@@ -40,12 +40,13 @@ module.exports = {
 		'buefy',
 	],
 	devServer: {
+		port: 7072,
 		disableHostCheck: true,
 		watchOptions: {
 			poll: false,
 		},
 	},
-	outputDir: path.resolve( __dirname, '../../web/skins/laika' ),
+	outputDir: path.resolve( __dirname, 'dist' ),
 
 	chainWebpack: config => {
 		if ( config.plugins.has( 'extract-css' ) ) {
