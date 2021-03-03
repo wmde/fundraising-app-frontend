@@ -1,4 +1,9 @@
-# This file is a template, and might need editing before it works on your project.
+stages:
+    - build
+    - test
+    - package
+    - deploy
+
 docker-build-main:
   # Official docker image.
   image: docker:latest
@@ -26,3 +31,15 @@ docker-build:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   except:
     - main
+
+build-artifacts:
+  image: node:14-alpine
+  stage: package
+  script:
+      - npm install
+      - npm run build
+  artifacts:
+      name: "fundraising-assets-$CI_COMMIT_REF_NAME"
+      public: true
+      paths:
+          - dist
