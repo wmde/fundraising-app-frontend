@@ -1,13 +1,24 @@
 stages:
-    - build
     - test
     - package
     - deploy
 
+test:
+  image: node:14-alpine
+  stage: test
+  script:
+    - npm install
+    - npm run lint
+    - npm run test:unit
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - node_modules
+
 docker-build-main:
   # Official docker image.
   image: docker:latest
-  stage: build
+  stage: package
   services:
     - docker:dind
   before_script:
@@ -21,7 +32,7 @@ docker-build-main:
 docker-build:
   # Official docker image.
   image: docker:latest
-  stage: build
+  stage: package
   services:
     - docker:dind
   before_script:
@@ -43,3 +54,8 @@ build-artifacts:
       public: true
       paths:
           - dist
+  cache:
+    key: "%CI_COMMIT_REF_SLUG%"
+    paths:
+      - node_modules
+
