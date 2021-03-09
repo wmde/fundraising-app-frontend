@@ -1,5 +1,6 @@
 <template>
 	<div class="supporters">
+		<h2 class="title is-size-2">{{ pageTitle }}</h2>
 		<supporter lang="de" v-for="( supporter, index ) in supporters"
 				:key="index"
 				v-on:supporter-opened="setSupporterId( $event )"
@@ -22,6 +23,7 @@ export default Vue.extend( {
 		Supporter,
 	},
 	props: {
+		pageTitle: String,
 		supporters: {
 			type: Array as () => SupporterInfo[],
 		},
