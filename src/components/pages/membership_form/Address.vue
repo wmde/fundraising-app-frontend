@@ -18,17 +18,12 @@
 					:initial-receipt-needed="receiptNeeded"
 					v-on:opted-out="setReceiptOptedOut( $event )"
 			/>
-			<div>
-				<feature-toggle>
-					<incentives
-						slot="campaigns.membership_incentive.incentive"
-						:message="$t( 'membership_form_incentive' )"
-						:incentive-choices="[ 'tote_bag' ]"
-						:default-incentives="incentives"
-						v-on:incentives-changed="setIncentives( $event )"
-					/>
-				</feature-toggle>
-			</div>
+      <incentives
+        :message="$t( 'membership_form_incentive' )"
+        :incentive-choices="[ 'tote_bag' ]"
+        :default-incentives="incentives"
+        v-on:incentives-changed="setIncentives( $event )"
+      />
 			<date-of-birth v-if="isPerson" :validation-pattern="dateOfBirthValidationPattern"/>
 			<email :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange"/>
 		</AutofillHandler>
