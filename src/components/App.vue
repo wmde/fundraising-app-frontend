@@ -1,5 +1,5 @@
 <template>
-	<div :class="bucketClasses">
+	<div class="app-container" :class="bucketClasses">
 		<header>
 			<Header :page-identifier="pageIdentifier" :assets-path="assetsPath"></Header>
 		</header>
