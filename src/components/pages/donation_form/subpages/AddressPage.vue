@@ -80,7 +80,7 @@ import { markEmptyValuesAsInvalid } from '@/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
 import { discardInitialization } from '@/store/payment/actionTypes';
-import { trackFormSubmission } from '@/tracking';
+import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 
 export default Vue.extend( {
 	name: 'AddressPage',
@@ -99,6 +99,9 @@ export default Vue.extend( {
 		countries: Array as () => Array<Country>,
 		trackingData: Object as () => TrackingData,
 		addressValidationPatterns: Object as () => AddressValidation,
+	},
+	mounted: function () {
+		trackDynamicForm();
 	},
 	computed: {
 		paymentSummary: {
