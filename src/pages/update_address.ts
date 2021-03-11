@@ -11,6 +11,7 @@ import Sidebar from '@/components/layout/Sidebar.vue';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import { Country } from '@/view_models/Country';
+import createCookieConsent from '@/cookie_consent';
 
 const PAGE_IDENTIFIER = 'update-address';
 const FORM_NAMESPACE = 'update_address';
@@ -41,11 +42,13 @@ const i18n = new VueI18n( {
 new Vue( {
 	store,
 	i18n,
+	provide: {
+		cookieConsent: createCookieConsent( pageData.cookieConsent ),
+	},
 	render: h => h( App, {
 		props: {
 			assetsPath: pageData.assetsPath,
 			pageIdentifier: PAGE_IDENTIFIER,
-			cookieConsent: pageData.cookieConsent,
 		},
 	},
 	[

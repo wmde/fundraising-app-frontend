@@ -8,6 +8,7 @@ import App from '@/components/App.vue';
 import Component from '@/components/pages/MembershipConfirmation.vue';
 import { clearPersistentData } from '@/store/create_data_persister';
 import LocalStorageRepository from '@/store/LocalStorageRepository';
+import createCookieConsent from '@/cookie_consent';
 
 const PAGE_IDENTIFIER = 'membership-application-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -30,12 +31,14 @@ const i18n = new VueI18n( {
 
 new Vue( {
 	i18n,
+	provide: {
+		cookieConsent: createCookieConsent( pageData.cookieConsent ),
+	},
 	render: h => h( App, {
 		props: {
 			assetsPath: pageData.assetsPath,
 			pageIdentifier: PAGE_IDENTIFIER,
 			isFullWidth: IS_FULLWIDTH_PAGE,
-			cookieConsent: pageData.cookieConsent,
 		},
 	},
 	[

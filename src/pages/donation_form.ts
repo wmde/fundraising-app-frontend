@@ -21,6 +21,7 @@ import { initializeAddress } from '@/store/address/actionTypes';
 import { Country } from '@/view_models/Country';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
+import createCookieConsent from '@/cookie_consent';
 
 const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
@@ -76,6 +77,9 @@ dataPersister.initialize( persistenceItems ).then( () => {
 		new Vue( {
 			store,
 			i18n,
+			provide: {
+				cookieConsent: createCookieConsent( pageData.cookieConsent ),
+			},
 			render: h => h( App, {
 				props: {
 					assetsPath: pageData.assetsPath,
@@ -89,7 +93,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 					countries: pageData.applicationVars.countries,
 					trackingData: pageData.applicationVars.tracking,
 					bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-					cookieConsent: pageData.cookieConsent,
 				},
 			},
 			[

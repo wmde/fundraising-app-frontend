@@ -1,11 +1,7 @@
 $cookie-notice-padding: 32px;
 
 .cookie-notice {
-	display: none;
-
-	&.is-visible {
-		display: block;
-	}
+	display: block;
 
 	h3 {
 		font-size: 18px;
