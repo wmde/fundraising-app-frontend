@@ -2,6 +2,7 @@
 	<div class="incentive-box">
 		<b-checkbox
 			v-for="incentive in incentiveChoices"
+			:key="incentive"
 			type="checkbox"
 			class="is-inline-checkbox"
 			:class="'incentive-' + incentive.replace( ' ', '-' )"
