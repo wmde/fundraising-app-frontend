@@ -9,6 +9,7 @@ import Component from '@/components/pages/Supporters.vue';
 import Sidebar from '@/components/layout/Sidebar.vue';
 import { supportersFromObject } from '@/view_models/supporters';
 
+const staticPage: any = document.getElementById( 'appdata' );
 const PAGE_IDENTIFIER = 'supporters';
 
 Vue.config.productionTip = false;
@@ -40,6 +41,7 @@ new Vue( {
 	[
 		h( Component, {
 			props: {
+				pageTitle: staticPage.getAttribute( 'data-page-title' ),
 				supporters: supportersFromObject( pageData.applicationVars ),
 			},
 		} ),
