@@ -15,7 +15,6 @@ const environment              = isProd ? require('./env/prod.env') : require('.
 const webpackConfig = merge(commonConfig, {
     mode: 'production',
     optimization: {
-        runtimeChunk: 'single',
         minimizer: [
             new OptimizeCSSAssetsPlugin({
                 cssProcessorPluginOptions: {
