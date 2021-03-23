@@ -71,14 +71,14 @@ const webpackConfig = {
                 test: /\.css$/,
                 use: [
 					{ loader: isDev ? 'vue-style-loader' : MiniCSSExtractPlugin.loader },
-                    { loader: 'css-loader', options: { sourceMap: isDev } },
+					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
                 ]
             },
             {
                 test: /\.scss$/,
                 use: [
 					{ loader: isDev ? 'vue-style-loader' : MiniCSSExtractPlugin.loader },
-                    { loader: 'css-loader', options: { sourceMap: isDev } },
+                    { loader: 'css-loader', options: { sourceMap: isDev, url: false} },
                     { loader: 'sass-loader', options: { sourceMap: isDev } }
                 ]
             },
@@ -86,7 +86,7 @@ const webpackConfig = {
                 test: /\.sass$/,
                 use: [
 					{ loader: isDev ? 'vue-style-loader' : MiniCSSExtractPlugin.loader },
-                    { loader: 'css-loader', options: { sourceMap: isDev } },
+                    { loader: 'css-loader', options: { sourceMap: isDev, url: false} },
                     { loader: 'sass-loader', options: { sourceMap: isDev } }
                 ]
             },
@@ -120,7 +120,8 @@ const webpackConfig = {
 		}
 	},
     plugins: [
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+		
     ]
 };
 
