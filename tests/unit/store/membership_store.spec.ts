@@ -7,7 +7,7 @@ import { initializeAddress } from '@/store/membership_address/actionTypes';
 import { initializeMembershipFee } from '@/store/membership_fee/actionTypes';
 import { initializeBankData } from '@/store/bankdata/actionTypes';
 
-describe( 'Donation Store', () => {
+describe( 'Membership Store', () => {
 
 	describe( 'Initialization', () => {
 
