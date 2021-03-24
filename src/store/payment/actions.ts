@@ -56,12 +56,12 @@ export const actions = {
 	[ markEmptyAmountAsInvalid ]( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( MARK_EMPTY_AMOUNT_INVALID );
 	},
-	[ setAmount ]( context: ActionContext<DonationPayment, any>, payload: any ): void {
+	[ setAmount ]( context: ActionContext<DonationPayment, any>, payload: any ): Promise<void> {
 		context.commit( SET_AMOUNT, payload.amountValue );
 		context.commit( SET_IS_VALIDATING, true );
 		const bodyFormData = new FormData();
 		bodyFormData.append( 'amount', payload.amountValue );
-		axios( payload.validateAmountUrl, {
+		return axios( payload.validateAmountUrl, {
 			method: 'post',
 			data: bodyFormData,
 			headers: { 'Content-Type': 'multipart/form-data' },

@@ -58,18 +58,18 @@ export const actions = {
 	[ markEmptyFeeAsInvalid ]( context: ActionContext<MembershipFee, any> ): void {
 		context.commit( MARK_EMPTY_FEE_INVALID );
 	},
-	[ setFee ]( context: ActionContext<MembershipFee, any>, payload: SetFeePayload ): void {
+	[ setFee ]( context: ActionContext<MembershipFee, any>, payload: SetFeePayload ): Promise<void> {
 		context.commit( SET_FEE, payload.feeValue );
 		if ( Helper.isNonNumeric( payload.feeValue ) ) {
 			context.commit( SET_FEE_VALIDITY, Validity.INVALID );
-			return;
+			return Promise.resolve();
 		}
 		if ( Helper.isNonNumeric( context.state.values.interval ) ) {
 			context.commit( SET_INTERVAL_VALIDITY );
-			return;
+			return Promise.resolve();
 		}
 		context.commit( SET_IS_VALIDATING, true );
-		validateFeeDataRemotely(
+		return validateFeeDataRemotely(
 			context,
 			payload.validateFeeUrl,
 			payload.feeValue,
@@ -79,14 +79,14 @@ export const actions = {
 			context.commit( SET_IS_VALIDATING, false );
 		} );
 	},
-	[ setInterval ]( context: ActionContext<MembershipFee, any>, payload: IntervalData ): void {
+	[ setInterval ]( context: ActionContext<MembershipFee, any>, payload: IntervalData ): Promise<void> {
 		context.commit( SET_INTERVAL, payload.selectedInterval );
 		context.commit( SET_INTERVAL_VALIDITY );
 		if ( Helper.isNonNumeric( context.state.values.fee ) ) {
 			return;
 		}
 		context.commit( SET_IS_VALIDATING, true );
-		validateFeeDataRemotely(
+		return validateFeeDataRemotely(
 			context,
 			payload.validateFeeUrl,
 			context.state.values.fee,
