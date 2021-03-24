@@ -24,7 +24,8 @@ const webpackConfig = merge(commonConfig, {
         port: 7072,
         stats: {
             normal: true
-        }
+        },
+		contentBase: 'public'
     }
 });
 
