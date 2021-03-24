@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "cross-env NODE_ENV=development webpack serve",
+    "build": "cross-env NODE_ENV=production webpack serve",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "ci": "npm run lint && npm run test:unit"
