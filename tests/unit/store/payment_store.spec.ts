@@ -15,7 +15,7 @@ import {
 	SET_TYPE_VALIDITY,
 } from '@/store/payment/mutationTypes';
 import each from 'jest-each';
-import moxios from 'moxios';
+import mockAxios from 'jest-mock-axios';
 import { DonationPayment } from '@/store/payment/types';
 
 function newMinimalStore( overrides: Object ): DonationPayment {
@@ -318,15 +318,12 @@ describe( 'Payment', () => {
 	} );
 
 	describe( 'Actions/setAmount', () => {
-		beforeEach( function () {
-			moxios.install();
-		} );
 
 		afterEach( function () {
-			moxios.uninstall();
+			mockAxios.reset();
 		} );
 
-		it( 'commits to mutation [SET_AMOUNT]', () => {
+		it( 'commits to mutation [SET_AMOUNT]', ( done ) => {
 			const context = {
 					commit: jest.fn(),
 				},
@@ -334,19 +331,24 @@ describe( 'Payment', () => {
 					amountValue: '2500',
 					validateAmountUrl: '/validation-amount-url',
 				};
-			moxios.stubRequest( payload.validateAmountUrl, {
-				status: 200,
-				responseText: 'OK',
-			} );
 			const action = actions.setAmount as any;
-			action( context, payload );
-			expect( context.commit ).toHaveBeenCalledWith(
-				'SET_AMOUNT',
-				payload.amountValue
-			);
+			action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenCalledWith(
+					'SET_AMOUNT',
+					payload.amountValue
+				);
+				done();
+			} );
+
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					'status': 'OK',
+				},
+			} );
 		} );
 
-		it( 'sends a post request for amount validation', () => {
+		it( 'sends a post request for amount validation', ( done ) => {
 			const context = {
 					commit: jest.fn(),
 				},
@@ -358,12 +360,16 @@ describe( 'Payment', () => {
 			bodyFormData.append( 'amount', payload.amountValue );
 
 			const action = actions.setAmount as any;
-			action( context, payload );
+			action( context, payload ).then( function () {
+				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateAmountUrl, bodyFormData );
+				done();
+			} );
 
-			moxios.wait( function () {
-				const request = moxios.requests.mostRecent();
-				expect( request.config.method ).toBe( 'post' );
-				expect( request.config.data ).toStrictEqual( bodyFormData );
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					'status': 'OK',
+				},
 			} );
 		} );
 
@@ -377,25 +383,19 @@ describe( 'Payment', () => {
 				},
 				action = actions.setAmount as any;
 
-			action( context, payload );
-
-			moxios.wait( function () {
-				let request = moxios.requests.mostRecent();
-				request.respondWith( {
-					status: 200,
-					response: {
-						'status': 'OK',
-					},
-				} ).then( function () {
-					expect( context.commit ).toHaveBeenCalledWith(
-						'SET_AMOUNT_VALIDITY',
-						Validity.VALID
-					);
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
-					done();
-				} );
+			action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
+				done();
 			} );
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					'status': 'OK',
+				},
+			} );
+
 		} );
 	} );
 
