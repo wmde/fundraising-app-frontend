@@ -27,6 +27,7 @@ module.exports = {
 		'ts-jest': {
 			babelConfig: true,
 			isolatedModules: true,
+			tsConfig: false,
 		},
 	},
 	setupFilesAfterEnv: [
