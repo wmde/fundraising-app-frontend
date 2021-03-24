@@ -19,9 +19,9 @@ import {
 import { Validity } from '@/view_models/Validity';
 
 export const actions = {
-	[ setBankData ]( context: ActionContext<BankAccount, any>, payload: BankAccountRequest ): void {
+	[ setBankData ]( context: ActionContext<BankAccount, any>, payload: BankAccountRequest ): Promise<void> {
 		context.commit( SET_IS_VALIDATING, true );
-		axios( payload.validationUrl, {
+		return axios( payload.validationUrl, {
 			method: 'get',
 			headers: { 'Content-Type': 'multipart/form-data' },
 			params: payload.requestParams,
