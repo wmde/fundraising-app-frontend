@@ -61,8 +61,7 @@ export const actions = {
 		context.commit( SET_IS_VALIDATING, true );
 		const bodyFormData = new FormData();
 		bodyFormData.append( 'amount', payload.amountValue );
-		return axios( payload.validateAmountUrl, {
-			method: 'post',
+		return axios.post( payload.validateAmountUrl, {
 			data: bodyFormData,
 			headers: { 'Content-Type': 'multipart/form-data' },
 		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {

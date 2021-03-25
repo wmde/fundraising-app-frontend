@@ -323,7 +323,7 @@ describe( 'Payment', () => {
 			mockAxios.reset();
 		} );
 
-		it( 'commits to mutation [SET_AMOUNT]', ( done ) => {
+		it( 'commits to mutation [SET_AMOUNT]', () => {
 			const context = {
 					commit: jest.fn(),
 				},
@@ -332,12 +332,11 @@ describe( 'Payment', () => {
 					validateAmountUrl: '/validation-amount-url',
 				};
 			const action = actions.setAmount as any;
-			action( context, payload ).then( function () {
+			const actionResult = action( context, payload ).then( function () {
 				expect( context.commit ).toHaveBeenCalledWith(
 					'SET_AMOUNT',
 					payload.amountValue
 				);
-				done();
 			} );
 
 			mockAxios.mockResponse( {
@@ -346,9 +345,11 @@ describe( 'Payment', () => {
 					'status': 'OK',
 				},
 			} );
+
+			return actionResult;
 		} );
 
-		it( 'sends a post request for amount validation', ( done ) => {
+		it( 'sends a post request for amount validation', () => {
 			const context = {
 					commit: jest.fn(),
 				},
@@ -360,9 +361,11 @@ describe( 'Payment', () => {
 			bodyFormData.append( 'amount', payload.amountValue );
 
 			const action = actions.setAmount as any;
-			action( context, payload ).then( function () {
-				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateAmountUrl, bodyFormData );
-				done();
+			const actionResult = action( context, payload ).then( function () {
+				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateAmountUrl, {
+					data: bodyFormData,
+					headers: { 'Content-Type': 'multipart/form-data' },
+				} );
 			} );
 
 			mockAxios.mockResponse( {
@@ -371,9 +374,11 @@ describe( 'Payment', () => {
 					'status': 'OK',
 				},
 			} );
+
+			return actionResult;
 		} );
 
-		it( 'commits to mutation [SET_AMOUNT_VALIDITY] and [SET_IS_VALIDATING] on server side validation', ( done ) => {
+		it( 'commits to mutation [SET_AMOUNT_VALIDITY] and [SET_IS_VALIDATING] on server side validation', () => {
 			const context = {
 					commit: jest.fn(),
 				},
@@ -383,12 +388,12 @@ describe( 'Payment', () => {
 				},
 				action = actions.setAmount as any;
 
-			action( context, payload ).then( function () {
+			const actionResult = action( context, payload ).then( function () {
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
-				done();
 			} );
+
 			mockAxios.mockResponse( {
 				status: 200,
 				data: {
@@ -396,6 +401,7 @@ describe( 'Payment', () => {
 				},
 			} );
 
+			return actionResult;
 		} );
 	} );
 
