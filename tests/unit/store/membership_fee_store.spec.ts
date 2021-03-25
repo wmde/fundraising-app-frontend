@@ -154,7 +154,7 @@ describe( 'MembershipFee', () => {
 			);
 		} );
 
-		it( 'checks the validity of the fee if the fee has been set', ( done ) => {
+		it( 'checks the validity of the fee if the fee has been set', () => {
 			const context = {
 					commit: jest.fn(),
 					state: {
@@ -175,14 +175,29 @@ describe( 'MembershipFee', () => {
 				} as IntervalData;
 
 			const action = actions.setInterval as any;
-			action( context, payload ).then( function () {
+			const actionResult = action( context, payload ).then( function () {
 				let bodyFormData = new FormData();
 				bodyFormData.append( 'membershipFee', '2000' );
 				bodyFormData.append( 'paymentIntervalInMonths', '6' );
 				bodyFormData.append( 'addressType', 'person' );
-				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateFeeUrl, bodyFormData );
-				done();
+				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateFeeUrl,
+					{
+						data: bodyFormData,
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					}
+				);
 			} );
+
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					'status': 'OK',
+				},
+			} );
+
+			return actionResult;
 		} );
 	} );
 
@@ -192,7 +207,7 @@ describe( 'MembershipFee', () => {
 			mockAxios.reset();
 		} );
 
-		it( 'commits to mutation [SET_FEE]', ( done ) => {
+		it( 'commits to mutation [SET_FEE]', () => {
 			const context = {
 					commit: jest.fn(),
 					state: {
@@ -211,9 +226,8 @@ describe( 'MembershipFee', () => {
 					validateFeeUrl: '/validation-fee-url',
 				};
 			const action = actions.setFee as any;
-			action( context, payload ).then( function () {
+			const actionResult = action( context, payload ).then( function () {
 				expect( context.commit ).toHaveBeenCalledWith( SET_FEE, payload.feeValue );
-				done();
 			} );
 
 			mockAxios.mockResponse( {
@@ -222,6 +236,8 @@ describe( 'MembershipFee', () => {
 					'status': 'OK',
 				},
 			} );
+
+			return actionResult;
 		} );
 
 		it( 'sends a post request for fee validation', () => {
@@ -303,7 +319,7 @@ describe( 'MembershipFee', () => {
 			} );
 		} );
 
-		it( 'commits to mutation [SET_FEE_VALIDITY] after server side validation', ( done ) => {
+		it( 'commits to mutation [SET_FEE_VALIDITY] after server side validation', () => {
 			const context = {
 					commit: jest.fn(),
 					state: {
@@ -323,9 +339,8 @@ describe( 'MembershipFee', () => {
 				},
 				action = actions.setFee as any;
 
-			action( context, payload ).then( function () {
+			const actionResult = action( context, payload ).then( function () {
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_FEE_VALIDITY', Validity.VALID );
-				done();
 			} );
 
 			mockAxios.mockResponse( {
@@ -334,9 +349,11 @@ describe( 'MembershipFee', () => {
 					'status': 'OK',
 				},
 			} );
+
+			return actionResult;
 		} );
 
-		it( 'commits to mutation [SET_IS_VALIDATING] when doing server side validation', ( done ) => {
+		it( 'commits to mutation [SET_IS_VALIDATING] when doing server side validation', () => {
 			const context = {
 					commit: jest.fn(),
 					state: {
@@ -356,10 +373,9 @@ describe( 'MembershipFee', () => {
 				},
 				action = actions.setFee as any;
 
-			action( context, payload ).then( function () {
+			const actionResult = action( context, payload ).then( function () {
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
-				done();
 			} );
 
 			mockAxios.mockResponse( {
@@ -368,6 +384,8 @@ describe( 'MembershipFee', () => {
 					'status': 'OK',
 				},
 			} );
+
+			return actionResult;
 		} );
 	} );
 
