@@ -89,7 +89,7 @@ export default Vue.extend( {
 </script>
 
 <style lang="scss">
-	@import "../../scss/custom.scss";
+	@import "../../scss/variables.scss";
 	.privacy-selection {
 		border: 1px solid $fun-color-gray-mid;
 		border-radius: 2px;

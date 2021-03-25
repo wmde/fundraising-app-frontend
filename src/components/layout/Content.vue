@@ -15,7 +15,6 @@ export default {
 </script>
 
 <style lang="scss">
-	@import "../../scss/custom";
 	.columns.content-wrapper {
 		margin: 0 -12px;
 	}
