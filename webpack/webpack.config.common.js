@@ -1,7 +1,7 @@
 'use strict';
 
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const VueLoaderPlugin      = require('vue-loader/lib/plugin');
-const HtmlPlugin           = require('html-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const helpers              = require('./helpers');
 const isDev                = process.env.NODE_ENV === 'development';
@@ -58,10 +58,12 @@ const webpackConfig = {
 			 {
         		test: /\.tsx?$/,
 				 use: [
-					 { 
+					 {
 						 loader: 'ts-loader',
 						 options: {
-					 		appendTsSuffixTo: [/\.vue$/],
+					 		appendTsSuffixTo: [ /\.vue$/ ],
+							// Type check happens in ForkTsCheckerWebpackPlugin
+							transpileOnly: true,
 				 			}
 					 }
 				 ],
@@ -121,7 +123,13 @@ const webpackConfig = {
 	},
     plugins: [
         new VueLoaderPlugin(),
-		
+		new ForkTsCheckerWebpackPlugin({
+			typescript: {
+				extensions: {
+					vue: true
+				}
+			}
+		}),
     ]
 };
 
