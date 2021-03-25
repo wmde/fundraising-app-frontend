@@ -40,20 +40,3 @@ export default Vue.extend( {
 	},
 } );
 </script>
-
-<style lang="scss">
-	@import "../../scss/custom";
-
-	.icon-aligned {
-		width:20px;
-		display: inline-block;
-	}
-
-	.supporters {
-		hyphens: auto;
-		width: 85vw;
-		@include from($tablet) {
-			width: auto;
-		}
-	}
-</style>

@@ -92,7 +92,3 @@ export default Vue.extend( {
 	},
 } );
 </script>
-
-<style lang="scss">
-	@import "../../../scss/custom";
-</style>

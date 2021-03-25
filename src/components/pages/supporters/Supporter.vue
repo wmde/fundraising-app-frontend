@@ -59,8 +59,6 @@ export default Vue.extend( {
 </script>
 
 <style lang="scss">
-	@import "../../../scss/custom";
-
 	.icon-aligned {
 		width:20px;
 		display: inline-block;

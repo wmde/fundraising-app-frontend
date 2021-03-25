@@ -12,20 +12,3 @@ export default {
 	props: [ 'isFullWidth' ],
 };
 </script>
-<style lang="scss">
-	@import "../../scss/custom";
-	.intro-content {
-		.is-two-thirds.column {
-			margin: 18px 0;
-			@include from($tablet) {
-				margin: 0px -28px;
-			}
-		}
-		.is-full.column {
-			margin: 18px 0;
-			@include from($tablet) {
-				margin: 18px 0;
-			}
-		}
-	}
-</style>

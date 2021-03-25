@@ -77,7 +77,6 @@ export default Vue.extend( {
 } );
 </script>
 <style lang="scss">
-@import "../../../scss/custom.scss";
 	.membership-type {
 		.b-radio.radio {
 			height: auto;

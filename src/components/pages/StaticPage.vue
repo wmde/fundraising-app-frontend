@@ -19,7 +19,6 @@ export default Vue.extend( {
 </script>
 
 <style lang="scss">
-	@import "../../scss/custom.scss";
 	.static-content {
 		ol {
 			margin-left: 1.5em;
