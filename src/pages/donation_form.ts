@@ -71,7 +71,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			action( NS_ADDRESS, initializeAddress ),
 			createInitialDonationAddressValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
-	] ).then( ( [ paymentDataComplete, _ ] ) => {
+	] ).then( ( [ paymentDataComplete ] ) => { // ignoring result of initializeAddress
 
 		new Vue( {
 			store,

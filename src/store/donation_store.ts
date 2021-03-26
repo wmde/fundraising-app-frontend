@@ -22,9 +22,8 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 		},
 		strict: process.env.NODE_ENV !== 'production',
 		getters: {
-			isValidating: function ( state, getters ): boolean {
+			isValidating: function ( state ): boolean {
 				return state[ NS_PAYMENT ].isValidating ||
-					// TODO use getters instead
 					state[ NS_ADDRESS ].serverSideValidationCount > 0 ||
 					state[ NS_BANKDATA ].isValidating;
 			},

@@ -29,7 +29,7 @@ import { ValidationResponse } from '@/store/ValidationResponse';
 import { Validity } from '@/view_models/Validity';
 
 export const actions = {
-	[ discardInitialization ]( context: ActionContext<DonationPayment, any>, initialValues: InitialPaymentValues ): void {
+	[ discardInitialization ]( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( SET_INITIALIZED, false );
 	},
 	[ initializePayment ]( context: ActionContext<DonationPayment, any>, initialValues: InitialPaymentValues ): Promise<boolean> {

@@ -19,7 +19,7 @@ import {
 } from '@/store/membership_address/mutationTypes';
 import { REQUIRED_FIELDS } from '@/store/membership_address/constants';
 import { Validity } from '@/view_models/Validity';
-import { MembershipAddressState, InputField, AddressState } from '@/view_models/Address';
+import { MembershipAddressState, InputField } from '@/view_models/Address';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
 

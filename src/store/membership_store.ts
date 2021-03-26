@@ -4,7 +4,6 @@ import createAddress from '@/store/membership_address';
 import createBankData from '@/store/bankdata';
 import createPayment from '@/store/membership_fee';
 import {
-	NS_ADDRESS,
 	NS_BANKDATA,
 	NS_MEMBERSHIP_ADDRESS,
 	NS_MEMBERSHIP_FEE,

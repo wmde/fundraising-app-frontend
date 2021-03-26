@@ -7,13 +7,13 @@ export const getters: GetterTree<AddressState, any> = {
 	invalidFields: ( state: AddressState ): Array<string> => {
 		return state.requiredFields[ state.addressType ].filter( fieldName => state.validity[ fieldName ] !== Validity.VALID );
 	},
-	requiredFieldsAreValid: ( state: AddressState, getters: GetterTree<AddressState, any> ): boolean => {
-		return getters.invalidFields.length === 0;
+	requiredFieldsAreValid: ( state: AddressState, addressGetters: GetterTree<AddressState, any> ): boolean => {
+		return addressGetters.invalidFields.length === 0;
 	},
 	addressType: ( state: AddressState ): AddressTypeModel => state.addressType,
-	addressTypeIsNotAnon: ( state: AddressState, getters ): boolean => getters.addressType !== AddressTypeModel.ANON,
-	addressTypeIsNeitherAnonNorEmail: ( state: AddressState, getters ): boolean => {
-		return getters.addressType !== AddressTypeModel.ANON && getters.addressType !== AddressTypeModel.EMAIL;
+	addressTypeIsNotAnon: ( state: AddressState, addressGetters ): boolean => addressGetters.addressType !== AddressTypeModel.ANON,
+	addressTypeIsNeitherAnonNorEmail: ( state: AddressState, addressGetters ): boolean => {
+		return addressGetters.addressType !== AddressTypeModel.ANON && addressGetters.addressType !== AddressTypeModel.EMAIL;
 	},
 	addressTypeIsInvalid: ( state: AddressState ): boolean => state.validity.addressType === Validity.INVALID,
 	fullName: ( state: AddressState ): string => {

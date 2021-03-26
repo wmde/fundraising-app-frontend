@@ -12,7 +12,7 @@ import {
 	validateAddressType,
 	validateCountry,
 } from '@/store/address/actionTypes';
-import { AddressState, CountryValidationFields, InitialAddressValues, InputField, MembershipAddressState } from '@/view_models/Address';
+import { AddressState, CountryValidationFields, InitialAddressValues, InputField } from '@/view_models/Address';
 import { ValidationResponse } from '@/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import {

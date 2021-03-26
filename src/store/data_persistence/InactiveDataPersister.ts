@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { DataPersistenceItem, DataPersister } from '@/view_models/DataPersistence';
 
 export class InactiveDataPersister implements DataPersister {

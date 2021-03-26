@@ -85,13 +85,6 @@ export interface InitialMembershipData {
     bankname?: string
 }
 
-export interface InputField {
-    name: string,
-    value: string,
-    pattern: string,
-    optionalField: boolean
-}
-
 export interface Payload {
     validateAddressUrl: string,
     validateEmailUrl: string,

@@ -1,9 +1,3 @@
-export interface DataPersister {
-	getPlugin( items: DataPersistenceItem[] ): any;
-	initialize( items: DataPersistenceItem[] ): Promise<void>;
-	getValue( key: string ): string|null;
-}
-
 /**
  * Data is captured by mutation name on Vuex mutations,
  * but address fields all share the same mutation name
@@ -22,4 +16,10 @@ export interface DataPersistenceItem {
 	mutationType: DataPersistenceMutationType,
 	mutationKey: string,
 	fields: string[]
+}
+
+export interface DataPersister {
+	getPlugin( items: DataPersistenceItem[] ): any;
+	initialize( items: DataPersistenceItem[] ): Promise<void>;
+	getValue( key: string ): string|null;
 }
