@@ -180,13 +180,10 @@ describe( 'MembershipFee', () => {
 				bodyFormData.append( 'membershipFee', '2000' );
 				bodyFormData.append( 'paymentIntervalInMonths', '6' );
 				bodyFormData.append( 'addressType', 'person' );
-				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateFeeUrl,
-					{
-						data: bodyFormData,
-						headers: {
-							'Content-Type': 'multipart/form-data',
-						},
-					}
+				expect( mockAxios.post ).toHaveBeenCalledWith(
+					payload.validateFeeUrl,
+					bodyFormData,
+					{ headers: { 'Content-Type': 'multipart/form-data' } }
 				);
 			} );
 

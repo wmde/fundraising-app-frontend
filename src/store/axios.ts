@@ -17,10 +17,11 @@ function postFeeData(
 	bodyFormData.append( 'membershipFee', membershipFee );
 	bodyFormData.append( 'paymentIntervalInMonths', interval );
 	bodyFormData.append( 'addressType', addressTypeName( addressType ) );
-	return axios.post( validateFeeUrl, {
-		data: bodyFormData,
-		headers: { 'Content-Type': 'multipart/form-data' },
-	} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
+	return axios.post(
+		validateFeeUrl,
+		bodyFormData,
+		{ headers: { 'Content-Type': 'multipart/form-data' } }
+	).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
 		return Promise.resolve( validationResult.data );
 	} );
 }

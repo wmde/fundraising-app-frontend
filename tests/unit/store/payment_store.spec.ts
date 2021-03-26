@@ -362,10 +362,11 @@ describe( 'Payment', () => {
 
 			const action = actions.setAmount as any;
 			const actionResult = action( context, payload ).then( function () {
-				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateAmountUrl, {
-					data: bodyFormData,
-					headers: { 'Content-Type': 'multipart/form-data' },
-				} );
+				expect( mockAxios.post ).toHaveBeenCalledWith(
+					payload.validateAmountUrl,
+					bodyFormData,
+					{ headers: { 'Content-Type': 'multipart/form-data' } }
+				);
 			} );
 
 			mockAxios.mockResponse( {
