@@ -3,10 +3,16 @@ module.exports = {
     [
       "@babel/preset-env",
       {
-        "modules": "auto"
+        "modules": "auto",
+        "useBuiltIns": "usage",
+        "corejs": {
+          "version": 3,
+          "proposals": true
+        }
       }
     ]
   ],
   "plugins": [
+	  "@babel/plugin-transform-runtime"
   ]
 }
