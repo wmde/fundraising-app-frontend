@@ -83,7 +83,7 @@ export const actions = {
 		context.commit( SET_INTERVAL, payload.selectedInterval );
 		context.commit( SET_INTERVAL_VALIDITY );
 		if ( Helper.isNonNumeric( context.state.values.fee ) ) {
-			return;
+			return Promise.resolve();
 		}
 		context.commit( SET_IS_VALIDATING, true );
 		return validateFeeDataRemotely(
