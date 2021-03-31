@@ -3,7 +3,7 @@
 		<legend class="title is-size-5">{{ $t( 'donation_form_payment_bankdata_title' ) }}</legend>
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]">
 			<label for="iban" class="subtitle">{{ $t( labels.iban ) }}</label>
-			<b-field>
+			<b-field v-bind:class="[{ 'has-margin-bottom-0': !isBankFieldEnabled }]">
 				<b-input class="is-medium"
 						data-content-name="Bank Data Type"
 						:data-track-content="getTrackingCode !== ''"
@@ -16,8 +16,15 @@
 						@blur="validate">
 				</b-input>
 			</b-field>
+      <span v-show="!isBankFieldEnabled">
+        <span id="bank-name-iban">{{ getBankName }}
+          <span v-show="showBankId">({{ bankIdentifier }})</span>
+        </span>
+      </span>
 		</div>
-		<div v-show="isBankFieldEnabled" v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]">
+		<div
+        v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]"
+        :style="{visibility: isBankFieldEnabled ? 'visible' : 'hidden'}" >
 			<label for="bic" class="subtitle">{{ $t( labels.bic ) }}</label>
 			<b-field>
 				<b-input class="is-medium"
@@ -31,8 +38,8 @@
 			</b-field>
 		</div>
 		<div>
-      <span>
-        <span id="bank-name">{{ getBankName }}
+      <span v-show="isBankFieldEnabled">
+        <span id="bank-name-legacy">{{ getBankName }}
           <span v-show="showBankId">({{ bankIdentifier }})</span>
         </span>
       </span>
