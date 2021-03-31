@@ -49,6 +49,9 @@ build-artifacts:
   script:
       - npm install
       - npm run build
+      - echo "$CI_COMMIT_REF_NAME" > dist/DEPLOY_ID
+      - echo "$CI_COMMIT_SHA" >> dist/DEPLOY_ID
+      - echo "$CI_JOB_STARTED_AT" >> dist/DEPLOY_ID
   artifacts:
       name: "fundraising-assets-$CI_COMMIT_REF_NAME"
       public: true
