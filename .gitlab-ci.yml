@@ -9,11 +9,14 @@ test:
   script:
     - npm install
     - npm run lint
-    - npm run test:unit
+    - npm run test:unit -- --coverage
   cache:
     key: "$CI_COMMIT_REF_SLUG"
     paths:
       - node_modules
+  artifacts:
+      reports:
+          cobertura: coverage/cobertura-coverage.xml
 
 docker-build-main:
   # Official docker image.

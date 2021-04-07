@@ -34,4 +34,5 @@ module.exports = {
 		'./jest.setup.js',
 		'./jest.dom.ts',
 	],
+	coverageReporters: ['cobertura']
 };
