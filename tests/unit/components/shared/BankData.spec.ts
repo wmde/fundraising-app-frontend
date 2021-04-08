@@ -182,7 +182,7 @@ describe( 'BankData', () => {
 		} );
 		const store = wrapper.vm.$store;
 		store.commit( NS_BANKDATA + '/SET_BANKNAME', 'Test Bank' );
-		const iban = wrapper.find( '#bank-name' );
+		const iban = wrapper.find( '#bank-name-iban' );
 		await wrapper.vm.$nextTick();
 		expect( iban.text() ).toMatch( 'Test Bank' );
 	} );
@@ -360,7 +360,7 @@ describe( 'BankData', () => {
 			} );
 			const iban = wrapper.find( '#iban' );
 			const bic = wrapper.find( '#bic' );
-			const bankName = wrapper.find( '#bank-name' );
+			const bankName = wrapper.find( '#bank-name-iban' );
 
 			expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'DE12345605171238489890' );
 			expect( ( ( <HTMLInputElement> bic.element ).value ) ).toMatch( 'ABCDDEFFXXX' );

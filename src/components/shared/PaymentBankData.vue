@@ -16,15 +16,15 @@
 						@blur="validate">
 				</b-input>
 			</b-field>
-      <span v-show="!isBankFieldEnabled">
-        <span id="bank-name-iban">{{ getBankName }}
-          <span v-show="showBankId">({{ bankIdentifier }})</span>
-        </span>
-      </span>
+			<span v-show="!isBankFieldEnabled">
+				<span id="bank-name-iban">{{ getBankName }}
+					<span v-show="showBankId">({{ bankIdentifier }})</span>
+				</span>
+			</span>
 		</div>
 		<div
-        v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]"
-        :style="{visibility: isBankFieldEnabled ? 'visible' : 'hidden'}" >
+				v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]"
+				:style="{visibility: isBankFieldEnabled ? 'visible' : 'hidden'}" >
 			<label for="bic" class="subtitle">{{ $t( labels.bic ) }}</label>
 			<b-field>
 				<b-input class="is-medium"
@@ -38,16 +38,16 @@
 			</b-field>
 		</div>
 		<div>
-      <span v-show="isBankFieldEnabled">
-        <span id="bank-name-legacy">{{ getBankName }}
-          <span v-show="showBankId">({{ bankIdentifier }})</span>
-        </span>
-      </span>
-      <span
-          v-if="bankInfoValidatedButInfoMissing"
-          id="bank-name-not-available" >
-            {{ $t( 'donation_form_payment_bankdata_bank_bic_placeholder_full' ) }}
-      </span>
+			<span v-show="isBankFieldEnabled">
+				<span id="bank-name-legacy">{{ getBankName }}
+					<span v-show="showBankId">({{ bankIdentifier }})</span>
+				</span>
+			</span>
+			<span
+					v-if="bankInfoValidatedButInfoMissing"
+					id="bank-name-not-available" >
+						{{ $t( 'donation_form_payment_bankdata_bank_bic_placeholder_full' ) }}
+			</span>
 			<span v-if="bankDataIsInvalid" class="help is-danger">{{ $t( 'donation_form_payment_bankdata_error' ) }}</span>
 		</div>
 	</fieldset>
@@ -84,8 +84,8 @@ export default Vue.extend( {
 		},
 		bankInfoValidatedButInfoMissing(): boolean {
 			return this.bankDataIsValid &&
-          this.bankIdentifier === '' &&
-          this.$store.getters[ NS_BANKDATA + '/getBankId' ] === '';
+					this.bankIdentifier === '' &&
+					this.$store.getters[ NS_BANKDATA + '/getBankId' ] === '';
 		},
 		showBankId(): boolean {
 			return this.bankIdentifier !== '' && this.looksLikeIban();
