@@ -27,10 +27,12 @@ module.exports = {
 		'ts-jest': {
 			babelConfig: true,
 			isolatedModules: true,
+			tsConfig: false,
 		},
 	},
 	setupFilesAfterEnv: [
 		'./jest.setup.js',
 		'./jest.dom.ts',
 	],
+	coverageReporters: ['cobertura']
 };

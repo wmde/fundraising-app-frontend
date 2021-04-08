@@ -40,7 +40,7 @@ export class ActiveDataPersister implements DataPersister {
 
 	getPlugin( items: DataPersistenceItem[] ) {
 		return ( store: Store<any> ) => {
-			store.subscribe( ( mutation: MutationPayload, state: any ) => {
+			store.subscribe( ( mutation: MutationPayload ) => {
 				const persistenceItem = items.find( item => item.mutationKey === mutation.type );
 				if ( !persistenceItem ) {
 					return;

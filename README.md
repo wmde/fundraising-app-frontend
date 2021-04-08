@@ -21,6 +21,38 @@ them into the directory `web/skins/laika` in the Fundraising Application
 directory. You can ingnore or delete the generated HTML files, they are an
 unused byproduct of the build process.
 
+
+## Where to put images and fonts and how to reference them
+Put all images, fonts and other non-bundled resources into subdirectories
+of the `public` directory. The bundler will automatically copy all
+subdirectories into the `dist` directory. When you deploy the application,
+the contents of `dist` will become the contents of `/skins/laika`.
+
+### Referencing resources in CSS
+Prefix all resources in the `public` directory with `/skins/laika`.
+Example: to reference the image
+`public/images/logo-vertical-wikimedia.svg` in CSS, use `url(
+'/skins/laika/images/logo-vertical-will.svg' )`.
+
+The bundler will preserve all `url()` references as-is.
+
+On your local development machine, you must manually keep the contents of
+`dist` (of the fundraising-app-client project) and `web/skins/laika` (of
+the fundraising-app prject) in sync, otherwise the CSS references will be
+broken.
+
+### Referencing resources in Vue
+Prefix  resources in the `public` directory with the variable `assetsPath`.
+Example: To show the image
+`public/images/logo-vertical-wikimedia.svg` in Vue, use `<img
+:src="assetsPath + '/images/logo-vertical-will.svg' )"/>`.
+
+The value of `assetsPath` comes from the `assets-path` data attribute of
+the HTML "skeleton" rendered by the PHP templates.
+The code in `src/page_data_initializer.ts` sets the variable from the HTML
+attribute.
+
+
 ## Using the Docker image to run the server and build assets
 
 The name of the Docker image is `registry.gitlab.com/fun-tech/fundraising-app-frontend`

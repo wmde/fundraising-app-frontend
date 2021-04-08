@@ -25,7 +25,7 @@ class ErrbitLogger implements Logger {
 }
 
 class SilentLogger implements Logger {
-	notify( error: object ) {}
+	notify( error: object ) {} /* eslint-disable-line @typescript-eslint/no-unused-vars */
 }
 
 class ConsoleLogger implements Logger {

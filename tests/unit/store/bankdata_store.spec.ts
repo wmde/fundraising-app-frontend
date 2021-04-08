@@ -3,7 +3,7 @@ import { actions } from '@/store/bankdata/actions';
 import { Validity } from '@/view_models/Validity';
 import each from 'jest-each';
 import { BankAccount, BankAccountRequest, BankAccountResponse } from '@/view_models/BankAccount';
-import moxios from 'moxios';
+import mockAxios from 'jest-mock-axios';
 import { mutations } from '@/store/bankdata/mutations';
 import { MARK_BANKDATA_INCOMPLETE } from '@/store/bankdata/mutationTypes';
 
@@ -149,15 +149,12 @@ describe( 'BankData', () => {
 	} );
 
 	describe( 'Actions/setBankData', () => {
-		beforeEach( function () {
-			moxios.install();
-		} );
 
 		afterEach( function () {
-			moxios.uninstall();
+			mockAxios.reset();
 		} );
 
-		it( 'commits to mutations [SET_BANK_DATA_VALIDITY], [SET_BANKNAME], [SET_BANKDATA], [SET_IS_VALIDATING]', ( done ) => {
+		it( 'commits to mutations [SET_BANK_DATA_VALIDITY], [SET_BANKNAME], [SET_BANKDATA], [SET_IS_VALIDATING]', () => {
 			const context = {
 					commit: jest.fn(),
 				},
@@ -167,31 +164,30 @@ describe( 'BankData', () => {
 				} as BankAccountRequest,
 				action = actions.setBankData as any;
 
-			action( context, payload );
-			moxios.wait( function () {
-				let request = moxios.requests.mostRecent();
-				request.respondWith( {
-					status: 200,
-					response: {
-						status: 'OK',
-						bic: testBIC,
-						iban: testIban,
-						account: testAccount,
-						bankCode: testBankCode,
-						bankName: testBankName,
-					} as BankAccountResponse,
-				} ).then( function () {
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_DATA_VALIDITY', Validity.VALID );
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKNAME', testBankName );
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKDATA', { accountId: testIban, bankId: testBIC } );
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
-					done();
-				} );
+			const actionResult = action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_DATA_VALIDITY', Validity.VALID );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKNAME', testBankName );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKDATA', { accountId: testIban, bankId: testBIC } );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
 			} );
+
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					status: 'OK',
+					bic: testBIC,
+					iban: testIban,
+					account: testAccount,
+					bankCode: testBankCode,
+					bankName: testBankName,
+				} as BankAccountResponse,
+			} );
+
+			return actionResult;
 		} );
 
-		it( 'resets the bank name via [SET_BANKNAME] on invalid account data', ( done ) => {
+		it( 'resets the bank name via [SET_BANKNAME] on invalid account data', () => {
 			const context = {
 					commit: jest.fn(),
 				},
@@ -201,20 +197,17 @@ describe( 'BankData', () => {
 				} as BankAccountRequest,
 				action = actions.setBankData as any;
 
-			action( context, payload );
-			moxios.wait( function () {
-				let request = moxios.requests.mostRecent();
-				request.respondWith( {
-					status: 200,
-					response: {
-						status: 'ERR',
-					} as BankAccountResponse,
-				} ).then( function () {
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_DATA_VALIDITY', Validity.INVALID );
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKNAME', '' );
-					done();
-				} );
+			const actionResult = action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_DATA_VALIDITY', Validity.INVALID );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKNAME', '' );
 			} );
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					status: 'ERR',
+				} as BankAccountResponse,
+			} );
+			return actionResult;
 		} );
 	} );
 

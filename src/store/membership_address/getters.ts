@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { AddressState, MembershipAddressState } from '@/view_models/Address';
+import { MembershipAddressState } from '@/view_models/Address';
 import { Validity } from '@/view_models/Validity';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
@@ -9,8 +9,8 @@ export const getters: GetterTree<MembershipAddressState, any> = {
 	invalidFields: ( state: MembershipAddressState ): Array<string> => {
 		return REQUIRED_FIELDS[ state.addressType ].filter( fieldName => state.validity[ fieldName ] !== Validity.VALID );
 	},
-	requiredFieldsAreValid: ( state: MembershipAddressState, getters: GetterTree<MembershipAddressState, any> ): boolean => {
-		return getters.invalidFields.length === 0;
+	requiredFieldsAreValid: ( state: MembershipAddressState, addressGetters: GetterTree<MembershipAddressState, any> ): boolean => {
+		return addressGetters.invalidFields.length === 0;
 	},
 	membershipTypeIsValid: ( state: MembershipAddressState ): boolean => state.validity.membershipType === Validity.VALID,
 	addressType: ( state: MembershipAddressState ): AddressTypeModel => state.addressType,

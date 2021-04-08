@@ -15,7 +15,7 @@ import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressState } from '@/view_models/Address';
 import { Validity } from '@/view_models/Validity';
 import { REQUIRED_FIELDS } from '@/store/address/constants';
-import moxios from 'moxios';
+import mockAxios from 'jest-mock-axios';
 
 function newMinimalStore( overrides: Object ): AddressState {
 	return Object.assign(
@@ -255,12 +255,9 @@ describe( 'Address', () => {
 	} );
 
 	describe( 'Actions/validateAddress', () => {
-		beforeEach( function () {
-			moxios.install();
-		} );
 
 		afterEach( function () {
-			moxios.uninstall();
+			mockAxios.reset();
 		} );
 		it( 'commits to mutation [MARK_EMPTY_FIELDS_INVALID] and [BEGIN_ADDRESS_VALIDATION]', () => {
 			const context = {
@@ -295,7 +292,7 @@ describe( 'Address', () => {
 			);
 		} );
 
-		it( 'sends post request for validation when required fields are valid and commits to mutation [FINISH_ADDRESS_VALIDATION]', ( done ) => {
+		it( 'sends post request for validation when required fields are valid and commits to mutation [FINISH_ADDRESS_VALIDATION]', () => {
 			const context = {
 					commit: jest.fn(),
 					getters: {
@@ -320,24 +317,23 @@ describe( 'Address', () => {
 				validationUrl = '/check-address',
 				action = actions.validateAddress as any;
 
-			action( context, validationUrl );
-			moxios.wait( function () {
-				let request = moxios.requests.mostRecent();
-				request.respondWith( {
-					status: 200,
-					response: {
-						status: 'OK',
-					} as any,
-				} ).then( function () {
-					expect( context.commit ).toHaveBeenCalledWith( 'FINISH_ADDRESS_VALIDATION', {
-						status: 'OK',
-					} );
-					done();
+			const actionResult = action( context, validationUrl ).then( function () {
+				expect( context.commit ).toHaveBeenCalledWith( 'FINISH_ADDRESS_VALIDATION', {
+					status: 'OK',
 				} );
 			} );
+
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					status: 'OK',
+				} as any,
+			} );
+
+			return actionResult;
 		} );
 
-		it( 'does not send a post request when required fields are invalid and returns an error', ( done ) => {
+		it( 'does not send a post request when required fields are invalid and returns an error', () => {
 			const context = {
 					commit: jest.fn(),
 					getters: {
@@ -361,10 +357,11 @@ describe( 'Address', () => {
 				},
 				validationUrl = '/check-address',
 				action = actions.validateAddress as any;
-			action( context, validationUrl ).then( function ( resp: any ) {
+			const actionResult = action( context, validationUrl ).then( function ( resp: any ) {
 				expect( resp ).toStrictEqual( { status: 'ERR', messages: [] } );
-				done();
 			} );
+
+			return actionResult;
 		} );
 	} );
 

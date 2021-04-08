@@ -153,8 +153,8 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		store.dispatch( action( NS_ADDRESS, setReceiptOptOut ), optedOut );
 	}
 
-	function setAddressType( addressType: AddressTypeModel ): void {
-		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), addressType );
+	function setAddressType( newAddressType: AddressTypeModel ): void {
+		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), newAddressType );
 	}
 
 	return {

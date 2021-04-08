@@ -1,5 +1,9 @@
 import _Vue from 'vue';
 
+export interface FeatureTogglePluginOptions {
+	activeFeatures: string,
+}
+
 export function FeatureTogglePlugin( Vue: typeof _Vue, options?: FeatureTogglePluginOptions ): void {
 	Vue.component( 'feature-toggle', {
 		functional: true,
@@ -15,8 +19,4 @@ export function FeatureTogglePlugin( Vue: typeof _Vue, options?: FeatureTogglePl
 			return h();
 		},
 	} );
-}
-
-export interface FeatureTogglePluginOptions {
-	activeFeatures: string,
 }

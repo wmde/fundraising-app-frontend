@@ -21,17 +21,23 @@ module.exports = {
 
 		// problematic in TypeScript / ES6
 		'no-unused-vars': 'off',
-		// TODO uncomment when https://github.com/typescript-eslint/typescript-eslint/issues/363 is fixed
-		// '@typescript-eslint/no-unused-vars': 'error',
+		'@typescript-eslint/no-unused-vars': 'error',
 		'one-var': 'off',
 		'no-undef': 'off',
+		// See https://stackoverflow.com/a/65768375/130121
+		'no-shadow': 'off',
+		'@typescript-eslint/no-shadow': [ 'error' ],
 
 		// diverging from Wikimedia rule set
 		'max-len': [ 'error', 170 ],
 		'comma-dangle': [ 'error', 'always-multiline' ],
 		'operator-linebreak': 'off',
 		'quote-props': 'off',
+		// Typescript helps with documentation, don't require params and retuns
 		'valid-jsdoc': 'off',
+		'jsdoc/require-param': 'off',
+		'jsdoc/require-returns': 'off',
+		'jsdoc/require-param-type': 'off',
 	},
 
 	parser: 'vue-eslint-parser',

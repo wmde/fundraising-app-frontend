@@ -29,7 +29,7 @@ import { ValidationResponse } from '@/store/ValidationResponse';
 import { Validity } from '@/view_models/Validity';
 
 export const actions = {
-	[ discardInitialization ]( context: ActionContext<DonationPayment, any>, initialValues: InitialPaymentValues ): void {
+	[ discardInitialization ]( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( SET_INITIALIZED, false );
 	},
 	[ initializePayment ]( context: ActionContext<DonationPayment, any>, initialValues: InitialPaymentValues ): Promise<boolean> {
@@ -56,16 +56,16 @@ export const actions = {
 	[ markEmptyAmountAsInvalid ]( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( MARK_EMPTY_AMOUNT_INVALID );
 	},
-	[ setAmount ]( context: ActionContext<DonationPayment, any>, payload: any ): void {
+	[ setAmount ]( context: ActionContext<DonationPayment, any>, payload: any ): Promise<void> {
 		context.commit( SET_AMOUNT, payload.amountValue );
 		context.commit( SET_IS_VALIDATING, true );
 		const bodyFormData = new FormData();
 		bodyFormData.append( 'amount', payload.amountValue );
-		axios( payload.validateAmountUrl, {
-			method: 'post',
-			data: bodyFormData,
-			headers: { 'Content-Type': 'multipart/form-data' },
-		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
+		return axios.post(
+			payload.validateAmountUrl,
+			bodyFormData,
+			{ headers: { 'Content-Type': 'multipart/form-data' } }
+		).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
 			const validity = validationResult.data.status === 'ERR' ?
 				Validity.INVALID : Validity.VALID;
 			context.commit( SET_AMOUNT_VALIDITY, validity );

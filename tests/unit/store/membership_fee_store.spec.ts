@@ -14,7 +14,7 @@ import {
 	SET_INTERVAL_VALIDITY,
 } from '@/store/membership_fee/mutationTypes';
 import each from 'jest-each';
-import moxios from 'moxios';
+import mockAxios from 'jest-mock-axios';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 
 function newMinimalStore( overrides: Object ): MembershipFee {
@@ -128,12 +128,9 @@ describe( 'MembershipFee', () => {
 	} );
 
 	describe( 'Actions/setInterval', () => {
-		beforeEach( function () {
-			moxios.install();
-		} );
 
 		afterEach( function () {
-			moxios.uninstall();
+			mockAxios.reset();
 		} );
 		it( 'commits to mutation [SET_INTERVAL], [SET_INTERVAL_VALIDITY]', () => {
 			const context = {
@@ -157,7 +154,7 @@ describe( 'MembershipFee', () => {
 			);
 		} );
 
-		it( 'checks the validity of the fee if the fee has been set', ( done ) => {
+		it( 'checks the validity of the fee if the fee has been set', () => {
 			const context = {
 					commit: jest.fn(),
 					state: {
@@ -177,33 +174,34 @@ describe( 'MembershipFee', () => {
 					validateFeeUrl: '/validation-fee-url',
 				} as IntervalData;
 
-			moxios.stubRequest( payload.validateFeeUrl, {
-				status: 200,
-				responseText: 'OK',
-			} );
-
 			const action = actions.setInterval as any;
-			action( context, payload );
-
-			moxios.wait( function () {
-				const request = moxios.requests.mostRecent();
+			const actionResult = action( context, payload ).then( function () {
 				let bodyFormData = new FormData();
 				bodyFormData.append( 'membershipFee', '2000' );
 				bodyFormData.append( 'paymentIntervalInMonths', '6' );
 				bodyFormData.append( 'addressType', 'person' );
-				expect( request.config.data ).toStrictEqual( bodyFormData );
-				done();
+				expect( mockAxios.post ).toHaveBeenCalledWith(
+					payload.validateFeeUrl,
+					bodyFormData,
+					{ headers: { 'Content-Type': 'multipart/form-data' } }
+				);
 			} );
+
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					'status': 'OK',
+				},
+			} );
+
+			return actionResult;
 		} );
 	} );
 
 	describe( 'Actions/setFee', () => {
-		beforeEach( function () {
-			moxios.install();
-		} );
 
 		afterEach( function () {
-			moxios.uninstall();
+			mockAxios.reset();
 		} );
 
 		it( 'commits to mutation [SET_FEE]', () => {
@@ -224,16 +222,19 @@ describe( 'MembershipFee', () => {
 					feeValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				};
-			moxios.stubRequest( payload.validateFeeUrl, {
-				status: 200,
-				responseText: 'OK',
-			} );
 			const action = actions.setFee as any;
-			action( context, payload );
-			expect( context.commit ).toHaveBeenCalledWith(
-				SET_FEE,
-				payload.feeValue
-			);
+			const actionResult = action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenCalledWith( SET_FEE, payload.feeValue );
+			} );
+
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					'status': 'OK',
+				},
+			} );
+
+			return actionResult;
 		} );
 
 		it( 'sends a post request for fee validation', () => {
@@ -259,12 +260,8 @@ describe( 'MembershipFee', () => {
 			bodyFormData.append( 'paymentIntervalInMonths', '12' );
 			bodyFormData.append( 'addressType', 'person' );
 			const action = actions.setFee as any;
-			action( context, payload );
-
-			moxios.wait( function () {
-				const request = moxios.requests.mostRecent();
-				expect( request.config.method ).toBe( 'post' );
-				expect( request.config.data ).toStrictEqual( bodyFormData );
+			action( context, payload ).then( function () {
+				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateFeeUrl, bodyFormData );
 			} );
 		} );
 
@@ -313,15 +310,13 @@ describe( 'MembershipFee', () => {
 					validateFeeUrl: '/validation-fee-url',
 				};
 			const action = actions.setFee as any;
-			action( context, payload );
-			expect( context.commit ).toHaveBeenNthCalledWith(
-				2,
-				SET_INTERVAL_VALIDITY,
-			);
-			expect( moxios.requests.mostRecent() ).toBe( undefined );
+			action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenNthCalledWith( 2, SET_INTERVAL_VALIDITY, );
+				expect( mockAxios.lastReqGet() ).toBe( undefined );
+			} );
 		} );
 
-		it( 'commits to mutation [SET_FEE_VALIDITY] after server side validation', ( done ) => {
+		it( 'commits to mutation [SET_FEE_VALIDITY] after server side validation', () => {
 			const context = {
 					commit: jest.fn(),
 					state: {
@@ -341,26 +336,21 @@ describe( 'MembershipFee', () => {
 				},
 				action = actions.setFee as any;
 
-			action( context, payload );
-
-			moxios.wait( function () {
-				let request = moxios.requests.mostRecent();
-				request.respondWith( {
-					status: 200,
-					response: {
-						'status': 'OK',
-					},
-				} ).then( function () {
-					expect( context.commit ).toHaveBeenCalledWith(
-						'SET_FEE_VALIDITY',
-						Validity.VALID
-					);
-					done();
-				} );
+			const actionResult = action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_FEE_VALIDITY', Validity.VALID );
 			} );
+
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					'status': 'OK',
+				},
+			} );
+
+			return actionResult;
 		} );
 
-		it( 'commits to mutation [SET_IS_VALIDATING] when doing server side validation', ( done ) => {
+		it( 'commits to mutation [SET_IS_VALIDATING] when doing server side validation', () => {
 			const context = {
 					commit: jest.fn(),
 					state: {
@@ -380,21 +370,19 @@ describe( 'MembershipFee', () => {
 				},
 				action = actions.setFee as any;
 
-			action( context, payload );
-
-			moxios.wait( function () {
-				let request = moxios.requests.mostRecent();
-				request.respondWith( {
-					status: 200,
-					response: {
-						'status': 'OK',
-					},
-				} ).then( function () {
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
-					expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
-					done();
-				} );
+			const actionResult = action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
 			} );
+
+			mockAxios.mockResponse( {
+				status: 200,
+				data: {
+					'status': 'OK',
+				},
+			} );
+
+			return actionResult;
 		} );
 	} );
 
