@@ -16,15 +16,19 @@
 						@blur="validate">
 				</b-input>
 			</b-field>
-			<span v-show="!isBankFieldEnabled">
+			<span :style="{visibility: isBankFieldEnabled ? 'hidden' : 'visible'}">
 				<span id="bank-name-iban">{{ getBankName }}
-					<span v-show="showBankId">({{ bankIdentifier }})</span>
+					<span
+              :style="{visibility: showBankId ? 'visible' : 'hidden'}"
+              v-show:>
+                ({{ bankIdentifier }})
+          </span>
 				</span>
 			</span>
 		</div>
 		<div
 				v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]"
-				:style="{visibility: isBankFieldEnabled ? 'visible' : 'hidden'}" >
+        v-show="isBankFieldEnabled" >
 			<label for="bic" class="subtitle">{{ $t( labels.bic ) }}</label>
 			<b-field>
 				<b-input class="is-medium"
