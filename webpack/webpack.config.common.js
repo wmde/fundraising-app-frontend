@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');

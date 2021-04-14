@@ -1,32 +1,33 @@
+/* eslint-disable */
 'use strict';
 
 const webpack                  = require('webpack');
-const merge                    = require('webpack-merge');
+const { merge }                = require('webpack-merge');
 const OptimizeCSSAssetsPlugin  = require('optimize-css-assets-webpack-plugin');
 const MiniCSSExtractPlugin     = require('mini-css-extract-plugin');
 const CopyWebpackPlugin        = require('copy-webpack-plugin');
-const UglifyJSPlugin           = require('uglifyjs-webpack-plugin');
+const TerserPlugin             = require("terser-webpack-plugin");
 const CompressionPlugin        = require('compression-webpack-plugin');
 const helpers                  = require('./helpers');
 const commonConfig             = require('./webpack.config.common');
-const isProd                   = process.env.NODE_ENV === 'production';
-const environment              = isProd ? require('./env/prod.env') : require('./env/staging.env');
+const environment              = require('./env/prod.env');
 
 const webpackConfig = merge(commonConfig, {
     mode: 'production',
+    devtool: 'source-map',
     optimization: {
+        minimize: true,
         minimizer: [
             new OptimizeCSSAssetsPlugin({
                 cssProcessorPluginOptions: {
                     preset: [ 'default', { discardComments: { removeAll: true } } ],
                 }
             }),
-            new UglifyJSPlugin({
-                cache: true,
-                parallel: true,
-                sourceMap: !isProd
+            new TerserPlugin({
+                parallel: true
             })
         ],
+        moduleIds: 'deterministic'
 	},
     plugins: [
         new webpack.EnvironmentPlugin(environment),
@@ -35,29 +36,24 @@ const webpackConfig = merge(commonConfig, {
             chunkFilename: 'css/styles.css'
         }),
         new CompressionPlugin({
-            filename: '[path].gz[query]',
+            filename: '[path][base].gz[query]',
             algorithm: 'gzip',
             test: new RegExp('\\.(js|css)$'),
             threshold: 10240,
             minRatio: 0.8
         }),
-        new webpack.HashedModuleIdsPlugin(),
-		new CopyWebpackPlugin( [
-			{ 
-				from: 'public', 
-				to: helpers.root('dist') 
-			}
-        ]),
+		new CopyWebpackPlugin( {
+            patterns: [ {
+				from: 'public',
+				to: helpers.root('dist')
+            } ]
+        } ),
     ]
 });
 
-if (!isProd) {
-    webpackConfig.devtool = 'source-map';
-
-    if (process.env.npm_config_report) {
-        const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-        webpackConfig.plugins.push(new BundleAnalyzerPlugin());
-    }
+if (process.env.npm_config_report) {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
 module.exports = webpackConfig;
