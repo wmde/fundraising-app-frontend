@@ -4,7 +4,6 @@ import Buefy from 'buefy';
 import BankData from '@/components/shared/PaymentBankData.vue';
 import { createStore } from '@/store/donation_store';
 import { NS_BANKDATA } from '@/store/namespaces';
-import bankdata from '@/store/bankdata';
 import { action } from '@/store/util';
 import {
 	initializeBankData,
@@ -13,7 +12,6 @@ import {
 	setBankData,
 } from '@/store/bankdata/actionTypes';
 import { BankAccountRequest } from '@/view_models/BankAccount';
-import setTimeout = jest.setTimeout;
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
@@ -201,6 +199,9 @@ describe( 'BankData', () => {
 				[ NS_BANKDATA ]: {
 					namespaced: true,
 					getters,
+					actions: {
+						setBankData: () => {},
+					},
 				},
 			},
 		} );

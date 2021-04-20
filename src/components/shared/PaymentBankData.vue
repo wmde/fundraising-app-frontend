@@ -4,53 +4,43 @@
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]">
 			<label for="iban" class="subtitle">{{ $t( labels.iban ) }}</label>
 			<b-field v-bind:class="[{ 'has-margin-bottom-0': !isBankFieldEnabled }]">
-				<b-input class="is-medium"
-						data-content-name="Bank Data Type"
-						:data-track-content="getTrackingCode !== ''"
-						:data-content-piece="getTrackingCode"
-						type="text"
-						id="iban"
-						v-model="accountId"
-						name="iban"
-						:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' )"
-						@blur="validate">
+				<b-input
+					class="is-medium"
+					data-content-name="Bank Data Type"
+					:data-track-content="getTrackingCode !== ''"
+					:data-content-piece="getTrackingCode"
+					type="text"
+					id="iban"
+					v-model="accountId"
+					name="iban"
+					:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' )"
+					@blur="validate">
 				</b-input>
 			</b-field>
-			<span :style="{visibility: isBankFieldEnabled ? 'hidden' : 'visible'}">
-				<span id="bank-name-iban">{{ getBankName }}
-					<span
-              :style="{visibility: showBankId ? 'visible' : 'hidden'}"
-              v-show:>
-                ({{ bankIdentifier }})
-          </span>
-				</span>
-			</span>
 		</div>
-		<div
-				v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]"
-        v-show="isBankFieldEnabled" >
+		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]" v-show="isBankFieldEnabled">
 			<label for="bic" class="subtitle">{{ $t( labels.bic ) }}</label>
 			<b-field>
-				<b-input class="is-medium"
-						type="text"
-						id="bic"
-						v-model="bankIdentifier"
-						name="bic"
-						:placeholder="$t( labels.bicPlaceholder )"
-						@blur="validate">
+				<b-input
+					class="is-medium"
+					type="text"
+					id="bic"
+					v-model="bankIdentifier"
+					name="bic"
+					:placeholder="$t( labels.bicPlaceholder )"
+					@blur="validate">
 				</b-input>
 			</b-field>
 		</div>
-		<div>
-			<span v-show="isBankFieldEnabled">
-				<span id="bank-name-legacy">{{ getBankName }}
+		<div id="bank-name-info">
+			<span v-show="bankInfoValidated" class="help">
+				<span id="bank-name-legacy">
+					<span id="bank-name-iban">{{ getBankName }}</span>
 					<span v-show="showBankId">({{ bankIdentifier }})</span>
 				</span>
 			</span>
-			<span
-					v-if="bankInfoValidatedButInfoMissing"
-					id="bank-name-not-available" >
-						{{ $t( 'donation_form_payment_bankdata_bank_bic_placeholder_full' ) }}
+			<span v-if="bankInfoValidatedButInfoMissing" id="bank-name-not-available" class="help">
+				{{ $t( 'donation_form_payment_bankdata_bank_bic_placeholder_full' ) }}
 			</span>
 			<span v-if="bankDataIsInvalid" class="help is-danger">{{ $t( 'donation_form_payment_bankdata_error' ) }}</span>
 		</div>
@@ -85,6 +75,18 @@ export default Vue.extend( {
 				return 'Classic';
 			}
 			return '';
+		},
+		bankInfoValidated(): boolean {
+			if ( !this.bankDataIsValid ) {
+				return false;
+			}
+			if ( this.bankIdentifier !== '' ) {
+				return true;
+			}
+			if ( this.$store.getters[ NS_BANKDATA + '/getBankId' ] !== '' ) {
+				return true;
+			}
+			return false;
 		},
 		bankInfoValidatedButInfoMissing(): boolean {
 			return this.bankDataIsValid &&
