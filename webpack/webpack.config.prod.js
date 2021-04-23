@@ -2,8 +2,8 @@
 
 const webpack = require( 'webpack' );
 const { merge } = require( 'webpack-merge' );
-const OptimizeCSSAssetsPlugin = require( 'optimize-css-assets-webpack-plugin' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
+const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const CompressionPlugin = require( 'compression-webpack-plugin' );
@@ -17,8 +17,8 @@ const webpackConfig = merge( commonConfig, {
 	optimization: {
 		minimize: true,
 		minimizer: [
-			new OptimizeCSSAssetsPlugin( {
-				cssProcessorPluginOptions: {
+			new CssMinimizerPlugin( {
+				minimizerOptions: {
 					preset: [ 'default', { discardComments: { removeAll: true } } ],
 				},
 			} ),
