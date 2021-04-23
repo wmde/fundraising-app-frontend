@@ -35,10 +35,10 @@ describe( 'Payment.vue', () => {
 
 		expect( amountSelection.vm.$props.title ).toEqual( 'membership_form_payment_amount_title' );
 
-		await interval1.trigger( 'click' );
+		await interval1.trigger( 'change' );
 		expect( amountSelection.vm.$props.title ).toEqual( 'membership_form_payment_amount_title_interval_1' );
 
-		await interval12.trigger( 'click' );
+		await interval12.trigger( 'change' );
 		expect( amountSelection.vm.$props.title ).toEqual( 'membership_form_payment_amount_title_interval_12' );
 	} );
 } );

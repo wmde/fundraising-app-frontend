@@ -35,7 +35,7 @@ describe( 'Incentives', () => {
 		expect( checkBox.props().value ).toStrictEqual( [] );
 	} );
 
-	it( 'emits toggle event on change', () => {
+	it( 'emits toggle event on change', async () => {
 		const wrapper = mount( Incentives, {
 				localVue,
 				propsData: {
@@ -47,7 +47,7 @@ describe( 'Incentives', () => {
 			event = 'incentives-changed',
 			checkBox = wrapper.find( '.incentive-tote_bag' );
 
-		checkBox.trigger( 'click' );
+		await checkBox.trigger( 'change' );
 		expect( wrapper.emitted( event )![ 0 ] ).not.toBeUndefined();
 	} );
 } );

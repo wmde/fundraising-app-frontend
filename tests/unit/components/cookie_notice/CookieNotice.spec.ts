@@ -91,9 +91,8 @@ describe( 'CookieNotice', () => {
 
 		wrapper.find( '.check > button' ).trigger( 'click' );
 		await wrapper.vm.$nextTick();
-		wrapper.find( 'input[name=optional]' ).trigger( 'click' );
-		wrapper.find( '.save > button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
+		await wrapper.find( 'input[name=optional]' ).trigger( 'change' );
+		await wrapper.find( '.save > button' ).trigger( 'click' );
 
 		expect( cookieConsent.consentState.value ).toEqual( CONSENT_STATE.TRUE );
 	} );

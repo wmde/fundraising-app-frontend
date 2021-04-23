@@ -25,10 +25,10 @@ describe( 'MembershipType.vue', () => {
 		} );
 	} );
 
-	it( 'sends selected membership type to the store on change', () => {
+	it( 'sends selected membership type to the store on change', async () => {
 		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn();
-		wrapper.find( '#active' ).trigger( 'click' );
+		await wrapper.find( '#active input' ).trigger( 'change' );
 		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setMembershipType );
 		const expectedPayload = MembershipTypeModel.ACTIVE;
 
