@@ -4,7 +4,6 @@ import Buefy from 'buefy';
 import BankData from '@/components/shared/PaymentBankData.vue';
 import { createStore } from '@/store/donation_store';
 import { NS_BANKDATA } from '@/store/namespaces';
-import bankdata from '@/store/bankdata';
 import { action } from '@/store/util';
 import {
 	initializeBankData,
@@ -13,7 +12,6 @@ import {
 	setBankData,
 } from '@/store/bankdata/actionTypes';
 import { BankAccountRequest } from '@/view_models/BankAccount';
-import setTimeout = jest.setTimeout;
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
@@ -105,36 +103,6 @@ describe( 'BankData', () => {
 		expect( store.dispatch ).toHaveBeenLastCalledWith( expectedAction, expectedPayload );
 	} );
 
-	it( 'disables BIC field for German IBANs and not for other values', async () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: () => {},
-			},
-		} );
-		const store = wrapper.vm.$store;
-		store.dispatch = jest.fn();
-
-		const iban = wrapper.find( '#iban' );
-		const bic = wrapper.find( '#bic' );
-
-		wrapper.setData( { accountId: 'DE12345605171238489890' } );
-		iban.trigger( 'blur' );
-		await wrapper.vm.$nextTick();
-		expect( bic.element.getAttribute( 'disabled' ) ).toMatch( 'disabled' );
-
-		wrapper.setData( { accountId: 'AT12345605171238489890' } );
-		iban.trigger( 'blur' );
-		await wrapper.vm.$nextTick();
-		expect( bic.element.getAttribute( 'disabled' ) ).toMatch( 'disabled' );
-
-		wrapper.setData( { accountId: '34560517' } );
-		iban.trigger( 'blur' );
-		await wrapper.vm.$nextTick();
-		expect( bic.element.getAttribute( 'disabled' ) ).toBeNull();
-	} );
-
 	it( 'marks invalid bank account IDs as invalid', () => {
 		const wrapper = mount( BankData, {
 			localVue,
@@ -212,9 +180,46 @@ describe( 'BankData', () => {
 		} );
 		const store = wrapper.vm.$store;
 		store.commit( NS_BANKDATA + '/SET_BANKNAME', 'Test Bank' );
-		const iban = wrapper.find( '#bank-name' );
+		const iban = wrapper.find( '#bank-name-iban' );
 		await wrapper.vm.$nextTick();
 		expect( iban.text() ).toMatch( 'Test Bank' );
+	} );
+
+	it( 'renders info message when bank info is valid but no bankname and bankId available', async () => {
+		let getters;
+		let store;
+		getters = {
+			bankDataIsValid: () => true,
+			bankDataIsInvalid: () => false,
+			getBankName: () => '',
+			getBankId: () => '',
+		};
+		store = new Vuex.Store( {
+			modules: {
+				[ NS_BANKDATA ]: {
+					namespaced: true,
+					getters,
+					actions: {
+						setBankData: () => {},
+					},
+				},
+			},
+		} );
+		const wrapper = mount( BankData, {
+			localVue,
+			store,
+			mocks: {
+				$t: ( key: string ) => key,
+			},
+		} );
+
+		wrapper.setData( { accountId: 'DE12345605171238489890' } );
+		const iban = wrapper.find( '#iban' );
+		iban.trigger( 'blur' );
+		await wrapper.vm.$nextTick();
+		const bicInfo = wrapper.find( '#bank-name-not-available' );
+		expect( bicInfo.text() )
+			.toMatch( 'donation_form_payment_bankdata_bank_bic_placeholder_full' );
 	} );
 
 	it( 'renders bank code / BIC field when legacy bank account number is entered', async () => {
@@ -236,7 +241,7 @@ describe( 'BankData', () => {
 		expect( bankInfoInput.element ).toBeVisible();
 	} );
 
-	it( 'renders bank code / BIC field when valid IBAN was validated', async () => {
+	it( 'does not render bank code / BIC field when valid IBAN was validated', async () => {
 		let getters;
 		let store;
 		getters = {
@@ -262,7 +267,7 @@ describe( 'BankData', () => {
 		wrapper.setData( { accountId: 'DE89370400440532013000' } );
 
 		let bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.element ).toBeVisible();
+		expect( bankInfoInput.element ).not.toBeVisible();
 	} );
 
 	it( 'does not render bank code / BIC field if IBAN is invalid', async () => {
@@ -356,7 +361,7 @@ describe( 'BankData', () => {
 			} );
 			const iban = wrapper.find( '#iban' );
 			const bic = wrapper.find( '#bic' );
-			const bankName = wrapper.find( '#bank-name' );
+			const bankName = wrapper.find( '#bank-name-iban' );
 
 			expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'DE12345605171238489890' );
 			expect( ( ( <HTMLInputElement> bic.element ).value ) ).toMatch( 'ABCDDEFFXXX' );

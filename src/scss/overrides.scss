@@ -151,6 +151,9 @@ button.is-main {
 	}
 }
 
+.button.is-loading {
+	pointer-events: all;
+}
 
 button.is-low {
 	height: 36px;
