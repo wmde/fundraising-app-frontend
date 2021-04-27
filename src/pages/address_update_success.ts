@@ -7,6 +7,7 @@ import App from '@/components/App.vue';
 
 import Component from '@/components/pages/UpdateAddressSuccess.vue';
 import Sidebar from '@/components/layout/Sidebar.vue';
+import createCookieConsent from '@/cookie_consent';
 
 const PAGE_IDENTIFIER = 'address-update-success';
 
@@ -25,11 +26,13 @@ const i18n = new VueI18n( {
 
 new Vue( {
 	i18n,
+	provide: {
+		cookieConsent: createCookieConsent( pageData.cookieConsent ),
+	},
 	render: h => h( App, {
 		props: {
 			assetsPath: pageData.assetsPath,
 			pageIdentifier: PAGE_IDENTIFIER,
-			cookieConsent: pageData.cookieConsent,
 		},
 	},
 	[

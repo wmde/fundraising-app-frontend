@@ -13,6 +13,7 @@ import { Country } from '@/view_models/Country';
 import { Donation } from '@/view_models/Donation';
 import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
+import createCookieConsent from '@/cookie_consent';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -49,12 +50,14 @@ const Component = pageData.selectedBuckets.indexOf( 'campaigns.confirmation_page
 new Vue( {
 	store,
 	i18n,
+	provide: {
+		cookieConsent: createCookieConsent( pageData.cookieConsent ),
+	},
 	render: h => h( App, {
 		props: {
 			assetsPath: pageData.assetsPath,
 			pageIdentifier: PAGE_IDENTIFIER,
 			isFullWidth: IS_FULLWIDTH_PAGE,
-			cookieConsent: pageData.cookieConsent,
 		},
 	},
 	[

@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="cookie-notice"
-		:class="{ 'is-visible': isVisible }"
-	>
+	<div class="cookie-notice" v-if="!isSubmitted">
 		<form
 			class="cookie-notice-content"
 			ref="cookieNotice"
@@ -68,21 +65,17 @@
 				</div>
 			</div>
 		</form>
-		<HeightAdjuster :element="cookieNotice" :element-visibility="isVisible"></HeightAdjuster>
+		<HeightAdjuster :element="cookieNotice" :element-visibility="true"></HeightAdjuster>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { ref } from '@vue/composition-api';
-import { setConsentGiven } from '@/tracking';
-import axios from 'axios';
+import { inject, ref, watch } from '@vue/composition-api';
 import CookieCheckbox from './CookieCheckbox.vue';
 import HeightAdjuster from './HeightAdjuster.vue';
 import TextVisibilityToggle from './TextVisibilityToggle.vue';
-
-const CONSENT_TRUE: string = 'yes';
-const CONSENT_FALSE: string = 'no';
+import { CONSENT_STATE, CookieConsentInterface } from '@/cookie_consent';
 
 export default Vue.extend( {
 	name: 'CookieNotice',
@@ -91,31 +84,22 @@ export default Vue.extend( {
 		HeightAdjuster,
 		TextVisibilityToggle,
 	},
+	inject: [ 'cookieConsent' ],
 	setup() {
-		const isVisible = ref( true );
+		const cookieConsent = inject<CookieConsentInterface>( 'cookieConsent' );
+
+		if ( !cookieConsent ) {
+			throw new Error( 'Could not resolve cookieConsent' );
+		}
+
+		const isSubmitted = cookieConsent.consentIsSubmitted;
 		const cookieNotice = ref<any>( null );
-		const optionalChecked = ref( false );
+		const optionalChecked = ref<boolean>( cookieConsent.consentIsGiven.value );
 		const showOptions = ref( false );
 		const textOpen = ref( false );
 
 		const toggleTextOpen = () => {
 			textOpen.value = !textOpen.value;
-		};
-
-		const submitPreferences = () => {
-			const form = new FormData();
-			const consent = optionalChecked.value ? CONSENT_TRUE : CONSENT_FALSE;
-			form.append( 'cookie_consent', consent );
-			axios.post(
-				cookieNotice.value.action + window.location.search,
-				form,
-				{ headers: { 'Content-Type': 'multipart/form-data' } }
-			).then( () => {
-				isVisible.value = false;
-				if ( consent === CONSENT_TRUE ) {
-					setConsentGiven();
-				}
-			} );
 		};
 
 		const onOptionalToggle = () => {
@@ -134,21 +118,27 @@ export default Vue.extend( {
 
 		const onSaveButtonClick = ( e: Event ) => {
 			e.preventDefault();
-			submitPreferences();
+			cookieConsent.submitConsent(
+				optionalChecked.value ? CONSENT_STATE.TRUE : CONSENT_STATE.FALSE
+			);
 		};
 
 		const onAcceptButtonClick = ( e: Event ) => {
 			e.preventDefault();
 			optionalChecked.value = true;
-			submitPreferences();
+			cookieConsent.submitConsent( CONSENT_STATE.TRUE );
 		};
 
+		watch( cookieConsent.consentState, () => {
+			optionalChecked.value = cookieConsent.consentIsGiven.value;
+		} );
+
 		return {
-			isVisible,
 			cookieNotice,
 			optionalChecked,
 			showOptions,
 			textOpen,
+			isSubmitted,
 			toggleTextOpen,
 			onOptionalToggle,
 			onCheckButtonClick,

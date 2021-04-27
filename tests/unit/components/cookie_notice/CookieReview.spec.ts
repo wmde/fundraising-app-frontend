@@ -4,7 +4,7 @@ import Buefy from 'buefy';
 import CompositionAPI from '@vue/composition-api';
 import axios from 'axios';
 
-import CookieNotice from '@/components/cookie_notice/CookieNotice.vue';
+import CookieReview from '@/components/cookie_notice/CookieReview.vue';
 import createCookieConsent, { CONSENT_STATE, CookieConsentInterface } from '@/cookie_consent';
 
 jest.mock( 'axios', () => ( {
@@ -17,7 +17,7 @@ localVue.use( Buefy );
 localVue.use( CompositionAPI );
 
 const getWrapperWithCookieConsent = ( cookieConsent: CookieConsentInterface ) => {
-	return mount( CookieNotice, {
+	return mount( CookieReview, {
 		localVue,
 		mocks: {
 			$t: ( key: string ) => key,
@@ -28,7 +28,7 @@ const getWrapperWithCookieConsent = ( cookieConsent: CookieConsentInterface ) =>
 	} );
 };
 
-describe( 'CookieNotice', () => {
+describe( 'CookieReview', () => {
 	beforeEach( () => {
 		jest.resetModules();
 		jest.clearAllMocks();
@@ -36,7 +36,7 @@ describe( 'CookieNotice', () => {
 
 	it( 'Throws an error when not passed an object that implements cookieConsent ', async () => {
 		expect( () => {
-			mount( CookieNotice, {
+			mount( CookieReview, {
 				localVue,
 				mocks: {
 					$t: ( key: string ) => key,
@@ -48,31 +48,25 @@ describe( 'CookieNotice', () => {
 		} ).toThrow( 'Could not resolve cookieConsent' );
 	} );
 
-	it( 'shows when no consent choice has been submitted', async () => {
-		const wrapper = getWrapperWithCookieConsent( createCookieConsent( 'unset' ) );
+	it( 'Sets optional checkbox checked if initialised with consent given', async () => {
+		const cookieConsent = createCookieConsent( 'yes' );
+		const wrapper = getWrapperWithCookieConsent( cookieConsent );
 
-		expect( wrapper.find( '.cookie-notice' ).exists() ).toBe( true );
+		expect( ( <HTMLInputElement>wrapper.find( 'input[name=optional]' ).element ).checked ).toBeTruthy();
 	} );
 
-	it( 'does not show when consent choice has been submitted', async () => {
-		let yesWrapper = getWrapperWithCookieConsent( createCookieConsent( 'yes' ) );
-		let noWrapper = getWrapperWithCookieConsent( createCookieConsent( 'no' ) );
+	it( 'Sets optional checkbox unchecked if initialised with consent not given', async () => {
+		const cookieConsent = createCookieConsent( 'no' );
+		const wrapper = getWrapperWithCookieConsent( cookieConsent );
 
-		expect( yesWrapper.find( '.cookie-notice' ).exists() ).toBe( false );
-		expect( noWrapper.find( '.cookie-notice' ).exists() ).toBe( false );
+		expect( ( <HTMLInputElement>wrapper.find( 'input[name=optional]' ).element ).checked ).toBeFalsy();
 	} );
 
-	it( 'changes view when check and back buttons are clicked', async () => {
-		const wrapper = getWrapperWithCookieConsent( createCookieConsent( 'unset' ) );
-		wrapper.find( '.check > button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
+	it( 'Sets optional checkbox unchecked if initialised with consent unset', async () => {
+		const cookieConsent = createCookieConsent( 'unset' );
+		const wrapper = getWrapperWithCookieConsent( cookieConsent );
 
-		expect( ( wrapper.vm as any ).showOptions ).toBeTruthy();
-
-		wrapper.find( '.cookie-notice-back-button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
-
-		expect( ( wrapper.vm as any ).showOptions ).toBeFalsy();
+		expect( ( <HTMLInputElement>wrapper.find( 'input[name=optional]' ).element ).checked ).toBeFalsy();
 	} );
 
 	it( 'submits consent when accept button is clicked', async () => {
@@ -89,8 +83,6 @@ describe( 'CookieNotice', () => {
 		const cookieConsent = createCookieConsent( 'unset' );
 		const wrapper = getWrapperWithCookieConsent( cookieConsent );
 
-		wrapper.find( '.check > button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
 		wrapper.find( 'input[name=optional]' ).trigger( 'click' );
 		wrapper.find( '.save > button' ).trigger( 'click' );
 		await wrapper.vm.$nextTick();
@@ -98,12 +90,10 @@ describe( 'CookieNotice', () => {
 		expect( cookieConsent.consentState.value ).toEqual( CONSENT_STATE.TRUE );
 	} );
 
-	it( 'submits negative consent no when save button is clicked and consent not given', async () => {
+	it( 'submits negative consent when save button is clicked and consent not given', async () => {
 		const cookieConsent = createCookieConsent( 'unset' );
 		const wrapper = getWrapperWithCookieConsent( cookieConsent );
 
-		wrapper.find( '.check > button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
 		wrapper.find( '.save > button' ).trigger( 'click' );
 		await wrapper.vm.$nextTick();
 
