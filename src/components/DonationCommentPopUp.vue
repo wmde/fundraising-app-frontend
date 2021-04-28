@@ -4,7 +4,7 @@
 		<input type="hidden" name="updateToken" :value="donation.updateToken">
 		<input type="hidden" name="isAnonymous" value="1" />
 		<div v-if="commentHasBeenSubmitted">
-			<p v-html="serverResponse"></p>
+			<p v-html="$t( serverResponse )"></p>
 			<b-button type="is-primary is-main has-margin-top-18" @click="$parent.close()" outlined>
 				{{ $t( 'back_to_donation_summary' ) }}
 			</b-button>
