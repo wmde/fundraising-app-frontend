@@ -13,7 +13,7 @@ const testIntervals: Array<number> = [ 0, 1, 3, 6, YEARLY ];
 
 describe( 'PaymentInterval', () => {
 
-	it( 'emits new interval when it is selected', () => {
+	it( 'emits new interval when it is selected', async () => {
 		const wrapper = mount( PaymentInterval, {
 			localVue,
 			propsData: {
@@ -26,7 +26,7 @@ describe( 'PaymentInterval', () => {
 			},
 		} );
 
-		wrapper.find( `#interval-${YEARLY}` ).trigger( 'click' );
+		await wrapper.find( `#interval-${YEARLY} input` ).trigger( 'change' );
 
 		expect( wrapper.emitted( 'interval-selected' ) ).toBeTruthy();
 		expect( wrapper.emitted( 'interval-selected' )![ 0 ] ).toEqual( [ String( YEARLY ) ] );

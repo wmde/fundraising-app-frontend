@@ -8,7 +8,7 @@ localVue.use( Buefy );
 
 describe( 'AddressType.vue', () => {
 
-	it( 'emits field changed event on blur', () => {
+	it( 'emits field changed event on blur', async () => {
 		const wrapper = mount( AddressType, {
 				localVue,
 				mocks: {
@@ -19,19 +19,19 @@ describe( 'AddressType.vue', () => {
 				},
 			} ),
 			event = 'address-type',
-			company = wrapper.find( '#company' );
-		company.trigger( 'click' );
-		const person = wrapper.find( '#personal' );
-		person.trigger( 'click' );
-		const anon = wrapper.find( '#anonymous' );
-		anon.trigger( 'click' );
+			company = wrapper.find( '#company input' );
+		await company.trigger( 'change' );
+		const person = wrapper.find( '#personal input' );
+		await person.trigger( 'change' );
+		const anon = wrapper.find( '#anonymous input' );
+		await anon.trigger( 'change' );
 		expect( wrapper.emitted( event ) ).toHaveLength( 3 );
 		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ AddressTypeModel.COMPANY ] );
 		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ AddressTypeModel.PERSON ] );
 		expect( wrapper.emitted( event )![ 2 ] ).toEqual( [ AddressTypeModel.ANON ] );
 	} );
 
-	it( 'disables address type if supplied via disabledAddressTypes property', () => {
+	it( 'disables address type if supplied via disabledAddressTypes property', async () => {
 		const wrapper = mount( AddressType, {
 				localVue,
 				mocks: {
@@ -42,12 +42,12 @@ describe( 'AddressType.vue', () => {
 				},
 			} ),
 			event = 'address-type',
-			company = wrapper.find( '#company' );
-		company.trigger( 'click' );
-		const anon = wrapper.find( '#anonymous' );
-		anon.trigger( 'click' );
-		const person = wrapper.find( '#personal' );
-		person.trigger( 'click' );
+			company = wrapper.find( '#company input' );
+		await company.trigger( 'change' );
+		const anon = wrapper.find( '#anonymous input' );
+		await anon.trigger( 'change' );
+		const person = wrapper.find( '#personal input' );
+		await person.trigger( 'change' );
 		expect( wrapper.emitted( event ) ).toHaveLength( 2 );
 		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ AddressTypeModel.COMPANY ] );
 		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ AddressTypeModel.PERSON ] );

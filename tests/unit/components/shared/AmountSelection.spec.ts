@@ -7,7 +7,7 @@ localVue.use( Vuex );
 
 describe( 'AmountSelection', () => {
 
-	it( 'emits amount event when amount is selected', () => {
+	it( 'emits amount event when amount is selected', async () => {
 		const wrapper = mount( AmountSelection, {
 			propsData: {
 				amount: '',
@@ -18,7 +18,7 @@ describe( 'AmountSelection', () => {
 			},
 		} );
 
-		wrapper.find( '#amount-29900' ).trigger( 'click' );
+		await wrapper.find( '#amount-29900' ).trigger( 'change' );
 
 		expect( wrapper.emitted( 'amount-selected' ) ).toBeTruthy();
 		expect( wrapper.emitted( 'amount-selected' )![ 0 ] ).toEqual( [ '29900' ] );

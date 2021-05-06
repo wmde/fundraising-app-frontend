@@ -8,7 +8,7 @@ localVue.use( Buefy );
 
 describe( 'AddressType.vue', () => {
 
-	it( 'emits field changed event on blur', () => {
+	it( 'emits field changed event on blur', async () => {
 		const wrapper = mount( AddressType, {
 				localVue,
 				mocks: {
@@ -16,10 +16,10 @@ describe( 'AddressType.vue', () => {
 				},
 			} ),
 			event = 'address-type',
-			company = wrapper.find( '#company' );
-		company.trigger( 'click' );
-		const person = wrapper.find( '#personal' );
-		person.trigger( 'click' );
+			company = wrapper.find( '#company input' );
+		await company.trigger( 'change' );
+		const person = wrapper.find( '#personal input' );
+		await person.trigger( 'change' );
 		expect( wrapper.emitted( event ) ).toHaveLength( 2 );
 		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ AddressTypeModel.COMPANY ] );
 		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ AddressTypeModel.PERSON ] );

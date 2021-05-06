@@ -15,7 +15,7 @@ const testPaymentMethods = [ 'BEZ', 'PPL', 'UEB', 'BTC' ];
 
 describe( 'PaymentType', () => {
 
-	it( 'emits new payment type when it is selected', () => {
+	it( 'emits new payment type when it is selected', async () => {
 		const wrapper = mount( PaymentType, {
 			localVue,
 			propsData: {
@@ -27,7 +27,7 @@ describe( 'PaymentType', () => {
 			},
 		} );
 
-		wrapper.find( '#payment-btc' ).trigger( 'click' );
+		await wrapper.find( '#payment-btc input' ).trigger( 'change' );
 
 		expect( wrapper.emitted( 'payment-type-selected' ) ).toBeTruthy();
 		expect( wrapper.emitted( 'payment-type-selected' )![ 0 ] ).toEqual( [ 'BTC' ] );
