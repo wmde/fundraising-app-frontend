@@ -47,7 +47,7 @@
     "css-minimizer-webpack-plugin": "^2.0.0",
     "eslint": "^7.23.0",
     "eslint-config-wikimedia": "^0.20.0",
-    "eslint-plugin-json": "^2.1.2",
+    "eslint-plugin-json": "^3.0.0",
     "eslint-plugin-vue": "^7.8.0",
     "file-loader": "^6.2.0",
     "fork-ts-checker-webpack-plugin": "^6.2.1",
