@@ -34,20 +34,6 @@ describe( 'CookieReview', () => {
 		jest.clearAllMocks();
 	} );
 
-	it( 'Throws an error when not passed an object that implements cookieConsent ', async () => {
-		expect( () => {
-			mount( CookieReview, {
-				localVue,
-				mocks: {
-					$t: ( key: string ) => key,
-				},
-				provide: {
-					cookieConsent: ( function () { return; }() ),
-				},
-			} );
-		} ).toThrow( 'Could not resolve cookieConsent' );
-	} );
-
 	it( 'Sets optional checkbox checked if initialised with consent given', async () => {
 		const cookieConsent = createCookieConsent( 'yes' );
 		const wrapper = getWrapperWithCookieConsent( cookieConsent );

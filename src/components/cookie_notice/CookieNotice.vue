@@ -75,7 +75,7 @@ import { inject, ref, watch } from '@vue/composition-api';
 import CookieCheckbox from './CookieCheckbox.vue';
 import HeightAdjuster from './HeightAdjuster.vue';
 import TextVisibilityToggle from './TextVisibilityToggle.vue';
-import { CONSENT_STATE, CookieConsentInterface } from '@/cookie_consent';
+import { CONSENT_STATE, CookieConsentInterface, NullCookieConsent } from '@/cookie_consent';
 
 export default Vue.extend( {
 	name: 'CookieNotice',
@@ -86,11 +86,7 @@ export default Vue.extend( {
 	},
 	inject: [ 'cookieConsent' ],
 	setup() {
-		const cookieConsent = inject<CookieConsentInterface>( 'cookieConsent' );
-
-		if ( !cookieConsent ) {
-			throw new Error( 'Could not resolve cookieConsent' );
-		}
+		const cookieConsent = inject<CookieConsentInterface>( 'cookieConsent', NullCookieConsent );
 
 		const isSubmitted = cookieConsent.consentIsSubmitted;
 		const cookieNotice = ref<any>( null );
