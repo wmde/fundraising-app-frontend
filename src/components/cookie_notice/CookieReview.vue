@@ -46,17 +46,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { ref, watch, inject } from '@vue/composition-api';
-import { CookieConsentInterface, CONSENT_STATE } from '@/cookie_consent';
+import { CookieConsentInterface, CONSENT_STATE, NullCookieConsent } from '@/cookie_consent';
 
 export default Vue.extend( {
 	name: 'CookieReview',
-	inject: [ 'cookieConsent' ],
 	setup() {
-		const cookieConsent = inject<CookieConsentInterface>( 'cookieConsent' );
-
-		if ( !cookieConsent ) {
-			throw new Error( 'Could not resolve cookieConsent' );
-		}
+		const cookieConsent = inject<CookieConsentInterface>( 'cookieConsent', NullCookieConsent );
 
 		const isSettingConsent = ref<boolean>( false );
 		const requiredChecked = ref<boolean>( true );

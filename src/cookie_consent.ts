@@ -34,6 +34,16 @@ export interface CookieConsentInterface {
 	submitConsent( consent: symbol ): Promise<void>;
 }
 
+/**
+ * Dummy object to use as default value for `inject`, to avoid TS null/undefined warnings
+ */
+export const NullCookieConsent = {
+	consentState: { value: CONSENT_STATE.UNSET },
+	consentIsGiven: { value: false },
+	consentIsSubmitted: { value: false },
+	submitConsent: () => Promise.resolve(),
+};
+
 export default function createCookieConsent( defaultConsent: string ): CookieConsentInterface {
 
 	consentState = ref<symbol>( consentStringToState( defaultConsent ) );
