@@ -63,7 +63,7 @@ export default Vue.extend( {
 </script>
 
 <style lang="scss">
-	.donation-links a {
+	.donation-links > a {
 		display: block;
 	}
 </style>
