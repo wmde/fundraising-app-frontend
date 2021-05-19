@@ -27,6 +27,7 @@ import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import createCookieConsent from '@/cookie_consent';
+import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 
 const PAGE_IDENTIFIER = 'membership-application';
 const FORM_NAMESPACE = 'membership_application';
@@ -100,6 +101,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			i18n,
 			provide: {
 				cookieConsent: createCookieConsent( pageData.cookieConsent ),
+				cityAutocompleteResource: new ApiCityAutocompleteResource(),
 			},
 			render: h => h( App, {
 				props: {

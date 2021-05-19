@@ -4,9 +4,11 @@ import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import countries from '@/../tests/data/countries';
 import { addressValidationPatterns } from '../../../data/validation';
+import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
+localVue.use( CompositionAPI );
 
 function newTestProperties( overrides: Object ) {
 	return Object.assign(
@@ -107,9 +109,9 @@ describe( 'Postal.vue', () => {
 				propsData: newTestProperties( {} ),
 			} ),
 			event = 'field-changed',
-			field = wrapper.find( '#city' );
+			field = wrapper.find( '#post-code' );
 		field.trigger( 'blur' );
-		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ 'city' ] );
+		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ 'postcode' ] );
 	} );
 
 	it( 'sets the correct postcode regex on country change', async () => {

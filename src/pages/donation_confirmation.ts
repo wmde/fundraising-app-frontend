@@ -14,6 +14,7 @@ import { Donation } from '@/view_models/Donation';
 import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import createCookieConsent from '@/cookie_consent';
+import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -52,6 +53,7 @@ new Vue( {
 	i18n,
 	provide: {
 		cookieConsent: createCookieConsent( pageData.cookieConsent ),
+		cityAutocompleteResource: new ApiCityAutocompleteResource(),
 	},
 	render: h => h( App, {
 		props: {

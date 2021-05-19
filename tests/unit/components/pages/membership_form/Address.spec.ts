@@ -22,10 +22,12 @@ import countries from '@/../tests/data/countries';
 import { Validity } from '@/view_models/Validity';
 import { addressValidationPatterns } from '../../../../data/validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
+import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
+localVue.use( CompositionAPI );
 
 localVue.use( FeatureTogglePlugin, { activeFeatures: [] } );
 
