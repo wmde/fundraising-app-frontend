@@ -22,8 +22,7 @@ describe( 'ReceiptOptOut', () => {
 		expect( checkBox.props().value ).toBe( true );
 	} );
 
-	// See https://phabricator.wikimedia.org/T281373
-	xit( 'emits opt out event on change', async () => {
+	it( 'emits opt out event on change', async () => {
 		const wrapper = mount( ReceiptOptOut, {
 				localVue,
 				propsData: {
@@ -34,10 +33,9 @@ describe( 'ReceiptOptOut', () => {
 				},
 			} ),
 			event = 'opted-out',
-			checkBox = wrapper.find( '#donation_receipt' );
-		// Triggering click does not change the internal value of the Buefy checkbox
-		await checkBox.trigger( 'click' );
-		await checkBox.trigger( 'click' );
+			checkBox = wrapper.find( '#donation_receipt input' );
+		await checkBox.setChecked( false );
+		await checkBox.setChecked( true );
 		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ true ] );
 		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ false ] );
 	} );
