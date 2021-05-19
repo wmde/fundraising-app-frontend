@@ -19,8 +19,9 @@
 			</div>
 			<div class="field has-margin-bottom-18" v-if="showPublishAuthor">
 				<b-checkbox type="checkbox" id="isAnonymous" name="isAnonymous" native-value="0"
-							v-model="commentHasPublicAuthorName"></b-checkbox>
-				<label for="isAnonymous" v-html="$t( 'donation_comment_popup_is_anon' )"></label>
+							v-model="commentHasPublicAuthorName">
+					<span v-html="$t( 'donation_comment_popup_is_anon' )"></span>
+				</b-checkbox>
 			</div>
 			<div class="field has-margin-bottom-18">
 				<b-checkbox type="checkbox" id="public" name="public" native-value="1"
@@ -28,12 +29,12 @@
 			</div>
 			<div class="columns">
 				<div class="column">
-					<b-button type="is-primary is-main has-margin-top-18 level-item" @click="$parent.close()" outlined>
+					<b-button type="is-primary is-main level-item" @click="$parent.close()" outlined>
 						{{ $t( 'donation_comment_popup_cancel' ) }}
 					</b-button>
 				</div>
 				<div class="column">
-					<b-button type="is-primary is-main has-margin-top-18 level-item" native-type="submit">
+					<b-button type="is-primary is-main level-item" native-type="submit">
 						{{ $t( 'donation_comment_popup_submit' ) }}
 					</b-button>
 				</div>
