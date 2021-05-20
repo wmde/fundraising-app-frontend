@@ -65,12 +65,11 @@ describe( 'CookieReview', () => {
 		expect( cookieConsent.consentState.value ).toEqual( CONSENT_STATE.TRUE );
 	} );
 
-	// See https://phabricator.wikimedia.org/T281373
-	xit( 'submits positive consent when save button is clicked and consent given', async () => {
+	it( 'submits positive consent when save button is clicked and consent given', async () => {
 		const cookieConsent = createCookieConsent( 'unset' );
 		const wrapper = getWrapperWithCookieConsent( cookieConsent );
 
-		await wrapper.find( 'input[name=optional]' ).trigger( 'change' );
+		await wrapper.find( 'input[name=optional]' ).setChecked( true );
 		await wrapper.find( '.save > button' ).trigger( 'click' );
 
 		expect( cookieConsent.consentState.value ).toEqual( CONSENT_STATE.TRUE );
