@@ -5,7 +5,7 @@ BUILD_DIR     := $(PWD)
 TMPDIR        := $(BUILD_DIR)/tmp
 NPM_FLAGS     := --prefer-offline
 
-NODE_IMAGE    := node:14
+NODE_IMAGE    := node:16
 
 install:
 	-mkdir -p $(TMPDIR)/home
