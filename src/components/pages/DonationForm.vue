@@ -27,6 +27,7 @@ export default Vue.extend( {
 		AddressPage,
 	},
 	props: {
+		assetsPath: String,
 		validateAddressUrl: String,
 		validateEmailUrl: String,
 		validateAmountUrl: String,
@@ -64,6 +65,7 @@ export default Vue.extend( {
 			get(): object {
 				if ( this.currentFormComponent === 'AddressPage' ) {
 					return {
+						assetsPath: this.$props.assetsPath,
 						validateAddressUrl: this.$props.validateAddressUrl,
 						validateEmailUrl: this.$props.validateEmailUrl,
 						validateBankDataUrl: this.$props.validateBankDataUrl,
@@ -74,6 +76,7 @@ export default Vue.extend( {
 					};
 				}
 				return {
+					assetsPath: this.$props.assetsPath,
 					validateAmountUrl: this.$props.validateAmountUrl,
 					paymentAmounts: this.$props.paymentAmounts,
 					paymentIntervals: this.$props.paymentIntervals,

@@ -37,11 +37,17 @@
 			</address-fields>
 		</feature-toggle>
 			<div class="summary-wrapper has-margin-top-18 has-outside-border">
-				<donation-summary :payment="paymentSummary" :address-type="addressType" :address="addressSummary" :countries="countries">
-					<div class="title is-size-5">{{ $t( 'donation_confirmation_review_headline' ) }}</div>
-				</donation-summary>
+				<donation-summary
+					:payment="paymentSummary"
+					:address-type="addressType"
+					:address="addressSummary"
+					:countries="countries"
+					:language-item="inlineSummaryLanguageItem"
+				/>
+
+				<trust :assets-path="assetsPath" />
 				<submit-values :tracking-data="{}"></submit-values>
-				<div class="columns has-margin-top-18">
+				<div class="columns payment-buttons">
 					<div class="column">
 						<b-button id="previous-btn" class="level-item"
 								@click="previousPage"
@@ -66,19 +72,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { addressTypeName } from '@/view_models/AddressTypeModel';
+import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
 import AddressFields from '@/components/pages/donation_form/Address.vue';
 import ProvisionalChoiceAddressFields from '@/components/pages/donation_form/ProvisionalChoiceAddress.vue';
-import DonationSummary from '@/components/DonationSummary.vue';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
+import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
+import DonationSummary from '@/components/shared/DonationSummary.vue';
+import Trust from '@/components/shared/Trust.vue';
 import { TrackingData } from '@/view_models/SubmitValues';
 import { AddressValidation } from '@/view_models/Validation';
 import { Country } from '@/view_models/Country';
 import { action } from '@/store/util';
 import { markEmptyValuesAsInvalid } from '@/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
-import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
 import { discardInitialization } from '@/store/payment/actionTypes';
 import { trackFormSubmission } from '@/tracking';
 
@@ -87,11 +94,13 @@ export default Vue.extend( {
 	components: {
 		AddressFields,
 		ProvisionalChoiceAddressFields,
-		DonationSummary,
 		SubmitValues,
 		PaymentSummary,
+		DonationSummary,
+		Trust,
 	},
 	props: {
+		assetsPath: String,
 		validateAddressUrl: String,
 		validateEmailUrl: String,
 		validateBankDataUrl: String,
@@ -146,6 +155,19 @@ export default Vue.extend( {
 			get: function (): boolean {
 				return this.$store.getters[ 'payment/isDirectDebitPayment' ];
 			},
+		},
+		inlineSummaryLanguageItem(): string {
+			switch ( this.$store.state[ NS_ADDRESS ].addressType ) {
+				case AddressTypeModel.ANON:
+				case AddressTypeModel.UNSET:
+					return 'donation_confirmation_inline_summary_anonymous';
+				case AddressTypeModel.EMAIL:
+					return 'donation_confirmation_inline_summary_email';
+				case AddressTypeModel.COMPANY:
+				case AddressTypeModel.PERSON:
+				default:
+					return 'donation_confirmation_inline_summary_address';
+			}
 		},
 	},
 	methods: {

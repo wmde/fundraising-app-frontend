@@ -1,29 +1,14 @@
 <template>
 	<div class="donation-summary">
-		<div class="intro"><slot></slot></div>
-		<feature-toggle>
-			<component
-				slot="campaigns.confirmation_page_layout.old_layout"
-				:is="addressTypeComponent"
-				:address="address"
-				:interval="interval"
-				:formatted-amount="formattedAmount"
-				:paymentType="paymentType"
-				:country="country"
-				:language-item="'donation_confirmation_topbox_summary'"
-			></component>
-			<component
-				slot="campaigns.confirmation_page_layout.new_layout"
-				:is="addressTypeComponent"
-				:address="address"
-				:interval="interval"
-				:formatted-amount="formattedAmount"
-				:paymentType="paymentType"
-				:country="country"
-				:language-item="'donation_confirmation_topbox_summary_alt'"
-			></component>
-		</feature-toggle>
-		<div class="payment-email" v-html="getEmail()"></div>
+		<component
+			:is="addressTypeComponent"
+			:address="address"
+			:interval="interval"
+			:formatted-amount="formattedAmount"
+			:paymentType="paymentType"
+			:country="country"
+			:language-item="languageItem"
+		></component>
 	</div>
 </template>
 
@@ -50,6 +35,7 @@ export default Vue.extend( {
 		'addressType',
 		'payment',
 		'countries',
+		'languageItem',
 	],
 	computed: {
 		addressTypeComponent: function () {
@@ -69,26 +55,5 @@ export default Vue.extend( {
 			return countryObject ? countryObject.countryFullName : '';
 		},
 	},
-	methods: {
-		getEmail: function () {
-			if ( this.addressType === 'anonym' ) {
-				return '';
-			}
-			if ( this.address.email ) {
-				return this.$t( 'donation_confirmation_topbox_email', { email: this.address.email } );
-			}
-			return this.$t( 'donation_confirmation_review_email_missing' );
-		},
-	},
 } );
 </script>
-
-<style lang="scss">
-.donation {
-	&-summary {
-		.intro {
-			margin-bottom: 18px;
-		}
-	}
-}
-</style>

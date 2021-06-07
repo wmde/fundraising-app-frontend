@@ -1,4 +1,4 @@
-import DonationSummary from '@/components/DonationSummary.vue';
+import DonationSummary from '@/components/shared/DonationSummary.vue';
 import { mount, createLocalVue } from '@vue/test-utils';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 
@@ -48,11 +48,12 @@ describe( 'DonationForm', () => {
 				payment,
 				addressType: 'person',
 				countries,
+				languageItem: 'language_item',
 			},
 			mocks: { $t },
 		} );
 		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_person' );
-		const params = findTranslationCallParams( 'donation_confirmation_topbox_summary', $t.mock.calls );
+		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
 		const expectedFields = [ 'salutation', 'fullName', 'streetAddress', 'postalCode', 'city' ];
 		expectedFields.map( ( fieldName: string ) => expect( params.address ).toContain( address[ fieldName ] ) );
 	} );
@@ -73,11 +74,12 @@ describe( 'DonationForm', () => {
 				payment,
 				addressType: 'firma',
 				countries,
+				languageItem: 'language_item',
 			},
 			mocks: { $t },
 		} );
 		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_company' );
-		const params = findTranslationCallParams( 'donation_confirmation_topbox_summary', $t.mock.calls );
+		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
 		const expectedFields = [ 'fullName', 'streetAddress', 'postalCode', 'city' ];
 		expectedFields.map( ( fieldName: string ) => expect( params.address ).toContain( address[ fieldName ] ) );
 	} );
@@ -91,12 +93,13 @@ describe( 'DonationForm', () => {
 				address: {},
 				addressType: 'person',
 				countries,
+				languageItem: 'language_item',
 			},
 			mocks: { $t },
 		} );
 		expect( $t ).toBeCalledWith( 'BEZ' );
 		expect( $t ).toBeCalledWith( 'donation_form_payment_interval_12' );
-		const params = findTranslationCallParams( 'donation_confirmation_topbox_summary', $t.mock.calls );
+		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
 		expect( params.formattedAmount ).toBe( '14,99' );
 		expect( params.interval ).toBe( 'donation_form_payment_interval_12' );
 		expect( params.paymentType ).toBe( 'BEZ' );

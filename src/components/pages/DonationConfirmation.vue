@@ -2,14 +2,16 @@
 	<div class="donation-confirmation">
 		<div class="donation-summary-wrapper has-background-bright columns has-padding-18">
 			<div class="column is-half">
+				<div class="donation-summary-intro">
+					<div class="title is-size-5">{{ $t( 'donation_confirmation_topbox_intro' ) }}</div>
+				</div>
 				<donation-summary
 						:address="currentAddress"
 						:address-type="currentAddressType"
 						:payment="donation"
 						:countries="countries"
-				>
-					<div class="title is-size-5">{{ $t( 'donation_confirmation_topbox_intro' ) }}</div>
-				</donation-summary>
+				/>
+				<div class="payment-email" v-html="getEmail()"></div>
 				<b-button v-if="showAddressChangeButton"
 							id="address-change-button"
 							class="address-change-button"
@@ -73,7 +75,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import BankData from '@/components/BankData.vue';
-import DonationSummary from '@/components/DonationSummary.vue';
+import DonationSummary from '@/components/DonationSummaryABTest.vue';
 import MembershipInfo from '@/components/pages/donation_confirmation/MembershipInfo.vue';
 import PaymentNotice from '@/components/pages/donation_confirmation/PaymentNotice.vue';
 import SummaryLinks from '@/components/pages/donation_confirmation/SummaryLinks.vue';
@@ -126,6 +128,15 @@ export default Vue.extend( {
 			this.$data.addressChangeHasSucceeded = true;
 			this.$data.currentAddress = submittedAddress.addressData;
 			this.$data.currentAddressType = submittedAddress.addressType;
+		},
+		getEmail: function () {
+			if ( this.$data.currentAddressType === 'anonym' ) {
+				return '';
+			}
+			if ( this.$data.currentAddress.email ) {
+				return this.$t( 'donation_confirmation_topbox_email', { email: this.$data.currentAddress.email } );
+			}
+			return this.$t( 'donation_confirmation_review_email_missing' );
 		},
 	},
 	computed: {

@@ -52,15 +52,17 @@
 						>
 						</address-modal>
 					</b-modal>
+					<div class="donation-summary-intro">
+						<div><strong>{{ $t( 'donation_confirmation_summary_title_alt' ) }}</strong></div>
+					</div>
 					<donation-summary
 						v-if="!showAddressChangeContent"
 						:address="currentAddress"
 						:address-type="currentAddressType"
 						:payment="donation"
 						:countries="countries"
-					>
-						<div><strong>{{ $t( 'donation_confirmation_summary_title_alt' ) }}</strong></div>
-					</donation-summary>
+					/>
+					<div class="payment-email" v-html="getEmail()"></div>
 				</div>
 			</div>
 		</div>
@@ -81,7 +83,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import BankData from '@/components/BankData.vue';
-import DonationSummary from '@/components/DonationSummary.vue';
+import DonationSummary from '@/components/DonationSummaryABTest.vue';
 import MembershipInfo from '@/components/pages/donation_confirmation/MembershipInfo.vue';
 import PaymentNotice from '@/components/pages/donation_confirmation/PaymentNoticeAlt.vue';
 import SummaryLinks from '@/components/pages/donation_confirmation/SummaryLinks.vue';
@@ -134,6 +136,15 @@ export default Vue.extend( {
 			this.$data.addressChangeHasSucceeded = true;
 			this.$data.currentAddress = submittedAddress.addressData;
 			this.$data.currentAddressType = submittedAddress.addressType;
+		},
+		getEmail: function () {
+			if ( this.$data.currentAddressType === 'anonym' ) {
+				return '';
+			}
+			if ( this.$data.currentAddress.email ) {
+				return this.$t( 'donation_confirmation_topbox_email', { email: this.$data.currentAddress.email } );
+			}
+			return this.$t( 'donation_confirmation_review_email_missing' );
 		},
 	},
 	computed: {
