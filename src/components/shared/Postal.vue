@@ -57,8 +57,7 @@
 					:open-on-focus="openOnFocus"
 					:data="filteredCountries"
 					@focus="focusCountryField"
-					@input="changeCountry"
-					@blur="blurCountryField">
+					@input="changeCountry">
 					<template slot-scope="props">
 						<span v-bind:class="{ 'is-last-frequent': isLastFrequent( props.index ) }">
 							{{ props.option.countryFullName }}
@@ -91,22 +90,20 @@ export default Vue.extend( {
 			openOnFocus: true,
 			countryInput: 'Deutschland',
 			countryClicked: false,
-			countryFocused: false,
-			countryInitialised: false,
 		};
+	},
+	mounted() {
+		const country = this.getCountryFromCode( this.$props.formData.country.value );
+		if ( country && this.countryInput !== country.countryFullName ) {
+			this.countryInput = country.countryFullName;
+			this.setPostcodeValidation( country.postCodeValidation );
+		}
 	},
 	watch: {
 		'formData.country.value': function ( value ) {
-			if ( this.countryInitialised ) {
-				return;
-			}
-
-			const country = this.countries.find( ( c: Country ) => c.countryCode === value );
-			if ( country !== undefined && this.countryInput !== country.countryFullName ) {
-				this.countryInitialised = true;
-				this.countryInput = country.countryFullName;
-				this.formData.postcode.pattern = country.postCodeValidation;
-				this.$emit( 'field-changed', 'postcode' );
+			const country = this.getCountryFromCode( value );
+			if ( country ) {
+				this.setPostcodeValidation( country.postCodeValidation );
 			}
 		},
 	},
@@ -122,17 +119,22 @@ export default Vue.extend( {
 			}
 			return thisCountry.isFrequentCountry && !nextCountry.isFrequentCountry;
 		},
+		getCountryFromCode( countryCode: string ) {
+			const country = this.countries.find( ( c: Country ) => c.countryCode === countryCode );
+			if ( country !== undefined ) {
+				return country;
+			}
+			return null;
+		},
+		setPostcodeValidation( pattern: string ) {
+			this.$props.formData.postcode.pattern = pattern;
+			this.$emit( 'field-changed', 'postcode' );
+		},
 		focusCountryField() {
-			this.$data.countryFocused = true;
 			if ( !this.$data.countryClicked ) {
 				this.formData.country.value = '';
 				this.$data.countryInput = '';
-				this.$data.countryClicked = true;
 			}
-		},
-		blurCountryField() {
-			this.$data.countryFocused = false;
-			this.$emit( 'field-changed', 'country' );
 		},
 		changeCountry( option: String ) {
 			let country = this.$props.countries.find( ( c: Country ) => c.countryFullName === option );
@@ -145,10 +147,12 @@ export default Vue.extend( {
 			} else {
 				this.formData.country.value = '';
 			}
-			// Blur sometimes runs before input/select events but then has no value
-			// so we need to re-validate if input happened while not focused
-			if ( !this.$data.countryFocused ) {
+			// If the country value is default only emit an event after the first interaction
+			// This stops the field being marked as invalid when the user clicks it
+			if ( this.$data.countryClicked ) {
 				this.$emit( 'field-changed', 'country' );
+			} else {
+				this.$data.countryClicked = true;
 			}
 		},
 	},
