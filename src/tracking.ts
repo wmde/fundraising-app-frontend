@@ -22,6 +22,10 @@ export function trackFormValidationErrors( formName: string, formFieldName: stri
 	_paq.push( [ 'trackEvent', 'Form Field Invalid', formName, formFieldName ] );
 }
 
+export function trackEvent( eventName: string, ...params: Array<string> ) {
+	_paq.push( [ 'trackEvent', eventName, ...params ] );
+}
+
 export function setTrackingConsentGiven() {
 	_paq.push( [ 'setConsentGiven' ] );
 	_paq.push( [ 'setCookieConsentGiven' ] );

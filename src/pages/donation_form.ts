@@ -22,6 +22,7 @@ import { Country } from '@/view_models/Country';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import createCookieConsent from '@/cookie_consent';
+import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 
 const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
@@ -79,6 +80,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			i18n,
 			provide: {
 				cookieConsent: createCookieConsent( pageData.cookieConsent ),
+				cityAutocompleteResource: new ApiCityAutocompleteResource(),
 			},
 			render: h => h( App, {
 				props: {

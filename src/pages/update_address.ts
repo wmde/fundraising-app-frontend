@@ -12,6 +12,7 @@ import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import { Country } from '@/view_models/Country';
 import createCookieConsent from '@/cookie_consent';
+import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 
 const PAGE_IDENTIFIER = 'update-address';
 const FORM_NAMESPACE = 'update_address';
@@ -44,6 +45,7 @@ new Vue( {
 	i18n,
 	provide: {
 		cookieConsent: createCookieConsent( pageData.cookieConsent ),
+		cityAutocompleteResource: new ApiCityAutocompleteResource(),
 	},
 	render: h => h( App, {
 		props: {
