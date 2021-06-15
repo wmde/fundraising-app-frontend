@@ -55,16 +55,13 @@
 					v-model="countryInput"
 					name="country"
 					id="country"
+					group-field="group"
 					:keep-first="keepFirst"
 					:open-on-focus="openOnFocus"
 					:data="filteredCountries"
 					@focus="focusCountryField"
 					@input="changeCountry">
-					<template slot-scope="props">
-						<span v-bind:class="{ 'is-last-frequent': isLastFrequent( props.index ) }">
-							{{ props.option.countryFullName }}
-						</span>
-					</template>
+				<span slot="group"><hr></span>
 			</b-autocomplete>
 		</b-field>
 		<span v-if="showError.country" class="help is-danger">{{ $t('donation_form_country_error') }}</span>
@@ -114,14 +111,6 @@ export default Vue.extend( {
 	methods: {
 		displayStreetWarning() {
 			this.showWarning = /^\D+$/.test( this.formData.street.value );
-		},
-		isLastFrequent( index: number ) {
-			const thisCountry = this.$props.countries[ index ];
-			const nextCountry = this.$props.countries[ index + 1 ];
-			if ( nextCountry === undefined ) {
-				return false;
-			}
-			return thisCountry.isFrequentCountry && !nextCountry.isFrequentCountry;
 		},
 		getCountryFromCode( countryCode: string ) {
 			const country = this.countries.find( ( c: Country ) => c.countryCode === countryCode );
