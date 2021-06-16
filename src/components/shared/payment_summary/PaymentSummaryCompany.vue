@@ -23,8 +23,15 @@ export default {
 					paymentType: this.$props.paymentType,
 					personType: this.$t( 'donation_confirmation_topbox_donor_type_company' ),
 					address: this.addressString(),
+					email: this.email(),
 				}
 			);
+		},
+		email: function () {
+			if ( !this.address.email ) {
+				return this.$t( 'donation_confirmation_review_email_missing' );
+			}
+			return this.address.email;
 		},
 		addressString: function () {
 			if ( !this.canRenderAddress() ) {

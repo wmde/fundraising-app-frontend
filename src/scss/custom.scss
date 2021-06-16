@@ -168,7 +168,7 @@
 	@include until($widescreen) {
 		button.is-main {
 			width: 100%;
-			margin: 5px 0;
+			margin: 0 0 5px;
 		}
 	}
 }
@@ -295,6 +295,37 @@
 
 	.help {
 		margin-top: 0;
+	}
+}
+
+.donation-summary-intro {
+	margin-bottom: 18px;
+}
+
+.trust-message {
+	box-sizing: border-box;
+	margin-top: 32px;
+	margin-bottom: 12px;
+	font-size: 14px;
+	line-height: 28px;
+	height: 28px;
+
+	img {
+		float: left;
+		height: 28px;
+		width: 26px;
+		margin-right: 3px;
+	}
+}
+
+.submit-values {
+	visibility: hidden;
+}
+
+.payment-buttons {
+	margin-top: 0;
+	.column {
+		padding-top: 0;
 	}
 }
 

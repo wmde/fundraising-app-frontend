@@ -12,6 +12,7 @@ export default {
 		'paymentType',
 		'country',
 		'languageItem',
+		'email',
 	],
 	computed: {
 		getSummary: function () {
@@ -22,7 +23,8 @@ export default {
 					formattedAmount: this.$props.formattedAmount,
 					paymentType: this.$props.paymentType,
 					personType: this.$t( 'donation_confirmation_topbox_donor_type_anonymous' ),
-					address: '',
+					address: this.$t( 'donation_confirmation_review_address_missing' ),
+					email: this.$t( 'donation_confirmation_review_email_missing' ),
 				}
 			);
 		},

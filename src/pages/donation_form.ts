@@ -100,6 +100,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			[
 				h( Component, {
 					props: {
+						assetsPath: pageData.assetsPath,
 						validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 						validateEmailUrl: pageData.applicationVars.urls.validateEmail,
 						validateAmountUrl: pageData.applicationVars.urls.validateDonationAmount,
