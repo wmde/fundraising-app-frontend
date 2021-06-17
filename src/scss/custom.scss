@@ -307,14 +307,16 @@
 	margin-top: 32px;
 	margin-bottom: 12px;
 	font-size: 14px;
-	line-height: 28px;
-	height: 28px;
+	line-height: 16px;
+	min-height: 28px;
+	padding: 6px 0;
 
 	img {
 		float: left;
 		height: 28px;
 		width: 26px;
 		margin-right: 3px;
+		margin-top: -6px;
 	}
 }
 
