@@ -1,1 +1,1 @@
-export const DEFAULT_LOCALE = 'de_DE';
+export const DEFAULT_LOCALE = 'locale_is_handled_by_fundraising_app';

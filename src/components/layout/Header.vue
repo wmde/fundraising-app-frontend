@@ -16,7 +16,7 @@
 					<span aria-hidden="true"></span>
 				</a>
 			</div>
-			<div id="navMenu" v-bind:class="[{ 'is-active': showNavbarBurger }, 'navbar-menu']"
+			<div id="navMenu" v-bind:class="[ { 'is-active': showNavbarBurger }, 'navbar-menu']"
 				@click="showNavbarBurger = !showNavbarBurger">
 				<div class="navbar-start">
 					<a v-for="( link, index ) in headerMenu"
@@ -27,15 +27,18 @@
 					</a>
 				</div>
 			</div>
+			<LocaleSelector :assets-path="assetsPath"/>
 		</div>
 	</div>
 </template>
 
 <script type="ts">
 import Vue from 'vue';
+import LocaleSelector from '@/components/shared/LocaleSelector.vue';
 
 export default Vue.extend( {
 	name: 'Header',
+	components: { LocaleSelector },
 	props: [ 'assetsPath', 'pageIdentifier' ],
 	data: function () {
 		return {
@@ -53,11 +56,13 @@ export default Vue.extend( {
 
 <style lang="scss">
 	@import "../../scss/variables";
+	@import "~bulma/sass/utilities/mixins";
 	.navbar {
 		&-item {
 			border-bottom: 2px solid $fun-color-bright;
 		}
-		&-menu {
+		&-menu,
+		&-language {
 			.navbar-item {
 				&:hover {
 					border-bottom: 2px solid $fun-color-primary;
@@ -71,6 +76,28 @@ export default Vue.extend( {
 					font-weight: bold;
 				}
 			}
+		}
+	}
+	.navbar-language {
+		align-items: stretch;
+		display: flex;
+
+		position: absolute;
+		top: 0;
+		right: 100px;
+		height: 100%;
+
+		@include from($tablet) {
+			right: 150px;
+		}
+
+		@include from($desktop) {
+			position: static;
+			float: right;
+		}
+
+		.navbar-item {
+			line-height: 4rem;
 		}
 	}
 </style>
