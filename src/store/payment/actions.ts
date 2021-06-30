@@ -32,23 +32,32 @@ export const actions = {
 	[ discardInitialization ]( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( SET_INITIALIZED, false );
 	},
-	[ initializePayment ]( context: ActionContext<DonationPayment, any>, initialValues: InitialPaymentValues ): Promise<boolean> {
-		let amountIsFilled = false, paymentIsFilled = false;
-		if ( initialValues.amount && initialValues.amount !== '0' ) {
-			context.commit( SET_AMOUNT, initialValues.amount );
-			context.commit( SET_AMOUNT_VALIDITY, Validity.VALID );
-			amountIsFilled = true;
+	[ initializePayment ](
+		context: ActionContext<DonationPayment, any>,
+		payload: { initialValues: InitialPaymentValues, maxAmount: number }
+	): Promise<boolean> {
+		let amountIsFilledAndValid = false, paymentIsFilled = false;
+		if ( payload.initialValues.amount && payload.initialValues.amount !== '0' ) {
+			context.commit( SET_AMOUNT, payload.initialValues.amount );
+
+			let amountValidity = Validity.INVALID;
+			if ( parseInt( payload.initialValues.amount ) < payload.maxAmount ) {
+				amountIsFilledAndValid = true;
+				amountValidity = Validity.VALID;
+			}
+
+			context.commit( SET_AMOUNT_VALIDITY, amountValidity );
 		}
 
-		if ( initialValues.type && initialValues.type !== '' ) {
-			context.commit( SET_TYPE, initialValues.type );
+		if ( payload.initialValues.type && payload.initialValues.type !== '' ) {
+			context.commit( SET_TYPE, payload.initialValues.type );
 			context.commit( SET_TYPE_VALIDITY, Validity.VALID );
 			paymentIsFilled = true;
 		}
-		context.commit( SET_INTERVAL, initialValues.paymentIntervalInMonths );
-		context.commit( SET_INITIALIZED, amountIsFilled && paymentIsFilled );
+		context.commit( SET_INTERVAL, payload.initialValues.paymentIntervalInMonths );
+		context.commit( SET_INITIALIZED, amountIsFilledAndValid && paymentIsFilled );
 
-		return Promise.resolve( amountIsFilled && paymentIsFilled );
+		return Promise.resolve( amountIsFilledAndValid && paymentIsFilled );
 	},
 	[ markEmptyValuesAsInvalid ]( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );

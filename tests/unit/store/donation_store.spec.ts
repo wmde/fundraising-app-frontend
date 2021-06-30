@@ -29,19 +29,43 @@ describe( 'Donation Store', () => {
 			const type = 'person';
 			const paymentIntervalInMonths = '1';
 			const isCustomAmount = false;
-
-			const initialData = {
-				amount,
-				type,
-				paymentIntervalInMonths,
-				isCustomAmount,
+			const payload = {
+				initialValues: {
+					amount,
+					type,
+					paymentIntervalInMonths,
+					isCustomAmount,
+				},
+				maxAmount: 100000,
 			};
 			const store = createStore();
-			await store.dispatch( action( NS_PAYMENT, initializePayment ), initialData );
+			await store.dispatch( action( NS_PAYMENT, initializePayment ), payload );
 
 			expect( store.state.payment.values.amount ).toBe( amount );
 			expect( store.state.payment.values.type ).toBe( type );
 			expect( store.state.payment.values.interval ).toBe( paymentIntervalInMonths );
+		} );
+
+		it( 'does not load address page when amount is invalid', () => {
+			const amount = '100000000';
+			const type = 'person';
+			const paymentIntervalInMonths = '1';
+			const isCustomAmount = true;
+
+			const payload = {
+				initialValues: {
+					amount,
+					type,
+					paymentIntervalInMonths,
+					isCustomAmount,
+				},
+				maxAmount: 100000,
+			};
+
+			const store = createStore();
+			store.dispatch( action( NS_PAYMENT, initializePayment ), payload );
+
+			expect( store.state.initialized ).toBeFalsy();
 		} );
 	} );
 } );

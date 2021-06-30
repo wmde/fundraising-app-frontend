@@ -40,7 +40,8 @@ interface DonationFormModel {
 	countries: Array<Country>,
 	urls: any,
 	userDataKey: string,
-	addressValidationPatterns: AddressValidation
+	addressValidationPatterns: AddressValidation,
+	donationMaximumAmount: number,
 }
 
 const pageData = new PageDataInitializer<DonationFormModel>( '#appdata' );
@@ -67,7 +68,10 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
 		store.dispatch(
 			action( NS_PAYMENT, initializePayment ),
-			createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues )
+			{
+				initialValues: createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues ),
+				maxAmount: pageData.applicationVars.donationMaximumAmount,
+			}
 		),
 		store.dispatch(
 			action( NS_ADDRESS, initializeAddress ),

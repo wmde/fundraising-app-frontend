@@ -171,24 +171,30 @@ describe( 'Payment', () => {
 		it( 'does not commit empty amount', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '0',
-				type: 'BEZ',
-				paymentIntervalInMonths: 12,
+			const payload = {
+				initialValues: {
+					amount: '0',
+					type: 'BEZ',
+					paymentIntervalInMonths: 12,
+				},
+				maxAmount: 100000,
 			};
-			action( { commit }, initialPayment );
+			action( { commit }, payload );
 			expect( commit ).not.toBeCalledWith( SET_AMOUNT, '0' );
 		} );
 
 		it( 'commits amount and sets it to valid when amount is set', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '2399',
-				type: 'BEZ',
-				paymentIntervalInMonths: 12,
+			const payload = {
+				initialValues: {
+					amount: '2399',
+					type: 'BEZ',
+					paymentIntervalInMonths: 12,
+				},
+				maxAmount: 100000,
 			};
-			action( { commit }, initialPayment );
+			action( { commit }, payload );
 			expect( commit ).toBeCalledWith( SET_AMOUNT, '2399' );
 			expect( commit ).toBeCalledWith( SET_AMOUNT_VALIDITY, Validity.VALID );
 		} );
@@ -196,24 +202,30 @@ describe( 'Payment', () => {
 		it( 'does not commit empty payment type', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '123',
-				type: '',
-				paymentIntervalInMonths: 12,
+			const payload = {
+				initialValues: {
+					amount: '123',
+					type: '',
+					paymentIntervalInMonths: 12,
+				},
+				maxAmount: 100000,
 			};
-			action( { commit }, initialPayment );
+			action( { commit }, payload );
 			expect( commit ).not.toBeCalledWith( SET_TYPE, '' );
 		} );
 
 		it( 'commits payment type and set it to valid when payment type is set', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '2399',
-				type: 'BEZ',
-				paymentIntervalInMonths: 12,
+			const payload = {
+				initialValues: {
+					amount: '2399',
+					type: 'BEZ',
+					paymentIntervalInMonths: 12,
+				},
+				maxAmount: 100000,
 			};
-			action( { commit }, initialPayment );
+			action( { commit }, payload );
 			expect( commit ).toBeCalledWith( SET_TYPE, 'BEZ' );
 			expect( commit ).toBeCalledWith( SET_TYPE_VALIDITY, Validity.VALID );
 		} );
@@ -221,12 +233,15 @@ describe( 'Payment', () => {
 		it( 'commits interval', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '2399',
-				type: 'BEZ',
-				paymentIntervalInMonths: '12',
+			const payload = {
+				initialValues: {
+					amount: '2399',
+					type: 'BEZ',
+					paymentIntervalInMonths: '12',
+				},
+				maxAmount: 100000,
 			};
-			action( { commit }, initialPayment );
+			action( { commit }, payload );
 			expect( commit ).toBeCalledWith( SET_INTERVAL, '12' );
 		} );
 
@@ -235,19 +250,23 @@ describe( 'Payment', () => {
 			{ amount: '0', type: 'BEZ', expectedResolution: false },
 			{ amount: '1234', type: '', expectedResolution: false },
 			{ amount: '4200', type: 'PPL', expectedResolution: true },
+			{ amount: '100000', type: 'PPL', expectedResolution: false },
 		];
 
 		describe.each( paymentAndAmountCases )( 'with initial payment data', ( data: any ) => {
 			it( `whose amount is ${ data.amount } and type is ${ data.type } should be ${ data.expectedResolution }`, () => {
 				const commit = jest.fn();
 				const action = actions[ initializePayment ] as any;
-				const initialValues = {
-					amount: data.amount,
-					type: data.type,
-					paymentIntervalInMonths: '0',
+				const payload = {
+					initialValues: {
+						amount: data.amount,
+						type: data.type,
+						paymentIntervalInMonths: '0',
+					},
+					maxAmount: 100000,
 				};
 				expect.assertions( 1 );
-				return expect( action( { commit }, initialValues ) ).resolves.toBe( data.expectedResolution );
+				return expect( action( { commit }, payload ) ).resolves.toBe( data.expectedResolution );
 			} );
 		} );
 	} );
