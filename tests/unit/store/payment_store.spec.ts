@@ -231,25 +231,25 @@ describe( 'Payment', () => {
 		} );
 
 		const paymentAndAmountCases = [
-			[ '', '', false ],
-			[ '0', 'BEZ', false ],
-			[ '1234', '', false ],
-			[ '4200', 'PPL', true ],
+			{ amount: '', type: '', expectedResolution: false },
+			{ amount: '0', type: 'BEZ', expectedResolution: false },
+			{ amount: '1234', type: '', expectedResolution: false },
+			{ amount: '4200', type: 'PPL', expectedResolution: true },
 		];
 
-		each( paymentAndAmountCases ).it( 'resolves true when amount and payment type are set (test index %#)',
-			( amount, type, expectedResolution ) => {
+		describe.each( paymentAndAmountCases )( 'with initial payment data', ( data: any ) => {
+			it( `whose amount is ${ data.amount } and type is ${ data.type } should be ${ data.expectedResolution }`, () => {
 				const commit = jest.fn();
 				const action = actions[ initializePayment ] as any;
-				const initialPayment = {
-					amount,
-					type,
+				const initialValues = {
+					amount: data.amount,
+					type: data.type,
 					paymentIntervalInMonths: '0',
 				};
 				expect.assertions( 1 );
-				return expect( action( { commit }, initialPayment ) ).resolves.toBe( expectedResolution );
+				return expect( action( { commit }, initialValues ) ).resolves.toBe( data.expectedResolution );
 			} );
-
+		} );
 	} );
 
 	describe( 'Actions/markEmptyAmountAsInvalid', () => {
