@@ -38,7 +38,6 @@ describe( 'DonationForm', () => {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
-				validateAmountUrl: 'https://example.com/amount-check',
 			},
 			store: new Vuex.Store( {
 				actions,

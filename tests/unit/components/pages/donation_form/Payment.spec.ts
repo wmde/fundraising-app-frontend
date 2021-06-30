@@ -25,7 +25,6 @@ describe( 'Payment', () => {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
-				validateAmountUrl: 'https://example.com/amount-check',
 			},
 			store: createStore(),
 			mocks: {
@@ -34,14 +33,11 @@ describe( 'Payment', () => {
 		} );
 		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn();
-		const expectedPayload = {
-			amountValue: '1500',
-			validateAmountUrl: 'https://example.com/amount-check',
-		};
+		const payload = '1500';
 
-		wrapper.findComponent( AmountSelection ).vm.$emit( 'amount-selected', '1500' );
+		wrapper.findComponent( AmountSelection ).vm.$emit( 'amount-selected', payload );
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_PAYMENT, setAmount ), expectedPayload );
+		expect( store.dispatch ).toBeCalledWith( action( NS_PAYMENT, setAmount ), payload );
 	} );
 
 	it( 'sends interval to store when interval selection emits event ', () => {
@@ -51,7 +47,6 @@ describe( 'Payment', () => {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
-				validateAmountUrl: 'https://example.com/amount-check',
 			},
 			store: createStore(),
 			mocks: {
@@ -73,7 +68,6 @@ describe( 'Payment', () => {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
-				validateAmountUrl: 'https://example.com/amount-check',
 			},
 			store: createStore(),
 			mocks: {

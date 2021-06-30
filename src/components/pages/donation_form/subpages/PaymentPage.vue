@@ -39,7 +39,6 @@ export default Vue.extend( {
 	},
 	props: {
 		assetsPath: String,
-		validateAmountUrl: String,
 		paymentAmounts: Array as () => Array<String>,
 		paymentIntervals: Array as () => Array<Number>,
 		paymentTypes: Array as () => Array<String>,

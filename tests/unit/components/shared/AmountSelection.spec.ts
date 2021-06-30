@@ -183,7 +183,6 @@ describe( 'AmountSelection', () => {
 			propsData: {
 				amount: '',
 				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-				validateAmountUrl: 'https://example.com/amount-check',
 			},
 			mocks: {
 				$t: () => {},
@@ -204,7 +203,6 @@ describe( 'AmountSelection', () => {
 				amount: '',
 				minimumAmount: 1000,
 				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-				validateAmountUrl: 'https://example.com/amount-check',
 			},
 			mocks: {
 				$t: () => {},

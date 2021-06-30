@@ -30,7 +30,6 @@ export default Vue.extend( {
 		assetsPath: String,
 		validateAddressUrl: String,
 		validateEmailUrl: String,
-		validateAmountUrl: String,
 		validateBankDataUrl: String,
 		validateLegacyBankDataUrl: String,
 		paymentAmounts: Array as () => Array<String>,
@@ -77,7 +76,6 @@ export default Vue.extend( {
 				}
 				return {
 					assetsPath: this.$props.assetsPath,
-					validateAmountUrl: this.$props.validateAmountUrl,
 					paymentAmounts: this.$props.paymentAmounts,
 					paymentIntervals: this.$props.paymentIntervals,
 					paymentTypes: this.$props.paymentTypes,

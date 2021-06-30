@@ -68,10 +68,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
 		store.dispatch(
 			action( NS_PAYMENT, initializePayment ),
-			{
-				initialValues: createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues ),
-				maxAmount: pageData.applicationVars.donationMaximumAmount,
-			}
+			createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
 		store.dispatch(
 			action( NS_ADDRESS, initializeAddress ),
@@ -92,7 +89,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 					pageIdentifier: PAGE_IDENTIFIER,
 					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 					validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-					validateAmountUrl: pageData.applicationVars.urls.validateDonationAmount,
 					paymentAmounts: pageData.applicationVars.presetAmounts,
 					paymentIntervals: pageData.applicationVars.paymentIntervals,
 					paymentTypes: pageData.applicationVars.paymentTypes,
@@ -107,7 +103,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 						assetsPath: pageData.assetsPath,
 						validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 						validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-						validateAmountUrl: pageData.applicationVars.urls.validateDonationAmount,
 						validateBankDataUrl: pageData.applicationVars.urls.validateIban,
 						validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
 						paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),

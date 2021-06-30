@@ -5,7 +5,7 @@ import { Validity } from '@/view_models/Validity';
 import { AmountValidity } from '@/view_models/Payment';
 import {
 	initializePayment,
-	markEmptyAmountAsInvalid,
+	markEmptyAmountAsInvalid, setAmount,
 } from '@/store/payment/actionTypes';
 import {
 	SET_AMOUNT,
@@ -171,30 +171,24 @@ describe( 'Payment', () => {
 		it( 'does not commit empty amount', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const payload = {
-				initialValues: {
-					amount: '0',
-					type: 'BEZ',
-					paymentIntervalInMonths: 12,
-				},
-				maxAmount: 100000,
+			const initialPayment = {
+				amount: '0',
+				type: 'BEZ',
+				paymentIntervalInMonths: 12,
 			};
-			action( { commit }, payload );
+			action( { commit }, initialPayment );
 			expect( commit ).not.toBeCalledWith( SET_AMOUNT, '0' );
 		} );
 
 		it( 'commits amount and sets it to valid when amount is set', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const payload = {
-				initialValues: {
-					amount: '2399',
-					type: 'BEZ',
-					paymentIntervalInMonths: 12,
-				},
-				maxAmount: 100000,
+			const initialPayment = {
+				amount: '2399',
+				type: 'BEZ',
+				paymentIntervalInMonths: 12,
 			};
-			action( { commit }, payload );
+			action( { commit }, initialPayment );
 			expect( commit ).toBeCalledWith( SET_AMOUNT, '2399' );
 			expect( commit ).toBeCalledWith( SET_AMOUNT_VALIDITY, Validity.VALID );
 		} );
@@ -202,30 +196,24 @@ describe( 'Payment', () => {
 		it( 'does not commit empty payment type', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const payload = {
-				initialValues: {
-					amount: '123',
-					type: '',
-					paymentIntervalInMonths: 12,
-				},
-				maxAmount: 100000,
+			const initialPayment = {
+				amount: '123',
+				type: '',
+				paymentIntervalInMonths: 12,
 			};
-			action( { commit }, payload );
+			action( { commit }, initialPayment );
 			expect( commit ).not.toBeCalledWith( SET_TYPE, '' );
 		} );
 
 		it( 'commits payment type and set it to valid when payment type is set', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const payload = {
-				initialValues: {
-					amount: '2399',
-					type: 'BEZ',
-					paymentIntervalInMonths: 12,
-				},
-				maxAmount: 100000,
+			const initialPayment = {
+				amount: '2399',
+				type: 'BEZ',
+				paymentIntervalInMonths: 12,
 			};
-			action( { commit }, payload );
+			action( { commit }, initialPayment );
 			expect( commit ).toBeCalledWith( SET_TYPE, 'BEZ' );
 			expect( commit ).toBeCalledWith( SET_TYPE_VALIDITY, Validity.VALID );
 		} );
@@ -233,15 +221,12 @@ describe( 'Payment', () => {
 		it( 'commits interval', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const payload = {
-				initialValues: {
-					amount: '2399',
-					type: 'BEZ',
-					paymentIntervalInMonths: '12',
-				},
-				maxAmount: 100000,
+			const initialPayment = {
+				amount: '2399',
+				type: 'BEZ',
+				paymentIntervalInMonths: '12',
 			};
-			action( { commit }, payload );
+			action( { commit }, initialPayment );
 			expect( commit ).toBeCalledWith( SET_INTERVAL, '12' );
 		} );
 
@@ -250,23 +235,20 @@ describe( 'Payment', () => {
 			{ amount: '0', type: 'BEZ', expectedResolution: false },
 			{ amount: '1234', type: '', expectedResolution: false },
 			{ amount: '4200', type: 'PPL', expectedResolution: true },
-			{ amount: '100000', type: 'PPL', expectedResolution: false },
+			{ amount: '10000000', type: 'PPL', expectedResolution: false },
 		];
 
 		describe.each( paymentAndAmountCases )( 'with initial payment data', ( data: any ) => {
 			it( `whose amount is ${ data.amount } and type is ${ data.type } should be ${ data.expectedResolution }`, () => {
 				const commit = jest.fn();
 				const action = actions[ initializePayment ] as any;
-				const payload = {
-					initialValues: {
-						amount: data.amount,
-						type: data.type,
-						paymentIntervalInMonths: '0',
-					},
-					maxAmount: 100000,
+				const initialValues = {
+					amount: data.amount,
+					type: data.type,
+					paymentIntervalInMonths: '0',
 				};
 				expect.assertions( 1 );
-				return expect( action( { commit }, payload ) ).resolves.toBe( data.expectedResolution );
+				return expect( action( { commit }, initialValues ) ).resolves.toBe( data.expectedResolution );
 			} );
 		} );
 	} );
@@ -344,84 +326,22 @@ describe( 'Payment', () => {
 
 		it( 'commits to mutation [SET_AMOUNT]', () => {
 			const context = {
-					commit: jest.fn(),
-				},
-				payload = {
-					amountValue: '2500',
-					validateAmountUrl: '/validation-amount-url',
-				};
-			const action = actions.setAmount as any;
-			const actionResult = action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith(
-					'SET_AMOUNT',
-					payload.amountValue
-				);
-			} );
+				commit: jest.fn(),
+			};
+			const payload = '2500';
+			actions[ setAmount ]( context, '2500' );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
-				},
-			} );
-
-			return actionResult;
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT', payload );
 		} );
 
-		it( 'sends a post request for amount validation', () => {
+		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on validation', () => {
 			const context = {
-					commit: jest.fn(),
-				},
-				payload = {
-					amountValue: '2500',
-					validateAmountUrl: '/validation-amount-url',
-				},
-				bodyFormData = new FormData();
-			bodyFormData.append( 'amount', payload.amountValue );
+				commit: jest.fn(),
+			};
 
-			const action = actions.setAmount as any;
-			const actionResult = action( context, payload ).then( function () {
-				expect( mockAxios.post ).toHaveBeenCalledWith(
-					payload.validateAmountUrl,
-					bodyFormData,
-					{ headers: { 'Content-Type': 'multipart/form-data' } }
-				);
-			} );
+			actions[ setAmount ]( context, '2500' );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
-				},
-			} );
-
-			return actionResult;
-		} );
-
-		it( 'commits to mutation [SET_AMOUNT_VALIDITY] and [SET_IS_VALIDATING] on server side validation', () => {
-			const context = {
-					commit: jest.fn(),
-				},
-				payload = {
-					amountValue: '2500',
-					validateAmountUrl: '/validation-amount-url',
-				},
-				action = actions.setAmount as any;
-
-			const actionResult = action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
-			} );
-
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
-				},
-			} );
-
-			return actionResult;
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
 		} );
 	} );
 

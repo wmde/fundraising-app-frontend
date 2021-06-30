@@ -45,17 +45,12 @@ describe( 'AddressPage', () => {
 	it( 'sends directDebit property value "true" if payment type is direct debit', async () => {
 		expect( wrapper.findComponent( Address ).vm.$options.propsData.isDirectDebit ).toBe( false );
 
-		const payload = {
-			initialValues: {
-				amount: '100',
-				type: 'BEZ',
-				paymentIntervalInMonths: '0',
-				isCustomAmount: false,
-			},
-			maxAmount: 100000,
-		};
-
-		return store.dispatch( action( NS_PAYMENT, initializePayment ), payload ).then( () => {
+		return store.dispatch( action( NS_PAYMENT, initializePayment ), {
+			amount: '100',
+			type: 'BEZ',
+			paymentIntervalInMonths: '0',
+			isCustomAmount: false,
+		} ).then( () => {
 			expect( wrapper.findComponent( Address ).vm.$options.propsData.isDirectDebit ).toBe( true );
 		} );
 
@@ -64,17 +59,12 @@ describe( 'AddressPage', () => {
 	it( 'sends directDebit property value "false" if payment type is not direct debit', async () => {
 		expect( wrapper.findComponent( Address ).vm.$options.propsData.isDirectDebit ).toBe( false );
 
-		const payload = {
-			initialValues: {
-				amount: '100',
-				type: 'UEB',
-				paymentIntervalInMonths: '0',
-				isCustomAmount: false,
-			},
-			maxAmount: 100000,
-		};
-
-		return store.dispatch( action( NS_PAYMENT, initializePayment ), payload ).then( () => {
+		return store.dispatch( action( NS_PAYMENT, initializePayment ), {
+			amount: '100',
+			type: 'UEB',
+			paymentIntervalInMonths: '0',
+			isCustomAmount: false,
+		} ).then( () => {
 			expect( wrapper.findComponent( Address ).vm.$options.propsData.isDirectDebit ).toBe( false );
 		} );
 
