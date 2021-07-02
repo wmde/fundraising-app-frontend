@@ -15,8 +15,8 @@ import {
 	SET_TYPE_VALIDITY,
 } from '@/store/payment/mutationTypes';
 import each from 'jest-each';
-import mockAxios from 'jest-mock-axios';
 import { DonationPayment } from '@/store/payment/types';
+import { ActionContext } from 'vuex';
 
 function newMinimalStore( overrides: Object ): DonationPayment {
 	return Object.assign(
@@ -320,28 +320,42 @@ describe( 'Payment', () => {
 
 	describe( 'Actions/setAmount', () => {
 
-		afterEach( function () {
-			mockAxios.reset();
+		const newMockActionContext = (): ActionContext<DonationPayment, any> => ( {
+			commit: jest.fn(),
+			dispatch: jest.fn(),
+			getters: undefined,
+			rootGetters: undefined,
+			rootState: undefined,
+			state: {
+				initialized: true,
+				isValidating: false,
+				validity: {},
+				values: {},
+			},
 		} );
 
 		it( 'commits to mutation [SET_AMOUNT]', () => {
-			const context = {
-				commit: jest.fn(),
-			};
+			const context = newMockActionContext();
 			const payload = '2500';
 			actions[ setAmount ]( context, '2500' );
 
 			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT', payload );
 		} );
 
-		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on validation', () => {
-			const context = {
-				commit: jest.fn(),
-			};
+		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on successful validation', () => {
+			const context = newMockActionContext();
 
 			actions[ setAmount ]( context, '2500' );
 
 			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
+		} );
+
+		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on failed validation', () => {
+			const context = newMockActionContext();
+
+			actions[ setAmount ]( context, '999999999999' );
+
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.INVALID );
 		} );
 	} );
 
