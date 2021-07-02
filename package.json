@@ -58,7 +58,7 @@
     "jest-mock-axios": "^4.3.0",
     "jest-serializer-vue": "^2.0.2",
     "jest-transform-stub": "^2.0.0",
-    "mini-css-extract-plugin": "^1.5.0",
+    "mini-css-extract-plugin": "^2.0.0",
     "moxios": "^0.4.0",
     "regenerator-runtime": "^0.13.7",
     "sass": "^1.32.8",
