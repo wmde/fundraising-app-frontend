@@ -31,6 +31,7 @@ describe( 'DonationForm', () => {
 			store: new Vuex.Store( {} ),
 			mocks: {
 				$t: jest.fn(),
+				$n: () => {},
 			},
 			stubs: {
 				PaymentPage: { template: '<div class="i-am-payment" />' },

@@ -1,5 +1,5 @@
 <template>
-	<div class="app-container" :class="bucketClasses">
+	<div class="app-container" :class="bucketClasses" :id="`locale-${locale}`">
 		<header>
 			<Header :page-identifier="pageIdentifier" :assets-path="assetsPath"></Header>
 		</header>
@@ -65,6 +65,9 @@ export default Vue.extend( {
 		bucketClasses: {
 			type: Array,
 			default: () => [],
+		},
+		locale: {
+			type: String,
 		},
 	},
 } );

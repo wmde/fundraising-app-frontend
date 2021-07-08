@@ -36,18 +36,14 @@ export default defineComponent( {
 			type: Array as PropType<Array<CompanyInterface>>,
 			required: true,
 		},
-		locale: {
-			type: String,
-			required: true,
-		},
 		citationLabel: {
 			type: String,
 			required: true,
 		},
 	},
 	setup( props ) {
-		const highestBudget = computed( () => props.companies.reduce( ( highestBudget: number, company: CompanyInterface ) =>
-			Math.max( highestBudget, company.budget ), 0 )
+		const highestBudget = computed( () => props.companies.reduce( ( budget: number, company: CompanyInterface ) =>
+			Math.max( budget, company.budget ), 0 )
 		);
 
 		return {

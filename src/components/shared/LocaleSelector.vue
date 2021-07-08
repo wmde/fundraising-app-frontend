@@ -13,9 +13,7 @@
 import Vue from 'vue';
 import { ref } from '@vue/composition-api';
 import Cookies from 'js-cookie';
-
-export const COOKIE_NAME = 'locale';
-export const DEFAULT_LOCALE = 'de_DE';
+import { COOKIE_NAME, DEFAULT_LOCALE } from '@/locales';
 
 export default Vue.extend( {
 	name: 'LocaleSelector',

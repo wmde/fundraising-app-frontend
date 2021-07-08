@@ -41,7 +41,7 @@ export default {
 				return '';
 			}
 			return this.$t( paymentString, {
-				formattedAmount: this.payment.amount.toFixed( 2 ).replace( '.', ',' ),
+				formattedAmount: this.$n( this.payment.amount, { key: 'currency', currencyDisplay: 'name' } ),
 			} );
 		},
 	},

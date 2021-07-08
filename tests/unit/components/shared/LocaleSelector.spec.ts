@@ -1,8 +1,9 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import Buefy from 'buefy';
 import CompositionAPI from '@vue/composition-api';
-import LocaleSelector, { COOKIE_NAME, DEFAULT_LOCALE } from '@/components/shared/LocaleSelector.vue';
+import LocaleSelector from '@/components/shared/LocaleSelector.vue';
 import Cookies from 'js-cookie';
+import { COOKIE_NAME, DEFAULT_LOCALE } from '@/locales';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );

@@ -5,7 +5,7 @@ import { FeatureTogglePlugin } from '@/FeatureToggle';
 const localVue = createLocalVue();
 localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.confirmation_page_layout.old_layout' ] } );
 
-describe( 'DonationForm', () => {
+describe( 'DonationSummary', () => {
 	const payment = {
 		paymentType: 'BEZ',
 		interval: 12,
@@ -50,7 +50,10 @@ describe( 'DonationForm', () => {
 				countries,
 				languageItem: 'language_item',
 			},
-			mocks: { $t },
+			mocks: {
+				$t,
+				$n: () => {},
+			},
 		} );
 		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_person' );
 		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
@@ -76,7 +79,10 @@ describe( 'DonationForm', () => {
 				countries,
 				languageItem: 'language_item',
 			},
-			mocks: { $t },
+			mocks: {
+				$t,
+				$n: () => {},
+			},
 		} );
 		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_company' );
 		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
@@ -86,6 +92,7 @@ describe( 'DonationForm', () => {
 
 	it( 'translates payment information', () => {
 		const $t = jest.fn( x => x );
+		const $n = jest.fn( x => x );
 		mount( DonationSummary, {
 			localVue,
 			propsData: {
@@ -95,12 +102,15 @@ describe( 'DonationForm', () => {
 				countries,
 				languageItem: 'language_item',
 			},
-			mocks: { $t },
+			mocks: {
+				$t,
+				$n,
+			},
 		} );
 		expect( $t ).toBeCalledWith( 'BEZ' );
 		expect( $t ).toBeCalledWith( 'donation_form_payment_interval_12' );
+		expect( $n ).toBeCalledWith( 14.99, expect.anything() );
 		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
-		expect( params.formattedAmount ).toBe( '14,99' );
 		expect( params.interval ).toBe( 'donation_form_payment_interval_12' );
 		expect( params.paymentType ).toBe( 'BEZ' );
 	} );

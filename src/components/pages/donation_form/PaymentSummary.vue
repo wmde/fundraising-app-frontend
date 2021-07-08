@@ -18,7 +18,7 @@ export default Vue.extend( {
 	methods: {
 		getSummary: function () {
 			const interval = this.$t( 'donation_form_payment_interval_' + this.$props.interval );
-			const formattedAmount = this.$props.amount.toFixed( 2 ).replace( '.', ',' );
+			const formattedAmount = this.$n( this.$props.amount, { key: 'currency', currencyDisplay: 'name' } );
 			const paymentType = this.$t( this.$props.paymentType );
 			return this.$t( 'donation_form_payment_summary', { interval: interval, formattedAmount, paymentType } );
 		},
