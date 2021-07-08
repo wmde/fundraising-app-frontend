@@ -2,13 +2,15 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import AddressType from '@/components/pages/donation_form/AddressType.vue';
 import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
+import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
+localVue.use( CompositionAPI );
 
 describe( 'AddressType.vue', () => {
 
-	it( 'emits field changed event on blur', async () => {
+	it( 'emits field changed event when selecting email or anonymous', async () => {
 		const wrapper = mount( AddressType, {
 				localVue,
 				mocks: {
@@ -18,39 +20,56 @@ describe( 'AddressType.vue', () => {
 					disabledAddressTypes: [],
 				},
 			} ),
-			event = 'address-type',
-			company = wrapper.find( '#company input' );
-		await company.trigger( 'change' );
-		const person = wrapper.find( '#personal input' );
-		await person.trigger( 'change' );
-		const anon = wrapper.find( '#anonymous input' );
+			event = 'address-type';
+		const email = wrapper.find( 'input[value=email]' );
+		await email.trigger( 'change' );
+		const anon = wrapper.find( 'input[value=anonymous]' );
 		await anon.trigger( 'change' );
-		expect( wrapper.emitted( event ) ).toHaveLength( 3 );
-		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ AddressTypeModel.COMPANY ] );
-		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ AddressTypeModel.PERSON ] );
-		expect( wrapper.emitted( event )![ 2 ] ).toEqual( [ AddressTypeModel.ANON ] );
+
+		expect( wrapper.emitted( event ) ).toHaveLength( 2 );
+		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ AddressTypeModel.EMAIL ] );
+		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ AddressTypeModel.ANON ] );
 	} );
 
-	it( 'disables address type if supplied via disabledAddressTypes property', async () => {
+	it( 'emits field changed event when selecting private or company in a two-step process', async () => {
 		const wrapper = mount( AddressType, {
 				localVue,
 				mocks: {
 					$t: () => { },
 				},
 				propsData: {
-					disabledAddressTypes: [ AddressTypeModel.ANON ],
+					disabledAddressTypes: [],
 				},
 			} ),
-			event = 'address-type',
-			company = wrapper.find( '#company input' );
-		await company.trigger( 'change' );
-		const anon = wrapper.find( '#anonymous input' );
-		await anon.trigger( 'change' );
-		const person = wrapper.find( '#personal input' );
+			event = 'address-type';
+		const fullAddress = wrapper.find( 'input[value=full]' );
+		await fullAddress.trigger( 'change' );
+		const person = wrapper.find( 'input[value=person]' );
 		await person.trigger( 'change' );
-		expect( wrapper.emitted( event ) ).toHaveLength( 2 );
-		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ AddressTypeModel.COMPANY ] );
+		const company = wrapper.find( 'input[value=company]' );
+		await company.trigger( 'change' );
+
+		expect( wrapper.emitted( event ) ).toHaveLength( 3 );
+		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ AddressTypeModel.UNSET ] );
 		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ AddressTypeModel.PERSON ] );
+		expect( wrapper.emitted( event )![ 2 ] ).toEqual( [ AddressTypeModel.COMPANY ] );
+	} );
+
+	it( 'disables address type if supplied via disabledAddressTypes property', async () => {
+		const wrapper = mount( AddressType, {
+			localVue,
+			mocks: {
+				$t: () => { },
+			},
+			propsData: {
+				disabledAddressTypes: [ AddressTypeModel.ANON ],
+			},
+		} );
+		const anon = wrapper.find( 'input[value=anonymous]' );
+		const email = wrapper.find( 'input[value=email]' );
+
+		expect( anon.attributes( 'disabled' ) ).toBe( 'disabled' );
+		expect( email.attributes( 'disabled' ) ).toBe( undefined );
 	} );
 
 	it( 'renders hint only if payment is direct debit', () => {

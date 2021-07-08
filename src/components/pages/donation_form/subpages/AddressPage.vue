@@ -12,30 +12,18 @@
 						:interval="paymentSummary.interval"
 						v-on:previous-page="previousPage">
 		</payment-summary>
-		<feature-toggle>
-			<provisional-choice-address-fields
-					slot="campaigns.address_provision_options.provisional_address_options"
-					:validate-address-url="validateAddressUrl"
-					:validate-email-url="validateEmailUrl"
-					:validate-bank-data-url="validateBankDataUrl"
-					:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
-					:countries="countries"
-					:is-direct-debit="isDirectDebit"
-					:address-validation-patterns="addressValidationPatterns"
-					ref="address">
-			</provisional-choice-address-fields>
-			<address-fields
-					slot="campaigns.address_provision_options.old_address_type_options"
-					:validate-address-url="validateAddressUrl"
-					:validate-email-url="validateEmailUrl"
-					:validate-bank-data-url="validateBankDataUrl"
-					:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
-					:countries="countries"
-					:is-direct-debit="isDirectDebit"
-					:address-validation-patterns="addressValidationPatterns"
-					ref="address">
-			</address-fields>
-		</feature-toggle>
+
+		<address-fields
+				:validate-address-url="validateAddressUrl"
+				:validate-email-url="validateEmailUrl"
+				:validate-bank-data-url="validateBankDataUrl"
+				:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
+				:countries="countries"
+				:is-direct-debit="isDirectDebit"
+				:address-validation-patterns="addressValidationPatterns"
+				ref="address">
+		</address-fields>
+
 			<div class="summary-wrapper has-margin-top-18 has-outside-border">
 				<donation-summary
 					:payment="paymentSummary"
@@ -75,7 +63,6 @@ import Vue from 'vue';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
 import AddressFields from '@/components/pages/donation_form/Address.vue';
-import ProvisionalChoiceAddressFields from '@/components/pages/donation_form/ProvisionalChoiceAddress.vue';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
 import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
 import DonationSummary from '@/components/shared/DonationSummary.vue';
@@ -93,7 +80,6 @@ export default Vue.extend( {
 	name: 'AddressPage',
 	components: {
 		AddressFields,
-		ProvisionalChoiceAddressFields,
 		SubmitValues,
 		PaymentSummary,
 		DonationSummary,

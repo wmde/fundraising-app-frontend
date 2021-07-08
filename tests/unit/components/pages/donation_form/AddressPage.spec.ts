@@ -18,7 +18,6 @@ localVue.use( CompositionAPI );
 
 localVue.use( FeatureTogglePlugin, { activeFeatures: [
 	'campaigns.address_type.preselection',
-	'campaigns.address_provision_options.old_address_type_options',
 ] } );
 
 describe( 'AddressPage', () => {
