@@ -1,7 +1,6 @@
 import { AddressFormData, AddressValidity, ValidationResult } from '@/view_models/Address';
 import { computed, reactive } from '@vue/composition-api';
 import { Validity } from '@/view_models/Validity';
-import { AddressTypeModel, addressTypeName as getAddressTypeName } from '@/view_models/AddressTypeModel';
 import { mergeValidationResults } from '@/merge_validation_results';
 import {
 	setAddressField,
@@ -9,7 +8,7 @@ import {
 	validateEmail,
 	validateAddressType,
 	setReceiptOptOut,
-	setAddressType as setAddressTypeActionType, validateAddressField,
+	validateAddressField,
 } from '@/store/address/actionTypes';
 import { NS_ADDRESS } from '@/store/namespaces';
 import { action } from '@/store/util';
@@ -111,18 +110,7 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 			}, ( {} as AddressValidity ) );
 		}
 	);
-	const disabledAddressTypes = computed(
-		(): Array<AddressTypeModel> => {
-			return store.getters[ 'payment/isDirectDebitPayment' ] ? [ AddressTypeModel.EMAIL, AddressTypeModel.ANON ] : [];
-		}
-	);
-	const addressType = computed( () => store.getters[ 'address/addressType' ] );
-	const addressTypeIsNotAnon = computed( () => store.getters[ 'address/addressTypeIsNotAnon' ] );
-	const addressTypeIsInvalid = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 
-	const addressTypeName = computed(
-		(): string => getAddressTypeName( store.state.address.addressType )
-	);
 	const receiptNeeded = computed(
 		(): Boolean => !store.state.address.receiptOptOut
 	);
@@ -153,10 +141,6 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		store.dispatch( action( NS_ADDRESS, setReceiptOptOut ), optedOut );
 	}
 
-	function setAddressType( newAddressType: AddressTypeModel ): void {
-		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), newAddressType );
-	}
-
 	/**
 	 * Call this in onMounted function to pre-fill form with store values
 	 */
@@ -173,9 +157,6 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 	return {
 		formData,
 		fieldErrors,
-		disabledAddressTypes,
-		addressType, addressTypeIsNotAnon, addressTypeIsInvalid,
-		addressTypeName,
 		receiptNeeded,
 
 		initializeDataFromStore,
@@ -183,6 +164,5 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		onFieldChange,
 		onAutofill,
 		setReceiptOptedOut,
-		setAddressType,
 	};
 };

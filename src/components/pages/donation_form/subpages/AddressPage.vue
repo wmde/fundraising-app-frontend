@@ -13,21 +13,41 @@
 						v-on:previous-page="previousPage">
 		</payment-summary>
 
+		<payment-bank-data
+				v-if="isDirectDebit"
+				:validateBankDataUrl="validateBankDataUrl"
+				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
+		/>
+
+		<address-type
+				v-on:address-type="setAddressType( $event )"
+				v-on:set-full-selected="setFullSelected"
+				:disabledAddressTypes="disabledAddressTypes"
+				:is-direct-debit="isDirectDebit"
+				:initial-address-type="addressTypeName"
+				:is-full-selected="isFullSelected"
+		/>
+		<span
+				v-if="addressTypeIsInvalid"
+				class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
+		</span>
+		<div
+				class="has-margin-top-18"
+				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
+		</div>
+
 		<address-fields
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
-				:validate-bank-data-url="validateBankDataUrl"
-				:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
 				:countries="countries"
-				:is-direct-debit="isDirectDebit"
 				:address-validation-patterns="addressValidationPatterns"
 				ref="address">
 		</address-fields>
 
-			<div class="summary-wrapper has-margin-top-18 has-outside-border">
+		<div class="summary-wrapper has-margin-top-18 has-outside-border">
 				<donation-summary
 					:payment="paymentSummary"
-					:address-type="addressType"
+					:address-type="addressTypeName"
 					:address="addressSummary"
 					:countries="countries"
 					:language-item="inlineSummaryLanguageItem"
@@ -60,10 +80,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
+import AddressType from '@/components/pages/donation_form/AddressType.vue';
 import AddressFields from '@/components/pages/donation_form/Address.vue';
+import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
+import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
 import DonationSummary from '@/components/shared/DonationSummary.vue';
 import Trust from '@/components/shared/Trust.vue';
@@ -75,12 +98,17 @@ import { markEmptyValuesAsInvalid } from '@/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import { discardInitialization } from '@/store/payment/actionTypes';
 import { trackFormSubmission } from '@/tracking';
+import { useAddressTypeFunctions } from '@/components/pages/donation_form/AddressTypeFunctions';
+import { ref } from '@vue/composition-api';
 
 export default Vue.extend( {
 	name: 'AddressPage',
 	components: {
+		AutofillHandler,
 		AddressFields,
+		AddressType,
 		SubmitValues,
+		PaymentBankData,
 		PaymentSummary,
 		DonationSummary,
 		Trust,
@@ -95,6 +123,32 @@ export default Vue.extend( {
 		trackingData: Object as () => TrackingData,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
+	setup( props : any, { root: { $store } } ) {
+		const isFullSelected = ref( false );
+		const setFullSelected = ( selected: boolean ) => {
+			isFullSelected.value = selected;
+		};
+		const {
+			disabledAddressTypes,
+			addressType,
+			addressTypeIsNotAnon,
+			addressTypeIsInvalid,
+			addressTypeName,
+			setAddressType,
+		} = useAddressTypeFunctions( $store );
+
+		return {
+			isFullSelected,
+			disabledAddressTypes,
+			addressType,
+			addressTypeIsNotAnon,
+			addressTypeIsInvalid,
+			addressTypeName,
+
+			setAddressType,
+			setFullSelected,
+		};
+	},
 	computed: {
 		paymentSummary: {
 			get(): object {
@@ -104,11 +158,6 @@ export default Vue.extend( {
 					amount: payment.amount / 100,
 					paymentType: payment.type,
 				};
-			},
-		},
-		addressType: {
-			get(): string {
-				return addressTypeName( this.$store.state[ NS_ADDRESS ].addressType );
 			},
 		},
 		addressSummary: {

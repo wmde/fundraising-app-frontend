@@ -1,22 +1,5 @@
 <template>
 	<div class="address-section">
-		<AutofillHandler @autofill="onAutofill" >
-			<payment-bank-data v-if="isDirectDebit" :validateBankDataUrl="validateBankDataUrl" :validateLegacyBankDataUrl="validateLegacyBankDataUrl"></payment-bank-data>
-		</AutofillHandler>
-		<address-type
-				v-on:address-type="setAddressType( $event )"
-				v-on:set-full-selected="setFullSelected"
-				:disabledAddressTypes="disabledAddressTypes"
-				:is-direct-debit="isDirectDebit"
-				:initial-address-type="addressTypeName"/>
-		<span
-				v-if="addressTypeIsInvalid"
-				class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
-		</span>
-		<div
-				class="has-margin-top-18"
-				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
-		</div>
 		<AutofillHandler @autofill="onAutofill">
 			<name
 					v-if="showName"
@@ -50,14 +33,12 @@
 import Vue from 'vue';
 import { computed, onMounted, PropType, ref } from '@vue/composition-api';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
-import AddressType from '@/components/pages/donation_form/AddressType.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
 import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
 import Email from '@/components/shared/Email.vue';
 import NewsletterOptIn from '@/components/pages/donation_form/NewsletterOptIn.vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
 import { useAddressFunctions } from './AddressFunctions';
@@ -67,48 +48,37 @@ export default Vue.extend( {
 	components: {
 		Name,
 		Postal,
-		AddressType,
 		ReceiptOptOut,
 		Email,
 		NewsletterOptIn,
-		PaymentBankData,
 		AutofillHandler,
 	},
 	props: {
 		validateAddressUrl: String,
 		validateEmailUrl: String,
-		validateBankDataUrl: String,
-		validateLegacyBankDataUrl: String,
 		countries: Array as PropType<Array<Country>>,
-		isDirectDebit: Boolean,
 		addressValidationPatterns: Object as PropType<AddressValidation>,
+		isFullSelected: Boolean,
 	},
 	setup( props : any, { root: { $store } } ) {
 		const addressFunctions = useAddressFunctions( props, $store );
-		const isFullSelected = ref( false );
 
 		const showPostal = computed( () => {
-			return isFullSelected.value || [ AddressTypeModel.COMPANY, AddressTypeModel.PERSON ].includes( $store.state.address.addressType );
+			return props.isFullSelected || [ AddressTypeModel.COMPANY, AddressTypeModel.PERSON ].includes( $store.state.address.addressType );
 		} );
 		const showEmail = computed( () => {
-			return isFullSelected.value || [ AddressTypeModel.EMAIL, AddressTypeModel.COMPANY, AddressTypeModel.PERSON ].includes( $store.state.address.addressType );
+			return props.isFullSelected || [ AddressTypeModel.EMAIL, AddressTypeModel.COMPANY, AddressTypeModel.PERSON ].includes( $store.state.address.addressType );
 		} );
 		const showName = computed( () => {
-			return isFullSelected.value || [ AddressTypeModel.EMAIL, AddressTypeModel.COMPANY, AddressTypeModel.PERSON ].includes( $store.state.address.addressType );
+			return props.isFullSelected || [ AddressTypeModel.EMAIL, AddressTypeModel.COMPANY, AddressTypeModel.PERSON ].includes( $store.state.address.addressType );
 		} );
 
 		onMounted( addressFunctions.initializeDataFromStore );
-
-		const setFullSelected = ( selected: boolean ) => {
-			isFullSelected.value = selected;
-		};
 
 		return { ...addressFunctions,
 			showName,
 			showPostal,
 			showEmail,
-			isFullSelected,
-			setFullSelected,
 		};
 	},
 } );
