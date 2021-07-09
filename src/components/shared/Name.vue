@@ -1,6 +1,6 @@
 <template>
 <div class="name-section">
-	<div v-if="addressType === AddressTypeModel.PERSON || addressType === AddressTypeModel.EMAIL || addressType === AddressTypeModel.UNSET">
+	<div v-if="showPersonalFields">
 		<fieldset class="form-input form-input__horizontal-option-list">
 			<legend class="subtitle">{{ $t( 'donation_form_salutation_label' ) }}</legend>
 			<div class="radio-container">
@@ -66,7 +66,7 @@
 			<span v-if="lastNameValueEqualsPlaceholder" class="help">{{ $t( 'donation_form_lastname_placeholder_warning' ) }}</span>
 		</div>
 	</div>
-	<div v-else-if="addressType === AddressTypeModel.COMPANY" v-bind:class="['form-input', { 'is-invalid': showError.companyName }]">
+	<div v-if="showCompanyFields" v-bind:class="['form-input', { 'is-invalid': showError.companyName }]">
 		<label for="company-name" class="subtitle">{{ $t( 'donation_form_companyname_label' ) }}</label>
 		<b-field :type="{ 'is-danger': showError.companyName }">
 			<b-input type="text"
@@ -86,6 +86,7 @@
 import Vue from 'vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressValidity, AddressFormData } from '@/view_models/Address';
+import { computed } from '@vue/composition-api';
 
 export default Vue.extend( {
 	name: 'name',
@@ -94,15 +95,23 @@ export default Vue.extend( {
 		formData: Object as () => AddressFormData,
 		addressType: Number as () => AddressTypeModel,
 	},
-	computed: {
-		AddressTypeModel: {
-			get: function () {
-				return AddressTypeModel;
-			},
-		},
-		lastNameValueEqualsPlaceholder(): boolean {
-			return this.$props.formData.lastName.value === this.$t( 'donation_form_lastname_placeholder' );
-		},
+	setup( props ) {
+		const showPersonalFields = computed( () => props.addressType === AddressTypeModel.PERSON ||
+				props.addressType === AddressTypeModel.EMAIL ||
+				props.addressType === AddressTypeModel.UNSET );
+		const showCompanyFields = computed( () => props.addressType === AddressTypeModel.COMPANY );
+		const lastNameValueEqualsPlaceholder = computed( () => {
+			// This functionality was broken before conversion to composition API and is difficult
+			// to implement without explicit props, we're waiting for
+			// a decision in https://phabricator.wikimedia.org/T286540
+			return false;
+		} );
+
+		return {
+			lastNameValueEqualsPlaceholder,
+			showCompanyFields,
+			showPersonalFields,
+		};
 	},
 } );
 </script>
