@@ -57,10 +57,6 @@ import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
 import Email from '@/components/shared/Email.vue';
 import NewsletterOptIn from '@/components/pages/donation_form/NewsletterOptIn.vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { Validity } from '@/view_models/Validity';
-import { NS_ADDRESS } from '@/store/namespaces';
-import { validateAddressField } from '@/store/address/actionTypes';
-import { action } from '@/store/util';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
@@ -101,15 +97,7 @@ export default Vue.extend( {
 			return isFullSelected.value || [ AddressTypeModel.EMAIL, AddressTypeModel.COMPANY, AddressTypeModel.PERSON ].includes( $store.state.address.addressType );
 		} );
 
-		onMounted( () => {
-			Object.entries( addressFunctions.formData ).forEach( ( formItem ) => {
-				const key: string = formItem[ 0 ];
-				addressFunctions.formData[ key ].value = $store.state.address.values[ key ];
-				if ( $store.state[ NS_ADDRESS ].validity[ key ] === Validity.RESTORED ) {
-					$store.dispatch( action( NS_ADDRESS, validateAddressField ), addressFunctions.formData[ key ] );
-				}
-			} );
-		} );
+		onMounted( addressFunctions.initializeDataFromStore );
 
 		const setFullSelected = ( selected: boolean ) => {
 			isFullSelected.value = selected;

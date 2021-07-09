@@ -9,7 +9,7 @@ import {
 	validateEmail,
 	validateAddressType,
 	setReceiptOptOut,
-	setAddressType as setAddressTypeActionType,
+	setAddressType as setAddressTypeActionType, validateAddressField,
 } from '@/store/address/actionTypes';
 import { NS_ADDRESS } from '@/store/namespaces';
 import { action } from '@/store/util';
@@ -157,6 +157,19 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), newAddressType );
 	}
 
+	/**
+	 * Call this in onMounted function to pre-fill form with store values
+	 */
+	function initializeDataFromStore() {
+		Object.entries( formData ).forEach( ( formItem ) => {
+			const key: string = formItem[ 0 ];
+			formData[ key ].value = store.state.address.values[ key ];
+			if ( store.state[ NS_ADDRESS ].validity[ key ] === Validity.RESTORED ) {
+				store.dispatch( action( NS_ADDRESS, validateAddressField ), formData[ key ] );
+			}
+		} );
+	}
+
 	return {
 		formData,
 		fieldErrors,
@@ -165,6 +178,7 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		addressTypeName,
 		receiptNeeded,
 
+		initializeDataFromStore,
 		validateForm,
 		onFieldChange,
 		onAutofill,
