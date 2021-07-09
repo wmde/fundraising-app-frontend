@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { computed, onMounted, PropType, ref } from '@vue/composition-api';
+import { computed, onMounted, PropType } from '@vue/composition-api';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
@@ -59,6 +59,7 @@ export default Vue.extend( {
 		countries: Array as PropType<Array<Country>>,
 		addressValidationPatterns: Object as PropType<AddressValidation>,
 		isFullSelected: Boolean,
+		addressType: Number,
 	},
 	setup( props : any, { root: { $store } } ) {
 		const addressFunctions = useAddressFunctions( props, $store );

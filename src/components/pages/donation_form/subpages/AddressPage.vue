@@ -25,7 +25,6 @@
 				:disabledAddressTypes="disabledAddressTypes"
 				:is-direct-debit="isDirectDebit"
 				:initial-address-type="addressTypeName"
-				:is-full-selected="isFullSelected"
 		/>
 		<span
 				v-if="addressTypeIsInvalid"
@@ -41,6 +40,8 @@
 				:validate-email-url="validateEmailUrl"
 				:countries="countries"
 				:address-validation-patterns="addressValidationPatterns"
+				:is-full-selected="isFullSelected"
+				:address-type="addressType"
 				ref="address">
 		</address-fields>
 
@@ -99,7 +100,7 @@ import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import { discardInitialization } from '@/store/payment/actionTypes';
 import { trackFormSubmission } from '@/tracking';
 import { useAddressTypeFunctions } from '@/components/pages/donation_form/AddressTypeFunctions';
-import { ref } from '@vue/composition-api';
+import { computed, ref } from '@vue/composition-api';
 
 export default Vue.extend( {
 	name: 'AddressPage',
@@ -123,11 +124,12 @@ export default Vue.extend( {
 		trackingData: Object as () => TrackingData,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
-	setup( props : any, { root: { $store } } ) {
+	setup( props : any, { root: { $store, $refs }, emit } ) {
 		const isFullSelected = ref( false );
 		const setFullSelected = ( selected: boolean ) => {
 			isFullSelected.value = selected;
 		};
+
 		const {
 			disabledAddressTypes,
 			addressType,
@@ -137,62 +139,30 @@ export default Vue.extend( {
 			setAddressType,
 		} = useAddressTypeFunctions( $store );
 
-		return {
-			isFullSelected,
-			disabledAddressTypes,
-			addressType,
-			addressTypeIsNotAnon,
-			addressTypeIsInvalid,
-			addressTypeName,
+		// Payment functions
+		const isExternalPayment = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isExternalPayment' ] );
+		const isBankTransferPayment = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isBankTransferPayment' ] );
+		const isDirectDebit = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] );
+		const paymentWasInitialized = computed( (): boolean => $store.state[ NS_PAYMENT ].initialized );
+		const paymentSummary = computed( () => {
+			const payment = $store.state[ NS_PAYMENT ].values;
+			return {
+				interval: payment.interval,
+				amount: payment.amount / 100,
+				paymentType: payment.type,
+			};
+		} );
 
-			setAddressType,
-			setFullSelected,
-		};
-	},
-	computed: {
-		paymentSummary: {
-			get(): object {
-				const payment = this.$store.state[ NS_PAYMENT ].values;
-				return {
-					interval: payment.interval,
-					amount: payment.amount / 100,
-					paymentType: payment.type,
-				};
-			},
-		},
-		addressSummary: {
-			get(): object {
-				return {
-					...this.$store.state[ NS_ADDRESS ].values,
-					fullName: this.$store.getters[ NS_ADDRESS + '/fullName' ],
-					streetAddress: this.$store.state[ NS_ADDRESS ].values.street,
-					postalCode: this.$store.state[ NS_ADDRESS ].values.postcode,
-					country: this.$store.state[ NS_ADDRESS ].values.country,
-				};
-			},
-		},
-		isExternalPayment: {
-			get(): boolean {
-				return this.$store.getters[ NS_PAYMENT + '/isExternalPayment' ];
-			},
-		},
-		isBankTransferPayment: {
-			get(): boolean {
-				return this.$store.getters[ NS_PAYMENT + '/isBankTransferPayment' ];
-			},
-		},
-		paymentWasInitialized: {
-			get(): boolean {
-				return this.$store.state[ NS_PAYMENT ].initialized;
-			},
-		},
-		isDirectDebit: {
-			get: function (): boolean {
-				return this.$store.getters[ 'payment/isDirectDebitPayment' ];
-			},
-		},
-		inlineSummaryLanguageItem(): string {
-			switch ( this.$store.state[ NS_ADDRESS ].addressType ) {
+		// Summary functions
+		const addressSummary = computed( () => ( {
+			...$store.state[ NS_ADDRESS ].values,
+			fullName: $store.getters[ NS_ADDRESS + '/fullName' ],
+			streetAddress: $store.state[ NS_ADDRESS ].values.street,
+			postalCode: $store.state[ NS_ADDRESS ].values.postcode,
+			country: $store.state[ NS_ADDRESS ].values.country,
+		} ) );
+		const inlineSummaryLanguageItem = computed( (): string => {
+			switch ( $store.state[ NS_ADDRESS ].addressType ) {
 				case AddressTypeModel.ANON:
 				case AddressTypeModel.UNSET:
 					return 'donation_confirmation_inline_summary_anonymous';
@@ -203,41 +173,67 @@ export default Vue.extend( {
 				default:
 					return 'donation_confirmation_inline_summary_address';
 			}
-		},
-	},
-	methods: {
-		previousPage() {
-			this.$store.dispatch( action( NS_PAYMENT, discardInitialization ) );
-			this.$emit( 'previous-page' );
-		},
-		submit() {
+		} );
+
+		// Event handlers
+		const previousPage = () => {
+			$store.dispatch( action( NS_PAYMENT, discardInitialization ) );
+			emit( 'previous-page' );
+		};
+		const submitHtmlForm = () => {
+			const formPersonal = $refs.personal as HTMLFormElement;
+			trackFormSubmission( formPersonal );
+			formPersonal.submit();
+		};
+		const scrollToFirstError = () => document.getElementsByClassName( 'help is-danger' )[ 0 ]
+			.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+		const submit = () => {
 			const validationCalls = [
-				( this.$refs.address as any ).validateForm(),
+				( $refs.address as any ).validateForm(),
 			];
-			if ( this.$store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] ) {
-				validationCalls.push( this.$store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
+			if ( isDirectDebit.value ) {
+				validationCalls.push( $store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
 			}
 			Promise.all( validationCalls ).then( () => {
 				// We need to wait for the asynchronous bank data validation, that might still be going on
-				waitForServerValidationToFinish( this.$store ).then( () => {
-					if ( this.$store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
-						if ( this.$store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] &&
-							!this.$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
-							document.getElementsByClassName( 'help is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-							return;
-						}
-						( this as any ).submitDonationForm();
-					} else {
-						document.getElementsByClassName( 'help is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+				waitForServerValidationToFinish( $store ).then( () => {
+					if ( !$store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
+						scrollToFirstError();
+						return;
 					}
+					if ( isDirectDebit.value && !$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+						scrollToFirstError();
+						return;
+					}
+					submitHtmlForm();
 				} );
 			} );
-		},
-		submitDonationForm(): void {
-			const formPersonal = this.$refs.personal as HTMLFormElement;
-			trackFormSubmission( formPersonal );
-			formPersonal.submit();
-		},
+		};
+
+		return {
+			// Accessors
+			addressSummary,
+			addressType,
+			addressTypeIsNotAnon,
+			addressTypeIsInvalid,
+			addressTypeName,
+			disabledAddressTypes,
+			isFullSelected,
+			isBankTransferPayment,
+			isDirectDebit,
+			isExternalPayment,
+			inlineSummaryLanguageItem,
+			paymentWasInitialized,
+			paymentSummary,
+
+			// Mutators
+			setAddressType,
+			setFullSelected,
+
+			// Event handlers
+			previousPage,
+			submit,
+		};
 	},
 } );
 </script>
