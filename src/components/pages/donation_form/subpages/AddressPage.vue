@@ -1,10 +1,5 @@
 <template>
-	<form name="laika-donation-personal-data"
-			id="laika-donation-personal-data"
-			class="address-page"
-			ref="personal"
-			action="/donation/add"
-			method="post">
+	<div class="address-page">
 		<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
 		<payment-summary v-if="paymentWasInitialized"
 						:amount="paymentSummary.amount"
@@ -36,13 +31,11 @@
 		</div>
 
 		<address-fields
-				:validate-address-url="validateAddressUrl"
-				:validate-email-url="validateEmailUrl"
 				:countries="countries"
 				:address-validation-patterns="addressValidationPatterns"
 				:is-full-selected="isFullSelected"
 				:address-type="addressType"
-				ref="address">
+				ref="addressRef">
 		</address-fields>
 
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
@@ -55,7 +48,6 @@
 				/>
 
 				<trust :assets-path="assetsPath" />
-				<submit-values :tracking-data="{}"></submit-values>
 				<div class="columns payment-buttons">
 					<div class="column">
 						<b-button id="previous-btn" class="level-item"
@@ -76,12 +68,12 @@
 				<div class="summary-notice" v-if="isExternalPayment">{{ $t('donation_form_summary_external_payment') }}</div>
 				<div class="summary-notice" v-if="isBankTransferPayment">{{ $t('donation_form_summary_bank_transfer_payment') }}</div>
 		</div>
-	</form>
+	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
+import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
 import AddressType from '@/components/pages/donation_form/AddressType.vue';
 import AddressFields from '@/components/pages/donation_form/Address.vue';
@@ -101,6 +93,7 @@ import { discardInitialization } from '@/store/payment/actionTypes';
 import { trackFormSubmission } from '@/tracking';
 import { useAddressTypeFunctions } from '@/components/pages/donation_form/AddressTypeFunctions';
 import { computed, ref } from '@vue/composition-api';
+import { validateAddress, validateAddressType, validateEmail } from '@/store/address/actionTypes';
 
 export default Vue.extend( {
 	name: 'AddressPage',
@@ -124,7 +117,7 @@ export default Vue.extend( {
 		trackingData: Object as () => TrackingData,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
-	setup( props : any, { root: { $store, $refs }, emit } ) {
+	setup( props : any, { root: { $store }, emit } ) {
 		const isFullSelected = ref( false );
 		const setFullSelected = ( selected: boolean ) => {
 			isFullSelected.value = selected;
@@ -175,21 +168,29 @@ export default Vue.extend( {
 			}
 		} );
 
-		// Event handlers
 		const previousPage = () => {
 			$store.dispatch( action( NS_PAYMENT, discardInitialization ) );
 			emit( 'previous-page' );
 		};
 		const submitHtmlForm = () => {
-			const formPersonal = $refs.personal as HTMLFormElement;
-			trackFormSubmission( formPersonal );
-			formPersonal.submit();
+			const formId = 'laika-donation-personal-data';
+			// const formId = `laika-donation-personal-data-${addressTypeName.value}`;
+			const currentAddressForm : HTMLFormElement = document.getElementById( formId ) as HTMLFormElement;
+			if ( !currentAddressForm ) {
+				// This should only happen if the child component has the wrong ID
+				throw new Error( `Address form with ID "${formId}" not found.` );
+			}
+
+			trackFormSubmission( currentAddressForm );
+			currentAddressForm.submit();
 		};
 		const scrollToFirstError = () => document.getElementsByClassName( 'help is-danger' )[ 0 ]
 			.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
 		const submit = () => {
 			const validationCalls = [
-				( $refs.address as any ).validateForm(),
+				$store.dispatch( action( NS_ADDRESS, validateAddressType ), $store.state.address.addressType ),
+				$store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
+				$store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
 			];
 			if ( isDirectDebit.value ) {
 				validationCalls.push( $store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );

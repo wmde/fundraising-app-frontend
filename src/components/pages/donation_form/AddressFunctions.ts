@@ -1,12 +1,8 @@
-import { AddressFormData, AddressValidity, ValidationResult } from '@/view_models/Address';
+import { AddressFormData, AddressValidity } from '@/view_models/Address';
 import { computed, reactive } from '@vue/composition-api';
 import { Validity } from '@/view_models/Validity';
-import { mergeValidationResults } from '@/merge_validation_results';
 import {
 	setAddressField,
-	validateAddress,
-	validateEmail,
-	validateAddressType,
 	setReceiptOptOut,
 	validateAddressField,
 } from '@/store/address/actionTypes';
@@ -116,14 +112,6 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 	);
 
 	// methods
-	function validateForm(): Promise<ValidationResult> {
-		return Promise.all( [
-			store.dispatch( action( NS_ADDRESS, validateAddressType ), store.state.address.addressType ),
-			store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
-			store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
-		] ).then( mergeValidationResults );
-	}
-
 	function onFieldChange( fieldName: string ): void {
 		store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
 	}
@@ -160,7 +148,6 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		receiptNeeded,
 
 		initializeDataFromStore,
-		validateForm,
 		onFieldChange,
 		onAutofill,
 		setReceiptOptedOut,
