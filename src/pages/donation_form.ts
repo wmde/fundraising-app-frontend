@@ -40,7 +40,8 @@ interface DonationFormModel {
 	countries: Array<Country>,
 	urls: any,
 	userDataKey: string,
-	addressValidationPatterns: AddressValidation
+	addressValidationPatterns: AddressValidation,
+	donationMaximumAmount: number,
 }
 
 const pageData = new PageDataInitializer<DonationFormModel>( '#appdata' );
@@ -88,7 +89,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 					pageIdentifier: PAGE_IDENTIFIER,
 					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 					validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-					validateAmountUrl: pageData.applicationVars.urls.validateDonationAmount,
 					paymentAmounts: pageData.applicationVars.presetAmounts,
 					paymentIntervals: pageData.applicationVars.paymentIntervals,
 					paymentTypes: pageData.applicationVars.paymentTypes,
@@ -103,7 +103,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 						assetsPath: pageData.assetsPath,
 						validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 						validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-						validateAmountUrl: pageData.applicationVars.urls.validateDonationAmount,
 						validateBankDataUrl: pageData.applicationVars.urls.validateIban,
 						validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
 						paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),

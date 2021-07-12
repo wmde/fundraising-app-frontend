@@ -5,7 +5,7 @@ import { Validity } from '@/view_models/Validity';
 import { AmountValidity } from '@/view_models/Payment';
 import {
 	initializePayment,
-	markEmptyAmountAsInvalid,
+	markEmptyAmountAsInvalid, setAmount,
 } from '@/store/payment/actionTypes';
 import {
 	SET_AMOUNT,
@@ -15,8 +15,8 @@ import {
 	SET_TYPE_VALIDITY,
 } from '@/store/payment/mutationTypes';
 import each from 'jest-each';
-import mockAxios from 'jest-mock-axios';
 import { DonationPayment } from '@/store/payment/types';
+import { ActionContext } from 'vuex';
 
 function newMinimalStore( overrides: Object ): DonationPayment {
 	return Object.assign(
@@ -231,25 +231,26 @@ describe( 'Payment', () => {
 		} );
 
 		const paymentAndAmountCases = [
-			[ '', '', false ],
-			[ '0', 'BEZ', false ],
-			[ '1234', '', false ],
-			[ '4200', 'PPL', true ],
+			{ amount: '', type: '', expectedResolution: false },
+			{ amount: '0', type: 'BEZ', expectedResolution: false },
+			{ amount: '1234', type: '', expectedResolution: false },
+			{ amount: '4200', type: 'PPL', expectedResolution: true },
+			{ amount: '10000000', type: 'PPL', expectedResolution: false },
 		];
 
-		each( paymentAndAmountCases ).it( 'resolves true when amount and payment type are set (test index %#)',
-			( amount, type, expectedResolution ) => {
+		describe.each( paymentAndAmountCases )( 'with initial payment data', ( data: any ) => {
+			it( `whose amount is ${ data.amount } and type is ${ data.type } should be ${ data.expectedResolution }`, () => {
 				const commit = jest.fn();
 				const action = actions[ initializePayment ] as any;
-				const initialPayment = {
-					amount,
-					type,
+				const initialValues = {
+					amount: data.amount,
+					type: data.type,
 					paymentIntervalInMonths: '0',
 				};
 				expect.assertions( 1 );
-				return expect( action( { commit }, initialPayment ) ).resolves.toBe( expectedResolution );
+				return expect( action( { commit }, initialValues ) ).resolves.toBe( data.expectedResolution );
 			} );
-
+		} );
 	} );
 
 	describe( 'Actions/markEmptyAmountAsInvalid', () => {
@@ -319,90 +320,42 @@ describe( 'Payment', () => {
 
 	describe( 'Actions/setAmount', () => {
 
-		afterEach( function () {
-			mockAxios.reset();
+		const newMockActionContext = (): ActionContext<DonationPayment, any> => ( {
+			commit: jest.fn(),
+			dispatch: jest.fn(),
+			getters: undefined,
+			rootGetters: undefined,
+			rootState: undefined,
+			state: {
+				initialized: true,
+				isValidating: false,
+				validity: {},
+				values: {},
+			},
 		} );
 
 		it( 'commits to mutation [SET_AMOUNT]', () => {
-			const context = {
-					commit: jest.fn(),
-				},
-				payload = {
-					amountValue: '2500',
-					validateAmountUrl: '/validation-amount-url',
-				};
-			const action = actions.setAmount as any;
-			const actionResult = action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith(
-					'SET_AMOUNT',
-					payload.amountValue
-				);
-			} );
+			const context = newMockActionContext();
+			const payload = '2500';
+			actions[ setAmount ]( context, '2500' );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
-				},
-			} );
-
-			return actionResult;
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT', payload );
 		} );
 
-		it( 'sends a post request for amount validation', () => {
-			const context = {
-					commit: jest.fn(),
-				},
-				payload = {
-					amountValue: '2500',
-					validateAmountUrl: '/validation-amount-url',
-				},
-				bodyFormData = new FormData();
-			bodyFormData.append( 'amount', payload.amountValue );
+		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on successful validation', () => {
+			const context = newMockActionContext();
 
-			const action = actions.setAmount as any;
-			const actionResult = action( context, payload ).then( function () {
-				expect( mockAxios.post ).toHaveBeenCalledWith(
-					payload.validateAmountUrl,
-					bodyFormData,
-					{ headers: { 'Content-Type': 'multipart/form-data' } }
-				);
-			} );
+			actions[ setAmount ]( context, '2500' );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
-				},
-			} );
-
-			return actionResult;
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
 		} );
 
-		it( 'commits to mutation [SET_AMOUNT_VALIDITY] and [SET_IS_VALIDATING] on server side validation', () => {
-			const context = {
-					commit: jest.fn(),
-				},
-				payload = {
-					amountValue: '2500',
-					validateAmountUrl: '/validation-amount-url',
-				},
-				action = actions.setAmount as any;
+		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on failed validation', () => {
+			const context = newMockActionContext();
 
-			const actionResult = action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
-			} );
+			actions[ setAmount ]( context, '999999999999' );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
-				},
-			} );
-
-			return actionResult;
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.INVALID );
 		} );
 	} );
 

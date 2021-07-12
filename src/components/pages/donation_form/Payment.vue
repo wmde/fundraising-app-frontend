@@ -59,7 +59,7 @@ export default Vue.extend( {
 		PaymentInterval,
 		PaymentType,
 	},
-	props: [ 'validateAmountUrl', 'paymentAmounts', 'paymentIntervals', 'paymentTypes' ],
+	props: [ 'paymentAmounts', 'paymentIntervals', 'paymentTypes' ],
 	computed: {
 		...mapState( {
 			amount: ( state: any ) => state[ NS_PAYMENT ].values.amount,
@@ -102,12 +102,8 @@ export default Vue.extend( {
 		},
 	},
 	methods: {
-		sendAmountToStore( amountValue: string ): Promise<null> {
-			const payload = {
-				amountValue,
-				validateAmountUrl: this.$props.validateAmountUrl,
-			};
-			return this.$store.dispatch( action( NS_PAYMENT, setAmount ), payload );
+		sendAmountToStore( amountValue: string ): void {
+			this.$store.dispatch( action( NS_PAYMENT, setAmount ), amountValue );
 		},
 		sendIntervalToStore( interval: string ): void {
 			this.$store.dispatch( action( NS_PAYMENT, setInterval ), interval );

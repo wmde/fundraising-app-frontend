@@ -24,7 +24,6 @@ describe( 'DonationForm', () => {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
-				validateAmountUrl: 'https://example.com/amount-check',
 				validateAddressUrl: 'https://example.com/address-check',
 				countries: countries,
 				trackingData: { bannerImpressionCount: 0, impressionCount: 0 },
