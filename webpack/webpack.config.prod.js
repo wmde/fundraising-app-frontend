@@ -1,12 +1,14 @@
 'use strict';
 
 const webpack = require( 'webpack' );
+const path = require( 'path' );
 const { merge } = require( 'webpack-merge' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const CompressionPlugin = require( 'compression-webpack-plugin' );
+const { WebpackManifestPlugin } = require( 'webpack-manifest-plugin' );
 const helpers = require( './helpers' );
 const commonConfig = require( './webpack.config.common' );
 const environment = require( './env/prod.env' );
@@ -28,14 +30,27 @@ const webpackConfig = merge( commonConfig, {
 		],
 		moduleIds: 'deterministic',
 	},
+	output: {
+		filename: 'js/[name].[chunkhash].js',
+	},
 	plugins: [
 		new webpack.EnvironmentPlugin( environment ),
+		new WebpackManifestPlugin( {
+			filter: ( { name } ) => name.endsWith( '.js' ) || name.endsWith( '.css' ),
+			generate( seed, files ) {
+				return files.reduce( ( manifest, file ) => {
+					const dir = path.relative( '/', path.parse( file.path ).dir );
+					manifest[ `${dir}/${file.name}` ] = path.relative( '/', file.path );
+					return manifest;
+				}, seed );
+			},
+		} ),
 		new MiniCSSExtractPlugin( {
-			filename: 'css/styles.css',
+			filename: 'css/styles.[chunkhash].css',
 			chunkFilename: 'css/styles.css',
 		} ),
 		new CompressionPlugin( {
-			filename: '[path][base].gz[query]',
+			filename: '[path].[base].gz[query]',
 			algorithm: 'gzip',
 			test: /\\.(js|css)$/,
 			threshold: 10240,
