@@ -52,7 +52,7 @@
 						>
 						</address-modal>
 					</b-modal>
-					<div class="donation-summary-intro">
+					<div class="donation-summary-intro" v-if="!currentAddress.isAnonymous">
 						<div><strong>{{ $t( 'donation_confirmation_summary_title_alt' ) }}</strong></div>
 					</div>
 					<donation-summary
