@@ -30,13 +30,12 @@
 				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
 		</div>
 
-		<address-fields
+		<address-forms
 				:countries="countries"
 				:address-validation-patterns="addressValidationPatterns"
 				:is-full-selected="isFullSelected"
-				:address-type="addressType"
-				ref="addressRef">
-		</address-fields>
+				:address-type="addressType">
+		</address-forms>
 
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
 				<donation-summary
@@ -73,10 +72,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
 import AddressType from '@/components/pages/donation_form/AddressType.vue';
-import AddressFields from '@/components/pages/donation_form/Address.vue';
+import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
@@ -99,7 +98,7 @@ export default Vue.extend( {
 	name: 'AddressPage',
 	components: {
 		AutofillHandler,
-		AddressFields,
+		AddressForms,
 		AddressType,
 		SubmitValues,
 		PaymentBankData,
@@ -173,8 +172,7 @@ export default Vue.extend( {
 			emit( 'previous-page' );
 		};
 		const submitHtmlForm = () => {
-			const formId = 'laika-donation-personal-data';
-			// const formId = `laika-donation-personal-data-${addressTypeName.value}`;
+			const formId = `laika-donation-personal-data-${AddressTypeIds.get( addressType.value )}`;
 			const currentAddressForm : HTMLFormElement = document.getElementById( formId ) as HTMLFormElement;
 			if ( !currentAddressForm ) {
 				// This should only happen if the child component has the wrong ID

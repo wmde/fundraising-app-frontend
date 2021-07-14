@@ -2,7 +2,7 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Buefy from 'buefy';
 import CompositionAPI from '@vue/composition-api';
-import Address from '@/components/pages/donation_form/Address.vue';
+import AddressForms from '@/components/pages/donation_form/AddressForms.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
 import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
@@ -28,10 +28,10 @@ localVue.use( CompositionAPI );
 
 localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.address_type.preselection' ] } );
 
-describe.skip( 'Address.vue', () => {
+describe.skip( 'AddressForms.vue', () => {
 	let wrapper: any;
 	beforeEach( () => {
-		wrapper = mount( Address, {
+		wrapper = mount( AddressForms, {
 			localVue,
 			propsData: {
 				validateAddressUrl: 'validate-address',
@@ -63,7 +63,7 @@ describe.skip( 'Address.vue', () => {
 	} );
 
 	it( 'renders Bank Data component if payment is direct debit', () => {
-		wrapper = mount( Address, {
+		wrapper = mount( AddressForms, {
 			localVue,
 			propsData: {
 				validateAddressUrl: 'validate-address',
@@ -139,7 +139,7 @@ describe.skip( 'Address.vue', () => {
 
 		const store = createStore();
 		await store.dispatch( action( NS_ADDRESS, initializeAddress ), initialData ).then( () => {
-			wrapper = mount( Address, {
+			wrapper = mount( AddressForms, {
 				localVue,
 				propsData: {
 					validateAddressUrl: 'validate-address',
