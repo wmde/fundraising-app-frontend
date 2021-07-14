@@ -7,7 +7,7 @@ import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeMode
 const localVue = createLocalVue();
 localVue.use( Vuex );
 
-describe( 'Address.vue', () => {
+describe( 'SubmitValues.vue', () => {
 	let wrapper: any;
 	beforeEach( () => {
 		wrapper = mount( SubmitValues, {
@@ -68,7 +68,7 @@ describe( 'Address.vue', () => {
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
-	it( 'renders the amount as German-Formatted decimal number', () => {
+	it( 'renders the amount as an integer', () => {
 		expect( ( wrapper.find( 'input[name=amount]' ).element as HTMLInputElement ).value ).toBe( '2349' );
 	} );
 
