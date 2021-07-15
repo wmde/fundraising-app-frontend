@@ -129,29 +129,43 @@ export default Vue.extend( {
 		SubmitValues,
 	},
 	props: {
-		validateAddressUrl: String,
-		validateEmailUrl: String,
 		countries: Array as PropType<Array<Country>>,
 		addressValidationPatterns: Object as PropType<AddressValidation>,
 		addressType: Number,
 		isFullSelected: Boolean,
 	},
-	setup( props : any, { root: { $store } } ) {
-		const { addressType } = toRefs( props );
-		const addressFunctions = useAddressFunctions( props, $store );
+	setup( props: any, { root: { $store } } ) {
+		const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );
+		const {
+			formData,
+			fieldErrors,
+			receiptNeeded,
+
+			initializeDataFromStore,
+			onFieldChange,
+			onAutofill,
+			setReceiptOptedOut,
+		} = useAddressFunctions( { addressValidationPatterns: addressValidationPatterns.value }, $store );
 
 		const addressTypeId = computed( () => {
-			if ( props.isFullSelected ) {
+			if ( isFullSelected.value && addressType.value === AddressTypeModel.UNSET ) {
 				return AddressTypeIds.get( AddressTypeModel.PERSON );
 			}
 			return AddressTypeIds.has( addressType.value ) ? AddressTypeIds.get( addressType.value ) : '';
 		} );
 
-		onMounted( addressFunctions.initializeDataFromStore );
+		onMounted( initializeDataFromStore );
 
-		return { ...addressFunctions,
+		return {
+			formData,
+			fieldErrors,
+			receiptNeeded,
 			AddressTypeModel,
 			addressTypeId,
+
+			onFieldChange,
+			onAutofill,
+			setReceiptOptedOut,
 		};
 	},
 } );

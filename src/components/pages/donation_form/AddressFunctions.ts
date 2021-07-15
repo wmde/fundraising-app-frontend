@@ -24,8 +24,6 @@ interface AddressValidationPatterns {
 }
 
 interface AddressFunctionParams {
-	validateAddressUrl: string,
-	validateEmailUrl: string,
 	addressValidationPatterns: AddressValidationPatterns
 }
 

@@ -1,93 +1,62 @@
-import { mount, createLocalVue } from '@vue/test-utils';
+import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Buefy from 'buefy';
 import CompositionAPI from '@vue/composition-api';
 import AddressForms from '@/components/pages/donation_form/AddressForms.vue';
 import Name from '@/components/shared/Name.vue';
-import Postal from '@/components/shared/Postal.vue';
 import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
-import AddressType from '@/components/pages/donation_form/AddressType.vue';
 import Email from '@/components/shared/Email.vue';
-import PaymentBankData from '@/components/shared/PaymentBankData.vue';
-import NewsletterOptIn from '@/components/pages/donation_form/NewsletterOptIn.vue';
 import { createStore } from '@/store/donation_store';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@/store/namespaces';
-import { setAddressField, setReceiptOptOut, initializeAddress } from '@/store/address/actionTypes';
+import { initializeAddress, setAddressField, setReceiptOptOut } from '@/store/address/actionTypes';
 import { action } from '@/store/util';
-import { FeatureTogglePlugin } from '@/FeatureToggle';
 import countries from '@/../tests/data/countries';
 import { Validity } from '@/view_models/Validity';
 import { addressValidationPatterns } from '../../../../data/validation';
-import { SET_ADDRESS_TYPE } from '@/store/address/mutationTypes';
+import each from 'jest-each';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
 localVue.use( CompositionAPI );
 
-localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.address_type.preselection' ] } );
+describe( 'AddressForms.vue', () => {
 
-describe.skip( 'AddressForms.vue', () => {
+	const createOptionsForAddressType = ( addressType: AddressTypeModel ) => ( {
+		localVue,
+		propsData: {
+			countries: countries,
+			addressValidationPatterns: addressValidationPatterns,
+			addressType,
+			isFullSelected: true,
+		},
+		store: createStore(),
+		mocks: {
+			$t: () => { },
+		},
+	} );
+
 	let wrapper: any;
 	beforeEach( () => {
-		wrapper = mount( AddressForms, {
-			localVue,
-			propsData: {
-				validateAddressUrl: 'validate-address',
-				countries: countries,
-				initialFormValues: '',
-				addressValidationPatterns: addressValidationPatterns,
-				isDirectDebit: false,
-			},
-			store: createStore(),
-			mocks: {
-				$t: () => { },
-			},
-		} );
+		wrapper = mount( AddressForms, createOptionsForAddressType( AddressTypeModel.PERSON ) );
 	} );
 
-	it( 'renders components which are part of the donation address page', async () => {
-		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
-		await wrapper.vm.$nextTick();
-		expect( wrapper.findComponent( Name ).exists() ).toBe( true );
-		expect( wrapper.findComponent( Postal ).exists() ).toBe( true );
-		expect( wrapper.findComponent( ReceiptOptOut ).exists() ).toBe( true );
-		expect( wrapper.findComponent( AddressType ).exists() ).toBe( true );
-		expect( wrapper.findComponent( Email ).exists() ).toBe( true );
-		expect( wrapper.findComponent( NewsletterOptIn ).exists() ).toBe( true );
+	each( [
+		[ AddressTypeModel.ANON, false, 'address-type-anonymous' ],
+		[ AddressTypeModel.EMAIL, false, 'address-type-email' ],
+		[ AddressTypeModel.UNSET, false, 'address-type-unset' ],
+		[ AddressTypeModel.UNSET, true, 'address-type-person' ],
+		[ AddressTypeModel.PERSON, true, 'address-type-person' ],
+		[ AddressTypeModel.COMPANY, true, 'address-type-company' ],
+	] ).test( 'adapts the class attribute', ( addressType, isFullSelected, expectedClass ) => {
+		const options = createOptionsForAddressType( addressType );
+		options.propsData.isFullSelected = isFullSelected;
+		wrapper = mount( AddressForms, options );
+		expect( wrapper.classes() ).toContain( expectedClass );
 	} );
 
-	it( 'hides Bank Data component if payment is not direct debit', () => {
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBe( false );
-	} );
-
-	it( 'renders Bank Data component if payment is direct debit', () => {
-		wrapper = mount( AddressForms, {
-			localVue,
-			propsData: {
-				validateAddressUrl: 'validate-address',
-				countries: countries,
-				initialFormValues: '',
-				addressValidationPatterns: addressValidationPatterns,
-				isDirectDebit: true,
-			},
-			store: createStore(),
-			mocks: {
-				$t: () => { },
-			},
-		} );
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBe( true );
-	} );
-
-	it( 'does not render postal and receipt opt out if adress type is anonymous', async () => {
-		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.ANON );
-		await wrapper.vm.$nextTick();
-		expect( wrapper.findComponent( Postal ).exists() ).toBe( false );
-		expect( wrapper.findComponent( ReceiptOptOut ).exists() ).toBe( false );
-	} );
-
-	xit( 'sets address field in store when it receives field-changed event', () => {
+	it( 'sets address field in store when it receives field-changed event', () => {
 		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn();
 		const expectedAction = action( NS_ADDRESS, setAddressField );
@@ -103,10 +72,8 @@ describe.skip( 'AddressForms.vue', () => {
 		} );
 	} );
 
-	xit( 'sets receipt opt out preference in store when it receives opted-out event', async () => {
+	it( 'sets receipt opt out preference in store when it receives opted-out event', async () => {
 		const store = wrapper.vm.$store;
-		store.commit( SET_ADDRESS_TYPE, AddressTypeModel.PERSON );
-		await wrapper.vm.$nextTick();
 		store.dispatch = jest.fn();
 		const expectedAction = action( NS_ADDRESS, setReceiptOptOut );
 		const expectedPayload = true;
@@ -114,7 +81,7 @@ describe.skip( 'AddressForms.vue', () => {
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
-	xit( 'sets email in store when it receives email event', () => {
+	it( 'sets email in store when it receives email event', () => {
 		const store = wrapper.vm.$store;
 		const testEmail = 'test@wikimedia.de';
 		store.dispatch = jest.fn();
