@@ -3,6 +3,8 @@ import AutocompleteCity from '@/components/shared/AutocompleteCity.vue';
 import Buefy from 'buefy';
 import CompositionAPI from '@vue/composition-api';
 import { FakeAutocompleteResource } from '../../TestDoubles/FakeAutocompleteResource';
+// @ts-ignore
+import { BAutocomplete } from 'buefy/dist/cjs/autocomplete';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
@@ -109,5 +111,30 @@ describe( 'AutocompleteCity.vue', () => {
 
 		await wrapper.setProps( { postcode: '12345' } );
 		expect( ( wrapper.vm as any ).placeholder ).toBe( placeholderKeyWhenSuggestionsExist );
+	} );
+
+	describe( 'Buefy Autocomplete', () => {
+		// We use an undocumented method in Buefy Autocomplete to fix an issue with
+		// some browser autofill usability. This test ensures the method still exists
+		it( 'has undocumented method clickedOutside', async () => {
+			const wrapper = mount( BAutocomplete, {
+				localVue,
+				mocks: {
+					$t: () => {},
+				},
+				provide: {
+					cityAutocompleteResource,
+				},
+				propsData: {
+					examplePlaceholder: '',
+					city: { value: '' },
+					showError: false,
+					postcode: '',
+				},
+			} );
+
+			const buefyAutocomplete = wrapper.findComponent( BAutocomplete );
+			expect( ( buefyAutocomplete.selector as any ).methods.clickedOutside ).not.toBeUndefined();
+		} );
 	} );
 } );

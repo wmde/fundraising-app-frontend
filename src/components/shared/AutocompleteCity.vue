@@ -1,15 +1,18 @@
 <template>
 	<b-autocomplete
+		ref="autocomplete"
 		class="is-form-input"
 		field="cityName"
 		:placeholder="$t( placeholder, { example: $t( examplePlaceholder ) } )"
 		v-model="city.value"
+		autocomplete="off"
 		name="city"
 		id="city"
 		:open-on-focus="true"
 		:data="cities"
 		@input="onInput"
-		@select="onSelect">
+		@select="onSelect"
+		@blur="onBlur">
 		<template slot-scope="props">
 			<strong>{{ postcode }}</strong> {{ props.option }}
 		</template>
@@ -38,6 +41,7 @@ export default Vue.extend( {
 
 		let currentPostcode = '';
 		const cities = ref<Array<string>>( [] );
+		const autocomplete = ref<any>( null );
 
 		const getCitiesForPostcode = ( postcode: string ) => {
 			if ( postcode === currentPostcode ) {
@@ -68,6 +72,18 @@ export default Vue.extend( {
 			trackEvent( 'City Autocomplete Result Selected', option );
 		};
 
+		// This is for hiding the cities suggestions after the user
+		// performs an autofill using their browser. clickedOutside()
+		// is an undocumented method on the Buefy Autocomplete component
+		// and we send it a fake event because then it hides the dropdown
+		// Issue: https://phabricator.wikimedia.org/T285921
+		// Merge Request: https://gitlab.com/fun-tech/fundraising-app-frontend/-/merge_requests/96
+		const onBlur = () => {
+			setTimeout( () => {
+				autocomplete.value?.clickedOutside( new Event( 'fake event' ) );
+			}, 100 );
+		};
+
 		onMounted( () => {
 			getCitiesForPostcode( props.postcode as string );
 		} );
@@ -85,8 +101,10 @@ export default Vue.extend( {
 
 		return {
 			cities,
+			autocomplete,
 			onInput,
 			onSelect,
+			onBlur,
 			placeholder,
 		};
 	},
