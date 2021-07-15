@@ -89,9 +89,9 @@ import { action } from '@/store/util';
 import { markEmptyValuesAsInvalid } from '@/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import { discardInitialization } from '@/store/payment/actionTypes';
-import { trackFormSubmission } from '@/tracking';
+import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 import { useAddressTypeFunctions } from '@/components/pages/donation_form/AddressTypeFunctions';
-import { computed, ref } from '@vue/composition-api';
+import { computed, ref, onMounted } from '@vue/composition-api';
 import { validateAddress, validateAddressType, validateEmail } from '@/store/address/actionTypes';
 
 export default Vue.extend( {
@@ -121,6 +121,8 @@ export default Vue.extend( {
 		const setFullSelected = ( selected: boolean ) => {
 			isFullSelected.value = selected;
 		};
+
+		onMounted( trackDynamicForm );
 
 		const {
 			disabledAddressTypes,

@@ -28,7 +28,7 @@ import { action } from '@/store/util';
 import { NS_PAYMENT } from '@/store/namespaces';
 import { markEmptyValuesAsInvalid } from '@/store/payment/actionTypes';
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
-import { trackFormSubmission } from '@/tracking';
+import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 import scrollToFirstError from '@/scroll_to_first_error';
 
 export default Vue.extend( {
@@ -43,6 +43,9 @@ export default Vue.extend( {
 		paymentAmounts: Array as () => Array<String>,
 		paymentIntervals: Array as () => Array<Number>,
 		paymentTypes: Array as () => Array<String>,
+	},
+	mounted() {
+		trackDynamicForm();
 	},
 	methods: {
 		next() {
