@@ -8,27 +8,30 @@
 						v-on:previous-page="previousPage">
 		</payment-summary>
 
-		<payment-bank-data
-				v-if="isDirectDebit"
-				:validateBankDataUrl="validateBankDataUrl"
-				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
-		/>
+		<form v-if="isDirectDebit" id="bank-data-details" @submit="evt => evt.preventDefault()">
+			<payment-bank-data
+					:validateBankDataUrl="validateBankDataUrl"
+					:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
+			/>
+		</form>
 
-		<address-type
-				v-on:address-type="setAddressType( $event )"
-				v-on:set-full-selected="setFullSelected"
-				:disabledAddressTypes="disabledAddressTypes"
-				:is-direct-debit="isDirectDebit"
-				:initial-address-type="addressTypeName"
-		/>
-		<span
-				v-if="addressTypeIsInvalid"
-				class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
-		</span>
-		<div
-				class="has-margin-top-18"
-				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
-		</div>
+		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
+			<address-type
+					v-on:address-type="setAddressType( $event )"
+					v-on:set-full-selected="setFullSelected"
+					:disabledAddressTypes="disabledAddressTypes"
+					:is-direct-debit="isDirectDebit"
+					:initial-address-type="addressTypeName"
+			/>
+			<span
+					v-if="addressTypeIsInvalid"
+					class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
+			</span>
+			<div
+					class="has-margin-top-18"
+					v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
+			</div>
+		</form>
 
 		<address-forms
 				:countries="countries"
