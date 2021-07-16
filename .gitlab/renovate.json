@@ -6,5 +6,11 @@
     ":rebaseStalePrs",
 	":preserveSemverRanges",
     ":label(renovate)"
+  ],
+   "packageRules": [
+    {
+      "matchPackageNames": ["vue-loader"],
+      "allowedVersions": "<=15"
+    }
   ]
 }
