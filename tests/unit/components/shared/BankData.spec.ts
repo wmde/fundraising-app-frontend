@@ -232,13 +232,13 @@ describe( 'BankData', () => {
 		} );
 
 		let bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.element ).not.toBeVisible();
+		expect( bankInfoInput.isVisible() ).toBe( false );
 
 		wrapper.setData( { accountId: '123' } );
 		await wrapper.vm.$nextTick();
 
 		bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.element ).toBeVisible();
+		expect( bankInfoInput.isVisible() ).toBe( true );
 	} );
 
 	it( 'does not render bank code / BIC field when valid IBAN was validated', async () => {
@@ -267,7 +267,7 @@ describe( 'BankData', () => {
 		wrapper.setData( { accountId: 'DE89370400440532013000' } );
 
 		let bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.element ).not.toBeVisible();
+		expect( bankInfoInput.isVisible() ).toBe( false );
 	} );
 
 	it( 'does not render bank code / BIC field if IBAN is invalid', async () => {
@@ -296,7 +296,7 @@ describe( 'BankData', () => {
 		wrapper.setData( { accountId: 'DE89370400440532013000' } );
 
 		let bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.element ).not.toBeVisible();
+		expect( bankInfoInput.isVisible() ).toBe( false );
 	} );
 
 	it( 'renders the appropriate labels for no value', () => {
