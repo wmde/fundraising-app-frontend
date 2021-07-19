@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
 import PageDataInitializer from '@/page_data_initializer';
-import { DEFAULT_LOCALE } from '@/locales';
+import { createI18n } from '@/locales';
 import { createStore } from '@/store/update_address_store';
 
 import App from '@/components/App.vue';
@@ -25,7 +25,7 @@ interface UpdateAddressModel {
 	isCompany: boolean,
 	countries: Array<Country>,
 	urls: any,
-	addressValidationPatterns: AddressValidation
+	addressValidationPatterns: AddressValidation,
 }
 
 const pageData = new PageDataInitializer<UpdateAddressModel>( '#appdata' );
@@ -33,12 +33,7 @@ const store = createStore( [
 	createTrackFormErrorsPlugin( FORM_NAMESPACE ),
 ] );
 
-const i18n = new VueI18n( {
-	locale: DEFAULT_LOCALE,
-	messages: {
-		[ DEFAULT_LOCALE ]: pageData.messages,
-	},
-} );
+const i18n = createI18n( pageData.messages );
 
 new Vue( {
 	store,
@@ -51,6 +46,7 @@ new Vue( {
 		props: {
 			assetsPath: pageData.assetsPath,
 			pageIdentifier: PAGE_IDENTIFIER,
+			locale: i18n.locale,
 		},
 	},
 	[

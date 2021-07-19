@@ -15,6 +15,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -32,6 +33,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -51,6 +53,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -70,6 +73,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -89,6 +93,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -108,6 +113,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -127,6 +133,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -145,6 +152,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -164,6 +172,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -186,6 +195,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -206,6 +216,7 @@ describe( 'AmountSelection', () => {
 			},
 			mocks: {
 				$t: () => {},
+				$n: () => {},
 			},
 		} );
 
@@ -220,5 +231,26 @@ describe( 'AmountSelection', () => {
 			expect( aboveChoice.element.parentElement!.className ).not.toContain( 'inactive' );
 		} );
 
+	} );
+
+	it( 'localises choices', () => {
+		const $n = jest.fn();
+		mount( AmountSelection, {
+			propsData: {
+				amount: '',
+				minimumAmount: 1000,
+				paymentAmounts: [ 500, 1000, 10000, 29900 ],
+				validateAmountUrl: 'https://example.com/amount-check',
+			},
+			mocks: {
+				$t: () => {},
+				$n,
+			},
+		} );
+
+		expect( $n ).toHaveBeenCalledWith( 5, expect.anything() );
+		expect( $n ).toHaveBeenCalledWith( 10, expect.anything() );
+		expect( $n ).toHaveBeenCalledWith( 100, expect.anything() );
+		expect( $n ).toHaveBeenCalledWith( 299, expect.anything() );
 	} );
 } );

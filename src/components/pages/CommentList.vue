@@ -7,7 +7,7 @@
 		</span>
 		<div class="has-margin-top-18">
 			<div class="has-margin-top-18" v-for="comment in pageContent">
-				<div class="has-text-weight-bold">{{ $t( 'donation_comments_donor_headline', { amount: comment.amount, donor: comment.donor } )}}</div>
+				<div class="has-text-weight-bold">{{ $t( 'donation_comments_donor_headline', headlineVars( comment ) )}}</div>
 				<div class="has-text-gray-dark">{{ comment.date }}</div>
 				<div>{{ comment.comment }}</div>
 			</div>
@@ -72,6 +72,12 @@ export default Vue.extend( {
 				this.currentPage -= 1;
 				this.switchPage();
 			}
+		},
+		headlineVars( comment: any ) {
+			return {
+				formattedAmount: this.$n( comment.amount, { key: 'currency' } ),
+				donor: comment.donor,
+			};
 		},
 	},
 } );

@@ -1,0 +1,9 @@
+#locale-en-GB {
+	.amount-custom::after {
+		right: auto;
+		left: 10px;
+	}
+	.input-amount {
+		text-align: left;
+	}
+}

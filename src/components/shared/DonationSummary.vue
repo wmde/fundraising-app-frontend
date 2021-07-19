@@ -48,7 +48,7 @@ export default Vue.extend( {
 			return this.$t( 'donation_form_payment_interval_' + this.payment.interval );
 		},
 		formattedAmount: function () {
-			return this.payment.amount.toFixed( 2 ).replace( '.', ',' );
+			return this.$n( this.payment.amount, { key: 'currency', currencyDisplay: 'name' } );
 		},
 		country: function () {
 			const countryObject = this.countries.find( c => ( c.countryCode === this.address.countryCode || c.countryCode === this.address.country ) );

@@ -30,16 +30,6 @@ const addressTypeRenderers = {
 	[ addressTypeName( AddressTypeModel.COMPANY ) ]: CompanyApplicantRenderer,
 };
 
-class YearlyAmountRenderer {
-	static renderAmount( amount, interval, currencyTranslation, intervalTranslation ) {
-		if ( interval === 12 ) {
-			return '';
-		}
-		const formattedAmount = amount.toFixed( 2 ).replace( '.', ',' );
-		return `(${formattedAmount} ${currencyTranslation} ${intervalTranslation})`;
-	}
-}
-
 export default Vue.extend( {
 	name: 'MembershipSummary',
 	props: [
@@ -54,9 +44,9 @@ export default Vue.extend( {
 			const numericInterval = parseInt( this.membershipApplication.paymentIntervalInMonths, 10 );
 			const interval = this.$t( 'donation_form_payment_interval_' + this.membershipApplication.paymentIntervalInMonths );
 			const addressTypeRenderer = addressTypeRenderers[ this.address.applicantType ];
-			const formattedAmountMonthly = parseFloat( this.membershipApplication.membershipFee ).toFixed( 2 ).replace( '.', ',' );
+			const formattedAmountMonthly = this.$n( parseFloat( this.membershipApplication.membershipFee ), { key: 'currency', currencyDisplay: 'name' } );
 			const amountYearly = parseFloat( this.membershipApplication.membershipFee ) * 12 / numericInterval;
-			const formattedAmountYearly = YearlyAmountRenderer.renderAmount(
+			const formattedAmountYearly = this.renderAmount(
 				amountYearly,
 				numericInterval,
 				this.$t( 'currency_name' ),
@@ -70,11 +60,18 @@ export default Vue.extend( {
 				{
 					paymentInterval: interval,
 					membershipType: membershipType,
-					membershipFee: formattedAmountMonthly,
-					membershipFeeYearly: formattedAmountYearly,
+					membershipFeeFormatted: formattedAmountMonthly,
+					membershipFeeYearlyFormatted: formattedAmountYearly,
 					address: address,
 				}
 			);
+		},
+		renderAmount( amount, interval, currencyTranslation, intervalTranslation ) {
+			if ( interval === 12 ) {
+				return '';
+			}
+			const formattedAmount = this.$n( amount, { key: 'currency', currencyDisplay: 'name' } );
+			return `(${formattedAmount} ${currencyTranslation} ${intervalTranslation})`;
 		},
 		canRender: function ( fee, interval ) {
 			return fee !== '' && !isNaN( Number( fee ) ) && interval !== '';

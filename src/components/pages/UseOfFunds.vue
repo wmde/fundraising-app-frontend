@@ -46,8 +46,7 @@
 					</div>
 					<CompanyBudgets
 							:companies="content.comparison.companies"
-							:citation-label="content.comparison.citationLabel"
-							:locale="locale" />
+							:citation-label="content.comparison.citationLabel"/>
 				</div>
 			</div>
 		</div>
@@ -92,10 +91,6 @@ export default defineComponent( {
 	props: {
 		content: {
 			type: Object,
-			required: true,
-		},
-		locale: {
-			type: String,
 			required: true,
 		},
 		assetsPath: {

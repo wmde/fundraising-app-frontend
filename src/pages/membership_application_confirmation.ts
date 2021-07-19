@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
 import PageDataInitializer from '@/page_data_initializer';
-import { DEFAULT_LOCALE } from '@/locales';
+import { createI18n } from '@/locales';
 import App from '@/components/App.vue';
 
 import Component from '@/components/pages/MembershipConfirmation.vue';
@@ -22,12 +22,7 @@ clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESP
 
 const pageData = new PageDataInitializer<any>( '#appdata' );
 
-const i18n = new VueI18n( {
-	locale: DEFAULT_LOCALE,
-	messages: {
-		[ DEFAULT_LOCALE ]: pageData.messages,
-	},
-} );
+const i18n = createI18n( pageData.messages );
 
 new Vue( {
 	i18n,
@@ -39,6 +34,7 @@ new Vue( {
 			assetsPath: pageData.assetsPath,
 			pageIdentifier: PAGE_IDENTIFIER,
 			isFullWidth: IS_FULLWIDTH_PAGE,
+			locale: i18n.locale,
 		},
 	},
 	[

@@ -16,7 +16,7 @@
 					@change="amountSelected( amount )"
 					class="is-sr-only">
 				<label class="has-border-rounded" :for="'amount-' + amount ">
-					<span>{{ amount | formatAmount }}€</span>
+					<span>{{ $n( amount / 100, { key: 'currency', maximumFractionDigits: 0 } ) }}</span>
 				</label>
 			</div>
 			<div class="amount-custom-wrapper">

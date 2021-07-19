@@ -63,6 +63,7 @@ describe( 'DonationConfirmation', () => {
 			store: createStore(),
 			mocks: {
 				$t: ( key: string ) => key,
+				$n: () => {},
 			},
 		} );
 
@@ -78,6 +79,7 @@ describe( 'DonationConfirmation', () => {
 			store: createStore(),
 			mocks: {
 				$t: ( key: string ) => key,
+				$n: () => {},
 			},
 		} );
 

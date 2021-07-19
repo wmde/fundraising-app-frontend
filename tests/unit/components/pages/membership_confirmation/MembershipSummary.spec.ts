@@ -69,6 +69,7 @@ describe( 'MembershipSummary', () => {
 			store: createStore(),
 			mocks: {
 				$t: mockTranslate,
+				$n: () => {},
 			},
 		} );
 
@@ -87,6 +88,7 @@ describe( 'MembershipSummary', () => {
 			store: createStore(),
 			mocks: {
 				$t: mockTranslate,
+				$n: () => {},
 			},
 		} );
 
@@ -108,11 +110,12 @@ describe( 'MembershipSummary', () => {
 			store: createStore(),
 			mocks: {
 				$t: mockTranslate,
+				$n: ( amount: string ) => amount,
 			},
 		} );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFee\": \"15,00\"' );
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearly\": \"(180,00 currency_name donation_form_payment_interval_12)\"' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 15' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 currency_name donation_form_payment_interval_12)\"' );
 	} );
 
 	it( 'renders quarterly payments', () => {
@@ -125,11 +128,12 @@ describe( 'MembershipSummary', () => {
 			store: createStore(),
 			mocks: {
 				$t: mockTranslate,
+				$n: ( amount: string ) => amount,
 			},
 		} );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFee\": \"45,00\"' );
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearly\": \"(180,00 currency_name donation_form_payment_interval_12)\"' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 45' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 currency_name donation_form_payment_interval_12)\"' );
 	} );
 
 	it( 'renders yearly payments', () => {
@@ -142,11 +146,12 @@ describe( 'MembershipSummary', () => {
 			store: createStore(),
 			mocks: {
 				$t: mockTranslate,
+				$n: ( amount: string ) => amount,
 			},
 		} );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFee\": \"180,00\"' );
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearly\": \"\"' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 180' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"\"' );
 	} );
 
 	/* eslint-enable no-useless-escape */

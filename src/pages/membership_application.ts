@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
 import PageDataInitializer from '@/page_data_initializer';
-import { DEFAULT_LOCALE } from '@/locales';
+import { createI18n } from '@/locales';
 import App from '@/components/App.vue';
 import { createStore } from '@/store/membership_store';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
@@ -57,12 +57,7 @@ const dataPersister = createDataPersister(
 	pageData.applicationVars.userDataKey
 );
 
-const i18n = new VueI18n( {
-	locale: DEFAULT_LOCALE,
-	messages: {
-		[ DEFAULT_LOCALE ]: pageData.messages,
-	},
-} );
+const i18n = createI18n( pageData.messages );
 
 const store = createStore( [
 	dataPersister.getPlugin( persistenceItems ),
@@ -107,6 +102,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				props: {
 					assetsPath: pageData.assetsPath,
 					pageIdentifier: PAGE_IDENTIFIER,
+					locale: i18n.locale,
 				},
 			},
 			[
