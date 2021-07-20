@@ -1,7 +1,11 @@
 <template>
-	<div class="trust-message">
-		<img :src="assetsPath + '/images/Icon_trust.svg'"/> {{ $t( 'form_trust_message' ) }}
-	</div>
+  <feature-toggle>
+    <div class="trust-message" slot="campaigns.encryption_hint.visible">
+      <img :src="assetsPath + '/images/Icon_trust.svg'"/> {{ $t( 'form_trust_message' ) }}
+    </div>
+    <div class="trust-message" slot="campaigns.encryption_hint.not_visible">
+    </div>
+  </feature-toggle>
 </template>
 
 <script lang="ts">
