@@ -9,9 +9,7 @@
 				<div class="cookie-notice-text" v-if="!showOptions">
 					<h3>{{ $t( 'cookie_heading' ) }}</h3>
 					<p class="cookie-notice-text-copy" :class="{ open: textOpen }">
-						<text-visibility-toggle :height-to-show="38" v-on:toggle-text="toggleTextOpen">
-							<span v-html="$t( 'cookie_content' )"></span>
-						</text-visibility-toggle>
+						<span v-html="$t( 'cookie_content' )"></span>
 					</p>
 				</div>
 				<div class="cookie-notice-options" v-if="showOptions">
@@ -65,7 +63,6 @@
 				</div>
 			</div>
 		</form>
-		<HeightAdjuster :element="cookieNotice" :element-visibility="true"></HeightAdjuster>
 	</div>
 </template>
 
@@ -73,16 +70,12 @@
 import Vue from 'vue';
 import { inject, ref, watch } from '@vue/composition-api';
 import CookieCheckbox from './CookieCheckbox.vue';
-import HeightAdjuster from './HeightAdjuster.vue';
-import TextVisibilityToggle from './TextVisibilityToggle.vue';
 import { CONSENT_STATE, CookieConsentInterface, NullCookieConsent } from '@/cookie_consent';
 
 export default Vue.extend( {
 	name: 'CookieNotice',
 	components: {
 		CookieCheckbox,
-		HeightAdjuster,
-		TextVisibilityToggle,
 	},
 	inject: [ 'cookieConsent' ],
 	setup() {

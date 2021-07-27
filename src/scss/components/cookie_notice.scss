@@ -1,7 +1,17 @@
 $cookie-notice-padding: 32px;
 
 .cookie-notice {
-	display: block;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 99;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	h3 {
 		font-size: 18px;
@@ -41,36 +51,19 @@ $cookie-notice-padding: 32px;
 			transition: transform 100ms, margin-top 100ms;
 		}
 	}
-	&-show-less {
-		display: none;
-	}
-	.open {
-		.cookie-notice-more::after {
-			margin-top: -0.2em;
-			transform: rotate( 135deg );
-		}
-		.cookie-notice-show-more {
-			display: none;
-		}
-		.cookie-notice-show-less {
-			display: inline;
-		}
-	}
 	&-content {
-		position: fixed;
 		display: flex;
 		flex-direction: column;
-		width: 100%;
+		max-width: 640px;
+		margin: 0 6px;
 		bottom: 0;
 		left: 0;
 		background: $fun-color-bright;
 		padding: $cookie-notice-padding;
 		box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
 		z-index: 10;
-
-		@include from( $desktop ) {
-			flex-direction: row;
-		}
+		max-height: 100%;
+		overflow-y: auto;
 	}
 
 	&-info {
@@ -78,31 +71,13 @@ $cookie-notice-padding: 32px;
 		flex-grow: 1;
 		flex-shrink: 1;
 		margin-bottom: 10px;
-
-		@include from( $desktop ) {
-			margin-bottom: 0;
-		}
 	}
 
 	&-text-copy {
 		position: relative;
-		height: 38px;
-		overflow-y: hidden;
-		padding-right: 80px;
-
-		&.open {
-			height: auto;
-		}
-	}
-
-	.cookie-notice-more {
-		position: absolute;
-		bottom: 0;
-		right: 0;
 	}
 
 	&-accordion {
-		max-height: 180px;
 		border: 1px solid $fun-color-gray-mid;
 		overflow-y: auto;
 
@@ -127,13 +102,6 @@ $cookie-notice-padding: 32px;
 	&-buttons {
 		display: flex;
 		align-items: flex-end;
-		@include from($desktop) {
-			width: 440px;
-			flex-basis: 440px;
-			flex-grow: 0;
-			flex-shrink: 0;
-			margin-left: $cookie-notice-padding;
-		}
 	}
 
 	&-button {
@@ -173,9 +141,6 @@ $cookie-notice-padding: 32px;
 		display: block;
 		font-size: 14px;
 		line-height: 18px;
-		padding-right: 80px;
-		max-height: 38px;
-		overflow-y: hidden;
 	}
 
 	&.open .cookie-checkbox-content {
