@@ -10,9 +10,7 @@
 			>
 				<span class="cookie-checkbox-heading">{{ heading }}</span>
 				<span class="cookie-checkbox-content">
-					<text-visibility-toggle :height-to-show="38" v-on:toggle-text="toggleOpen">
-						{{ content }}
-					</text-visibility-toggle>
+					{{ content }}
 				</span>
 			</b-checkbox>
 	</div>
@@ -21,13 +19,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { ref } from '@vue/composition-api';
-import TextVisibilityToggle from './TextVisibilityToggle.vue';
 
 export default Vue.extend( {
 	name: 'CookieCheckbox',
-	components: {
-		TextVisibilityToggle,
-	},
 	props: {
 		heading: String,
 		content: String,
