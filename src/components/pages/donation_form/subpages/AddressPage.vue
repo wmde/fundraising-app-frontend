@@ -1,10 +1,5 @@
 <template>
-	<form name="laika-donation-personal-data"
-			id="laika-donation-personal-data"
-			class="address-page"
-			ref="personal"
-			action="/donation/add"
-			method="post">
+	<div class="address-page">
 		<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
 		<payment-summary v-if="paymentWasInitialized"
 						:amount="paymentSummary.amount"
@@ -12,41 +7,49 @@
 						:interval="paymentSummary.interval"
 						v-on:previous-page="previousPage">
 		</payment-summary>
-		<feature-toggle>
-			<provisional-choice-address-fields
-					slot="campaigns.address_provision_options.provisional_address_options"
-					:validate-address-url="validateAddressUrl"
-					:validate-email-url="validateEmailUrl"
-					:validate-bank-data-url="validateBankDataUrl"
-					:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
-					:countries="countries"
+
+		<form v-if="isDirectDebit" id="bank-data-details" @submit="evt => evt.preventDefault()">
+			<payment-bank-data
+					:validateBankDataUrl="validateBankDataUrl"
+					:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
+			/>
+		</form>
+
+		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
+			<address-type
+					v-on:address-type="setAddressType( $event )"
+					v-on:set-full-selected="setFullSelected"
+					:disabledAddressTypes="disabledAddressTypes"
 					:is-direct-debit="isDirectDebit"
-					:address-validation-patterns="addressValidationPatterns"
-					ref="address">
-			</provisional-choice-address-fields>
-			<address-fields
-					slot="campaigns.address_provision_options.old_address_type_options"
-					:validate-address-url="validateAddressUrl"
-					:validate-email-url="validateEmailUrl"
-					:validate-bank-data-url="validateBankDataUrl"
-					:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
-					:countries="countries"
-					:is-direct-debit="isDirectDebit"
-					:address-validation-patterns="addressValidationPatterns"
-					ref="address">
-			</address-fields>
-		</feature-toggle>
-			<div class="summary-wrapper has-margin-top-18 has-outside-border">
+					:initial-address-type="addressTypeName"
+			/>
+			<span
+					v-if="addressTypeIsInvalid"
+					class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
+			</span>
+			<div
+					class="has-margin-top-18"
+					v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
+			</div>
+		</form>
+
+		<address-forms
+				:countries="countries"
+				:address-validation-patterns="addressValidationPatterns"
+				:is-full-selected="isFullSelected"
+				:address-type="addressType">
+		</address-forms>
+
+		<div class="summary-wrapper has-margin-top-18 has-outside-border">
 				<donation-summary
 					:payment="paymentSummary"
-					:address-type="addressType"
+					:address-type="addressTypeName"
 					:address="addressSummary"
 					:countries="countries"
 					:language-item="inlineSummaryLanguageItem"
 				/>
 
 				<trust :assets-path="assetsPath" />
-				<submit-values :tracking-data="{}"></submit-values>
 				<div class="columns payment-buttons">
 					<div class="column">
 						<b-button id="previous-btn" class="level-item"
@@ -67,16 +70,18 @@
 				<div class="summary-notice" v-if="isExternalPayment">{{ $t('donation_form_summary_external_payment') }}</div>
 				<div class="summary-notice" v-if="isBankTransferPayment">{{ $t('donation_form_summary_bank_transfer_payment') }}</div>
 		</div>
-	</form>
+	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
-import AddressFields from '@/components/pages/donation_form/Address.vue';
-import ProvisionalChoiceAddressFields from '@/components/pages/donation_form/ProvisionalChoiceAddress.vue';
+import AddressType from '@/components/pages/donation_form/AddressType.vue';
+import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
+import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
+import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
 import DonationSummary from '@/components/shared/DonationSummary.vue';
 import Trust from '@/components/shared/Trust.vue';
@@ -87,14 +92,19 @@ import { action } from '@/store/util';
 import { markEmptyValuesAsInvalid } from '@/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import { discardInitialization } from '@/store/payment/actionTypes';
-import { trackFormSubmission } from '@/tracking';
+import { trackDynamicForm, trackFormSubmission } from '@/tracking';
+import { useAddressTypeFunctions } from '@/components/pages/donation_form/AddressTypeFunctions';
+import { computed, ref, onMounted } from '@vue/composition-api';
+import { validateAddress, validateAddressType, validateEmail } from '@/store/address/actionTypes';
 
 export default Vue.extend( {
 	name: 'AddressPage',
 	components: {
-		AddressFields,
-		ProvisionalChoiceAddressFields,
+		AutofillHandler,
+		AddressForms,
+		AddressType,
 		SubmitValues,
+		PaymentBankData,
 		PaymentSummary,
 		DonationSummary,
 		Trust,
@@ -109,55 +119,47 @@ export default Vue.extend( {
 		trackingData: Object as () => TrackingData,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
-	computed: {
-		paymentSummary: {
-			get(): object {
-				const payment = this.$store.state[ NS_PAYMENT ].values;
-				return {
-					interval: payment.interval,
-					amount: payment.amount / 100,
-					paymentType: payment.type,
-				};
-			},
-		},
-		addressType: {
-			get(): string {
-				return addressTypeName( this.$store.state[ NS_ADDRESS ].addressType );
-			},
-		},
-		addressSummary: {
-			get(): object {
-				return {
-					...this.$store.state[ NS_ADDRESS ].values,
-					fullName: this.$store.getters[ NS_ADDRESS + '/fullName' ],
-					streetAddress: this.$store.state[ NS_ADDRESS ].values.street,
-					postalCode: this.$store.state[ NS_ADDRESS ].values.postcode,
-					country: this.$store.state[ NS_ADDRESS ].values.country,
-				};
-			},
-		},
-		isExternalPayment: {
-			get(): boolean {
-				return this.$store.getters[ NS_PAYMENT + '/isExternalPayment' ];
-			},
-		},
-		isBankTransferPayment: {
-			get(): boolean {
-				return this.$store.getters[ NS_PAYMENT + '/isBankTransferPayment' ];
-			},
-		},
-		paymentWasInitialized: {
-			get(): boolean {
-				return this.$store.state[ NS_PAYMENT ].initialized;
-			},
-		},
-		isDirectDebit: {
-			get: function (): boolean {
-				return this.$store.getters[ 'payment/isDirectDebitPayment' ];
-			},
-		},
-		inlineSummaryLanguageItem(): string {
-			switch ( this.$store.state[ NS_ADDRESS ].addressType ) {
+	setup( props : any, { root: { $store }, emit } ) {
+		const isFullSelected = ref( false );
+		const setFullSelected = ( selected: boolean ) => {
+			isFullSelected.value = selected;
+		};
+
+		onMounted( trackDynamicForm );
+
+		const {
+			disabledAddressTypes,
+			addressType,
+			addressTypeIsNotAnon,
+			addressTypeIsInvalid,
+			addressTypeName,
+			setAddressType,
+		} = useAddressTypeFunctions( $store );
+
+		// Payment functions
+		const isExternalPayment = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isExternalPayment' ] );
+		const isBankTransferPayment = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isBankTransferPayment' ] );
+		const isDirectDebit = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] );
+		const paymentWasInitialized = computed( (): boolean => $store.state[ NS_PAYMENT ].initialized );
+		const paymentSummary = computed( () => {
+			const payment = $store.state[ NS_PAYMENT ].values;
+			return {
+				interval: payment.interval,
+				amount: payment.amount / 100,
+				paymentType: payment.type,
+			};
+		} );
+
+		// Summary functions
+		const addressSummary = computed( () => ( {
+			...$store.state[ NS_ADDRESS ].values,
+			fullName: $store.getters[ NS_ADDRESS + '/fullName' ],
+			streetAddress: $store.state[ NS_ADDRESS ].values.street,
+			postalCode: $store.state[ NS_ADDRESS ].values.postcode,
+			country: $store.state[ NS_ADDRESS ].values.country,
+		} ) );
+		const inlineSummaryLanguageItem = computed( (): string => {
+			switch ( $store.state[ NS_ADDRESS ].addressType ) {
 				case AddressTypeModel.ANON:
 				case AddressTypeModel.UNSET:
 					return 'donation_confirmation_inline_summary_anonymous';
@@ -168,41 +170,74 @@ export default Vue.extend( {
 				default:
 					return 'donation_confirmation_inline_summary_address';
 			}
-		},
-	},
-	methods: {
-		previousPage() {
-			this.$store.dispatch( action( NS_PAYMENT, discardInitialization ) );
-			this.$emit( 'previous-page' );
-		},
-		submit() {
+		} );
+
+		const previousPage = () => {
+			$store.dispatch( action( NS_PAYMENT, discardInitialization ) );
+			emit( 'previous-page' );
+		};
+		const submitHtmlForm = () => {
+			const formId = `laika-donation-personal-data-${AddressTypeIds.get( addressType.value )}`;
+			const currentAddressForm : HTMLFormElement = document.getElementById( formId ) as HTMLFormElement;
+			if ( !currentAddressForm ) {
+				// This should only happen if the child component has the wrong ID
+				throw new Error( `Address form with ID "${formId}" not found.` );
+			}
+
+			trackFormSubmission( currentAddressForm );
+			currentAddressForm.submit();
+		};
+		const scrollToFirstError = () => document.getElementsByClassName( 'help is-danger' )[ 0 ]
+			.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+		const submit = () => {
 			const validationCalls = [
-				( this.$refs.address as any ).validateForm(),
+				$store.dispatch( action( NS_ADDRESS, validateAddressType ), $store.state.address.addressType ),
+				$store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
+				$store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
 			];
-			if ( this.$store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] ) {
-				validationCalls.push( this.$store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
+			if ( isDirectDebit.value ) {
+				validationCalls.push( $store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
 			}
 			Promise.all( validationCalls ).then( () => {
 				// We need to wait for the asynchronous bank data validation, that might still be going on
-				waitForServerValidationToFinish( this.$store ).then( () => {
-					if ( this.$store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
-						if ( this.$store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] &&
-							!this.$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
-							document.getElementsByClassName( 'help is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-							return;
-						}
-						( this as any ).submitDonationForm();
-					} else {
-						document.getElementsByClassName( 'help is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+				waitForServerValidationToFinish( $store ).then( () => {
+					if ( !$store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
+						scrollToFirstError();
+						return;
 					}
+					if ( isDirectDebit.value && !$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+						scrollToFirstError();
+						return;
+					}
+					submitHtmlForm();
 				} );
 			} );
-		},
-		submitDonationForm(): void {
-			const formPersonal = this.$refs.personal as HTMLFormElement;
-			trackFormSubmission( formPersonal );
-			formPersonal.submit();
-		},
+		};
+
+		return {
+			// Accessors
+			addressSummary,
+			addressType,
+			addressTypeIsNotAnon,
+			addressTypeIsInvalid,
+			addressTypeName,
+			disabledAddressTypes,
+			isFullSelected,
+			isBankTransferPayment,
+			isDirectDebit,
+			isExternalPayment,
+			inlineSummaryLanguageItem,
+			paymentWasInitialized,
+			paymentSummary,
+
+			// Mutators
+			setAddressType,
+			setFullSelected,
+
+			// Event handlers
+			previousPage,
+			submit,
+		};
 	},
 } );
 </script>

@@ -10,6 +10,7 @@ import PaymentPage from '@/components/pages/donation_form/subpages/PaymentPage.v
 jest.mock( '@/tracking', () => {
 	return {
 		trackFormSubmission: jest.fn(),
+		trackDynamicForm: jest.fn(),
 	};
 } );
 

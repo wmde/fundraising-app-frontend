@@ -2,9 +2,11 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import Name from '@/components/shared/Name.vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import Buefy from 'buefy';
+import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
+localVue.use( CompositionAPI );
 
 function newTestProperties( overrides: Object ) {
 	return Object.assign(

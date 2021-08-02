@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Address.vue renders input fields 1`] = `
+exports[`SubmitValues.vue renders input fields 1`] = `
 <span
   class="submit-values"
 >
