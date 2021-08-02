@@ -83,7 +83,7 @@ describe( 'AddressType.vue', () => {
 				isDirectDebit: true,
 			},
 		} );
-		expect( wrapper.find( '.info-message' ).element ).toBeVisible();
+		expect( wrapper.find( '.info-message' ).isVisible() ).toBe( true );
 	} );
 
 	it( 'does not render hint if payment is not direct debit', () => {
@@ -97,6 +97,6 @@ describe( 'AddressType.vue', () => {
 				isDirectDebit: false,
 			},
 		} );
-		expect( wrapper.find( '.info-message' ).element ).not.toBeVisible();
+		expect( wrapper.find( '.info-message' ).isVisible() ).toBe( false );
 	} );
 } );
