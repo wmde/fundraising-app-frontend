@@ -46,7 +46,7 @@ describe( 'Supporter.vue', () => {
 				$t: ( key: string ) => key,
 			},
 		} );
-		wrapper.find( '.accordion-item > div' ).element.click();
+		wrapper.find<HTMLElement>( '.accordion-item > div' ).element.click();
 
 		expect( wrapper.emitted( 'supporter-opened', ) ).toHaveLength( 1 );
 		expect( wrapper.emitted( 'supporter-opened' )![ 0 ] ).toEqual( [ 5 ] );
@@ -69,7 +69,7 @@ describe( 'Supporter.vue', () => {
 				$t: ( key: string ) => key,
 			},
 		} );
-		wrapper.find( '.accordion-item > div' ).element.click();
+		wrapper.find<HTMLElement>( '.accordion-item > div' ).element.click();
 
 		expect( wrapper.emitted( 'supporter-opened', ) ).toBeFalsy();
 		expect( wrapper.emitted( 'supporter-closed', ) ).toBeTruthy();
@@ -116,7 +116,7 @@ describe( 'Supporter.vue', () => {
 		expect( wrapper.find( '.mdi-arrow-up' ).exists() ).toBe( false );
 		expect( wrapper.find( '.mdi-arrow-down' ).exists() ).toBe( false );
 
-		wrapper.find( '.accordion-item > div' ).element.click();
+		wrapper.find<HTMLElement>( '.accordion-item > div' ).element.click();
 		expect( wrapper.emitted( 'supporter-opened', ) ).toBeFalsy();
 		expect( wrapper.emitted( 'supporter-closed', ) ).toBeFalsy();
 	} );
