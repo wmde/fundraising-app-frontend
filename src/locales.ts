@@ -19,6 +19,14 @@ export function createI18n( messages: LocaleMessageObject ) {
 					notation: 'standard',
 					currencyDisplay: 'symbol',
 				},
+				euros: {
+					style: 'currency',
+					currency: 'EUR',
+					notation: 'standard',
+					currencyDisplay: 'symbol',
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0,
+				},
 				decimal: {
 					style: 'decimal',
 					minimumFractionDigits: 2,
@@ -35,6 +43,14 @@ export function createI18n( messages: LocaleMessageObject ) {
 					currency: 'EUR',
 					notation: 'standard',
 					currencyDisplay: 'symbol',
+				},
+				euros: {
+					style: 'currency',
+					currency: 'EUR',
+					notation: 'standard',
+					currencyDisplay: 'symbol',
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0,
 				},
 				decimal: {
 					style: 'decimal',
