@@ -11,12 +11,12 @@
 					:id="'amount-' + amount "
 					name="amount-grp"
 					:value="amount"
-					:checked="amount == selectedAmount"
+					:checked="amount === selectedAmount"
 					:disabled="amount < minimumAmount"
 					@change="amountSelected( amount )"
 					class="is-sr-only">
 				<label class="has-border-rounded" :for="'amount-' + amount ">
-					<span>{{ $n( amount / 100, { key: 'currency', maximumFractionDigits: 0 } ) }}</span>
+					<span>{{ $n( amount / 100, 'euros' ) }}</span>
 				</label>
 			</div>
 			<div class="amount-custom-wrapper">
