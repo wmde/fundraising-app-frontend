@@ -20,7 +20,8 @@ localVue.use( Buefy );
 localVue.use( CompositionAPI );
 
 localVue.use( FeatureTogglePlugin, { activeFeatures: [
-	'campaigns.address_type.preselection',
+	'campaigns.encryption_hint',
+	'campaigns.address_type_steps',
 ] } );
 
 describe( 'AddressPage', () => {
