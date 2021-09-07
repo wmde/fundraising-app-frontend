@@ -8,7 +8,9 @@
 		</div>
 		<div v-if="!hasErrored && !hasSucceeded">
 			<AutofillHandler v-on:autofill="onAutofill">
-				<address-type v-on:address-type="setAddressType( $event )" :disabled-anonymous-type="true"></address-type>
+				<address-type-full
+					v-on:address-type="setAddressType( $event )"
+					:initial-address-type="'person'"></address-type-full>
 				<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" v-on:field-changed="onFieldChange"></name>
 				<postal :show-error="fieldErrors" :form-data="formData" :countries="countries" v-on:field-changed="onFieldChange"></postal>
 				<email :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange"></email>
@@ -41,7 +43,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import AddressType from '@/components/pages/donation_form/AddressType.vue';
+import AddressTypeFull from '@/components/pages/donation_confirmation/AddressTypeFull.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
 import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
@@ -53,7 +55,7 @@ import { AddressValidity, AddressFormData, ValidationResult } from '@/view_model
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import { Validity } from '@/view_models/Validity';
 import { NS_ADDRESS } from '@/store/namespaces';
-import { setAddressField, validateAddress, validateEmail, setReceiptOptOut, setAddressType } from '@/store/address/actionTypes';
+import { setAddressField, validateAddress, validateEmail, setAddressType } from '@/store/address/actionTypes';
 import { action } from '@/store/util';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import SubmitValues from '@/components/pages/update_address/SubmitValues.vue';
@@ -69,7 +71,7 @@ export default Vue.extend( {
 	components: {
 		Name,
 		Postal,
-		AddressType,
+		AddressTypeFull,
 		ReceiptOptOut,
 		Email,
 		NewsletterOptIn,
@@ -146,6 +148,7 @@ export default Vue.extend( {
 	},
 	mounted: function () {
 		trackDynamicForm();
+		this.setAddressType( AddressTypeModel.PERSON );
 	},
 	props: {
 		donation: Object,

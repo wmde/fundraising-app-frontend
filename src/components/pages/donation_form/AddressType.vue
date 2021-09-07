@@ -78,7 +78,6 @@ export default defineComponent( {
 	name: 'AddressType',
 	props: {
 		disabledAddressTypes: Array as PropType<Array<AddressTypeModel>>,
-		disabledAnonymousType: Boolean,
 		initialAddressType: String,
 		isDirectDebit: Boolean,
 	},
