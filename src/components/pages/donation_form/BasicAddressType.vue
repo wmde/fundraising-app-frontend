@@ -69,11 +69,11 @@ export default defineComponent( {
 			case AddressTypeModel.COMPANY:
 				addressType.value = 'company';
 				break;
-
 		}
 		const type: Ref<AddressTypeModel> = ref( addressTypeFromName( initialAddressTypeString ) );
 
-		const disableEmail = computed( (): boolean => props.disabledAddressTypes !== undefined && props.disabledAddressTypes.includes( AddressTypeModel.EMAIL ) );
+		emit( 'set-full-selected', true );
+
 		const disableAnonymous = computed( (): boolean => props.disabledAddressTypes !== undefined && props.disabledAddressTypes.includes( AddressTypeModel.ANON ) );
 
 		// When disabled address type is selected, revert to person type
@@ -102,7 +102,6 @@ export default defineComponent( {
 		return {
 			type,
 			addressType,
-			disableEmail,
 			disableAnonymous,
 		};
 	},

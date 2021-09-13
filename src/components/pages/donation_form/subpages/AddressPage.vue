@@ -28,9 +28,10 @@
         <basic-address-type
             slot="campaigns.address_type_steps.direct"
             v-on:address-type="setAddressType( $event )"
+			v-on:set-full-selected="setFullSelected"
             :disabledAddressTypes="disabledAddressTypes"
             :is-direct-debit="isDirectDebit"
-            :initial-address-type="addressTypeName"
+            initial-address-type="full"
         />
       </feature-toggle>
 			<span
