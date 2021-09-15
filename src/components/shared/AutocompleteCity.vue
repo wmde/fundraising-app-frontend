@@ -11,7 +11,6 @@
 		:open-on-focus="true"
 		:data="cities"
 		@input="onInput"
-		@select="onSelect"
 		@blur="onBlur">
 		<template slot-scope="props">
 			<strong>{{ postcode }}</strong> {{ props.option }}
@@ -23,7 +22,6 @@
 import Vue from 'vue';
 import { onMounted, ref, watch, computed, inject } from '@vue/composition-api';
 import { CityAutocompleteResource, NullCityAutocompleteResource } from '@/CityAutocompleteResource';
-import { trackEvent } from '@/tracking';
 import { InputField } from '@/view_models/Address';
 
 const postcodePattern = /^[0-9]{5}$/;
@@ -56,9 +54,6 @@ export default Vue.extend( {
 
 			cityAutocompleteResource.getCitiesInPostcode( postcode ).then(
 				( newCities: Array<string> ) => {
-					if ( newCities.length === 0 ) {
-						trackEvent( 'City Autocomplete No Results for Postcode', postcode );
-					}
 					cities.value = newCities;
 				}
 			);
@@ -66,10 +61,6 @@ export default Vue.extend( {
 
 		const onInput = () => {
 			emit( 'field-changed' );
-		};
-
-		const onSelect = ( option: string ) => {
-			trackEvent( 'City Autocomplete Result Selected', option );
 		};
 
 		// This is for hiding the cities suggestions after the user
@@ -103,7 +94,6 @@ export default Vue.extend( {
 			cities,
 			autocomplete,
 			onInput,
-			onSelect,
 			onBlur,
 			placeholder,
 		};
