@@ -57,7 +57,7 @@
 					</button>
 				</div>
 				<div class="cookie-notice-button accept">
-					<button class="button is-primary is-main" v-on:click="onAcceptButtonClick">
+					<button class="button is-primary is-main is-outlined" v-on:click="onAcceptButtonClick">
 						<span>{{ $t( 'cookie_button_accept' ) }}</span>
 					</button>
 				</div>
