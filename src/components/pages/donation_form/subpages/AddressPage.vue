@@ -16,13 +16,24 @@
 		</form>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
-			<address-type
-					v-on:address-type="setAddressType( $event )"
-					v-on:set-full-selected="setFullSelected"
-					:disabledAddressTypes="disabledAddressTypes"
-					:is-direct-debit="isDirectDebit"
-					:initial-address-type="addressTypeName"
-			/>
+      <feature-toggle>
+        <address-type
+            slot="campaigns.address_type_steps.multistep"
+            v-on:address-type="setAddressType( $event )"
+            v-on:set-full-selected="setFullSelected"
+            :disabledAddressTypes="disabledAddressTypes"
+            :is-direct-debit="isDirectDebit"
+            :initial-address-type="addressTypeName"
+        />
+        <basic-address-type
+            slot="campaigns.address_type_steps.direct"
+            v-on:address-type="setAddressType( $event )"
+			v-on:set-full-selected="setFullSelected"
+            :disabledAddressTypes="disabledAddressTypes"
+            :is-direct-debit="isDirectDebit"
+            initial-address-type="full"
+        />
+      </feature-toggle>
 			<span
 					v-if="addressTypeIsInvalid"
 					class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
@@ -78,6 +89,7 @@ import Vue from 'vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
 import AddressType from '@/components/pages/donation_form/AddressType.vue';
+import BasicAddressType from '@/components/pages/donation_form/BasicAddressType.vue';
 import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
@@ -103,6 +115,7 @@ export default Vue.extend( {
 		AutofillHandler,
 		AddressForms,
 		AddressType,
+		BasicAddressType,
 		SubmitValues,
 		PaymentBankData,
 		PaymentSummary,
