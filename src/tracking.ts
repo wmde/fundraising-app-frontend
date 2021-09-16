@@ -27,11 +27,9 @@ export function trackEvent( eventName: string, ...params: Array<string> ) {
 }
 
 export function setTrackingConsentGiven() {
-	_paq.push( [ 'setConsentGiven' ] );
 	_paq.push( [ 'setCookieConsentGiven' ] );
 }
 
 export function forgetTrackingConsentGiven() {
-	_paq.push( [ 'forgetConsentGiven' ] );
 	_paq.push( [ 'forgetCookieConsentGiven' ] );
 }
