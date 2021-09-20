@@ -33,3 +33,7 @@ export function setTrackingConsentGiven() {
 export function forgetTrackingConsentGiven() {
 	_paq.push( [ 'forgetCookieConsentGiven' ] );
 }
+
+export function trackGoal( id: number ) {
+	_paq.push( [ 'trackGoal', id ] );
+}

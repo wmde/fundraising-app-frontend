@@ -4,11 +4,12 @@ import VueCompositionApi from '@vue/composition-api';
 import PageDataInitializer from '@/page_data_initializer';
 import { createI18n } from '@/locales';
 import App from '@/components/App.vue';
-
 import Component from '@/components/pages/MembershipConfirmation.vue';
 import { clearPersistentData } from '@/store/create_data_persister';
 import LocalStorageRepository from '@/store/LocalStorageRepository';
 import createCookieConsent from '@/cookie_consent';
+import { trackGoal } from '@/tracking';
+import { Salutation } from '@/view_models/Salutation';
 
 const PAGE_IDENTIFIER = 'membership-application-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -20,9 +21,16 @@ Vue.use( VueCompositionApi );
 
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 
-const pageData = new PageDataInitializer<any>( '#appdata' );
+interface MembershipApplicationConfirmationModel {
+	piwik: { membershipApplicationConfirmationGoalId: number; },
+	salutations: Array<Salutation>,
+}
+
+const pageData = new PageDataInitializer<MembershipApplicationConfirmationModel>( '#appdata' );
 
 const i18n = createI18n( pageData.messages );
+
+trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId );
 
 new Vue( {
 	i18n,

@@ -16,6 +16,7 @@ import { FeatureTogglePlugin } from '@/FeatureToggle';
 import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
+import { trackGoal } from '@/tracking';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -35,12 +36,15 @@ interface DonationConfirmationModel {
 	addressType: String,
 	addressValidationPatterns: AddressValidation,
 	salutations: Array<Salutation>,
+	piwik: { donationConfirmationGoalId: number; },
 }
 
 const pageData = new PageDataInitializer<DonationConfirmationModel>( '#appdata' );
 const store = createStore();
 
 const i18n = createI18n( pageData.messages );
+
+trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
 Vue.use( FeatureTogglePlugin, { activeFeatures: pageData.selectedBuckets } );
 const Component = pageData.selectedBuckets.indexOf( 'campaigns.confirmation_page_layout.new_layout' ) !== -1 ? DonationConfirmationAlt : DonationConfirmation;
