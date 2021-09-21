@@ -9,9 +9,7 @@
 				@change.native="$emit('toggle')"
 			>
 				<span class="cookie-checkbox-heading">{{ heading }}</span>
-				<span class="cookie-checkbox-content">
-					{{ content }}
-				</span>
+				<span class="cookie-checkbox-content" v-html="content"></span>
 			</b-checkbox>
 	</div>
 </template>
