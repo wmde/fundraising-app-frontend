@@ -28,6 +28,7 @@ import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
+import { Salutation } from '@/view_models/Salutation';
 
 const PAGE_IDENTIFIER = 'membership-application';
 const FORM_NAMESPACE = 'membership_application';
@@ -41,6 +42,7 @@ interface MembershipAmountModel {
 	paymentIntervals: Array<string>,
 	tracking: Array<number>,
 	countries: Array<Country>,
+	salutations: Array<Salutation>,
 	urls: any,
 	showMembershipTypeOption: Boolean,
 	initialFormValues: InitialMembershipData,
@@ -115,6 +117,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 						validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
 						paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),
 						countries: pageData.applicationVars.countries,
+						salutations: pageData.applicationVars.salutations,
 						showMembershipTypeOption: pageData.applicationVars.showMembershipTypeOption,
 						paymentIntervals: pageData.applicationVars.paymentIntervals,
 						addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,

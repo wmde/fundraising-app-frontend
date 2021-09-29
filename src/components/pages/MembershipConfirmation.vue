@@ -2,8 +2,11 @@
 	<div class="membership-confirmation">
 		<div class="donation-summary-wrapper has-background-bright columns has-padding-18">
 			<div class="column is-half">
-				<membership-summary :address="confirmationData.address"
-									:membershipApplication="confirmationData.membershipApplication">
+				<membership-summary
+					:address="confirmationData.address"
+					:membershipApplication="confirmationData.membershipApplication"
+					:salutations="salutations"
+				>
 					<div class="has-margin-top-18" v-if="hasIncentives()">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</div>
 					<div class="has-margin-top-18" v-if="!hasIncentives()">{{ $t( 'membership_confirmation_success_text' ) }}</div>
 				</membership-summary>
@@ -34,6 +37,7 @@ export default Vue.extend( {
 	},
 	props: [
 		'confirmationData',
+		'salutations',
 	],
 	methods: {
 		hasIncentives(): boolean {

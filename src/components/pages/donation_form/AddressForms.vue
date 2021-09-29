@@ -11,6 +11,7 @@
 						:show-error="fieldErrors"
 						:form-data="formData"
 						:address-type="AddressTypeModel.PERSON"
+						:salutations="salutations"
 						v-on:field-changed="onFieldChange"/>
 				<postal
 						:show-error="fieldErrors"
@@ -42,6 +43,7 @@
 						:show-error="fieldErrors"
 						:form-data="formData"
 						:address-type="AddressTypeModel.COMPANY"
+						:salutations="salutations"
 						v-on:field-changed="onFieldChange"/>
 				<postal
 						:show-error="fieldErrors"
@@ -73,6 +75,7 @@
 						:show-error="fieldErrors"
 						:form-data="formData"
 						:address-type="AddressTypeModel.PERSON"
+						:salutations="salutations"
 						v-on:field-changed="onFieldChange"/>
 				<email
 						:show-error="fieldErrors.email"
@@ -108,6 +111,7 @@ import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
 import { useAddressFunctions } from './AddressFunctions';
+import { Salutation } from '@/view_models/Salutation';
 
 export const AddressTypeIds = new Map<number, string>( [
 	[ AddressTypeModel.ANON, 'anonymous' ],
@@ -133,6 +137,7 @@ export default Vue.extend( {
 		addressValidationPatterns: Object as PropType<AddressValidation>,
 		addressType: Number,
 		isFullSelected: Boolean,
+		salutations: Array as () => Array<Salutation>,
 	},
 	setup( props: any, { root: { $store } } ) {
 		const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );

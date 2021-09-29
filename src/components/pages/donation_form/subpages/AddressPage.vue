@@ -46,6 +46,7 @@
 
 		<address-forms
 				:countries="countries"
+				:salutations="salutations"
 				:address-validation-patterns="addressValidationPatterns"
 				:is-full-selected="isFullSelected"
 				:address-type="addressType">
@@ -57,6 +58,7 @@
 					:address-type="addressTypeName"
 					:address="addressSummary"
 					:countries="countries"
+					:salutations="salutations"
 					:language-item="inlineSummaryLanguageItem"
 				/>
 
@@ -108,6 +110,7 @@ import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 import { useAddressTypeFunctions } from '@/components/pages/donation_form/AddressTypeFunctions';
 import { computed, ref, onMounted } from '@vue/composition-api';
 import { validateAddress, validateAddressType, validateEmail } from '@/store/address/actionTypes';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'AddressPage',
@@ -129,6 +132,7 @@ export default Vue.extend( {
 		validateBankDataUrl: String,
 		validateLegacyBankDataUrl: String,
 		countries: Array as () => Array<Country>,
+		salutations: Array as () => Array<Salutation>,
 		trackingData: Object as () => TrackingData,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},

@@ -10,6 +10,7 @@
 						:address-type="currentAddressType"
 						:payment="donation"
 						:countries="countries"
+						:salutations="salutations"
 				/>
 				<div class="payment-email" v-html="getEmail()"></div>
 				<b-button v-if="showAddressChangeButton"
@@ -23,6 +24,7 @@
 				<b-modal :active.sync="isAddressModalOpen" scroll="keep" class="address-modal" has-modal-card>
 					<address-modal
 							:countries="countries"
+							:salutations="salutations"
 							:donation="donation"
 							:updateDonorUrl="updateDonorUrl"
 							:validate-address-url="validateAddressUrl"
@@ -86,6 +88,7 @@ import { Country } from '@/view_models/Country';
 import { SubmittedAddress } from '@/view_models/Address';
 import { Donation } from '@/view_models/Donation';
 import { AddressValidation } from '@/view_models/Validation';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
@@ -118,6 +121,7 @@ export default Vue.extend( {
 		cancelDonationUrl: String,
 		postCommentUrl: String,
 		countries: Array as () => Array<Country>,
+		salutations: Array as () => Array<Salutation>,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
 	methods: {

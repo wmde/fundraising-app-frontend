@@ -23,6 +23,7 @@ import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
+import { Salutation } from '@/view_models/Salutation';
 
 const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
@@ -42,6 +43,7 @@ interface DonationFormModel {
 	userDataKey: string,
 	addressValidationPatterns: AddressValidation,
 	donationMaximumAmount: number,
+	salutations: Array<Salutation>,
 }
 
 const pageData = new PageDataInitializer<DonationFormModel>( '#appdata' );
@@ -105,6 +107,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 						paymentIntervals: pageData.applicationVars.paymentIntervals,
 						paymentTypes: pageData.applicationVars.paymentTypes,
 						countries: pageData.applicationVars.countries,
+						salutations: pageData.applicationVars.salutations,
 						trackingData: pageData.applicationVars.tracking,
 						addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
 						startPage: paymentDataComplete ? 'AddressPage' : 'PaymentPage',

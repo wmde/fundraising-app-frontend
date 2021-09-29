@@ -2,7 +2,7 @@
 	<div class="payment-page">
 		<payment v-bind="$props"></payment>
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
-			<membership-summary :membership-application="membershipApplication" :address="addressSummary"></membership-summary>
+			<membership-summary :membership-application="membershipApplication" :address="addressSummary" :salutations="salutations"></membership-summary>
 			<submit-values :tracking-data="{}"></submit-values>
 			<div class="columns has-margin-top-18">
 				<div class="column">
@@ -37,6 +37,7 @@ import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@/
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import { membershipTypeName } from '@/view_models/MembershipTypeModel';
 import { addressTypeName } from '@/view_models/AddressTypeModel';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'PaymentPage',
@@ -51,6 +52,7 @@ export default Vue.extend( {
 		paymentIntervals: Array as () => Array<Number>,
 		validateBankDataUrl: String,
 		validateLegacyBankDataUrl: String,
+		salutations: Array as () => Array<Salutation>,
 	},
 	methods: {
 		submit() {

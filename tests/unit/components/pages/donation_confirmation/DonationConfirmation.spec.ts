@@ -51,6 +51,18 @@ function getDefaultConfirmationData(): any {
 				'postCodeValidation': '^[0-9]{4}$',
 			},
 		],
+		salutations: [
+			{
+				'label': 'Herr',
+				'value': 'Herr',
+				'display': 'Herr',
+			},
+			{
+				'label': 'Frau',
+				'value': 'Frau',
+				'display': 'Frau',
+			},
+		],
 	};
 }
 

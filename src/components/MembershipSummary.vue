@@ -11,8 +11,8 @@ import Vue from 'vue';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 
 class PrivateApplicantRenderer {
-	static renderAddress( address, country ) {
-		return address.salutation + ' ' + address.fullName + ', '
+	static renderAddress( address, country, salutation ) {
+		return salutation + address.fullName + ', '
 				+ address.streetAddress + ', ' + address.postalCode + ' ' + address.city + ', ' + country
 				+ ' <p>E-Mail: ' + address.email + '</p>';
 	}
@@ -35,6 +35,7 @@ export default Vue.extend( {
 	props: [
 		'address',
 		'membershipApplication',
+		'salutations',
 	],
 	methods: {
 		getSummary: function () {
@@ -53,7 +54,11 @@ export default Vue.extend( {
 				this.$t( 'donation_form_payment_interval_12' )
 			);
 			const membershipType = this.$t( this.membershipApplication.membershipType );
-			const address = addressTypeRenderer.renderAddress( this.address, this.$t( 'donation_form_country_option_' + this.address.countryCode ) );
+			const address = addressTypeRenderer.renderAddress(
+				this.address,
+				this.$t( 'donation_form_country_option_' + this.address.countryCode ),
+				this.renderSalutation()
+			);
 
 			return this.$t(
 				'membership_confirmation_data_text',
@@ -65,6 +70,13 @@ export default Vue.extend( {
 					address: address,
 				}
 			);
+		},
+		renderSalutation() {
+			if ( !this.address.salutation ) {
+				return '';
+			}
+
+			return this.$props.salutations.find( salutation => salutation.value === this.address.salutation )?.display + ' ';
 		},
 		renderAmount( amount, interval, currencyTranslation, intervalTranslation ) {
 			if ( interval === 12 ) {

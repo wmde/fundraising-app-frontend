@@ -41,6 +41,7 @@ new Vue( {
 		h( Component, {
 			props: {
 				confirmationData: pageData.applicationVars,
+				salutations: pageData.applicationVars.salutations,
 			},
 		} ),
 	] ),

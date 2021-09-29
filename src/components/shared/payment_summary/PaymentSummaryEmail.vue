@@ -12,6 +12,7 @@ export default {
 		'paymentType',
 		'country',
 		'languageItem',
+		'salutation',
 	],
 	methods: {
 		getSummary: function () {
@@ -33,11 +34,17 @@ export default {
 			}
 			return this.address.email;
 		},
+		salutationDisplay: function () {
+			if ( this.salutation === '' ) {
+				return '';
+			}
+			return this.salutation + ' ';
+		},
 		addressString: function () {
 			if ( !this.canRenderAddress() ) {
 				return this.$t( 'donation_confirmation_review_address_missing' );
 			}
-			return this.$props.address.salutation + ' ' + this.$props.address.fullName;
+			return this.salutationDisplay() + this.$props.address.fullName;
 		},
 		canRenderAddress: function () {
 			return this.$props.address.salutation

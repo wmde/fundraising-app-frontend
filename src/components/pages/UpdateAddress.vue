@@ -9,6 +9,7 @@
 				<name :show-error="fieldErrors"
 						:form-data="formData"
 						:address-type="addressType"
+						:salutations="salutations"
 						v-on:field-changed="onFieldChange">
 				</name>
 				<postal :show-error="fieldErrors"
@@ -47,6 +48,7 @@ import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeMode
 import { AddressValidation } from '@/view_models/Validation';
 import { mapGetters } from 'vuex';
 import { trackFormSubmission } from '@/tracking';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'UpdateAddress',
@@ -124,6 +126,7 @@ export default Vue.extend( {
 		updateAddressURL: String,
 		isCompany: Boolean,
 		countries: Array as () => Array<Country>,
+		salutations: Array as () => Array<Salutation>,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
 	computed: {
