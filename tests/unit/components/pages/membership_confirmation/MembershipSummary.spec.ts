@@ -54,6 +54,19 @@ const yearlyPayment = {
 	paymentIntervalInMonths: 12,
 };
 
+const salutations = [
+	{
+		'label': 'Herr',
+		'value': 'Herr',
+		'display': 'Herr',
+	},
+	{
+		'label': 'Frau',
+		'value': 'Frau',
+		'display': 'Frau',
+	},
+];
+
 const mockTranslate = function ( key: string, params?: Object ) {
 	return key + ( params ? ': ' + JSON.stringify( params, null, 2 ) : '' );
 };
@@ -65,6 +78,7 @@ describe( 'MembershipSummary', () => {
 			propsData: {
 				address: privateAddress,
 				membershipApplication: monthlyPayment,
+				salutations,
 			},
 			store: createStore(),
 			mocks: {
@@ -84,6 +98,7 @@ describe( 'MembershipSummary', () => {
 			propsData: {
 				address: companyAddress,
 				membershipApplication: monthlyPayment,
+				salutations
 			},
 			store: createStore(),
 			mocks: {
@@ -106,6 +121,7 @@ describe( 'MembershipSummary', () => {
 			propsData: {
 				address: companyAddress,
 				membershipApplication: monthlyPayment,
+				salutations,
 			},
 			store: createStore(),
 			mocks: {
@@ -124,6 +140,7 @@ describe( 'MembershipSummary', () => {
 			propsData: {
 				address: companyAddress,
 				membershipApplication: quarterlyPayment,
+				salutations,
 			},
 			store: createStore(),
 			mocks: {
@@ -142,6 +159,7 @@ describe( 'MembershipSummary', () => {
 			propsData: {
 				address: companyAddress,
 				membershipApplication: yearlyPayment,
+				salutations,
 			},
 			store: createStore(),
 			mocks: {

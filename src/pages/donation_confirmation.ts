@@ -15,6 +15,7 @@ import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
+import { Salutation } from '@/view_models/Salutation';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -33,6 +34,7 @@ interface DonationConfirmationModel {
 	address: Object,
 	addressType: String,
 	addressValidationPatterns: AddressValidation,
+	salutations: Array<Salutation>,
 }
 
 const pageData = new PageDataInitializer<DonationConfirmationModel>( '#appdata' );
@@ -65,6 +67,7 @@ new Vue( {
 				address: pageData.applicationVars.address,
 				addressType: pageData.applicationVars.addressType,
 				countries: pageData.applicationVars.countries,
+				salutations: pageData.applicationVars.salutations,
 				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 				validateEmailUrl: pageData.applicationVars.urls.validateEmail,
 				updateDonorUrl: pageData.applicationVars.urls.updateDonor,

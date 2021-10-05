@@ -4,19 +4,13 @@
 		<fieldset class="form-input form-input__horizontal-option-list">
 			<legend class="subtitle">{{ $t( 'donation_form_salutation_label' ) }}</legend>
 			<div class="radio-container">
-				<b-radio id="salutation-mr"
+				<b-radio v-for="salutation in salutations" :key="salutation.value"
+						:id="`salutation-${salutation.value}`"
 						name="salutationInternal"
-						:native-value="$t( 'donation_form_salutation_option_mr' ) "
+						:native-value="salutation.label"
 						v-model="formData.salutation.value"
 						@input="$emit('field-changed', 'salutation')">
-					{{ $t( 'donation_form_salutation_option_mr' ) }}
-				</b-radio>
-				<b-radio id="salutation-mrs"
-						name="salutationInternal"
-						:native-value="$t( 'donation_form_salutation_option_mrs' ) "
-						v-model="formData.salutation.value"
-						@input="$emit('field-changed', 'salutation')">
-					{{ $t( 'donation_form_salutation_option_mrs' ) }}
+					{{ salutation.label }}
 				</b-radio>
 			</div>
 			<span v-if="showError.salutation" class="help is-danger"> {{ $t( 'donation_form_salutation_error' ) }}</span>
@@ -87,6 +81,7 @@ import Vue from 'vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressValidity, AddressFormData } from '@/view_models/Address';
 import { computed } from '@vue/composition-api';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'name',
@@ -94,6 +89,7 @@ export default Vue.extend( {
 		showError: Object as () => AddressValidity,
 		formData: Object as () => AddressFormData,
 		addressType: Number as () => AddressTypeModel,
+		salutations: Array as () => Array<Salutation>,
 	},
 	setup( props ) {
 		const showPersonalFields = computed( () => props.addressType === AddressTypeModel.PERSON ||

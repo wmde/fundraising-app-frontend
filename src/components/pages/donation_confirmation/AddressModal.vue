@@ -11,7 +11,7 @@
 				<address-type-full
 					v-on:address-type="setAddressType( $event )"
 					:initial-address-type="'person'"></address-type-full>
-				<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" v-on:field-changed="onFieldChange"></name>
+				<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"></name>
 				<postal :show-error="fieldErrors" :form-data="formData" :countries="countries" v-on:field-changed="onFieldChange"></postal>
 				<email :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange"></email>
 			</AutofillHandler>
@@ -65,6 +65,7 @@ import { mergeValidationResults } from '@/merge_validation_results';
 import { camelizeName } from '@/camlize_name';
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'AddressModal',
@@ -156,6 +157,7 @@ export default Vue.extend( {
 		validateEmailUrl: String,
 		validateAddressUrl: String,
 		countries: Array as () => Array<Country>,
+		salutations: Array as () => Array<Salutation>,
 		hasErrored: Boolean,
 		hasSucceeded: Boolean,
 		addressValidationPatterns: Object as () => AddressValidation,

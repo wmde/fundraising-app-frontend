@@ -25,6 +25,18 @@ describe( 'DonationSummary', () => {
 			'postCodeValidation': '^[0-9]{4}$',
 		},
 	];
+	const salutations = [
+		{
+			'label': 'Herr',
+			'value': 'Herr',
+			'display': 'Herr',
+		},
+		{
+			'label': 'Frau',
+			'value': 'Frau',
+			'display': 'Frau',
+		},
+	];
 
 	const findTranslationCallParams = ( messageKey: string, calls: any[] ) => calls.find( call => call[ 0 ] === messageKey )[ 1 ];
 
@@ -48,6 +60,7 @@ describe( 'DonationSummary', () => {
 				payment,
 				addressType: 'person',
 				countries,
+				salutations,
 				languageItem: 'language_item',
 			},
 			mocks: {
@@ -77,6 +90,7 @@ describe( 'DonationSummary', () => {
 				payment,
 				addressType: 'firma',
 				countries,
+				salutations,
 				languageItem: 'language_item',
 			},
 			mocks: {
@@ -100,6 +114,7 @@ describe( 'DonationSummary', () => {
 				address: {},
 				addressType: 'person',
 				countries,
+				salutations,
 				languageItem: 'language_item',
 			},
 			mocks: {

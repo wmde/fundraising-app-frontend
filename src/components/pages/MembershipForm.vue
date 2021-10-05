@@ -20,6 +20,7 @@ import AddressPage from '@/components/pages/membership_form/subpages/AddressPage
 import { trackFormSubmission } from '@/tracking';
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'MembershipForm',
@@ -36,6 +37,7 @@ export default Vue.extend( {
 		paymentAmounts: Array as () => Array<String>,
 		paymentIntervals: Array as () => Array<String>,
 		countries: Array as () => Array<Country>,
+		salutations: Array as () => Array<Salutation>,
 		showMembershipTypeOption: Boolean,
 		addressValidationPatterns: Object as () => AddressValidation,
 		dateOfBirthValidationPattern: String,
@@ -59,6 +61,7 @@ export default Vue.extend( {
 						validateAddressUrl: this.$props.validateAddressUrl,
 						validateEmailUrl: this.$props.validateEmailUrl,
 						countries: this.$props.countries,
+						salutations: this.$props.salutations,
 						showMembershipTypeOption: this.$props.showMembershipTypeOption,
 						addressValidationPatterns: this.$props.addressValidationPatterns,
 						dateOfBirthValidationPattern: this.$props.dateOfBirthValidationPattern,
@@ -70,6 +73,7 @@ export default Vue.extend( {
 					paymentIntervals: this.$props.paymentIntervals,
 					validateBankDataUrl: this.$props.validateBankDataUrl,
 					validateLegacyBankDataUrl: this.$props.validateLegacyBankDataUrl,
+					salutations: this.$props.salutations,
 				};
 			},
 		},

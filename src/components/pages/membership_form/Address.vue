@@ -5,7 +5,7 @@
 		</div>
 		<h1 class="has-margin-top-36 title is-size-5">{{ $t( 'donation_form_section_address_title' ) }}</h1>
 		<AutofillHandler @autofill="onAutofill">
-			<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" v-on:field-changed="onFieldChange"/>
+			<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"/>
 			<postal
 					:show-error="fieldErrors"
 					:form-data="formData"
@@ -59,6 +59,7 @@ import {
 import { action } from '@/store/util';
 import { mergeValidationResults } from '@/merge_validation_results';
 import { camelizeName } from '@/camlize_name';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'Address',
@@ -142,6 +143,7 @@ export default Vue.extend( {
 		validateAddressUrl: String,
 		validateEmailUrl: String,
 		countries: Array as () => Array<String>,
+		salutations: Array as () => Array<Salutation>,
 		initialFormValues: [ Object, String ],
 		addressValidationPatterns: Object as () => AddressValidation,
 		dateOfBirthValidationPattern: String,

@@ -6,6 +6,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Buefy from 'buefy';
 import PaymentPage from '@/components/pages/donation_form/subpages/PaymentPage.vue';
+import CompositionAPI from "@vue/composition-api";
+import { FeatureTogglePlugin } from "@/FeatureToggle";
 
 jest.mock( '@/tracking', () => {
 	return {
@@ -28,17 +30,31 @@ describe( 'DonationForm', () => {
 		'payment/paymentDataIsValid': jest.fn(),
 		'isValidating': () => false,
 	};
+	const salutations = [
+		{
+			'label': 'Herr',
+			'value': 'Herr',
+			'display': 'Herr',
+		},
+		{
+			'label': 'Frau',
+			'value': 'Frau',
+			'display': 'Frau',
+		},
+	];
 	beforeEach( () => {
 		global.window.scrollTo = jest.fn();
 		const localVue = createLocalVue();
 		localVue.use( Vuex );
 		localVue.use( Buefy );
+		localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.encryption_hint.visible' ] } );
 		wrapper = mount( PaymentPage, {
 			localVue,
 			propsData: {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
+				salutations,
 			},
 			store: new Vuex.Store( {
 				actions,

@@ -19,6 +19,7 @@ import PaymentPage from '@/components/pages/donation_form/subpages/PaymentPage.v
 import AddressPage from '@/components/pages/donation_form/subpages/AddressPage.vue';
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'DonationForm',
@@ -36,6 +37,7 @@ export default Vue.extend( {
 		paymentIntervals: Array as () => Array<Number>,
 		paymentTypes: Array as () => Array<String>,
 		countries: Array as () => Array<Country>,
+		salutations: Array as () => Array<Salutation>,
 		trackingData: Object as () => TrackingData,
 		addressValidationPatterns: Object as () => AddressValidation,
 		startPage: {
@@ -70,6 +72,7 @@ export default Vue.extend( {
 						validateBankDataUrl: this.$props.validateBankDataUrl,
 						validateLegacyBankDataUrl: this.$props.validateLegacyBankDataUrl,
 						countries: this.$props.countries,
+						salutations: this.$props.salutations,
 						trackingData: this.$props.trackingData,
 						addressValidationPatterns: this.$props.addressValidationPatterns,
 					};

@@ -13,6 +13,7 @@ import { AddressValidation } from '@/view_models/Validation';
 import { Country } from '@/view_models/Country';
 import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
+import { Salutation } from '@/view_models/Salutation';
 
 const PAGE_IDENTIFIER = 'update-address';
 const FORM_NAMESPACE = 'update_address';
@@ -24,6 +25,7 @@ Vue.use( VueCompositionApi );
 interface UpdateAddressModel {
 	isCompany: boolean,
 	countries: Array<Country>,
+	salutations: Array<Salutation>,
 	urls: any,
 	addressValidationPatterns: AddressValidation,
 }
@@ -56,6 +58,7 @@ new Vue( {
 				updateAddressURL: pageData.applicationVars.urls.updateAddress,
 				isCompany: pageData.applicationVars.isCompany,
 				countries: pageData.applicationVars.countries,
+				salutations: pageData.applicationVars.salutations,
 				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
 			},
 		} ),

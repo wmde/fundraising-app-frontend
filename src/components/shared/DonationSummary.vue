@@ -8,6 +8,7 @@
 			:paymentType="paymentType"
 			:country="country"
 			:language-item="languageItem"
+			:salutation="salutation"
 		></component>
 	</div>
 </template>
@@ -36,6 +37,7 @@ export default Vue.extend( {
 		'payment',
 		'countries',
 		'languageItem',
+		'salutations',
 	],
 	computed: {
 		addressTypeComponent: function () {
@@ -53,6 +55,13 @@ export default Vue.extend( {
 		country: function () {
 			const countryObject = this.countries.find( c => ( c.countryCode === this.address.countryCode || c.countryCode === this.address.country ) );
 			return countryObject ? countryObject.countryFullName : '';
+		},
+		salutation: function () {
+			if ( !this.address.salutation ) {
+				return '';
+			}
+
+			return this.$props.salutations.find( salutation => salutation.value === this.address.salutation )?.display;
 		},
 	},
 } );

@@ -6,6 +6,7 @@
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
 				:countries="countries"
+				:salutations="salutations"
 				:address-validation-patterns="addressValidationPatterns"
 				:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
 				ref="address">
@@ -28,6 +29,7 @@ import MembershipType from '@/components/pages/membership_form//MembershipType.v
 import AddressFields from '@/components/pages/membership_form/Address.vue';
 import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
 import { AddressValidation } from '@/view_models/Validation';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'AddressPage',
@@ -39,6 +41,7 @@ export default Vue.extend( {
 		validateAddressUrl: String,
 		validateEmailUrl: String,
 		countries: Array as () => Array<String>,
+		salutations: Array as () => Array<Salutation>,
 		showMembershipTypeOption: Boolean,
 		addressValidationPatterns: Object as () => AddressValidation,
 		dateOfBirthValidationPattern: String,

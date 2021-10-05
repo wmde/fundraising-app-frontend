@@ -7,6 +7,7 @@
 				:address-type="addressType"
 				:address="address"
 				:countries="countries"
+				:salutations="salutations"
 				:language-item="'donation_confirmation_topbox_summary'"
 			/>
 			<donation-summary
@@ -15,6 +16,7 @@
 				:address-type="addressType"
 				:address="address"
 				:countries="countries"
+				:salutations="salutations"
 				:language-item="inlineSummaryLanguageItem"
 			/>
 		</feature-toggle>
@@ -34,6 +36,7 @@ export default Vue.extend( {
 		'addressType',
 		'payment',
 		'countries',
+		'salutations',
 	],
 	components: {
 		DonationSummary,
