@@ -24,6 +24,7 @@ import { AddressValidation } from '@/view_models/Validation';
 import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
+import { TrackingData } from '@/view_models/TrackingData';
 
 const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
@@ -37,7 +38,7 @@ interface DonationFormModel {
 	presetAmounts: Array<string>,
 	paymentTypes: Array<string>,
 	paymentIntervals: Array<number>,
-	tracking: Array<number>,
+	tracking: TrackingData,
 	countries: Array<Country>,
 	urls: any,
 	userDataKey: string,
