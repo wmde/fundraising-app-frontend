@@ -331,6 +331,12 @@
 	}
 }
 
+#address-type-selection{
+	.info-message {
+		line-height: 1.25;
+	}
+}
+
 @import "overrides";
 @import "compact_form"; // AB Test Import
 @import "components/address_usage_toggle";

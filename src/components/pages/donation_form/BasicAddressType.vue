@@ -40,8 +40,6 @@
 import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { computed, defineComponent, PropType, Ref, ref, watch } from '@vue/composition-api';
 
-// TODO: If this option wins the test add a store state to handle the pre-address type selection
-//       This will allow it to be saved and restored from local storage and simplify states here
 export default defineComponent( {
 	name: 'BasicAddressType',
 	props: {
