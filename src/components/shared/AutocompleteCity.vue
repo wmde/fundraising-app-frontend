@@ -72,7 +72,7 @@ export default Vue.extend( {
 		const onBlur = () => {
 			setTimeout( () => {
 				autocomplete.value?.clickedOutside( new Event( 'fake event' ) );
-			}, 100 );
+			}, 200 );
 		};
 
 		onMounted( () => {
