@@ -1,6 +1,6 @@
 import { Ref, ComputedRef, computed, ref } from '@vue/composition-api';
 import axios from 'axios';
-import { forgetTrackingConsentGiven, setTrackingConsentGiven } from '@/tracking';
+import { forgetTrackingConsentGiven, setTrackingConsentGiven, trackEvent } from '@/tracking';
 
 const CONSENT_ENDPOINT: string = '/set-cookie-preferences';
 
@@ -80,8 +80,10 @@ export default function createCookieConsent( defaultConsent: string ): CookieCon
 			consentState.value = consent;
 			if ( consent === CONSENT_STATE.TRUE ) {
 				setTrackingConsentGiven();
+				trackEvent( 'All Cookies Were Accepted' );
 			} else {
 				forgetTrackingConsentGiven();
+				trackEvent( 'Necessary Cookies Were Accepted' );
 			}
 		} );
 	};
