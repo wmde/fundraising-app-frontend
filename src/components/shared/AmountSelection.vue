@@ -65,10 +65,10 @@ export default Vue.extend( {
 			},
 		},
 		selectedAmount: {
-			get: function (): string {
+			get: function (): number {
 				const amount = this.$props.amount;
 				const amountFound = this.$props.paymentAmounts.indexOf( Number( amount ) );
-				return amountFound > -1 ? amount : '';
+				return amountFound > -1 ? Number( amount ) : 0;
 			},
 		},
 		customAmount: {
@@ -78,13 +78,9 @@ export default Vue.extend( {
 				if ( amountFound > -1 || amount === '0' || amount === '' ) {
 					return '';
 				}
-				// Format German number
-				return String( ( Number( amount ) / 100 ).toFixed( 2 ) ).replace( /\./, ',' );
+				return this.$n( Number( amount ) / 100, 'decimal' );
 			},
 		},
-	},
-	filters: {
-		formatAmount: ( amount: string ) => ( Number( amount ) / 100 ).toFixed( 0 ),
 	},
 	methods: {
 		toCents: ( amount: string ): number => Math.trunc( Number( amount ) * 100 ),
@@ -95,7 +91,7 @@ export default Vue.extend( {
 			const amount = ( evt.target as HTMLInputElement ).value.trim();
 			if ( amount === '' ) {
 				// can't access computed props through this.$props here
-				if ( ( this as any ).selectedAmount !== '' ) {
+				if ( ( this as any ).selectedAmount !== 0 ) {
 					return;
 				}
 
@@ -112,4 +108,3 @@ export default Vue.extend( {
 	},
 } );
 </script>
-

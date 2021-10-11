@@ -184,7 +184,7 @@ describe( 'AmountSelection', () => {
 
 		// Can't access (computed) property on generic Vue instance,
 		// see https://github.com/vuejs/vue-test-utils/issues/255
-		expect( ( wrapper.vm as any ).selectedAmount ).toBe( '' );
+		expect( ( wrapper.vm as any ).selectedAmount ).toBe( 0 );
 	} );
 
 	it( 'clears custom amount when amount is selected', () => {
