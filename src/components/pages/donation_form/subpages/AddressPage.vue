@@ -57,7 +57,8 @@
 				:salutations="salutations"
 				:address-validation-patterns="addressValidationPatterns"
 				:is-full-selected="isFullSelected"
-				:address-type="addressType">
+				:address-type="addressType"
+				:tracking-data="trackingData">
 		</address-forms>
 
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
@@ -103,12 +104,11 @@ import AddressTypeVar from '@/components/pages/donation_form/AddressType_var.vue
 import BasicAddressType from '@/components/pages/donation_form/BasicAddressType.vue';
 import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
-import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
 import DonationSummary from '@/components/shared/DonationSummary.vue';
 import Trust from '@/components/shared/Trust.vue';
-import { TrackingData } from '@/view_models/SubmitValues';
+import { TrackingData } from '@/view_models/TrackingData';
 import { AddressValidation } from '@/view_models/Validation';
 import { Country } from '@/view_models/Country';
 import { action } from '@/store/util';
@@ -129,7 +129,6 @@ export default Vue.extend( {
 		AddressType,
 		AddressTypeVar,
 		BasicAddressType,
-		SubmitValues,
 		PaymentBankData,
 		PaymentSummary,
 		DonationSummary,

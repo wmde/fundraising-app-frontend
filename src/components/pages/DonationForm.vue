@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { TrackingData } from '@/view_models/SubmitValues';
+import { TrackingData } from '@/view_models/TrackingData';
 import PaymentPage from '@/components/pages/donation_form/subpages/PaymentPage.vue';
 import AddressPage from '@/components/pages/donation_form/subpages/AddressPage.vue';
 import { Country } from '@/view_models/Country';

@@ -29,7 +29,7 @@
 						v-on:field-changed="onFieldChange"/>
 				<newsletter-opt-in/>
 			</AutofillHandler>
-			<submit-values :tracking-data="{}"></submit-values>
+			<submit-values :tracking-data="trackingData"></submit-values>
 		</form>
 
 		<form
@@ -61,7 +61,7 @@
 						v-on:field-changed="onFieldChange"/>
 				<newsletter-opt-in/>
 			</AutofillHandler>
-			<submit-values :tracking-data="{}"></submit-values>
+			<submit-values :tracking-data="trackingData"></submit-values>
 		</form>
 
 		<form
@@ -83,7 +83,7 @@
 						v-on:field-changed="onFieldChange"/>
 				<newsletter-opt-in />
 			</AutofillHandler>
-			<submit-values :tracking-data="{}"></submit-values>
+			<submit-values :tracking-data="trackingData"></submit-values>
 		</form>
 
 		<form
@@ -91,7 +91,7 @@
 				action="/donation/add"
 				method="post"
 		>
-			<submit-values :tracking-data="{}"></submit-values>
+			<submit-values :tracking-data="trackingData"></submit-values>
 		</form>
 
 	</div>
@@ -112,6 +112,7 @@ import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
 import { useAddressFunctions } from './AddressFunctions';
 import { Salutation } from '@/view_models/Salutation';
+import { TrackingData } from '@/view_models/TrackingData';
 
 export const AddressTypeIds = new Map<number, string>( [
 	[ AddressTypeModel.ANON, 'anonymous' ],
@@ -138,6 +139,7 @@ export default Vue.extend( {
 		addressType: Number,
 		isFullSelected: Boolean,
 		salutations: Array as () => Array<Salutation>,
+		trackingData: Object as () => TrackingData,
 	},
 	setup( props: any, { root: { $store } } ) {
 		const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );
