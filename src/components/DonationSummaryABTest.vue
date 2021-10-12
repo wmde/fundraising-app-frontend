@@ -26,7 +26,6 @@
 <script lang="js">
 import Vue from 'vue';
 import DonationSummary from '@/components/shared/DonationSummary';
-import { NS_ADDRESS } from '@/store/namespaces';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 
 export default Vue.extend( {
@@ -43,7 +42,7 @@ export default Vue.extend( {
 	},
 	computed: {
 		inlineSummaryLanguageItem() {
-			switch ( this.$store.state[ NS_ADDRESS ].addressType ) {
+			switch ( this.$props.addressType ) {
 				case AddressTypeModel.ANON:
 				case AddressTypeModel.UNSET:
 					return 'donation_confirmation_inline_summary_anonymous';
@@ -55,6 +54,6 @@ export default Vue.extend( {
 					return 'donation_confirmation_inline_summary_address';
 			}
 		},
-	}
+	},
 } );
 </script>
