@@ -99,7 +99,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { computed, onMounted, PropType, toRefs } from '@vue/composition-api';
+import { computed, onBeforeMount, PropType, toRefs } from '@vue/composition-api';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
@@ -161,7 +161,7 @@ export default Vue.extend( {
 			return AddressTypeIds.has( addressType.value ) ? AddressTypeIds.get( addressType.value ) : '';
 		} );
 
-		onMounted( initializeDataFromStore );
+		onBeforeMount( initializeDataFromStore );
 
 		return {
 			formData,

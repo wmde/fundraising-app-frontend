@@ -7,8 +7,7 @@
 		method="post"
 		@keydown.enter.prevent="next()">
 		<payment v-bind="$props"></payment>
-		<Trust :assets-path="assetsPath"/>
-		<div class="level">
+		<div class="level has-margin-top-18">
 			<div class="level-left">
 				<b-button id="next" :class="[ 'is-form-input-width', $store.getters.isValidating ? 'is-loading' : '', 'level-item']"
 						@click="next()"
@@ -23,7 +22,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import Payment from '@/components/pages/donation_form/Payment.vue';
-import Trust from '@/components/shared/Trust.vue';
 import { action } from '@/store/util';
 import { NS_PAYMENT } from '@/store/namespaces';
 import { markEmptyValuesAsInvalid } from '@/store/payment/actionTypes';
@@ -35,7 +33,6 @@ export default Vue.extend( {
 	name: 'PaymentPage',
 	components: {
 		Payment,
-		Trust,
 	},
 	props: {
 		assetsPath: String,

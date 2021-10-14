@@ -71,7 +71,6 @@
 					:language-item="inlineSummaryLanguageItem"
 				/>
 
-				<trust :assets-path="assetsPath" />
 				<div class="columns payment-buttons">
 					<div class="column">
 						<b-button id="previous-btn" class="level-item"
@@ -107,7 +106,6 @@ import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
 import DonationSummary from '@/components/shared/DonationSummary.vue';
-import Trust from '@/components/shared/Trust.vue';
 import { TrackingData } from '@/view_models/TrackingData';
 import { AddressValidation } from '@/view_models/Validation';
 import { Country } from '@/view_models/Country';
@@ -132,7 +130,6 @@ export default Vue.extend( {
 		PaymentBankData,
 		PaymentSummary,
 		DonationSummary,
-		Trust,
 	},
 	props: {
 		assetsPath: String,

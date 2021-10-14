@@ -97,7 +97,9 @@ export default Vue.extend( {
 		const country = this.getCountryFromCode( this.$props.formData.country.value );
 		if ( country && this.countryInput !== country.countryFullName ) {
 			this.countryInput = country.countryFullName;
-			this.setPostcodeValidation( country.postCodeValidation );
+			if ( this.$props.formData.postcode.value !== '' ) {
+				this.setPostcodeValidation( country.postCodeValidation );
+			}
 		}
 	},
 	watch: {

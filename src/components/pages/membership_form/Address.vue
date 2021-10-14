@@ -171,7 +171,7 @@ export default Vue.extend( {
 			return this.$store.state[ NS_MEMBERSHIP_ADDRESS ].incentives;
 		},
 	},
-	mounted() {
+	beforeMount() {
 		Object.entries( this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values ).forEach( ( entry ) => {
 			const name: string = entry[ 0 ];
 			const value: string = entry[ 1 ] as string;
