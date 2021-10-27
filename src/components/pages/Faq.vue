@@ -1,7 +1,7 @@
 <template>
-	<div id="faq">
+	<div id="faq" class="content">
 		<h1 class="title is-size-1">{{ $t('faq_headline') }}</h1>
-		<ul>
+		<ul class="faq-item">
 			<li v-for="( topic, index ) in content.topics"
 				:key="index">
 				<h2 class="title is-size-2 has-margin-top-36 has-margin-bottom-18">{{ topic.name }}</h2>
