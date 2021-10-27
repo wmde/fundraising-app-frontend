@@ -131,7 +131,7 @@ describe( 'MembershipSummary', () => {
 		} );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 15' );
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 currency_name donation_form_payment_interval_12)\"' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 donation_form_payment_interval_12)\"' );
 	} );
 
 	it( 'renders quarterly payments', () => {
@@ -150,7 +150,7 @@ describe( 'MembershipSummary', () => {
 		} );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 45' );
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 currency_name donation_form_payment_interval_12)\"' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 donation_form_payment_interval_12)\"' );
 	} );
 
 	it( 'renders yearly payments', () => {
