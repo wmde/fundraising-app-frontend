@@ -50,7 +50,6 @@ export default Vue.extend( {
 			const formattedAmountYearly = this.renderAmount(
 				amountYearly,
 				numericInterval,
-				this.$t( 'currency_name' ),
 				this.$t( 'donation_form_payment_interval_12' )
 			);
 			const membershipType = this.$t( this.membershipApplication.membershipType );
@@ -78,12 +77,12 @@ export default Vue.extend( {
 
 			return this.$props.salutations.find( salutation => salutation.value === this.address.salutation )?.display + ' ';
 		},
-		renderAmount( amount, interval, currencyTranslation, intervalTranslation ) {
+		renderAmount( amount, interval, intervalTranslation ) {
 			if ( interval === 12 ) {
 				return '';
 			}
 			const formattedAmount = this.$n( amount, { key: 'currency', currencyDisplay: 'name' } );
-			return `(${formattedAmount} ${currencyTranslation} ${intervalTranslation})`;
+			return `(${formattedAmount} ${intervalTranslation})`;
 		},
 		canRender: function ( fee, interval ) {
 			return fee !== '' && !isNaN( Number( fee ) ) && interval !== '';
