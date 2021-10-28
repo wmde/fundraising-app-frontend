@@ -114,13 +114,13 @@ exports[`SubmitValues.vue renders input fields 1`] = `
   <input
     name="impCount"
     type="hidden"
-    value="1"
+    value="5"
   />
    
   <input
     name="bImpCount"
     type="hidden"
-    value="5"
+    value="1"
   />
 </span>
 `;
