@@ -48,19 +48,6 @@ describe( 'CookieNotice', () => {
 		expect( noWrapper.find( '.cookie-notice' ).exists() ).toBe( false );
 	} );
 
-	it( 'changes view when check and back buttons are clicked', async () => {
-		const wrapper = getWrapperWithCookieConsent( createCookieConsent( 'unset' ) );
-		wrapper.find( '.check > button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
-
-		expect( ( wrapper.vm as any ).showOptions ).toBeTruthy();
-
-		wrapper.find( '.cookie-notice-back-button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
-
-		expect( ( wrapper.vm as any ).showOptions ).toBeFalsy();
-	} );
-
 	it( 'submits consent when accept button is clicked', async () => {
 		const cookieConsent = createCookieConsent( 'unset' );
 		const wrapper = getWrapperWithCookieConsent( cookieConsent );
@@ -71,25 +58,11 @@ describe( 'CookieNotice', () => {
 		expect( cookieConsent.consentState.value ).toEqual( CONSENT_STATE.TRUE );
 	} );
 
-	it( 'submits positive consent when save button is clicked and consent given', async () => {
+	it( 'submits consent when necessary button is clicked', async () => {
 		const cookieConsent = createCookieConsent( 'unset' );
 		const wrapper = getWrapperWithCookieConsent( cookieConsent );
 
-		wrapper.find( '.check > button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
-		await wrapper.find( 'input[name=optional]' ).trigger( 'change' );
-		await wrapper.find( '.save > button' ).trigger( 'click' );
-
-		expect( cookieConsent.consentState.value ).toEqual( CONSENT_STATE.TRUE );
-	} );
-
-	it( 'submits negative consent no when save button is clicked and consent not given', async () => {
-		const cookieConsent = createCookieConsent( 'unset' );
-		const wrapper = getWrapperWithCookieConsent( cookieConsent );
-
-		wrapper.find( '.check > button' ).trigger( 'click' );
-		await wrapper.vm.$nextTick();
-		wrapper.find( '.save > button' ).trigger( 'click' );
+		wrapper.find( '.necessary > button' ).trigger( 'click' );
 		await wrapper.vm.$nextTick();
 
 		expect( cookieConsent.consentState.value ).toEqual( CONSENT_STATE.FALSE );

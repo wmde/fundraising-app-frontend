@@ -27,31 +27,8 @@ $cookie-notice-padding: 32px;
 		font-size: 14px;
 		line-height: 18px;
 	}
-	&-more {
-		position: relative;
-		padding-left: 1.3em;
-		line-height: 18px;
-
-		&::after {
-			border: 2px solid $fun-color-primary;
-			border-right: 0;
-			border-top: 0;
-			content: ' ';
-			display: block;
-			margin-top: -0.4em;
-			pointer-events: none;
-			position: absolute;
-			top: 50%;
-			left: 5px;
-			transform: rotate( -45deg );
-			transform-origin: center;
-			height: 0.6em;
-			width: 0.6em;
-
-			transition: transform 100ms, margin-top 100ms;
-		}
-	}
 	&-content {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		max-width: 640px;
@@ -59,49 +36,53 @@ $cookie-notice-padding: 32px;
 		bottom: 0;
 		left: 0;
 		background: $fun-color-bright;
-		padding: $cookie-notice-padding;
 		box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
 		z-index: 10;
 		max-height: 100%;
-		overflow-y: auto;
 	}
 
 	&-info {
 		position: relative;
+		padding: $cookie-notice-padding $cookie-notice-padding 102px;
 		flex-grow: 1;
 		flex-shrink: 1;
 		margin-bottom: 10px;
+		height: 100%;
+		overflow-y: auto;
 	}
 
 	&-text-copy {
-		position: relative;
+		margin-bottom: 16px;
 	}
 
-	&-accordion {
-		border: 1px solid $fun-color-gray-mid;
-		overflow-y: auto;
+	.collapse {
+		margin-bottom: 16px;
 
-		ul {
-			padding: 10px;
+		&:last-child {
+			margin-bottom: 0;
 		}
+	}
 
-		li {
-			padding-bottom: 10px;
-			margin-bottom: 10px;
-			border-bottom: 1px solid $fun-color-gray-mid;
-			padding-left: 6px;
+	&-accordion-button {
+		line-height: 28px;
+		color: $fun-color-dark;
+		font-weight: bold;
 
-			&:last-child {
-				border-bottom: 0;
-				margin-bottom: 0;
-				padding-bottom: 0;
-			}
+		&:hover,
+		&:focus {
+			color: $fun-color-primary;
 		}
 	}
 
 	&-buttons {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: 16px $cookie-notice-padding $cookie-notice-padding;
 		display: flex;
 		align-items: flex-end;
+		background: $fun-color-bright;
 	}
 
 	&-button {
@@ -111,39 +92,8 @@ $cookie-notice-padding: 32px;
 			padding-left: 16px;
 		}
 
-		&.check {
-			padding-right: 16px;
-		}
-
 		.button.is-main {
 			width: 100%;
 		}
-	}
-}
-
-.cookie-checkbox {
-	position: relative;
-
-	.b-checkbox.checkbox[disabled] {
-		opacity: 1;
-		color: $fun-color-dark;
-	}
-
-	&-heading {
-		display: block;
-		font-size: 18px;
-		line-height: 18px;
-		margin-bottom: 6px;
-	}
-
-	&-content {
-		position: relative;
-		display: block;
-		font-size: 14px;
-		line-height: 18px;
-	}
-
-	&.open .cookie-checkbox-content {
-		max-height: 1000px;
 	}
 }
