@@ -79,9 +79,8 @@ export default Vue.extend( {
 		}
 	}
 	.navbar-language {
+		display: flex;
 		align-items: stretch;
-		/* TODO: change this to display: flex; when we have English localisation */
-		display: none;
 
 		position: absolute;
 		top: 0;
