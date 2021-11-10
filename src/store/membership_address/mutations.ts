@@ -81,10 +81,17 @@ export const mutations: MutationTree<MembershipAddressState> = {
 	[ SET_ADDRESS_FIELD_VALIDITY ]( state: MembershipAddressState, payload: { name: string, validity: Validity } ) {
 		state.validity[ payload.name ] = payload.validity;
 	},
-	[ SET_DATE ]( state: MembershipAddressState, date ) {
-		state.values.date = date;
-		state.validity.date = Validity.VALID;
+
+	[ SET_DATE ]( state: MembershipAddressState, payload: { date: string, pattern: string } ) {
+		const regexPattern = new RegExp( payload.pattern );
+		if ( payload.date === '' || regexPattern.test( payload.date ) ) {
+			state.values.date = payload.date;
+			state.validity.date = Validity.VALID;
+		} else {
+			state.validity.date = Validity.INVALID;
+		}
 	},
+
 	[ SET_RECEIPT_OPTOUT ]( state: MembershipAddressState, optOut ) {
 		state.receiptOptOut = optOut;
 	},

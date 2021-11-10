@@ -24,8 +24,16 @@
         :default-incentives="incentives"
         v-on:incentives-changed="setIncentives( $event )"
       />
-			<date-of-birth v-if="isPerson" :validation-pattern="dateOfBirthValidationPattern"/>
-			<email :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange"/>
+			<date-of-birth
+				v-if="isPerson"
+				:validation-pattern="dateOfBirthValidationPattern"
+				v-on:field-changed="onFieldChange"
+				:show-error="fieldErrors.date"
+				:form-data="formData"/>
+			<email
+				:show-error="fieldErrors.email"
+				:form-data="formData"
+				v-on:field-changed="onFieldChange"/>
 		</AutofillHandler>
 	</div>
 </template>
@@ -136,6 +144,12 @@ export default Vue.extend( {
 					pattern: this.$props.addressValidationPatterns.email,
 					optionalField: false,
 				},
+				date: {
+					name: 'date',
+					value: '',
+					pattern: this.$props.dateOfBirthValidationPattern,
+					optionalField: false, //TODO should actually be true
+				},
 			},
 		};
 	},
@@ -194,6 +208,7 @@ export default Vue.extend( {
 			return Promise.all( [
 				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddress ), this.$props.validateAddressUrl ),
 				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateEmail ), this.$props.validateEmailUrl ),
+				//TODO integrate Date of birth
 			] ).then( mergeValidationResults );
 
 		},

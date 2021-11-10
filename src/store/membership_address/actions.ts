@@ -127,9 +127,11 @@ export const actions = {
 			context.commit( SET_MEMBERSHIP_TYPE_VALIDITY, Validity.INVALID );
 		}
 	},
-	[ setDate ]( context: ActionContext<MembershipAddressState, any>, date: string ) {
-		context.commit( 'SET_DATE', date );
+
+	[ setDate ]( context: ActionContext<MembershipAddressState, any>, datePattern: string ) {
+		context.commit( 'SET_DATE', { date: context.state.values.date, pattern: datePattern } );
 	},
+
 	[ setReceiptOptOut ]( context: ActionContext<MembershipAddressState, any>, optOut: boolean ) {
 		context.commit( SET_RECEIPT_OPTOUT, optOut );
 	},
