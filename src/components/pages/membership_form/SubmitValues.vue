@@ -22,7 +22,7 @@
 		<input type="hidden" name="country" :value="address.country">
 		<input type="hidden" name="email" :value="address.email">
 		<input type="hidden" name="donationReceipt" :value="receiptOptIn">
-		<input type="hidden" name="dob" :value="address.date">
+		<input type="hidden" name="dob" :value="formattedDateOfBirth">
 		<input type="hidden" name="incentives[]" :value="incentives">
 
 	</span>
@@ -52,6 +52,9 @@ export default Vue.extend( {
 			receiptOptIn: state => ( state as MembershipAddressState ).receiptOptOut ? '0' : '1',
 			incentives: state => ( state as MembershipAddressState ).incentives,
 			membershipType: state => membershipTypeName( ( state as MembershipAddressState ).membershipType ),
+			formattedDateOfBirth: state => {
+				return ( state as MembershipAddressState ).values['date'].replaceAll( '/', '-' );
+			},
 		} ),
 		...mapState( NS_BANKDATA, {
 			bankdata: state => ( state as BankAccount ).values,

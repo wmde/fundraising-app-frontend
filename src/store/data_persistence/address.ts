@@ -18,6 +18,7 @@ export default ( namespace: string ) => {
 			'country',
 			'email',
 			'companyName',
+			'date',
 		],
 	};
 };

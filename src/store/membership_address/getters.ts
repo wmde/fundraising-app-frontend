@@ -3,7 +3,7 @@ import { MembershipAddressState } from '@/view_models/Address';
 import { Validity } from '@/view_models/Validity';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
-import { REQUIRED_FIELDS } from '@/store/address/constants';
+import { REQUIRED_FIELDS } from '@/store/membership_address/constants';
 
 export const getters: GetterTree<MembershipAddressState, any> = {
 	invalidFields: ( state: MembershipAddressState ): Array<string> => {
@@ -13,6 +13,7 @@ export const getters: GetterTree<MembershipAddressState, any> = {
 		return addressGetters.invalidFields.length === 0;
 	},
 	membershipTypeIsValid: ( state: MembershipAddressState ): boolean => state.validity.membershipType === Validity.VALID,
+	dateOfBirthIsValid: ( state: MembershipAddressState ): boolean => state.validity.date !== Validity.INVALID,
 	addressType: ( state: MembershipAddressState ): AddressTypeModel => state.addressType,
 	membershipType: ( state: MembershipAddressState ): MembershipTypeModel => state.membershipType,
 	isPerson: ( state: MembershipAddressState ): boolean => state.addressType === AddressTypeModel.PERSON,

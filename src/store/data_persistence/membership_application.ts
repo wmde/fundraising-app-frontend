@@ -2,7 +2,6 @@ import { mutation } from '@/store/util';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
 import {
 	SET_ADDRESS_TYPE,
-	SET_DATE,
 	SET_MEMBERSHIP_TYPE,
 	SET_RECEIPT_OPTOUT,
 	SET_INCENTIVES,
@@ -22,12 +21,6 @@ export default [
 		storageKey: 'addressType',
 		mutationType: DataPersistenceMutationType.VALUE,
 		mutationKey: mutation( NS_MEMBERSHIP_ADDRESS, SET_ADDRESS_TYPE ),
-		fields: [],
-	},
-	{
-		storageKey: 'date',
-		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_ADDRESS, SET_DATE ),
 		fields: [],
 	},
 	{
