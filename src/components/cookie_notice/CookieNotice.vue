@@ -20,9 +20,7 @@
 								<span v-if="props.open" class="icon icon-size"><i class="mdi mdi-arrow-up mdi-24px"></i></span>
 							</a>
 						</template>
-						<div class="notification">
-							<div class="content" v-html="$t('cookie_option_required_content')"></div>
-						</div>
+						<div class="cookie-notice-accordion-content" v-html="$t('cookie_option_required_content')"></div>
 					</b-collapse>
 					<b-collapse :open="false">
 						<template #trigger="props">
@@ -32,9 +30,7 @@
 								<span v-if="props.open" class="icon icon-size"><i class="mdi mdi-arrow-up mdi-24px"></i></span>
 							</a>
 						</template>
-						<div class="notification">
-							<div class="content" v-html="$t('cookie_option_optional_content')"></div>
-						</div>
+						<div class="cookie-notice-accordion-content" v-html="$t('cookie_option_optional_content')"></div>
 					</b-collapse>
 				</div>
 			</div>

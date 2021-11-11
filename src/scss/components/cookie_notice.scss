@@ -25,7 +25,6 @@ $cookie-notice-padding: 32px;
 	}
 	p {
 		font-size: 14px;
-		line-height: 18px;
 	}
 	&-content {
 		position: relative;
@@ -66,12 +65,16 @@ $cookie-notice-padding: 32px;
 	&-accordion-button {
 		line-height: 28px;
 		color: $fun-color-dark;
-		font-weight: bold;
+		border-bottom: 2px solid rgba( 0, 0, 0, .14 );
 
 		&:hover,
 		&:focus {
 			color: $fun-color-primary;
 		}
+	}
+
+	&-accordion-content {
+		padding: 6px 0 0;
 	}
 
 	&-buttons {
