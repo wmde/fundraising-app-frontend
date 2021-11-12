@@ -17,7 +17,7 @@
 					{{ content.detailedReports.international.linkName }}
 				</a>
 			</div>
-			<div class="use_of_funds__column--info" style="display: none;">
+			<div class="use_of_funds__column--info">
 				<span>{{ content.detailedReports.germany.intro }}</span>
 				<a :href="content.detailedReports.germany.linkUrl" target="_blank">
 					{{ content.detailedReports.germany.linkName }}
