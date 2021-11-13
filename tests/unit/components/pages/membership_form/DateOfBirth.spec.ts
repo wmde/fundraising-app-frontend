@@ -3,18 +3,23 @@ import Vuex from 'vuex';
 import Buefy from 'buefy';
 import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
 import { createStore } from '@/store/membership_store';
-import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
-import { action } from '@/store/util';
-import { setDate } from '@/store/membership_address/actionTypes';
-import { dateOfBirthValidationPattern } from '../../../../data/validation';
+import { InputField } from '@/view_models/Address';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
 localVue.use( Vuex );
 
+const newDateImportFieldMetadata = ( value: string ): InputField => ( {
+	name: 'date',
+	optionalField: false,
+	// The component doesn't use the validation pattern so we can leave it empty in this test
+	pattern: '',
+	value,
+} );
+
 describe( 'DateOfBirth.vue', () => {
 
-	it( 'does not show an error on inital render', () => {
+	it( 'renders field', () => {
 		const wrapper = mount( DateOfBirth, {
 			localVue,
 			store: createStore(),
@@ -22,47 +27,15 @@ describe( 'DateOfBirth.vue', () => {
 				$t: () => { },
 			},
 			propsData: {
-				validationPattern: dateOfBirthValidationPattern,
+				formData: {
+					date: newDateImportFieldMetadata( '' ),
+				},
 			},
 		} );
-		expect( wrapper.vm.$data.dateHasError ).toBe( false );
+		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
-	it( 'shows an error when the entered date is the wrong format', () => {
-		const wrapper = mount( DateOfBirth, {
-				localVue,
-				store: createStore(),
-				mocks: {
-					$t: () => { },
-				},
-				propsData: {
-					validationPattern: dateOfBirthValidationPattern,
-				},
-			} ),
-			birthDate = wrapper.find( '#birthDate' );
-
-		wrapper.setData( { date: '10-04-1975' } );
-		birthDate.trigger( 'blur' );
-		expect( wrapper.vm.$data.dateHasError ).toBe( true );
-
-		wrapper.setData( { date: '10/04/1975' } );
-		birthDate.trigger( 'blur' );
-		expect( wrapper.vm.$data.dateHasError ).toBe( true );
-
-		wrapper.setData( { date: '00.04.1975' } );
-		birthDate.trigger( 'blur' );
-		expect( wrapper.vm.$data.dateHasError ).toBe( true );
-
-		wrapper.setData( { date: '10.13.1975' } );
-		birthDate.trigger( 'blur' );
-		expect( wrapper.vm.$data.dateHasError ).toBe( true );
-
-		wrapper.setData( { date: '10.04.0042' } );
-		birthDate.trigger( 'blur' );
-		expect( wrapper.vm.$data.dateHasError ).toBe( true );
-	} );
-
-	it( 'sends the entered birth date to the store when it is correct', () => {
+	it( 'renders error message', () => {
 		const wrapper = mount( DateOfBirth, {
 			localVue,
 			store: createStore(),
@@ -70,22 +43,13 @@ describe( 'DateOfBirth.vue', () => {
 				$t: () => { },
 			},
 			propsData: {
-				validationPattern: dateOfBirthValidationPattern,
+				formData: {
+					date: newDateImportFieldMetadata( '12/27/1987' ),
+				},
+				showError: true,
 			},
 		} );
-		const store = wrapper.vm.$store;
-		store.dispatch = jest.fn().mockResolvedValue( null );
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setDate );
-		const birthDate = wrapper.find( '#birthDate' );
-
-		wrapper.setData( { date: '09.11.1989' } );
-		birthDate.trigger( 'blur' );
-		let expectedPayload = '09.11.1989';
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
-
-		wrapper.setData( { date: '09/11/1989' } );
-		birthDate.trigger( 'blur' );
-		expectedPayload = '09/11/1989';
-		expect( store.dispatch ).not.toBeCalledWith( expectedAction, expectedPayload );
+		expect( wrapper.element ).toMatchSnapshot();
 	} );
+
 } );

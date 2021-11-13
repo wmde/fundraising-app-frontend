@@ -26,7 +26,6 @@
       />
 			<date-of-birth
 				v-if="isPerson"
-				:validation-pattern="dateOfBirthValidationPattern"
 				v-on:field-changed="onFieldChange"
 				:show-error="fieldErrors.date"
 				:form-data="formData"/>
@@ -63,6 +62,7 @@ import {
 	setAddressType,
 	validateCountry,
 	validateAddressField,
+	validateDateOfBirth,
 } from '@/store/membership_address/actionTypes';
 import { action } from '@/store/util';
 import { mergeValidationResults } from '@/merge_validation_results';
@@ -148,7 +148,7 @@ export default Vue.extend( {
 					name: 'date',
 					value: '',
 					pattern: this.$props.dateOfBirthValidationPattern,
-					optionalField: false, //TODO should actually be true
+					optionalField: true,
 				},
 			},
 		};
@@ -165,12 +165,14 @@ export default Vue.extend( {
 	computed: {
 		fieldErrors: {
 			get: function (): AddressValidity {
-				return Object.keys( this.formData ).reduce( ( validity: AddressValidity, fieldName: string ) => {
+				const validityResult = Object.keys( this.formData ).reduce( ( validity: AddressValidity, fieldName: string ) => {
 					if ( !this.formData[ fieldName ].optionalField ) {
 						validity[ fieldName ] = this.$store.state.membership_address.validity[ fieldName ] === Validity.INVALID;
 					}
 					return validity;
 				}, ( {} as AddressValidity ) );
+				validityResult.date = this.$store.state.membership_address.validity.date === Validity.INVALID;
+				return validityResult;
 			},
 		},
 		...mapGetters( NS_MEMBERSHIP_ADDRESS, [
@@ -208,7 +210,7 @@ export default Vue.extend( {
 			return Promise.all( [
 				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddress ), this.$props.validateAddressUrl ),
 				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateEmail ), this.$props.validateEmailUrl ),
-				//TODO integrate Date of birth
+				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateDateOfBirth ) ),
 			] ).then( mergeValidationResults );
 
 		},

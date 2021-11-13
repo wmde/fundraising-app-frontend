@@ -9,7 +9,7 @@ import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import Email from '@/components/shared/Email.vue';
 import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
 import { createStore } from '@/store/membership_store';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
 import {
 	setAddressField,

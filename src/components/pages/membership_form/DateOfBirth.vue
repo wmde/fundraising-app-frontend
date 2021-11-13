@@ -19,7 +19,6 @@ import Vue from 'vue';
 export default Vue.extend( {
 	name: 'DateOfBirth',
 	props: {
-		validationPattern: String,
 		formData: Object as () => FormData,
 		showError: Boolean,
 	},

@@ -8,7 +8,6 @@
 				:countries="countries"
 				:salutations="salutations"
 				:address-validation-patterns="addressValidationPatterns"
-				:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
 				ref="address">
 		</address-fields>
 		<div class="level has-margin-top-18">

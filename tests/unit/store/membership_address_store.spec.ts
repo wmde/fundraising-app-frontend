@@ -1,23 +1,11 @@
 import { getters } from '@/store/membership_address/getters';
 import { actions } from '@/store/membership_address/actions';
 import { mutations } from '@/store/membership_address/mutations';
-import {
-	VALIDATE_INPUT,
-	MARK_EMPTY_FIELDS_INVALID,
-	BEGIN_ADDRESS_VALIDATION,
-	FINISH_ADDRESS_VALIDATION,
-	SET_ADDRESS_TYPE,
-	SET_ADDRESS_FIELD,
-	SET_DATE,
-	SET_RECEIPT_OPTOUT,
-	SET_MEMBERSHIP_TYPE,
-	SET_MEMBERSHIP_TYPE_VALIDITY,
-} from '@/store/membership_address/mutationTypes';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
 import { MembershipAddressState } from '@/view_models/Address';
 import { Validity } from '@/view_models/Validity';
-import { REQUIRED_FIELDS } from '@/store/address/constants';
+import { REQUIRED_FIELDS } from '@/store/membership_address/constants';
 import mockAxios from 'jest-mock-axios';
 
 function newMinimalStore( overrides: Object ): MembershipAddressState {
@@ -66,7 +54,7 @@ describe( 'MembershipAddress', () => {
 	describe( 'Getters/invalidFields', () => {
 		const requiredFields = REQUIRED_FIELDS[ AddressTypeModel.PERSON ];
 
-		it( 'does not return unrequired fields as invalid when they are not set', () => {
+		it( 'does not return non-required fields as invalid when they are not set', () => {
 			expect( getters.invalidFields(
 				newMinimalStore( {
 					addressType: AddressTypeModel.PERSON,
@@ -400,6 +388,38 @@ describe( 'MembershipAddress', () => {
 		} );
 	} );
 
+	describe( 'Actions/validateDateOfBirth', () => {
+		it( 'returns result if client-side validity is valid', async () => {
+			const context = {
+					commit: jest.fn(),
+					state: newMinimalStore( {
+						validity: {
+							date: Validity.VALID,
+						},
+					} ),
+				},
+				action = actions.validateDateOfBirth as any;
+			const result = await action( context );
+			expect( result ).toEqual( { status: 'OK', messages: {} } );
+			expect( context.commit ).not.toHaveBeenCalled();
+		} );
+
+		it( 'returns result if client-side validity is invalid', async () => {
+			const context = {
+					commit: jest.fn(),
+					state: newMinimalStore( {
+						validity: {
+							date: Validity.INVALID,
+						},
+					} ),
+				},
+				action = actions.validateDateOfBirth as any;
+			const result = await action( context );
+			expect( result ).toEqual( { status: 'ERR', messages: {} } );
+			expect( context.commit ).not.toHaveBeenCalled();
+		} );
+	} );
+
 	describe( 'Actions/setAddressType', () => {
 		it( 'commits to mutation [SET_ADDRESS_TYPE] with the chosen type', () => {
 			const commit = jest.fn(),
@@ -429,19 +449,6 @@ describe( 'MembershipAddress', () => {
 			expect( context.commit ).toBeCalledWith(
 				'SET_MEMBERSHIP_TYPE_VALIDITY',
 				Validity.INVALID
-			);
-		} );
-	} );
-
-	describe( 'Actions/setDate', () => {
-		it( 'commits to mutation [SET_DATE] with the entered birth date', () => {
-			const commit = jest.fn(),
-				action = actions.setDate as any,
-				date = '19.19.1919';
-			action( { commit }, date );
-			expect( commit ).toBeCalledWith(
-				'SET_DATE',
-				date
 			);
 		} );
 	} );
@@ -676,16 +683,6 @@ describe( 'MembershipAddress', () => {
 			};
 			mutations.SET_ADDRESS_FIELD( store, field );
 			expect( store.values.firstName ).toBe( 'Amazing' );
-		} );
-	} );
-
-	describe( 'Mutations/SET_DATE', () => {
-		it( 'sets date of birth value and validity', () => {
-			const store = newMinimalStore( {} );
-			const date = '01.01.2001';
-			mutations.SET_DATE( store, date );
-			expect( store.values.date ).toBe( date );
-			expect( store.validity.date ).toBe( Validity.VALID );
 		} );
 	} );
 
