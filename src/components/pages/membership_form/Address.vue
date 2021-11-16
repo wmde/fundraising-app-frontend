@@ -148,7 +148,7 @@ export default Vue.extend( {
 					name: 'date',
 					value: '',
 					pattern: this.$props.dateOfBirthValidationPattern,
-					optionalField: true,
+					optionalField: false,
 				},
 			},
 		};
