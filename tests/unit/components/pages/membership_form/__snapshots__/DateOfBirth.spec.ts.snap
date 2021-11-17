@@ -35,6 +35,8 @@ exports[`DateOfBirth.vue renders error message 1`] = `
     <!---->
   </div>
    
+  <!---->
+   
   <span
     class="help is-danger"
   >
@@ -71,6 +73,12 @@ exports[`DateOfBirth.vue renders field 1`] = `
     </div>
     <!---->
   </div>
+   
+  <span
+    class="help has-text-dark-lighter"
+  >
+    
+  </span>
    
   <!---->
 </fieldset>
