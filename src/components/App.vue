@@ -19,7 +19,9 @@
 		<footer class="is-hidden-print">
 			<Footer :assets-path="assetsPath"></Footer>
 		</footer>
-		<CookieNotice/>
+		<feature-toggle>
+			<CookieNotice slot="campaigns.optional_cookie_notice.show"/>
+		</feature-toggle>
 	</div>
 </template>
 
