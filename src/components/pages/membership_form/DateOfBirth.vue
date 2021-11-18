@@ -9,6 +9,7 @@
 				@blur="$emit('field-changed', 'date')">>
 			</b-input>
 		</b-field>
+		<span v-if="!showError" class="help has-text-dark-lighter">{{ $t( 'membership_form_birth_date_help_text' ) }}</span>
 		<span v-if="showError" class="help is-danger">{{ $t( 'membership_form_birth_date_error' ) }}</span>
 	</fieldset>
 </template>
