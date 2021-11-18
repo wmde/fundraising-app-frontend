@@ -11,7 +11,6 @@ import {
 	SET_ADDRESS_FIELD,
 	SET_ADDRESS_FIELDS,
 	SET_ADDRESS_FIELD_VALIDITY,
-	SET_DATE,
 	SET_RECEIPT_OPTOUT,
 	SET_INCENTIVES,
 	SET_MEMBERSHIP_TYPE,
@@ -81,10 +80,7 @@ export const mutations: MutationTree<MembershipAddressState> = {
 	[ SET_ADDRESS_FIELD_VALIDITY ]( state: MembershipAddressState, payload: { name: string, validity: Validity } ) {
 		state.validity[ payload.name ] = payload.validity;
 	},
-	[ SET_DATE ]( state: MembershipAddressState, date ) {
-		state.values.date = date;
-		state.validity.date = Validity.VALID;
-	},
+
 	[ SET_RECEIPT_OPTOUT ]( state: MembershipAddressState, optOut ) {
 		state.receiptOptOut = optOut;
 	},

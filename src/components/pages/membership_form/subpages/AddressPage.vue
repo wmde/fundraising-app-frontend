@@ -49,13 +49,24 @@ export default Vue.extend( {
 	methods: {
 		next() {
 			( this.$refs.address as any ).validateForm().then( () => {
-				if ( this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ]
-					&& this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {
+				if ( this.formIsValid() ) {
 					this.$emit( 'next-page' );
 				} else {
-					document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+					document.getElementsByClassName( 'is-danger' )[ 0 ]?.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
 				}
 			} );
+		},
+		formIsValid() {
+			if ( !this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] ) {
+				return false;
+			}
+			if ( !this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {
+				return false;
+			}
+			if ( !this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ] ) {
+				return false;
+			}
+			return true;
 		},
 	},
 } );

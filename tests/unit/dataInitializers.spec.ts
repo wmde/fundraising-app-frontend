@@ -156,6 +156,7 @@ describe( 'createInitialMembershipAddressValues', () => {
 			postcode: '12345',
 			country: 'de',
 			email: 'spookymagoo@email.com',
+			date: '12.12.1980',
 		};
 
 		const dataPersister = new FakeDataPersister( [] );
@@ -166,7 +167,7 @@ describe( 'createInitialMembershipAddressValues', () => {
 		expect( values.date ).toBeNull();
 
 		persistenceAddress( NS_MEMBERSHIP_ADDRESS ).fields.forEach( key => {
-			const field = values.fields.find( field => field.name === key );
+			const field = values.fields.find( f => f.name === key );
 			expect( field ).toBeDefined();
 			expect( ( field || {} ).value ).toEqual( ( initialValues as any )[ key ] );
 		} );

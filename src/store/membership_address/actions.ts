@@ -2,23 +2,18 @@ import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
 import {
 	initializeAddress,
-	validateAddress,
-	validateEmail,
-	setAddressType,
-	validateAddressField,
 	setAddressField,
-	setReceiptOptOut,
+	setAddressType,
 	setIncentives,
-	setDate,
 	setMembershipType,
+	setReceiptOptOut,
+	validateAddress,
+	validateAddressField,
 	validateCountry,
+	validateDateOfBirth,
+	validateEmail,
 } from '@/store/membership_address/actionTypes';
-import {
-	MembershipAddressState,
-	InputField,
-	CountryValidationFields,
-	InitialMembershipAddressValues,
-} from '@/view_models/Address';
+import { CountryValidationFields, InitialMembershipAddressValues, InputField, MembershipAddressState } from '@/view_models/Address';
 import { ValidationResponse } from '@/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
@@ -31,11 +26,10 @@ import {
 	SET_ADDRESS_FIELD,
 	SET_ADDRESS_FIELD_VALIDITY,
 	SET_ADDRESS_TYPE,
-	SET_DATE,
+	SET_INCENTIVES,
 	SET_MEMBERSHIP_TYPE,
 	SET_MEMBERSHIP_TYPE_VALIDITY,
 	SET_RECEIPT_OPTOUT,
-	SET_INCENTIVES,
 	VALIDATE_INPUT,
 } from '@/store/membership_address/mutationTypes';
 import { Validity } from '@/view_models/Validity';
@@ -54,7 +48,7 @@ export const actions = {
 		}
 
 		if ( initialData.date ) {
-			context.commit( SET_DATE, initialData.date );
+			context.commit( SET_ADDRESS_FIELD, { name: 'date', value: initialData.date } );
 		}
 
 		context.commit( SET_RECEIPT_OPTOUT, initialData.receiptOptOut );
@@ -99,7 +93,6 @@ export const actions = {
 			context.commit( FINISH_ADDRESS_VALIDATION, validationResult.data );
 			return validationResult.data;
 		} );
-
 	},
 	[ validateEmail ]( context: ActionContext<MembershipAddressState, any>, validateEmailUrl: string ) {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );
@@ -119,7 +112,11 @@ export const actions = {
 			context.commit( FINISH_EMAIL_VALIDATION, validationResult.data );
 			return validationResult.data;
 		} );
-
+	},
+	[ validateDateOfBirth ]( context: ActionContext<MembershipAddressState, any> ) {
+		// We don't send the date of birth to the server, instead we rely on it being already validated with the client-side pattern
+		const status = context.state.validity.date === Validity.VALID ? 'OK' : 'ERR';
+		return Promise.resolve( { status, messages: {} } );
 	},
 	[ setAddressType ]( context: ActionContext<MembershipAddressState, any>, type: AddressTypeModel ) {
 		context.commit( SET_ADDRESS_TYPE, type );
@@ -127,9 +124,7 @@ export const actions = {
 			context.commit( SET_MEMBERSHIP_TYPE_VALIDITY, Validity.INVALID );
 		}
 	},
-	[ setDate ]( context: ActionContext<MembershipAddressState, any>, date: string ) {
-		context.commit( 'SET_DATE', date );
-	},
+
 	[ setReceiptOptOut ]( context: ActionContext<MembershipAddressState, any>, optOut: boolean ) {
 		context.commit( SET_RECEIPT_OPTOUT, optOut );
 	},
