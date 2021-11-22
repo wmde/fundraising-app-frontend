@@ -54,6 +54,15 @@ $cookie-notice-padding: 32px;
 		margin-bottom: 16px;
 	}
 
+	&-info-links {
+		margin-top: 16px;
+
+		a {
+			display: inline-block;
+			margin-right: 16px;
+		}
+	}
+
 	.collapse {
 		margin-bottom: 16px;
 
