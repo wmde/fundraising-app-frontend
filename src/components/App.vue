@@ -20,7 +20,7 @@
 			<Footer :assets-path="assetsPath"></Footer>
 		</footer>
 		<feature-toggle>
-			<CookieNotice slot="campaigns.optional_cookie_notice.show"/>
+			<CookieNotice slot="campaigns.optional_cookie_notice.show" v-if="showCookieNotice"/>
 		</feature-toggle>
 	</div>
 </template>
@@ -70,6 +70,10 @@ export default Vue.extend( {
 		},
 		locale: {
 			type: String,
+		},
+		showCookieNotice: {
+			type: Boolean,
+			default: true,
 		},
 	},
 } );

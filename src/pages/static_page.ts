@@ -30,6 +30,7 @@ new Vue( {
 			assetsPath: pageData.assetsPath,
 			pageIdentifier: PAGE_IDENTIFIER,
 			locale: i18n.locale,
+			showCookieNotice: PAGE_IDENTIFIER !== 'imprint',
 		},
 	},
 	[

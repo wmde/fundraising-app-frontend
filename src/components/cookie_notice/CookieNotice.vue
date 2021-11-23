@@ -33,6 +33,10 @@
 						<div class="cookie-notice-accordion-content" v-html="$t('cookie_option_optional_content')"></div>
 					</b-collapse>
 				</div>
+				<div class="cookie-notice-info-links">
+					<a href="/page/Impressum">{{ $t('cookie_link_imprint') }}</a>
+					<a href="/page/Datenschutz">{{ $t('cookie_link_privacy_protection') }}</a>
+				</div>
 			</div>
 			<div class="cookie-notice-buttons">
 				<div class="cookie-notice-button necessary">
