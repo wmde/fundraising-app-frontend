@@ -1,95 +1,112 @@
 <template>
 	<div class="address-page">
 		<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
-		<payment-summary v-if="paymentWasInitialized"
-						:amount="paymentSummary.amount"
-						:payment-type="paymentSummary.paymentType"
-						:interval="paymentSummary.interval"
-						v-on:previous-page="previousPage">
+		<payment-summary
+			v-if="paymentWasInitialized"
+			:amount="paymentSummary.amount"
+			:payment-type="paymentSummary.paymentType"
+			:interval="paymentSummary.interval"
+			v-on:previous-page="previousPage">
 		</payment-summary>
 
 		<form v-if="isDirectDebit" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<payment-bank-data
-					:validateBankDataUrl="validateBankDataUrl"
-					:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
+				:validateBankDataUrl="validateBankDataUrl"
+				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
 			/>
 		</form>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
-      <feature-toggle>
-        <address-type
-            slot="campaigns.address_type_steps.multistep"
-            v-on:address-type="setAddressType( $event )"
-            v-on:set-full-selected="setFullSelected"
-            :disabledAddressTypes="disabledAddressTypes"
-            :is-direct-debit="isDirectDebit"
-            :initial-address-type="addressTypeName"
-        />
-        <address-type-var
-            slot="campaigns.address_type_steps.multistep_var"
-            v-on:address-type="setAddressType( $event )"
-			v-on:set-full-selected="setFullSelected"
-            :disabledAddressTypes="disabledAddressTypes"
-            :is-direct-debit="isDirectDebit"
-			:initial-address-type="addressTypeName"
-        />
-		<basic-address-type
-			slot="campaigns.address_type_steps.direct"
-			v-on:address-type="setAddressType( $event )"
-			v-on:set-full-selected="setFullSelected"
-			:disabledAddressTypes="disabledAddressTypes"
-			:is-direct-debit="isDirectDebit"
-			initial-address-type="full"
-		/>
-      </feature-toggle>
+			<feature-toggle>
+				<address-type
+					slot="campaigns.address_type_steps.multistep"
+					v-on:address-type="setAddressType( $event )"
+					v-on:set-full-selected="setFullSelected"
+					:disabledAddressTypes="disabledAddressTypes"
+					:is-direct-debit="isDirectDebit"
+					:initial-address-type="addressTypeName"
+				/>
+				<address-type-var
+					slot="campaigns.address_type_steps.multistep_var"
+					v-on:address-type="setAddressType( $event )"
+					v-on:set-full-selected="setFullSelected"
+					:disabledAddressTypes="disabledAddressTypes"
+					:is-direct-debit="isDirectDebit"
+					:initial-address-type="addressTypeName"
+				/>
+				<address-type-checkmarks
+					slot="campaigns.address_type_steps.multistep_checkmarks"
+					v-on:address-type="setAddressType( $event )"
+					v-on:set-full-selected="setFullSelected"
+					:disabledAddressTypes="disabledAddressTypes"
+					:is-direct-debit="isDirectDebit"
+					:initial-address-type="addressTypeName"
+				/>
+				<basic-address-type
+					slot="campaigns.address_type_steps.direct"
+					v-on:address-type="setAddressType( $event )"
+					v-on:set-full-selected="setFullSelected"
+					:disabledAddressTypes="disabledAddressTypes"
+					:is-direct-debit="isDirectDebit"
+					initial-address-type="full"
+				/>
+			</feature-toggle>
 			<span
-					v-if="addressTypeIsInvalid"
-					class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
+				v-if="addressTypeIsInvalid"
+				class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
 			</span>
 			<div
-					class="has-margin-top-18"
-					v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
+				class="has-margin-top-18"
+				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
 			</div>
 		</form>
 
 		<address-forms
-				:countries="countries"
-				:salutations="salutations"
-				:address-validation-patterns="addressValidationPatterns"
-				:is-full-selected="isFullSelected"
-				:address-type="addressType"
-				:tracking-data="trackingData">
+			:countries="countries"
+			:salutations="salutations"
+			:address-validation-patterns="addressValidationPatterns"
+			:is-full-selected="isFullSelected"
+			:address-type="addressType"
+			:tracking-data="trackingData">
 		</address-forms>
 
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
-				<donation-summary
-					:payment="paymentSummary"
-					:address-type="addressTypeName"
-					:address="addressSummary"
-					:countries="countries"
-					:salutations="salutations"
-					:language-item="inlineSummaryLanguageItem"
-				/>
+			<donation-summary
+				:payment="paymentSummary"
+				:address-type="addressTypeName"
+				:address="addressSummary"
+				:countries="countries"
+				:salutations="salutations"
+				:language-item="inlineSummaryLanguageItem"
+			/>
 
-				<div class="columns payment-buttons">
-					<div class="column">
-						<b-button id="previous-btn" class="level-item"
-								@click="previousPage"
-								type="is-primary is-main"
-								outlined>
-							{{ $t('donation_form_section_back') }}
-						</b-button>
-					</div>
-					<div class="column">
-						<b-button id="submit-btn" :class="[ $store.getters.isValidating ? 'is-loading' : '', 'level-item' ]"
-								@click="submit"
-								type="is-primary is-main">
-							{{ $t('donation_form_finalize') }}
-						</b-button>
-					</div>
+			<div class="columns payment-buttons">
+				<div class="column">
+					<b-button
+						id="previous-btn"
+						class="level-item"
+						@click="previousPage"
+						type="is-primary is-main"
+						outlined>
+						{{ $t( 'donation_form_section_back' ) }}
+					</b-button>
 				</div>
-				<div class="summary-notice" v-if="isExternalPayment">{{ $t('donation_form_summary_external_payment') }}</div>
-				<div class="summary-notice" v-if="isBankTransferPayment">{{ $t('donation_form_summary_bank_transfer_payment') }}</div>
+				<div class="column">
+					<b-button
+						id="submit-btn"
+						:class="[ $store.getters.isValidating ? 'is-loading' : '', 'level-item' ]"
+						@click="submit"
+						type="is-primary is-main">
+						{{ $t( 'donation_form_finalize' ) }}
+					</b-button>
+				</div>
+			</div>
+			<div class="summary-notice" v-if="isExternalPayment">
+				{{ $t( 'donation_form_summary_external_payment' ) }}
+			</div>
+			<div class="summary-notice" v-if="isBankTransferPayment">
+				{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
+			</div>
 		</div>
 	</div>
 </template>
@@ -100,6 +117,7 @@ import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
 import AddressType from '@/components/pages/donation_form/AddressType.vue';
 import AddressTypeVar from '@/components/pages/donation_form/AddressType_var.vue';
+import AddressTypeCheckmarks from '@/components/pages/donation_form/AddressType_checkmarks.vue';
 import BasicAddressType from '@/components/pages/donation_form/BasicAddressType.vue';
 import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
@@ -126,6 +144,7 @@ export default Vue.extend( {
 		AddressForms,
 		AddressType,
 		AddressTypeVar,
+		AddressTypeCheckmarks,
 		BasicAddressType,
 		PaymentBankData,
 		PaymentSummary,
@@ -142,7 +161,7 @@ export default Vue.extend( {
 		trackingData: Object as () => TrackingData,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
-	setup( props : any, { root: { $store }, emit } ) {
+	setup( props: any, { root: { $store }, emit } ) {
 		const isFullSelected = ref( false );
 		const setFullSelected = ( selected: boolean ) => {
 			isFullSelected.value = selected;
@@ -200,11 +219,11 @@ export default Vue.extend( {
 			emit( 'previous-page' );
 		};
 		const submitHtmlForm = () => {
-			const formId = `laika-donation-personal-data-${AddressTypeIds.get( addressType.value )}`;
-			const currentAddressForm : HTMLFormElement = document.getElementById( formId ) as HTMLFormElement;
+			const formId = `laika-donation-personal-data-${ AddressTypeIds.get( addressType.value ) }`;
+			const currentAddressForm: HTMLFormElement = document.getElementById( formId ) as HTMLFormElement;
 			if ( !currentAddressForm ) {
 				// This should only happen if the child component has the wrong ID
-				throw new Error( `Address form with ID "${formId}" not found.` );
+				throw new Error( `Address form with ID "${ formId }" not found.` );
 			}
 
 			trackFormSubmission( currentAddressForm );
