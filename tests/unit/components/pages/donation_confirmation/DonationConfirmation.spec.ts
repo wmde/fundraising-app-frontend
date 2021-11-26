@@ -8,7 +8,7 @@ import { FeatureTogglePlugin } from '@/FeatureToggle';
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
-localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.confirmation_page_layout.old_layout' ] } );
+localVue.use( FeatureTogglePlugin );
 
 const testBankTransferCode = 'XW-XLK-M3F-Z';
 

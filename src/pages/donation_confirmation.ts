@@ -8,7 +8,6 @@ import { clearPersistentData } from '@/store/create_data_persister';
 import LocalStorageRepository from '@/store/LocalStorageRepository';
 import App from '@/components/App.vue';
 import DonationConfirmation from '@/components/pages/DonationConfirmation.vue';
-import DonationConfirmationAlt from '@/components/pages/DonationConfirmationAlt.vue';
 import { Country } from '@/view_models/Country';
 import { Donation } from '@/view_models/Donation';
 import { AddressValidation } from '@/view_models/Validation';
@@ -47,7 +46,6 @@ const i18n = createI18n( pageData.messages );
 trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
 Vue.use( FeatureTogglePlugin, { activeFeatures: pageData.selectedBuckets } );
-const Component = pageData.selectedBuckets.indexOf( 'campaigns.confirmation_page_layout.new_layout' ) !== -1 ? DonationConfirmationAlt : DonationConfirmation;
 
 new Vue( {
 	store,
@@ -65,7 +63,7 @@ new Vue( {
 		},
 	},
 	[
-		h( Component, {
+		h( DonationConfirmation, {
 			props: {
 				donation: pageData.applicationVars.donation,
 				address: pageData.applicationVars.address,
