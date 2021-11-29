@@ -3,7 +3,7 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 
 const localVue = createLocalVue();
-localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.confirmation_page_layout.old_layout' ] } );
+localVue.use( FeatureTogglePlugin );
 
 describe( 'DonationSummary', () => {
 	const payment = {
