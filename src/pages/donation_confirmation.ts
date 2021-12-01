@@ -60,6 +60,7 @@ new Vue( {
 			pageIdentifier: PAGE_IDENTIFIER,
 			isFullWidth: IS_FULLWIDTH_PAGE,
 			locale: i18n.locale,
+			showCookieNotice: false,
 		},
 	},
 	[
