@@ -65,7 +65,6 @@
 		<div class="banner_model__section use_of_funds__section--call_to_action">
 			<button class="use_of_funds__button" onclick="location.href='/'">{{ content.callToAction }}</button>
 		</div>
-		<div style="text-align: left; font-size: small; padding-bottom: 16px;">{{ content.provisional }}</div>
 	</div>
 </template>
 
