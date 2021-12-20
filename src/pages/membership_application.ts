@@ -29,6 +29,8 @@ import { FeatureTogglePlugin } from '@/FeatureToggle';
 import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
+import UrlQueryParams from '@/util/UrlQueryParams';
+import FilteredUrlMembershipValues from '@/util/FilteredUrlMembershipValues';
 
 const PAGE_IDENTIFIER = 'membership-application';
 const FORM_NAMESPACE = 'membership_application';
@@ -73,12 +75,19 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	// The PHP serialization sends the initial form data as an empty array (instead of empty object)
 	// when donation was anonymous so converting it to a map makes it consistent
 	const initialFormValues = new Map( Object.entries( pageData.applicationVars.initialFormValues || {} ) );
+	const initialFeeValues = new FilteredUrlMembershipValues(
+		new UrlQueryParams( window.location.search ),
+		pageData.applicationVars.urls.validateMembershipFee,
+	);
 	const initialBankAccountData = {
 		iban: initialFormValues.get( 'iban' ),
 		bic: initialFormValues.get( 'bic' ),
 		bankname: initialFormValues.get( 'bankname' ),
 	};
 
+	// Combine the initial values (from app data and URL) with the values from the local storage.
+	// Local storage overrides initial values.
+	// Send the combined values to the store, as the "final initial" value in the store.
 	Promise.all( [
 		store.dispatch(
 			action( NS_MEMBERSHIP_ADDRESS, initializeAddress ),
@@ -86,7 +95,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 		),
 		store.dispatch(
 			action( NS_MEMBERSHIP_FEE, initializeMembershipFee ),
-			createInitialMembershipFeeValues( dataPersister, pageData.applicationVars.urls.validateMembershipFee ),
+			createInitialMembershipFeeValues( dataPersister, initialFeeValues ),
 		),
 		store.dispatch(
 			action( NS_BANKDATA, initializeBankData ),
