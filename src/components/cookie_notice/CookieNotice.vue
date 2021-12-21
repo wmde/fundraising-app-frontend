@@ -10,33 +10,20 @@
 			<div class="cookie-notice-content-block">
 				<div class="cookie-notice-info">
 					<div class="cookie-notice-text">
-
 						<p class="cookie-notice-text-copy" :class="{ open: textOpen }">
 							<span v-html="$t( 'cookie_content' )"></span>
 						</p>
 					</div>
 				</div>
 				<div class="cookie-notice-category-explanation">
-					<b-collapse :open="false">
-						<template #trigger="props">
-							<a class="cookie-notice-accordion-button icon-inline">
-								{{ $t('cookie_option_required_heading') }}
-								<span v-if="!props.open" class="icon icon-size"><i class="mdi mdi-arrow-down mdi-24px"></i></span>
-								<span v-if="props.open" class="icon icon-size"><i class="mdi mdi-arrow-up mdi-24px"></i></span>
-							</a>
-						</template>
-						<div class="cookie-notice-accordion-content" v-html="$t('cookie_option_required_content')"></div>
-					</b-collapse>
-					<b-collapse :open="false">
-						<template #trigger="props">
-							<a class="cookie-notice-accordion-button icon-inline">
-								{{ $t('cookie_option_optional_heading') }}
-								<span v-if="!props.open" class="icon icon-size"><i class="mdi mdi-arrow-down mdi-24px"></i></span>
-								<span v-if="props.open" class="icon icon-size"><i class="mdi mdi-arrow-up mdi-24px"></i></span>
-							</a>
-						</template>
-						<div class="cookie-notice-accordion-content" v-html="$t('cookie_option_optional_content')"></div>
-					</b-collapse>
+					<div>
+						<div class="cookie-notice-category-headline icon-inline">{{ $t('cookie_option_required_heading') }}</div>
+						<div class="cookie-notice-category-content" v-html="$t('cookie_option_required_content')"></div>
+					</div>
+					<div>
+						<div class="cookie-notice-category-headline icon-inline">{{ $t('cookie_option_optional_heading') }}</div>
+						<div class="cookie-notice-category-content" v-html="$t('cookie_option_optional_content')"></div>
+					</div>
 				</div>
 				<div class="cookie-notice-buttons">
 					<div class="cookie-notice-buttons-acceptance">

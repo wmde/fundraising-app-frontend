@@ -107,7 +107,18 @@ $cookie-notice-padding: 32px;
 		right: 0;
 	}
 
-	&-accordion {
+	&-category {
+
+		&-headline {
+			font-weight: bold;
+		}
+
+		&-content {
+			overflow-y: scroll;
+			max-height: 50px;
+			margin-bottom: 20px;
+		}
+
 		max-height: 180px;
 		border: 1px solid $fun-color-gray-mid;
 		overflow-y: auto;
