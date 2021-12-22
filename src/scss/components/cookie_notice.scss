@@ -1,4 +1,5 @@
 $cookie-notice-padding: 32px;
+$cookie-notice-mobile-breakpoint: 1200px;
 
 .cookie-notice {
 	display: block;
@@ -41,21 +42,6 @@ $cookie-notice-padding: 32px;
 			transition: transform 100ms, margin-top 100ms;
 		}
 	}
-	&-show-less {
-		display: none;
-	}
-	.open {
-		.cookie-notice-more::after {
-			margin-top: -0.2em;
-			transform: rotate( 135deg );
-		}
-		.cookie-notice-show-more {
-			display: none;
-		}
-		.cookie-notice-show-less {
-			display: inline;
-		}
-	}
 	&-content {
 		position: fixed;
 		display: flex;
@@ -71,7 +57,10 @@ $cookie-notice-padding: 32px;
 
 	&-content-block {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
+		@media ( min-width: $cookie-notice-mobile-breakpoint ) {
+			flex-direction: row;
+		}
 	}
 
 	&-info {
@@ -92,9 +81,7 @@ $cookie-notice-padding: 32px;
 
 	&-text-copy {
 		position: relative;
-		height: 38px;
-		/*overflow-y: hidden; */
-		padding-right: 80px;
+		padding-right: 50px;
 
 		&.open {
 			height: auto;
@@ -107,6 +94,11 @@ $cookie-notice-padding: 32px;
 		right: 0;
 	}
 
+	.open {
+		overflow-y: visible;
+		max-height: 100%;
+	}
+
 	&-category {
 
 		&-headline {
@@ -114,9 +106,12 @@ $cookie-notice-padding: 32px;
 		}
 
 		&-content {
-			overflow-y: scroll;
-			max-height: 50px;
-			margin-bottom: 20px;
+			overflow-y: hidden;
+			max-height: 21px;
+			@media ( min-width: $cookie-notice-mobile-breakpoint ) {
+				max-height: 36px;
+			}
+			line-height: 18px;
 		}
 
 		max-height: 180px;
@@ -144,13 +139,7 @@ $cookie-notice-padding: 32px;
 	&-buttons {
 		display: flex;
 		flex-direction: column;
-		@include from($desktop) {
-			width: 340px;
-			flex-basis: 340px;
-			flex-grow: 0;
-			flex-shrink: 0;
-			margin-left: 0;
-		}
+		margin-left: 10px;
 	}
 
 	&-button {
@@ -166,9 +155,13 @@ $cookie-notice-padding: 32px;
 
 	&-buttons-acceptance {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
+		flex-direction: row;
 		margin-bottom: 22px;
+		justify-content: space-evenly;
+		@media ( min-width: $cookie-notice-mobile-breakpoint ) {
+			flex-direction: column;
+			align-items: center;
+		}
 	}
 
 	&-info-links {

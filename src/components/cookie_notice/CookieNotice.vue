@@ -10,7 +10,7 @@
 			<div class="cookie-notice-content-block">
 				<div class="cookie-notice-info">
 					<div class="cookie-notice-text">
-						<p class="cookie-notice-text-copy" :class="{ open: textOpen }">
+						<p class="cookie-notice-text-copy" >
 							<span v-html="$t( 'cookie_content' )"></span>
 						</p>
 					</div>
@@ -18,11 +18,15 @@
 				<div class="cookie-notice-category-explanation">
 					<div>
 						<div class="cookie-notice-category-headline icon-inline">{{ $t('cookie_option_required_heading') }}</div>
-						<div class="cookie-notice-category-content" v-html="$t('cookie_option_required_content')"></div>
+						<TextTruncator>
+							{{ $t('cookie_option_required_content') }}
+						</TextTruncator>
 					</div>
 					<div>
 						<div class="cookie-notice-category-headline icon-inline">{{ $t('cookie_option_optional_heading') }}</div>
-						<div class="cookie-notice-category-content" v-html="$t('cookie_option_optional_content')"></div>
+						<TextTruncator>
+							{{ $t('cookie_option_optional_content') }}
+						</TextTruncator>
 					</div>
 				</div>
 				<div class="cookie-notice-buttons">
@@ -53,10 +57,12 @@ import Vue from 'vue';
 import { inject, ref } from '@vue/composition-api';
 import CookieCheckbox from './CookieCheckbox.vue';
 import { CONSENT_STATE, CookieConsentInterface, NullCookieConsent } from '@/cookie_consent';
+import TextTruncator from '@/components/cookie_notice/TextTruncator.vue';
 
 export default Vue.extend( {
 	name: 'CookieNotice',
 	components: {
+		TextTruncator,
 		CookieCheckbox,
 	},
 	inject: [ 'cookieConsent' ],
@@ -65,7 +71,6 @@ export default Vue.extend( {
 
 		const isSubmitted = cookieConsent.consentIsSubmitted;
 		const cookieNotice = ref<any>( null );
-		const textOpen = ref( false );
 
 		const onSaveButtonClick = ( e: Event ) => {
 			e.preventDefault();
@@ -79,7 +84,6 @@ export default Vue.extend( {
 
 		return {
 			cookieNotice,
-			textOpen,
 			isSubmitted,
 			onSaveButtonClick,
 			onAcceptButtonClick,
