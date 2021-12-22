@@ -5,6 +5,9 @@ node_modules
 /tests/e2e/reports/
 selenium-debug.log
 
+# tmp dir with npm cache, created by Makefile
+tmp
+
 # local env files
 .env.local
 .env.*.local
