@@ -8,36 +8,38 @@
 		>
 			<h3>{{ $t( 'cookie_heading' ) }}</h3>
 			<div class="cookie-notice-content-block">
-				<div class="cookie-notice-info">
-					<div class="cookie-notice-text">
-						<p class="cookie-notice-text-copy" >
-							<span v-html="$t( 'cookie_content' )"></span>
-						</p>
+				<div class="cookie-notice-text-content">
+					<div class="cookie-notice-info">
+						<div class="cookie-notice-text">
+							<p class="cookie-notice-text-copy" >
+								<span v-html="$t( 'cookie_content' )"></span>
+							</p>
+						</div>
 					</div>
-				</div>
-				<div class="cookie-notice-category-explanation">
-					<div>
-						<div class="cookie-notice-category-headline icon-inline">{{ $t('cookie_option_required_heading') }}</div>
-						<TextTruncator>
-							{{ $t('cookie_option_required_content') }}
-						</TextTruncator>
-					</div>
-					<div>
-						<div class="cookie-notice-category-headline icon-inline">{{ $t('cookie_option_optional_heading') }}</div>
-						<TextTruncator>
-							{{ $t('cookie_option_optional_content') }}
-						</TextTruncator>
+					<div class="cookie-notice-category-explanation">
+						<div>
+							<div class="cookie-notice-category-headline icon-inline">{{ $t('cookie_option_required_heading') }}</div>
+							<TextTruncator>
+								{{ $t('cookie_option_required_content') }}
+							</TextTruncator>
+						</div>
+						<div>
+							<div class="cookie-notice-category-headline icon-inline">{{ $t('cookie_option_optional_heading') }}</div>
+							<TextTruncator>
+								{{ $t('cookie_option_optional_content') }}
+							</TextTruncator>
+						</div>
 					</div>
 				</div>
 				<div class="cookie-notice-buttons">
 					<div class="cookie-notice-buttons-acceptance">
 						<div class="cookie-notice-button necessary">
-							<button class="button is-primary is-main is-outlined" v-on:click="onSaveButtonClick">
+							<button class="button is-primary is-main" v-on:click="onSaveButtonClick">
 								<span>{{ $t( 'cookie_button_necessary' ) }}</span>
 							</button>
 						</div>
 						<div class="cookie-notice-button accept">
-							<button class="button is-primary is-main is-outlined" v-on:click="onAcceptButtonClick">
+							<button class="button is-primary is-main" v-on:click="onAcceptButtonClick">
 								<span>{{ $t( 'cookie_button_accept' ) }}</span>
 							</button>
 						</div>

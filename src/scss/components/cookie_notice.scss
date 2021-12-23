@@ -1,4 +1,7 @@
+$cookie-notice-mobile-padding: 16px;
 $cookie-notice-padding: 32px;
+$cookie-notice-small-mobile-breakpoint: 640px;
+$cookie-notice-medium-mobile-breakpoint: 1024px;
 $cookie-notice-mobile-breakpoint: 1200px;
 
 .cookie-notice {
@@ -50,9 +53,13 @@ $cookie-notice-mobile-breakpoint: 1200px;
 		bottom: 0;
 		left: 0;
 		background: $fun-color-bright;
-		padding: $cookie-notice-padding;
 		box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
 		z-index: 10;
+
+		padding: $cookie-notice-mobile-padding;
+		@media ( min-width: $cookie-notice-mobile-breakpoint ) {
+			padding: $cookie-notice-padding;
+		}
 	}
 
 	&-content-block {
@@ -79,12 +86,33 @@ $cookie-notice-mobile-breakpoint: 1200px;
 		width: 100%;
 	}
 
+	&-text-content {
+		display: flex;
+		flex-direction: column;
+
+		overflow-y: scroll;
+		border: 1px solid $fun-color-gray-light-solid;
+		height: 200px;
+		padding: 5px 10px 5px 5px;
+		margin-bottom: 16px;
+		@media ( min-width: $cookie-notice-medium-mobile-breakpoint ) {
+			flex-direction: row;
+			overflow-y: visible;
+			height: 100%;
+			border: 0;
+			margin-bottom: 0;
+		}
+	}
+
 	&-text-copy {
 		position: relative;
-		padding-right: 50px;
+
 
 		&.open {
 			height: auto;
+		}
+		@media ( min-width: $cookie-notice-medium-mobile-breakpoint ) {
+			padding-right: 50px;
 		}
 	}
 
@@ -139,7 +167,9 @@ $cookie-notice-mobile-breakpoint: 1200px;
 	&-buttons {
 		display: flex;
 		flex-direction: column;
-		margin-left: 10px;
+		@media ( min-width: 400px ) {
+			margin-left: 10px;
+		}
 	}
 
 	&-button {
@@ -151,15 +181,27 @@ $cookie-notice-mobile-breakpoint: 1200px;
 			margin-bottom: 16px;
 		}
 
+		>button.is-main {
+			width: 100%;
+			@media ( min-width: $cookie-notice-small-mobile-breakpoint ) {
+				width: 240px;
+			}
+
+		}
 	}
 
 	&-buttons-acceptance {
 		display: flex;
-		flex-direction: row;
-		margin-bottom: 22px;
-		justify-content: space-evenly;
+		flex-direction: column;
+		justify-content: space-between;
+
+		@media ( min-width: 400px ) {
+			flex-direction: row;
+			justify-content: space-evenly;
+		}
 		@media ( min-width: $cookie-notice-mobile-breakpoint ) {
 			flex-direction: column;
+			margin-bottom: 22px;
 			align-items: center;
 		}
 	}
