@@ -109,11 +109,11 @@ export const createInitialMembershipAddressValues = ( dataPersister: DataPersist
 /**
  * Look for initial membership fee values in local storage
  */
-export const createInitialMembershipFeeValues = ( dataPersister: DataPersister, validateFeeUrl: string ): InitialMembershipFeeValues => {
+export const createInitialMembershipFeeValues = ( dataPersister: DataPersister, initialFeeValues: InitialMembershipFeeValues ): InitialMembershipFeeValues => {
 	return {
-		validateFeeUrl: validateFeeUrl,
-		fee: dataPersister.getValue( 'fee' ),
-		interval: dataPersister.getValue( 'interval' ),
+		validateFeeUrl: initialFeeValues.validateFeeUrl,
+		fee: replaceInitialValue( initialFeeValues.fee, dataPersister.getValue( 'fee' ) ),
+		interval: replaceInitialValue( initialFeeValues.interval, dataPersister.getValue( 'interval' ) ),
 	};
 };
 

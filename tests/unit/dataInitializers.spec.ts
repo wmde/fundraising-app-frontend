@@ -226,11 +226,36 @@ describe( 'createInitialMembershipFeeValues', () => {
 		const interval = { key: 'interval', value: 'Magoo' };
 
 		const dataPersister = new FakeDataPersister( [ fee, interval ] );
-		const values = createInitialMembershipFeeValues( dataPersister, 'https://wikipedia.de' );
+		const values = createInitialMembershipFeeValues( dataPersister, { validateFeeUrl: 'https://wikipedia.de', fee: null, interval: null } );
 
 		expect( values.validateFeeUrl ).toEqual( validateFeeUrl );
 		expect( values.fee ).toEqual( fee.value );
 		expect( values.interval ).toEqual( interval.value );
+	} );
+
+	it( 'fills data from initial values when there are none in storage', () => {
+		const validateFeeUrl = 'https://wikipedia.de';
+
+		const dataPersister = new FakeDataPersister( [] );
+		const values = createInitialMembershipFeeValues( dataPersister, { validateFeeUrl: 'https://wikipedia.de', fee: '1299', interval: '1' } );
+
+		expect( values.validateFeeUrl ).toEqual( validateFeeUrl );
+		expect( values.fee ).toEqual( '1299' );
+		expect( values.interval ).toEqual( '1' );
+	} );
+
+	it( 'overrides initial values with values form storage where they exist', () => {
+		const validateFeeUrl = 'https://wikipedia.de';
+		const fee = { key: 'fee', value: 'Spooky' };
+
+		const dataPersister = new FakeDataPersister( [ fee ] );
+		const values = createInitialMembershipFeeValues( dataPersister, { validateFeeUrl: 'https://wikipedia.de', fee: '1299', interval: '1' } );
+
+		expect( values.validateFeeUrl ).toEqual( validateFeeUrl );
+		// Value from storage
+		expect( values.fee ).toEqual( 'Spooky' );
+		// Value from initial values
+		expect( values.interval ).toEqual( '1' );
 	} );
 } );
 
