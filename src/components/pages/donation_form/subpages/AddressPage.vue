@@ -50,6 +50,14 @@
 					:is-direct-debit="isDirectDebit"
 					initial-address-type="full"
 				/>
+        <address-type-no-anon
+            slot="campaigns.address_type_steps.require_address"
+            v-on:address-type="setAddressType( $event )"
+            v-on:set-full-selected="setFullSelected"
+            :disabledAddressTypes="disabledAddressTypes"
+            :is-direct-debit="isDirectDebit"
+            :initial-address-type="addressTypeName"
+        />
 			</feature-toggle>
 			<span
 				v-if="addressTypeIsInvalid"
@@ -119,6 +127,7 @@ import AddressType from '@/components/pages/donation_form/AddressType.vue';
 import AddressTypeVar from '@/components/pages/donation_form/AddressType_var.vue';
 import AddressTypeCheckmarks from '@/components/pages/donation_form/AddressType_checkmarks.vue';
 import BasicAddressType from '@/components/pages/donation_form/BasicAddressType.vue';
+import AddressTypeNoAnon from '@/components/pages/donation_form/AddressType_no_anon.vue';
 import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
@@ -145,6 +154,7 @@ export default Vue.extend( {
 		AddressType,
 		AddressTypeVar,
 		AddressTypeCheckmarks,
+    AddressTypeNoAnon,
 		BasicAddressType,
 		PaymentBankData,
 		PaymentSummary,
