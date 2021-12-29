@@ -52,7 +52,7 @@ import { AddressValidity, AddressFormData, ValidationResult } from '@/view_model
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressValidation } from '@/view_models/Validation';
 import { Validity } from '@/view_models/Validity';
-import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
 import {
 	setAddressField,
 	validateAddress,
@@ -64,6 +64,7 @@ import {
 	validateAddressField,
 	validateDateOfBirth,
 } from '@/store/membership_address/actionTypes';
+import { validateFee } from '@/store/membership_fee/actionTypes';
 import { action } from '@/store/util';
 import { mergeValidationResults } from '@/merge_validation_results';
 import { camelizeName } from '@/camlize_name';
@@ -156,6 +157,7 @@ export default Vue.extend( {
 	props: {
 		validateAddressUrl: String,
 		validateEmailUrl: String,
+		validateFeeUrl: String,
 		countries: Array as () => Array<String>,
 		salutations: Array as () => Array<Salutation>,
 		initialFormValues: [ Object, String ],
@@ -232,7 +234,14 @@ export default Vue.extend( {
 			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setIncentives ), incentives );
 		},
 		setAddressType( addressType: AddressTypeModel ): void {
-			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), addressType );
+			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), addressType ).then( () => {
+				// Re-validate fee when address type changes, to apply server-side rules on minimum amounts
+				const payload = {
+					feeValue: this.$store.state[ NS_MEMBERSHIP_FEE ].values.fee,
+					validateFeeUrl: this.$props.validateFeeUrl,
+				};
+				this.$store.dispatch( action( NS_MEMBERSHIP_FEE, validateFee ), payload );
+			} );
 		},
 	},
 } );

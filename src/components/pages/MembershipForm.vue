@@ -60,6 +60,7 @@ export default Vue.extend( {
 					return {
 						validateAddressUrl: this.$props.validateAddressUrl,
 						validateEmailUrl: this.$props.validateEmailUrl,
+						validateFeeUrl: this.$props.validateFeeUrl,
 						countries: this.$props.countries,
 						salutations: this.$props.salutations,
 						showMembershipTypeOption: this.$props.showMembershipTypeOption,

@@ -13,6 +13,7 @@ import {
 	markEmptyValuesAsInvalid,
 	setFee,
 	setInterval,
+	validateFee,
 } from '@/store/membership_fee/actionTypes';
 import {
 	MARK_EMPTY_FEE_INVALID,
@@ -58,16 +59,7 @@ export const actions = {
 	[ markEmptyFeeAsInvalid ]( context: ActionContext<MembershipFee, any> ): void {
 		context.commit( MARK_EMPTY_FEE_INVALID );
 	},
-	[ setFee ]( context: ActionContext<MembershipFee, any>, payload: SetFeePayload ): Promise<void> {
-		context.commit( SET_FEE, payload.feeValue );
-		if ( Helper.isNonNumeric( payload.feeValue ) ) {
-			context.commit( SET_FEE_VALIDITY, Validity.INVALID );
-			return Promise.resolve();
-		}
-		if ( Helper.isNonNumeric( context.state.values.interval ) ) {
-			context.commit( SET_INTERVAL_VALIDITY );
-			return Promise.resolve();
-		}
+	[ validateFee ]( context: ActionContext<MembershipFee, any>, payload: SetFeePayload ): Promise<void> {
 		context.commit( SET_IS_VALIDATING, true );
 		return validateFeeDataRemotely(
 			context,
@@ -78,6 +70,18 @@ export const actions = {
 			context.commit( SET_FEE_VALIDITY, validationResult.status === 'ERR' ? Validity.INVALID : Validity.VALID );
 			context.commit( SET_IS_VALIDATING, false );
 		} );
+	},
+	[ setFee ]( context: ActionContext<MembershipFee, any>, payload: SetFeePayload ): Promise<void> {
+		context.commit( SET_FEE, payload.feeValue );
+		if ( Helper.isNonNumeric( payload.feeValue ) ) {
+			context.commit( SET_FEE_VALIDITY, Validity.INVALID );
+			return Promise.resolve();
+		}
+		if ( Helper.isNonNumeric( context.state.values.interval ) ) {
+			context.commit( SET_INTERVAL_VALIDITY );
+			return Promise.resolve();
+		}
+		return context.dispatch( validateFee, payload );
 	},
 	[ setInterval ]( context: ActionContext<MembershipFee, any>, payload: IntervalData ): Promise<void> {
 		context.commit( SET_INTERVAL, payload.selectedInterval );
