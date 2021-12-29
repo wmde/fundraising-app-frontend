@@ -9,6 +9,7 @@
 <script lang="js">
 import Vue from 'vue';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
+import { YearlyMembershipFee } from '@/view_models/MembershipFee';
 
 class PrivateApplicantRenderer {
 	static renderAddress( address, country, salutation ) {
@@ -42,14 +43,13 @@ export default Vue.extend( {
 			if ( !this.canRender( this.membershipApplication.membershipFee, this.membershipApplication.paymentIntervalInMonths ) ) {
 				return this.$t( 'membership_form_review_payment_missing' );
 			}
-			const numericInterval = parseInt( this.membershipApplication.paymentIntervalInMonths, 10 );
+			const yearlyFee = new YearlyMembershipFee( this.membershipApplication.paymentIntervalInMonths, this.membershipApplication.membershipFee );
 			const interval = this.$t( 'donation_form_payment_interval_' + this.membershipApplication.paymentIntervalInMonths );
 			const addressTypeRenderer = addressTypeRenderers[ this.address.applicantType ];
-			const formattedAmountMonthly = this.$n( parseFloat( this.membershipApplication.membershipFee ), { key: 'currency', currencyDisplay: 'name' } );
-			const amountYearly = parseFloat( this.membershipApplication.membershipFee ) * 12 / numericInterval;
+			const formattedAmountPerInterval = this.$n( yearlyFee.membershipFeePerInterval, { key: 'currency', currencyDisplay: 'name' } );
 			const formattedAmountYearly = this.renderAmount(
-				amountYearly,
-				numericInterval,
+				yearlyFee.yearlyFee,
+				yearlyFee.paymentIntervalInMonths,
 				this.$t( 'donation_form_payment_interval_12' )
 			);
 			const membershipType = this.$t( this.membershipApplication.membershipType );
@@ -64,7 +64,7 @@ export default Vue.extend( {
 				{
 					paymentInterval: interval,
 					membershipType: membershipType,
-					membershipFeeFormatted: formattedAmountMonthly,
+					membershipFeeFormatted: formattedAmountPerInterval,
 					membershipFeeYearlyFormatted: formattedAmountYearly,
 					address: address,
 				}

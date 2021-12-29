@@ -10,6 +10,7 @@ import LocalStorageRepository from '@/store/LocalStorageRepository';
 import createCookieConsent from '@/cookie_consent';
 import { trackGoal } from '@/tracking';
 import { Salutation } from '@/view_models/Salutation';
+import { YearlyMembershipFee } from '@/view_models/MembershipFee';
 
 const PAGE_IDENTIFIER = 'membership-application-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -21,16 +22,30 @@ Vue.use( VueCompositionApi );
 
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 
+// TODO move this model, see https://phabricator.wikimedia.org/T298372
 interface MembershipApplicationConfirmationModel {
 	piwik: { membershipApplicationConfirmationGoalId: number; },
 	salutations: Array<Salutation>,
+	membershipApplication: {
+		paymentIntervalInMonths: string|number,
+		membershipFee: string|number,
+		paymentType: string,
+		// TODO The incentive array and serialization is not properly defined
+		//      The summary page displays a fixed string when length > 0
+		incentives: any[]
+	},
+	// TODO add address property, see MembershipSummary.vue
 }
 
 const pageData = new PageDataInitializer<MembershipApplicationConfirmationModel>( '#appdata' );
 
 const i18n = createI18n( pageData.messages );
 
-trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId );
+const yearlyFee = new YearlyMembershipFee(
+	pageData.applicationVars.membershipApplication.paymentIntervalInMonths,
+	pageData.applicationVars.membershipApplication.membershipFee
+);
+trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId, yearlyFee.yearlyFee );
 
 new Vue( {
 	i18n,
