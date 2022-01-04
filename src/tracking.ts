@@ -34,6 +34,6 @@ export function forgetTrackingConsentGiven() {
 	_paq.push( [ 'forgetCookieConsentGiven' ] );
 }
 
-export function trackGoal( id: number ) {
-	_paq.push( [ 'trackGoal', id ] );
+export function trackGoal( goalID: number, amount?: number ) {
+	_paq.push( [ 'trackGoal', goalID, amount ] );
 }
