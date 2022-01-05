@@ -3,16 +3,8 @@ import { actions } from '@/store/membership_fee/actions';
 import { mutations } from '@/store/membership_fee/mutations';
 import { IntervalData, MembershipFee } from '@/view_models/MembershipFee';
 import { Validity } from '@/view_models/Validity';
-import {
-	markEmptyFeeAsInvalid,
-} from '@/store/membership_fee/actionTypes';
-import {
-	MARK_EMPTY_FEE_INVALID,
-	SET_FEE,
-	SET_FEE_VALIDITY,
-	SET_INTERVAL,
-	SET_INTERVAL_VALIDITY,
-} from '@/store/membership_fee/mutationTypes';
+import { markEmptyFeeAsInvalid } from '@/store/membership_fee/actionTypes';
+import { MARK_EMPTY_FEE_INVALID, SET_FEE, SET_FEE_VALIDITY, SET_INTERVAL, SET_INTERVAL_VALIDITY } from '@/store/membership_fee/mutationTypes';
 import each from 'jest-each';
 import mockAxios from 'jest-mock-axios';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
@@ -200,13 +192,10 @@ describe( 'MembershipFee', () => {
 
 	describe( 'Actions/setFee', () => {
 
-		afterEach( function () {
-			mockAxios.reset();
-		} );
-
 		it( 'commits to mutation [SET_FEE]', () => {
 			const context = {
 					commit: jest.fn(),
+					dispatch: jest.fn().mockResolvedValue( null ),
 					state: {
 						values: {
 							interval: 12,
@@ -223,18 +212,96 @@ describe( 'MembershipFee', () => {
 					validateFeeUrl: '/validation-fee-url',
 				};
 			const action = actions.setFee as any;
-			const actionResult = action( context, payload ).then( function () {
+			return action( context, payload ).then( function () {
 				expect( context.commit ).toHaveBeenCalledWith( SET_FEE, payload.feeValue );
 			} );
+		} );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
+		it( 'calls validation action with payload when interval and fee look ok', () => {
+			const context = {
+					commit: jest.fn(),
+					dispatch: jest.fn().mockResolvedValue( null ),
+					state: {
+						values: {
+							interval: 12,
+						},
+					},
+					rootState: {
+						membership_address: { // eslint-disable-line camelcase
+							addressType: AddressTypeModel.PERSON,
+						},
+					},
 				},
+				payload = {
+					feeValue: '2500',
+					validateFeeUrl: '/validation-fee-url',
+				};
+			const action = actions.setFee as any;
+			action( context, payload ).then( function () {
+				expect( context.dispatch ).toHaveBeenCalledWith( 'validateFee', payload );
 			} );
+		} );
 
-			return actionResult;
+		it( 'commits INVALID validity to [SET_FEE] if a non-numeric fee is supplied', () => {
+			const context = {
+					commit: jest.fn(),
+					dispatch: jest.fn().mockResolvedValue( null ),
+					state: {
+						values: {
+							interval: 12,
+						},
+					},
+					rootState: {
+						membership_address: { // eslint-disable-line camelcase
+							addressType: AddressTypeModel.PERSON,
+						},
+					},
+				},
+				payload = {
+					feeValue: '2500Blah',
+					validateFeeUrl: '/validation-fee-url',
+				};
+			const action = actions.setFee as any;
+			return action( context, payload ).then( () => {
+				expect( context.commit ).toHaveBeenCalledWith(
+					SET_FEE_VALIDITY,
+					Validity.INVALID
+				);
+				expect( context.dispatch ).not.toBeCalled();
+			} );
+		} );
+
+		it( 'commits INVALID validity to [SET_INTERVAL_VALIDITY] if a non-numeric interval is set in the state', () => {
+			const context = {
+					commit: jest.fn(),
+					dispatch: jest.fn().mockResolvedValue( null ),
+					state: {
+						values: {
+							interval: undefined,
+						},
+					},
+					rootState: {
+						membership_address: { // eslint-disable-line camelcase
+							addressType: AddressTypeModel.PERSON,
+						},
+					},
+				},
+				payload = {
+					feeValue: '2500',
+					validateFeeUrl: '/validation-fee-url',
+				};
+			const action = actions.setFee as any;
+			action( context, payload ).then( function () {
+				expect( context.commit ).toHaveBeenNthCalledWith( 2, SET_INTERVAL_VALIDITY, );
+				expect( context.dispatch ).not.toBeCalled();
+			} );
+		} );
+	} );
+
+	describe( 'Actions/validateFee', () => {
+
+		afterEach( function () {
+			mockAxios.reset();
 		} );
 
 		it( 'sends a post request for fee validation', () => {
@@ -255,68 +322,17 @@ describe( 'MembershipFee', () => {
 					feeValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
-				bodyFormData = new FormData();
-			bodyFormData.append( 'membershipFee', '2500' );
-			bodyFormData.append( 'paymentIntervalInMonths', '12' );
-			bodyFormData.append( 'addressType', 'person' );
-			const action = actions.setFee as any;
+				expectedFormData = new FormData();
+			expectedFormData.append( 'membershipFee', '2500' );
+			expectedFormData.append( 'paymentIntervalInMonths', '12' );
+			expectedFormData.append( 'addressType', 'person' );
+			const action = actions.validateFee as any;
 			action( context, payload ).then( function () {
-				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateFeeUrl, bodyFormData );
+				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateFeeUrl, expectedFormData );
 			} );
 		} );
 
-		it( 'commits INVALID validity to [SET_FEE] if a non-numeric fee is supplied', () => {
-			const context = {
-					commit: jest.fn(),
-					state: {
-						values: {
-							interval: 12,
-						},
-					},
-					rootState: {
-						membership_address: { // eslint-disable-line camelcase
-							addressType: AddressTypeModel.PERSON,
-						},
-					},
-				},
-				payload = {
-					feeValue: '2500Blah',
-					validateFeeUrl: '/validation-fee-url',
-				};
-			const action = actions.setFee as any;
-			action( context, payload );
-			expect( context.commit ).toHaveBeenCalledWith(
-				SET_FEE_VALIDITY,
-				Validity.INVALID
-			);
-		} );
-
-		it( 'commits INVALID validity to [SET_INTERVAL_VALIDITY] if a non-numeric interval is set in the state', () => {
-			const context = {
-					commit: jest.fn(),
-					state: {
-						values: {
-							interval: undefined,
-						},
-					},
-					rootState: {
-						membership_address: { // eslint-disable-line camelcase
-							addressType: AddressTypeModel.PERSON,
-						},
-					},
-				},
-				payload = {
-					feeValue: '2500',
-					validateFeeUrl: '/validation-fee-url',
-				};
-			const action = actions.setFee as any;
-			action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenNthCalledWith( 2, SET_INTERVAL_VALIDITY, );
-				expect( mockAxios.lastReqGet() ).toBe( undefined );
-			} );
-		} );
-
-		it( 'commits to mutation [SET_FEE_VALIDITY] after server side validation', () => {
+		it( 'commits to mutation [SET_FEE_VALIDITY] after server side request', () => {
 			const context = {
 					commit: jest.fn(),
 					state: {
@@ -334,7 +350,7 @@ describe( 'MembershipFee', () => {
 					feeValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
-				action = actions.setFee as any;
+				action = actions.validateFee as any;
 
 			const actionResult = action( context, payload ).then( function () {
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_FEE_VALIDITY', Validity.VALID );
@@ -368,7 +384,7 @@ describe( 'MembershipFee', () => {
 					feeValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
-				action = actions.setFee as any;
+				action = actions.validateFee as any;
 
 			const actionResult = action( context, payload ).then( function () {
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
