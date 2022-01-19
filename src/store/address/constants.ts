@@ -1,6 +1,6 @@
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 
-/** AddressTypeModel: String array of required fields **/
+/** AddressTypeModel: String array of required fields */
 export interface AddressRequirements {
 	[ key: number ]: string[]
 }
