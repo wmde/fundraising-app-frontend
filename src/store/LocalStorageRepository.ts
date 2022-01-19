@@ -76,10 +76,10 @@ export default class LocalStorageRepository implements DataPersistenceRepository
 		}
 
 		if ( bytes.length % 3 === 2 ) {
-			base64String = base64String.substring( 0, base64String.length - 1 ) + '=';
+			base64String = base64String.slice( 0, Math.max( 0, base64String.length - 1 ) ) + '=';
 		} else if ( bytes.length % 3 === 1 ) {
 			base64String =
-				base64String.substring( 0, base64String.length - 2 ) + '==';
+				base64String.slice( 0, Math.max( 0, base64String.length - 2 ) ) + '==';
 		}
 
 		return base64String;
