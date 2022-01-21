@@ -29,4 +29,61 @@ describe( 'Email', () => {
 		const errorElement = wrapper.find( '.help.is-danger' );
 		expect( errorElement.text() ).toMatch( 'donation_form_email_error' );
 	} );
+
+	it( 'suggests a mail provider if the entered email address contains typos in that part', () => {
+		const wrapper = mount( Email, {
+			localVue,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+			},
+			propsData: {
+				formData: {
+					email: {
+						value: 'i-missed-a-letter@gmail.co',
+					},
+				},
+			},
+		} );
+		const infoElement = wrapper.find( '.help' );
+		expect( infoElement.text() ).toMatch( "donation_form_email_suggestion 'gmail.com'?" );
+	} );
+
+	it( 'does not suggest mail provider if no typos are detectable', () => {
+		const wrapper = mount( Email, {
+			localVue,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+			},
+			propsData: {
+				formData: {
+					email: {
+						value: 'fine@gmail.com',
+					},
+				},
+			},
+		} );
+		const infoElement = wrapper.find( '.help' );
+		expect( infoElement.exists() ).toBeFalsy();
+	} );
+
+	it( 'does not suggest mail provider if input is more than 2 steps away from nearest suggestion', () => {
+		const wrapper = mount( Email, {
+			localVue,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+			},
+			propsData: {
+				formData: {
+					email: {
+						value: 'totally-different_provider@gmailerz.com',
+					},
+				},
+			},
+		} );
+		const infoElement = wrapper.find( '.help' );
+		expect( infoElement.exists() ).toBeFalsy();
+	} );
 } );

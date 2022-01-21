@@ -10,7 +10,9 @@
 				@blur="$emit('field-changed', 'email')">
 			</b-input>
 		</b-field>
-		<span v-if="suggestedProvider" class="help has-text-dark-lighter"> Meinten Sie '{{ suggestedProvider }}'?</span>
+		<span v-if="suggestedProvider" class="help has-text-dark-lighter">
+			{{ $t( 'donation_form_email_suggestion' ) }} '{{ suggestedProvider }}'?
+		</span>
 		<span v-if="showError" class="help is-danger">{{ $t( 'donation_form_email_error' ) }}</span>
     </div>
 </template>
