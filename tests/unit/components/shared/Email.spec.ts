@@ -3,10 +3,12 @@ import Vuex from 'vuex';
 import Email from '@/components/shared/Email.vue';
 import { createStore } from '@/store/donation_store';
 import Buefy from 'buefy';
+import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
+localVue.use( CompositionAPI );
 
 describe( 'Email', () => {
 
@@ -38,6 +40,7 @@ describe( 'Email', () => {
 				$t: ( key: string ) => key,
 			},
 			propsData: {
+				commonMailProviders: [ 'gmail.com', 't-online.de', 'gmx.net' ],
 				formData: {
 					email: {
 						value: 'i-missed-a-letter@gmail.co',
@@ -45,6 +48,7 @@ describe( 'Email', () => {
 				},
 			},
 		} );
+
 		const infoElement = wrapper.find( '.help' );
 		expect( infoElement.text() ).toMatch( "donation_form_email_suggestion 'gmail.com'?" );
 	} );
@@ -57,6 +61,7 @@ describe( 'Email', () => {
 				$t: ( key: string ) => key,
 			},
 			propsData: {
+				commonMailProviders: [ 'gmail.com', 't-online.de', 'gmx.net' ],
 				formData: {
 					email: {
 						value: 'fine@gmail.com',
@@ -76,6 +81,7 @@ describe( 'Email', () => {
 				$t: ( key: string ) => key,
 			},
 			propsData: {
+				commonMailProviders: [ 'gmail.com', 't-online.de', 'gmx.net' ],
 				formData: {
 					email: {
 						value: 'totally-different_provider@gmailerz.com',

@@ -13,7 +13,11 @@
 					:initial-address-type="'person'"></address-type-full>
 				<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"></name>
 				<postal :show-error="fieldErrors" :form-data="formData" :countries="countries" v-on:field-changed="onFieldChange"></postal>
-				<email :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange"></email>
+				<email
+					:show-error="fieldErrors.email"
+					:form-data="formData"
+					v-on:field-changed="onFieldChange"
+					:common-mail-providers="mailHostList" />
 			</AutofillHandler>
 			<newsletter-opt-in></newsletter-opt-in>
 			<div class="columns has-margin-top-18 has-padding-bottom-18">
@@ -66,6 +70,7 @@ import { camelizeName } from '@/camlize_name';
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
 import { Salutation } from '@/view_models/Salutation';
+import { useMailHostList } from '@/components/shared/useMailHostList';
 
 export default Vue.extend( {
 	name: 'AddressModal',
@@ -80,6 +85,11 @@ export default Vue.extend( {
 		SubmitValues,
 		AutofillHandler,
 	},
+	setup() {
+		const { mailHostList } = useMailHostList();
+		return { mailHostList };
+	},
+	// TODO move computed etc into composition-api's setup() method
 	data: function (): { formData: AddressFormData, isValidating: boolean } {
 		return {
 			isValidating: false,

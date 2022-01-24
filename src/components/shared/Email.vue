@@ -19,6 +19,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { computed } from '@vue/composition-api';
 import { distance, closest } from 'fastest-levenshtein';
 import { AddressFormData } from '@/view_models/Address';
 
@@ -27,23 +28,26 @@ export default Vue.extend( {
 	props: {
 		formData: Object as () => AddressFormData,
 		showError: Boolean,
-		commonMailProviders: Array,
+		commonMailProviders: { type: Array, default: () => { return []; } },
 	},
-	computed: {
-		suggestedProvider: function () {
-			const mailUserInput = this.formData.email.value;
+	setup( props: any ) {
+		const suggestedProvider = computed( () => {
+			if ( props.commonMailProviders.length === 0 ) {
+				return '';
+			}
+			const mailUserInput = props.formData.email.value;
 			if ( mailUserInput.indexOf( '@' ) === -1 ) {
 				return '';
 			}
 			const mailHost = mailUserInput.substring( mailUserInput.lastIndexOf( '@' ) + 1 );
-			const closestFit = closest( mailHost,
-				[ 'gmail.com', 'yahoo.com', 't-online.de', 'abracadabza.ac', 'gmx.net', 'ab.c', 'web.de' ] );
+			const closestFit = closest( mailHost, props.commonMailProviders );
 			const calculatedDistance = distance( mailHost, closestFit );
 			if ( calculatedDistance > 0 && calculatedDistance <= 2 ) {
 				return closestFit;
 			}
 			return '';
-		},
+		} );
+		return { suggestedProvider };
 	},
 } );
 </script>
