@@ -58,7 +58,7 @@ describe( 'Address.vue', () => {
 
 	it( 'sets address type in store when it receives address-type event', () => {
 		const store = wrapper.vm.$store;
-		store.dispatch = jest.fn();
+		store.dispatch = jest.fn( () => Promise.resolve() );
 		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setAddressType );
 		const expectedPayload = AddressTypeModel.PERSON;
 		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
