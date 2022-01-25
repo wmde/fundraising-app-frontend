@@ -1,4 +1,6 @@
 module.exports = {
+	preset: 'ts-jest',
+	testEnvironment: 'jsdom',
 	moduleFileExtensions: [
 		'js',
 		'json',
@@ -6,9 +8,8 @@ module.exports = {
 		'ts',
 	],
 	transform: {
-		'^.+\\.vue$': 'vue-jest',
+		'^.+\\.vue$': '@vue/vue2-jest',
 		'.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
-		'^.+\\.tsx?$': 'ts-jest',
 	},
 	transformIgnorePatterns: [
 		'/node_modules/',
@@ -27,7 +28,7 @@ module.exports = {
 		'ts-jest': {
 			babelConfig: true,
 			isolatedModules: true,
-			tsConfig: false,
+			tsconfig: false,
 		},
 	},
 	setupFilesAfterEnv: [
