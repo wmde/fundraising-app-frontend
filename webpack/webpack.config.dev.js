@@ -10,19 +10,20 @@ const webpackConfig = merge( commonConfig, {
 	devtool: 'eval-cheap-module-source-map',
 	plugins: [
 		new webpack.EnvironmentPlugin( environment ),
-		new webpack.HotModuleReplacementPlugin(),
 	],
 	devServer: {
 		compress: true,
 		historyApiFallback: true,
 		hot: true,
 		open: false,
-		overlay: true,
-		port: 7072,
-		stats: {
-			normal: true,
+		client: {
+			overlay: true,
 		},
-		contentBase: 'public',
+		port: 7072,
+		devMiddleware: {
+			stats: { normal: true },
+		},
+		static: 'public',
 	},
 } );
 
