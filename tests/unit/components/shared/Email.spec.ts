@@ -50,7 +50,7 @@ describe( 'Email', () => {
 		} );
 
 		const infoElement = wrapper.find( '.help' );
-		expect( infoElement.text() ).toMatch( "donation_form_email_suggestion 'gmail.com'?" );
+		expect( infoElement.text() ).toMatch( 'donation_form_email_suggestion gmail.com?' );
 	} );
 
 	it( 'does not suggest mail provider if no typos are detectable', () => {
