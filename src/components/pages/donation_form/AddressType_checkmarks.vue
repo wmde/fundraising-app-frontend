@@ -1,6 +1,6 @@
 <template>
 	<fieldset class="form-input form-input__vertical-option-list address-list">
-		<legend class="subtitle">{{ $t( 'C21_WMDE_Test_15_header' ) }}</legend>
+		<legend class="subtitle">{{ $t( 'C21_WMDE_Test_15_header_addresstype_checkmarks' ) }}</legend>
 
 		<div class="radio-container address-preselection">
 			<b-radio
@@ -9,7 +9,7 @@
 				name="addressType"
 			>
 				<div class="address-choice">
-					{{ $t( 'C21_WMDE_Test_15_full_title' ) }}
+					{{ $t( 'C21_WMDE_Test_15_full_title_addresstype_checkmarks' ) }}
 				</div>
 				<div class="info-message">
 					<ul>
@@ -18,7 +18,7 @@
 								<span class="icon">
 									<checkmark/>
 								</span>
-								<em>{{ $t( 'C21_WMDE_Test_15_full_line_1' ) }}</em>
+								<em>{{ $t( 'C21_WMDE_Test_15_full_line_1_addresstype_checkmarks' ) }}</em>
 							</span>
 						</li>
 						<li>
@@ -26,7 +26,7 @@
 								<span class="icon">
 									<checkmark/>
 								</span>
-								<em>{{ $t( 'C21_WMDE_Test_15_full_line_2' ) }}</em>
+								<em>{{ $t( 'C21_WMDE_Test_15_full_line_2_addresstype_checkmarks' ) }}</em>
 							</span>
 						</li>
 					</ul>
@@ -38,7 +38,7 @@
 				native-value="email"
 				:disabled="disableEmail">
 				<div class="address-choice">
-					{{ $t( 'C21_WMDE_Test_15_email_title' ) }}
+					{{ $t( 'C21_WMDE_Test_15_email_title_addresstype_checkmarks' ) }}
 				</div>
 				<div class="info-message">
 					<ul>
@@ -47,7 +47,7 @@
 								<span class="icon">
 									<checkmark/>
 								</span>
-								<em>{{ $t( 'C21_WMDE_Test_15_email_line_1' ) }}</em>
+								<em>{{ $t( 'C21_WMDE_Test_15_email_line_1_addresstype_checkmarks' ) }}</em>
 							</span>
 						</li>
 						<li>
@@ -55,7 +55,7 @@
 								<span class="icon">
 									<cross/>
 								</span>
-								<em>{{ $t( 'C21_WMDE_Test_15_email_line_2' ) }}</em>
+								<em>{{ $t( 'C21_WMDE_Test_15_email_line_2_addresstype_checkmarks' ) }}</em>
 							</span>
 						</li>
 					</ul>
@@ -68,7 +68,7 @@
 				native-value="anonymous"
 				:disabled="disableAnonymous">
 				<div class="address-choice">
-					{{ $t( 'C21_WMDE_Test_15_none_title' ) }}
+					{{ $t( 'C21_WMDE_Test_15_none_title_addresstype_checkmarks' ) }}
 				</div>
 				<div class="info-message">
 					<ul>
@@ -77,7 +77,7 @@
 								<span class="icon">
 									<cross/>
 								</span>
-								<em>{{ $t( 'C21_WMDE_Test_15_none_line_1' ) }}</em>
+								<em>{{ $t( 'C21_WMDE_Test_15_none_line_1_addresstype_checkmarks' ) }}</em>
 							</span>
 						</li>
 						<li>
@@ -85,7 +85,7 @@
 								<span class="icon">
 									<cross/>
 								</span>
-								<em>{{ $t( 'C21_WMDE_Test_15_none_line_2' ) }}</em>
+								<em>{{ $t( 'C21_WMDE_Test_15_none_line_2_addresstype_checkmarks' ) }}</em>
 							</span>
 						</li>
 					</ul>
@@ -102,7 +102,7 @@
 				name="addressTypeInternal"
 				v-model="fullAddressType"
 				native-value="person"
-			>{{ $t( 'donation_form_addresstype_option_private' ) }}
+			>{{ $t( 'donation_form_addresstype_option_private_addresstype_checkmarks' ) }}
 			</b-radio>
 			<b-radio
 				v-show="isFullAddressSelected"
@@ -110,7 +110,7 @@
 				v-model="fullAddressType"
 				native-value="company"
 			>
-				{{ $t( 'donation_form_addresstype_option_company' ) }}
+				{{ $t( 'donation_form_addresstype_option_company_addresstype_checkmarks' ) }}
 			</b-radio>
 		</div>
 

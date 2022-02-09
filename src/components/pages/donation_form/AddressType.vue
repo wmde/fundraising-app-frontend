@@ -1,8 +1,8 @@
 <template>
 	<fieldset class="form-input form-input__vertical-option-list">
-		<legend class="subtitle">{{ $t( 'donation_form_provisional_address_choice_title' ) }}</legend>
+		<legend class="subtitle">{{ $t( 'donation_form_address_choice_title_addresstype' ) }}</legend>
 		<div v-show="isDirectDebit" class="info-message has-margin-top-18">
-			{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
+			{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype' ) }}
 		</div>
 
 		<div class="radio-container">
@@ -11,9 +11,9 @@
 					native-value="full"
 					name="addressType"
 			>
-				{{ $t( 'donation_form_provisional_address_choice_fulladdress' ) }}
+				{{ $t( 'donation_form_address_choice_fulladdress_addresstype' ) }}
 				<div class="info-message has-margin-top-18">
-					{{ $t( 'donation_form_provisional_address_choice_fulladdress_notice' ) }}
+					{{ $t( 'donation_form_address_choice_fulladdress_notice_addresstype' ) }}
 				</div>
 			</b-radio>
 			<b-radio
@@ -21,9 +21,9 @@
 					v-model="addressType"
 					native-value="email"
 					:disabled="disableEmail">
-				{{ $t( 'donation_form_provisional_address_choice_emailonly' ) }}
+				{{ $t( 'donation_form_address_choice_emailonly_addresstype' ) }}
 				<div class="info-message has-margin-top-18">
-					{{ $t( 'donation_form_provisional_address_choice_emailonly_notice' ) }}
+					{{ $t( 'donation_form_address_choice_emailonly_notice_addresstype' ) }}
 				</div>
 			</b-radio>
 			<b-radio
@@ -32,12 +32,12 @@
 					v-model="addressType"
 					native-value="anonymous"
 					:disabled="disableAnonymous">
-				{{ $t( 'donation_form_provisional_address_choice_noaddress' ) }}
+				{{ $t( 'donation_form_address_choice_noaddress_addresstype' ) }}
 			</b-radio>
 		</div>
 
 		<legend class="subtitle" v-show="isFullAddressSelected">{{
-				$t( 'donation_form_section_address_header_type' )
+				$t( 'donation_form_section_address_header_type_addresstype' )
 			}}
 		</legend>
 		<div class="radio-container" v-show="isFullAddressSelected">
@@ -45,7 +45,7 @@
 					name="addressTypeInternal"
 					v-model="fullAddressType"
 					native-value="person"
-			>{{ $t( 'donation_form_addresstype_option_private' ) }}
+			>{{ $t( 'donation_form_addresstype_option_private_addresstype' ) }}
 			</b-radio>
 			<b-radio
 					v-show="isFullAddressSelected"
@@ -53,7 +53,7 @@
 					v-model="fullAddressType"
 					native-value="company"
 			>
-				{{ $t( 'donation_form_addresstype_option_company' ) }}
+				{{ $t( 'donation_form_addresstype_option_company_addresstype' ) }}
 			</b-radio>
 		</div>
 

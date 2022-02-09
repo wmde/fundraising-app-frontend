@@ -1,8 +1,8 @@
 <template>
 	<fieldset class="form-input form-input__vertical-option-list">
-		<legend class="subtitle">{{ $t( 'donation_form_provisional_address_choice_title' ) }}</legend>
+		<legend class="subtitle">{{ $t( 'donation_form_address_choice_title_addresstype_basic' ) }}</legend>
 		<div v-show="isDirectDebit" class="info-message has-margin-top-18">
-			{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
+			{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_basic' ) }}
 		</div>
 
 		<div class="radio-container">
@@ -11,7 +11,7 @@
           name="addressType"
           v-model="addressType"
           native-value="person"
-      >{{ $t( 'donation_form_addresstype_option_private' ) }}
+      >{{ $t( 'donation_form_addresstype_option_private_addresstype_basic' ) }}
       </b-radio>
 
       <b-radio
@@ -19,7 +19,7 @@
           v-model="addressType"
           native-value="company"
       >
-        {{ $t( 'donation_form_addresstype_option_company' ) }}
+        {{ $t( 'donation_form_addresstype_option_company_addresstype_basic' ) }}
       </b-radio>
 
       <b-radio
@@ -28,7 +28,7 @@
           v-model="addressType"
           native-value="anonymous"
           :disabled="disableAnonymous">
-        {{ $t( 'donation_form_addresstype_option_anonymous' ) }}
+        {{ $t( 'donation_form_addresstype_option_anonymous_addresstype_basic' ) }}
       </b-radio>
 
 		</div>
