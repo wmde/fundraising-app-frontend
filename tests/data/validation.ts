@@ -3,13 +3,13 @@ import { AddressValidation, ContactFormValidation } from '@/view_models/Validati
 export const addressValidationPatterns: AddressValidation = {
 	salutation: '^(Herr|Frau)$',
 	title: '',
-	companyName: '^.+$',
-	firstName: "^[A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\\s\\-\\.\\']+$",
-	lastName: "^[A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\\s\\-\\.\\']+$",
-	street: '^.+$',
-	city: '^.+$',
-	postcode: '^.+$',
-	country: '^.+$',
+	companyName: '\\p{L}+',
+	firstName: '\\p{L}+',
+	lastName: '\\p{L}+',
+	street: '[\\p{L}0-9]{2,}',
+	city: '[\\p{L}0-9]{2,}',
+	postcode: '[\\p{L}0-9]{2,}',
+	country: '[\\p{L}0-9]{2,}',
 	email: '^(.+)@(.+)\\.(.+)$',
 };
 
