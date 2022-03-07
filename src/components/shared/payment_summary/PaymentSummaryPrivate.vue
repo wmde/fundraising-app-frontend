@@ -35,7 +35,7 @@ export default {
 			return this.address.email;
 		},
 		salutationDisplay: function () {
-			if ( this.salutation === '' ) {
+			if ( !this.salutation || this.salutation === '' ) {
 				return '';
 			}
 			return this.salutation + ' ';
