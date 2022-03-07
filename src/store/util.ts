@@ -19,7 +19,7 @@ export const Helper = {
 		if ( pattern === null ) {
 			return value !== '' ? Validity.VALID : Validity.INVALID;
 		}
-		return new RegExp( pattern ).test( value ) ? Validity.VALID : Validity.INVALID;
+		return new RegExp( pattern, 'u' ).test( value ) ? Validity.VALID : Validity.INVALID;
 	},
 	formatPostData: ( form: AddressFormData ): any => {
 		return Object.keys( form ).reduce( ( accumulator: PostData, currentValue: string ) => {
