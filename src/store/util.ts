@@ -11,6 +11,14 @@ function buildActionOrMutationName( ...namespacesAndName: string[] ): string {
 export const action = buildActionOrMutationName;
 export const mutation = buildActionOrMutationName;
 
+function createBrowserSpecificRegex( pattern: string ) {
+	try {
+		return new RegExp( pattern, 'u' );
+	} catch ( e ) {
+		return /\w+/;
+	}
+}
+
 export const Helper = {
 	inputIsValid: function ( value: string, pattern: string, isOptional?: boolean ) {
 		if ( isOptional && value === '' ) {
@@ -19,7 +27,7 @@ export const Helper = {
 		if ( pattern === null ) {
 			return value !== '' ? Validity.VALID : Validity.INVALID;
 		}
-		return new RegExp( pattern, 'u' ).test( value ) ? Validity.VALID : Validity.INVALID;
+		return createBrowserSpecificRegex( pattern ).test( value ) ? Validity.VALID : Validity.INVALID;
 	},
 	formatPostData: ( form: AddressFormData ): any => {
 		return Object.keys( form ).reduce( ( accumulator: PostData, currentValue: string ) => {
