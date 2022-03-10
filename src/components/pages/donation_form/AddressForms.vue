@@ -26,7 +26,8 @@
 				<email
 						:show-error="fieldErrors.email"
 						:form-data="formData"
-						v-on:field-changed="onFieldChange"/>
+						v-on:field-changed="onFieldChange"
+						:common-mail-providers="mailHostList" />
 				<newsletter-opt-in/>
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData"></submit-values>
@@ -58,7 +59,8 @@
 				<email
 						:show-error="fieldErrors.email"
 						:form-data="formData"
-						v-on:field-changed="onFieldChange"/>
+						v-on:field-changed="onFieldChange"
+						:common-mail-providers="mailHostList" />
 				<newsletter-opt-in/>
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData"></submit-values>
@@ -80,7 +82,8 @@
 				<email
 						:show-error="fieldErrors.email"
 						:form-data="formData"
-						v-on:field-changed="onFieldChange"/>
+						v-on:field-changed="onFieldChange"
+						:common-mail-providers="mailHostList" />
 				<newsletter-opt-in />
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData"></submit-values>
@@ -113,6 +116,7 @@ import { AddressValidation } from '@/view_models/Validation';
 import { useAddressFunctions } from './AddressFunctions';
 import { Salutation } from '@/view_models/Salutation';
 import { TrackingData } from '@/view_models/TrackingData';
+import { useMailHostList } from '@/components/shared/useMailHostList';
 
 export const AddressTypeIds = new Map<number, string>( [
 	[ AddressTypeModel.ANON, 'anonymous' ],
@@ -160,6 +164,7 @@ export default Vue.extend( {
 			}
 			return AddressTypeIds.has( addressType.value ) ? AddressTypeIds.get( addressType.value ) : '';
 		} );
+		const { mailHostList } = useMailHostList();
 
 		onBeforeMount( initializeDataFromStore );
 
@@ -169,6 +174,7 @@ export default Vue.extend( {
 			receiptNeeded,
 			AddressTypeModel,
 			addressTypeId,
+			mailHostList,
 
 			onFieldChange,
 			onAutofill,

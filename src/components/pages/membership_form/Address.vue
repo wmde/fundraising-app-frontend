@@ -32,7 +32,8 @@
 			<email
 				:show-error="fieldErrors.email"
 				:form-data="formData"
-				v-on:field-changed="onFieldChange"/>
+				v-on:field-changed="onFieldChange"
+				:common-mail-providers="mailHostList" />
 		</AutofillHandler>
 	</div>
 </template>
@@ -69,6 +70,7 @@ import { action } from '@/store/util';
 import { mergeValidationResults } from '@/merge_validation_results';
 import { camelizeName } from '@/camlize_name';
 import { Salutation } from '@/view_models/Salutation';
+import { useMailHostList } from '@/components/shared/useMailHostList';
 
 export default Vue.extend( {
 	name: 'Address',
@@ -164,6 +166,11 @@ export default Vue.extend( {
 		addressValidationPatterns: Object as () => AddressValidation,
 		dateOfBirthValidationPattern: String,
 	},
+	setup() {
+		const { mailHostList } = useMailHostList();
+		return { mailHostList };
+	},
+	// TODO move computed and state into composition-api's setup() method
 	computed: {
 		fieldErrors: {
 			get: function (): AddressValidity {

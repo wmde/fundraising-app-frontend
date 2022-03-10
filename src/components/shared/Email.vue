@@ -10,18 +10,44 @@
 				@blur="$emit('field-changed', 'email')">
 			</b-input>
 		</b-field>
+		<span v-if="suggestedProvider" class="help">
+			{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
+		</span>
 		<span v-if="showError" class="help is-danger">{{ $t( 'donation_form_email_error' ) }}</span>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { computed } from '@vue/composition-api';
+import { distance, closest } from 'fastest-levenshtein';
+import { AddressFormData } from '@/view_models/Address';
 
 export default Vue.extend( {
 	name: 'Email',
 	props: {
-		formData: Object as () => FormData,
+		formData: Object as () => AddressFormData,
 		showError: Boolean,
+		commonMailProviders: { type: Array, default: () => { return []; } },
+	},
+	setup( props: any ) {
+		const suggestedProvider = computed( () => {
+			if ( props.commonMailProviders.length === 0 ) {
+				return '';
+			}
+			const mailUserInput = props.formData.email.value;
+			if ( mailUserInput.indexOf( '@' ) === -1 ) {
+				return '';
+			}
+			const mailHost = mailUserInput.substring( mailUserInput.lastIndexOf( '@' ) + 1 );
+			const closestFit = closest( mailHost, props.commonMailProviders );
+			const calculatedDistance = distance( mailHost, closestFit );
+			if ( calculatedDistance > 0 && calculatedDistance <= 2 ) {
+				return closestFit;
+			}
+			return '';
+		} );
+		return { suggestedProvider };
 	},
 } );
 </script>
