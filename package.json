@@ -53,7 +53,7 @@
     "eslint-plugin-jsdoc": "^39.0.0",
     "eslint-plugin-json": "^3.0.0",
     "eslint-plugin-json-es": "^1.5.4",
-    "eslint-plugin-unicorn": "^41.0.0",
+    "eslint-plugin-unicorn": "^42.0.0",
     "eslint-plugin-vue": "^8.0.0",
     "fastest-levenshtein": "^1.0.12",
     "file-loader": "^6.2.0",
