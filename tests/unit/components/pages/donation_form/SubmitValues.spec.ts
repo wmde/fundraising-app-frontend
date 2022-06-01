@@ -4,13 +4,12 @@ import CompositionAPI from '@vue/composition-api';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
 import { NS_BANKDATA, NS_ADDRESS, NS_PAYMENT } from '@/store/namespaces';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
-import createCookieConsent, { CookieConsentInterface } from '@/cookie_consent';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( CompositionAPI );
 
-const getWrapperWithCookieConsent = ( cookieConsent: CookieConsentInterface ) => {
+const getWrapper = () => {
 	return mount( SubmitValues, {
 		localVue,
 		propsData: {
@@ -18,9 +17,6 @@ const getWrapperWithCookieConsent = ( cookieConsent: CookieConsentInterface ) =>
 				bannerImpressionCount: 1,
 				impressionCount: 5,
 			},
-		},
-		provide: {
-			cookieConsent: cookieConsent,
 		},
 		store: new Vuex.Store( {
 			modules: {
@@ -70,36 +66,24 @@ const getWrapperWithCookieConsent = ( cookieConsent: CookieConsentInterface ) =>
 
 describe( 'SubmitValues.vue', () => {
 	it( 'renders input fields', () => {
-		const cookieConsent = createCookieConsent( 'yes' );
-		const wrapper = getWrapperWithCookieConsent( cookieConsent );
+		const wrapper = getWrapper();
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
 	it( 'renders the amount as an integer', () => {
-		const cookieConsent = createCookieConsent( 'yes' );
-		const wrapper = getWrapperWithCookieConsent( cookieConsent );
+		const wrapper = getWrapper();
 		expect( ( wrapper.find( 'input[name=amount]' ).element as HTMLInputElement ).value ).toBe( '2349' );
 	} );
 
 	it( 'renders the address type as string', () => {
-		const cookieConsent = createCookieConsent( 'yes' );
-		const wrapper = getWrapperWithCookieConsent( cookieConsent );
+		const wrapper = getWrapper();
 		expect( ( wrapper.find( 'input[name=addressType]' ).element as HTMLInputElement ).value ).toBe( addressTypeName( AddressTypeModel.PERSON ) );
 	} );
 
-	it( 'sends tracking when cookies are consented', () => {
-		const cookieConsent = createCookieConsent( 'yes' );
-		const wrapper = getWrapperWithCookieConsent( cookieConsent );
+	it( 'sends tracking', () => {
+		const wrapper = getWrapper();
 
 		expect( wrapper.find( 'input[name=impCount]' ).exists() ).toBe( true );
 		expect( wrapper.find( 'input[name=bImpCount]' ).exists() ).toBe( true );
-	} );
-
-	it( 'does not send tracking when cookies are not consented', () => {
-		const cookieConsent = createCookieConsent( 'no' );
-		const wrapper = getWrapperWithCookieConsent( cookieConsent );
-
-		expect( wrapper.find( 'input[name=impCount]' ).exists() ).toBeFalsy();
-		expect( wrapper.find( 'input[name=bImpCount]' ).exists() ).toBeFalsy();
 	} );
 } );

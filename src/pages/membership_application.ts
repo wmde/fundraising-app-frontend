@@ -26,7 +26,6 @@ import { initializeMembershipFee } from '@/store/membership_fee/actionTypes';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
-import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
 import UrlQueryParams from '@/util/UrlQueryParams';
@@ -106,7 +105,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			store,
 			i18n,
 			provide: {
-				cookieConsent: createCookieConsent( pageData.cookieConsent ),
 				cityAutocompleteResource: new ApiCityAutocompleteResource(),
 			},
 			render: h => h( App, {

@@ -7,7 +7,6 @@ import App from '@/components/App.vue';
 import Component from '@/components/pages/Contact.vue';
 import Sidebar from '@/components/layout/Sidebar.vue';
 import { ContactFormValidation } from '@/view_models/Validation';
-import createCookieConsent from '@/cookie_consent';
 
 const PAGE_IDENTIFIER = 'contact-form';
 
@@ -26,9 +25,6 @@ const i18n = createI18n( pageData.messages );
 
 new Vue( {
 	i18n,
-	provide: {
-		cookieConsent: createCookieConsent( pageData.cookieConsent ),
-	},
 	render: h => h( App, {
 		props: {
 			assetsPath: pageData.assetsPath,

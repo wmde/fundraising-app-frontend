@@ -21,7 +21,6 @@ import { initializeAddress } from '@/store/address/actionTypes';
 import { Country } from '@/view_models/Country';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
-import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
 import { TrackingData } from '@/view_models/TrackingData';
@@ -78,7 +77,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			store,
 			i18n,
 			provide: {
-				cookieConsent: createCookieConsent( pageData.cookieConsent ),
 				cityAutocompleteResource: new ApiCityAutocompleteResource(),
 			},
 			render: h => h( App, {

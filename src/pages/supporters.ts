@@ -8,7 +8,6 @@ import App from '@/components/App.vue';
 import Component from '@/components/pages/Supporters.vue';
 import Sidebar from '@/components/layout/Sidebar.vue';
 import { supportersFromObject } from '@/view_models/supporters';
-import createCookieConsent from '@/cookie_consent';
 
 const staticPage: any = document.getElementById( 'appdata' );
 const PAGE_IDENTIFIER = 'supporters';
@@ -28,9 +27,6 @@ const i18n = createI18n( pageData.messages );
 
 new Vue( {
 	i18n,
-	provide: {
-		cookieConsent: createCookieConsent( pageData.cookieConsent ),
-	},
 	render: h => h( App, {
 		props: {
 			assetsPath: pageData.assetsPath,

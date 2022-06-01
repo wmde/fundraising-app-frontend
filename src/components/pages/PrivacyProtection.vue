@@ -2,18 +2,15 @@
 	<div class="privacy_protection">
 		<h2 class="title is-size-2">{{ pageTitle }}</h2>
 		<div v-html="partialContentFirstHalf" class="has-margin-top-18 static-content"></div>
-		<CookieReview/>
 		<div v-html="partialContentSecondHalf" class="has-margin-top-18 static-content"></div>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import CookieReview from '@/components/cookie_notice/CookieReview.vue';
 
 export default Vue.extend( {
 	name: 'PrivacyProtection',
-	components: { CookieReview },
 	data: function () {
 		const splitContent = this.$props.pageContent.split( '<!-- placeholder_matomo -->' );
 		return {

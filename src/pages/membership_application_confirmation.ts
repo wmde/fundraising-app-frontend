@@ -7,7 +7,6 @@ import App from '@/components/App.vue';
 import Component from '@/components/pages/MembershipConfirmation.vue';
 import { clearPersistentData } from '@/store/create_data_persister';
 import LocalStorageRepository from '@/store/LocalStorageRepository';
-import createCookieConsent from '@/cookie_consent';
 import { trackGoal } from '@/tracking';
 import { Salutation } from '@/view_models/Salutation';
 import { YearlyMembershipFee } from '@/view_models/MembershipFee';
@@ -49,9 +48,6 @@ trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalI
 
 new Vue( {
 	i18n,
-	provide: {
-		cookieConsent: createCookieConsent( pageData.cookieConsent ),
-	},
 	render: h => h( App, {
 		props: {
 			assetsPath: pageData.assetsPath,

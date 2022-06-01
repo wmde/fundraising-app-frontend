@@ -22,8 +22,8 @@
 		<input type="hidden" name="info" :value="newsletterOptIn">
 		<input type="hidden" name="donationReceipt" :value="receiptOptIn">
 
-		<input v-if="cookieConsent.consentIsGiven.value" type="hidden" name="impCount" :value="trackingData.impressionCount">
-		<input v-if="cookieConsent.consentIsGiven.value" type="hidden" name="bImpCount" :value="trackingData.bannerImpressionCount">
+		<input type="hidden" name="impCount" :value="trackingData.impressionCount">
+		<input type="hidden" name="bImpCount" :value="trackingData.bannerImpressionCount">
 
 	</span>
 </template>
@@ -41,9 +41,6 @@ export default Vue.extend( {
 	name: 'SubmitValues',
 	props: [
 		'trackingData',
-	],
-	inject: [
-		'cookieConsent',
 	],
 	computed: {
 		...mapState( NS_PAYMENT, {
