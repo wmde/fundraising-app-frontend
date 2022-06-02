@@ -28,7 +28,7 @@ import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
-import UrlQueryParams from '@/util/UrlQueryParams';
+import 'core-js/features/url-search-params';
 import FilteredUrlMembershipValues from '@/util/FilteredUrlMembershipValues';
 
 const PAGE_IDENTIFIER = 'membership-application';
@@ -75,7 +75,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	// when donation was anonymous so converting it to a map makes it consistent
 	const initialFormValues = new Map( Object.entries( pageData.applicationVars.initialFormValues || {} ) );
 	const initialFeeValues = new FilteredUrlMembershipValues(
-		new UrlQueryParams( window.location.search ),
+		new URLSearchParams( window.location.search ),
 		pageData.applicationVars.urls.validateMembershipFee,
 	);
 	const initialBankAccountData = {
