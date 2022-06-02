@@ -1,3 +1,4 @@
+import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import PageDataInitializer from '@/page_data_initializer';

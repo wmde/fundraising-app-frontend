@@ -1,3 +1,4 @@
+import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
@@ -28,7 +29,6 @@ import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
-import 'core-js/features/url-search-params';
 import FilteredUrlMembershipValues from '@/util/FilteredUrlMembershipValues';
 
 const PAGE_IDENTIFIER = 'membership-application';
