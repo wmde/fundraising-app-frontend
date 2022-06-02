@@ -30,7 +30,7 @@
 						:common-mail-providers="mailHostList" />
 				<newsletter-opt-in/>
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData"></submit-values>
+			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
@@ -63,7 +63,7 @@
 						:common-mail-providers="mailHostList" />
 				<newsletter-opt-in/>
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData"></submit-values>
+			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
@@ -86,7 +86,7 @@
 						:common-mail-providers="mailHostList" />
 				<newsletter-opt-in />
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData"></submit-values>
+			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
@@ -94,7 +94,7 @@
 				action="/donation/add"
 				method="post"
 		>
-			<submit-values :tracking-data="trackingData"></submit-values>
+			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 	</div>
@@ -117,6 +117,7 @@ import { useAddressFunctions } from './AddressFunctions';
 import { Salutation } from '@/view_models/Salutation';
 import { TrackingData } from '@/view_models/TrackingData';
 import { useMailHostList } from '@/components/shared/useMailHostList';
+import { CampaignValues } from '@/view_models/CampaignValues';
 
 export const AddressTypeIds = new Map<number, string>( [
 	[ AddressTypeModel.ANON, 'anonymous' ],
@@ -144,6 +145,7 @@ export default Vue.extend( {
 		isFullSelected: Boolean,
 		salutations: Array as () => Array<Salutation>,
 		trackingData: Object as () => TrackingData,
+		campaignValues: Object as () => CampaignValues,
 	},
 	setup( props: any, { root: { $store } } ) {
 		const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );

@@ -75,7 +75,8 @@
 			:address-validation-patterns="addressValidationPatterns"
 			:is-full-selected="isFullSelected"
 			:address-type="addressType"
-			:tracking-data="trackingData">
+			:tracking-data="trackingData"
+			:campaign-values="campaignValues">
 		</address-forms>
 
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
@@ -145,6 +146,7 @@ import { useAddressTypeFunctions } from '@/components/pages/donation_form/Addres
 import { computed, ref, onMounted } from '@vue/composition-api';
 import { validateAddress, validateAddressType, validateEmail } from '@/store/address/actionTypes';
 import { Salutation } from '@/view_models/Salutation';
+import { CampaignValues } from '@/view_models/CampaignValues';
 
 export default Vue.extend( {
 	name: 'AddressPage',
@@ -154,7 +156,7 @@ export default Vue.extend( {
 		AddressType,
 		AddressTypeVar,
 		AddressTypeCheckmarks,
-    AddressTypeNoAnon,
+		AddressTypeNoAnon,
 		BasicAddressType,
 		PaymentBankData,
 		PaymentSummary,
@@ -169,6 +171,7 @@ export default Vue.extend( {
 		countries: Array as () => Array<Country>,
 		salutations: Array as () => Array<Salutation>,
 		trackingData: Object as () => TrackingData,
+		campaignValues: Object as () => CampaignValues,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
 	setup( props: any, { root: { $store }, emit } ) {

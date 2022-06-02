@@ -17,6 +17,10 @@ const getWrapper = () => {
 				bannerImpressionCount: 1,
 				impressionCount: 5,
 			},
+			campaignValues: {
+				campaign: 'nicholas',
+				keyword: 'cage',
+			},
 		},
 		store: new Vuex.Store( {
 			modules: {
@@ -80,10 +84,17 @@ describe( 'SubmitValues.vue', () => {
 		expect( ( wrapper.find( 'input[name=addressType]' ).element as HTMLInputElement ).value ).toBe( addressTypeName( AddressTypeModel.PERSON ) );
 	} );
 
-	it( 'sends tracking', () => {
+	it( 'sends tracking values', () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( 'input[name=impCount]' ).exists() ).toBe( true );
-		expect( wrapper.find( 'input[name=bImpCount]' ).exists() ).toBe( true );
+		expect( ( wrapper.find( 'input[name=bImpCount]' ).element as HTMLInputElement ).value ).toBe( '1' );
+		expect( ( wrapper.find( 'input[name=impCount]' ).element as HTMLInputElement ).value ).toBe( '5' );
+	} );
+
+	it( 'sends campaign values', () => {
+		const wrapper = getWrapper();
+
+		expect( ( wrapper.find( 'input[name=piwik_campaign]' ).element as HTMLInputElement ).value ).toBe( 'nicholas' );
+		expect( ( wrapper.find( 'input[name=piwik_kwd]' ).element as HTMLInputElement ).value ).toBe( 'cage' );
 	} );
 } );

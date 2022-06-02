@@ -24,6 +24,8 @@
 
 		<input type="hidden" name="impCount" :value="trackingData.impressionCount">
 		<input type="hidden" name="bImpCount" :value="trackingData.bannerImpressionCount">
+		<input type="hidden" name="piwik_campaign" :value="campaignValues.campaign">
+		<input type="hidden" name="piwik_kwd" :value="campaignValues.keyword">
 
 	</span>
 </template>
@@ -36,12 +38,15 @@ import { Payment } from '@/view_models/Payment';
 import { AddressState } from '@/view_models/Address';
 import { addressTypeName } from '@/view_models/AddressTypeModel';
 import { BankAccount } from '@/view_models/BankAccount';
+import { TrackingData } from '@/view_models/TrackingData';
+import { CampaignValues } from '@/view_models/CampaignValues';
 
 export default Vue.extend( {
 	name: 'SubmitValues',
-	props: [
-		'trackingData',
-	],
+	props: {
+		trackingData: Object as () => TrackingData,
+		campaignValues: Object as () => CampaignValues,
+	},
 	computed: {
 		...mapState( NS_PAYMENT, {
 			payment: state => ( state as Payment ).values,

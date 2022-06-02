@@ -27,6 +27,7 @@ describe( 'DonationForm', () => {
 				validateAddressUrl: 'https://example.com/address-check',
 				countries: countries,
 				trackingData: { bannerImpressionCount: 0, impressionCount: 0 },
+				campaignValues: { campaign: 'nicholas', keyword: 'cage' },
 			},
 			store: new Vuex.Store( {} ),
 			mocks: {

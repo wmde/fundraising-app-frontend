@@ -34,6 +34,10 @@ describe( 'AddressForms.vue', () => {
 				bannerImpressionCount: 1,
 				impressionCount: 5,
 			},
+			campaignValues: {
+				campaign: 'nicholas',
+				keyword: 'cage',
+			},
 		},
 		store: createStore(),
 		mocks: {
@@ -119,6 +123,10 @@ describe( 'AddressForms.vue', () => {
 					trackingData: {
 						bannerImpressionCount: 1,
 						impressionCount: 5,
+					},
+					campaignValues: {
+						campaign: 'nicholas',
+						keyword: 'cage',
 					},
 				},
 				store,
