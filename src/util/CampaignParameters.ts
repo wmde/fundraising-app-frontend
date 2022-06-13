@@ -39,9 +39,9 @@ export default class CampaignParameters {
 
 	private parseReferrer( campaign: string, keyword: string ): string {
 		if ( campaign.includes( 'org' ) || keyword.includes( 'org' ) ) {
-			return 'WMF';
+			return 'org';
 		}
 
-		return 'WMDE';
+		return 'wmde';
 	}
 }

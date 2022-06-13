@@ -43,7 +43,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 		campaignParameters.getCampaignValues();
 
 		expect( savedKey ).toEqual( cookieKey );
-		expect( savedValue ).toEqual( 'WMDE' );
+		expect( savedValue ).toEqual( 'wmde' );
 	} );
 
 	it( 'Stores WMF cookie when campaign contains WMF keyword', function () {
@@ -62,7 +62,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 		campaignParameters.getCampaignValues();
 
 		expect( savedKey ).toEqual( cookieKey );
-		expect( savedValue ).toEqual( 'WMF' );
+		expect( savedValue ).toEqual( 'org' );
 	} );
 
 	it( 'returns parameters when values are in url and referrer is stored', function () {
