@@ -1,3 +1,4 @@
+import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
@@ -12,7 +13,6 @@ import { Country } from '@/view_models/Country';
 import { Donation } from '@/view_models/Donation';
 import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
-import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
 import { trackGoal } from '@/tracking';
@@ -51,7 +51,6 @@ new Vue( {
 	store,
 	i18n,
 	provide: {
-		cookieConsent: createCookieConsent( pageData.cookieConsent ),
 		cityAutocompleteResource: new ApiCityAutocompleteResource(),
 	},
 	render: h => h( App, {
@@ -60,7 +59,6 @@ new Vue( {
 			pageIdentifier: PAGE_IDENTIFIER,
 			isFullWidth: IS_FULLWIDTH_PAGE,
 			locale: i18n.locale,
-			showCookieNotice: false,
 		},
 	},
 	[

@@ -1,3 +1,4 @@
+import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
@@ -26,10 +27,8 @@ import { initializeMembershipFee } from '@/store/membership_fee/actionTypes';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
-import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
-import UrlQueryParams from '@/util/UrlQueryParams';
 import FilteredUrlMembershipValues from '@/util/FilteredUrlMembershipValues';
 
 const PAGE_IDENTIFIER = 'membership-application';
@@ -76,7 +75,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	// when donation was anonymous so converting it to a map makes it consistent
 	const initialFormValues = new Map( Object.entries( pageData.applicationVars.initialFormValues || {} ) );
 	const initialFeeValues = new FilteredUrlMembershipValues(
-		new UrlQueryParams( window.location.search ),
+		new URLSearchParams( window.location.search ),
 		pageData.applicationVars.urls.validateMembershipFee,
 	);
 	const initialBankAccountData = {
@@ -106,7 +105,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			store,
 			i18n,
 			provide: {
-				cookieConsent: createCookieConsent( pageData.cookieConsent ),
 				cityAutocompleteResource: new ApiCityAutocompleteResource(),
 			},
 			render: h => h( App, {

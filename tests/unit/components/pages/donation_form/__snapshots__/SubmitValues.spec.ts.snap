@@ -122,5 +122,17 @@ exports[`SubmitValues.vue renders input fields 1`] = `
     type="hidden"
     value="1"
   />
+   
+  <input
+    name="piwik_campaign"
+    type="hidden"
+    value="nicholas"
+  />
+   
+  <input
+    name="piwik_kwd"
+    type="hidden"
+    value="cage"
+  />
 </span>
 `;

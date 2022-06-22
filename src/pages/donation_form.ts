@@ -1,3 +1,4 @@
+import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
@@ -21,10 +22,10 @@ import { initializeAddress } from '@/store/address/actionTypes';
 import { Country } from '@/view_models/Country';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
-import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
 import { TrackingData } from '@/view_models/TrackingData';
+import CampaignParameters from '@/util/CampaignParameters';
 
 const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
@@ -59,6 +60,7 @@ const store = createStore( [
 ] );
 
 const i18n = createI18n( pageData.messages );
+const campaignParameters = new CampaignParameters( new URLSearchParams( window.location.search ) );
 
 Vue.use( FeatureTogglePlugin, { activeFeatures: pageData.selectedBuckets } );
 
@@ -78,7 +80,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			store,
 			i18n,
 			provide: {
-				cookieConsent: createCookieConsent( pageData.cookieConsent ),
 				cityAutocompleteResource: new ApiCityAutocompleteResource(),
 			},
 			render: h => h( App, {
@@ -110,6 +111,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 						countries: pageData.applicationVars.countries,
 						salutations: pageData.applicationVars.salutations,
 						trackingData: pageData.applicationVars.tracking,
+						campaignValues: campaignParameters.getCampaignValues(),
 						addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
 						startPage: paymentDataComplete ? 'AddressPage' : 'PaymentPage',
 					},

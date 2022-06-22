@@ -1,3 +1,4 @@
+import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
@@ -11,7 +12,6 @@ import Sidebar from '@/components/layout/Sidebar.vue';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import { Country } from '@/view_models/Country';
-import createCookieConsent from '@/cookie_consent';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
 
@@ -41,7 +41,6 @@ new Vue( {
 	store,
 	i18n,
 	provide: {
-		cookieConsent: createCookieConsent( pageData.cookieConsent ),
 		cityAutocompleteResource: new ApiCityAutocompleteResource(),
 	},
 	render: h => h( App, {

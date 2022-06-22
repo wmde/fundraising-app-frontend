@@ -15,7 +15,6 @@ import countries from '@/../tests/data/countries';
 import { Validity } from '@/view_models/Validity';
 import { addressValidationPatterns } from '../../../../data/validation';
 import each from 'jest-each';
-import createCookieConsent from '@/cookie_consent';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
@@ -35,9 +34,10 @@ describe( 'AddressForms.vue', () => {
 				bannerImpressionCount: 1,
 				impressionCount: 5,
 			},
-		},
-		provide: {
-			cookieConsent: createCookieConsent( 'yes' ),
+			campaignValues: {
+				campaign: 'nicholas',
+				keyword: 'cage',
+			},
 		},
 		store: createStore(),
 		mocks: {
@@ -124,9 +124,10 @@ describe( 'AddressForms.vue', () => {
 						bannerImpressionCount: 1,
 						impressionCount: 5,
 					},
-				},
-				provide: {
-					cookieConsent: createCookieConsent( 'yes' ),
+					campaignValues: {
+						campaign: 'nicholas',
+						keyword: 'cage',
+					},
 				},
 				store,
 				mocks: {

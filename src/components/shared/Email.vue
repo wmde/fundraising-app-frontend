@@ -20,7 +20,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { computed } from '@vue/composition-api';
-import { distance, closest } from 'fastest-levenshtein';
+import { distance, closest } from '@/util/fastest-levenshtein';
 import { AddressFormData } from '@/view_models/Address';
 
 export default Vue.extend( {

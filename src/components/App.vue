@@ -19,9 +19,6 @@
 		<footer class="is-hidden-print">
 			<Footer :assets-path="assetsPath"></Footer>
 		</footer>
-		<feature-toggle>
-			<CookieNotice slot="campaigns.optional_cookie_notice.show" v-if="showCookieNotice"/>
-		</feature-toggle>
 	</div>
 </template>
 
@@ -32,7 +29,6 @@ import Header from '@/components/layout/Header.vue';
 import Headline from '@/components/layout/Headline.vue';
 import Content from '@/components/layout/Content.vue';
 import Footer from '@/components/layout/Footer.vue';
-import CookieNotice from '@/components/cookie_notice/CookieNotice.vue';
 import createLogger from '@/logger';
 
 Vue.use( Buefy );
@@ -51,7 +47,6 @@ export default Vue.extend( {
 		Headline,
 		Content,
 		Footer,
-		CookieNotice,
 	},
 	props: {
 		assetsPath: {
@@ -70,10 +65,6 @@ export default Vue.extend( {
 		},
 		locale: {
 			type: String,
-		},
-		showCookieNotice: {
-			type: Boolean,
-			default: true,
 		},
 	},
 } );

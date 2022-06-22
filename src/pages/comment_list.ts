@@ -1,3 +1,4 @@
+import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueCompositionApi from '@vue/composition-api';
@@ -7,7 +8,6 @@ import App from '@/components/App.vue';
 
 import Component from '@/components/pages/CommentList.vue';
 import Sidebar from '@/components/layout/Sidebar.vue';
-import createCookieConsent from '@/cookie_consent';
 
 const PAGE_IDENTIFIER = 'comment-list';
 
@@ -21,9 +21,6 @@ const i18n = createI18n( pageData.messages );
 
 new Vue( {
 	i18n,
-	provide: {
-		cookieConsent: createCookieConsent( pageData.cookieConsent ),
-	},
 	render: h => h( App, {
 		props: {
 			assetsPath: pageData.assetsPath,

@@ -26,14 +26,6 @@ export function trackEvent( eventName: string, ...params: Array<string> ) {
 	_paq.push( [ 'trackEvent', eventName, ...params ] );
 }
 
-export function setTrackingConsentGiven() {
-	_paq.push( [ 'setCookieConsentGiven' ] );
-}
-
-export function forgetTrackingConsentGiven() {
-	_paq.push( [ 'forgetCookieConsentGiven' ] );
-}
-
 export function trackGoal( goalID: number, amount?: number ) {
 	_paq.push( [ 'trackGoal', goalID, amount ] );
 }

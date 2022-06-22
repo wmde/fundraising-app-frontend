@@ -20,6 +20,7 @@ import AddressPage from '@/components/pages/donation_form/subpages/AddressPage.v
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
 import { Salutation } from '@/view_models/Salutation';
+import { CampaignValues } from '@/view_models/CampaignValues';
 
 export default Vue.extend( {
 	name: 'DonationForm',
@@ -39,6 +40,7 @@ export default Vue.extend( {
 		countries: Array as () => Array<Country>,
 		salutations: Array as () => Array<Salutation>,
 		trackingData: Object as () => TrackingData,
+		campaignValues: Object as () => CampaignValues,
 		addressValidationPatterns: Object as () => AddressValidation,
 		startPage: {
 			type: String,
@@ -74,6 +76,7 @@ export default Vue.extend( {
 						countries: this.$props.countries,
 						salutations: this.$props.salutations,
 						trackingData: this.$props.trackingData,
+						campaignValues: this.$props.campaignValues,
 						addressValidationPatterns: this.$props.addressValidationPatterns,
 					};
 				}
