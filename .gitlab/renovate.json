@@ -11,6 +11,18 @@
     {
       "matchPackageNames": ["vue-loader"],
       "allowedVersions": "<=15"
+    },
+	{
+      "matchPackageNames": ["vue"],
+      "allowedVersions": "<=2"
+    },
+	{
+      "matchPackageNames": ["vuex"],
+      "allowedVersions": "<=3"
+    },
+	{
+      "matchPackageNames": ["@vue/test-utils"],
+      "allowedVersions": "<=1"
     }
   ]
 }
