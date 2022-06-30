@@ -1,6 +1,5 @@
-module.exports = {
+const commonSettings = {
 	preset: 'ts-jest',
-	testEnvironment: 'jsdom',
 	moduleFileExtensions: [
 		'js',
 		'json',
@@ -17,13 +16,12 @@ module.exports = {
 	moduleNameMapper: {
 		'^@/(.*)$': '<rootDir>/src/$1',
 	},
-	snapshotSerializers: [
-		'jest-serializer-vue',
-	],
-	testMatch: [
-		'**/tests/unit/**/*.spec.(js|ts)|**/__tests__/*.(js|ts)',
-	],
-	testURL: 'http://localhost/',
+};
+
+module.exports = {
+	testEnvironmentOptions: {
+		url: 'http://localhost/',
+	},
 	globals: {
 		'ts-jest': {
 			babelConfig: true,
@@ -31,9 +29,48 @@ module.exports = {
 			tsconfig: false,
 		},
 	},
-	setupFilesAfterEnv: [
-		'./jest.setup.js',
-		'./jest.dom.ts',
+	coverageReporters: [ 'cobertura' ],
+	projects: [
+		{
+			...commonSettings,
+			displayName: 'components',
+			testEnvironment: 'jsdom',
+			testMatch: [
+				// TODO Move the FormData initialization out of the store, so they don't rely on a browser environment
+				'**/tests/unit/components/**/*.spec.(js|ts)',
+			],
+			snapshotSerializers: [
+				'jest-serializer-vue',
+			],
+			setupFilesAfterEnv: [
+				'./jest.setup.js',
+				'./jest.dom.ts',
+			],
+		},
+		{
+			...commonSettings,
+			displayName: 'store',
+			testEnvironment: 'jsdom',
+			testMatch: [
+				// TODO Move the FormData initialization out of the store, so they don't rely on a browser (jsdom) environment
+				'**/tests/unit/store/**/*.spec.(js|ts)',
+			],
+			setupFilesAfterEnv: [
+				'./jest.setup.js',
+				'./jest.dom.ts',
+			],
+		},
+		{
+			...commonSettings,
+			displayName: 'node',
+			testEnvironment: 'node',
+			testMatch: [
+				'**/tests/unit/*.spec.(js|ts)',
+				'**/tests/unit/utils/**/*.spec.(js|ts)',
+			],
+			setupFilesAfterEnv: [
+				'./jest.setup.js',
+			],
+		},
 	],
-	coverageReporters: ['cobertura']
 };
