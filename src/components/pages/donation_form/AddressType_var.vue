@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { computed, defineComponent, PropType, Ref, ref, watch } from '@vue/composition-api';
+import { computed, defineComponent, PropType, Ref, ref, watch } from 'vue';
 
 type fullAddressStates = '' | 'person' | 'company';
 

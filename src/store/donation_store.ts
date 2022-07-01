@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue, { InjectionKey } from 'vue';
 import Vuex, { Store, StoreOptions } from 'vuex';
 import createPayment from '@/store/payment';
 import createAddress from '@/store/address';
@@ -33,3 +33,5 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 
 	return new Vuex.Store<any>( storeBundle );
 }
+
+export const StoreKey: InjectionKey<Store<any>> = Symbol( 'Store' );

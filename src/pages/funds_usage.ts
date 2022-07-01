@@ -4,7 +4,6 @@ import VueI18n from 'vue-i18n';
 import PageDataInitializer from '@/page_data_initializer';
 import { createI18n } from '@/locales';
 import App from '@/components/App.vue';
-import VueCompositionApi from '@vue/composition-api';
 
 import Component from '@/components/pages/UseOfFunds.vue';
 
@@ -12,9 +11,7 @@ const PAGE_IDENTIFIER = 'use-of-funds',
 	IS_FULLWIDTH_PAGE = true;
 
 Vue.config.productionTip = false;
-Vue.use( VueCompositionApi );
 Vue.use( VueI18n );
-Vue.use( VueCompositionApi );
 
 const pageData = new PageDataInitializer<any>( '#appdata' );
 

@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { onMounted, ref, watch, computed, inject } from '@vue/composition-api';
+import { onMounted, ref, watch, computed, inject } from 'vue';
 import { CityAutocompleteResource, NullCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { InputField } from '@/view_models/Address';
 

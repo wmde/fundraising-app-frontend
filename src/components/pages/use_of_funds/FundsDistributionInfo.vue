@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api';
+import { defineComponent, ref } from 'vue';
 import { FundsItem } from '@/view_models/useOfFunds';
 
 export default defineComponent( {

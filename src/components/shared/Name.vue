@@ -80,7 +80,7 @@
 import Vue from 'vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressValidity, AddressFormData } from '@/view_models/Address';
-import { computed } from '@vue/composition-api';
+import { computed } from 'vue';
 import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {

@@ -73,7 +73,7 @@
 import CompanyBudgets from '@/components/pages/use_of_funds/CompanyBudgets.vue';
 import FundsDistributionAccordion from '@/components/pages/use_of_funds/FundsDistributionAccordion.vue';
 import FundsDistributionInfo from '@/components/pages/use_of_funds/FundsDistributionInfo.vue';
-import { defineComponent, computed } from '@vue/composition-api';
+import { defineComponent, computed } from 'vue';
 
 function splitStringAt( splitWords: string[], str: string ) {
 	const rx = new RegExp( '(' + splitWords.join( '|' ) + ')', 'g' );

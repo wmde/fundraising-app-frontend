@@ -1,7 +1,6 @@
 import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import VueCompositionApi from '@vue/composition-api';
 import PageDataInitializer from '@/page_data_initializer';
 import { createI18n } from '@/locales';
 import { createStore } from '@/store/update_address_store';
@@ -20,7 +19,6 @@ const FORM_NAMESPACE = 'update_address';
 
 Vue.config.productionTip = false;
 Vue.use( VueI18n );
-Vue.use( VueCompositionApi );
 
 interface UpdateAddressModel {
 	isCompany: boolean,

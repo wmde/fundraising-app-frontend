@@ -119,7 +119,7 @@
 
 <script lang="ts">
 import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { computed, defineComponent, PropType, Ref, ref, watch } from '@vue/composition-api';
+import { computed, defineComponent, PropType, Ref, ref, watch } from 'vue';
 import Checkmark from '@/components/pages/donation_form/Checkmark.vue';
 import Cross from '@/components/pages/donation_form/Cross.vue';
 

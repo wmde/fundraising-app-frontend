@@ -143,10 +143,12 @@ import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import { discardInitialization } from '@/store/payment/actionTypes';
 import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 import { useAddressTypeFunctions } from '@/components/pages/donation_form/AddressTypeFunctions';
-import { computed, ref, onMounted } from '@vue/composition-api';
+import { computed, ref, onMounted } from 'vue';
 import { validateAddress, validateAddressType, validateEmail } from '@/store/address/actionTypes';
 import { Salutation } from '@/view_models/Salutation';
 import { CampaignValues } from '@/view_models/CampaignValues';
+import { StoreKey } from '@/store/donation_store';
+import { injectStrict } from '@/util/injectStrict';
 
 export default Vue.extend( {
 	name: 'AddressPage',
@@ -174,8 +176,9 @@ export default Vue.extend( {
 		campaignValues: Object as () => CampaignValues,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
-	setup( props: any, { root: { $store }, emit } ) {
+	setup( props: any, { emit } ) {
 		const isFullSelected = ref( false );
+		const store = injectStrict( StoreKey );
 		const setFullSelected = ( selected: boolean ) => {
 			isFullSelected.value = selected;
 		};
@@ -189,15 +192,15 @@ export default Vue.extend( {
 			addressTypeIsInvalid,
 			addressTypeName,
 			setAddressType,
-		} = useAddressTypeFunctions( $store );
+		} = useAddressTypeFunctions( store );
 
 		// Payment functions
-		const isExternalPayment = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isExternalPayment' ] );
-		const isBankTransferPayment = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isBankTransferPayment' ] );
-		const isDirectDebit = computed( (): boolean => $store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] );
-		const paymentWasInitialized = computed( (): boolean => $store.state[ NS_PAYMENT ].initialized );
+		const isExternalPayment = computed( (): boolean => store.getters[ NS_PAYMENT + '/isExternalPayment' ] );
+		const isBankTransferPayment = computed( (): boolean => store.getters[ NS_PAYMENT + '/isBankTransferPayment' ] );
+		const isDirectDebit = computed( (): boolean => store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] );
+		const paymentWasInitialized = computed( (): boolean => store.state[ NS_PAYMENT ].initialized );
 		const paymentSummary = computed( () => {
-			const payment = $store.state[ NS_PAYMENT ].values;
+			const payment = store.state[ NS_PAYMENT ].values;
 			return {
 				interval: payment.interval,
 				amount: payment.amount / 100,
@@ -207,14 +210,14 @@ export default Vue.extend( {
 
 		// Summary functions
 		const addressSummary = computed( () => ( {
-			...$store.state[ NS_ADDRESS ].values,
-			fullName: $store.getters[ NS_ADDRESS + '/fullName' ],
-			streetAddress: $store.state[ NS_ADDRESS ].values.street,
-			postalCode: $store.state[ NS_ADDRESS ].values.postcode,
-			country: $store.state[ NS_ADDRESS ].values.country,
+			...store.state[ NS_ADDRESS ].values,
+			fullName: store.getters[ NS_ADDRESS + '/fullName' ],
+			streetAddress: store.state[ NS_ADDRESS ].values.street,
+			postalCode: store.state[ NS_ADDRESS ].values.postcode,
+			country: store.state[ NS_ADDRESS ].values.country,
 		} ) );
 		const inlineSummaryLanguageItem = computed( (): string => {
-			switch ( $store.state[ NS_ADDRESS ].addressType ) {
+			switch ( store.state[ NS_ADDRESS ].addressType ) {
 				case AddressTypeModel.ANON:
 				case AddressTypeModel.UNSET:
 					return 'donation_confirmation_inline_summary_anonymous';
@@ -228,7 +231,7 @@ export default Vue.extend( {
 		} );
 
 		const previousPage = () => {
-			$store.dispatch( action( NS_PAYMENT, discardInitialization ) );
+			store.dispatch( action( NS_PAYMENT, discardInitialization ) );
 			emit( 'previous-page' );
 		};
 		const submitHtmlForm = () => {
@@ -246,21 +249,21 @@ export default Vue.extend( {
 			.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
 		const submit = () => {
 			const validationCalls = [
-				$store.dispatch( action( NS_ADDRESS, validateAddressType ), $store.state.address.addressType ),
-				$store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
-				$store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
+				store.dispatch( action( NS_ADDRESS, validateAddressType ), store.state.address.addressType ),
+				store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
+				store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
 			];
 			if ( isDirectDebit.value ) {
-				validationCalls.push( $store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
+				validationCalls.push( store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
 			}
 			Promise.all( validationCalls ).then( () => {
 				// We need to wait for the asynchronous bank data validation, that might still be going on
-				waitForServerValidationToFinish( $store ).then( () => {
-					if ( !$store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
+				waitForServerValidationToFinish( store ).then( () => {
+					if ( !store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
 						scrollToFirstError();
 						return;
 					}
-					if ( isDirectDebit.value && !$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+					if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
 						scrollToFirstError();
 						return;
 					}

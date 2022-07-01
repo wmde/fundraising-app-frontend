@@ -102,7 +102,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { computed, onBeforeMount, PropType, toRefs } from '@vue/composition-api';
+import { computed, onBeforeMount, PropType, toRefs } from 'vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
@@ -118,6 +118,8 @@ import { Salutation } from '@/view_models/Salutation';
 import { TrackingData } from '@/view_models/TrackingData';
 import { useMailHostList } from '@/components/shared/useMailHostList';
 import { CampaignValues } from '@/view_models/CampaignValues';
+import { StoreKey } from '@/store/donation_store';
+import { injectStrict } from '@/util/injectStrict';
 
 export const AddressTypeIds = new Map<number, string>( [
 	[ AddressTypeModel.ANON, 'anonymous' ],
@@ -147,8 +149,9 @@ export default Vue.extend( {
 		trackingData: Object as () => TrackingData,
 		campaignValues: Object as () => CampaignValues,
 	},
-	setup( props: any, { root: { $store } } ) {
+	setup( props: any ) {
 		const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );
+		const $store = injectStrict( StoreKey );
 		const {
 			formData,
 			fieldErrors,
