@@ -36,6 +36,7 @@ export default Vue.extend( {
 		validateFeeUrl: String,
 		paymentAmounts: Array as () => Array<String>,
 		paymentIntervals: Array as () => Array<String>,
+		paymentTypes: Array as () => Array<String>,
 		countries: Array as () => Array<Country>,
 		salutations: Array as () => Array<Salutation>,
 		showMembershipTypeOption: Boolean,
@@ -45,7 +46,7 @@ export default Vue.extend( {
 	data: function () {
 		return {
 			pages: [ 'AddressPage', 'PaymentPage' ],
-			currentPageIndex: 0,
+			currentPageIndex: 1,
 		};
 	},
 	computed: {
@@ -72,6 +73,7 @@ export default Vue.extend( {
 					validateFeeUrl: this.$props.validateFeeUrl,
 					paymentAmounts: this.$props.paymentAmounts,
 					paymentIntervals: this.$props.paymentIntervals,
+					paymentTypes: this.$props.paymentTypes,
 					validateBankDataUrl: this.$props.validateBankDataUrl,
 					validateLegacyBankDataUrl: this.$props.validateLegacyBankDataUrl,
 					salutations: this.$props.salutations,
