@@ -2,11 +2,9 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import AddressTypeFull from '@/components/pages/donation_confirmation/AddressTypeFull.vue';
 import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
-localVue.use( CompositionAPI );
 
 describe( 'AddressTypeFull.vue', () => {
 	it( 'selected initial address type when given one', async () => {

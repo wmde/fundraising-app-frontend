@@ -1,14 +1,12 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import AutocompleteCity from '@/components/shared/AutocompleteCity.vue';
 import Buefy from 'buefy';
-import CompositionAPI from '@vue/composition-api';
 import { FakeAutocompleteResource } from '../../TestDoubles/FakeAutocompleteResource';
 // @ts-ignore
 import { BAutocomplete } from 'buefy/dist/cjs/autocomplete';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
-localVue.use( CompositionAPI );
 
 const cityAutocompleteResource = new FakeAutocompleteResource();
 const placeholderKey = 'form_for_example';

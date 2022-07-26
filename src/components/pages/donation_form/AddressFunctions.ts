@@ -1,5 +1,5 @@
 import { AddressFormData, AddressValidity } from '@/view_models/Address';
-import { computed, reactive } from '@vue/composition-api';
+import { computed, reactive } from 'vue';
 import { Validity } from '@/view_models/Validity';
 import {
 	setAddressField,

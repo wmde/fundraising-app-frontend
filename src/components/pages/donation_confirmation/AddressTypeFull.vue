@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { defineComponent, ref, watch } from '@vue/composition-api';
+import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent( {
 	name: 'AddressTypeFull',

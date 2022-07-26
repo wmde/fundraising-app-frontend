@@ -1,12 +1,11 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Buefy from 'buefy';
-import CompositionAPI from '@vue/composition-api';
 import AddressForms from '@/components/pages/donation_form/AddressForms.vue';
 import Name from '@/components/shared/Name.vue';
 import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
 import Email from '@/components/shared/Email.vue';
-import { createStore } from '@/store/donation_store';
+import { createStore, StoreKey } from '@/store/donation_store';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@/store/namespaces';
 import { initializeAddress, setAddressField, setReceiptOptOut } from '@/store/address/actionTypes';
@@ -19,9 +18,12 @@ import each from 'jest-each';
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
-localVue.use( CompositionAPI );
+
+const store = createStore();
 
 describe( 'AddressForms.vue', () => {
+
+	let originalStoreDispatch: any;
 
 	const createOptionsForAddressType = ( addressType: AddressTypeModel ) => ( {
 		localVue,
@@ -39,7 +41,10 @@ describe( 'AddressForms.vue', () => {
 				keyword: 'cage',
 			},
 		},
-		store: createStore(),
+		provide: {
+			[ StoreKey as symbol ]: store,
+		},
+		store,
 		mocks: {
 			$t: () => { },
 		},
@@ -47,7 +52,12 @@ describe( 'AddressForms.vue', () => {
 
 	let wrapper: any;
 	beforeEach( () => {
+		originalStoreDispatch = store.dispatch;
 		wrapper = mount( AddressForms, createOptionsForAddressType( AddressTypeModel.PERSON ) );
+	} );
+
+	afterEach( () => {
+		store.dispatch = originalStoreDispatch;
 	} );
 
 	each( [
@@ -64,12 +74,11 @@ describe( 'AddressForms.vue', () => {
 		expect( wrapper.classes() ).toContain( expectedClass );
 	} );
 
-	it( 'sets address field in store when it receives field-changed event', () => {
-		const store = wrapper.vm.$store;
+	it( 'sets address field in store when it receives field-changed event', async () => {
 		store.dispatch = jest.fn();
 		const expectedAction = action( NS_ADDRESS, setAddressField );
 		const firstNameValue = 'Vuetiful';
-		wrapper.vm.$data.formData.firstName.value = firstNameValue;
+		await wrapper.find( '#first-name' ).setValue( firstNameValue );
 
 		wrapper.findComponent( Name ).vm.$emit( 'field-changed', 'firstName' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
@@ -81,7 +90,6 @@ describe( 'AddressForms.vue', () => {
 	} );
 
 	it( 'sets receipt opt out preference in store when it receives opted-out event', async () => {
-		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn();
 		const expectedAction = action( NS_ADDRESS, setReceiptOptOut );
 		const expectedPayload = true;
@@ -89,11 +97,11 @@ describe( 'AddressForms.vue', () => {
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
-	it( 'sets email in store when it receives email event', () => {
-		const store = wrapper.vm.$store;
+	it( 'sets email in store when it receives email event', async () => {
 		const testEmail = 'test@wikimedia.de';
 		store.dispatch = jest.fn();
-		wrapper.vm.$data.formData.email.value = testEmail;
+		await wrapper.find( '#email' ).setValue( testEmail );
+
 		const expectedAction = action( NS_ADDRESS, setAddressField );
 		wrapper.findComponent( Email ).vm.$emit( 'field-changed', 'email' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
@@ -111,33 +119,33 @@ describe( 'AddressForms.vue', () => {
 			addressType: AddressTypeModel.PERSON,
 			fields: [ firstName, lastName ],
 		};
-
-		const store = createStore();
-		await store.dispatch( action( NS_ADDRESS, initializeAddress ), initialData ).then( () => {
-			wrapper = mount( AddressForms, {
-				localVue,
-				propsData: {
-					validateAddressUrl: 'validate-address',
-					countries: countries,
-					addressValidationPatterns: addressValidationPatterns,
-					trackingData: {
-						bannerImpressionCount: 1,
-						impressionCount: 5,
-					},
-					campaignValues: {
-						campaign: 'nicholas',
-						keyword: 'cage',
-					},
+		await store.dispatch( action( NS_ADDRESS, initializeAddress ), initialData );
+		wrapper = mount( AddressForms, {
+			localVue,
+			propsData: {
+				validateAddressUrl: 'validate-address',
+				countries: countries,
+				addressValidationPatterns: addressValidationPatterns,
+				trackingData: {
+					bannerImpressionCount: 1,
+					impressionCount: 5,
 				},
-				store,
-				mocks: {
-					$t: () => { },
+				campaignValues: {
+					campaign: 'nicholas',
+					keyword: 'cage',
 				},
-			} );
+			},
+			store,
+			provide: {
+				[ StoreKey as symbol ]: store,
+			},
+			mocks: {
+				$t: () => { },
+			},
 		} );
 
-		expect( wrapper.vm.$data.formData.firstName.value ).toBe( firstName.value );
-		expect( wrapper.vm.$data.formData.lastName.value ).toBe( lastName.value );
+		expect( wrapper.find( '#first-name' ).element.value ).toBe( firstName.value );
+		expect( wrapper.find( '#last-name' ).element.value ).toBe( lastName.value );
 		expect( store.state.address.validity.firstName ).not.toBe( Validity.RESTORED );
 		expect( store.state.address.validity.lastName ).not.toBe( Validity.RESTORED );
 	} );

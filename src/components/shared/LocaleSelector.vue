@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ref } from '@vue/composition-api';
+import { ref } from 'vue';
 import Cookies from 'js-cookie';
 import { COOKIE_NAME, DEFAULT_LOCALE } from '@/locales';
 

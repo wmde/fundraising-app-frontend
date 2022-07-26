@@ -1,11 +1,10 @@
 import 'core-js/stable';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import VueCompositionApi from '@vue/composition-api';
 import PageDataInitializer from '@/page_data_initializer';
 import { createI18n } from '@/locales';
 import App from '@/components/App.vue';
-import { createStore } from '@/store/donation_store';
+import { createStore, StoreKey } from '@/store/donation_store';
 
 import Component from '@/components/pages/DonationForm.vue';
 import Sidebar from '@/components/layout/Sidebar.vue';
@@ -32,7 +31,6 @@ const FORM_NAMESPACE = 'donation_form';
 
 Vue.config.productionTip = false;
 Vue.use( VueI18n );
-Vue.use( VueCompositionApi );
 
 interface DonationFormModel {
 	initialFormValues: any,
@@ -81,6 +79,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			i18n,
 			provide: {
 				cityAutocompleteResource: new ApiCityAutocompleteResource(),
+				[ StoreKey as symbol ]: store,
 			},
 			render: h => h( App, {
 				props: {

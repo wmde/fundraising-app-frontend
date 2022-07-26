@@ -2,11 +2,9 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import AddressType from '@/components/pages/donation_form/AddressType.vue';
 import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
-localVue.use( CompositionAPI );
 
 describe( 'AddressType.vue', () => {
 

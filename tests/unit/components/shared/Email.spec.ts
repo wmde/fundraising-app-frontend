@@ -3,12 +3,10 @@ import Vuex from 'vuex';
 import Email from '@/components/shared/Email.vue';
 import { createStore } from '@/store/donation_store';
 import Buefy from 'buefy';
-import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
-localVue.use( CompositionAPI );
 
 describe( 'Email', () => {
 

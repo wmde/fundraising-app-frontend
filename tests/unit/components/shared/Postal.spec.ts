@@ -4,11 +4,9 @@ import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import countries from '@/../tests/data/countries';
 import { addressValidationPatterns } from '../../../data/validation';
-import CompositionAPI from '@vue/composition-api';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
-localVue.use( CompositionAPI );
 
 function newTestProperties( overrides: Object ) {
 	return Object.assign(

@@ -6,7 +6,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Buefy from 'buefy';
 import PaymentPage from '@/components/pages/donation_form/subpages/PaymentPage.vue';
-import CompositionAPI from "@vue/composition-api";
 import { FeatureTogglePlugin } from "@/FeatureToggle";
 
 jest.mock( '@/tracking', () => {

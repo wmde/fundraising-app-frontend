@@ -17,7 +17,7 @@
 
 <script lang="ts">
 
-import { computed, defineComponent, PropType } from '@vue/composition-api';
+import { computed, defineComponent, PropType } from 'vue';
 import CompanyCitation from './CompanyCitation.vue';
 
 interface CompanyInterface {

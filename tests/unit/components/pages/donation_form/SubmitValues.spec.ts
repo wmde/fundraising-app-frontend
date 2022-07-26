@@ -1,13 +1,11 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
-import CompositionAPI from '@vue/composition-api';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
 import { NS_BANKDATA, NS_ADDRESS, NS_PAYMENT } from '@/store/namespaces';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( CompositionAPI );
 
 const getWrapper = () => {
 	return mount( SubmitValues, {
