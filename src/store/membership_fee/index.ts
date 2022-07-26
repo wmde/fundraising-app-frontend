@@ -16,7 +16,7 @@ export default function (): Module<Payment, any> {
 		values: {
 			fee: '', // membership fee in cents
 			interval: '',
-			type: 'BEZ',
+			type: '',
 		},
 	};
 

@@ -50,6 +50,7 @@ export default Vue.extend( {
 		validateFeeUrl: String,
 		paymentAmounts: Array as () => Array<String>,
 		paymentIntervals: Array as () => Array<Number>,
+		paymentTypes: Array as () => Array<String>,
 		validateBankDataUrl: String,
 		validateLegacyBankDataUrl: String,
 		salutations: Array as () => Array<Salutation>,
