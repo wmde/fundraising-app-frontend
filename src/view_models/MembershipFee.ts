@@ -12,6 +12,7 @@ export interface MembershipFee {
 export interface InitialMembershipFeeValues {
 	validateFeeUrl: string,
 	fee: string|null,
+	type: string|null,
 	interval: string|null,
 }
 

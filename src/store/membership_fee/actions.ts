@@ -14,6 +14,7 @@ import {
 	setFee,
 	setInterval,
 	validateFee,
+	setType,
 } from '@/store/membership_fee/actionTypes';
 import {
 	MARK_EMPTY_FEE_INVALID,
@@ -28,6 +29,8 @@ import { ValidationResponse } from '@/store/ValidationResponse';
 import { Validity } from '@/view_models/Validity';
 import { Helper } from '@/store/util';
 import { validateFeeDataRemotely } from '@/store/axios';
+import { TypeData } from '@/view_models/Payment';
+import { SET_TYPE, SET_TYPE_VALIDITY } from '@/store/payment/mutationTypes';
 
 export const actions = {
 	[ initializeMembershipFee ]( context: ActionContext<MembershipFee, any>, initialData: InitialMembershipFeeValues ) {
@@ -38,6 +41,11 @@ export const actions = {
 		if ( initialData.interval ) {
 			context.commit( SET_INTERVAL, initialData.interval );
 			context.commit( SET_INTERVAL_VALIDITY );
+		}
+
+		if ( initialData.type ) {
+			context.commit( SET_TYPE, initialData.type );
+			context.commit( SET_TYPE_VALIDITY );
 		}
 
 		if ( initialData.fee || initialData.interval ) {
@@ -99,5 +107,9 @@ export const actions = {
 			context.commit( SET_FEE_VALIDITY, validationResult.status === 'ERR' ? Validity.INVALID : Validity.VALID );
 			context.commit( SET_IS_VALIDATING, false );
 		} );
+	},
+	[ setType ]( context: ActionContext<MembershipFee, any>, payload: TypeData ): void {
+		context.commit( SET_TYPE, payload );
+		context.commit( SET_TYPE_VALIDITY );
 	},
 };
