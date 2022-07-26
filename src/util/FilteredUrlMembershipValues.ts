@@ -13,8 +13,13 @@ export default class FilteredUrlMembershipValues implements InitialMembershipFee
 		const feeValue = this.params.get( 'fee' ) ?? '';
 		return feeValue.match( /^\d+$/ ) ? feeValue : '';
 	}
+
 	get interval() {
 		const rawInterval = this.params.get( 'interval' ) ?? '';
 		return [ '1', '3', '6', '12' ].indexOf( rawInterval ) > -1 ? rawInterval : '';
+	}
+
+	get type() {
+		return null;
 	}
 }
