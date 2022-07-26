@@ -53,6 +53,7 @@ export default Vue.extend( {
 				this.$t( 'donation_form_payment_interval_12' )
 			);
 			const membershipType = this.$t( this.membershipApplication.membershipType );
+			const paymentType = this.$t( this.membershipApplication.paymentType );
 			const address = addressTypeRenderer.renderAddress(
 				this.address,
 				this.$t( 'donation_form_country_option_' + this.address.countryCode ),
@@ -66,6 +67,7 @@ export default Vue.extend( {
 					membershipType: membershipType,
 					membershipFeeFormatted: formattedAmountPerInterval,
 					membershipFeeYearlyFormatted: formattedAmountYearly,
+					paymentType: paymentType,
 					address: address,
 				}
 			);
