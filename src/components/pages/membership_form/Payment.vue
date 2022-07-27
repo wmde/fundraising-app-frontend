@@ -22,8 +22,8 @@
 			class="has-margin-top-36"
 			:current-type="type"
 			:payment-types="paymentTypes"
-			:error="typeIsValid ? '' : $t('donation_form_payment_type_error')"
-			:title="$t('donation_form_payment_type_title')"
+			:error="typeIsValid ? '' : $t('membership_form_payment_type_error')"
+			:title="$t('membership_form_payment_type_title')"
 			v-on:payment-type-selected="sendTypeToStore"
 		></payment-type>
 
