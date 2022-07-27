@@ -153,6 +153,7 @@ describe( 'MembershipFee', () => {
 						values: {
 							fee: '2000',
 							interval: '6',
+							type: 'BEZ',
 						},
 					},
 					rootState: {
@@ -172,11 +173,17 @@ describe( 'MembershipFee', () => {
 				bodyFormData.append( 'membershipFee', '2000' );
 				bodyFormData.append( 'paymentIntervalInMonths', '6' );
 				bodyFormData.append( 'addressType', 'person' );
-				expect( mockAxios.post ).toHaveBeenCalledWith(
-					payload.validateFeeUrl,
-					bodyFormData,
-					{ headers: { 'Content-Type': 'multipart/form-data' } }
-				);
+				bodyFormData.append( 'type', 'BEZ' );
+
+				// toHaveBeenCalledWith isn't able to compare form objects
+				// meaning we need to pull the passed arguments out of the call manually
+				const calledUrl = mockAxios.post.mock.calls[ 0 ][ 0 ];
+				const calledFormData = mockAxios.post.mock.calls[ 0 ][ 1 ];
+				const calledHeaders = mockAxios.post.mock.calls[ 0 ][ 2 ];
+
+				expect( calledUrl ).toEqual( payload.validateFeeUrl );
+				expect( [ ...calledFormData.values() ] ).toEqual( [ ...bodyFormData.values() ] );
+				expect( calledHeaders ).toEqual( { headers: { 'Content-Type': 'multipart/form-data' } } );
 			} );
 
 			mockAxios.mockResponse( {

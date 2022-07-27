@@ -54,7 +54,8 @@ export const actions = {
 				context,
 				initialData.validateFeeUrl,
 				context.state.values.fee,
-				context.state.values.interval
+				context.state.values.interval,
+				context.state.values.type,
 			).then( ( validationResult: ValidationResponse ) => {
 				context.commit( SET_FEE_VALIDITY, validationResult.status === 'ERR' ? Validity.INVALID : Validity.VALID );
 				context.commit( SET_IS_VALIDATING, false );
@@ -73,7 +74,8 @@ export const actions = {
 			context,
 			payload.validateFeeUrl,
 			payload.feeValue,
-			context.state.values.interval
+			context.state.values.interval,
+			context.state.values.type,
 		).then( ( validationResult: ValidationResponse ) => {
 			context.commit( SET_FEE_VALIDITY, validationResult.status === 'ERR' ? Validity.INVALID : Validity.VALID );
 			context.commit( SET_IS_VALIDATING, false );
@@ -102,7 +104,8 @@ export const actions = {
 			context,
 			payload.validateFeeUrl,
 			context.state.values.fee,
-			context.state.values.interval
+			context.state.values.interval,
+			context.state.values.type,
 		).then( ( validationResult: ValidationResponse ) => {
 			context.commit( SET_FEE_VALIDITY, validationResult.status === 'ERR' ? Validity.INVALID : Validity.VALID );
 			context.commit( SET_IS_VALIDATING, false );

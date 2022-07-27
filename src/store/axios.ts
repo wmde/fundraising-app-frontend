@@ -11,12 +11,14 @@ function postFeeData(
 	validateFeeUrl: string,
 	membershipFee: string,
 	interval: string,
-	addressType: AddressTypeModel
+	addressType: AddressTypeModel,
+	paymentType: string,
 ): Promise<ValidationResponse> {
 	const bodyFormData = new FormData();
 	bodyFormData.append( 'membershipFee', membershipFee );
 	bodyFormData.append( 'paymentIntervalInMonths', interval );
 	bodyFormData.append( 'addressType', addressTypeName( addressType ) );
+	bodyFormData.append( 'paymentType', paymentType );
 	return axios.post(
 		validateFeeUrl,
 		bodyFormData,
@@ -30,10 +32,11 @@ export function validateFeeDataRemotely(
 	context: ActionContext<MembershipFee, any>,
 	validateFeeUrl: string,
 	feeValue: string,
-	interval: string
+	interval: string,
+	paymentType: string,
 ): Promise<ValidationResponse> {
 	const feeAmount = feeValue;
 	const paymentInterval = interval;
 	const addressType = context.rootState.membership_address.addressType;
-	return postFeeData( context, validateFeeUrl, feeAmount, paymentInterval, addressType );
+	return postFeeData( context, validateFeeUrl, feeAmount, paymentInterval, addressType, paymentType );
 }
