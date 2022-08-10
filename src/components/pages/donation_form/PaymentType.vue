@@ -22,7 +22,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed, PropType } from 'vue';
+import { defineComponent, computed, PropType, toRefs } from 'vue';
+import { usePaymentType } from '@/components/shared/usePaymentType';
 
 export default defineComponent( {
 	name: 'PaymentType',
@@ -43,12 +44,8 @@ export default defineComponent( {
 		},
 	},
 	setup( props, { emit } ) {
-		const selectedType = ref( props.currentType );
-		const setType = () => emit( 'payment-type-selected', selectedType.value );
-
-		watch( () => props.currentType, ( newType ) => {
-			selectedType.value = newType;
-		} );
+		const { currentType } = toRefs( props );
+		const { selectedType, setType } = usePaymentType( currentType, emit );
 
 		// Maps payment types to I18n message keys that describe why they are not available
 		const disabledPaymentMessageMap = new Map( [
