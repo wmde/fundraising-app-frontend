@@ -3,15 +3,12 @@ import Vuex from 'vuex';
 import Buefy from 'buefy';
 import PaymentType from '@/components/pages/donation_form/PaymentType.vue';
 import { createStore } from '@/store/donation_store';
-import { action } from '@/store/util';
-import { NS_PAYMENT } from '@/store/namespaces';
-import { setInterval, setType } from '@/store/payment/actionTypes';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
 
-const testPaymentMethods = [ 'BEZ', 'PPL', 'UEB', 'BTC' ];
+const testPaymentMethods = [ 'BEZ', 'PPL', 'UEB' ];
 
 describe( 'PaymentType', () => {
 
@@ -27,10 +24,10 @@ describe( 'PaymentType', () => {
 			},
 		} );
 
-		await wrapper.find( '#payment-btc input' ).trigger( 'change' );
+		await wrapper.find( '#payment-ueb input' ).trigger( 'change' );
 
 		expect( wrapper.emitted( 'payment-type-selected' ) ).toBeTruthy();
-		expect( wrapper.emitted( 'payment-type-selected' )![ 0 ] ).toEqual( [ 'BTC' ] );
+		expect( wrapper.emitted( 'payment-type-selected' )![ 0 ] ).toEqual( [ 'UEB' ] );
 	} );
 
 	it( 'updates the selected type when the property changes', async () => {
@@ -44,11 +41,16 @@ describe( 'PaymentType', () => {
 				$t: () => {},
 			},
 		} );
+		const pplInput = await wrapper.find( '#payment-ppl input' );
 
-		// explicitly simulate a prop change from outside of the wrapper
+		// Check that PPL is not checked by default, because we passed empty props
+		expect( ( pplInput.element as HTMLInputElement ).checked ).toBeFalsy();
+
+		// explicitly simulate a prop change from the parent of the wrapper
 		wrapper.setProps( { currentType: 'PPL' } );
 		await wrapper.vm.$nextTick();
-		expect( wrapper.vm.$data.selectedType ).toBe( 'PPL' );
+
+		expect( ( pplInput.element as HTMLInputElement ).checked ).toBeTruthy();
 	} );
 
 } );
