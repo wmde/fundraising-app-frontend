@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, PropType } from 'vue';
+import { defineComponent, PropType, toRefs } from 'vue';
+import { usePaymentType } from '@/components/shared/usePaymentType';
 
 export default defineComponent( {
 	name: 'PaymentType',
@@ -35,17 +36,8 @@ export default defineComponent( {
 		title: String,
 	},
 	setup( props, { emit } ) {
-		const selectedType = ref( props.currentType );
-		const setType = () => emit( 'payment-type-selected', selectedType.value );
-
-		watch( () => props.currentType, ( newType ) => {
-			selectedType.value = newType;
-		} );
-
-		return {
-			selectedType,
-			setType,
-		};
+		const { currentType } = toRefs( props );
+		return usePaymentType( currentType, emit );
 	},
 } );
 </script>
