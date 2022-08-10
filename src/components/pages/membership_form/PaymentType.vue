@@ -18,34 +18,34 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { TypeData } from '@/view_models/Payment';
+import { defineComponent, ref, watch, PropType } from 'vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'PaymentType',
-	data: function (): TypeData {
-		return {
-			selectedType: this.$props.currentType,
-		};
-	},
 	props: {
 		currentType: String,
 		error: {
 			type: String,
 			default: '',
 		},
-		paymentTypes: Array,
+		paymentTypes: {
+			type: Array as PropType<string[]>,
+			default: () => [],
+		},
 		title: String,
 	},
-	methods: {
-		setType(): void {
-			this.$emit( 'payment-type-selected', this.$data.selectedType );
-		},
-	},
-	watch: {
-		currentType: function ( newType ) {
-			this.selectedType = newType;
-		},
+	setup( props, { emit } ) {
+		const selectedType = ref( props.currentType );
+		const setType = () => emit( 'payment-type-selected', selectedType.value );
+
+		watch( () => props.currentType, ( newType ) => {
+			selectedType.value = newType;
+		} );
+
+		return {
+			selectedType,
+			setType,
+		};
 	},
 } );
 </script>
