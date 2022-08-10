@@ -42,10 +42,16 @@ describe( 'PaymentType', () => {
 			},
 		} );
 
-		// explicitly simulate a prop change from outside of the wrapper
-		wrapper.setProps( { currentType: 'PPL' } );
+		const uebInput = await wrapper.find( '#payment-ueb input' );
+
+		// Check that PPL is not checked by default, because we passed empty props
+		expect( ( uebInput.element as HTMLInputElement ).checked ).toBeFalsy();
+
+		// explicitly simulate a prop change from the parent of the wrapper
+		wrapper.setProps( { currentType: 'UEB' } );
 		await wrapper.vm.$nextTick();
-		expect( wrapper.vm.$data.selectedType ).toBe( 'PPL' );
+
+		expect( ( uebInput.element as HTMLInputElement ).checked ).toBeTruthy();
 	} );
 
 } );
