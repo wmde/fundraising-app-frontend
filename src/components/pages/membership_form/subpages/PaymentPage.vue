@@ -58,12 +58,12 @@ export default Vue.extend( {
 	methods: {
 		submit() {
 			waitForServerValidationToFinish( this.$store ).then( () => {
-				return Promise.all( [
-					this.$store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeValuesAsInvalid ) ),
-					this.$store.dispatch( action( NS_BANKDATA, markemptyBankDataValuesAsInvalid ) ),
-				] ).then( () => {
-					if ( this.$store.getters[ NS_MEMBERSHIP_FEE + '/paymentDataIsValid' ] &&
-						this.$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+				const storeCleanupActions = [ this.$store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeValuesAsInvalid ) ) ];
+				if ( this.$store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' ) {
+					storeCleanupActions.push( this.$store.dispatch( action( NS_BANKDATA, markemptyBankDataValuesAsInvalid ) ) );
+				}
+				return Promise.all( storeCleanupActions ).then( () => {
+					if ( this.$store.getters.paymentDataIsValid ) {
 						this.$emit( 'submit-membership' );
 					} else {
 						document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );

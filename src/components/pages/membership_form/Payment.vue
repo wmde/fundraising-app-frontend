@@ -28,7 +28,7 @@
 		></payment-type>
 
 		<payment-bank-data
-			v-if="type !== ''"
+			v-if="type == 'BEZ'"
 			class="has-margin-top-36"
 			:validateBankDataUrl="validateBankDataUrl"
 			:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
