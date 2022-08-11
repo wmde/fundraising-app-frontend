@@ -19,6 +19,11 @@ export const getters: GetterTree<MembershipFee, any> = {
 		}
 		return true;
 	},
+	allPaymentValuesAreSet: function ( state: MembershipFee ): boolean {
+		return state.values.fee !== '' &&
+			state.values.interval !== '' &&
+			state.values.type !== '';
+	},
 	minimumAmount: ( state: MembershipFee ) => ( addressType: AddressTypeModel ): number => {
 		const interval = Number( state.values.interval );
 		if ( isNaN( interval ) ) {
