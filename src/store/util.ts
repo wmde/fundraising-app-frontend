@@ -1,5 +1,6 @@
 import { Validity } from '@/view_models/Validity';
 import { AddressFormData, PostData } from '@/view_models/Address';
+import { ValidationResponse } from '@/store/ValidationResponse';
 
 /**
  * @param namespacesAndName namespace1, namespace2, ..., mutationOrActionName
@@ -38,5 +39,10 @@ export const Helper = {
 	isNonNumeric( value: string ): boolean {
 		return value === '' || isNaN( Number( value ) );
 	},
-
+	validationSucceeded( validationResponse: ValidationResponse, fieldName: string ): Validity {
+		if ( validationResponse.status === 'OK' ) {
+			return Validity.VALID;
+		}
+		return validationResponse.messages[ fieldName ] ? Validity.INVALID : Validity.VALID;
+	},
 };
