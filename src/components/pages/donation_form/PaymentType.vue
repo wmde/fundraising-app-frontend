@@ -47,23 +47,16 @@ export default defineComponent( {
 		const { currentType } = toRefs( props );
 		const { selectedType, setType } = usePaymentType( currentType, emit );
 
-		// Maps payment types to I18n message keys that describe why they are not available
-		const disabledPaymentMessageMap = new Map( [
-			[ 'SUB', 'donation_form_SUB_payment_type_info' ],
-			[ 'BEZ', 'donation_form_address_choice_direct_debit_disclaimer' ],
-		] );
+		// Utility function
+		const paymentIsDisabled = ( paymentName: string ): boolean =>
+			props.disabledPaymentTypes.indexOf( paymentName ) > -1;
 
 		// An object with i18n messages for each unavailable payment type, empty strings if the payment is available
-		const disabledPaymentMessages = computed( () => props.paymentTypes.reduce(
-			( messages: Record<string, string>, paymentType: string ) => {
-				messages[ paymentType ] = '';
-				if ( props.disabledPaymentTypes.indexOf( paymentType ) > -1 ) {
-					messages[ paymentType ] = disabledPaymentMessageMap.get( paymentType ) ?? '';
-				}
-				return messages;
-			},
-			{} as Record<string, string>
-		) );
+		// We only need keys for payments that show messages when disabled
+		const disabledPaymentMessages = computed( () => ( {
+			SUB: paymentIsDisabled( 'SUB' ) ? 'donation_form_SUB_payment_type_info' : '',
+			BEZ: paymentIsDisabled( 'BEZ' ) ? 'donation_form_address_choice_direct_debit_disclaimer' : '',
+		} ) );
 
 		return {
 			selectedType,
