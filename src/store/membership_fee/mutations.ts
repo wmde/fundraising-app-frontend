@@ -29,13 +29,17 @@ export const mutations: MutationTree<MembershipFee> = {
 	[ SET_FEE_VALIDITY ]( state: MembershipFee, validity: Validity ) {
 		state.validity.fee = validity;
 	},
-	[ SET_INTERVAL_VALIDITY ]( state: MembershipFee ) {
-		state.validity.interval = state.values.interval === '' ?
-			Validity.INVALID : Validity.VALID;
+	[ SET_INTERVAL_VALIDITY ]( state: MembershipFee, validity?: Validity ) {
+		if ( validity === undefined ) {
+			validity = state.values.interval === '' ? Validity.INVALID : Validity.VALID;
+		}
+		state.validity.interval = validity;
 	},
-	[ SET_TYPE_VALIDITY ]( state: MembershipFee ) {
-		state.validity.type = state.values.type === '' ?
-			Validity.INVALID : Validity.VALID;
+	[ SET_TYPE_VALIDITY ]( state: MembershipFee, validity?: Validity ) {
+		if ( validity === undefined ) {
+			validity = state.values.type === '' ? Validity.INVALID : Validity.VALID;
+		}
+		state.validity.type = validity;
 	},
 	[ SET_FEE ]( state: MembershipFee, fee: string ) {
 		if ( fee === '' ) {
@@ -45,10 +49,10 @@ export const mutations: MutationTree<MembershipFee> = {
 		const euroAmount = fee.slice( 0, -2 );
 		state.values.fee = parseInt( euroAmount, 10 ) > 0 ? fee.slice( 0, -2 ) + '00' : '0';
 	},
-	[ SET_INTERVAL ]( state: MembershipFee, interval ) {
+	[ SET_INTERVAL ]( state: MembershipFee, interval: string ) {
 		state.values.interval = interval;
 	},
-	[ SET_TYPE ]( state: MembershipFee, type ) {
+	[ SET_TYPE ]( state: MembershipFee, type: string ) {
 		state.values.type = type;
 	},
 	[ SET_IS_VALIDATING ]( state: MembershipFee, isValidating ) {

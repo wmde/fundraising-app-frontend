@@ -26,6 +26,13 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 					state[ NS_MEMBERSHIP_ADDRESS ].serverSideValidationCount > 0 ||
 					state[ NS_BANKDATA ].isValidating;
 			},
+			paymentDataIsValid: function ( state, getters ): boolean {
+				if ( state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' ) {
+					return getters[ NS_MEMBERSHIP_FEE + '/paymentDataIsValid' ] && getters[ NS_BANKDATA + '/bankDataIsValid' ];
+				} else {
+					return getters[ NS_MEMBERSHIP_FEE + '/paymentDataIsValid' ];
+				}
+			},
 		},
 		plugins,
 	};
