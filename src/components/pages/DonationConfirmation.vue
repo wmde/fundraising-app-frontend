@@ -80,16 +80,7 @@
 			</div>
 		</div>
 		<membership-info :donation="donation"></membership-info>
-		<img :src="'https://de.wikipedia.org/wiki/Special:HideBanners?duration=' + donation.cookieDuration + '&reason=donate'"
-			alt=""
-			width="0"
-			height="0"
-		/>
-		<img src="https://bruce.wikipedia.de/finish-donation?c=fundraising"
-			alt=""
-			width="0"
-			height="0"
-		/>
+		<donation-confirmation-banner-notifier :cookieDuration="donation.cookieDuration"/>
 	</div>
 </template>
 
@@ -108,10 +99,13 @@ import { SubmittedAddress } from '@/view_models/Address';
 import { Donation } from '@/view_models/Donation';
 import { AddressValidation } from '@/view_models/Validation';
 import { Salutation } from '@/view_models/Salutation';
+import DonationConfirmationBannerNotifier
+	from '@/components/pages/donation_confirmation/DonationConfirmationBannerNotifier.vue';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
 	components: {
+		DonationConfirmationBannerNotifier,
 		BankData,
 		DonationSummary,
 		MembershipInfo,
