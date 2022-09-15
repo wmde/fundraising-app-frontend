@@ -27,8 +27,65 @@
 			<div class="column is-half pt-0 pb-0">
 				<membership-info :donation="donation"></membership-info>
 			</div>
-		</div>
 
+			<div class="column is-half">
+				<div class="donation-cta">
+					<div v-if="showAddressChangeContent">
+						<p class="has-margin-bottom-18"><strong>{{ $t( 'donation_confirmation_cta_title_alt' ) }}</strong></p>
+						<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_cta_summary_alt' ) }}</p>
+						<b-button
+							id="address-change-button"
+							class="address-change-button"
+							@click="showAddressModal()"
+							type="is-primary is-main"
+						>
+							{{ $t('donation_confirmation_address_update_button_alt') }}
+						</b-button>
+						<address-usage-toggle></address-usage-toggle>
+					</div>
+					<b-modal :active.sync="isAddressModalOpen" scroll="keep" class="address-modal" has-modal-card>
+						<address-modal
+							:countries="countries"
+							:salutations="salutations"
+							:donation="donation"
+							:updateDonorUrl="updateDonorUrl"
+							:validate-address-url="validateAddressUrl"
+							:validate-email-url="validateEmailUrl"
+							:has-errored="addressChangeHasErrored"
+							:has-succeeded="addressChangeHasSucceeded"
+							:address-validation-patterns="addressValidationPatterns"
+							v-on:address-update-failed="addressChangeHasErrored = true"
+							v-on:address-updated="updateAddress( $event )"
+						>
+						</address-modal>
+					</b-modal>
+					<div class="donation-summary-intro" v-if="!currentAddress.isAnonymous">
+						<div><strong>{{ $t( 'donation_confirmation_summary_title_alt' ) }}</strong></div>
+					</div>
+					<div class="donation-summary">
+						<donation-summary
+							v-if="!showAddressChangeContent"
+							:address="currentAddress"
+							:address-type="currentAddressType"
+							:payment="donation"
+							:countries="countries"
+							:salutations="salutations"
+						/>
+						<donation-summary
+							v-if="!showAddressChangeContent"
+							:address="currentAddress"
+							:address-type="currentAddressType"
+							:payment="donation"
+							:countries="countries"
+							:salutations="salutations"
+							:language-item="inlineSummaryLanguageItem"
+						/>
+					</div>
+					<div class="payment-email" v-html="getEmail()"></div>
+				</div>
+			</div>
+		</div>
+		<membership-info :donation="donation"></membership-info>
 		<b-modal :active.sync="isAddressModalOpen" scroll="keep" class="address-modal" has-modal-card>
 			<address-modal
 				:countries="countries"
@@ -52,17 +109,7 @@
 				:post-comment-url="postCommentUrl"
 			/>
 		</b-modal>
-
-		<img :src="'https://de.wikipedia.org/wiki/Special:HideBanners?duration=' + donation.cookieDuration + '&reason=donate'"
-			alt=""
-			width="0"
-			height="0"
-		/>
-		<img src="https://bruce.wikipedia.de/finish-donation?c=fundraising"
-			alt=""
-			width="0"
-			height="0"
-		/>
+		<donation-confirmation-banner-notifier :cookieDuration="donation.cookieDuration"/>
 	</div>
 </template>
 
@@ -85,6 +132,8 @@ import AddressKnown from '@/components/pages/donation_confirmation/AddressKnown.
 import AddressAnonymous from '@/components/pages/donation_confirmation/AddressAnonymous.vue';
 import Survey from '@/components/pages/donation_confirmation/Survey.vue';
 import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
+import DonationConfirmationBannerNotifier
+	from '@/components/pages/donation_confirmation/DonationConfirmationBannerNotifier.vue';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
@@ -92,6 +141,7 @@ export default Vue.extend( {
 		Survey,
 		SuccessMessageBankTransfer,
 		SuccessMessage,
+		DonationConfirmationBannerNotifier,
 		BankData,
 		DonationCommentPopUp,
 		MembershipInfo,
