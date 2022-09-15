@@ -15,11 +15,7 @@
 			<div class="column is-half">
 				<summary-links :confirmation-data="confirmationData"/>
 			</div>
-			<img src="https://de.wikipedia.org/wiki/Special:HideBanners?category=fr-thankyou&duration=15552000&reason=membership"
-				alt=""
-				width="0"
-				height="0"
-			/>
+			<membership-confirmation-banner-notifier/>
 		</div>
 	</div>
 </template>
@@ -28,10 +24,13 @@
 import Vue from 'vue';
 import MembershipSummary from '@/components/MembershipSummary.vue';
 import SummaryLinks from '@/components/pages/membership_confirmation/SummaryLinks.vue';
+import MembershipConfirmationBannerNotifier
+	from '@/components/pages/membership_confirmation/MembershipConfirmationBannerNotifier.vue';
 
 export default Vue.extend( {
 	name: 'MembershipConfirmation',
 	components: {
+		MembershipConfirmationBannerNotifier,
 		MembershipSummary,
 		SummaryLinks,
 	},
