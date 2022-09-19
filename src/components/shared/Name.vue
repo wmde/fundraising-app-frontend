@@ -77,11 +77,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { onMounted } from 'vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressValidity, AddressFormData } from '@/view_models/Address';
 import { computed } from 'vue';
 import { Salutation } from '@/view_models/Salutation';
+import { adjustSalutationLocaleIfNeeded } from '@/components/shared/SalutationLocaleAdjuster';
 
 export default Vue.extend( {
 	name: 'name',
@@ -91,7 +92,15 @@ export default Vue.extend( {
 		addressType: Number as () => AddressTypeModel,
 		salutations: Array as () => Array<Salutation>,
 	},
-	setup( props ) {
+	setup( props, context ) {
+		onMounted( () => {
+			const translatedSalutation = adjustSalutationLocaleIfNeeded( props.salutations, props.formData.salutation.value );
+			if ( translatedSalutation !== '' ) {
+				props.formData.salutation.value = translatedSalutation;
+				context.emit( 'field-changed', 'salutation' );
+			}
+		} );
+
 		const showPersonalFields = computed( () => props.addressType === AddressTypeModel.PERSON ||
 				props.addressType === AddressTypeModel.EMAIL ||
 				props.addressType === AddressTypeModel.UNSET );
