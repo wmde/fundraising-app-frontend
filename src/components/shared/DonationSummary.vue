@@ -3,9 +3,6 @@
 		<component
 			:is="addressTypeComponent"
 			:address="address"
-			:interval="interval"
-			:formatted-amount="formattedAmount"
-			:paymentType="paymentType"
 			:country="country"
 			:language-item="languageItem"
 			:salutation="salutation"

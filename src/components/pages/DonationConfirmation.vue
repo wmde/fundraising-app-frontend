@@ -145,15 +145,6 @@ export default Vue.extend( {
 			this.$data.currentAddress = submittedAddress.addressData;
 			this.$data.currentAddressType = submittedAddress.addressType;
 		},
-		getEmail: function () {
-			if ( this.$data.currentAddressType === 'anonym' ) {
-				return '';
-			}
-			if ( this.$data.currentAddress.email ) {
-				return this.$t( 'donation_confirmation_topbox_email', { email: this.$data.currentAddress.email } );
-			}
-			return this.$t( 'donation_confirmation_review_email_missing' );
-		},
 		openPopUp(): void {
 			if ( !this.$data.commentLinkIsDisabled ) {
 				this.$data.openCommentPopUp = true;
