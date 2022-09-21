@@ -4,30 +4,12 @@
 
 <script>
 
-class BankTransferRenderer {
-	static getPaymentString() {
-		return 'donation_confirmation_payment_bank_transfer';
-	}
-}
-
-class DirectDebitRenderer {
-	static getPaymentString() {
-		return 'donation_confirmation_payment_direct_debit';
-	}
-}
-
-class EmptyRenderer {
-	static getPaymentString() {
-		return '';
-	}
-}
-
-const paymentTypeRenderers = {
-	'UEB': BankTransferRenderer,
-	'BEZ': DirectDebitRenderer,
-	'PPL': EmptyRenderer,
-	'MCP': EmptyRenderer,
-	'SUB': EmptyRenderer,
+const paymentTypeNotices = {
+	'UEB': 'donation_confirmation_payment_bank_transfer_alt',
+	'BEZ': 'donation_confirmation_payment_direct_debit',
+	'PPL': '',
+	'MCP': '',
+	'SUB': '',
 };
 
 export default {
@@ -35,12 +17,11 @@ export default {
 	props: [ 'payment' ],
 	computed: {
 		paymentNotice: function () {
-			const paymentTypeRenderer = paymentTypeRenderers[ this.payment.paymentType ];
-			const paymentString = paymentTypeRenderer.getPaymentString();
-			if ( paymentString === '' ) {
-				return '';
-			}
-			return this.$t( paymentString );
+			const paymentTypeNotice = paymentTypeNotices[ this.payment.paymentType ];
+
+			return paymentTypeNotice === '' ? '' : this.$t( paymentTypeNotice, {
+				formattedAmount: this.$n( this.payment.amount, { key: 'currency', currencyDisplay: 'name' } ),
+			} );
 		},
 	},
 };

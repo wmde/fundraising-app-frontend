@@ -27,6 +27,7 @@ describe( 'PaymentNotice', () => {
 			store: createStore(),
 			mocks: {
 				$t: ( key: string ) => key,
+				$n: ( key: string ) => key,
 			},
 		} );
 
