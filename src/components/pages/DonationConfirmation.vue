@@ -11,12 +11,8 @@
 				/>
 			</div>
 			<div class="column is-half pt-0 pb-0">
-				<address-anonymous
-					v-if="showAddressChangeContent"
-					v-on:show-address-modal="showAddressModal()"
-				/>
 				<address-known
-					v-else
+					v-if="showAddress"
 					v-on:show-address-modal="showAddressModal()"
 					:donation="donation"
 					:address="currentAddress"
@@ -24,6 +20,7 @@
 					:countries="countries"
 					:salutations="salutations"
 				/>
+				<address-anonymous v-else v-on:show-address-modal="showAddressModal()"/>
 
 				<survey/>
 			</div>
@@ -75,7 +72,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import BankData from '@/components/BankData.vue';
-import DonationSummary from '@/components/pages/donation_confirmation/DonationSummary.vue';
 import MembershipInfo from '@/components/pages/donation_confirmation/MembershipInfo.vue';
 import SummaryLinks from '@/components/pages/donation_confirmation/SummaryLinks.vue';
 import AddressUsageToggle from '@/components/pages/donation_confirmation/AddressUsageToggle.vue';
@@ -101,7 +97,6 @@ export default Vue.extend( {
 		SuccessMessage,
 		BankData,
 		DonationCommentPopUp,
-		DonationSummary,
 		MembershipInfo,
 		SummaryLinks,
 		AddressUsageToggle,
@@ -153,9 +148,16 @@ export default Vue.extend( {
 		showBankTransferContent: function () {
 			return this.$props.donation.paymentType === 'UEB';
 		},
-		showAddressChangeContent: function () {
-			return this.$props.addressType === addressTypeName( AddressTypeModel.ANON ) &&
-					!this.$data.addressChangeHasErrored && !this.$data.addressChangeHasSucceeded;
+		showAddress: function () {
+			if ( this.$props.addressType === addressTypeName( AddressTypeModel.ANON ) ) {
+				return false;
+			}
+
+			if ( this.$props.addressType === addressTypeName( AddressTypeModel.EMAIL ) ) {
+				return false;
+			}
+
+			return this.$data.addressChangeHasErrored || this.$data.addressChangeHasSucceeded;
 		},
 	},
 } );
@@ -171,6 +173,10 @@ export default Vue.extend( {
 		&-card {
 			border: 1px solid $fun-color-gray-mid;
 			border-radius: 2px;
+		}
+
+		h2 {
+			line-height: 25px;
 		}
 	}
 

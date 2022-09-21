@@ -68,6 +68,14 @@ export const payPalConfirmationData = createConfirmationData( {
 	},
 } );
 
+export const companyPayPalConfirmationData = createConfirmationData( {
+	addressType: 'firma',
+	donation: {
+		paymentType: 'PPL',
+		bankTransferCode: testBankTransferCode,
+	},
+} );
+
 export const directDebitConfirmationData = createConfirmationData( {
 	donation: {
 		paymentType: 'BEZ',

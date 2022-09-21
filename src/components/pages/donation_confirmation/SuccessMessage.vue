@@ -19,8 +19,7 @@
 import Vue from 'vue';
 import { Donation } from '@/view_models/Donation';
 import SuccessIcon from '@/components/shared/icons/SuccessIcon.vue';
-import VueI18n from 'vue-i18n';
-import TranslateResult = VueI18n.TranslateResult;
+import { TranslateResult } from 'vue-i18n';
 
 export default Vue.extend( {
 	name: 'SuccessMessage',

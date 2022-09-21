@@ -145,6 +145,14 @@ button.is-main {
 	}
 }
 
+button.is-full-width {
+	height: 54px;
+	font-size: 1em;
+	font-weight: bold;
+	width: 100%;
+	border-radius: 0;
+}
+
 .button.is-loading {
 	pointer-events: all;
 }

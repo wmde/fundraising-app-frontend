@@ -137,12 +137,15 @@
 }
 
 .icon-title {
-	padding-left: 2rem;
+	padding-left: 2.5rem;
 	svg {
 		float: left;
-		margin-left: -2rem;
-		margin-top: 2px;
+		margin-left: -2.5rem;
 	}
+}
+
+h1.icon-title svg {
+	margin-top: 2px;
 }
 
 // No such feature in Bulma as of August 2019, if you see this comment, check if Bulma has adedd this natively
