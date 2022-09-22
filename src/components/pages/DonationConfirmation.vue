@@ -2,7 +2,12 @@
 	<div class="donation-confirmation">
 		<div class="columns is-multiline is-variable is-2">
 			<div class="column is-full pt-0 pb-0">
-				<success-message v-if="!showBankTransferContent" :donation="donation"/>
+				<success-message
+					v-if="!showBankTransferContent"
+					:donation="donation"
+					:comment-link-is-disabled="commentLinkIsDisabled"
+					v-on:show-comment-modal="openPopUp()"
+				/>
 				<success-message-bank-transfer v-if="showBankTransferContent" :donation="donation"/>
 			</div>
 			<div class="column is-half pt-0 pb-0">
@@ -44,6 +49,16 @@
 			</address-modal>
 		</b-modal>
 
+		<b-modal :active.sync="openCommentPopUp" scroll="keep" has-modal-card>
+			<donation-comment-pop-up
+				v-on:disable-comment-link="commentLinkIsDisabled = true"
+				v-if="openCommentPopUp"
+				:donation="donation"
+				:address-type="addressType"
+				:post-comment-url="postCommentUrl"
+			/>
+		</b-modal>
+
 		<img :src="'https://de.wikipedia.org/wiki/Special:HideBanners?duration=' + donation.cookieDuration + '&reason=donate'"
 			alt=""
 			width="0"
@@ -77,6 +92,7 @@ import SuccessMessageBankTransfer from '@/components/pages/donation_confirmation
 import AddressKnown from '@/components/pages/donation_confirmation/AddressKnown.vue';
 import AddressAnonymous from '@/components/pages/donation_confirmation/AddressAnonymous.vue';
 import Survey from '@/components/pages/donation_confirmation/Survey.vue';
+import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
@@ -85,6 +101,7 @@ export default Vue.extend( {
 		SuccessMessageBankTransfer,
 		SuccessMessage,
 		BankData,
+		DonationCommentPopUp,
 		DonationSummary,
 		MembershipInfo,
 		PaymentNotice,
@@ -101,6 +118,8 @@ export default Vue.extend( {
 			addressChangeHasSucceeded: false,
 			currentAddress: this.$props.address,
 			currentAddressType: this.$props.addressType,
+			openCommentPopUp: false,
+			commentLinkIsDisabled: false,
 		};
 	},
 	props: {
@@ -134,6 +153,11 @@ export default Vue.extend( {
 				return this.$t( 'donation_confirmation_topbox_email', { email: this.$data.currentAddress.email } );
 			}
 			return this.$t( 'donation_confirmation_review_email_missing' );
+		},
+		openPopUp(): void {
+			if ( !this.$data.commentLinkIsDisabled ) {
+				this.$data.openCommentPopUp = true;
+			}
 		},
 	},
 	computed: {
