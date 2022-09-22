@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss">
-	.bank-data-content {
+	.footer .bank-data-content {
 		padding-top: 10px;
 		p {
 			line-height: 2.5em;
