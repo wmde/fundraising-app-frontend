@@ -1,9 +1,14 @@
 <template>
 	<div class="donation-confirmation-card has-background-bright has-padding-18 mb-4">
-		<div class="title is-size-5"><success-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</div>
+		<h1 class="title icon-title"><success-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1>
 		<payment-notice :payment="donation"></payment-notice>
 		<div id="newsletter-optin" class="has-margin-top-18" v-if="donation.optsIntoNewsletter">
 			{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
+		</div>
+		<div class="has-margin-top-18">
+			<a id="comment-link" @click="$emit( 'show-comment-modal' )" :disabled="commentLinkIsDisabled">
+				{{ commentLinkIsDisabled ? $t( 'donation_comment_popup_thanks' ) : $t( 'donation_confirmation_comment_button' ) }}
+			</a>
 		</div>
 	</div>
 </template>
@@ -14,6 +19,9 @@ import PaymentNotice from '@/components/pages/donation_confirmation/PaymentNotic
 import { Donation } from '@/view_models/Donation';
 import SuccessIcon from '@/components/shared/icons/SuccessIcon.vue';
 
+import VueI18n from 'vue-i18n';
+import TranslateResult = VueI18n.TranslateResult;
+
 export default Vue.extend( {
 	name: 'SuccessMessage',
 	components: {
@@ -22,6 +30,18 @@ export default Vue.extend( {
 	},
 	props: {
 		donation: Object as () => Donation,
+		commentLinkIsDisabled: Boolean,
+	},
+	computed: {
+		paymentNotice(): string|TranslateResult {
+			if ( this.$props.donation.paymentType !== 'BEZ' ) {
+				return '';
+			}
+
+			return this.$t( 'donation_confirmation_payment_direct_debit', {
+				formattedAmount: this.$n( this.$props.donation.amount, { key: 'currency', currencyDisplay: 'name' } ),
+			} );
+		},
 	},
 } );
 </script>
