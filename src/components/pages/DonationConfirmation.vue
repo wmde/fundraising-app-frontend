@@ -77,7 +77,6 @@ import Vue from 'vue';
 import BankData from '@/components/BankData.vue';
 import DonationSummary from '@/components/pages/donation_confirmation/DonationSummary.vue';
 import MembershipInfo from '@/components/pages/donation_confirmation/MembershipInfo.vue';
-import PaymentNotice from '@/components/pages/donation_confirmation/PaymentNotice.vue';
 import SummaryLinks from '@/components/pages/donation_confirmation/SummaryLinks.vue';
 import AddressUsageToggle from '@/components/pages/donation_confirmation/AddressUsageToggle.vue';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
@@ -104,7 +103,6 @@ export default Vue.extend( {
 		DonationCommentPopUp,
 		DonationSummary,
 		MembershipInfo,
-		PaymentNotice,
 		SummaryLinks,
 		AddressUsageToggle,
 		AddressModal,

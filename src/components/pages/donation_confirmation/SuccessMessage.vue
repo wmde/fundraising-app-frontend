@@ -1,7 +1,9 @@
 <template>
 	<div class="donation-confirmation-card has-background-bright has-padding-18 mb-4">
 		<h1 class="title icon-title"><success-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1>
-		<payment-notice :payment="donation"></payment-notice>
+		<div class="has-margin-top-18">
+			<span v-html="donationSummaryMessage"></span> <span v-html="paymentNotice"></span>
+		</div>
 		<div id="newsletter-optin" class="has-margin-top-18" v-if="donation.optsIntoNewsletter">
 			{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
 		</div>
@@ -15,10 +17,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import PaymentNotice from '@/components/pages/donation_confirmation/PaymentNotice.vue';
 import { Donation } from '@/view_models/Donation';
 import SuccessIcon from '@/components/shared/icons/SuccessIcon.vue';
-
 import VueI18n from 'vue-i18n';
 import TranslateResult = VueI18n.TranslateResult;
 
@@ -26,7 +26,6 @@ export default Vue.extend( {
 	name: 'SuccessMessage',
 	components: {
 		SuccessIcon,
-		PaymentNotice,
 	},
 	props: {
 		donation: Object as () => Donation,
@@ -39,6 +38,13 @@ export default Vue.extend( {
 			}
 
 			return this.$t( 'donation_confirmation_payment_direct_debit', {
+				formattedAmount: this.$n( this.$props.donation.amount, { key: 'currency', currencyDisplay: 'name' } ),
+			} );
+		},
+		donationSummaryMessage(): string|TranslateResult {
+			return this.$t( 'donation_confirmation_inline_summary', {
+				interval: this.$t( 'donation_form_payment_interval_' + this.$props.donation.interval ),
+				paymentType: this.$t( this.$props.donation.paymentType ),
 				formattedAmount: this.$n( this.$props.donation.amount, { key: 'currency', currencyDisplay: 'name' } ),
 			} );
 		},
