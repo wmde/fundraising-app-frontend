@@ -136,6 +136,15 @@
 	align-items: center;
 }
 
+.icon-title {
+	padding-left: 2rem;
+	svg {
+		float: left;
+		margin-left: -2rem;
+		margin-top: 2px;
+	}
+}
+
 // No such feature in Bulma as of August 2019, if you see this comment, check if Bulma has adedd this natively
 .is-hidden-print {
 	@media print {

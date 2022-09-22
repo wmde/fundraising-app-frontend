@@ -79,7 +79,7 @@ describe( 'DonationConfirmation', () => {
 			},
 		} );
 
-		expect( wrapper.find( '#bank-data' ).html() ).toContain( testBankTransferCode );
+		expect( wrapper.find( '.success-bank-transfer .bank-data-content' ).html() ).toContain( testBankTransferCode );
 	} );
 
 	it( 'does not display the bank data element for other payment methods', () => {
@@ -95,7 +95,7 @@ describe( 'DonationConfirmation', () => {
 			},
 		} );
 
-		expect( wrapper.find( '#bank-data' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.success-bank-transfer .bank-data-content' ).exists() ).toBeFalsy();
 	} );
 
 } );
