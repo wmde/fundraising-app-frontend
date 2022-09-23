@@ -77,6 +77,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 		new URLSearchParams( window.location.search ),
 		pageData.applicationVars.urls.validateMembershipFee,
 	);
+	initialFeeValues.setTypeFromAvailablePaymentTypes( pageData.applicationVars.paymentTypes );
 	const initialBankAccountData = {
 		iban: initialFormValues.get( 'iban' ),
 		bic: initialFormValues.get( 'bic' ),

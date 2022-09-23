@@ -77,7 +77,7 @@ export default Vue.extend( {
 			return '';
 		},
 		bankInfoValidated(): boolean {
-			if ( !this.bankDataIsValid ) {
+			if ( this.$store.getters[ NS_BANKDATA + '/bankDataIsInValid' ] ) {
 				return false;
 			}
 			if ( this.bankIdentifier !== '' ) {
@@ -89,7 +89,7 @@ export default Vue.extend( {
 			return false;
 		},
 		bankInfoValidatedButInfoMissing(): boolean {
-			return this.bankDataIsValid &&
+			return this.$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] &&
 					this.bankIdentifier === '' &&
 					this.$store.getters[ NS_BANKDATA + '/getBankId' ] === '';
 		},
@@ -132,7 +132,6 @@ export default Vue.extend( {
 		},
 		...mapGetters( NS_BANKDATA, [
 			'bankDataIsInvalid',
-			'bankDataIsValid',
 			'getBankName',
 		] ),
 	},

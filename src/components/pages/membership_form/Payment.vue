@@ -19,6 +19,7 @@
 		<div>{{ $t('membership_form_payment_amount_cap_notice') }}</div>
 
 		<payment-type
+			v-if="paymentTypes.length > 1"
 			class="has-margin-top-36"
 			:current-type="type"
 			:payment-types="paymentTypes"
@@ -28,7 +29,7 @@
 		></payment-type>
 
 		<payment-bank-data
-			v-if="type == 'BEZ'"
+			v-if="type === 'BEZ'"
 			class="has-margin-top-36"
 			:validateBankDataUrl="validateBankDataUrl"
 			:validateLegacyBankDataUrl="validateLegacyBankDataUrl"

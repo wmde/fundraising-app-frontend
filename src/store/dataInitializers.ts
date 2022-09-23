@@ -113,7 +113,7 @@ export const createInitialMembershipFeeValues = ( dataPersister: DataPersister, 
 	return {
 		validateFeeUrl: initialFeeValues.validateFeeUrl,
 		fee: replaceInitialValue( initialFeeValues.fee, dataPersister.getValue( 'fee' ) ),
-		type: dataPersister.getValue( 'type' ),
+		type: replaceInitialValue( initialFeeValues.type, dataPersister.getValue( 'type' ) ),
 		interval: replaceInitialValue( initialFeeValues.interval, dataPersister.getValue( 'interval' ) ),
 	};
 };
