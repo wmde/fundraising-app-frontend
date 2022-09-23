@@ -3,10 +3,12 @@ import { InitialMembershipFeeValues } from '@/view_models/MembershipFee';
 export default class FilteredUrlMembershipValues implements InitialMembershipFeeValues {
 	private params: URLSearchParams;
 	public validateFeeUrl: string;
+	public paymentType: string|null;
 
 	constructor( params: URLSearchParams, validateFeeUrl: string ) {
 		this.params = params;
 		this.validateFeeUrl = validateFeeUrl;
+		this.paymentType = null;
 	}
 
 	get fee() {
@@ -20,6 +22,12 @@ export default class FilteredUrlMembershipValues implements InitialMembershipFee
 	}
 
 	get type() {
-		return null;
+		return this.paymentType;
+	}
+
+	public setTypeFromAvailablePaymentTypes( paymentTypes: string[] ) {
+		if ( paymentTypes.length === 1 ) {
+			this.paymentType = paymentTypes[ 0 ];
+		}
 	}
 }
