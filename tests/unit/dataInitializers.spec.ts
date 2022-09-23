@@ -239,7 +239,7 @@ describe( 'createInitialMembershipFeeValues', () => {
 		const validateFeeUrl = 'https://wikipedia.de';
 
 		const dataPersister = new FakeDataPersister( [] );
-		const values = createInitialMembershipFeeValues( dataPersister, { validateFeeUrl: 'https://wikipedia.de', fee: '1299', interval: '1' } );
+		const values = createInitialMembershipFeeValues( dataPersister, { validateFeeUrl: 'https://wikipedia.de', fee: '1299', interval: '1', type: null } );
 
 		expect( values.validateFeeUrl ).toEqual( validateFeeUrl );
 		expect( values.fee ).toEqual( '1299' );

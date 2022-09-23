@@ -50,4 +50,25 @@ describe( 'FilteredUrlMembershipValues', function () {
 
 		expect( urlValues.interval ).toEqual( '' );
 	} );
+
+	it( 'returns null when available payment types were not set', function () {
+		const urlValues = new FilteredUrlMembershipValues( new URLSearchParams( '' ), 'https://example.com/' );
+
+		expect( urlValues.type ).toBeNull();
+	} );
+
+	it( 'returns null when multiple payment types were set', function () {
+		const urlValues = new FilteredUrlMembershipValues( new URLSearchParams( '' ), 'https://example.com/' );
+		urlValues.setTypeFromAvailablePaymentTypes( [ 'BEZ', 'UEB' ] );
+
+		expect( urlValues.type ).toBeNull();
+	} );
+
+	it( 'returns first payment type there only one payment type was set', function () {
+		const urlValues = new FilteredUrlMembershipValues( new URLSearchParams( '' ), 'https://example.com/' );
+		urlValues.setTypeFromAvailablePaymentTypes( [ 'BEZ' ] );
+
+		expect( urlValues.type ).toEqual( 'BEZ' );
+	} );
+
 } );

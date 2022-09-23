@@ -132,7 +132,6 @@ export default Vue.extend( {
 		},
 		...mapGetters( NS_BANKDATA, [
 			'bankDataIsInvalid',
-			'bankDataIsValid',
 			'getBankName',
 		] ),
 	},
