@@ -7,8 +7,9 @@
 					:membershipApplication="confirmationData.membershipApplication"
 					:salutations="salutations"
 				>
-					<div class="has-margin-top-18" v-if="hasIncentives()">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</div>
-					<div class="has-margin-top-18" v-if="!hasIncentives()">{{ $t( 'membership_confirmation_success_text' ) }}</div>
+					<div class="has-margin-top-18" v-if="hasIncentives">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</div>
+					<div class="has-margin-top-18" v-if="!hasIncentives">{{ $t( 'membership_confirmation_success_text' ) }}</div>
+					<div class="has-margin-top-18" v-if="showBankTransferContent">{{ $t( 'membership_confirmation_success_text_bank_transfer' ) }}</div>
 				</membership-summary>
 			</div>
 
@@ -26,7 +27,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import MembershipSummary from '@/components/MembershipSummary.vue';
+import MembershipSummary from '@/components/shared/MembershipSummary.vue';
 import SummaryLinks from '@/components/pages/membership_confirmation/SummaryLinks.vue';
 
 export default Vue.extend( {
@@ -39,10 +40,13 @@ export default Vue.extend( {
 		'confirmationData',
 		'salutations',
 	],
-	methods: {
+	computed: {
 		hasIncentives(): boolean {
 			return this.confirmationData.membershipApplication.incentives !== undefined
 				&& this.confirmationData.membershipApplication.incentives.length > 0;
+		},
+		showBankTransferContent(): boolean {
+			return this.$props.confirmationData.membershipApplication.paymentType === 'UEB';
 		},
 	},
 } );
