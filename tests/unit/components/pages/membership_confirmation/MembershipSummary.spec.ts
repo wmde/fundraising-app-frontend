@@ -1,3 +1,4 @@
+import each from 'jest-each';
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Buefy from 'buefy';
@@ -54,6 +55,24 @@ const yearlyPayment = {
 	paymentIntervalInMonths: 12,
 };
 
+const missingFee = {
+	membershipFee: '',
+	paymentIntervalInMonths: 1,
+	paymentType: 'BEZ',
+};
+
+const missingInterval = {
+	membershipFee: '45.00',
+	paymentIntervalInMonths: '',
+	paymentType: 'BEZ',
+};
+
+const missingPaymentType = {
+	membershipFee: '45.00',
+	paymentIntervalInMonths: 1,
+	paymentType: '',
+};
+
 const salutations = [
 	{
 		'label': 'Herr',
@@ -98,7 +117,7 @@ describe( 'MembershipSummary', () => {
 			propsData: {
 				address: companyAddress,
 				membershipApplication: monthlyPayment,
-				salutations
+				salutations,
 			},
 			store: createStore(),
 			mocks: {
@@ -170,6 +189,25 @@ describe( 'MembershipSummary', () => {
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 180' );
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"\"' );
+	} );
+
+	each( [ missingFee, missingInterval, missingPaymentType ] ).test( 'Does not render summary when some payment info is missing', ( paymentData ) => {
+		const wrapper = mount( MembershipSummary, {
+			localVue,
+			propsData: {
+				address: companyAddress,
+				membershipApplication: paymentData,
+				salutations,
+			},
+			store: createStore(),
+			mocks: {
+				$t: mockTranslate,
+				$n: ( amount: string ) => amount,
+			},
+		} );
+
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( 'membership_form_review_payment_missing' );
+		expect( wrapper.find( '.payment-summary' ).text() ).not.toContain( 'membershipFeeYearlyFormatted' );
 	} );
 
 	/* eslint-enable no-useless-escape */
