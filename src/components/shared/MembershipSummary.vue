@@ -40,7 +40,11 @@ export default Vue.extend( {
 	],
 	methods: {
 		getSummary: function () {
-			if ( !this.canRender( this.membershipApplication.membershipFee, this.membershipApplication.paymentIntervalInMonths ) ) {
+			if ( !this.canRender(
+				this.membershipApplication.membershipFee,
+				this.membershipApplication.paymentIntervalInMonths,
+				this.membershipApplication.paymentType
+			) ) {
 				return this.$t( 'membership_form_review_payment_missing' );
 			}
 			const yearlyFee = new YearlyMembershipFee( this.membershipApplication.paymentIntervalInMonths, this.membershipApplication.membershipFee );
@@ -86,8 +90,8 @@ export default Vue.extend( {
 			const formattedAmount = this.$n( amount, { key: 'currency', currencyDisplay: 'name' } );
 			return `(${formattedAmount} ${intervalTranslation})`;
 		},
-		canRender: function ( fee, interval ) {
-			return fee !== '' && !isNaN( Number( fee ) ) && interval !== '';
+		canRender: function ( fee, interval, paymentType ) {
+			return fee !== '' && !isNaN( Number( fee ) ) && interval !== '' && paymentType;
 		},
 	},
 } );
