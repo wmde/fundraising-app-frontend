@@ -2,27 +2,27 @@
 	<div class="donation-confirmation">
 		<div class="columns is-multiline is-variable is-2">
 			<div class="column is-full pt-0 pb-0">
+				<success-message-bank-transfer v-if="showBankTransferContent" :donation="donation"/>
 				<success-message
-					v-if="!showBankTransferContent"
+					v-else
 					:donation="donation"
 					:comment-link-is-disabled="commentLinkIsDisabled"
-					v-on:show-comment-modal="openPopUp()"
+					v-on:show-comment-modal="showCommentModal()"
 				/>
-				<success-message-bank-transfer v-if="showBankTransferContent" :donation="donation"/>
 			</div>
 			<div class="column is-half pt-0 pb-0">
+				<address-anonymous
+					v-if="showAddressChangeContent"
+					v-on:show-address-modal="showAddressModal()"
+				/>
 				<address-known
-					v-if="!showAddressChangeContent"
+					v-else
 					v-on:show-address-modal="showAddressModal()"
 					:donation="donation"
 					:address="currentAddress"
 					:address-type="currentAddressType"
 					:countries="countries"
 					:salutations="salutations"
-				/>
-				<address-anonymous
-					v-if="showAddressChangeContent"
-					v-on:show-address-modal="showAddressModal()"
 				/>
 
 				<survey/>
@@ -143,16 +143,7 @@ export default Vue.extend( {
 			this.$data.currentAddress = submittedAddress.addressData;
 			this.$data.currentAddressType = submittedAddress.addressType;
 		},
-		getEmail: function () {
-			if ( this.$data.currentAddressType === 'anonym' ) {
-				return '';
-			}
-			if ( this.$data.currentAddress.email ) {
-				return this.$t( 'donation_confirmation_topbox_email', { email: this.$data.currentAddress.email } );
-			}
-			return this.$t( 'donation_confirmation_review_email_missing' );
-		},
-		openPopUp(): void {
+		showCommentModal(): void {
 			if ( !this.$data.commentLinkIsDisabled ) {
 				this.$data.openCommentPopUp = true;
 			}
@@ -165,19 +156,6 @@ export default Vue.extend( {
 		showAddressChangeContent: function () {
 			return this.$props.addressType === addressTypeName( AddressTypeModel.ANON ) &&
 					!this.$data.addressChangeHasErrored && !this.$data.addressChangeHasSucceeded;
-		},
-		inlineSummaryLanguageItem: function () {
-			switch ( this.$props.addressType ) {
-				case AddressTypeModel.ANON:
-				case AddressTypeModel.UNSET:
-					return 'donation_confirmation_inline_summary_anonymous';
-				case AddressTypeModel.EMAIL:
-					return 'donation_confirmation_inline_summary_email';
-				case AddressTypeModel.COMPANY:
-				case AddressTypeModel.PERSON:
-				default:
-					return 'donation_confirmation_inline_summary_address';
-			}
 		},
 	},
 } );

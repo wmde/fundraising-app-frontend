@@ -1,5 +1,5 @@
 <template>
-	<div class="donation-confirmation-card success-bank-transfer has-background-bright has-padding-18 mb-4">
+	<div class="donation-confirmation-card success-message-bank-transfer has-background-bright has-padding-36 mb-4">
 		<div class="columns is-multiline">
 			<div class="column is-full">
 				<h1 class="title icon-title"><warning-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1>
@@ -46,7 +46,7 @@ export default Vue.extend( {
 </script>
 
 <style lang="scss">
-.success-bank-transfer {
+.success-message-bank-transfer {
 	.bank-data-content {
 		background: #DDEDF6;
 		padding: 1rem;
