@@ -1,5 +1,5 @@
 <template>
-	<div class="donation-confirmation-card has-background-bright has-padding-18 mb-4">
+	<div class="donation-confirmation-card success-message has-background-bright has-padding-36 mb-4">
 		<h1 class="title icon-title"><success-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1>
 		<div class="has-margin-top-18">
 			<span v-html="donationSummaryMessage"></span> <span v-html="paymentNotice"></span>

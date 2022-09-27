@@ -41,7 +41,7 @@ describe( 'SuccessMessageBankTransfer', () => {
 			},
 		} );
 
-		expect( wrapper.find( '.success-bank-transfer .bank-data-content' ).html() ).toContain( testBankTransferCode );
+		expect( wrapper.find( '.success-message-bank-transfer .bank-data-content' ).html() ).toContain( testBankTransferCode );
 	} );
 
 	it( 'does not render newsletter confirmation message when opted out', () => {
