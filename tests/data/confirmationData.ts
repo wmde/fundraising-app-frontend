@@ -61,6 +61,24 @@ export const bankTransferConfirmationData = createConfirmationData( {
 	},
 } );
 
+export const anonymousBankTransferConfirmationData = createConfirmationData( {
+	addressType: 'anonym',
+	address: {},
+	donation: {
+		paymentType: 'UEB',
+		bankTransferCode: testBankTransferCode,
+	},
+} );
+
+export const emailBankTransferConfirmationData = createConfirmationData( {
+	addressType: 'email',
+	address: {},
+	donation: {
+		paymentType: 'UEB',
+		bankTransferCode: testBankTransferCode,
+	},
+} );
+
 export const payPalConfirmationData = createConfirmationData( {
 	donation: {
 		paymentType: 'PPL',

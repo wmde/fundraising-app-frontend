@@ -37,10 +37,7 @@
 				:updateDonorUrl="updateDonorUrl"
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
-				:has-errored="addressChangeHasErrored"
-				:has-succeeded="addressChangeHasSucceeded"
 				:address-validation-patterns="addressValidationPatterns"
-				v-on:address-update-failed="addressChangeHasErrored = true"
 				v-on:address-updated="updateAddress( $event )"
 			>
 			</address-modal>
@@ -107,8 +104,6 @@ export default Vue.extend( {
 	data: function () {
 		return {
 			isAddressModalOpen: false,
-			addressChangeHasErrored: false,
-			addressChangeHasSucceeded: false,
 			currentAddress: this.$props.address,
 			currentAddressType: this.$props.addressType,
 			openCommentPopUp: false,
@@ -134,7 +129,6 @@ export default Vue.extend( {
 			this.$data.isAddressModalOpen = true;
 		},
 		updateAddress: function ( submittedAddress: SubmittedAddress ) {
-			this.$data.addressChangeHasSucceeded = true;
 			this.$data.currentAddress = submittedAddress.addressData;
 			this.$data.currentAddressType = submittedAddress.addressType;
 		},
@@ -149,15 +143,8 @@ export default Vue.extend( {
 			return this.$props.donation.paymentType === 'UEB';
 		},
 		showAddress: function () {
-			if ( this.$props.addressType === addressTypeName( AddressTypeModel.ANON ) ) {
-				return false;
-			}
-
-			if ( this.$props.addressType === addressTypeName( AddressTypeModel.EMAIL ) ) {
-				return false;
-			}
-
-			return this.$data.addressChangeHasErrored || this.$data.addressChangeHasSucceeded;
+			return this.$data.currentAddressType !== addressTypeName( AddressTypeModel.ANON ) &&
+				this.$data.currentAddressType !== addressTypeName( AddressTypeModel.EMAIL );
 		},
 	},
 } );
