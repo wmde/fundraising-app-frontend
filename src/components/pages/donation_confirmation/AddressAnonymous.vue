@@ -1,5 +1,5 @@
 <template>
-	<div class="donation-confirmation-card has-background-bright has-padding-36 mb-4">
+	<div class="donation-confirmation-card anonymous-address has-background-bright has-padding-36 mb-4">
 		<h2 class="title icon-title is-size-5 has-margin-bottom-18"><warning-icon/>{{ $t( 'donation_confirmation_cta_title_alt' ) }}</h2>
 		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_cta_summary_alt' ) }}</p>
 		<b-button
