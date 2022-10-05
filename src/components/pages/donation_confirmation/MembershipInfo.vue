@@ -1,10 +1,10 @@
 <template>
-	<div class="membership-benefits-wrapper donation-confirmation-card has-background-bright has-padding-18 mb-4">
-		<h2 class="title is-size-5"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
-		<p>{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
-		<p>
+	<div class="membership-benefits-wrapper has-background-bright has-padding-36 mb-4">
+		<h2 class="icon-title is-size-5 has-margin-bottom-18"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
+		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
+		<p class="has-margin-bottom-18">
 			<a id="membership-application-url" :href="membershipApplicationUrl">
-				<b-button type="is-primary is-main has-margin-top-36">{{ $t('donation_confirmation_membership_button') }}</b-button>
+				<b-button type="is-primary is-main">{{ $t('donation_confirmation_membership_button') }}</b-button>
 			</a>
 		</p>
 		<ul class="membership-benefits">
@@ -39,7 +39,13 @@ export default Vue.extend( {
 
 <style lang="scss">
 	@import "../../../scss/variables";
+
+	.membership-benefits-wrapper {
+		border-radius: 2px;
+		border: 3px solid $fun-color-primary-light;
+	}
 	.membership-benefits {
 		list-style: disc;
+		padding-left: 1rem;
 	}
 </style>
