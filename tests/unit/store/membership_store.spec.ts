@@ -6,6 +6,9 @@ import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/n
 import { initializeAddress } from '@/store/membership_address/actionTypes';
 import { initializeMembershipFee } from '@/store/membership_fee/actionTypes';
 import { initializeBankData } from '@/store/bankdata/actionTypes';
+import { validateFeeDataRemotely } from '@/store/axios';
+
+jest.mock( '@/store/axios' );
 
 describe( 'Membership Store', () => {
 
@@ -31,6 +34,8 @@ describe( 'Membership Store', () => {
 				fee: '1200',
 				interval: '2',
 			};
+			const mockedValidateFeeDataRemotely = jest.mocked( validateFeeDataRemotely, true );
+			mockedValidateFeeDataRemotely.mockResolvedValue( { status: 'OK' } );
 			const store = createStore();
 			await store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialData );
 

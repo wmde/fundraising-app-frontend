@@ -17,7 +17,19 @@
 				v-on:amount-selected="sendAmountToStore"
 		></amount-selection>
 		<div>{{ $t('membership_form_payment_amount_cap_notice') }}</div>
+
+		<payment-type
+			v-if="paymentTypes.length > 1"
+			class="has-margin-top-36"
+			:current-type="type"
+			:payment-types="paymentTypes"
+			:error="typeIsValid ? '' : $t('membership_form_payment_type_error')"
+			:title="$t('membership_form_payment_type_title')"
+			v-on:payment-type-selected="sendTypeToStore"
+		></payment-type>
+
 		<payment-bank-data
+			v-if="type === 'BEZ'"
 			class="has-margin-top-36"
 			:validateBankDataUrl="validateBankDataUrl"
 			:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
@@ -30,12 +42,14 @@ import Vue from 'vue';
 import AmountSelection from '@/components/shared/AmountSelection.vue';
 import PaymentInterval from '@/components/shared/PaymentInterval.vue';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
+import PaymentType from '@/components/pages/membership_form/PaymentType.vue';
 
 import { action } from '@/store/util';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
 import { mapGetters, mapState } from 'vuex';
 import { setFee, setInterval } from '@/store/membership_fee/actionTypes';
 import { IntervalData, SetFeePayload } from '@/view_models/MembershipFee';
+import { setType } from '@/store/payment/actionTypes';
 
 export default Vue.extend( {
 	name: 'Payment',
@@ -43,11 +57,13 @@ export default Vue.extend( {
 		AmountSelection,
 		PaymentInterval,
 		PaymentBankData,
+		PaymentType,
 	},
 	props: {
 		validateFeeUrl: String,
 		paymentAmounts: Array as () => Array<Number>,
 		paymentIntervals: Array as () => Array<String>,
+		paymentTypes: Array as () => Array<String>,
 		validateBankDataUrl: String,
 		validateLegacyBankDataUrl: String,
 	},
@@ -55,6 +71,7 @@ export default Vue.extend( {
 		...mapState( {
 			fee: ( state: any ) => state[ NS_MEMBERSHIP_FEE ].values.fee,
 			interval: ( state: any ) => state[ NS_MEMBERSHIP_FEE ].values.interval,
+			type: ( state: any ) => state[ NS_MEMBERSHIP_FEE ].values.type,
 		} ),
 		...mapGetters( NS_MEMBERSHIP_FEE, {
 			feeIsValid: 'feeIsValid',
@@ -88,6 +105,9 @@ export default Vue.extend( {
 				validateFeeUrl: this.validateFeeUrl,
 			} as IntervalData;
 			this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setInterval ), payload );
+		},
+		sendTypeToStore( paymentType: string ): void {
+			this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setType ), paymentType );
 		},
 	},
 } );

@@ -6,7 +6,7 @@ import {
 	SET_RECEIPT_OPTOUT,
 	SET_INCENTIVES,
 } from '@/store/membership_address/mutationTypes';
-import { SET_FEE, SET_INTERVAL } from '@/store/membership_fee/mutationTypes';
+import { SET_FEE, SET_INTERVAL, SET_TYPE } from '@/store/membership_fee/mutationTypes';
 import { DataPersistenceMutationType } from '@/view_models/DataPersistence';
 import address from '@/store/data_persistence/address';
 
@@ -45,6 +45,12 @@ export default [
 		storageKey: 'interval',
 		mutationType: DataPersistenceMutationType.VALUE,
 		mutationKey: mutation( NS_MEMBERSHIP_FEE, SET_INTERVAL ),
+		fields: [],
+	},
+	{
+		storageKey: 'type',
+		mutationType: DataPersistenceMutationType.VALUE,
+		mutationKey: mutation( NS_MEMBERSHIP_FEE, SET_TYPE ),
 		fields: [],
 	},
 	address( NS_MEMBERSHIP_ADDRESS ),

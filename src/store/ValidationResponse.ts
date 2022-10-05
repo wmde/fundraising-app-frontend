@@ -6,7 +6,7 @@ export interface SuccessResponse {
 
 export interface ErrorResponse {
     status: 'ERR';
-    messages: Array<string>;
+    messages: Record<string, string>;
 }
 
 export type ValidationResponse = SuccessResponse | ErrorResponse;

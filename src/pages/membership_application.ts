@@ -21,8 +21,8 @@ import Component from '@/components/pages/MembershipForm.vue';
 import Sidebar from '@/components/layout/Sidebar.vue';
 import { InitialMembershipData } from '@/view_models/Address';
 import { initializeBankData } from '@/store/bankdata/actionTypes';
-import { Country } from '@/view_models/Country';
 import { initializeMembershipFee } from '@/store/membership_fee/actionTypes';
+import { Country } from '@/view_models/Country';
 import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
 import { AddressValidation } from '@/view_models/Validation';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
@@ -39,6 +39,7 @@ Vue.use( VueI18n );
 interface MembershipAmountModel {
 	presetAmounts: Array<string>,
 	paymentIntervals: Array<string>,
+	paymentTypes: Array<string>,
 	tracking: Array<number>,
 	countries: Array<Country>,
 	salutations: Array<Salutation>,
@@ -76,6 +77,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 		new URLSearchParams( window.location.search ),
 		pageData.applicationVars.urls.validateMembershipFee,
 	);
+	initialFeeValues.setTypeFromAvailablePaymentTypes( pageData.applicationVars.paymentTypes );
 	const initialBankAccountData = {
 		iban: initialFormValues.get( 'iban' ),
 		bic: initialFormValues.get( 'bic' ),
@@ -125,6 +127,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 						salutations: pageData.applicationVars.salutations,
 						showMembershipTypeOption: pageData.applicationVars.showMembershipTypeOption,
 						paymentIntervals: pageData.applicationVars.paymentIntervals,
+						paymentTypes: pageData.applicationVars.paymentTypes,
 						addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
 						dateOfBirthValidationPattern: pageData.applicationVars.dateOfBirthValidationPattern,
 					},

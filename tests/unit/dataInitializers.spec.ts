@@ -224,24 +224,27 @@ describe( 'createInitialMembershipFeeValues', () => {
 		const validateFeeUrl = 'https://wikipedia.de';
 		const fee = { key: 'fee', value: 'Spooky' };
 		const interval = { key: 'interval', value: 'Magoo' };
+		const type = { key: 'type', value: 'UEB' };
 
-		const dataPersister = new FakeDataPersister( [ fee, interval ] );
+		const dataPersister = new FakeDataPersister( [ fee, interval, type ] );
 		const values = createInitialMembershipFeeValues( dataPersister, { validateFeeUrl: 'https://wikipedia.de', fee: null, interval: null } );
 
 		expect( values.validateFeeUrl ).toEqual( validateFeeUrl );
 		expect( values.fee ).toEqual( fee.value );
 		expect( values.interval ).toEqual( interval.value );
+		expect( values.type ).toEqual( type.value );
 	} );
 
 	it( 'fills data from initial values when there are none in storage', () => {
 		const validateFeeUrl = 'https://wikipedia.de';
 
 		const dataPersister = new FakeDataPersister( [] );
-		const values = createInitialMembershipFeeValues( dataPersister, { validateFeeUrl: 'https://wikipedia.de', fee: '1299', interval: '1' } );
+		const values = createInitialMembershipFeeValues( dataPersister, { validateFeeUrl: 'https://wikipedia.de', fee: '1299', interval: '1', type: null } );
 
 		expect( values.validateFeeUrl ).toEqual( validateFeeUrl );
 		expect( values.fee ).toEqual( '1299' );
 		expect( values.interval ).toEqual( '1' );
+		expect( values.type ).toEqual( null );
 	} );
 
 	it( 'overrides initial values with values form storage where they exist', () => {

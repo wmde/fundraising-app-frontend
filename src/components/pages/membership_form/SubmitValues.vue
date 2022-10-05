@@ -3,7 +3,7 @@
 
 		<input type="hidden" name="membership_type" :value="membershipType">
 
-		<input type="hidden" name="payment_type" value="BEZ">
+		<input type="hidden" name="payment_type" :value="fee.type">
 		<input type="hidden" name="membership_fee_interval" :value="fee.interval">
 		<input type="hidden" name="membership_fee" :value="fee.fee">
 		<input type="hidden" name="iban" :value="bankdata.iban">

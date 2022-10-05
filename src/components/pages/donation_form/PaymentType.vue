@@ -11,11 +11,8 @@
 						:disabled="disabledPaymentTypes.indexOf( paymentType ) > -1"
 						@change.native="setType">
 					{{ $t( paymentType ) }}
-					<div v-show="isDisabledPaymentType( paymentType ) && paymentType==='SUB'" class="has-text-dark-lighter has-margin-top-18">
-						{{ $t( 'donation_form_SUB_payment_type_info' ) }}
-					</div>
-					<div v-show="isDisabledPaymentType( paymentType ) && paymentType==='BEZ'" class="has-text-dark-lighter has-margin-top-18">
-						{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
+					<div v-show="disabledPaymentMessages[paymentType]" class="has-text-dark-lighter has-margin-top-18">
+						{{ $t( disabledPaymentMessages[paymentType] ) }}
 					</div>
 				</b-radio>
 			</div>
@@ -25,41 +22,47 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { TypeData } from '@/view_models/Payment';
+import { defineComponent, computed, PropType, toRefs } from 'vue';
+import { usePaymentType } from '@/components/shared/usePaymentType';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'PaymentType',
-	data: function (): TypeData {
-		return {
-			selectedType: this.$props.currentType,
-		};
-	},
 	props: {
 		currentType: String,
 		error: {
 			type: String,
 			default: '',
 		},
-		paymentTypes: Array,
+		paymentTypes: {
+			type: Array as PropType<string[]>,
+			default: () => [],
+		},
 		title: String,
 		disabledPaymentTypes: {
-			type: Array,
+			type: Array as PropType<string[]>,
 			default: () => [],
 		},
 	},
-	methods: {
-		setType(): void {
-			this.$emit( 'payment-type-selected', this.$data.selectedType );
-		},
-		isDisabledPaymentType( paymentType: string ): Boolean {
-			return this.$props.disabledPaymentTypes.indexOf( paymentType ) > -1;
-		},
-	},
-	watch: {
-		currentType: function ( newType ) {
-			this.selectedType = newType;
-		},
+	setup( props, { emit } ) {
+		const { currentType } = toRefs( props );
+		const { selectedType, setType } = usePaymentType( currentType, emit );
+
+		// Utility function
+		const paymentIsDisabled = ( paymentName: string ): boolean =>
+			props.disabledPaymentTypes.indexOf( paymentName ) > -1;
+
+		// An object with i18n messages for each unavailable payment type, empty strings if the payment is available
+		// We only need keys for payments that show messages when disabled
+		const disabledPaymentMessages = computed( () => ( {
+			SUB: paymentIsDisabled( 'SUB' ) ? 'donation_form_SUB_payment_type_info' : '',
+			BEZ: paymentIsDisabled( 'BEZ' ) ? 'donation_form_address_choice_direct_debit_disclaimer' : '',
+		} ) );
+
+		return {
+			selectedType,
+			setType,
+			disabledPaymentMessages,
+		};
 	},
 } );
 </script>
