@@ -40,7 +40,11 @@ export default Vue.extend( {
 	],
 	methods: {
 		getSummary: function () {
-			if ( !this.canRender( this.membershipApplication.membershipFee, this.membershipApplication.paymentIntervalInMonths ) ) {
+			if ( !this.canRender(
+				this.membershipApplication.membershipFee,
+				this.membershipApplication.paymentIntervalInMonths,
+				this.membershipApplication.paymentType
+			) ) {
 				return this.$t( 'membership_form_review_payment_missing' );
 			}
 			const yearlyFee = new YearlyMembershipFee( this.membershipApplication.paymentIntervalInMonths, this.membershipApplication.membershipFee );
@@ -53,6 +57,7 @@ export default Vue.extend( {
 				this.$t( 'donation_form_payment_interval_12' )
 			);
 			const membershipType = this.$t( this.membershipApplication.membershipType );
+			const paymentType = this.$t( this.membershipApplication.paymentType );
 			const address = addressTypeRenderer.renderAddress(
 				this.address,
 				this.$t( 'donation_form_country_option_' + this.address.countryCode ),
@@ -66,6 +71,7 @@ export default Vue.extend( {
 					membershipType: membershipType,
 					membershipFeeFormatted: formattedAmountPerInterval,
 					membershipFeeYearlyFormatted: formattedAmountYearly,
+					paymentType: paymentType,
 					address: address,
 				}
 			);
@@ -84,8 +90,8 @@ export default Vue.extend( {
 			const formattedAmount = this.$n( amount, { key: 'currency', currencyDisplay: 'name' } );
 			return `(${formattedAmount} ${intervalTranslation})`;
 		},
-		canRender: function ( fee, interval ) {
-			return fee !== '' && !isNaN( Number( fee ) ) && interval !== '';
+		canRender: function ( fee, interval, paymentType ) {
+			return fee !== '' && !isNaN( Number( fee ) ) && interval !== '' && paymentType;
 		},
 	},
 } );

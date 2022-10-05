@@ -29,7 +29,7 @@
 import Vue from 'vue';
 import Payment from '@/components/pages/membership_form/Payment.vue';
 import SubmitValues from '@/components/pages/membership_form/SubmitValues.vue';
-import MembershipSummary from '@/components/MembershipSummary.vue';
+import MembershipSummary from '@/components/shared/MembershipSummary.vue';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
 import { action } from '@/store/util';
 import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@/store/membership_fee/actionTypes';
