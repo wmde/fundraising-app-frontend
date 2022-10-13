@@ -37,24 +37,8 @@ $padding_mobile: 16px;
 			white-space: nowrap;
 		}
 	}
-
-	&__section--two-cols-info {
-		@media ( min-width: $use_of_funds_breakpoint_m ) {
-			display: flex;
-		}
-
-		.use_of_funds__column--info {
-			padding-bottom: 12px;
-			@media ( min-width: $use_of_funds_breakpoint_m ) {
-				&:first-child {
-					padding-right: 5px;
-				}
-
-				&:last-child {
-					padding-left: 5px;
-				}
-			}
-		}
+	&__info_text {
+		margin-bottom: 18px;
 	}
 	&__section--two-cols {
 		@media ( min-width: $use_of_funds_breakpoint_l ) {
