@@ -349,6 +349,14 @@ h1.icon-title svg {
 	}
 }
 
+.donation-confirmation-card,
+.membership-benefits-wrapper {
+	padding: 36px 18px;
+	@media ( min-width: 400px ) {
+		padding: 36px;
+	}
+}
+
 @import "overrides";
 @import "compact_form"; // AB Test Import
 @import "components/address_usage_toggle";

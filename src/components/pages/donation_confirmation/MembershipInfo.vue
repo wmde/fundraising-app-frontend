@@ -1,5 +1,5 @@
 <template>
-	<div class="membership-benefits-wrapper has-background-bright has-padding-36 mb-4">
+	<div class="membership-benefits-wrapper has-background-bright mb-4">
 		<h2 class="icon-title is-size-5 has-margin-bottom-18"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
 		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
 		<p class="has-margin-bottom-18">
