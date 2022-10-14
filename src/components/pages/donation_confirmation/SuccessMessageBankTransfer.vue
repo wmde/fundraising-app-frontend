@@ -1,8 +1,8 @@
 <template>
-	<div class="donation-confirmation-card success-message-bank-transfer has-background-bright has-padding-36 mb-4">
+	<div class="donation-confirmation-card success-message-bank-transfer has-background-bright mb-4">
 		<div class="columns is-multiline">
 			<div class="column is-full">
-				<h1 class="title icon-title"><warning-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1>
+				<h1 class="title icon-title"><warning-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' ) }}</h1>
 			</div>
 			<div class="column is-half">
 				<p>{{ donationSummaryMessage }}</p>
@@ -54,3 +54,4 @@ export default Vue.extend( {
 	}
 }
 </style>
+

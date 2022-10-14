@@ -23,7 +23,7 @@ describe( 'SuccessMessageBankTransfer', () => {
 			},
 		} );
 
-		expect( wrapper.text() ).toContain( 'donation_confirmation_topbox_payment_title_alt' );
+		expect( wrapper.text() ).toContain( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' );
 		expect( wrapper.text() ).toContain( 'donation_confirmation_payment_bank_transfer_alt' );
 		expect( wrapper.text() ).toContain( 'donation_confirmation_reminder_bank_transfer' );
 	} );

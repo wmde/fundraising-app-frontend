@@ -1,5 +1,5 @@
 <template>
-	<div class="donation-confirmation-card known-address has-background-bright has-padding-36 mb-4">
+	<div class="donation-confirmation-card known-address has-background-bright mb-4">
 		<h2 class="icon-title is-size-5 has-margin-bottom-18"><success-icon/>{{ $t( 'donation_confirmation_summary_title' ) }}</h2>
 		<div class="address-summary">
 			<p v-if="addressType === 'person'" v-html="$t( 'donation_confirmation_address_person', {
