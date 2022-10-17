@@ -2,12 +2,17 @@
 	<div class="donation-confirmation">
 		<div class="columns is-multiline is-variable is-2">
 			<div class="column is-full pt-0 pb-0">
-				<success-message v-if="!showBankTransferContent" :donation="donation"/>
 				<success-message-bank-transfer v-if="showBankTransferContent" :donation="donation"/>
+				<success-message
+					v-else
+					:donation="donation"
+					:comment-link-is-disabled="commentLinkIsDisabled"
+					v-on:show-comment-modal="showCommentModal()"
+				/>
 			</div>
 			<div class="column is-half pt-0 pb-0">
 				<address-known
-					v-if="!showAddressChangeContent"
+					v-if="showAddress"
 					v-on:show-address-modal="showAddressModal()"
 					:donation="donation"
 					:address="currentAddress"
@@ -15,10 +20,7 @@
 					:countries="countries"
 					:salutations="salutations"
 				/>
-				<address-anonymous
-					v-if="showAddressChangeContent"
-					v-on:show-address-modal="showAddressModal()"
-				/>
+				<address-anonymous v-else v-on:show-address-modal="showAddressModal()"/>
 
 				<survey/>
 			</div>
@@ -35,24 +37,39 @@
 				:updateDonorUrl="updateDonorUrl"
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
-				:has-errored="addressChangeHasErrored"
-				:has-succeeded="addressChangeHasSucceeded"
 				:address-validation-patterns="addressValidationPatterns"
-				v-on:address-update-failed="addressChangeHasErrored = true"
 				v-on:address-updated="updateAddress( $event )"
 			>
 			</address-modal>
 		</b-modal>
-		<donation-confirmation-banner-notifier :cookieDuration="donation.cookieDuration"/>
+
+		<b-modal :active.sync="openCommentPopUp" scroll="keep" has-modal-card>
+			<donation-comment-pop-up
+				v-on:disable-comment-link="commentLinkIsDisabled = true"
+				v-if="openCommentPopUp"
+				:donation="donation"
+				:address-type="addressType"
+				:post-comment-url="postCommentUrl"
+			/>
+		</b-modal>
+
+		<img :src="'https://de.wikipedia.org/wiki/Special:HideBanners?duration=' + donation.cookieDuration + '&reason=donate'"
+			alt=""
+			width="0"
+			height="0"
+		/>
+		<img src="https://bruce.wikipedia.de/finish-donation?c=fundraising"
+			alt=""
+			width="0"
+			height="0"
+		/>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import BankData from '@/components/BankData.vue';
-import DonationSummary from '@/components/pages/donation_confirmation/DonationSummary.vue';
 import MembershipInfo from '@/components/pages/donation_confirmation/MembershipInfo.vue';
-import PaymentNotice from '@/components/pages/donation_confirmation/PaymentNotice.vue';
 import SummaryLinks from '@/components/pages/donation_confirmation/SummaryLinks.vue';
 import AddressUsageToggle from '@/components/pages/donation_confirmation/AddressUsageToggle.vue';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
@@ -67,8 +84,7 @@ import SuccessMessageBankTransfer from '@/components/pages/donation_confirmation
 import AddressKnown from '@/components/pages/donation_confirmation/AddressKnown.vue';
 import AddressAnonymous from '@/components/pages/donation_confirmation/AddressAnonymous.vue';
 import Survey from '@/components/pages/donation_confirmation/Survey.vue';
-import DonationConfirmationBannerNotifier
-	from '@/components/pages/donation_confirmation/DonationConfirmationBannerNotifier.vue';
+import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
@@ -76,11 +92,9 @@ export default Vue.extend( {
 		Survey,
 		SuccessMessageBankTransfer,
 		SuccessMessage,
-		DonationConfirmationBannerNotifier,
 		BankData,
-		DonationSummary,
+		DonationCommentPopUp,
 		MembershipInfo,
-		PaymentNotice,
 		SummaryLinks,
 		AddressUsageToggle,
 		AddressModal,
@@ -90,10 +104,10 @@ export default Vue.extend( {
 	data: function () {
 		return {
 			isAddressModalOpen: false,
-			addressChangeHasErrored: false,
-			addressChangeHasSucceeded: false,
 			currentAddress: this.$props.address,
 			currentAddressType: this.$props.addressType,
+			openCommentPopUp: false,
+			commentLinkIsDisabled: false,
 		};
 	},
 	props: {
@@ -115,75 +129,61 @@ export default Vue.extend( {
 			this.$data.isAddressModalOpen = true;
 		},
 		updateAddress: function ( submittedAddress: SubmittedAddress ) {
-			this.$data.addressChangeHasSucceeded = true;
 			this.$data.currentAddress = submittedAddress.addressData;
 			this.$data.currentAddressType = submittedAddress.addressType;
 		},
-		getEmail: function () {
-			if ( this.$data.currentAddressType === 'anonym' ) {
-				return '';
+		showCommentModal(): void {
+			if ( !this.$data.commentLinkIsDisabled ) {
+				this.$data.openCommentPopUp = true;
 			}
-			if ( this.$data.currentAddress.email ) {
-				return this.$t( 'donation_confirmation_topbox_email', { email: this.$data.currentAddress.email } );
-			}
-			return this.$t( 'donation_confirmation_review_email_missing' );
 		},
 	},
 	computed: {
 		showBankTransferContent: function () {
 			return this.$props.donation.paymentType === 'UEB';
 		},
-		showAddressChangeContent: function () {
-			return this.$props.addressType === addressTypeName( AddressTypeModel.ANON ) &&
-					!this.$data.addressChangeHasErrored && !this.$data.addressChangeHasSucceeded;
-		},
-		inlineSummaryLanguageItem: function () {
-			switch ( this.$props.addressType ) {
-				case AddressTypeModel.ANON:
-				case AddressTypeModel.UNSET:
-					return 'donation_confirmation_inline_summary_anonymous';
-				case AddressTypeModel.EMAIL:
-					return 'donation_confirmation_inline_summary_email';
-				case AddressTypeModel.COMPANY:
-				case AddressTypeModel.PERSON:
-				default:
-					return 'donation_confirmation_inline_summary_address';
-			}
+		showAddress: function () {
+			return this.$data.currentAddressType !== addressTypeName( AddressTypeModel.ANON ) &&
+				this.$data.currentAddressType !== addressTypeName( AddressTypeModel.EMAIL );
 		},
 	},
 } );
 </script>
 
 <style lang="scss">
-	@import "../../scss/variables";
+@import "../../scss/variables";
 
-	.donation-confirmation {
-		margin-left: -18px;
-		margin-right: -18px;
+.donation-confirmation {
+	margin-left: -18px;
+	margin-right: -18px;
 
-		&-card {
+	&-card {
+		border: 1px solid $fun-color-gray-mid;
+		border-radius: 2px;
+	}
+
+	h2 {
+		line-height: 25px;
+	}
+}
+
+.donation {
+	&-summary {
+		&-wrapper {
 			border: 1px solid $fun-color-gray-mid;
 			border-radius: 2px;
-		}
-	}
 
-	.donation {
-		&-summary {
-			&-wrapper {
-				border: 1px solid $fun-color-gray-mid;
-				border-radius: 2px;
-
-				.address-change-button {
-					width: 100%;
-					white-space: normal;
-				}
+			.address-change-button {
+				width: 100%;
+				white-space: normal;
 			}
+		}
 
-			.bank-data-content {
-				p {
-					line-height: 2em;
-				}
+		.bank-data-content {
+			p {
+				line-height: 2em;
 			}
 		}
 	}
+}
 </style>
