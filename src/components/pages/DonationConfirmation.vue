@@ -1,5 +1,10 @@
 <template>
 	<div class="donation-confirmation">
+		<a class="mobile-call-to-action is-primary button" href="#become-a-member" v-on:click="scrollToCallToAction">
+			Jetzt Fördermitglied werden
+			<chevron-down-icon/>
+		</a>
+
 		<div class="columns is-multiline is-variable is-2">
 			<div class="column is-full pt-0 pb-0">
 				<success-message-bank-transfer v-if="showBankTransferContent" :donation="donation"/>
@@ -24,7 +29,7 @@
 
 				<survey/>
 			</div>
-			<div class="column is-half pt-0 pb-0">
+			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
 				<membership-info :donation="donation"></membership-info>
 			</div>
 		</div>
@@ -53,7 +58,8 @@
 			/>
 		</b-modal>
 
-		<img :src="'https://de.wikipedia.org/wiki/Special:HideBanners?duration=' + donation.cookieDuration + '&reason=donate'"
+		<img
+			:src="'https://de.wikipedia.org/wiki/Special:HideBanners?duration=' + donation.cookieDuration + '&reason=donate'"
 			alt=""
 			width="0"
 			height="0"
@@ -85,10 +91,12 @@ import AddressKnown from '@/components/pages/donation_confirmation/AddressKnown.
 import AddressAnonymous from '@/components/pages/donation_confirmation/AddressAnonymous.vue';
 import Survey from '@/components/pages/donation_confirmation/Survey.vue';
 import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
+import ChevronDownIcon from '@/components/shared/icons/ChevronDown.vue';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
 	components: {
+		ChevronDownIcon,
 		Survey,
 		SuccessMessageBankTransfer,
 		SuccessMessage,
@@ -137,6 +145,14 @@ export default Vue.extend( {
 				this.$data.openCommentPopUp = true;
 			}
 		},
+		scrollToCallToAction( e: Event ): void {
+			e.preventDefault();
+			window.scrollTo( {
+				left: 0,
+				top: ( this.$refs.becomeAMember as any ).offsetTop,
+				behavior: 'smooth',
+			} );
+		},
 	},
 	computed: {
 		showBankTransferContent: function () {
@@ -184,6 +200,22 @@ export default Vue.extend( {
 				line-height: 2em;
 			}
 		}
+	}
+}
+
+.mobile-call-to-action {
+	position: fixed;
+	bottom: 0;
+	height: 64px;
+	width: 100%;
+	padding: 0 10px;
+	line-height: 64px;
+	z-index: 1000;
+	font-weight: bold;
+	left: 0;
+
+	svg {
+		margin-left: 10px;
 	}
 }
 </style>
