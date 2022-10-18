@@ -1,6 +1,8 @@
 <template>
 	<div class="donation-confirmation">
-		<a class="mobile-call-to-action is-primary button" href="#become-a-member" v-on:click="scrollToCallToAction">
+		<a class="mobile-call-to-action is-primary button" href="#membership-application-url"
+			v-on:click="scrollToCallToAction"
+			v-if="isMobileCallToActionButtonVisible">
 			Jetzt Fördermitglied werden
 			<chevron-down-icon/>
 		</a>
@@ -116,6 +118,7 @@ export default Vue.extend( {
 			currentAddressType: this.$props.addressType,
 			openCommentPopUp: false,
 			commentLinkIsDisabled: false,
+			isMobileCallToActionButtonVisible: true,
 		};
 	},
 	props: {
@@ -132,7 +135,16 @@ export default Vue.extend( {
 		salutations: Array as () => Array<Salutation>,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
+	mounted() {
+		window.addEventListener( 'scroll', this.checkShouldShowButton );
+	},
+	destroyed() {
+		window.removeEventListener( 'scroll', this.checkShouldShowButton );
+	},
 	methods: {
+		checkShouldShowButton: function () {
+			this.$data.isMobileCallToActionButtonVisible = window.scrollY < ( this.$refs.becomeAMember as any ).getBoundingClientRect().top;
+		},
 		showAddressModal: function () {
 			this.$data.isAddressModalOpen = true;
 		},
