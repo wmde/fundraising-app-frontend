@@ -32,7 +32,11 @@
 				<survey/>
 			</div>
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
-				<membership-info :donation="donation"></membership-info>
+				<membership-info
+					v-on:membership-cta-button-shown="isMobileCallToActionButtonVisible = false"
+					v-on:membership-cta-button-hidden="isMobileCallToActionButtonVisible = true"
+					:donation="donation"
+				/>
 			</div>
 		</div>
 
@@ -135,16 +139,7 @@ export default Vue.extend( {
 		salutations: Array as () => Array<Salutation>,
 		addressValidationPatterns: Object as () => AddressValidation,
 	},
-	mounted() {
-		window.addEventListener( 'scroll', this.checkShouldShowButton );
-	},
-	destroyed() {
-		window.removeEventListener( 'scroll', this.checkShouldShowButton );
-	},
 	methods: {
-		checkShouldShowButton: function () {
-			this.$data.isMobileCallToActionButtonVisible = window.scrollY < ( this.$refs.becomeAMember as any ).getBoundingClientRect().top;
-		},
 		showAddressModal: function () {
 			this.$data.isAddressModalOpen = true;
 		},
