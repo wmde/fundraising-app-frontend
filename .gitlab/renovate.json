@@ -21,6 +21,10 @@
       "allowedVersions": "<=3"
     },
 	{
+      "matchPackageNames": ["vue-i18n"],
+      "allowedVersions": "<=8"
+	},
+	{
       "matchPackageNames": ["@vue/test-utils"],
       "allowedVersions": "<=1"
     }
