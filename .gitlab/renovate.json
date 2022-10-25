@@ -8,6 +8,10 @@
     ":label(renovate)"
   ],
    "packageRules": [
+	{
+      "matchPackageNames": ["axios"],
+      "allowedVersions": "<=0.27"
+    },
     {
       "matchPackageNames": ["vue-loader"],
       "allowedVersions": "<=15"
