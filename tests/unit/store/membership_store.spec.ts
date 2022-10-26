@@ -34,7 +34,7 @@ describe( 'Membership Store', () => {
 				fee: '1200',
 				interval: '2',
 			};
-			const mockedValidateFeeDataRemotely = jest.mocked( validateFeeDataRemotely, true );
+			const mockedValidateFeeDataRemotely = jest.mocked( validateFeeDataRemotely, { shallow: true } );
 			mockedValidateFeeDataRemotely.mockResolvedValue( { status: 'OK' } );
 			const store = createStore();
 			await store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialData );
