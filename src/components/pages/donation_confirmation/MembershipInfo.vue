@@ -3,7 +3,7 @@
 		<h2 class="icon-title is-size-5 has-margin-bottom-18"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
 		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
 		<p class="has-margin-bottom-18">
-			<a id="membership-application-url" :href="membershipApplicationUrl">
+			<a ref="membership-cta-button" id="membership-application-url" :href="membershipApplicationUrl">
 				<b-button type="is-primary is-main">{{ $t('donation_confirmation_membership_button') }}</b-button>
 			</a>
 		</p>
@@ -27,6 +27,32 @@ export default Vue.extend( {
 	components: { WarningIcon },
 	props: {
 		donation: Object as () => Donation,
+	},
+	data: function () {
+		return {
+			buttonVisibilityObserver: null,
+			buttonIsVisible: false,
+		};
+	},
+	mounted() {
+		if ( !window.IntersectionObserver ) {
+			return;
+		}
+
+		this.$data.buttonVisibilityObserver = new IntersectionObserver( ( entries ) => {
+			if ( entries[ 0 ].isIntersecting && !this.$data.buttonIsVisible ) {
+				this.$data.buttonIsVisible = true;
+				this.$emit( 'membership-cta-button-shown' );
+			} else if ( !entries[ 0 ].isIntersecting && this.$data.buttonIsVisible ) {
+				this.$data.buttonIsVisible = false;
+				this.$emit( 'membership-cta-button-hidden' );
+			}
+		} );
+
+		this.$data.buttonVisibilityObserver.observe( ( this.$refs[ 'membership-cta-button' ] as HTMLElement ) );
+	},
+	destroyed() {
+		this.$data.buttonVisibilityObserver.disconnect();
 	},
 	computed: {
 		membershipApplicationUrl(): string {
