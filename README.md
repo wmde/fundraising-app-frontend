@@ -13,12 +13,14 @@ redirect all asset requests to the development server.
 
 ## Building the assets
 
+The command
+
 	npm run build
 	
-Will create the CSS, JavaScript, fonts and images inside the `dist`
+will create the CSS, JavaScript, fonts and images inside the `dist`
 directory. To use them with the Fundraising Application, you must copy
 them into the directory `web/skins/laika` in the Fundraising Application
-directory. You can ingnore or delete the generated HTML files, they are an
+directory. You can ignore or delete the generated HTML files, they are an
 unused byproduct of the build process.
 
 
