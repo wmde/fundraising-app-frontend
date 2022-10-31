@@ -29,7 +29,6 @@
 				/>
 				<address-anonymous v-else v-on:show-address-modal="showAddressModal()"/>
 
-				<survey/>
 			</div>
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
 				<membership-info
