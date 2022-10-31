@@ -145,6 +145,7 @@ export default Vue.extend( {
 		updateAddress: function ( submittedAddress: SubmittedAddress ) {
 			this.$data.currentAddress = submittedAddress.addressData;
 			this.$data.currentAddressType = submittedAddress.addressType;
+			this.$data.isAddressModalOpen = false;
 		},
 		showCommentModal(): void {
 			if ( !this.$data.commentLinkIsDisabled ) {
