@@ -89,7 +89,7 @@ $padding_mobile: 16px;
 	&__benefits_list {
 		background: #f4f4f4;
 		padding: $padding_mobile;
-		margin: $padding_mobile -$padding_mobile 0 -$padding_mobile;
+		margin: $padding_mobile (-$padding_mobile) 0 (-$padding_mobile);
 		flex: 1 1 auto;
 		@media ( min-width: $use_of_funds_breakpoint_l ) {
 			padding: $padding;
@@ -100,7 +100,7 @@ $padding_mobile: 16px;
 		background: #ebebeb;
 		padding: $padding_mobile;
 		flex: 1 1 auto;
-		margin: 0 -$padding_mobile;
+		margin: 0 (-$padding_mobile);
 		@media ( min-width: $use_of_funds_breakpoint_l ) {
 			padding: $padding;
 			margin: 0;

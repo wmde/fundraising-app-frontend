@@ -29,8 +29,7 @@
   "include": [
     "jest.dom.ts",
     "src/**/*.ts",
-    "src/**/*.vue",
-    "tests/**/*.ts"
+    "src/**/*.vue"
   ],
   "exclude": [
     "node_modules"
