@@ -46,7 +46,7 @@ export const createInitialDonationAddressValues = ( dataPersister: DataPersister
 		// The address type chosen by the user in the banner should override the choice made later, assuming that
 		// reloading the page (and restoring from localStorage) happens less often than coming back from a banner
 		addressType: replaceInitialValue( dataPersister.getValue( 'addressType' ), initialFormValues.addressType ),
-		newsletterOptIn: replaceInitialValue( false, dataPersister.getValue( 'newsletter' ) ),
+		newsletterOptIn: replaceInitialValue( true, dataPersister.getValue( 'newsletter' ) ),
 		receiptOptOut: replaceInitialValue( false, dataPersister.getValue( 'receiptOptOut' ) ),
 		fields: addressPersistItems,
 	};
