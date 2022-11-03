@@ -1,13 +1,15 @@
 <template>
 	<div class="opt-out-box">
-		<b-checkbox type="checkbox" class="is-inline-checkbox"
+		<b-checkbox type="checkbox" class="is-inline-checkbox has-margin-bottom-18"
 			id="newsletter"
 			name="newsletter"
 			v-model="newsletterOptIn"
 			@change.native="setNewsletterOptIn()">
-			{{ $t( 'donation_form_newsletter_label' ) }}
+			<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
 		</b-checkbox>
+		<label class="has-padding-left-36 checkbox"  v-html="$t( 'donation_form_newsletter_label_paragraph_2' )" for="newsletter-opt-in"></label>
 	</div>
+
 </template>
 
 <script lang="ts">
@@ -33,3 +35,11 @@ export default Vue.extend( {
 	},
 } );
 </script>
+<style lang="scss">
+.opt-out-box{
+	label {
+		display: block;
+	}
+}
+
+</style>
