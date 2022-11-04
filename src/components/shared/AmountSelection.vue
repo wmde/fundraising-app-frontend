@@ -24,6 +24,7 @@
 					<input :class="[customAmount ? 'is-valid' : '', 'input', 'is-large', 'input-amount', 'has-border-rounded' ]"
 							type="text"
 							id="amount-custom"
+							@keydown.enter="catchEnter"
 							@blur="customAmountEntered"
 							maxlength="9"
 							:value="customAmount"
@@ -104,6 +105,11 @@ export default Vue.extend( {
 				return;
 			}
 			this.$emit( 'amount-selected', String( Math.trunc( englishDecimalAmount * 100 ) ) );
+		},
+		catchEnter( evt: Event ) {
+			// Stop enter from submitting if there is only one field, because we need the validation code to run
+			evt.preventDefault();
+			this.customAmountEntered( evt );
 		},
 	},
 } );
