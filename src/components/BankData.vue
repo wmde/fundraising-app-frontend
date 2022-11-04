@@ -10,7 +10,10 @@
 		</p>
 		<p><strong>{{ $t( 'bank_data_bic')  }}:</strong> {{ $t( 'bank_data_operator_account_bic')  }}</p>
 		<p>{{ $t( 'bank_data_operator_bank_name')  }}</p>
-		<p v-if="bankTransferCode"><strong>{{ $t( 'bank_data_transfer_code' ) }}:</strong> {{ bankTransferCode }}</p>
+		<p v-if="bankTransferCode">
+			<strong>{{ $t( 'bank_data_transfer_code' ) }}:</strong>
+			<span class="bank-transfer-code"> {{ bankTransferCode }}</span>
+		</p>
 	</div>
 </template>
 <script>
@@ -26,3 +29,8 @@ export default {
 	},
 };
 </script>
+<style lang="scss">
+	.bank-transfer-code{
+		white-space: nowrap;
+	}
+</style>

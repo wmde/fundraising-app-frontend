@@ -4,74 +4,23 @@ import Buefy from 'buefy';
 import DonationConfirmation from '@/components/pages/DonationConfirmation.vue';
 import { createStore } from '@/store/donation_store';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
+import {
+	anonymousBankTransferConfirmationData,
+	bankTransferConfirmationData,
+	emailBankTransferConfirmationData,
+	payPalConfirmationData,
+} from '../../../../data/confirmationData';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
 localVue.use( FeatureTogglePlugin );
 
-const testBankTransferCode = 'XW-XLK-M3F-Z';
-
-function getDefaultConfirmationData(): any {
-	return {
-		addressType: 'person',
-		address: {
-			city: 'Berlin',
-			countryCode: 'DE',
-			email: 'test@wikimedia.de',
-			firstName: 'Tester',
-			fullName: 'Prof. Dr. Tester McTest',
-			lastName: 'McTest',
-			postalCode: '10963',
-			salutation: 'Herr',
-			streetAddress: 'Tempelhofer Ufer 23-24',
-		},
-		donation: {
-			accessToken: 'a839bc8045aba4c8b600bc0477dbbf10',
-			amount: 12.35,
-			bankTransferCode: testBankTransferCode,
-			id: 1,
-			interval: 0,
-			optsIntoDonationReceipt: true,
-			optsIntoNewsletter: false,
-			paymentType: 'UEB',
-			updateToken: 'd387cebd6cc05efbd117545492cb0e99',
-		},
-		countries: [
-			{
-				'countryCode': 'DE',
-				'countryFullName': 'Deutschland',
-				'isFrequentCountry': true,
-				'postCodeValidation': '^[0-9]{5}$',
-			},
-			{
-				'countryCode': 'AT',
-				'countryFullName': 'Österreich',
-				'isFrequentCountry': true,
-				'postCodeValidation': '^[0-9]{4}$',
-			},
-		],
-		salutations: [
-			{
-				'label': 'Herr',
-				'value': 'Herr',
-				'display': 'Herr',
-			},
-			{
-				'label': 'Frau',
-				'value': 'Frau',
-				'display': 'Frau',
-			},
-		],
-	};
-}
-
 describe( 'DonationConfirmation', () => {
-	it( 'displays bank data for bank transaction payments', () => {
-		let confirmationData = getDefaultConfirmationData();
+	it( 'displays bank data success message for bank transfer payments', () => {
 		const wrapper = mount( DonationConfirmation, {
 			localVue,
-			propsData: confirmationData,
+			propsData: bankTransferConfirmationData,
 			store: createStore(),
 			mocks: {
 				$t: ( key: string ) => key,
@@ -79,15 +28,14 @@ describe( 'DonationConfirmation', () => {
 			},
 		} );
 
-		expect( wrapper.find( '#bank-data' ).html() ).toContain( testBankTransferCode );
+		expect( wrapper.find( '.success-message-bank-transfer' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.success-message' ).exists() ).toBeFalsy();
 	} );
 
-	it( 'does not display the bank data element for other payment methods', () => {
-		let confirmationData = getDefaultConfirmationData();
-		confirmationData.donation.paymentType = 'PPL';
+	it( 'displays standard success message for non-bank transfer payments', () => {
 		const wrapper = mount( DonationConfirmation, {
 			localVue,
-			propsData: confirmationData,
+			propsData: payPalConfirmationData,
 			store: createStore(),
 			mocks: {
 				$t: ( key: string ) => key,
@@ -95,7 +43,53 @@ describe( 'DonationConfirmation', () => {
 			},
 		} );
 
-		expect( wrapper.find( '#bank-data' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.success-message-bank-transfer' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.success-message' ).exists() ).toBeTruthy();
+	} );
+
+	it( 'displays anonymous address card for anonymous address type', () => {
+		const wrapper = mount( DonationConfirmation, {
+			localVue,
+			propsData: anonymousBankTransferConfirmationData,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+				$n: () => {},
+			},
+		} );
+
+		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'displays anonymous address card for email address type', () => {
+		const wrapper = mount( DonationConfirmation, {
+			localVue,
+			propsData: emailBankTransferConfirmationData,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+				$n: () => {},
+			},
+		} );
+
+		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'displays known address card for known address types', () => {
+		const wrapper = mount( DonationConfirmation, {
+			localVue,
+			propsData: payPalConfirmationData,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+				$n: () => {},
+			},
+		} );
+
+		expect( wrapper.find( '.known-address' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
 	} );
 
 } );

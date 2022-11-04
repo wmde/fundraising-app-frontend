@@ -53,7 +53,7 @@ export default Vue.extend( {
 		},
 	},
 	methods: {
-		openPopUp(): void {
+		showCommentModal(): void {
 			if ( !this.$data.commentLinkIsDisabled ) {
 				this.$data.openCommentPopUp = true;
 			}

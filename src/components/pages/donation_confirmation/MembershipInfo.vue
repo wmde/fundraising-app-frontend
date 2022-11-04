@@ -1,35 +1,58 @@
 <template>
-	<div class="is-hidden-print membership-benefits-wrapper has-background-bright columns has-margin-top-36 has-padding-18">
-		<div class="column is-half">
-			<h2 class="title is-size-5">{{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
-			<p>{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
-			<p>
-				<a id="membership-application-url" :href="membershipApplicationUrl">
-					<b-button type="is-primary is-main has-margin-top-36">{{ $t('donation_confirmation_membership_button') }}</b-button>
-				</a>
-			</p>
-		</div>
-		<div class="column is-half">
-			<ul class="membership-benefits">
-				<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_1' ) }}</li>
-				<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_2' ) }}</li>
-				<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_3' ) }}</li>
-				<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_4' ) }}</li>
-				<li class="has-margin-top-18"><a href="https://wikimedia.de/de/mitglied-werden">{{ $t( 'donation_confirmation_bottombox_membership_link' ) }}</a></li>
-			</ul>
-		</div>
-
+	<div class="membership-benefits-wrapper has-background-bright mb-4">
+		<h2 class="icon-title is-size-5 has-margin-bottom-18"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
+		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
+		<p class="has-margin-bottom-18">
+			<a ref="membership-cta-button" id="membership-application-url" :href="membershipApplicationUrl">
+				<b-button type="is-primary is-main">{{ $t('donation_confirmation_membership_button') }}</b-button>
+			</a>
+		</p>
+		<ul class="membership-benefits">
+			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_1' ) }}</li>
+			<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_2' ) }}</li>
+			<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_3' ) }}</li>
+			<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_4' ) }}</li>
+			<li class="has-margin-top-18"><a href="https://wikimedia.de/de/mitglied-werden">{{ $t( 'donation_confirmation_bottombox_membership_link' ) }}</a></li>
+		</ul>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { Donation } from '@/view_models/Donation';
+import WarningIcon from '@/components/shared/icons/WarningIcon.vue';
 
 export default Vue.extend( {
 	name: 'MembershipInfo',
+	components: { WarningIcon },
 	props: {
 		donation: Object as () => Donation,
+	},
+	data: function () {
+		return {
+			buttonVisibilityObserver: null,
+			buttonIsVisible: false,
+		};
+	},
+	mounted() {
+		if ( !window.IntersectionObserver ) {
+			return;
+		}
+
+		this.$data.buttonVisibilityObserver = new IntersectionObserver( ( entries ) => {
+			if ( entries[ 0 ].isIntersecting && !this.$data.buttonIsVisible ) {
+				this.$data.buttonIsVisible = true;
+				this.$emit( 'membership-cta-button-shown' );
+			} else if ( !entries[ 0 ].isIntersecting && this.$data.buttonIsVisible ) {
+				this.$data.buttonIsVisible = false;
+				this.$emit( 'membership-cta-button-hidden' );
+			}
+		} );
+
+		this.$data.buttonVisibilityObserver.observe( ( this.$refs[ 'membership-cta-button' ] as HTMLElement ) );
+	},
+	destroyed() {
+		this.$data.buttonVisibilityObserver.disconnect();
 	},
 	computed: {
 		membershipApplicationUrl(): string {
@@ -42,11 +65,13 @@ export default Vue.extend( {
 
 <style lang="scss">
 	@import "../../../scss/variables";
+
+	.membership-benefits-wrapper {
+		border-radius: 2px;
+		border: 3px solid $fun-color-primary-light;
+	}
 	.membership-benefits {
 		list-style: disc;
-		&-wrapper {
-			border: 1px solid $fun-color-primary-light;
-			border-radius: 2px;
-		}
+		padding-left: 1rem;
 	}
 </style>
