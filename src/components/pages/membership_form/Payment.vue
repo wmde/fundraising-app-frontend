@@ -4,7 +4,7 @@
 				:payment-intervals="paymentIntervals"
 				:current-interval="interval"
 				:title="$t( 'membership_form_payment_interval_title' )"
-				v-on:interval-selected="sendIntervalToStore"
+				v-on:interval-selected="saveIntervalAndReEvaluateFee"
 		></payment-interval>
 		<amount-selection
 				class="has-margin-top-36"
@@ -99,12 +99,21 @@ export default Vue.extend( {
 			} as SetFeePayload;
 			return this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setFee ), payload );
 		},
-		sendIntervalToStore( interval: string ): void {
-			const payload = {
+		saveIntervalAndReEvaluateFee( interval: string ): void {
+			const intervalPayload = {
 				selectedInterval: interval,
 				validateFeeUrl: this.validateFeeUrl,
 			} as IntervalData;
-			this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setInterval ), payload );
+			this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setInterval ), intervalPayload );
+
+			const minimumAmount = ( this as any ).minimumAmount( this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/addressType' ] );
+			if ( this.fee && this.fee < minimumAmount ) {
+				const feePayload = {
+					feeValue: String( this.getMinimumAmount ),
+					validateFeeUrl: this.validateFeeUrl,
+				} as SetFeePayload;
+				this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setFee ), feePayload );
+			}
 		},
 		sendTypeToStore( paymentType: string ): void {
 			this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setType ), paymentType );
