@@ -9,9 +9,6 @@
   ],
    "packageRules": [
 	{
-      "enabled": false
-    },
-	{
 	  "matchPackageNames": ["axios"],
 	  "allowedVersions": "<=0.27"
 	},
@@ -34,6 +31,10 @@
 	{
       "matchPackageNames": ["@vue/test-utils"],
       "allowedVersions": "<=1"
-    }
-  ]
+    },
+	{
+		"matchPackagePatterns": ["*"],
+		"enabled": false
+	}
+   ]
 }
