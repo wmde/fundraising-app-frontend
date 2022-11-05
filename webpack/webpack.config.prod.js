@@ -32,6 +32,7 @@ const webpackConfig = merge( commonConfig, {
 	},
 	output: {
 		filename: 'js/[name].[chunkhash].js',
+		clean: true
 	},
 	plugins: [
 		new webpack.EnvironmentPlugin( environment ),
