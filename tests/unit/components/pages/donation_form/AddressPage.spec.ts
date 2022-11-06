@@ -11,7 +11,7 @@ import { FeatureTogglePlugin } from '@/FeatureToggle';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import { setAddressType } from '@/store/address/actionTypes';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import AddressType from '@/components/pages/donation_form/AddressType.vue';
+import AddressType from '@/components/pages/donation_form/AddressType_no_anon.vue';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );

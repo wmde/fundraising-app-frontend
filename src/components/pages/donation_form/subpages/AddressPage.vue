@@ -18,30 +18,6 @@
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
 			<feature-toggle>
-				<address-type
-					slot="campaigns.address_type_steps.multistep"
-					v-on:address-type="setAddressType( $event )"
-					v-on:set-full-selected="setFullSelected"
-					:disabledAddressTypes="disabledAddressTypes"
-					:is-direct-debit="isDirectDebit"
-					:initial-address-type="addressTypeName"
-				/>
-				<address-type-var
-					slot="campaigns.address_type_steps.multistep_var"
-					v-on:address-type="setAddressType( $event )"
-					v-on:set-full-selected="setFullSelected"
-					:disabledAddressTypes="disabledAddressTypes"
-					:is-direct-debit="isDirectDebit"
-					:initial-address-type="addressTypeName"
-				/>
-				<address-type-checkmarks
-					slot="campaigns.address_type_steps.multistep_checkmarks"
-					v-on:address-type="setAddressType( $event )"
-					v-on:set-full-selected="setFullSelected"
-					:disabledAddressTypes="disabledAddressTypes"
-					:is-direct-debit="isDirectDebit"
-					:initial-address-type="addressTypeName"
-				/>
 				<basic-address-type
 					slot="campaigns.address_type_steps.direct"
 					v-on:address-type="setAddressType( $event )"
@@ -124,9 +100,6 @@
 import Vue from 'vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
-import AddressType from '@/components/pages/donation_form/AddressType.vue';
-import AddressTypeVar from '@/components/pages/donation_form/AddressType_var.vue';
-import AddressTypeCheckmarks from '@/components/pages/donation_form/AddressType_checkmarks.vue';
 import BasicAddressType from '@/components/pages/donation_form/BasicAddressType.vue';
 import AddressTypeNoAnon from '@/components/pages/donation_form/AddressType_no_anon.vue';
 import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
@@ -155,9 +128,6 @@ export default Vue.extend( {
 	components: {
 		AutofillHandler,
 		AddressForms,
-		AddressType,
-		AddressTypeVar,
-		AddressTypeCheckmarks,
 		AddressTypeNoAnon,
 		BasicAddressType,
 		PaymentBankData,
