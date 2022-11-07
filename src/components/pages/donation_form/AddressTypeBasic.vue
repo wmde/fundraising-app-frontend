@@ -41,10 +41,9 @@ import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressType
 import { computed, defineComponent, PropType, Ref, ref, watch } from 'vue';
 
 export default defineComponent( {
-	name: 'BasicAddressType',
+	name: 'AddressTypeBasic',
 	props: {
 		disabledAddressTypes: Array as PropType<Array<AddressTypeModel>>,
-		disabledAnonymousType: Boolean,
 		initialAddressType: String,
 		isDirectDebit: Boolean,
 	},

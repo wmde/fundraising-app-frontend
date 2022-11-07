@@ -18,7 +18,7 @@
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
 			<feature-toggle>
-				<basic-address-type
+				<address-type-basic
 					slot="campaigns.address_type_steps.direct"
 					v-on:address-type="setAddressType( $event )"
 					v-on:set-full-selected="setFullSelected"
@@ -100,7 +100,7 @@
 import Vue from 'vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
-import BasicAddressType from '@/components/pages/donation_form/BasicAddressType.vue';
+import AddressTypeBasic from '@/components/pages/donation_form/AddressTypeBasic.vue';
 import AddressTypeFullOrEmail from '@/components/pages/donation_form/AddressTypeFullOrEmail.vue';
 import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
@@ -129,7 +129,7 @@ export default Vue.extend( {
 		AutofillHandler,
 		AddressForms,
 		AddressTypeFullOrEmail,
-		BasicAddressType,
+		AddressTypeBasic,
 		PaymentBankData,
 		PaymentSummary,
 		DonationSummary,
