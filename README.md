@@ -54,25 +54,3 @@ the HTML "skeleton" rendered by the PHP templates.
 The code in `src/page_data_initializer.ts` sets the variable from the HTML
 attribute.
 
-
-## Using the Docker image to run the server and build assets
-
-The name of the Docker image is `registry.gitlab.com/fun-tech/fundraising-app-frontend`
-
-To run the development server:
-
-	docker run --rm -p 7072:7072 registry.gitlab.com/fun-tech/fundraising-app-frontend
-	
-To build the assets and copy them to a location, run the following 3
-commands (adapting the example path of
-`~/src/fundraising-app/web/skins/laika` to your actual path)
-
-	docker run --name frontend-build registry.gitlab.com/fun-tech/fundraising-app-frontend npm run build
-	docker cp frontend-build:/app/dist/.  ~/src/fundraising-app/web/skins/laika
-	docker rm frontend-build
-
-These 3 commands will build the assets *inside* the docker image, copy them out of the
-stopped image and then delete the stopped image. There are other ways get
-the files, but this method has the benfit that the copied
-files will have the right owner (the user who copied the files).
-
