@@ -70,7 +70,7 @@ const fullAddressTypeToModel: Record<fullAddressStates, AddressTypeModel> = {
 // TODO: If this option wins the test add a store state to handle the pre-address type selection
 //       This will allow it to be saved and restored from local storage and simplify states here
 export default defineComponent( {
-	name: 'AddressTypeVar',
+	name: 'AddressTypeFullOrEmail',
 	props: {
 		disabledAddressTypes: Array as PropType<Array<AddressTypeModel>>,
 		initialAddressType: String,
