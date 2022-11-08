@@ -104,6 +104,12 @@ export default Vue.extend( {
 				this.$emit( 'amount-selected', '' );
 				return;
 			}
+			const amountInEuroCents = englishDecimalAmount * 100;
+			const minimumAmountInEuroCents = this.$props.minimumAmount;
+			if ( amountInEuroCents < minimumAmountInEuroCents ) {
+				this.$emit( 'amount-selected', '' );
+				return;
+			}
 			this.$emit( 'amount-selected', String( Math.trunc( englishDecimalAmount * 100 ) ) );
 		},
 		catchEnter( evt: Event ) {
