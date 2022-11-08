@@ -109,7 +109,7 @@ export default Vue.extend( {
 			const minimumAmount = ( this as any ).minimumAmount( this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/addressType' ] );
 			if ( this.fee && this.fee < minimumAmount ) {
 				const feePayload = {
-					feeValue: String( this.getMinimumAmount ),
+					feeValue: '',
 					validateFeeUrl: this.validateFeeUrl,
 				} as SetFeePayload;
 				this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setFee ), feePayload );
