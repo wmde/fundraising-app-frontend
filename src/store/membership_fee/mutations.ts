@@ -28,6 +28,9 @@ export const mutations: MutationTree<MembershipFee> = {
 	},
 	[ SET_FEE_VALIDITY ]( state: MembershipFee, validity: Validity ) {
 		state.validity.fee = validity;
+		if ( validity === Validity.INVALID ) {
+			state.values.fee = '';
+		}
 	},
 	[ SET_INTERVAL_VALIDITY ]( state: MembershipFee, validity?: Validity ) {
 		if ( validity === undefined ) {
