@@ -233,6 +233,24 @@ describe( 'AmountSelection', () => {
 
 	} );
 
+	it( 'does not select amounts for choices that are below minimum amount', () => {
+		const wrapper = mount( AmountSelection, {
+			propsData: {
+				amount: '500',
+				minimumAmount: 1000,
+				paymentAmounts: [ 500, 1000, 10000, 29900 ],
+			},
+			mocks: {
+				$t: () => {},
+				$n: () => {},
+			},
+		} );
+
+		const belowChoice = wrapper.find( '#amount-500' );
+
+		expect( ( belowChoice.element as HTMLInputElement ).checked ).toBeFalsy();
+	} );
+
 	it( 'localises choices', () => {
 		const $n = jest.fn();
 		mount( AmountSelection, {

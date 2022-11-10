@@ -11,7 +11,7 @@
 					:id="'amount-' + amount "
 					name="amount-grp"
 					:value="amount"
-					:checked="amount === selectedAmount"
+					:checked="amount === selectedAmount && amount >= minimumAmount"
 					:disabled="amount < minimumAmount"
 					@change="amountSelected( amount )"
 					class="is-sr-only">
