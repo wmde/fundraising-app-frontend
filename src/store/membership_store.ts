@@ -33,6 +33,10 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 					return getters[ NS_MEMBERSHIP_FEE + '/paymentDataIsValid' ];
 				}
 			},
+			// Expose context-specific getter for checks in other contexts
+			allPaymentValuesAreSet: function ( _, getters ): boolean {
+				return getters[ NS_MEMBERSHIP_FEE + '/allPaymentValuesAreSet' ];
+			},
 		},
 		plugins,
 	};

@@ -7,6 +7,7 @@ import { MembershipAddressState } from '@/view_models/Address';
 import { Validity } from '@/view_models/Validity';
 import { REQUIRED_FIELDS } from '@/store/membership_address/constants';
 import mockAxios from 'jest-mock-axios';
+import { NS_MEMBERSHIP_FEE } from '../../../src/store/namespaces';
 
 function newMinimalStore( overrides: Object ): MembershipAddressState {
 	return Object.assign(
@@ -425,13 +426,13 @@ describe( 'MembershipAddress', () => {
 			const commit = jest.fn(),
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
-			action( { commit, getters }, type );
+			action( { commit, getters, rootGetters: { allPaymentValuesAreSet: false } }, type );
 			expect( commit ).toBeCalledWith(
 				'SET_ADDRESS_TYPE',
 				type
 			);
 		} );
-		it( 'commits to mutation [SET_MEMBERSHIP_TYPE_VALIDITY] with invalid when address type is comapany and membership type is active', () => {
+		it( 'commits to mutation [SET_MEMBERSHIP_TYPE_VALIDITY] with invalid when address type is company and membership type is active', () => {
 			const context = {
 					commit: jest.fn(),
 					getters: {
@@ -442,6 +443,7 @@ describe( 'MembershipAddress', () => {
 							membershipType: MembershipTypeModel.ACTIVE,
 						},
 					} ),
+					rootGetters: { allPaymentValuesAreSet: false },
 				},
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
@@ -449,6 +451,30 @@ describe( 'MembershipAddress', () => {
 			expect( context.commit ).toBeCalledWith(
 				'SET_MEMBERSHIP_TYPE_VALIDITY',
 				Validity.INVALID
+			);
+		} );
+
+		it( 'triggers fee validation when payment values are set', () => {
+			const context = {
+					commit: jest.fn(),
+					dispatch: jest.fn(),
+					rootGetters: { allPaymentValuesAreSet: true },
+					rootState: { [ NS_MEMBERSHIP_FEE ]: { values: { fee: '500' } } },
+					state: newMinimalStore( {} ),
+					getters: {
+						membershipType: MembershipTypeModel.SUSTAINING,
+					},
+				},
+				action = actions.setAddressType as any,
+				type = AddressTypeModel.COMPANY;
+			action( context, type );
+			expect( context.dispatch ).toBeCalledWith(
+				'membership_fee/validateFee',
+				{
+					feeValue: '500',
+					validateFeeUrl: '/validate-fee',
+				},
+				{ root: true }
 			);
 		} );
 	} );

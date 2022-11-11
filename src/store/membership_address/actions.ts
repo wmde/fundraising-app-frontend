@@ -34,6 +34,9 @@ import {
 } from '@/store/membership_address/mutationTypes';
 import { Validity } from '@/view_models/Validity';
 import { FieldInitialization } from '@/view_models/FieldInitialization';
+import { validateFee } from '@/store/membership_fee/actionTypes';
+import { NS_MEMBERSHIP_FEE } from '@/store/namespaces';
+import { action } from '@/store/util';
 
 export const actions = {
 	[ initializeAddress ]( context: ActionContext<MembershipAddressState, any>, initialData: InitialMembershipAddressValues ) {
@@ -122,6 +125,21 @@ export const actions = {
 		context.commit( SET_ADDRESS_TYPE, type );
 		if ( type === AddressTypeModel.COMPANY && context.getters.membershipType === MembershipTypeModel.ACTIVE ) {
 			context.commit( SET_MEMBERSHIP_TYPE_VALIDITY, Validity.INVALID );
+		}
+
+		// Trigger server-side re-validation of membership fee when address type changes
+		// This only happens when the user goes back from a filled payment page to the address page
+		if ( context.rootGetters.allPaymentValuesAreSet ) {
+			return context.dispatch(
+				action( NS_MEMBERSHIP_FEE, validateFee ),
+				{
+					feeValue: context.rootState[ NS_MEMBERSHIP_FEE ].values.fee,
+					// Hard-coded URL without host name for now
+					// validateFeeUrl should not be part of the payload, see https://phabricator.wikimedia.org/T315068
+					validateFeeUrl: '/validate-fee',
+				},
+				{ root: true }
+			);
 		}
 	},
 

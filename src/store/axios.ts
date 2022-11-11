@@ -7,7 +7,6 @@ import axios, { AxiosResponse } from 'axios';
 // Membership fee call
 
 function postFeeData(
-	context: ActionContext<MembershipFee, any>,
 	validateFeeUrl: string,
 	membershipFee: string,
 	interval: string,
@@ -38,5 +37,5 @@ export function validateFeeDataRemotely(
 	const feeAmount = feeValue;
 	const paymentInterval = interval;
 	const addressType = context.rootState.membership_address.addressType;
-	return postFeeData( context, validateFeeUrl, feeAmount, paymentInterval, addressType, paymentType );
+	return postFeeData( validateFeeUrl, feeAmount, paymentInterval, addressType, paymentType );
 }

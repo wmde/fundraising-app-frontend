@@ -96,6 +96,7 @@ export const actions = {
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( validateFee, {
 				feeValue: context.state.values.fee,
+				// validateFeeUrl should not be part of the payload, see https://phabricator.wikimedia.org/T315068
 				validateFeeUrl: payload.validateFeeUrl,
 			} );
 		}
