@@ -28,7 +28,7 @@ const webpackConfig = {
 		'system_message': './src/pages/system_message.ts',
 		'supporters': './src/pages/supporters.ts',
 		'update_address': './src/pages/update_address.ts',
-
+		'subscription_confirmation': './src/pages/subscription_confirmation.ts'
 	},
 	output: {
 		path: helpers.root( 'dist' ),
