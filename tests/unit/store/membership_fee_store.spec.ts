@@ -433,6 +433,22 @@ describe( 'MembershipFee', () => {
 			mutations.SET_FEE_VALIDITY( store, Validity.INVALID );
 			expect( store.validity.fee ).toStrictEqual( Validity.INVALID );
 		} );
+
+		it( 'sets fee to empty when it is invalid', () => {
+			const store = newMinimalStore( { values: { fee: '500' } } );
+			mutations.SET_FEE_VALIDITY( store, Validity.INVALID );
+			expect( store.values.fee ).toStrictEqual( '' );
+		} );
+
+		it( 'leaves fee as-is for other validity values', () => {
+			const store = newMinimalStore( { values: { fee: '500' } } );
+			mutations.SET_FEE_VALIDITY( store, Validity.VALID );
+			expect( store.values.fee ).toStrictEqual( '500' );
+			mutations.SET_FEE_VALIDITY( store, Validity.INCOMPLETE );
+			expect( store.values.fee ).toStrictEqual( '500' );
+			mutations.SET_FEE_VALIDITY( store, Validity.RESTORED );
+			expect( store.values.fee ).toStrictEqual( '500' );
+		} );
 	} );
 
 	describe( 'Mutations/SET_FEE', () => {

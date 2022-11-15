@@ -11,7 +11,7 @@
 					:id="'amount-' + amount "
 					name="amount-grp"
 					:value="amount"
-					:checked="amount === selectedAmount"
+					:checked="amount === selectedAmount && amount >= minimumAmount"
 					:disabled="amount < minimumAmount"
 					@change="amountSelected( amount )"
 					class="is-sr-only">
@@ -101,12 +101,6 @@ export default Vue.extend( {
 			}
 			const englishDecimalAmount = Number( amount.replace( /,/, '.' ) );
 			if ( isNaN( englishDecimalAmount ) ) {
-				this.$emit( 'amount-selected', '' );
-				return;
-			}
-			const amountInEuroCents = englishDecimalAmount * 100;
-			const minimumAmountInEuroCents = this.$props.minimumAmount;
-			if ( amountInEuroCents < minimumAmountInEuroCents ) {
 				this.$emit( 'amount-selected', '' );
 				return;
 			}
