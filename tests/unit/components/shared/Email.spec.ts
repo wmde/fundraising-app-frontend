@@ -82,7 +82,7 @@ describe( 'Email', () => {
 				commonMailProviders: [ 'gmail.com', 't-online.de', 'gmx.net' ],
 				formData: {
 					email: {
-						value: 'totally-different_provider@gmailerz.com',
+						value: 'totally-different_provider@gmail1234.com',
 					},
 				},
 			},
