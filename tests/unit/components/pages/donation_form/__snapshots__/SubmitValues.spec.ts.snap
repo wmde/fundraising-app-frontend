@@ -102,13 +102,12 @@ exports[`SubmitValues.vue renders input fields 1`] = `
   <input
     name="info"
     type="hidden"
-    value="1"
   />
    
   <input
     name="donationReceipt"
     type="hidden"
-    value="1"
+    value="0"
   />
    
   <input

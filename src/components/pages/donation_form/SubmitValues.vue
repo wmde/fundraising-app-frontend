@@ -56,12 +56,16 @@ export default Vue.extend( {
 			addressType: state => {
 				return addressTypeName( ( state as AddressState ).addressType );
 			},
-			newsletterOptIn: state => ( state as AddressState ).newsletterOptIn ? '1' : '',
-			receiptOptIn: state => ( state as AddressState ).receiptOptOut ? '0' : '1',
 		} ),
 		...mapState( NS_BANKDATA, {
 			bankdata: state => ( state as BankAccount ).values,
 		} ),
+		newsletterOptIn(): string {
+			return this.$store.getters[ NS_ADDRESS + '/willGetNewsletter' ] ? '1' : '';
+		},
+		receiptOptIn(): string {
+			return this.$store.getters[ NS_ADDRESS + '/willGetReceipt' ] ? '1' : '0';
+		},
 	},
 } );
 </script>

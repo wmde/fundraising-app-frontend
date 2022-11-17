@@ -206,6 +206,94 @@ describe( 'Address', () => {
 		} );
 	} );
 
+	describe( 'Getters/willGetReceipt', () => {
+		it( 'will return true when non anonymous user opts in', () => {
+			expect( getters.willGetReceipt(
+				newMinimalStore( {
+					receiptOptOut: false,
+				} ),
+				{ addressTypeIsNeitherAnonNorEmail: true },
+				null,
+				null
+			) ).toBe( true );
+		} );
+
+		it( 'will return false for anonymous users', () => {
+			expect( getters.willGetReceipt(
+				newMinimalStore( {
+					receiptOptOut: false,
+				} ),
+				{ addressTypeIsNeitherAnonNorEmail: false },
+				null,
+				null
+			) ).toBe( false );
+
+			expect( getters.willGetReceipt(
+				newMinimalStore( {
+					receiptOptOut: true,
+				} ),
+				{ addressTypeIsNeitherAnonNorEmail: false },
+				null,
+				null
+			) ).toBe( false );
+		} );
+
+		it( 'will return false when non anonymous user opts out', () => {
+			expect( getters.willGetReceipt(
+				newMinimalStore( {
+					receiptOptOut: true,
+				} ),
+				{ addressTypeIsNeitherAnonNorEmail: true },
+				null,
+				null
+			) ).toBe( false );
+		} );
+	} );
+
+	describe( 'Getters/willGetNewsletter', () => {
+		it( 'will return true when non anonymous user opts in', () => {
+			expect( getters.willGetNewsletter(
+				newMinimalStore( {
+					newsletterOptIn: true,
+				} ),
+				{ addressTypeIsNotAnon: true },
+				null,
+				null
+			) ).toBe( true );
+		} );
+
+		it( 'will return false when non anonymous user opts out', () => {
+			expect( getters.willGetNewsletter(
+				newMinimalStore( {
+					newsletterOptIn: false,
+				} ),
+				{ addressTypeIsNotAnon: true },
+				null,
+				null
+			) ).toBe( false );
+		} );
+
+		it( 'will return false for anonymous users', () => {
+			expect( getters.willGetNewsletter(
+				newMinimalStore( {
+					newsletterOptIn: true,
+				} ),
+				{ addressTypeIsNotAnon: false },
+				null,
+				null
+			) ).toBe( false );
+
+			expect( getters.willGetNewsletter(
+				newMinimalStore( {
+					newsletterOptIn: false,
+				} ),
+				{ addressTypeIsNotAnon: false },
+				null,
+				null
+			) ).toBe( false );
+		} );
+	} );
+
 	describe( 'Actions/setAddressField', () => {
 		it( 'commits to mutation [SET_ADDRESS_FIELD] and [VALIDATE_INPUT] with the correct field', () => {
 			const commit = jest.fn(),

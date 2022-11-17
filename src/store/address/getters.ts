@@ -34,4 +34,11 @@ export const getters: GetterTree<AddressState, any> = {
 	allRequiredFieldsEmpty: ( state: AddressState ): boolean => {
 		return state.requiredFields[ state.addressType ].map( field => state.values[ field ] === '' ).every( x => x );
 	},
+	// Some combinations of address type and information opt-in don't make sense, so we need getters that combine them
+	willGetReceipt: ( state: AddressState, addressGetters ): boolean => {
+		return !state.receiptOptOut && addressGetters.addressTypeIsNeitherAnonNorEmail;
+	},
+	willGetNewsletter: ( state: AddressState, addressGetters ): boolean => {
+		return state.newsletterOptIn && addressGetters.addressTypeIsNotAnon;
+	},
 };
