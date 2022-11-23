@@ -4,7 +4,7 @@
 			<h1 class="title is-size-1">{{ $t( 'address_change_form_title' ) }}</h1>
 			<legend class="title is-size-6">{{ $t( 'address_change_form_label' ) }}</legend>
 			<div>
-				<receipt-opt-out :message="$t( 'receipt_needed_donation_page' )" v-on:opted-out="setReceiptOptedOut( $event )"/>
+				<receipt-option :message="$t( 'receipt_needed_donation_page' )" v-on:receipt-changed="setReceipt( $event )"/>
 				<div> {{ $t( 'address_change_opt_out_hint') }}</div>
 				<name :show-error="fieldErrors"
 						:form-data="formData"
@@ -36,13 +36,13 @@
 import Vue from 'vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
-import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
+import ReceiptOption from '@/components/shared/ReceiptOption.vue';
 import SubmitValues from '@/components/pages/update_address/SubmitValues.vue';
 import { AddressValidity, AddressFormData, ValidationResult } from '@/view_models/Address';
 import { Validity } from '@/view_models/Validity';
 import { Country } from '@/view_models/Country';
 import { NS_ADDRESS } from '@/store/namespaces';
-import { setAddressField, validateAddress, setReceiptOptOut, setAddressType } from '@/store/address/actionTypes';
+import { setAddressField, validateAddress, setReceiptChoice, setAddressType } from '@/store/address/actionTypes';
 import { action } from '@/store/util';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import { AddressValidation } from '@/view_models/Validation';
@@ -55,7 +55,7 @@ export default Vue.extend( {
 	components: {
 		Name,
 		Postal,
-		ReceiptOptOut,
+		ReceiptOption,
 		SubmitValues,
 	},
 	beforeMount() {
@@ -148,6 +148,11 @@ export default Vue.extend( {
 				return addressTypeName( ( this as any ).addressType );
 			},
 		},
+		userOnlyWantsToDeclineReceipt: {
+			get: function (): boolean {
+				return !this.$store.state.address.receipt && this.$store.getters[ NS_ADDRESS + '/allRequiredFieldsEmpty' ];
+			},
+		},
 	},
 	methods: {
 		validateForm(): Promise<ValidationResult> {
@@ -156,14 +161,14 @@ export default Vue.extend( {
 		onFieldChange( fieldName: string ): void {
 			this.$store.dispatch( action( NS_ADDRESS, setAddressField ), this.$data.formData[ fieldName ] );
 		},
-		setReceiptOptedOut( optedOut: boolean ): void {
-			this.$store.dispatch( action( NS_ADDRESS, setReceiptOptOut ), optedOut );
+		setReceipt( choice: boolean ): void {
+			this.$store.dispatch( action( NS_ADDRESS, setReceiptChoice ), choice );
 		},
 		setAddressType( addressType: AddressTypeModel ): void {
 			this.$store.dispatch( action( NS_ADDRESS, setAddressType ), addressType );
 		},
 		submit() {
-			if ( this.$store.state.address.receiptOptOut && this.$store.getters[ NS_ADDRESS + '/allRequiredFieldsEmpty' ] ) {
+			if ( this.userOnlyWantsToDeclineReceipt ) {
 				const form = this.$refs.form as HTMLFormElement;
 				trackFormSubmission( form );
 				form.submit();

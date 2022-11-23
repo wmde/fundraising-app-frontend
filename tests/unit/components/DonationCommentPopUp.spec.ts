@@ -24,8 +24,8 @@ describe( 'DonationCommentPopUp', () => {
 			bankTransferCode: 'XW-XLK-M3F-Z',
 			id: 1,
 			interval: 0,
-			optsIntoDonationReceipt: true,
-			optsIntoNewsletter: false,
+			receipt: true,
+			newsletter: false,
 			paymentType: 'UEB',
 			updateToken: 'd387cebd6cc05efbd117545492cb0e99',
 		};

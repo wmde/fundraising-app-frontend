@@ -21,7 +21,7 @@
 		<input type="hidden" name="ort" :value="address.city">
 		<input type="hidden" name="country" :value="address.country">
 		<input type="hidden" name="email" :value="address.email">
-		<input type="hidden" name="donationReceipt" :value="receiptOptIn">
+		<input type="hidden" name="donationReceipt" :value="receipt">
 		<input type="hidden" name="dob" :value="formattedDateOfBirth">
 		<input type="hidden" name="incentives[]" :value="incentives">
 
@@ -49,7 +49,7 @@ export default Vue.extend( {
 			addressType: state => {
 				return addressTypeName( ( state as MembershipAddressState ).addressType );
 			},
-			receiptOptIn: state => ( state as MembershipAddressState ).receiptOptOut ? '0' : '1',
+			receipt: state => ( state as MembershipAddressState ).receipt ? '1' : '0',
 			incentives: state => ( state as MembershipAddressState ).incentives,
 			membershipType: state => membershipTypeName( ( state as MembershipAddressState ).membershipType ),
 			formattedDateOfBirth: state => {

@@ -19,7 +19,7 @@
 					v-on:field-changed="onFieldChange"
 					:common-mail-providers="mailHostList" />
 			</AutofillHandler>
-			<newsletter-opt-in></newsletter-opt-in>
+			<newsletter-option></newsletter-option>
 			<div class="columns has-margin-top-18 has-padding-bottom-18">
 				<div class="column">
 					<b-button type="is-primary is-main has-margin-top-18 level-item" @click="$parent.close()" outlined>
@@ -50,9 +50,9 @@ import Vue from 'vue';
 import AddressTypeFull from '@/components/pages/donation_confirmation/AddressTypeFull.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
-import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
+import ReceiptOption from '@/components/shared/ReceiptOption.vue';
 import Email from '@/components/shared/Email.vue';
-import NewsletterOptIn from '@/components/pages/donation_form/NewsletterOptIn.vue';
+import NewsletterOption from '@/components/pages/donation_form/NewsletterOption.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import { mapGetters } from 'vuex';
 import { AddressValidity, AddressFormData, ValidationResult } from '@/view_models/Address';
@@ -78,9 +78,9 @@ export default Vue.extend( {
 		Name,
 		Postal,
 		AddressTypeFull,
-		ReceiptOptOut,
+		ReceiptOption,
 		Email,
-		NewsletterOptIn,
+		NewsletterOption,
 		PaymentBankData,
 		SubmitValues,
 		AutofillHandler,

@@ -15,7 +15,7 @@ function newMinimalStore( overrides: Object ): MembershipAddressState {
 			serverSideValidationCount: 0,
 			addressType: AddressTypeModel.PERSON,
 			membershipType: MembershipTypeModel.SUSTAINING,
-			receiptOptOut: false,
+			receipt: false,
 			incentives: [],
 			values: {
 				salutation: '',
@@ -479,14 +479,14 @@ describe( 'MembershipAddress', () => {
 		} );
 	} );
 
-	describe( 'Actions/setReceiptOptOut', () => {
-		it( 'commits to mutation [SET_RECEIPT_OPTOUT] with the entered choice', () => {
+	describe( 'Actions/setReceiptChoice', () => {
+		it( 'commits to mutation [SET_RECEIPT] with the entered choice', () => {
 			const commit = jest.fn(),
-				action = actions.setReceiptOptOut as any,
+				action = actions.setReceiptChoice as any,
 				choice = true;
 			action( { commit }, choice );
 			expect( commit ).toBeCalledWith(
-				'SET_RECEIPT_OPTOUT',
+				'SET_RECEIPT',
 				choice
 			);
 		} );
@@ -712,12 +712,12 @@ describe( 'MembershipAddress', () => {
 		} );
 	} );
 
-	describe( 'Mutations/SET_RECEIPT_OPTOUT', () => {
-		it( 'sets receipt opt out choice', () => {
+	describe( 'Mutations/SET_RECEIPT', () => {
+		it( 'sets receipt choice', () => {
 			const store = newMinimalStore( {} );
 			const choice = true;
-			mutations.SET_RECEIPT_OPTOUT( store, choice );
-			expect( store.receiptOptOut ).toBe( choice );
+			mutations.SET_RECEIPT( store, choice );
+			expect( store.receipt ).toBe( choice );
 		} );
 	} );
 

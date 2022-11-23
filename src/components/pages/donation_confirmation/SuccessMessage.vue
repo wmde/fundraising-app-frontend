@@ -4,7 +4,7 @@
 		<div class="has-margin-top-18">
 			<span v-html="donationSummaryMessage"></span> <span v-html="paymentNotice"></span>
 		</div>
-		<div id="newsletter-optin" class="has-margin-top-18" v-if="donation.optsIntoNewsletter">
+		<div id="newsletter-box" class="has-margin-top-18" v-if="donation.newsletter">
 			{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
 		</div>
 		<div class="has-margin-top-18">

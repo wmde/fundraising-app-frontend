@@ -6,5 +6,5 @@ export const setAddressField = 'setAddressField';
 export const validateAddressField = 'validateAddressField';
 export const setAddressType = 'setAddressType';
 export const validateAddressType = 'validateAddressType';
-export const setNewsletterOptIn = 'setNewsletterOptIn';
-export const setReceiptOptOut = 'setReceiptOptOut';
+export const setNewsletterChoice = 'setNewsletterChoice';
+export const setReceiptChoice = 'setReceiptChoice';

@@ -3,7 +3,7 @@ import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
 import {
 	SET_ADDRESS_TYPE,
 	SET_MEMBERSHIP_TYPE,
-	SET_RECEIPT_OPTOUT,
+	SET_RECEIPT,
 	SET_INCENTIVES,
 } from '@/store/membership_address/mutationTypes';
 import { SET_FEE, SET_INTERVAL, SET_TYPE } from '@/store/membership_fee/mutationTypes';
@@ -30,9 +30,9 @@ export default [
 		fields: [],
 	},
 	{
-		storageKey: 'receiptOptOut',
+		storageKey: 'receipt',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_ADDRESS, SET_RECEIPT_OPTOUT ),
+		mutationKey: mutation( NS_MEMBERSHIP_ADDRESS, SET_RECEIPT ),
 		fields: [],
 	},
 	{

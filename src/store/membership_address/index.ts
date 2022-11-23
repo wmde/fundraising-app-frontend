@@ -12,7 +12,7 @@ export default function (): Module<MembershipAddressState, any> {
 		serverSideValidationCount: 0,
 		addressType: AddressTypeModel.PERSON,
 		membershipType: MembershipTypeModel.SUSTAINING,
-		receiptOptOut: false,
+		receipt: true,
 		incentives: [],
 		values: {
 			salutation: '',

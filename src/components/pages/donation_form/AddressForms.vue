@@ -19,16 +19,16 @@
 						:countries="countries"
 						:post-code-validation="addressValidationPatterns.postcode"
 						v-on:field-changed="onFieldChange"/>
-				<receipt-opt-out
+				<receipt-option
 						:message="$t( 'receipt_needed_donation_page' )"
 						:initial-receipt-needed="receiptNeeded"
-						v-on:opted-out="setReceiptOptedOut( $event )"/>
+						v-on:receipt-changed="setReceipt( $event )"/>
 				<email
 						:show-error="fieldErrors.email"
 						:form-data="formData"
 						v-on:field-changed="onFieldChange"
 						:common-mail-providers="mailHostList" />
-				<newsletter-opt-in/>
+				<newsletter-option/>
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
@@ -52,16 +52,16 @@
 						:countries="countries"
 						:post-code-validation="addressValidationPatterns.postcode"
 						v-on:field-changed="onFieldChange"/>
-				<receipt-opt-out
+				<receipt-option
 						:message="$t( 'receipt_needed_donation_page' )"
 						:initial-receipt-needed="receiptNeeded"
-						v-on:opted-out="setReceiptOptedOut( $event )"/>
+						v-on:receipt-changed="setReceipt( $event )"/>
 				<email
 						:show-error="fieldErrors.email"
 						:form-data="formData"
 						v-on:field-changed="onFieldChange"
 						:common-mail-providers="mailHostList" />
-				<newsletter-opt-in/>
+				<newsletter-option/>
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
@@ -84,7 +84,7 @@
 						:form-data="formData"
 						v-on:field-changed="onFieldChange"
 						:common-mail-providers="mailHostList" />
-				<newsletter-opt-in />
+				<newsletter-option />
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
@@ -106,9 +106,9 @@ import { computed, onBeforeMount, PropType, toRefs } from 'vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
-import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
+import ReceiptOption from '@/components/shared/ReceiptOption.vue';
 import Email from '@/components/shared/Email.vue';
-import NewsletterOptIn from '@/components/pages/donation_form/NewsletterOptIn.vue';
+import NewsletterOption from '@/components/pages/donation_form/NewsletterOption.vue';
 import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { Country } from '@/view_models/Country';
@@ -134,9 +134,9 @@ export default Vue.extend( {
 	components: {
 		Name,
 		Postal,
-		ReceiptOptOut,
+		ReceiptOption,
 		Email,
-		NewsletterOptIn,
+		NewsletterOption,
 		AutofillHandler,
 		SubmitValues,
 	},
@@ -160,7 +160,7 @@ export default Vue.extend( {
 			initializeDataFromStore,
 			onFieldChange,
 			onAutofill,
-			setReceiptOptedOut,
+			setReceipt,
 		} = useAddressFunctions( { addressValidationPatterns: addressValidationPatterns.value }, $store );
 
 		const addressTypeId = computed( () => {
@@ -183,7 +183,7 @@ export default Vue.extend( {
 
 			onFieldChange,
 			onAutofill,
-			setReceiptOptedOut,
+			setReceipt,
 		};
 	},
 } );

@@ -11,7 +11,7 @@ import {
 	SET_ADDRESS_FIELD,
 	SET_ADDRESS_FIELDS,
 	SET_ADDRESS_FIELD_VALIDITY,
-	SET_RECEIPT_OPTOUT,
+	SET_RECEIPT,
 	SET_INCENTIVES,
 	SET_MEMBERSHIP_TYPE,
 	SET_MEMBERSHIP_TYPE_VALIDITY,
@@ -81,8 +81,8 @@ export const mutations: MutationTree<MembershipAddressState> = {
 		state.validity[ payload.name ] = payload.validity;
 	},
 
-	[ SET_RECEIPT_OPTOUT ]( state: MembershipAddressState, optOut ) {
-		state.receiptOptOut = optOut;
+	[ SET_RECEIPT ]( state: MembershipAddressState, choice ) {
+		state.receipt = choice;
 	},
 	[ SET_INCENTIVES ]( state: MembershipAddressState, incentives ) {
 		state.incentives = incentives;

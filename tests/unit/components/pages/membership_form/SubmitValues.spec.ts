@@ -19,7 +19,7 @@ describe( 'SubmitValues.vue', () => {
 						namespaced: true,
 						state: {
 							membershipType: MembershipTypeModel.SUSTAINING,
-							receiptOptOut: false,
+							receipt: true,
 							incentives: [],
 							addressType: AddressTypeModel.PERSON,
 							values: {

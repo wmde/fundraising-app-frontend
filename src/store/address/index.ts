@@ -11,8 +11,8 @@ export default function ( requiredFields: AddressRequirements ): Module<AddressS
 	const state: AddressState = {
 		serverSideValidationCount: 0,
 		addressType: AddressTypeModel.UNSET,
-		newsletterOptIn: false,
-		receiptOptOut: false,
+		newsletter: true,
+		receipt: true,
 		requiredFields: requiredFields,
 		values: {
 			salutation: '',

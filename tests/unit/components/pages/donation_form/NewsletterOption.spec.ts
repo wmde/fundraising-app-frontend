@@ -1,30 +1,31 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Buefy from 'buefy';
-import NewsletterOptIn from '@/components/pages/donation_form/NewsletterOptIn.vue';
+import NewsletterOption from '../../../../../src/components/pages/donation_form/NewsletterOption.vue';
 import { createStore } from '@/store/donation_store';
 import { action } from '@/store/util';
 import { NS_ADDRESS } from '@/store/namespaces';
-import { setNewsletterOptIn } from '@/store/address/actionTypes';
+import { setNewsletterChoice } from '@/store/address/actionTypes';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
 
-describe( 'NewsletterOptIn', () => {
+describe( 'NewsletterOption', () => {
 	it( 'renders the component with the checkbox unselected', () => {
-		const wrapper = mount( NewsletterOptIn, {
+		const wrapper = mount( NewsletterOption, {
 			localVue,
 			store: createStore(),
 			mocks: {
 				$t: () => { },
 			},
 		} );
-		expect( wrapper.vm.$data.newsletterOptIn ).toBe( false );
+		const checkbox = wrapper.find( '#newsletter' );
+		expect( checkbox.props().value ).toBe( false );
 	} );
 
-	it( 'sends opt in preference to store on change', () => {
-		const wrapper = mount( NewsletterOptIn, {
+	it( 'sends changed preference to store on change', () => {
+		const wrapper = mount( NewsletterOption, {
 			localVue,
 			store: createStore(),
 			mocks: {
@@ -33,9 +34,9 @@ describe( 'NewsletterOptIn', () => {
 		} );
 		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_ADDRESS, setNewsletterOptIn );
+		const expectedAction = action( NS_ADDRESS, setNewsletterChoice );
 		const checkbox = wrapper.find( '#newsletter' );
-		wrapper.setData( { newsletterOptIn: true } );
+		wrapper.setData( { newsletter: true } );
 		checkbox.trigger( 'change' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, true );
 	} );
