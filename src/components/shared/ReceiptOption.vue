@@ -1,10 +1,10 @@
 <template>
-	<div class="opt-out-box">
+	<div class="option-checkbox">
 		<b-checkbox type="checkbox" class="is-inline-checkbox"
 			id="donation_receipt"
-			name="receiptOptOut"
+			name="receipt"
 			v-model="receiptNeeded"
-			@change.native="setReceiptOptOut()">
+			@change.native="setReceipt()">
 			{{ message }}
 		</b-checkbox>
 	</div>
@@ -15,7 +15,7 @@
 import Vue from 'vue';
 
 export default Vue.extend( {
-	name: 'ReceiptOptOut',
+	name: 'ReceiptOption',
 	data: function () {
 		return {
 			receiptNeeded: this.$props.initialReceiptNeeded,
@@ -26,8 +26,8 @@ export default Vue.extend( {
 		initialReceiptNeeded: Boolean,
 	},
 	methods: {
-		setReceiptOptOut: function () {
-			this.$emit( 'opted-out', !this.receiptNeeded );
+		setReceipt: function () {
+			this.$emit( 'receipt-changed', this.receiptNeeded );
 		},
 	},
 } );

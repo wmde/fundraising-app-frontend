@@ -8,8 +8,8 @@ import {
 	FINISH_ADDRESS_VALIDATION,
 	SET_ADDRESS_FIELD,
 	SET_ADDRESS_TYPE,
-	SET_NEWSLETTER_OPTIN,
-	SET_RECEIPT_OPTOUT,
+	SET_NEWSLETTER,
+	SET_RECEIPT,
 } from '@/store/address/mutationTypes';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressState } from '@/view_models/Address';
@@ -22,8 +22,8 @@ function newMinimalStore( overrides: Object ): AddressState {
 		{
 			serverSideValidationCount: 0,
 			addressType: AddressTypeModel.PERSON,
-			newsletterOptIn: false,
-			receiptOptOut: false,
+			newsletter: false,
+			receipt: false,
 			requiredFields: REQUIRED_FIELDS,
 			values: {
 				salutation: '',
@@ -207,10 +207,10 @@ describe( 'Address', () => {
 	} );
 
 	describe( 'Getters/willGetReceipt', () => {
-		it( 'will return true when non anonymous user opts in', () => {
+		it( 'will return true when non anonymous user demands receipt', () => {
 			expect( getters.willGetReceipt(
 				newMinimalStore( {
-					receiptOptOut: false,
+					receipt: true,
 				} ),
 				{ addressTypeIsNeitherAnonNorEmail: true },
 				null,
@@ -221,7 +221,7 @@ describe( 'Address', () => {
 		it( 'will return false for anonymous users', () => {
 			expect( getters.willGetReceipt(
 				newMinimalStore( {
-					receiptOptOut: false,
+					receipt: false,
 				} ),
 				{ addressTypeIsNeitherAnonNorEmail: false },
 				null,
@@ -230,7 +230,7 @@ describe( 'Address', () => {
 
 			expect( getters.willGetReceipt(
 				newMinimalStore( {
-					receiptOptOut: true,
+					receipt: true,
 				} ),
 				{ addressTypeIsNeitherAnonNorEmail: false },
 				null,
@@ -238,10 +238,10 @@ describe( 'Address', () => {
 			) ).toBe( false );
 		} );
 
-		it( 'will return false when non anonymous user opts out', () => {
+		it( 'will return false when non anonymous user declines receipt', () => {
 			expect( getters.willGetReceipt(
 				newMinimalStore( {
-					receiptOptOut: true,
+					receipt: false,
 				} ),
 				{ addressTypeIsNeitherAnonNorEmail: true },
 				null,
@@ -251,10 +251,10 @@ describe( 'Address', () => {
 	} );
 
 	describe( 'Getters/willGetNewsletter', () => {
-		it( 'will return true when non anonymous user opts in', () => {
+		it( 'will return true when non anonymous user demands newsletter', () => {
 			expect( getters.willGetNewsletter(
 				newMinimalStore( {
-					newsletterOptIn: true,
+					newsletter: true,
 				} ),
 				{ addressTypeIsNotAnon: true },
 				null,
@@ -262,10 +262,10 @@ describe( 'Address', () => {
 			) ).toBe( true );
 		} );
 
-		it( 'will return false when non anonymous user opts out', () => {
+		it( 'will return false when non anonymous user declines newsletter', () => {
 			expect( getters.willGetNewsletter(
 				newMinimalStore( {
-					newsletterOptIn: false,
+					newsletter: false,
 				} ),
 				{ addressTypeIsNotAnon: true },
 				null,
@@ -276,7 +276,7 @@ describe( 'Address', () => {
 		it( 'will return false for anonymous users', () => {
 			expect( getters.willGetNewsletter(
 				newMinimalStore( {
-					newsletterOptIn: true,
+					newsletter: true,
 				} ),
 				{ addressTypeIsNotAnon: false },
 				null,
@@ -285,7 +285,7 @@ describe( 'Address', () => {
 
 			expect( getters.willGetNewsletter(
 				newMinimalStore( {
-					newsletterOptIn: false,
+					newsletter: false,
 				} ),
 				{ addressTypeIsNotAnon: false },
 				null,
@@ -466,27 +466,27 @@ describe( 'Address', () => {
 		} );
 	} );
 
-	describe( 'Actions/setReceiptOptOut', () => {
-		it( 'commits to mutation [SET_RECEIPT_OPTOUT] with the entered choice', () => {
+	describe( 'Actions/setReceiptChoice', () => {
+		it( 'commits to mutation [SET_RECEIPT] with the entered choice', () => {
 			const commit = jest.fn(),
-				action = actions.setReceiptOptOut as any,
+				action = actions.setReceiptChoice as any,
 				choice = true;
 			action( { commit }, choice );
 			expect( commit ).toBeCalledWith(
-				'SET_RECEIPT_OPTOUT',
+				'SET_RECEIPT',
 				choice
 			);
 		} );
 	} );
 
-	describe( 'Actions/setNewsletterOptIn', () => {
-		it( 'commits to mutation [SET_NEWSLETTER_OPTIN] with the entered choice', () => {
+	describe( 'Actions/setNewsletterChoice', () => {
+		it( 'commits to mutation [SET_NEWSLETTER] with the entered choice', () => {
 			const commit = jest.fn(),
-				action = actions.setNewsletterOptIn as any,
+				action = actions.setNewsletterChoice as any,
 				choice = true;
 			action( { commit }, choice );
 			expect( commit ).toBeCalledWith(
-				'SET_NEWSLETTER_OPTIN',
+				'SET_NEWSLETTER',
 				choice
 			);
 		} );
@@ -708,21 +708,21 @@ describe( 'Address', () => {
 		} );
 	} );
 
-	describe( 'Mutations/SET_RECEIPT_OPTOUT', () => {
+	describe( 'Mutations/SET_RECEIPT', () => {
 		it( 'sets receipt opt out choice', () => {
 			const store = newMinimalStore( {} );
 			const choice = true;
-			mutations.SET_RECEIPT_OPTOUT( store, choice );
-			expect( store.receiptOptOut ).toBe( choice );
+			mutations.SET_RECEIPT( store, choice );
+			expect( store.receipt ).toBe( choice );
 		} );
 	} );
 
-	describe( 'Mutations/SET_NEWSLETTER_OPTIN', () => {
+	describe( 'Mutations/SET_NEWSLETTER', () => {
 		it( 'sets receipt opt out choice', () => {
 			const store = newMinimalStore( {} );
 			const choice = true;
-			mutations.SET_NEWSLETTER_OPTIN( store, choice );
-			expect( store.newsletterOptIn ).toBe( choice );
+			mutations.SET_NEWSLETTER( store, choice );
+			expect( store.newsletter ).toBe( choice );
 		} );
 	} );
 

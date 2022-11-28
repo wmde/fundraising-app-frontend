@@ -3,12 +3,12 @@ import Vuex from 'vuex';
 import Buefy from 'buefy';
 import AddressForms from '@/components/pages/donation_form/AddressForms.vue';
 import Name from '@/components/shared/Name.vue';
-import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
+import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
 import Email from '@/components/shared/Email.vue';
 import { createStore, StoreKey } from '@/store/donation_store';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@/store/namespaces';
-import { initializeAddress, setAddressField, setReceiptOptOut } from '@/store/address/actionTypes';
+import { initializeAddress, setAddressField, setReceiptChoice } from '@/store/address/actionTypes';
 import { action } from '@/store/util';
 import countries from '@/../tests/data/countries';
 import { Validity } from '@/view_models/Validity';
@@ -89,11 +89,11 @@ describe( 'AddressForms.vue', () => {
 		} );
 	} );
 
-	it( 'sets receipt opt out preference in store when it receives opted-out event', async () => {
+	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_ADDRESS, setReceiptOptOut );
+		const expectedAction = action( NS_ADDRESS, setReceiptChoice );
 		const expectedPayload = true;
-		wrapper.findComponent( ReceiptOptOut ).vm.$emit( 'opted-out', true );
+		wrapper.findComponent( ReceiptOption ).vm.$emit( 'receipt-changed', true );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 

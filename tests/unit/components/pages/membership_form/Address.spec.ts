@@ -4,7 +4,7 @@ import Buefy from 'buefy';
 import Address from '@/components/pages/membership_form/Address.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
-import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
+import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
 import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import Email from '@/components/shared/Email.vue';
 import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
@@ -13,7 +13,7 @@ import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
 import {
 	setAddressField,
-	setReceiptOptOut,
+	setReceiptChoice,
 	setAddressType,
 	initializeAddress,
 } from '@/store/membership_address/actionTypes';
@@ -48,7 +48,7 @@ describe( 'Address.vue', () => {
 	it( 'renders components which are part of the donation address page', () => {
 		expect( wrapper.findComponent( Name ).exists() ).toBe( true );
 		expect( wrapper.findComponent( Postal ).exists() ).toBe( true );
-		expect( wrapper.findComponent( ReceiptOptOut ).exists() ).toBe( true );
+		expect( wrapper.findComponent( ReceiptOption ).exists() ).toBe( true );
 		expect( wrapper.findComponent( AddressType ).exists() ).toBe( true );
 		expect( wrapper.findComponent( Email ).exists() ).toBe( true );
 		expect( wrapper.findComponent( DateOfBirth ).exists() ).toBe( true );
@@ -79,12 +79,12 @@ describe( 'Address.vue', () => {
 		} );
 	} );
 
-	it( 'sets receipt opt out preference in store when it receives opted-out event', () => {
+	it( 'sets receipt preference in store when it receives receipt-changed event', () => {
 		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setReceiptOptOut );
+		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setReceiptChoice );
 		const expectedPayload = true;
-		wrapper.findComponent( ReceiptOptOut ).vm.$emit( 'opted-out', true );
+		wrapper.findComponent( ReceiptOption ).vm.$emit( 'receipt-changed', true );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 

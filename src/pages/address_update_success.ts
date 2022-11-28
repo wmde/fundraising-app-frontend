@@ -29,7 +29,7 @@ new Vue( {
 	[
 		h( Component, {
 			props: {
-				donationReceipt: pageData.applicationVars.receiptOptOut ? '0' : '1',
+				donationReceipt: pageData.applicationVars.receipt ? '1' : '0',
 			},
 		} ),
 		h( Sidebar, {

@@ -6,8 +6,8 @@ export interface Donation {
 	creationDate: String,
 	id: Number,
 	interval: Number,
-	optsIntoDonationReceipt: Boolean,
-	optsIntoNewsletter: Boolean,
+	receipt: Boolean,
+	newsletter: Boolean,
 	paymentType: String,
 	status: String
 	updateToken: String,

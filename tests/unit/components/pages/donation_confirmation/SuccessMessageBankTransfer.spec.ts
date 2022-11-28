@@ -60,9 +60,9 @@ describe( 'SuccessMessageBankTransfer', () => {
 		expect( wrapper.text() ).not.toContain( 'donation_confirmation_newsletter_confirmation' );
 	} );
 
-	it( 'renders newsletter confirmation message when opted in', () => {
+	it( 'renders newsletter confirmation message when user activated newsletter option', () => {
 		let donation = payPalConfirmationData.donation;
-		donation.optsIntoNewsletter = true;
+		donation.newsletter = true;
 
 		const wrapper = mount( SuccessMessageBankTransfer, {
 			localVue,

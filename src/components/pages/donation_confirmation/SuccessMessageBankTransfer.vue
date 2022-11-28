@@ -9,7 +9,7 @@
 				<div class="has-margin-top-18"
 					v-html="$t( 'donation_confirmation_reminder_bank_transfer', { bankTransferCode: donation.bankTransferCode } )">
 				</div>
-				<div id="newsletter-optin" class="has-margin-top-18" v-if="donation.optsIntoNewsletter">
+				<div id="newsletter-box" class="has-margin-top-18" v-if="donation.newsletter">
 					{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
 				</div>
 			</div>

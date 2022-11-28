@@ -25,8 +25,6 @@ const getWrapper = () => {
 				[ NS_ADDRESS ]: {
 					namespaced: true,
 					state: {
-						receiptOptOut: false,
-						newsletterOptIn: true,
 						addressType: AddressTypeModel.PERSON,
 						values: {
 							firstName: 'Victor',
@@ -40,7 +38,10 @@ const getWrapper = () => {
 							email: 'doom@untergang.biz',
 						},
 					},
-
+					getters: {
+						willGetNewsletter() { return true; },
+						willGetReceipt() { return true; },
+					},
 				},
 				[ NS_BANKDATA ]: {
 					namespaced: true,

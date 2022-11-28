@@ -46,8 +46,8 @@ export const createInitialDonationAddressValues = ( dataPersister: DataPersister
 		// The address type chosen by the user in the banner should override the choice made later, assuming that
 		// reloading the page (and restoring from localStorage) happens less often than coming back from a banner
 		addressType: replaceInitialValue( dataPersister.getValue( 'addressType' ), initialFormValues.addressType ),
-		newsletterOptIn: replaceInitialValue( true, dataPersister.getValue( 'newsletter' ) ),
-		receiptOptOut: replaceInitialValue( false, dataPersister.getValue( 'receiptOptOut' ) ),
+		newsletter: replaceInitialValue( null, dataPersister.getValue( 'newsletter' ) ),
+		receipt: replaceInitialValue( null, dataPersister.getValue( 'receipt' ) ),
 		fields: addressPersistItems,
 	};
 };
@@ -100,7 +100,7 @@ export const createInitialMembershipAddressValues = ( dataPersister: DataPersist
 		addressType: replaceInitialValue( initialFormValues.get( 'addressType' ), dataPersister.getValue( 'addressType' ) ),
 		membershipType: replaceInitialValue( initialFormValues.get( 'membershipType' ), dataPersister.getValue( 'membershipType' ) ),
 		date: dataPersister.getValue( 'date' ),
-		receiptOptOut: replaceInitialValue( false, dataPersister.getValue( 'receiptOptOut' ) ),
+		receipt: replaceInitialValue( null, dataPersister.getValue( 'receipt' ) ),
 		incentives: replaceInitialValue( initialFormValues.get( 'incentives' ), dataPersister.getValue( 'incentives' ) ),
 		fields: addressPersistItems,
 	};

@@ -23,8 +23,8 @@ describe( 'Address.vue', () => {
 					[ NS_ADDRESS ]: {
 						namespaced: true,
 						state: {
-							receiptOptOut: false,
-							newsletterOptIn: true,
+							receipt: true,
+							newsletter: true,
 							addressType: AddressTypeModel.PERSON,
 							values: {
 								firstName: 'Victoria',
