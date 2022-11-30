@@ -24,7 +24,7 @@
 					v-on:set-full-selected="setFullSelected"
 					:disabledAddressTypes="disabledAddressTypes"
 					:is-direct-debit="isDirectDebit"
-					initial-address-type="full"
+					:initial-address-type="addressTypeName"
 				/>
 				<address-type-all-options
 					slot="campaigns.address_type_steps.preselect"
