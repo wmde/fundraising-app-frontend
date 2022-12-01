@@ -3,7 +3,7 @@ import { computed, reactive } from 'vue';
 import { Validity } from '@/view_models/Validity';
 import {
 	setAddressField,
-	setReceiptOptOut,
+	setReceiptChoice,
 	validateAddressField,
 } from '@/store/address/actionTypes';
 import { NS_ADDRESS } from '@/store/namespaces';
@@ -106,7 +106,7 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 	);
 
 	const receiptNeeded = computed(
-		(): Boolean => !store.state.address.receiptOptOut
+		(): Boolean => store.state.address.receipt
 	);
 
 	// methods
@@ -123,8 +123,8 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		} );
 	}
 
-	function setReceiptOptedOut( optedOut: boolean ): void {
-		store.dispatch( action( NS_ADDRESS, setReceiptOptOut ), optedOut );
+	function setReceipt( choice: boolean ): void {
+		store.dispatch( action( NS_ADDRESS, setReceiptChoice ), choice );
 	}
 
 	/**
@@ -148,6 +148,6 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		initializeDataFromStore,
 		onFieldChange,
 		onAutofill,
-		setReceiptOptedOut,
+		setReceipt,
 	};
 };

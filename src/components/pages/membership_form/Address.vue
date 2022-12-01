@@ -13,10 +13,10 @@
 					:post-code-validation="addressValidationPatterns.postcode"
 					v-on:field-changed="onFieldChange"
 			/>
-			<receipt-opt-out
+			<receipt-option
 					:message="$t( 'receipt_needed_membership_page' )"
 					:initial-receipt-needed="receiptNeeded"
-					v-on:opted-out="setReceiptOptedOut( $event )"
+					v-on:receipt-changed="setReceipt( $event )"
 			/>
       <incentives
         :message="$t( 'membership_form_incentive' )"
@@ -45,7 +45,7 @@ import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
 import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
-import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
+import ReceiptOption from '@/components/shared/ReceiptOption.vue';
 import Incentives from '@/components/pages/membership_form/Incentives.vue';
 import Email from '@/components/shared/Email.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
@@ -58,7 +58,7 @@ import {
 	setAddressField,
 	validateAddress,
 	validateEmail,
-	setReceiptOptOut,
+	setReceiptChoice,
 	setIncentives,
 	setAddressType,
 	validateCountry,
@@ -78,7 +78,7 @@ export default Vue.extend( {
 		Name,
 		Postal,
 		DateOfBirth,
-		ReceiptOptOut,
+		ReceiptOption,
 		Incentives,
 		AddressType,
 		Email,
@@ -190,7 +190,7 @@ export default Vue.extend( {
 			'isPerson',
 		] ),
 		receiptNeeded(): Boolean {
-			return !this.$store.state[ NS_MEMBERSHIP_ADDRESS ].receiptOptOut;
+			return this.$store.state[ NS_MEMBERSHIP_ADDRESS ].receipt;
 		},
 		incentives(): String[] {
 			return this.$store.state[ NS_MEMBERSHIP_ADDRESS ].incentives;
@@ -234,8 +234,8 @@ export default Vue.extend( {
 				}
 			} );
 		},
-		setReceiptOptedOut( optedOut: boolean ): void {
-			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setReceiptOptOut ), optedOut );
+		setReceipt( choice: boolean ): void {
+			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setReceiptChoice ), choice );
 		},
 		setIncentives( incentives: string[] ): void {
 			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setIncentives ), incentives );

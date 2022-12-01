@@ -43,7 +43,7 @@ describe( 'SuccessMessage', () => {
 
 	it( 'renders newsletter confirmation message when opted in', () => {
 		let donation = payPalConfirmationData.donation;
-		donation.optsIntoNewsletter = true;
+		donation.newsletter = true;
 
 		const wrapper = mount( SuccessMessage, {
 			localVue,

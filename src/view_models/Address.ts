@@ -35,8 +35,8 @@ export interface FormValues {
 export interface AddressState {
     serverSideValidationCount: number,
     addressType: AddressTypeModel,
-    newsletterOptIn: boolean,
-    receiptOptOut: boolean,
+    newsletter: boolean,
+    receipt: boolean,
     values: FormValues,
     validity: FormValidity,
     requiredFields: AddressRequirements,
@@ -46,7 +46,7 @@ export interface MembershipAddressState {
     serverSideValidationCount: number,
     addressType: AddressTypeModel,
     membershipType: MembershipTypeModel,
-    receiptOptOut: boolean,
+    receipt: boolean,
     incentives: string[],
     values: FormValues,
     validity: FormValidity,
@@ -54,8 +54,8 @@ export interface MembershipAddressState {
 
 export interface InitialAddressValues {
     addressType: AddressTypeModel,
-    newsletterOptIn: boolean,
-    receiptOptOut: boolean,
+    newsletter: boolean,
+    receipt: boolean,
     fields: FieldInitialization[],
 }
 
@@ -63,7 +63,7 @@ export interface InitialMembershipAddressValues {
     addressType?: AddressTypeModel,
     membershipType?: MembershipTypeModel,
     date?: string|null,
-    receiptOptOut: boolean,
+    receipt: boolean,
     incentives: string[],
     fields: FieldInitialization[],
 }

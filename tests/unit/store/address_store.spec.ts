@@ -8,8 +8,8 @@ import {
 	FINISH_ADDRESS_VALIDATION,
 	SET_ADDRESS_FIELD,
 	SET_ADDRESS_TYPE,
-	SET_NEWSLETTER_OPTIN,
-	SET_RECEIPT_OPTOUT,
+	SET_NEWSLETTER,
+	SET_RECEIPT,
 } from '@/store/address/mutationTypes';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressState } from '@/view_models/Address';
@@ -22,8 +22,8 @@ function newMinimalStore( overrides: Object ): AddressState {
 		{
 			serverSideValidationCount: 0,
 			addressType: AddressTypeModel.PERSON,
-			newsletterOptIn: false,
-			receiptOptOut: false,
+			newsletter: false,
+			receipt: false,
 			requiredFields: REQUIRED_FIELDS,
 			values: {
 				salutation: '',
@@ -206,6 +206,94 @@ describe( 'Address', () => {
 		} );
 	} );
 
+	describe( 'Getters/willGetReceipt', () => {
+		it( 'will return true when non anonymous user demands receipt', () => {
+			expect( getters.willGetReceipt(
+				newMinimalStore( {
+					receipt: true,
+				} ),
+				{ addressTypeIsNeitherAnonNorEmail: true },
+				null,
+				null
+			) ).toBe( true );
+		} );
+
+		it( 'will return false for anonymous users', () => {
+			expect( getters.willGetReceipt(
+				newMinimalStore( {
+					receipt: false,
+				} ),
+				{ addressTypeIsNeitherAnonNorEmail: false },
+				null,
+				null
+			) ).toBe( false );
+
+			expect( getters.willGetReceipt(
+				newMinimalStore( {
+					receipt: true,
+				} ),
+				{ addressTypeIsNeitherAnonNorEmail: false },
+				null,
+				null
+			) ).toBe( false );
+		} );
+
+		it( 'will return false when non anonymous user declines receipt', () => {
+			expect( getters.willGetReceipt(
+				newMinimalStore( {
+					receipt: false,
+				} ),
+				{ addressTypeIsNeitherAnonNorEmail: true },
+				null,
+				null
+			) ).toBe( false );
+		} );
+	} );
+
+	describe( 'Getters/willGetNewsletter', () => {
+		it( 'will return true when non anonymous user demands newsletter', () => {
+			expect( getters.willGetNewsletter(
+				newMinimalStore( {
+					newsletter: true,
+				} ),
+				{ addressTypeIsNotAnon: true },
+				null,
+				null
+			) ).toBe( true );
+		} );
+
+		it( 'will return false when non anonymous user declines newsletter', () => {
+			expect( getters.willGetNewsletter(
+				newMinimalStore( {
+					newsletter: false,
+				} ),
+				{ addressTypeIsNotAnon: true },
+				null,
+				null
+			) ).toBe( false );
+		} );
+
+		it( 'will return false for anonymous users', () => {
+			expect( getters.willGetNewsletter(
+				newMinimalStore( {
+					newsletter: true,
+				} ),
+				{ addressTypeIsNotAnon: false },
+				null,
+				null
+			) ).toBe( false );
+
+			expect( getters.willGetNewsletter(
+				newMinimalStore( {
+					newsletter: false,
+				} ),
+				{ addressTypeIsNotAnon: false },
+				null,
+				null
+			) ).toBe( false );
+		} );
+	} );
+
 	describe( 'Actions/setAddressField', () => {
 		it( 'commits to mutation [SET_ADDRESS_FIELD] and [VALIDATE_INPUT] with the correct field', () => {
 			const commit = jest.fn(),
@@ -378,27 +466,27 @@ describe( 'Address', () => {
 		} );
 	} );
 
-	describe( 'Actions/setReceiptOptOut', () => {
-		it( 'commits to mutation [SET_RECEIPT_OPTOUT] with the entered choice', () => {
+	describe( 'Actions/setReceiptChoice', () => {
+		it( 'commits to mutation [SET_RECEIPT] with the entered choice', () => {
 			const commit = jest.fn(),
-				action = actions.setReceiptOptOut as any,
+				action = actions.setReceiptChoice as any,
 				choice = true;
 			action( { commit }, choice );
 			expect( commit ).toBeCalledWith(
-				'SET_RECEIPT_OPTOUT',
+				'SET_RECEIPT',
 				choice
 			);
 		} );
 	} );
 
-	describe( 'Actions/setNewsletterOptIn', () => {
-		it( 'commits to mutation [SET_NEWSLETTER_OPTIN] with the entered choice', () => {
+	describe( 'Actions/setNewsletterChoice', () => {
+		it( 'commits to mutation [SET_NEWSLETTER] with the entered choice', () => {
 			const commit = jest.fn(),
-				action = actions.setNewsletterOptIn as any,
+				action = actions.setNewsletterChoice as any,
 				choice = true;
 			action( { commit }, choice );
 			expect( commit ).toBeCalledWith(
-				'SET_NEWSLETTER_OPTIN',
+				'SET_NEWSLETTER',
 				choice
 			);
 		} );
@@ -620,21 +708,21 @@ describe( 'Address', () => {
 		} );
 	} );
 
-	describe( 'Mutations/SET_RECEIPT_OPTOUT', () => {
+	describe( 'Mutations/SET_RECEIPT', () => {
 		it( 'sets receipt opt out choice', () => {
 			const store = newMinimalStore( {} );
 			const choice = true;
-			mutations.SET_RECEIPT_OPTOUT( store, choice );
-			expect( store.receiptOptOut ).toBe( choice );
+			mutations.SET_RECEIPT( store, choice );
+			expect( store.receipt ).toBe( choice );
 		} );
 	} );
 
-	describe( 'Mutations/SET_NEWSLETTER_OPTIN', () => {
+	describe( 'Mutations/SET_NEWSLETTER', () => {
 		it( 'sets receipt opt out choice', () => {
 			const store = newMinimalStore( {} );
 			const choice = true;
-			mutations.SET_NEWSLETTER_OPTIN( store, choice );
-			expect( store.newsletterOptIn ).toBe( choice );
+			mutations.SET_NEWSLETTER( store, choice );
+			expect( store.newsletter ).toBe( choice );
 		} );
 	} );
 

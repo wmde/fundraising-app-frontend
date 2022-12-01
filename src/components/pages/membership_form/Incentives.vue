@@ -1,5 +1,5 @@
 <template>
-	<div class="incentive-box">
+	<div class="option-checkbox">
 		<b-checkbox
 			v-for="incentive in incentiveChoices"
 			:key="incentive"

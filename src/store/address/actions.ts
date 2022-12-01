@@ -4,8 +4,8 @@ import {
 	validateAddress,
 	validateEmail,
 	setAddressType,
-	setNewsletterOptIn,
-	setReceiptOptOut,
+	setNewsletterChoice,
+	setReceiptChoice,
 	validateAddressField,
 	setAddressField,
 	initializeAddress,
@@ -23,8 +23,9 @@ import {
 	MARK_EMPTY_FIELDS_INVALID,
 	SET_ADDRESS_FIELD,
 	SET_ADDRESS_TYPE,
-	SET_NEWSLETTER_OPTIN,
-	SET_RECEIPT_OPTOUT, SET_VALIDITY,
+	SET_NEWSLETTER,
+	SET_RECEIPT,
+	SET_VALIDITY,
 	VALIDATE_INPUT,
 } from '@/store/address/mutationTypes';
 import { Validity } from '@/view_models/Validity';
@@ -97,11 +98,11 @@ export const actions = {
 		}
 		return Promise.resolve( { status: 'OK', messages: [] } );
 	},
-	[ setNewsletterOptIn ]( context: ActionContext<AddressState, any>, optIn: boolean ) {
-		context.commit( SET_NEWSLETTER_OPTIN, optIn );
+	[ setNewsletterChoice ]( context: ActionContext<AddressState, any>, choice: boolean ) {
+		context.commit( SET_NEWSLETTER, choice );
 	},
-	[ setReceiptOptOut ]( context: ActionContext<AddressState, any>, optOut: boolean ) {
-		context.commit( SET_RECEIPT_OPTOUT, optOut );
+	[ setReceiptChoice ]( context: ActionContext<AddressState, any>, choice: boolean ) {
+		context.commit( SET_RECEIPT, choice );
 	},
 	[ initializeAddress ]( context: ActionContext<AddressState, any>, initialValues: InitialAddressValues ): void {
 		if ( initialValues.addressType !== null ) {
@@ -110,8 +111,12 @@ export const actions = {
 		} else {
 			context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.INCOMPLETE } );
 		}
-		context.commit( SET_NEWSLETTER_OPTIN, initialValues.newsletterOptIn );
-		context.commit( SET_RECEIPT_OPTOUT, initialValues.receiptOptOut );
+		if ( initialValues.newsletter !== null ) {
+			context.commit( SET_NEWSLETTER, initialValues.newsletter );
+		}
+		if ( initialValues.receipt !== null ) {
+			context.commit( SET_RECEIPT, initialValues.receipt );
+		}
 		context.commit( INITIALIZE_ADDRESS, initialValues.fields );
 	},
 

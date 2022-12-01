@@ -1,14 +1,14 @@
 import { mount, createLocalVue } from '@vue/test-utils';
-import ReceiptOptOut from '@/components/shared/ReceiptOptOut.vue';
+import ReceiptOption from '../../../../src/components/shared/ReceiptOption.vue';
 import Buefy from 'buefy';
 
 const localVue = createLocalVue();
 localVue.use( Buefy );
 
-describe( 'ReceiptOptOut', () => {
+describe( 'ReceiptOption', () => {
 
-	it( 'receipt checkbox is checked on initial render and can be opted-out from', () => {
-		const wrapper = mount( ReceiptOptOut, {
+	it( 'receipt checkbox reflects initial receipt needed state', () => {
+		const wrapper = mount( ReceiptOption, {
 				localVue,
 				propsData: {
 					initialReceiptNeeded: true,
@@ -22,8 +22,8 @@ describe( 'ReceiptOptOut', () => {
 		expect( checkBox.props().value ).toBe( true );
 	} );
 
-	it( 'emits opt out event on change', async () => {
-		const wrapper = mount( ReceiptOptOut, {
+	it( 'emits receipt-changed event on change', async () => {
+		const wrapper = mount( ReceiptOption, {
 				localVue,
 				propsData: {
 					initialReceiptNeeded: true,
@@ -32,12 +32,12 @@ describe( 'ReceiptOptOut', () => {
 					$t: () => { },
 				},
 			} ),
-			event = 'opted-out',
+			event = 'receipt-changed',
 			checkBox = wrapper.find( '#donation_receipt input' );
 		await checkBox.setChecked( false );
 		await checkBox.setChecked( true );
-		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ true ] );
-		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ false ] );
+		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ false ] );
+		expect( wrapper.emitted( event )![ 1 ] ).toEqual( [ true ] );
 	} );
 
 } );
