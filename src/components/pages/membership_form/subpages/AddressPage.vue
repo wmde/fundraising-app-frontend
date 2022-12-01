@@ -5,7 +5,6 @@
 		<address-fields
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
-				:validate-fee-url="validateFeeUrl"
 				:countries="countries"
 				:salutations="salutations"
 				:address-validation-patterns="addressValidationPatterns"
@@ -41,7 +40,6 @@ export default Vue.extend( {
 	props: {
 		validateAddressUrl: String,
 		validateEmailUrl: String,
-		validateFeeUrl: String,
 		countries: Array as () => Array<String>,
 		salutations: Array as () => Array<Salutation>,
 		showMembershipTypeOption: Boolean,
