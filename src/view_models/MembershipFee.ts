@@ -18,6 +18,7 @@ export interface InitialMembershipFeeValues {
 
 export interface TypeData {
 	selectedType: string,
+	validateFeeUrl: string,
 }
 
 export interface IntervalData {

@@ -48,7 +48,7 @@ import { action } from '@/store/util';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
 import { mapGetters, mapState } from 'vuex';
 import { setFee, setInterval } from '@/store/membership_fee/actionTypes';
-import { IntervalData, SetFeePayload } from '@/view_models/MembershipFee';
+import { IntervalData, SetFeePayload, TypeData } from '@/view_models/MembershipFee';
 import { setType } from '@/store/payment/actionTypes';
 
 export default Vue.extend( {
@@ -107,7 +107,11 @@ export default Vue.extend( {
 			this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setInterval ), payload );
 		},
 		sendTypeToStore( paymentType: string ): void {
-			this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setType ), paymentType );
+			const payload = {
+				selectedType: paymentType,
+				validateFeeUrl: this.validateFeeUrl,
+			} as TypeData;
+			this.$store.dispatch( action( NS_MEMBERSHIP_FEE, setType ), payload );
 		},
 	},
 } );

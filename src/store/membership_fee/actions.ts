@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
 
-import { InitialMembershipFeeValues, IntervalData, MembershipFee, SetFeePayload } from '@/view_models/MembershipFee';
+import { InitialMembershipFeeValues, IntervalData, MembershipFee, SetFeePayload, TypeData } from '@/view_models/MembershipFee';
 
 import { initializeMembershipFee, markEmptyFeeAsInvalid, markEmptyValuesAsInvalid, setFee, setInterval, setType, validateFee } from '@/store/membership_fee/actionTypes';
 import {
@@ -102,10 +102,16 @@ export const actions = {
 		}
 		return Promise.resolve();
 	},
-	[ setType ]( context: ActionContext<MembershipFee, any>, typeName: string ): void {
-		context.commit( SET_TYPE, typeName );
+	[ setType ]( context: ActionContext<MembershipFee, any>, payload: TypeData ): Promise<void> {
+		context.commit( SET_TYPE, payload.selectedType );
 		// Trigger client-side validation - store will inspect set value
 		context.commit( SET_TYPE_VALIDITY );
-		// We don't trigger a server-side validation here, because we don't have a validation URL
+		if ( context.getters.allPaymentValuesAreSet ) {
+			return context.dispatch( validateFee, {
+				feeValue: context.state.values.fee,
+				validateFeeUrl: payload.validateFeeUrl,
+			} );
+		}
+		return Promise.resolve();
 	},
 };

@@ -79,7 +79,7 @@ describe( 'Payment.vue', () => {
 
 		wrapper.findComponent( PaymentType ).vm.$emit( 'payment-type-selected', 'BEZ' );
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setType ), 'BEZ' );
+		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setType ), { 'selectedType': 'BEZ', 'validateFeeUrl': 'https://example.com/amount-check' } );
 	} );
 
 	it( 'sends amount to store when amount selection emits event ', () => {
