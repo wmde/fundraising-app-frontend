@@ -57,10 +57,17 @@ export const createInitialDonationAddressValues = ( dataPersister: DataPersister
  * If they don't exist check in local storage
  */
 export const createInitialDonationPaymentValues = ( dataPersister: DataPersister, initialFormValues: any ): InitialPaymentValues => {
+	let paymentIntervalInMonths = replaceInitialValue( '0', dataPersister.getValue( 'interval' ) );
+	if ( initialFormValues.paymentIntervalInMonths !== undefined && initialFormValues.paymentIntervalInMonths !== null ) {
+		paymentIntervalInMonths = replaceInitialValue(
+			paymentIntervalInMonths,
+			String( initialFormValues.paymentIntervalInMonths )
+		);
+	}
 	return {
 		amount: replaceInitialValue( dataPersister.getValue( 'amount' ), nullifyZeroString( initialFormValues.amount?.toString() ) ),
 		type: replaceInitialValue( dataPersister.getValue( 'type' ), initialFormValues.paymentType ),
-		paymentIntervalInMonths: replaceInitialValue( dataPersister.getValue( 'interval' ), nullifyZeroString( initialFormValues.paymentIntervalInMonths?.toString() ) ),
+		paymentIntervalInMonths: paymentIntervalInMonths,
 		isCustomAmount: initialFormValues.isCustomAmount,
 	};
 };

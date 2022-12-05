@@ -41,11 +41,7 @@ export const actions = {
 			context.commit( SET_TYPE_VALIDITY, Validity.VALID );
 			paymentIsFilled = true;
 		}
-
-		if ( initialValues.paymentIntervalInMonths ) {
-			context.commit( SET_INTERVAL, initialValues.paymentIntervalInMonths );
-		}
-
+		context.commit( SET_INTERVAL, initialValues.paymentIntervalInMonths );
 		context.commit( SET_INITIALIZED, amountIsFilledAndValid && paymentIsFilled );
 
 		return Promise.resolve( amountIsFilledAndValid && paymentIsFilled );
