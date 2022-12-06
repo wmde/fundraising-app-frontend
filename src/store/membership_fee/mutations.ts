@@ -45,7 +45,7 @@ export const mutations: MutationTree<MembershipFee> = {
 		state.validity.type = validity;
 	},
 	[ SET_FEE ]( state: MembershipFee, fee: string ) {
-		if ( fee === '' ) {
+		if ( fee === '' || fee === '0' || fee === '0.0' ) {
 			state.values.fee = '';
 			return;
 		}

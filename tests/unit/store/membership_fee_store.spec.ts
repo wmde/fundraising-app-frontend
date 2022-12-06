@@ -471,7 +471,7 @@ describe( 'MembershipFee', () => {
 			mutations.SET_FEE( store, '' );
 			expect( store.values.fee ).toStrictEqual( '' );
 			mutations.SET_FEE( store, '0' );
-			expect( store.values.fee ).toStrictEqual( '0' );
+			expect( store.values.fee ).toStrictEqual( '' );
 		} );
 	} );
 
