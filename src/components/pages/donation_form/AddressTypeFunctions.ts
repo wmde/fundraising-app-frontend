@@ -7,7 +7,7 @@ import { setAddressType as setAddressTypeActionType } from '@/store/address/acti
 export const useAddressTypeFunctions = ( store: any ) => {
 	const disabledAddressTypes = computed(
 		(): Array<AddressTypeModel> => {
-			return store.getters[ 'payment/isDirectDebitPayment' ] ? [ AddressTypeModel.EMAIL, AddressTypeModel.ANON ] : [];
+			return store.getters[ 'payment/isDirectDebitPayment' ] ? [ AddressTypeModel.ANON ] : [];
 		}
 	);
 	const addressType = computed( () => store.getters[ 'address/addressType' ] );
