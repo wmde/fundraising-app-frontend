@@ -10,7 +10,7 @@
 				@blur="$emit('field-changed', 'email')">
 			</b-input>
 		</b-field>
-		<span v-if="suggestedProvider" class="help">
+		<span v-if="suggestedProvider" @click="onSuggestionClicked(suggestedProvider)" class="help is-clickable">
 			{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
 		</span>
 		<span v-if="showError" class="help is-danger">{{ $t( 'donation_form_email_error' ) }}</span>
@@ -30,7 +30,7 @@ export default Vue.extend( {
 		showError: Boolean,
 		commonMailProviders: { type: Array, default: () => { return []; } },
 	},
-	setup( props: any ) {
+	setup( props: any, { emit } ) {
 		const suggestedProvider = computed( () => {
 			if ( props.commonMailProviders.length === 0 ) {
 				return '';
@@ -40,14 +40,22 @@ export default Vue.extend( {
 				return '';
 			}
 			const mailHost = mailUserInput.substring( mailUserInput.lastIndexOf( '@' ) + 1 );
-			const closestFit = closest( mailHost, props.commonMailProviders );
-			const calculatedDistance = distance( mailHost, closestFit );
-			if ( calculatedDistance > 0 && calculatedDistance <= 2 ) {
-				return closestFit;
+			if( mailHost.match( /^\w+\.\w{2}/ ) ) {
+				const closestFit = closest( mailHost, props.commonMailProviders );
+				const calculatedDistance = distance( mailHost, closestFit );
+				if ( calculatedDistance > 0 && calculatedDistance <= 3 ) {
+					return closestFit;
+				}
 			}
 			return '';
 		} );
-		return { suggestedProvider };
+
+		const onSuggestionClicked = ( suggestion:string ) => {
+			props.formData.email.value = props.formData.email.value.split( '@', 1 ).toString() + '@' + suggestion;
+			emit( 'field-changed', 'email' );
+		};
+
+		return { suggestedProvider, onSuggestionClicked };
 	},
 } );
 </script>

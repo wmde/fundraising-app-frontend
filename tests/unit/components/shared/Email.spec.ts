@@ -51,6 +51,29 @@ describe( 'Email', () => {
 		expect( infoElement.text() ).toMatch( 'donation_form_email_suggestion gmail.com?' );
 	} );
 
+	it( 'changes the email when the suggestion is clicked.', async () => {
+		const wrapper = mount( Email, {
+			localVue,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+			},
+			propsData: {
+				commonMailProviders: [ 'gmail.com', 't-online.de', 'gmx.net' ],
+				formData: {
+					email: {
+						value: 'i-missed-a-letter@gmail.co',
+					},
+				},
+			},
+		} );
+
+		const infoElement = wrapper.find( '.help' );
+		await infoElement.trigger('click' )
+		expect( ( wrapper.find('input' ).element as HTMLInputElement ).value ).toMatch( 'i-missed-a-letter@gmail.com' );
+		expect( wrapper.find( '.help' ).exists() ).toBeFalsy();
+	} );
+
 	it( 'does not suggest mail provider if no typos are detectable', () => {
 		const wrapper = mount( Email, {
 			localVue,
@@ -82,7 +105,7 @@ describe( 'Email', () => {
 				commonMailProviders: [ 'gmail.com', 't-online.de', 'gmx.net' ],
 				formData: {
 					email: {
-						value: 'totally-different_provider@gmailerz.com',
+						value: 'totally-different_provider@gmail1234.com',
 					},
 				},
 			},
