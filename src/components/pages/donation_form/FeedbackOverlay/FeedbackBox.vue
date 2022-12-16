@@ -1,16 +1,12 @@
 <template>
 	<div class="feedback-wrapper has-margin-top-0 ">
-
 		<div class="feedback-overlay-mobile transform" :class="{'animate-in': isExpanded}">
 			<div class="feedback-tab-mobile">
-				<a
-					@click="isExpanded = !isExpanded"
-					type="is-primary is-low"
-					class="button is-primary is-main ">
+				<a @click="isExpanded = !isExpanded"
+					class="">
 					<span class="feedback-tab-mobile-text">
-					Feedback
-					<b-icon v-if="isExpanded" icon="arrow-up" class="icon-size text-mobile"></b-icon>
-					<b-icon v-else icon="arrow-down" class="icon-size text-mobile"></b-icon>
+					Feedback <chevron-down-icon v-if="isExpanded"/>
+					<chevron-up-icon v-else />
 				</span>
 				</a>
 			</div>
@@ -19,6 +15,8 @@
 				:isExpanded="isExpanded"
 				v-on:collapse-feedback-box="isExpanded = false"
 			/>
+
+			<div class="grayed-modal-overlay" v-if="isExpanded"/>
 		</div>
 
 		<div class="feedback-overlay-desktop">
@@ -27,7 +25,10 @@
 					@click="isExpanded = true"
 					type="is-primary is-low"
 					class="button is-primary is-main ">
-					<span> > Schwierigkeiten beim Ausfüllen? </span>
+					<span>
+						<chevron-right-icon />
+						Schwierigkeiten beim Ausfüllen?
+					</span>
 				</a>
 			</div>
 
@@ -44,10 +45,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import FeedbackBoxContent from '@/components/pages/donation_form/FeedbackOverlay/FeedbackBoxContent.vue';
+import ChevronUpIcon from '@/components/pages/donation_form/FeedbackOverlay/ChevronUpIcon.vue';
+import ChevronDownIcon from '@/components/pages/donation_form/FeedbackOverlay/ChevronDownIcon.vue';
+import ChevronRightIcon from '@/components/pages/donation_form/FeedbackOverlay/ChevronRightIcon.vue';
 
 export default Vue.extend( {
 	name: 'FeedbackBox',
-	components: { FeedbackBoxContent },
+	components: { ChevronRightIcon, ChevronDownIcon, ChevronUpIcon, FeedbackBoxContent },
 	data() {
 		return {
 			isExpanded: false,

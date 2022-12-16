@@ -1,10 +1,21 @@
 @keyframes slide-up {
 	0% {
-		height: 50px;
+		height: 44px;
 	}
 	100% {
-		height: 350px;
+		height: 370px;
 	}
+}
+
+.grayed-modal-overlay {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 100%;
+	z-index: -1;
+	background-color: rgba(0, 0, 0 , 0.5);
 }
 
 .feedback-wrapper {
@@ -15,42 +26,58 @@
 	right: 0;
 	z-index: 9999;
 
-	// TODO mobile first
-
-	.feedback-button {
-		a {
-			bottom: 2px;
-			right: 6px;
-			position: fixed;
-			/*width: 100%; */
-			box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
-			border-radius: 8px 8px 0 0;
-			@media ( min-width: 900px ) {
-				border-radius: 2px;
-				bottom: 18px;
-				right: 36px;
-			}
-		}
-
-	}
-
-
-	.feedback-box {
+	.feedback-content-box {
 		position: sticky;
 		padding: 36px;
 		box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
 		background: $fun-color-bright;
 
-
 		border: 3px solid $fun-color-primary;
 		border-top: 12px solid $fun-color-primary;
+
 		@media ( min-width: 900px ) {
 			border: 1px solid $fun-color-gray-mid;
+			border-radius: 2px;
 			position: fixed;
 			align-self: flex-end;
 			bottom: 18px;
 			right: 36px;
-			width: 600px;
+			width: 520px;
+		}
+
+		h3 {
+			font-size: 24px;
+			line-height: 36px;
+			margin-bottom: 10px;
+		}
+
+		p {
+			font-size: 14px;
+			line-height: 21px;
+		}
+
+		.button-group{
+			display: flex;
+			flex-direction: column-reverse;
+			justify-content: space-between;
+
+			@media ( min-width: 900px ) {
+				flex-direction: row;
+			}
+			a, button {
+				cursor: pointer;
+				font-size: 1em;
+				font-weight: bold;
+				width: 100%;
+				border-radius: 2px;
+				padding: 1.8em;
+				margin-top: 18px;
+
+				@media ( min-width: 900px ) {
+					width: 204px;
+					margin-top: 0;
+				}
+			}
 		}
 	}
 
@@ -59,29 +86,49 @@
 		@media ( min-width: 900px ) {
 			display: inline-block;
 			position: absolute;
-			top: 3px;
-			right: 3px;
+			top: 12px;
+			right: 12px;
 		}
 	}
+
+	/*---  Mobile section  -------------------- */
 
 	.animate-in {
 		animation-name: slide-up;
 	}
-
 
 	.feedback-overlay-mobile {
 		display: flex;
 		flex-direction: column;
 
 		width: 100%;
-		height: 50px;
-		animation-duration: 1s;
+		height: 44px;
+		animation-duration: 0.5s;
 		animation-timing-function: ease-out;
 		animation-iteration-count: 1;
 		animation-fill-mode: forwards;
 
 		.feedback-tab-mobile {
 			margin-left: auto;
+			z-index: 1;
+			box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
+			a {
+				background-color: #0065a4;
+				border-color: transparent;
+				color: $fun-color-bright;
+				padding: 0.9em 1.5em 0.8em 2em;
+				white-space: nowrap;
+				border-radius: 5px 5px 0 0;
+				font-size: 18px;
+				font-weight: bold;
+				margin-right: 16px;
+				span {
+					margin-bottom: 14px;
+					svg {
+						margin: 3px 3px 3px 8px;
+					}
+				}
+			}
 		}
 
 		@media ( min-width: 900px ) {
@@ -90,18 +137,27 @@
 	}
 
 
-
+	/*---  desktop section  ---------------------*/
 
 	.feedback-overlay-desktop {
 		display: none;
 		@media ( min-width: 900px ) {
 			display: inline-block;
 		}
+
+		.feedback-button {
+			a {
+				position: fixed;
+				cursor: pointer;
+				box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
+				border-radius: 2px;
+				bottom: 18px;
+				right: 36px;
+				font-weight: bold;
+				font-size: 14px;
+			}
+		}
 	}
-
-
-
-
 
 	.text-desktop {
 		display: none;
@@ -117,53 +173,4 @@
 		}
 	}
 
-	h3 {
-		font-size: 18px;
-		line-height: 18px;
-		margin-bottom: 10px;
-
-		@include from( $desktop ) {
-			font-size: 24px;
-			line-height: 36px;
-		}
-	}
-
-	p {
-		font-size: 14px;
-		line-height: 21px;
-	}
-
-	.button-group{
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		@media ( min-width: 900px ) {
-			flex-direction: row;
-		}
-		a, button {
-			font-size: 1em;
-			font-weight: bold;
-			width: 100%;
-			border-radius: 2px;
-			padding: 1.8em;
-			margin-top: 18px;
-
-			@media ( min-width: 900px ) {
-				width: 240px;
-				margin-top: 0;
-			}
-		}
-	}
-
-	.styled-line {
-		position: fixed;
-		height: 6px;
-		background-color: $fun-color-primary;
-		bottom: 0;
-		right: 0;
-		left: 0;
-		@media ( min-width: 900px ) {
-			display: none;
-		}
-	}
 }

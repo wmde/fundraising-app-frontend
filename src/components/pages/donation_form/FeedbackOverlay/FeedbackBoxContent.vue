@@ -1,9 +1,9 @@
 <template>
-	<div class="feedback-box">
+	<div class="feedback-content-box">
 
-		<b-button @click="$emit( 'collapse-feedback-box' )" class="feedback-close">
-			X
-		</b-button>
+		<a @click="$emit( 'collapse-feedback-box' )" class="feedback-close">
+			<CloseIcon/>
+		</a>
 		<h3 class="text-desktop">Haben Sie evtl. Schwierigkeiten beim Ausfüllen des Formulars?</h3>
 		<h3 class="text-mobile">Haben Sie Schwierigkeiten?</h3>
 		<p>
@@ -28,9 +28,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import CloseIcon from '@/components/pages/donation_form/FeedbackOverlay/CloseIcon.vue';
 
 export default Vue.extend( {
 	name: 'FeedbackBoxContent',
+	components: { CloseIcon },
 	data() {
 		return {
 			isExpanded: this.$props.isExpanded,
