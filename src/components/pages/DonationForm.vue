@@ -22,7 +22,7 @@ import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
 import { Salutation } from '@/view_models/Salutation';
 import { CampaignValues } from '@/view_models/CampaignValues';
-import FeedbackBox from '@/components/pages/donation_form/FeedbackBox.vue';
+import FeedbackBox from '@/components/pages/donation_form/FeedbackOverlay/FeedbackBox.vue';
 
 export default Vue.extend( {
 	name: 'DonationForm',
