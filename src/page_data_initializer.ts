@@ -4,6 +4,7 @@ export default class PageDataInitializer<T> {
 	messages: { [key: string]: string };
 	assetsPath: string;
 	selectedBuckets: string[];
+	activeFeatures: string[];
 
 	constructor( dataElementSelector: string = '#appdata' ) {
 		const dataElement: HTMLElement | null = document.querySelector( dataElementSelector );
@@ -15,6 +16,11 @@ export default class PageDataInitializer<T> {
 		if ( applicationVars.selectedBuckets ) {
 			this.selectedBuckets = applicationVars.selectedBuckets;
 			delete applicationVars.selectedBuckets;
+		}
+		this.activeFeatures = [];
+		if ( applicationVars.activeFeatures ) {
+			this.activeFeatures = applicationVars.activeFeatures;
+			delete applicationVars.activeFeatures;
 		}
 		this.environment = dataElement.dataset.environment || '';
 		this.applicationVars = applicationVars;

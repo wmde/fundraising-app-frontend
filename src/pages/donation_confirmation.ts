@@ -43,7 +43,7 @@ const i18n = createI18n( pageData.messages );
 
 trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
-Vue.use( FeatureTogglePlugin, { activeFeatures: pageData.selectedBuckets } );
+Vue.use( FeatureTogglePlugin, { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } );
 
 new Vue( {
 	store,

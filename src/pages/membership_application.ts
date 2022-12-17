@@ -66,7 +66,7 @@ const store = createStore( [
 	createTrackFormErrorsPlugin( FORM_NAMESPACE ),
 ] );
 
-Vue.use( FeatureTogglePlugin, { activeFeatures: pageData.selectedBuckets } );
+Vue.use( FeatureTogglePlugin, { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } );
 
 dataPersister.initialize( persistenceItems ).then( () => {
 
