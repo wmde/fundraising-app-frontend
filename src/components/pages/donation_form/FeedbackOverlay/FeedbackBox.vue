@@ -2,10 +2,9 @@
 	<div class="feedback-wrapper has-margin-top-0 ">
 		<div class="feedback-overlay-mobile transform" :class="{'animate-in': isExpanded}">
 			<div class="feedback-tab-mobile">
-				<a @click="isExpanded = !isExpanded"
-					class="">
+				<a @click="isExpanded = !isExpanded">
 					<span class="feedback-tab-mobile-text">
-					Feedback <chevron-down-icon v-if="isExpanded"/>
+					{{ $t( 'donation_page_feedback_box_mobile_feedback_tab' ) }}<chevron-down-icon v-if="isExpanded"/>
 					<chevron-up-icon v-else />
 				</span>
 				</a>
@@ -22,13 +21,9 @@
 		<div class="feedback-overlay-desktop">
 			<div class="feedback-button">
 				<a v-if="!isExpanded"
-					@click="isExpanded = true"
-					type="is-primary is-low"
-					class="button is-primary is-main ">
-					<span>
-						<chevron-right-icon />
-						Schwierigkeiten beim Ausfüllen?
-					</span>
+					@click="isExpanded = true">
+					<chevron-right-icon />
+					{{ $t( 'donation_page_feedback_box_desktop_feedback_button' ) }}
 				</a>
 			</div>
 

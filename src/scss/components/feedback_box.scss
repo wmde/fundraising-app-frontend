@@ -113,7 +113,7 @@
 			z-index: 1;
 			box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
 			a {
-				background-color: #0065a4;
+				background-color: $fun-color-primary;
 				border-color: transparent;
 				color: $fun-color-bright;
 				padding: 0.9em 1.5em 0.8em 2em;
@@ -147,14 +147,22 @@
 
 		.feedback-button {
 			a {
-				position: fixed;
-				cursor: pointer;
 				box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
 				border-radius: 2px;
 				bottom: 18px;
 				right: 36px;
-				font-weight: bold;
+				height: 44px;
+				width: 292px;
+				padding: 10px 23px 10px 23px;
+				background-color: $fun-color-primary;
+				color: $fun-color-bright;
+				cursor: pointer;
+				position: fixed;
 				font-size: 14px;
+				font-weight: bold;
+				svg {
+					margin-right: 6px;
+				}
 			}
 		}
 	}
