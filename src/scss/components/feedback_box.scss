@@ -19,12 +19,15 @@
 }
 
 .feedback-wrapper {
-
 	position: fixed;
 	display: flex;
 	bottom: 0;
 	right: 0;
 	z-index: 9999;
+	@media ( min-width: 900px ) {
+		position: relative;
+		top: 18px;
+	}
 
 	.feedback-content-box {
 		position: sticky;
@@ -149,8 +152,8 @@
 			a {
 				box-shadow: 0 -10px 30px rgba( 0, 0, 0, 0.1 );
 				border-radius: 2px;
-				bottom: 18px;
-				right: 36px;
+				/*bottom: 18px;
+				left: 30vw;*/
 				height: 44px;
 				width: 292px;
 				padding: 10px 23px 10px 23px;
