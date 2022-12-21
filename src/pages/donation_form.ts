@@ -60,7 +60,7 @@ const store = createStore( [
 const i18n = createI18n( pageData.messages );
 const campaignParameters = new CampaignParameters( new URLSearchParams( window.location.search ) );
 
-Vue.use( FeatureTogglePlugin, { activeFeatures: pageData.selectedBuckets } );
+Vue.use( FeatureTogglePlugin, { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } );
 
 dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
