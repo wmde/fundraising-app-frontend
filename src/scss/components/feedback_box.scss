@@ -1,9 +1,20 @@
+$sidebar-breakpoint: 900px;
+
 @keyframes slide-up {
 	0% {
 		height: 44px;
 	}
 	100% {
 		height: 370px;
+	}
+}
+
+@keyframes slide-down {
+	0% {
+		height: 370px;
+	}
+	100% {
+		height: 44px;
 	}
 }
 
@@ -19,15 +30,6 @@
 }
 
 .feedback-wrapper {
-	position: fixed;
-	display: flex;
-	bottom: 0;
-	right: 0;
-	z-index: 9999;
-	@media ( min-width: 900px ) {
-		position: relative;
-		top: 18px;
-	}
 
 	.feedback-content-box {
 		position: sticky;
@@ -38,7 +40,7 @@
 		border: 3px solid $fun-color-primary;
 		border-top: 12px solid $fun-color-primary;
 
-		@media ( min-width: 900px ) {
+		@media ( min-width: $sidebar-breakpoint ) {
 			border: 1px solid $fun-color-gray-mid;
 			border-radius: 2px;
 			position: fixed;
@@ -64,7 +66,7 @@
 			flex-direction: column-reverse;
 			justify-content: space-between;
 
-			@media ( min-width: 900px ) {
+			@media ( min-width: $sidebar-breakpoint ) {
 				flex-direction: row;
 			}
 			a, button {
@@ -76,7 +78,7 @@
 				padding: 1.8em;
 				margin-top: 18px;
 
-				@media ( min-width: 900px ) {
+				@media ( min-width: $sidebar-breakpoint ) {
 					width: 204px;
 					margin-top: 0;
 				}
@@ -86,7 +88,7 @@
 
 	.feedback-close {
 		display: none;
-		@media ( min-width: 900px ) {
+		@media ( min-width: $sidebar-breakpoint ) {
 			display: inline-block;
 			position: absolute;
 			top: 12px;
@@ -94,22 +96,31 @@
 		}
 	}
 
-	/*---  Mobile section  -------------------- */
-
 	.animate-in {
 		animation-name: slide-up;
 	}
 
+	.animate-out {
+		animation-name: slide-down;
+	}
+
+	/*---  Mobile section  -------------------- */
+
 	.feedback-overlay-mobile {
+
 		display: flex;
 		flex-direction: column;
-
 		width: 100%;
 		height: 44px;
 		animation-duration: 0.5s;
 		animation-timing-function: ease-out;
 		animation-iteration-count: 1;
 		animation-fill-mode: forwards;
+
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 9999;
 
 		.feedback-tab-mobile {
 			margin-left: auto;
@@ -134,7 +145,7 @@
 			}
 		}
 
-		@media ( min-width: 900px ) {
+		@media ( min-width: $sidebar-breakpoint ) {
 			display: none;
 		}
 	}
@@ -144,8 +155,11 @@
 
 	.feedback-overlay-desktop {
 		display: none;
-		@media ( min-width: 900px ) {
+		@media ( min-width: $sidebar-breakpoint ) {
+			position: fixed;
+			z-index: 9999;
 			display: inline-block;
+			bottom: 67px;
 		}
 
 		.feedback-button {
@@ -170,14 +184,14 @@
 
 	.text-desktop {
 		display: none;
-		@media ( min-width: 900px ) {
+		@media ( min-width: $sidebar-breakpoint ) {
 			display: inline-block;
 		}
 	}
 
 	.text-mobile {
 		display: inline-block;
-		@media ( min-width: 900px ) {
+		@media ( min-width: $sidebar-breakpoint ) {
 			display: none;
 		}
 	}
