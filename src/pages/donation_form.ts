@@ -25,6 +25,7 @@ import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
 import { TrackingData } from '@/view_models/TrackingData';
 import CampaignParameters from '@/util/CampaignParameters';
+import FeedbackBox from '@/components/pages/donation_form/FeedbackOverlay/FeedbackBox.vue';
 
 const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
@@ -115,9 +116,16 @@ dataPersister.initialize( persistenceItems ).then( () => {
 						startPage: paymentDataComplete ? 'AddressPage' : 'PaymentPage',
 					},
 				} ),
+
 				h( Sidebar, {
 					slot: 'sidebar',
-				} ),
+				}, [
+					h( 'div', {},
+						pageData.activeFeatures.indexOf( 'features.feedback-form' ) > -1 ?
+							[ h( FeedbackBox ) ] :
+							[ ]
+					),
+				] ),
 			] ),
 		} ).$mount( '#app' );
 	} );
