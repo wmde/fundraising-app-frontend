@@ -34,6 +34,14 @@
 					:is-direct-debit="isDirectDebit"
 					:initial-address-type="addressTypeName"
 				/>
+				<address-type-full-or-email
+					slot="campaigns.address_type_steps.full_or_email"
+					v-on:address-type="setAddressType( $event )"
+					v-on:set-full-selected="setFullSelected"
+					:disabledAddressTypes="disabledAddressTypes"
+					:is-direct-debit="isDirectDebit"
+					:initial-address-type="addressTypeName"
+				/>
 			</feature-toggle>
 			<span
 				v-if="addressTypeIsInvalid"
@@ -122,10 +130,12 @@ import { Salutation } from '@/view_models/Salutation';
 import { CampaignValues } from '@/view_models/CampaignValues';
 import { StoreKey } from '@/store/donation_store';
 import { injectStrict } from '@/util/injectStrict';
+import AddressTypeFullOrEmail from '@/components/pages/donation_form/AddressTypeFullOrEmail.vue';
 
 export default Vue.extend( {
 	name: 'AddressPage',
 	components: {
+		AddressTypeFullOrEmail,
 		AutofillHandler,
 		AddressForms,
 		AddressTypeAllOptions,
