@@ -424,9 +424,10 @@ describe( 'MembershipAddress', () => {
 	describe( 'Actions/setAddressType', () => {
 		it( 'commits to mutation [SET_ADDRESS_TYPE] with the chosen type', () => {
 			const commit = jest.fn(),
+				dispatch = jest.fn(),
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
-			action( { commit, getters, rootGetters: { allPaymentValuesAreSet: false } }, type );
+			action( { commit, dispatch, getters, rootGetters: { allPaymentValuesAreSet: false } }, type );
 			expect( commit ).toBeCalledWith(
 				'SET_ADDRESS_TYPE',
 				type
@@ -435,6 +436,7 @@ describe( 'MembershipAddress', () => {
 		it( 'commits to mutation [SET_MEMBERSHIP_TYPE_VALIDITY] with invalid when address type is company and membership type is active', () => {
 			const context = {
 					commit: jest.fn(),
+					dispatch: jest.fn(),
 					getters: {
 						membershipType: MembershipTypeModel.ACTIVE,
 					},
@@ -454,10 +456,23 @@ describe( 'MembershipAddress', () => {
 			);
 		} );
 
+		it( 'triggers fee reset action', () => {
+			const commit = jest.fn(),
+				dispatch = jest.fn(),
+				action = actions.setAddressType as any,
+				type = AddressTypeModel.COMPANY;
+			action( { commit, dispatch, getters, rootGetters: { allPaymentValuesAreSet: false } }, type );
+			expect( dispatch ).toBeCalledWith(
+				'membership_fee/resetFeeForAddressType',
+				type,
+				{ root: true }
+			);
+		} );
+
 		it( 'triggers fee validation when payment values are set', () => {
 			const context = {
 					commit: jest.fn(),
-					dispatch: jest.fn(),
+					dispatch: jest.fn().mockImplementation( () => Promise.resolve() ),
 					rootGetters: { allPaymentValuesAreSet: true },
 					rootState: { [ NS_MEMBERSHIP_FEE ]: { values: { fee: '500' } } },
 					state: newMinimalStore( {} ),
@@ -467,15 +482,18 @@ describe( 'MembershipAddress', () => {
 				},
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
-			action( context, type );
-			expect( context.dispatch ).toBeCalledWith(
-				'membership_fee/validateFee',
-				{
-					feeValue: '500',
-					validateFeeUrl: '/validate-fee',
-				},
-				{ root: true }
-			);
+
+			return action( context, type ).then( () => {
+				expect( context.dispatch.mock.calls.length ).toBe( 2 );
+				expect( context.dispatch.mock.lastCall ).toEqual( [
+					'membership_fee/validateFee',
+					{
+						feeValue: '500',
+						validateFeeUrl: '/validate-fee',
+					},
+					{ root: true },
+				] );
+			} );
 		} );
 	} );
 

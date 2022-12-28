@@ -29,6 +29,10 @@
 	margin-top: $column-gap * 2;
 }
 
+.is-form-input.inactive label{
+	cursor: not-allowed;
+}
+
 .title + .form-input .subtitle {
 	margin-top: 0;
 }

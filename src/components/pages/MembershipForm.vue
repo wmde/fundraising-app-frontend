@@ -45,7 +45,7 @@ export default Vue.extend( {
 	},
 	data: function () {
 		return {
-			pages: [ 'AddressPage', 'PaymentPage' ],
+			pages: [ 'PaymentPage', 'AddressPage' ],
 			currentPageIndex: 0,
 		};
 	},
