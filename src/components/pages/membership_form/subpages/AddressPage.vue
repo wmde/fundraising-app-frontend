@@ -12,7 +12,7 @@
 				ref="address">
 		</address-fields>
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
-			<membership-summary :membership-application="membershipApplication" :address="addressSummary" :salutations="salutations"></membership-summary>
+			<membership-summary :membership-application="membershipApplication" :address="addressSummary" :salutations="salutations" :address-is-invalid="addressIsInvalid"></membership-summary>
 			<submit-values :tracking-data="{}"></submit-values>
 			<div class="columns has-margin-top-18">
 				<div class="column">
@@ -47,6 +47,7 @@ import { AddressValidation } from '@/view_models/Validation';
 import { Salutation } from '@/view_models/Salutation';
 import { membershipTypeName } from '@/view_models/MembershipTypeModel';
 import { addressTypeName } from '@/view_models/AddressTypeModel';
+import {mapGetters} from "vuex";
 
 export default Vue.extend( {
 	name: 'AddressPage',
@@ -66,6 +67,12 @@ export default Vue.extend( {
 		dateOfBirthValidationPattern: String,
 	},
   computed: {
+    ...mapGetters( NS_MEMBERSHIP_ADDRESS, [ 'addressType' ] ),
+    addressIsInvalid: {
+      get(): boolean {
+        return !this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ];
+      }
+    },
     membershipApplication: {
       get(): object {
         const payment = this.$store.state[ NS_MEMBERSHIP_FEE ].values;
