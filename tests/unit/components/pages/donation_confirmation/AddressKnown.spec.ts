@@ -24,9 +24,8 @@ describe( 'AddressKnown', () => {
 
 		expect( wrapper.text() ).toContain( 'donation_confirmation_summary_title' );
 		expect( wrapper.text() ).toContain( 'donation_confirmation_email' );
-		// TODO: Activate these when https://phabricator.wikimedia.org/T316632 is done
-		// expect( wrapper.text() ).toContain( 'donation_confirmation_address_update' );
-		// expect( wrapper.text() ).toContain( 'donation_confirmation_address_update_link' );
+		expect( wrapper.text() ).toContain( 'donation_confirmation_address_update' );
+		expect( wrapper.text() ).toContain( 'donation_confirmation_address_update_link' );
 	} );
 
 	it( 'renders person address for person address type', () => {

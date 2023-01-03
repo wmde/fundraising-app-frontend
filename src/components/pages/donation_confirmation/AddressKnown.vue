@@ -26,9 +26,9 @@
 			} )"></p>
 		</div>
 		<div class="payment-email has-margin-bottom-18" v-html="$t( 'donation_confirmation_email', { email: this.$props.address.email } )"></div>
-		<!--div>{{ $t( 'donation_confirmation_address_update' ) }}
+		<div>{{ $t( 'donation_confirmation_address_update' ) }}
 			<a href="#" id="update-address-link" @click="$emit( 'show-address-modal' )">{{ $t( 'donation_confirmation_address_update_link' ) }}</a>
-		</div-->
+		</div>
 	</div>
 </template>
 
