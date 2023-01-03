@@ -15,6 +15,10 @@ import { FeatureTogglePlugin } from '@/FeatureToggle';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
 import { trackGoal } from '@/tracking';
+import { action } from '@/store/util';
+import { NS_ADDRESS } from '@/store/namespaces';
+import { initializeAddress } from '@/store/address/actionTypes';
+import { addressTypeFromName, AddressTypes } from '@/view_models/AddressTypeModel';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -29,7 +33,7 @@ interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },
 	countries: Array<Country>,
 	donation: Donation,
-	address: Object,
+	address: any,
 	addressType: String,
 	addressValidationPatterns: AddressValidation,
 	salutations: Array<Salutation>,
@@ -45,35 +49,55 @@ trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
 Vue.use( FeatureTogglePlugin, { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } );
 
-new Vue( {
-	store,
-	i18n,
-	provide: {
-		cityAutocompleteResource: new ApiCityAutocompleteResource(),
-	},
-	render: h => h( App, {
-		props: {
-			assetsPath: pageData.assetsPath,
-			pageIdentifier: PAGE_IDENTIFIER,
-			isFullWidth: IS_FULLWIDTH_PAGE,
-			locale: i18n.locale,
+store.dispatch(
+	action( NS_ADDRESS, initializeAddress ),
+	{
+		addressType: addressTypeFromName( pageData.applicationVars.addressType.toString() ),
+		newsletter: pageData.applicationVars.donation.newsletter,
+		fields: [
+			{ name: 'salutation', value: pageData.applicationVars.address.salutation ?? '' },
+			{ name: 'title', value: pageData.applicationVars.address.title ?? '' },
+			{ name: 'firstName', value: pageData.applicationVars.address.firstName ?? '' },
+			{ name: 'lastName', value: pageData.applicationVars.address.lastName ?? '' },
+			{ name: 'companyName', value: pageData.applicationVars.address.companyName ?? '' },
+			{ name: 'street', value: pageData.applicationVars.address.streetAddress ?? '' },
+			{ name: 'postcode', value: pageData.applicationVars.address.postalCode ?? '' },
+			{ name: 'city', value: pageData.applicationVars.address.city ?? '' },
+			{ name: 'country', value: pageData.applicationVars.address.countryCode ?? 'DE' },
+			{ name: 'email', value: pageData.applicationVars.address.email ?? '' },
+		],
+	}
+).then( () => {
+	new Vue( {
+		store,
+		i18n,
+		provide: {
+			cityAutocompleteResource: new ApiCityAutocompleteResource(),
 		},
-	},
-	[
-		h( DonationConfirmation, {
+		render: h => h( App, {
 			props: {
-				donation: pageData.applicationVars.donation,
-				address: pageData.applicationVars.address,
-				addressType: pageData.applicationVars.addressType,
-				countries: pageData.applicationVars.countries,
-				salutations: pageData.applicationVars.salutations,
-				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-				validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-				updateDonorUrl: pageData.applicationVars.urls.updateDonor,
-				cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
-				postCommentUrl: pageData.applicationVars.urls.postComment,
-				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+				assetsPath: pageData.assetsPath,
+				pageIdentifier: PAGE_IDENTIFIER,
+				isFullWidth: IS_FULLWIDTH_PAGE,
+				locale: i18n.locale,
 			},
-		} ),
-	] ),
-} ).$mount( '#app' );
+		},
+		[
+			h( DonationConfirmation, {
+				props: {
+					donation: pageData.applicationVars.donation,
+					address: pageData.applicationVars.address,
+					addressType: pageData.applicationVars.addressType,
+					countries: pageData.applicationVars.countries,
+					salutations: pageData.applicationVars.salutations,
+					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+					validateEmailUrl: pageData.applicationVars.urls.validateEmail,
+					updateDonorUrl: pageData.applicationVars.urls.updateDonor,
+					cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
+					postCommentUrl: pageData.applicationVars.urls.postComment,
+					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+				},
+			} ),
+		] ),
+	} ).$mount( '#app' );
+} );
