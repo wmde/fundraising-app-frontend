@@ -64,12 +64,12 @@ export default Vue.extend( {
 						validateFeeUrl: this.$props.validateFeeUrl,
 						countries: this.$props.countries,
 						salutations: this.$props.salutations,
-						showMembershipTypeOption: this.$props.showMembershipTypeOption,
 						addressValidationPatterns: this.$props.addressValidationPatterns,
 						dateOfBirthValidationPattern: this.$props.dateOfBirthValidationPattern,
 					};
 				}
 				return {
+					showMembershipTypeOption: this.$props.showMembershipTypeOption,
 					validateFeeUrl: this.$props.validateFeeUrl,
 					paymentAmounts: this.$props.paymentAmounts,
 					paymentIntervals: this.$props.paymentIntervals,

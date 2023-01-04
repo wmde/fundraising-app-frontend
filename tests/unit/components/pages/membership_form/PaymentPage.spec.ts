@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import Buefy from 'buefy';
 import PaymentPage from '@/components/pages/membership_form/subpages/PaymentPage.vue';
 import AddressType from '@/components/pages/membership_form/AddressType.vue';
+import MembershipType from '@/components/pages/membership_form/MembershipType.vue';
 import { createStore } from '@/store/membership_store';
 import { action } from '@/store/util';
 import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
@@ -25,6 +26,7 @@ describe( 'PaymentPage.vue', () => {
 				paymentTypes: [ 'BEZ', 'UEB' ],
 				validateBankDataUrl: 'https://example.com/amount-check',
 				validateLegacyBankDataUrl: 'https://example.com/amount-check',
+				showMembershipTypeOption: true,
 			},
 			store: createStore(),
 			stubs: {
@@ -43,6 +45,13 @@ describe( 'PaymentPage.vue', () => {
 		const expectedPayload = AddressTypeModel.PERSON;
 		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+	} );
+
+	it( 'toggle membership type visibility', async () => {
+		wrapper.findComponent( MembershipType );
+		expect( wrapper.findComponent( MembershipType ).exists() ).toBe( true );
+		await wrapper.setProps( { showMembershipTypeOption: false } );
+		expect( wrapper.findComponent( MembershipType ).exists() ).toBe( false );
 	} );
 
 } );

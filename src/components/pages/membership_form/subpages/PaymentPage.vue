@@ -1,6 +1,7 @@
 <template>
 	<div class="payment-page">
 		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
+    <membership-type v-if="showMembershipTypeOption"></membership-type>
 		<div class="has-margin-top-36">
 			<address-type :initial-value="addressType" v-on:address-type="setAddressType( $event )" />
 		</div>
@@ -19,6 +20,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import MembershipType from '@/components/pages/membership_form//MembershipType.vue';
 import Payment from '@/components/pages/membership_form/Payment.vue';
 import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
@@ -35,6 +37,7 @@ export default Vue.extend( {
 	components: {
 		AddressType,
 		Payment,
+		MembershipType,
 	},
 	props: {
 		validateFeeUrl: String,
@@ -43,6 +46,7 @@ export default Vue.extend( {
 		paymentTypes: Array as () => Array<String>,
 		validateBankDataUrl: String,
 		validateLegacyBankDataUrl: String,
+		showMembershipTypeOption: Boolean,
 	},
 	methods: {
 		next() {
@@ -52,7 +56,7 @@ export default Vue.extend( {
 					storeCleanupActions.push( this.$store.dispatch( action( NS_BANKDATA, markemptyBankDataValuesAsInvalid ) ) );
 				}
 				return Promise.all( storeCleanupActions ).then( () => {
-					if ( this.$store.getters.paymentDataIsValid ) {
+					if ( this.$store.getters.paymentDataIsValid && this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {
 						this.$emit( 'next-page' );
 					} else {
 						document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
