@@ -1,5 +1,5 @@
 <template>
-	<div class="donation-summary">
+	<div class="donation-summary has-margin-bottom-18">
 		<component
 			:is="addressTypeComponent"
 			:address="address"
