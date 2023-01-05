@@ -3,8 +3,7 @@
 		<div class="container">
 			<div class="navbar-brand">
 				<a class="navbar-item" href="/">
-					<img :src="assetsPath + '/images/logo-horizontal-wikimedia.svg'" alt="Wikimedia Deutschland"
-						width="144" height="29">
+					<Logo/>
 				</a>
 				<a role="button"
 					aria-label="menu"
@@ -35,10 +34,11 @@
 <script type="ts">
 import Vue from 'vue';
 import LocaleSelector from '@/components/shared/LocaleSelector.vue';
+import Logo from '@/components/layout/Logo.vue';
 
 export default Vue.extend( {
 	name: 'Header',
-	components: { LocaleSelector },
+	components: { Logo, LocaleSelector },
 	props: [ 'assetsPath', 'pageIdentifier' ],
 	data: function () {
 		return {
@@ -60,6 +60,27 @@ export default Vue.extend( {
 	.navbar {
 		&-item {
 			border-bottom: 2px solid $fun-color-bright;
+		}
+		&-brand {
+			margin-left: 0;
+			@include from($tablet) {
+				margin-right: 54px;
+			}
+		}
+		&-menu {
+			padding: 0;
+			.navbar-item {
+				padding: 18px;
+
+				@include until(820px) {
+					padding: 18px 9px;
+				}
+
+				@include until($navbar-breakpoint) {
+					padding: 18px;
+					border-bottom: 2px solid $fun-color-gray-light-transparency;
+				}
+			}
 		}
 		&-menu,
 		&-language {
@@ -84,14 +105,10 @@ export default Vue.extend( {
 
 		position: absolute;
 		top: 0;
-		right: 100px;
-		height: 100%;
+		right: 72px;
 
-		@include from($tablet) {
-			right: 150px;
-		}
-
-		@include from($desktop) {
+		@include from($navbar-breakpoint) {
+			right: 0;
 			position: static;
 			float: right;
 		}
