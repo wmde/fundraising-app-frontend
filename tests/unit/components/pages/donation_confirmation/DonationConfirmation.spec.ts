@@ -6,7 +6,7 @@ import { createStore } from '@/store/donation_store';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import {
 	anonymousBankTransferConfirmationData,
-	bankTransferConfirmationData,
+	bankTransferConfirmationData, donationExportedConfirmationData,
 	emailBankTransferConfirmationData,
 	payPalConfirmationData,
 } from '../../../../data/confirmationData';
@@ -89,6 +89,22 @@ describe( 'DonationConfirmation', () => {
 		} );
 
 		expect( wrapper.find( '.known-address' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'displays donation exported card when donation is exported', () => {
+		const wrapper = mount( DonationConfirmation, {
+			localVue,
+			propsData: donationExportedConfirmationData,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+				$n: () => {},
+			},
+		} );
+
+		expect( wrapper.find( '.exported-donation' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
 		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
 	} );
 

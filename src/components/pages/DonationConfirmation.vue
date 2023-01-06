@@ -17,7 +17,7 @@
 					v-on:show-comment-modal="showCommentModal()"
 				/>
 			</div>
-			<div class="column is-half pt-0 pb-0">
+			<div class="column is-half pt-0 pb-0" v-if="!donation.isExported">
 				<address-known
 					v-if="showAddress"
 					v-on:show-address-modal="showAddressModal()"
@@ -29,6 +29,9 @@
 				/>
 				<address-anonymous v-else v-on:show-address-modal="showAddressModal()"/>
 
+			</div>
+			<div class="column is-half pt-0 pb-0" v-else>
+				<donation-exported :address-type="currentAddressType"/>
 			</div>
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
 				<membership-info
@@ -97,10 +100,12 @@ import AddressAnonymous from '@/components/pages/donation_confirmation/AddressAn
 import Survey from '@/components/pages/donation_confirmation/Survey.vue';
 import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
 import ChevronDownIcon from '@/components/shared/icons/ChevronDown.vue';
+import DonationExported from '@/components/pages/donation_confirmation/DonationExported.vue';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
 	components: {
+		DonationExported,
 		ChevronDownIcon,
 		Survey,
 		SuccessMessageBankTransfer,
