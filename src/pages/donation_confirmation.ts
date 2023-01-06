@@ -18,7 +18,7 @@ import { trackGoal } from '@/tracking';
 import { action } from '@/store/util';
 import { NS_ADDRESS } from '@/store/namespaces';
 import { initializeAddress } from '@/store/address/actionTypes';
-import { addressTypeFromName, AddressTypes } from '@/view_models/AddressTypeModel';
+import { addressTypeFromName } from '@/view_models/AddressTypeModel';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
