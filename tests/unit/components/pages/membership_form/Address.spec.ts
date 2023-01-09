@@ -5,7 +5,6 @@ import Address from '@/components/pages/membership_form/Address.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
 import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
-import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import Email from '@/components/shared/Email.vue';
 import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
 import { createStore } from '@/store/membership_store';
@@ -14,7 +13,6 @@ import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
 import {
 	setAddressField,
 	setReceiptChoice,
-	setAddressType,
 	initializeAddress,
 } from '@/store/membership_address/actionTypes';
 import { action } from '@/store/util';
@@ -49,18 +47,8 @@ describe( 'Address.vue', () => {
 		expect( wrapper.findComponent( Name ).exists() ).toBe( true );
 		expect( wrapper.findComponent( Postal ).exists() ).toBe( true );
 		expect( wrapper.findComponent( ReceiptOption ).exists() ).toBe( true );
-		expect( wrapper.findComponent( AddressType ).exists() ).toBe( true );
 		expect( wrapper.findComponent( Email ).exists() ).toBe( true );
 		expect( wrapper.findComponent( DateOfBirth ).exists() ).toBe( true );
-	} );
-
-	it( 'sets address type in store when it receives address-type event', () => {
-		const store = wrapper.vm.$store;
-		store.dispatch = jest.fn( () => Promise.resolve() );
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setAddressType );
-		const expectedPayload = AddressTypeModel.PERSON;
-		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
 	it( 'sets address field in store when it receives field-changed event', () => {

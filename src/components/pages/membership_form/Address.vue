@@ -1,9 +1,6 @@
 <template>
 	<div class="address-section">
-		<div class="has-margin-top-36">
-			<address-type :initial-value="addressType" v-on:address-type="setAddressType( $event )"/>
-		</div>
-		<h1 class="has-margin-top-36 title is-size-5">{{ $t( 'donation_form_section_address_title' ) }}</h1>
+		<h1 class="has-margin-top-36 title is-size-5">{{ $t( 'membership_form_section_address_title' ) }}</h1>
 		<AutofillHandler @autofill="onAutofill">
 			<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"/>
 			<postal
@@ -18,12 +15,12 @@
 					:initial-receipt-needed="receiptNeeded"
 					v-on:receipt-changed="setReceipt( $event )"
 			/>
-      <incentives
-        :message="$t( 'membership_form_incentive' )"
-        :incentive-choices="[ 'tote_bag' ]"
-        :default-incentives="incentives"
-        v-on:incentives-changed="setIncentives( $event )"
-      />
+			<incentives
+				:message="$t( 'membership_form_incentive' )"
+				:incentive-choices="[ 'tote_bag' ]"
+				:default-incentives="incentives"
+				v-on:incentives-changed="setIncentives( $event )"
+			/>
 			<date-of-birth
 				v-if="isPerson"
 				v-on:field-changed="onFieldChange"
@@ -41,7 +38,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
 import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
@@ -50,7 +46,6 @@ import Incentives from '@/components/pages/membership_form/Incentives.vue';
 import Email from '@/components/shared/Email.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
 import { AddressValidity, AddressFormData, ValidationResult } from '@/view_models/Address';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { AddressValidation } from '@/view_models/Validation';
 import { Validity } from '@/view_models/Validity';
 import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
@@ -60,7 +55,6 @@ import {
 	validateEmail,
 	setReceiptChoice,
 	setIncentives,
-	setAddressType,
 	validateCountry,
 	validateAddressField,
 	validateDateOfBirth,
@@ -79,7 +73,6 @@ export default Vue.extend( {
 		DateOfBirth,
 		ReceiptOption,
 		Incentives,
-		AddressType,
 		Email,
 		AutofillHandler,
 	},
@@ -183,8 +176,8 @@ export default Vue.extend( {
 			},
 		},
 		...mapGetters( NS_MEMBERSHIP_ADDRESS, [
-			'addressType',
 			'email',
+			'addressType',
 			'isPerson',
 		] ),
 		receiptNeeded(): Boolean {
@@ -237,9 +230,6 @@ export default Vue.extend( {
 		},
 		setIncentives( incentives: string[] ): void {
 			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setIncentives ), incentives );
-		},
-		setAddressType( addressType: AddressTypeModel ): void {
-			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), addressType );
 		},
 	},
 } );

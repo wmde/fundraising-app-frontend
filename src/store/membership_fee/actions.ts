@@ -2,7 +2,16 @@ import { ActionContext } from 'vuex';
 
 import { InitialMembershipFeeValues, IntervalData, MembershipFee, SetFeePayload, TypeData } from '@/view_models/MembershipFee';
 
-import { initializeMembershipFee, markEmptyFeeAsInvalid, markEmptyValuesAsInvalid, setFee, setInterval, setType, validateFee } from '@/store/membership_fee/actionTypes';
+import {
+	initializeMembershipFee,
+	markEmptyFeeAsInvalid,
+	markEmptyValuesAsInvalid,
+	resetFeeForAddressType,
+	setFee,
+	setInterval,
+	setType,
+	validateFee,
+} from '@/store/membership_fee/actionTypes';
 import {
 	MARK_EMPTY_FEE_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -17,6 +26,7 @@ import { Validity } from '@/view_models/Validity';
 import { Helper } from '@/store/util';
 import { validateFeeDataRemotely } from '@/store/axios';
 import { SET_TYPE, SET_TYPE_VALIDITY } from '@/store/payment/mutationTypes';
+import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 
 /**
  * Map source values from WMDE\Fundraising\MembershipContext\Domain\MembershipPaymentValidator to validation mutation functions
@@ -83,6 +93,13 @@ export const actions = {
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( validateFee, payload );
+		}
+		return Promise.resolve();
+	},
+	[ resetFeeForAddressType ]( context: ActionContext<MembershipFee, any>, addressType: AddressTypeModel ): Promise<void> {
+		if ( context.state.values.fee < context.getters.minimumAmount( addressType ) ) {
+			context.commit( SET_FEE, '' );
+			context.commit( SET_FEE_VALIDITY, Validity.INCOMPLETE );
 		}
 		return Promise.resolve();
 	},

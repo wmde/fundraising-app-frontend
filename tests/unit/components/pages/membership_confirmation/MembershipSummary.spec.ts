@@ -191,13 +191,14 @@ describe( 'MembershipSummary', () => {
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"\"' );
 	} );
 
-	each( [ missingFee, missingInterval, missingPaymentType ] ).test( 'Does not render summary when some payment info is missing', ( paymentData ) => {
+	test( 'Does not render summary when address is invalid', () => {
 		const wrapper = mount( MembershipSummary, {
 			localVue,
 			propsData: {
 				address: companyAddress,
-				membershipApplication: paymentData,
+				membershipApplication: monthlyPayment,
 				salutations,
+				addressIsInvalid: true
 			},
 			store: createStore(),
 			mocks: {
@@ -206,7 +207,7 @@ describe( 'MembershipSummary', () => {
 			},
 		} );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( 'membership_form_review_payment_missing' );
+		expect( wrapper.find( '.payment-summary' ).text() ).toContain( 'membership_form_review_address_is_invalid' );
 		expect( wrapper.find( '.payment-summary' ).text() ).not.toContain( 'membershipFeeYearlyFormatted' );
 	} );
 

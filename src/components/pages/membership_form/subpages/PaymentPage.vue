@@ -1,25 +1,18 @@
 <template>
 	<div class="payment-page">
-		<payment v-bind="$props"></payment>
-		<div class="summary-wrapper has-margin-top-18 has-outside-border">
-			<membership-summary :membership-application="membershipApplication" :address="addressSummary" :salutations="salutations"></membership-summary>
-			<submit-values :tracking-data="{}"></submit-values>
-			<div class="columns has-margin-top-18">
-				<div class="column">
-					<b-button id="previous-btn" class="level-item"
-						@click="$emit( 'previous-page' )"
-						type="is-primary is-main"
-						outlined>
-						{{ $t('membership_form_section_back') }}
-					</b-button>
-				</div>
-				<div class="column">
-					<b-button id="submit-btn" :class="[ $store.getters.isValidating ? 'is-loading' : '', 'level-item']"
-						@click="submit"
-						type="is-primary is-main">
-						{{ $t('membership_form_finalize') }}
-					</b-button>
-				</div>
+		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
+    <membership-type v-if="showMembershipTypeOption"></membership-type>
+		<div class="has-margin-top-36">
+			<address-type :initial-value="addressType" v-on:address-type="setAddressType( $event )" />
+		</div>
+		<payment class="has-margin-top-36" v-bind="$props"></payment>
+		<div class="level has-margin-top-18">
+			<div class="level-left">
+				<b-button id="next" :class="[ 'is-form-input-width', $store.getters.isValidating ? 'is-loading' : '', 'level-item']"
+          @click="next()"
+          type="is-primary is-main">
+					{{ $t('donation_form_section_continue') }}
+				</b-button>
 			</div>
 		</div>
 	</div>
@@ -27,24 +20,24 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import MembershipType from '@/components/pages/membership_form//MembershipType.vue';
 import Payment from '@/components/pages/membership_form/Payment.vue';
-import SubmitValues from '@/components/pages/membership_form/SubmitValues.vue';
-import MembershipSummary from '@/components/shared/MembershipSummary.vue';
+import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
 import { action } from '@/store/util';
 import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@/store/membership_fee/actionTypes';
 import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
-import { membershipTypeName } from '@/view_models/MembershipTypeModel';
-import { addressTypeName } from '@/view_models/AddressTypeModel';
-import { Salutation } from '@/view_models/Salutation';
+import { AddressTypeModel } from '@/view_models/AddressTypeModel';
+import { setAddressType } from '@/store/membership_address/actionTypes';
+import { mapGetters } from 'vuex';
 
 export default Vue.extend( {
 	name: 'PaymentPage',
 	components: {
+		AddressType,
 		Payment,
-		SubmitValues,
-		MembershipSummary,
+		MembershipType,
 	},
 	props: {
 		validateFeeUrl: String,
@@ -53,50 +46,32 @@ export default Vue.extend( {
 		paymentTypes: Array as () => Array<String>,
 		validateBankDataUrl: String,
 		validateLegacyBankDataUrl: String,
-		salutations: Array as () => Array<Salutation>,
+		showMembershipTypeOption: Boolean,
 	},
 	methods: {
-		submit() {
+		next() {
 			waitForServerValidationToFinish( this.$store ).then( () => {
 				const storeCleanupActions = [ this.$store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeValuesAsInvalid ) ) ];
 				if ( this.$store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' ) {
 					storeCleanupActions.push( this.$store.dispatch( action( NS_BANKDATA, markemptyBankDataValuesAsInvalid ) ) );
 				}
 				return Promise.all( storeCleanupActions ).then( () => {
-					if ( this.$store.getters.paymentDataIsValid ) {
-						this.$emit( 'submit-membership' );
+					if ( this.$store.getters.paymentDataIsValid && this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {
+						this.$emit( 'next-page' );
 					} else {
 						document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
 					}
 				} );
 			} );
-
+		},
+		setAddressType( addressType: AddressTypeModel ): void {
+			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), addressType );
 		},
 	},
 	computed: {
-		membershipApplication: {
-			get(): object {
-				const payment = this.$store.state[ NS_MEMBERSHIP_FEE ].values;
-				return {
-					paymentIntervalInMonths: payment.interval,
-					membershipFee: payment.fee / 100,
-					paymentType: payment.type,
-					membershipType: membershipTypeName( this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipType' ] ),
-				};
-			},
-		},
-		addressSummary: {
-			get(): object {
-				return {
-					...this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values,
-					fullName: this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/fullName' ],
-					streetAddress: this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values.street,
-					postalCode: this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values.postcode,
-					countryCode: this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values.country,
-					applicantType: addressTypeName( this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/addressType' ] ),
-				};
-			},
-		},
+		...mapGetters( NS_MEMBERSHIP_ADDRESS, [
+			'addressType',
+		] ),
 	},
 } );
 </script>

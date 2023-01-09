@@ -37,16 +37,14 @@ export default Vue.extend( {
 		'address',
 		'membershipApplication',
 		'salutations',
+    'addressIsInvalid'
 	],
 	methods: {
 		getSummary: function () {
-			if ( !this.canRender(
-				this.membershipApplication.membershipFee,
-				this.membershipApplication.paymentIntervalInMonths,
-				this.membershipApplication.paymentType
-			) ) {
-				return this.$t( 'membership_form_review_payment_missing' );
-			}
+      if( this.addressIsInvalid ) {
+        return this.$t( 'membership_form_review_address_is_invalid' );
+      }
+
 			const yearlyFee = new YearlyMembershipFee( this.membershipApplication.paymentIntervalInMonths, this.membershipApplication.membershipFee );
 			const interval = this.$t( 'donation_form_payment_interval_' + this.membershipApplication.paymentIntervalInMonths );
 			const addressTypeRenderer = addressTypeRenderers[ this.address.applicantType ];
@@ -89,9 +87,6 @@ export default Vue.extend( {
 			}
 			const formattedAmount = this.$n( amount, { key: 'currency', currencyDisplay: 'name' } );
 			return `(${formattedAmount} ${intervalTranslation})`;
-		},
-		canRender: function ( fee, interval, paymentType ) {
-			return fee !== '' && !isNaN( Number( fee ) ) && interval !== '' && paymentType;
 		},
 	},
 } );
