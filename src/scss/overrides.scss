@@ -1,22 +1,6 @@
 @import "variables";
 
 // Miscellaneous overrides
-.navbar {
-	&-brand {
-		@include from($tablet) {
-			margin-right: 54px;
-		}
-	}
-	&-menu {
-		padding: 0;
-		.navbar-item {
-			padding: 18px;
-			@include until($desktop) {
-				border-bottom: 2px solid $fun-color-gray-light-transparency;
-			}
-		}
-	}
-}
 
 .subtitle {
 	display: inline-block;
