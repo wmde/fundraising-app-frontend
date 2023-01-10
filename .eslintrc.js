@@ -16,8 +16,8 @@ module.exports = {
 	],
 
 	rules: {
-		'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-		'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+		'no-console': 'error',
+		'no-debugger': 'error',
 
 		// problematic in TypeScript / ES6
 		'no-unused-vars': 'off',
