@@ -28,6 +28,11 @@
 					</b-button>
 				</div>
 			</div>
+			<div v-if="serverMessage !== ''" class="columns">
+				<div class="column has-text-danger has-text-centered has-text-weight-bold">
+					{{ $t( serverMessage ) }}
+				</div>
+			</div>
 		</div>
 		<div v-else class="columns has-margin-top-18 has-padding-bottom-18">
 			<div class="column">
@@ -48,7 +53,7 @@ import ReceiptOption from '@/components/shared/ReceiptOption.vue';
 import Email from '@/components/shared/Email.vue';
 import NewsletterOption from '@/components/pages/donation_form/NewsletterOption.vue';
 import AutofillHandler from '@/components/shared/AutofillHandler.vue';
-import { AddressValidity, AddressFormData, ValidationResult } from '@/view_models/Address';
+import { AddressValidity, AddressFormData, ValidationResult, Address } from '@/view_models/Address';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import { Validity } from '@/view_models/Validity';
 import { NS_ADDRESS } from '@/store/namespaces';
@@ -83,9 +88,10 @@ export default Vue.extend( {
 		return { mailHostList };
 	},
 	// TODO move computed etc into composition-api's setup() method
-	data: function (): { formData: AddressFormData, isValidating: boolean } {
+	data: function (): { formData: AddressFormData, isValidating: boolean, serverMessage: string } {
 		return {
 			isValidating: false,
+			serverMessage: '',
 			formData: {
 				salutation: {
 					name: 'salutation',
@@ -189,8 +195,10 @@ export default Vue.extend( {
 			switch ( this.$store.state.address.addressType ) {
 				case AddressTypeModel.COMPANY:
 					return 'company';
-				default:
+				case AddressTypeModel.PERSON:
 					return 'person';
+				default:
+					return 'anon';
 			}
 		},
 	},
@@ -200,7 +208,6 @@ export default Vue.extend( {
 				this.$store.dispatch( action( NS_ADDRESS, validateAddress ), this.$props.validateAddressUrl ),
 				this.$store.dispatch( action( NS_ADDRESS, validateEmail ), this.$props.validateEmailUrl ),
 			] ).then( mergeValidationResults );
-
 		},
 		onFieldChange( fieldName: string ): void {
 			this.$store.dispatch( action( NS_ADDRESS, setAddressField ), this.$data.formData[ fieldName ] );
@@ -218,6 +225,7 @@ export default Vue.extend( {
 		},
 		submit() {
 			this.$data.isValidating = true;
+			this.$data.serverMessage = '';
 			this.validateForm().then( ( validationResult: ValidationResult ) => {
 				if ( validationResult.status !== 'OK' ) {
 					this.$data.isValidating = false;
@@ -225,43 +233,39 @@ export default Vue.extend( {
 				}
 				let form = this.$refs.addressForm as HTMLFormElement;
 				trackFormSubmission( form );
-				const jsonForm = new FormData();
+
+				const data = {} as any;
 				Object.keys( this.$data.formData ).forEach( fieldName => {
-					jsonForm.append( fieldName, this.$data.formData[ fieldName ].value );
+					data[ fieldName ] = this.$data.formData[ fieldName ].value;
 				} );
-				jsonForm.append( 'updateToken', this.$props.donation.updateToken );
-				jsonForm.append( 'donation_id', this.$props.donation.id );
-				jsonForm.append( 'addressType', addressTypeName( this.$store.getters[ NS_ADDRESS + '/addressType' ] ) );
-				axios.post(
+				data.updateToken = this.$props.donation.updateToken;
+				data.donationId = this.$props.donation.id;
+				data.addressType = addressTypeName( this.$store.getters[ NS_ADDRESS + '/addressType' ] );
+				axios.put(
 					this.$props.updateDonorUrl,
-					jsonForm,
-					{ headers: { 'Content-Type': 'multipart/form-data' } }
-				).then( ( validationResultFromServer: AxiosResponse<any> ) => {
+					data,
+					{ headers: { 'Content-Type': 'application/json' } }
+				).then( ( response: AxiosResponse<Address> ) => {
 					this.$data.isValidating = false;
-					if ( validationResultFromServer.data.state === 'OK' ) {
-						const address = this.$data.formData;
-						let addressData = {
-							streetAddress: address.street.value,
-							postalCode: address.postcode.value,
-							city: address.city.value,
-							country: address.country.value,
-							email: address.email.value,
-						} as any;
-						if ( this.$store.getters[ NS_ADDRESS + '/addressType' ] === AddressTypeModel.COMPANY ) {
-							addressData.fullName = address.companyName.value;
-						} else {
-							addressData.salutation = address.salutation.value;
-							addressData.firstName = address.firstName.value;
-							addressData.lastName = address.lastName.value;
-							addressData.fullName = `${address.title.value} ${address.firstName.value} ${address.lastName.value}`;
-						}
-						this.$emit( 'address-updated', {
-							addressData,
-							addressType: addressTypeName( this.$store.getters[ NS_ADDRESS + '/addressType' ] ),
-						} );
-					} else {
-						this.$emit( 'address-update-failed' );
-					}
+					let addressData = {
+						street: response.data.street,
+						postcode: response.data.postcode,
+						city: response.data.city,
+						country: response.data.country,
+						email: response.data.email,
+						salutation: response.data.salutation,
+						firstName: response.data.firstName,
+						lastName: response.data.lastName,
+						fullName: response.data.fullName,
+					} as Address;
+					this.$emit( 'address-updated', {
+						addressData,
+						addressType: response.data.addressType,
+					} );
+				} ).catch( ( error: any ) => {
+					this.$emit( 'address-update-failed' );
+					this.$data.isValidating = false;
+					this.$data.serverMessage = error.response.data.errors[ 0 ];
 				} );
 			} );
 		},
