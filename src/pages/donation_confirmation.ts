@@ -19,6 +19,7 @@ import { action } from '@/store/util';
 import { NS_ADDRESS } from '@/store/namespaces';
 import { initializeAddress } from '@/store/address/actionTypes';
 import { addressTypeFromName } from '@/view_models/AddressTypeModel';
+import { Address } from '@/view_models/Address';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -33,7 +34,7 @@ interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },
 	countries: Array<Country>,
 	donation: Donation,
-	address: any,
+	address: Address,
 	addressType: String,
 	addressValidationPatterns: AddressValidation,
 	salutations: Array<Salutation>,
@@ -60,10 +61,10 @@ store.dispatch(
 			{ name: 'firstName', value: pageData.applicationVars.address.firstName ?? '' },
 			{ name: 'lastName', value: pageData.applicationVars.address.lastName ?? '' },
 			{ name: 'companyName', value: pageData.applicationVars.address.companyName ?? '' },
-			{ name: 'street', value: pageData.applicationVars.address.streetAddress ?? '' },
-			{ name: 'postcode', value: pageData.applicationVars.address.postalCode ?? '' },
+			{ name: 'street', value: pageData.applicationVars.address.street ?? '' },
+			{ name: 'postcode', value: pageData.applicationVars.address.postcode ?? '' },
 			{ name: 'city', value: pageData.applicationVars.address.city ?? '' },
-			{ name: 'country', value: pageData.applicationVars.address.countryCode ?? 'DE' },
+			{ name: 'country', value: pageData.applicationVars.address.country ?? 'DE' },
 			{ name: 'email', value: pageData.applicationVars.address.email ?? '' },
 		],
 	}
