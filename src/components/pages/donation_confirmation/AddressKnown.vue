@@ -12,15 +12,15 @@
 			<p v-if="addressType === 'person'" v-html="$t( 'donation_confirmation_address_person', {
 				salutation: salutation,
 				fullName: address.fullName,
-				streetAddress: address.streetAddress,
-				postalCode: address.postalCode,
+				streetAddress: address.street,
+				postalCode: address.postcode,
 				city: address.city,
 				country: country
 			} )"></p>
 			<p v-else v-html="$t( 'donation_confirmation_address_company', {
 				fullName: address.fullName,
-				streetAddress: address.streetAddress,
-				postalCode: address.postalCode,
+				streetAddress: address.street,
+				postalCode: address.postcode,
 				city: address.city,
 				country: country
 			} )"></p>
@@ -38,6 +38,7 @@ import { Donation } from '@/view_models/Donation';
 import { Country } from '@/view_models/Country';
 import SuccessIcon from '@/components/shared/icons/SuccessIcon.vue';
 import { TranslateResult } from 'vue-i18n';
+import { Address } from '@/view_models/Address';
 
 export default Vue.extend( {
 	name: 'AddressKnown',
@@ -46,12 +47,12 @@ export default Vue.extend( {
 	},
 	data: function () {
 		return {
-			countryCode: this.$props.address.countryCode,
+			countryCode: this.$props.address.country,
 		};
 	},
 	props: {
 		donation: Object as () => Donation,
-		address: Object,
+		address: Object as () => Address,
 		addressType: String,
 		countries: Array as () => Array<Country>,
 	},
