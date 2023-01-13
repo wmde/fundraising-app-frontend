@@ -61,7 +61,6 @@ import { setAddressField, validateAddress, validateEmail, setAddressType, valida
 import { action } from '@/store/util';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import SubmitValues from '@/components/pages/update_address/SubmitValues.vue';
-import axios, { AxiosResponse } from 'axios';
 import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 import { mergeValidationResults } from '@/merge_validation_results';
 import { camelizeName } from '@/camlize_name';
@@ -69,6 +68,7 @@ import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
 import { Salutation } from '@/view_models/Salutation';
 import { useMailHostList } from '@/components/shared/useMailHostList';
+import DonorResource from '@/api/DonorResource';
 
 export default Vue.extend( {
 	name: 'AddressModal',
@@ -168,7 +168,6 @@ export default Vue.extend( {
 	},
 	props: {
 		donation: Object,
-		updateDonorUrl: String,
 		validateEmailUrl: String,
 		validateAddressUrl: String,
 		countries: Array as () => Array<Country>,
@@ -176,6 +175,7 @@ export default Vue.extend( {
 		hasErrored: Boolean,
 		hasSucceeded: Boolean,
 		addressValidationPatterns: Object as () => AddressValidation,
+		donorResource: Object as () => DonorResource,
 	},
 	computed: {
 		fieldErrors: {
@@ -223,7 +223,7 @@ export default Vue.extend( {
 		setAddressType( addressType: AddressTypeModel ): void {
 			this.$store.dispatch( action( NS_ADDRESS, setAddressType ), addressType );
 		},
-		submit() {
+		submit(): void {
 			this.$data.isValidating = true;
 			this.$data.serverMessage = '';
 			this.validateForm().then( ( validationResult: ValidationResult ) => {
@@ -234,40 +234,26 @@ export default Vue.extend( {
 				let form = this.$refs.addressForm as HTMLFormElement;
 				trackFormSubmission( form );
 
-				const data = {} as any;
-				Object.keys( this.$data.formData ).forEach( fieldName => {
-					data[ fieldName ] = this.$data.formData[ fieldName ].value;
-				} );
-				data.updateToken = this.$props.donation.updateToken;
-				data.donationId = this.$props.donation.id;
-				data.addressType = addressTypeName( this.$store.getters[ NS_ADDRESS + '/addressType' ] );
-				axios.put(
-					this.$props.updateDonorUrl,
-					data,
-					{ headers: { 'Content-Type': 'application/json' } }
-				).then( ( response: AxiosResponse<Address> ) => {
+				this.$props.donorResource.put( this.getAddressData() ).then( ( addressData: Address ) => {
 					this.$data.isValidating = false;
-					let addressData = {
-						street: response.data.street,
-						postcode: response.data.postcode,
-						city: response.data.city,
-						country: response.data.country,
-						email: response.data.email,
-						salutation: response.data.salutation,
-						firstName: response.data.firstName,
-						lastName: response.data.lastName,
-						fullName: response.data.fullName,
-					} as Address;
-					this.$emit( 'address-updated', {
-						addressData,
-						addressType: response.data.addressType,
-					} );
-				} ).catch( ( error: any ) => {
+					this.$emit( 'address-updated', { addressData, addressType: addressData.addressType } );
+				} ).catch( ( error: string ) => {
 					this.$emit( 'address-update-failed' );
 					this.$data.isValidating = false;
-					this.$data.serverMessage = error.response.data.errors[ 0 ];
+					this.$data.serverMessage = error;
 				} );
 			} );
+		},
+		getAddressData(): Address {
+			const data = {
+				updateToken: this.$props.donation.updateToken,
+				donationId: this.$props.donation.id,
+				addressType: addressTypeName( this.$store.getters[ NS_ADDRESS + '/addressType' ] ),
+			} as any;
+			Object.keys( this.$data.formData ).forEach( fieldName => {
+				data[ fieldName ] = this.$data.formData[ fieldName ].value;
+			} );
+			return data as Address;
 		},
 	},
 } );
