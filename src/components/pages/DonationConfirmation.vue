@@ -47,7 +47,7 @@
 				:countries="countries"
 				:salutations="salutations"
 				:donation="donation"
-				:updateDonorUrl="updateDonorUrl"
+				:donorResource="donorResource"
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
 				:address-validation-patterns="addressValidationPatterns"
@@ -101,6 +101,7 @@ import Survey from '@/components/pages/donation_confirmation/Survey.vue';
 import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
 import ChevronDownIcon from '@/components/shared/icons/ChevronDown.vue';
 import DonationExported from '@/components/pages/donation_confirmation/DonationExported.vue';
+import DonorResource from '@/api/DonorResource';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
@@ -133,7 +134,6 @@ export default Vue.extend( {
 		donation: Object as () => Donation,
 		address: Object,
 		addressType: String,
-		updateDonorUrl: String,
 		cancelMembershipUrl: String,
 		validateAddressUrl: String,
 		validateEmailUrl: String,
@@ -142,6 +142,7 @@ export default Vue.extend( {
 		countries: Array as () => Array<Country>,
 		salutations: Array as () => Array<Salutation>,
 		addressValidationPatterns: Object as () => AddressValidation,
+		donorResource: Object as () => DonorResource,
 	},
 	methods: {
 		showAddressModal: function () {

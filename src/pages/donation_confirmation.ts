@@ -20,6 +20,7 @@ import { NS_ADDRESS } from '@/store/namespaces';
 import { initializeAddress } from '@/store/address/actionTypes';
 import { addressTypeFromName } from '@/view_models/AddressTypeModel';
 import { Address } from '@/view_models/Address';
+import DonorResource from '@/api/DonorResource';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -93,10 +94,10 @@ store.dispatch(
 					salutations: pageData.applicationVars.salutations,
 					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 					validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-					updateDonorUrl: pageData.applicationVars.urls.updateDonor,
 					cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
 					postCommentUrl: pageData.applicationVars.urls.postComment,
 					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+					donorResource: new DonorResource( pageData.applicationVars.urls.updateDonor ),
 				},
 			} ),
 		] ),
