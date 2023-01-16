@@ -9,6 +9,7 @@
 		<div v-if="!hasErrored && !hasSucceeded">
 			<AutofillHandler v-on:autofill="onAutofill">
 				<address-type-full v-on:address-type="setAddressType( $event )" :initial-address-type="addressTypeString"/>
+				<span v-if="addressTypeIsInvalid" class="help is-danger error-address-type">{{ $t( 'donation_form_section_address_error' ) }}</span>
 				<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"/>
 				<postal :show-error="fieldErrors" :form-data="formData" :countries="countries" v-on:field-changed="onFieldChange"/>
 				<email :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange" :common-mail-providers="mailHostList" />
@@ -21,14 +22,14 @@
 					</b-button>
 				</div>
 				<div class="column">
-					<b-button type="is-primary is-main has-margin-top-18 level-item"
+					<b-button type="is-primary is-main has-margin-top-18 level-item modal-submit"
 								:class="isValidating ? 'is-loading' : ''"
 								native-type="submit">
 						{{ $t( 'donation_confirmation_address_update_confirm' ) }}
 					</b-button>
 				</div>
 			</div>
-			<div v-if="serverMessage !== ''" class="columns">
+			<div v-if="serverMessage !== ''" class="columns error-server">
 				<div class="column has-text-danger has-text-centered has-text-weight-bold">
 					{{ $t( serverMessage ) }}
 				</div>
@@ -57,7 +58,14 @@ import { AddressValidity, AddressFormData, ValidationResult, Address } from '@/v
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import { Validity } from '@/view_models/Validity';
 import { NS_ADDRESS } from '@/store/namespaces';
-import { setAddressField, validateAddress, validateEmail, setAddressType, validateAddressField } from '@/store/address/actionTypes';
+import {
+	setAddressField,
+	validateAddress,
+	validateEmail,
+	setAddressType,
+	validateAddressField,
+	validateAddressType,
+} from '@/store/address/actionTypes';
 import { action } from '@/store/util';
 import PaymentBankData from '@/components/shared/PaymentBankData.vue';
 import SubmitValues from '@/components/pages/update_address/SubmitValues.vue';
@@ -198,16 +206,27 @@ export default Vue.extend( {
 				case AddressTypeModel.PERSON:
 					return 'person';
 				default:
-					return 'anon';
+					return 'unset';
 			}
+		},
+		addressTypeIsInvalid: function () {
+			return this.$store.getters[ NS_ADDRESS + '/addressTypeIsInvalid' ];
 		},
 	},
 	methods: {
 		validateForm(): Promise<ValidationResult> {
-			return Promise.all( [
-				this.$store.dispatch( action( NS_ADDRESS, validateAddress ), this.$props.validateAddressUrl ),
-				this.$store.dispatch( action( NS_ADDRESS, validateEmail ), this.$props.validateEmailUrl ),
-			] ).then( mergeValidationResults );
+			return this.$store.dispatch( action( NS_ADDRESS, validateAddressType ), {
+				type: this.$store.state.address.addressType,
+				disallowed: [ AddressTypeModel.UNSET, AddressTypeModel.ANON ],
+			} ).then( ( response: ValidationResult ) => {
+				if ( response.status !== 'OK' ) {
+					return Promise.resolve( response );
+				}
+				return Promise.all( [
+					this.$store.dispatch( action( NS_ADDRESS, validateAddress ), this.$props.validateAddressUrl ),
+					this.$store.dispatch( action( NS_ADDRESS, validateEmail ), this.$props.validateEmailUrl ),
+				] ).then( mergeValidationResults );
+			} );
 		},
 		onFieldChange( fieldName: string ): void {
 			this.$store.dispatch( action( NS_ADDRESS, setAddressField ), this.$data.formData[ fieldName ] );
