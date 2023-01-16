@@ -39,8 +39,8 @@ export default Vue.extend( {
 			if ( mailUserInput.indexOf( '@' ) === -1 ) {
 				return '';
 			}
-			const mailHost = mailUserInput.substring( mailUserInput.lastIndexOf( '@' ) + 1 );
-			if( mailHost.match( /^\w+\.\w{2}/ ) ) {
+			const mailHost = mailUserInput.slice( Math.max( 0, mailUserInput.lastIndexOf( '@' ) + 1 ) );
+			if ( mailHost.match( /^\w+\.\w{2}/ ) ) {
 				const closestFit = closest( mailHost, props.commonMailProviders );
 				const calculatedDistance = distance( mailHost, closestFit );
 				if ( calculatedDistance > 0 && calculatedDistance <= 3 ) {

@@ -37,13 +37,13 @@ export default Vue.extend( {
 		'address',
 		'membershipApplication',
 		'salutations',
-    'addressIsInvalid'
+		'addressIsInvalid',
 	],
 	methods: {
 		getSummary: function () {
-      if( this.addressIsInvalid ) {
-        return this.$t( 'membership_form_review_address_is_invalid' );
-      }
+			if ( this.addressIsInvalid ) {
+				return this.$t( 'membership_form_review_address_is_invalid' );
+			}
 
 			const yearlyFee = new YearlyMembershipFee( this.membershipApplication.paymentIntervalInMonths, this.membershipApplication.membershipFee );
 			const interval = this.$t( 'donation_form_payment_interval_' + this.membershipApplication.paymentIntervalInMonths );

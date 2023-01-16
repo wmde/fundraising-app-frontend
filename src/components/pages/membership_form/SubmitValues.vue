@@ -53,7 +53,7 @@ export default Vue.extend( {
 			incentives: state => ( state as MembershipAddressState ).incentives,
 			membershipType: state => membershipTypeName( ( state as MembershipAddressState ).membershipType ),
 			formattedDateOfBirth: state => {
-				return ( state as MembershipAddressState ).values['date'].replaceAll( '/', '-' );
+				return ( state as MembershipAddressState ).values.date.replaceAll( '/', '-' );
 			},
 		} ),
 		...mapState( NS_BANKDATA, {

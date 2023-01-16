@@ -7,19 +7,19 @@
 </template>
 
 <script lang="ts">
-import Vue, {computed} from 'vue';
+import Vue, { computed } from 'vue';
 
 export default Vue.extend( {
 	name: 'SubscriptionConfirmation',
 	props: {
 		'errorMessage': {
 			type: String,
-			default:''
+			default: '',
 		},
 	},
 	setup( props ) {
-		const hasErrors = computed(() => props.errorMessage && props.errorMessage!=='subscription_already_confirmed')
-		return { hasErrors }
-	}
+		const hasErrors = computed( () => props.errorMessage && props.errorMessage !== 'subscription_already_confirmed' );
+		return { hasErrors };
+	},
 } );
 </script>
