@@ -13,7 +13,7 @@
 					{{ salutation.label }}
 				</b-radio>
 			</div>
-			<span v-if="showError.salutation" class="help is-danger"> {{ $t( 'donation_form_salutation_error' ) }}</span>
+			<span v-if="showError.salutation" class="help is-danger error-salutation"> {{ $t( 'donation_form_salutation_error' ) }}</span>
 		</fieldset>
 		<div class="form-input">
 			<label for="title" class="subtitle">{{ $t( 'donation_form_academic_title_label' ) }}</label>
@@ -43,7 +43,7 @@
 						@blur="$emit('field-changed', 'firstName')">
 				</b-input>
 			</b-field>
-			<span v-if="showError.firstName" class="help is-danger">{{ $t( 'donation_form_firstname_error' ) }}</span>
+			<span v-if="showError.firstName" class="help is-danger error-first-name">{{ $t( 'donation_form_firstname_error' ) }}</span>
 		</div>
 		<div v-bind:class="['form-input', { 'is-invalid': showError.lastName }]">
 			<label for="last-name" class="subtitle">{{ $t( 'donation_form_lastname_label' ) }}</label>
@@ -56,7 +56,7 @@
 						@blur="$emit('field-changed', 'lastName')">
 				</b-input>
 			</b-field>
-			<span v-if="showError.lastName" class="help is-danger">{{ $t( 'donation_form_lastname_error' ) }}</span>
+			<span v-if="showError.lastName" class="help is-danger error-last-name">{{ $t( 'donation_form_lastname_error' ) }}</span>
 			<span v-if="lastNameValueEqualsPlaceholder" class="help">{{ $t( 'donation_form_lastname_placeholder_warning' ) }}</span>
 		</div>
 	</div>
@@ -71,7 +71,7 @@
 					@blur="$emit('field-changed', 'companyName')">
 			</b-input>
 		</b-field>
-		<span v-if="showError.companyName" class="help is-danger">{{ $t( 'donation_form_companyname_error' )  }}</span>
+		<span v-if="showError.companyName" class="help is-danger  error-company-name">{{ $t( 'donation_form_companyname_error' )  }}</span>
 	</div>
 </div>
 </template>

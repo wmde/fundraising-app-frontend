@@ -21,6 +21,7 @@ import { initializeAddress } from '@/store/address/actionTypes';
 import { addressTypeFromName } from '@/view_models/AddressTypeModel';
 import { Address } from '@/view_models/Address';
 import DonorResource from '@/api/DonorResource';
+import { Validity } from '@/view_models/Validity';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -51,22 +52,23 @@ trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
 Vue.use( FeatureTogglePlugin, { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } );
 
+const address = pageData.applicationVars.address;
 store.dispatch(
 	action( NS_ADDRESS, initializeAddress ),
 	{
 		addressType: addressTypeFromName( pageData.applicationVars.addressType.toString() ),
 		newsletter: pageData.applicationVars.donation.newsletter,
 		fields: [
-			{ name: 'salutation', value: pageData.applicationVars.address.salutation ?? '' },
-			{ name: 'title', value: pageData.applicationVars.address.title ?? '' },
-			{ name: 'firstName', value: pageData.applicationVars.address.firstName ?? '' },
-			{ name: 'lastName', value: pageData.applicationVars.address.lastName ?? '' },
-			{ name: 'companyName', value: pageData.applicationVars.address.companyName ?? '' },
-			{ name: 'street', value: pageData.applicationVars.address.street ?? '' },
-			{ name: 'postcode', value: pageData.applicationVars.address.postcode ?? '' },
-			{ name: 'city', value: pageData.applicationVars.address.city ?? '' },
-			{ name: 'country', value: pageData.applicationVars.address.country ?? 'DE' },
-			{ name: 'email', value: pageData.applicationVars.address.email ?? '' },
+			{ name: 'salutation', value: address.salutation ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'title', value: address.title ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'firstName', value: address.firstName ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'lastName', value: address.lastName ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'companyName', value: address.companyName ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'street', value: address.street ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'postcode', value: address.postcode ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'city', value: address.city ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'country', value: address.country ?? 'DE', validity: Validity.INCOMPLETE },
+			{ name: 'email', value: address.email ?? '', validity: Validity.INCOMPLETE },
 		],
 	}
 ).then( () => {
@@ -88,7 +90,7 @@ store.dispatch(
 			h( DonationConfirmation, {
 				props: {
 					donation: pageData.applicationVars.donation,
-					address: pageData.applicationVars.address,
+					address: address,
 					addressType: pageData.applicationVars.addressType,
 					countries: pageData.applicationVars.countries,
 					salutations: pageData.applicationVars.salutations,

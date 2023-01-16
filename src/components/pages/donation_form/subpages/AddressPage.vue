@@ -229,7 +229,10 @@ export default Vue.extend( {
 			.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
 		const submit = () => {
 			const validationCalls = [
-				store.dispatch( action( NS_ADDRESS, validateAddressType ), store.state.address.addressType ),
+				store.dispatch( action( NS_ADDRESS, validateAddressType ), {
+					type: store.state.address.addressType,
+					disallowed: [ AddressTypeModel.UNSET ],
+				} ),
 				store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
 				store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
 			];

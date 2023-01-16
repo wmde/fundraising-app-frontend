@@ -11,7 +11,7 @@
 					@blur="$emit('field-changed', 'street'); displayStreetWarning()">
 			</b-input>
 		</b-field>
-		<span v-if="showError.street" class="help is-danger">{{ $t('donation_form_street_error') }}</span>
+		<span v-if="showError.street" class="help is-danger error-street">{{ $t('donation_form_street_error') }}</span>
 		<span v-if="showWarning" class="help">{{ $t('donation_form_street_number_warning') }}</span>
 		<span v-if="streetValueEqualsPlaceholder" class="help">{{ $t('donation_form_street_placeholder_warning') }}</span>
 	</div>
@@ -26,14 +26,13 @@
 					@blur="$emit('field-changed', 'postcode')">
 			</b-input>
 		</b-field>
-		<span v-if="showError.postcode" class="help is-danger">{{ $t('donation_form_zip_error') }}</span>
+		<span v-if="showError.postcode" class="help is-danger error-postcode">{{ $t('donation_form_zip_error') }}</span>
 		<span v-if="zipValueEqualsPlaceholder" class="help">{{ $t('donation_form_zip_placeholder_warning') }}</span>
 	</div>
 	<div v-bind:class="['form-input', { 'is-invalid': showError.city }]">
 		<label for="city" class="subtitle">{{ $t( 'donation_form_city_label' ) }}</label>
 		<b-field :type="{ 'is-danger': showError.city }">
 			<AutocompleteCity
-				id="city"
 				:city="formData.city"
 				:example-placeholder="'donation_form_city_placeholder'"
 				:show-error="showError.city"
@@ -41,7 +40,7 @@
 				v-on:field-changed="$emit('field-changed', 'city')"
 			/>
 		</b-field>
-		<span v-if="showError.city" class="help is-danger">{{ $t('donation_form_city_error') }}</span>
+		<span v-if="showError.city" class="help is-danger error-city">{{ $t('donation_form_city_error') }}</span>
 		<span v-if="cityValueEqualsPlaceholder" class="help">{{ $t('donation_form_city_placeholder_warning') }}</span>
 	</div>
 
@@ -64,7 +63,7 @@
 				<span slot="group"><hr></span>
 			</b-autocomplete>
 		</b-field>
-		<span v-if="showError.country" class="help is-danger">{{ $t('donation_form_country_error') }}</span>
+		<span v-if="showError.country" class="help is-danger error-country">{{ $t('donation_form_country_error') }}</span>
 	</div>
 </div>
 </template>

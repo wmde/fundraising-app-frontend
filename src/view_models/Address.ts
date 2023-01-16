@@ -122,3 +122,8 @@ export interface SubmittedAddress {
     addressData: AddressFormData,
     addressType: string
 }
+
+export interface AddressTypeValidationRequest {
+    type: AddressTypeModel,
+    disallowed: AddressTypeModel[]
+}

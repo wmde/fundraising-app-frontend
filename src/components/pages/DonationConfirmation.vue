@@ -2,7 +2,7 @@
 	<div class="donation-confirmation">
 		<a class="mobile-call-to-action is-primary button" href="#membership-application-url"
 			v-on:click="scrollToCallToAction"
-			v-if="isMobileCallToActionButtonVisible">
+			v-if="isMobileCallToActionButtonVisible && !isAddressModalOpen">
 			Jetzt Fördermitglied werden
 			<chevron-down-icon/>
 		</a>
