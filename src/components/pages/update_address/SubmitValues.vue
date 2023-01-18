@@ -18,11 +18,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapState } from 'vuex';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
-import { Payment } from '@/view_models/Payment';
+import { NS_ADDRESS } from '@/store/namespaces';
 import { AddressState } from '@/view_models/Address';
 import { addressTypeName } from '@/view_models/AddressTypeModel';
-import { BankAccount } from '@/view_models/BankAccount';
 
 export default Vue.extend( {
 	name: 'SubmitValues',

@@ -12,7 +12,7 @@ module.exports = {
 
 	extends: [
 		'wikimedia',
-
+		'plugin:vue/base',
 	],
 
 	rules: {

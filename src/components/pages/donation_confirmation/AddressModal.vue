@@ -229,9 +229,9 @@ export default Vue.extend( {
 					this.$props.updateDonorUrl,
 					jsonForm,
 					{ headers: { 'Content-Type': 'multipart/form-data' } }
-				).then( ( validationResult: AxiosResponse<any> ) => {
+				).then( ( validationResultFromServer: AxiosResponse<any> ) => {
 					this.$data.isValidating = false;
-					if ( validationResult.data.state === 'OK' ) {
+					if ( validationResultFromServer.data.state === 'OK' ) {
 						const address = this.$data.formData;
 						let addressData = {
 							streetAddress: address.street.value,

@@ -21,7 +21,6 @@ import { trackFormSubmission } from '@/tracking';
 import { Country } from '@/view_models/Country';
 import { AddressValidation } from '@/view_models/Validation';
 import { Salutation } from '@/view_models/Salutation';
-import CampaignParameters from '@/util/CampaignParameters';
 
 export default Vue.extend( {
 	name: 'MembershipForm',
@@ -51,17 +50,17 @@ export default Vue.extend( {
 		};
 	},
 	computed: {
-    trackingParams: {
-      get(): string {
-        const params = new URLSearchParams( window.location.search );
-        const campaign = params.get('piwik_campaign');
-        const kwd = params.get('piwik_kwd');
-        if ( kwd && campaign ) {
-          return `piwik_campaign=${campaign}&piwik_kwd=${kwd}`;
-        }
-        return '';
-      }
-    },
+		trackingParams: {
+			get(): string {
+				const params = new URLSearchParams( window.location.search );
+				const campaign = params.get( 'piwik_campaign' );
+				const kwd = params.get( 'piwik_kwd' );
+				if ( kwd && campaign ) {
+					return `piwik_campaign=${campaign}&piwik_kwd=${kwd}`;
+				}
+				return '';
+			},
+		},
 		currentFormComponent: {
 			get(): string {
 				return this.$data.pages[ this.$data.currentPageIndex ];
