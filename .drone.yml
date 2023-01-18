@@ -15,7 +15,7 @@ steps:
             - echo "$DRONE_COMMIT_SHA" >> dist/DEPLOY_ID
             - echo "$DRONE_BUILD_STARTED" >> dist/DEPLOY_ID
             - cd dist/
-            - mkdir /build/fundraising-assets
+            - mkdir -p /build/fundraising-assets
             - tar -czvf /build/fundraising-assets/$DRONE_BRANCH.tar.gz .
             # 1008 is the hardcoded user ID of the deploy user
             - chown 1008:1008 /build/fundraising-assets/$DRONE_BRANCH.tar.gz
