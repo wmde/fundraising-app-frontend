@@ -1,0 +1,26 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+    -   name: build
+        image: node:18-alpine
+        volumes:
+            -   name: build-dir
+                path: /build
+        commands:
+            - npm install
+            - npm run build
+            - echo "$DRONE_BRANCH" > dist/DEPLOY_ID
+            - echo "$DRONE_COMMIT_SHA" >> dist/DEPLOY_ID
+            - echo "$DRONE_BUILD_STARTED" >> dist/DEPLOY_ID
+            - cd dist/
+            - mkdir /build/fundraising-assets
+            - tar -czvf /build/fundraising-assets/$DRONE_BRANCH.tar.gz .
+            # 1008 is the hardcoded user ID of the deploy user
+            - chown 1008:1008 /build/fundraising-assets/$DRONE_BRANCH.tar.gz
+
+volumes:
+    -   name: build-dir
+        host:
+            path: /tmp
