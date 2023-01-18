@@ -46,7 +46,7 @@ describe( 'AddressForms.vue', () => {
 		},
 		store,
 		mocks: {
-			$t: () => { },
+			$t: ( key: string ) => key,
 		},
 	} );
 
@@ -140,7 +140,7 @@ describe( 'AddressForms.vue', () => {
 				[ StoreKey as symbol ]: store,
 			},
 			mocks: {
-				$t: () => { },
+				$t: ( key: string ) => key,
 			},
 		} );
 

@@ -89,7 +89,7 @@ describe( 'Postal.vue', () => {
 		const wrapper = mount( Postal, {
 				localVue,
 				mocks: {
-					$t: () => { },
+					$t: ( key: string ) => key,
 				},
 				propsData: newTestProperties( {} ),
 			} ),
@@ -102,7 +102,7 @@ describe( 'Postal.vue', () => {
 		const wrapper = mount( Postal, {
 				localVue,
 				mocks: {
-					$t: () => { },
+					$t: ( key: string ) => key,
 				},
 				propsData: newTestProperties( {} ),
 			} ),
@@ -116,7 +116,7 @@ describe( 'Postal.vue', () => {
 		const wrapper = mount( Postal, {
 				localVue,
 				mocks: {
-					$t: () => { },
+					$t: ( key: string ) => key,
 				},
 				propsData: newTestProperties( {} ),
 			} ),

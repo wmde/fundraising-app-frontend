@@ -13,7 +13,11 @@
 		</b-field>
 		<span v-if="showError.street" class="help is-danger">{{ $t('donation_form_street_error') }}</span>
 		<span v-if="showWarning" class="help">{{ $t('donation_form_street_number_warning') }}</span>
-		<span v-if="streetValueEqualsPlaceholder" class="help">{{ $t('donation_form_street_placeholder_warning') }}</span>
+		<ValueEqualsPlaceholderWarning
+			:value="formData.street.value"
+			:placeholder="$t( 'donation_form_street_placeholder' )"
+			:warning="'donation_form_street_placeholder_warning'"
+		/>
 	</div>
 	<div v-bind:class="['form-input', { 'is-invalid': showError.postcode }]">
 		<label for="post-code" class="subtitle">{{ $t( 'donation_form_zip_label' ) }}</label>
@@ -27,7 +31,11 @@
 			</b-input>
 		</b-field>
 		<span v-if="showError.postcode" class="help is-danger">{{ $t('donation_form_zip_error') }}</span>
-		<span v-if="zipValueEqualsPlaceholder" class="help">{{ $t('donation_form_zip_placeholder_warning') }}</span>
+		<ValueEqualsPlaceholderWarning
+			:value="formData.postcode.value"
+			:placeholder="$t( 'donation_form_zip_placeholder' )"
+			:warning="'donation_form_zip_placeholder_warning'"
+		/>
 	</div>
 	<div v-bind:class="['form-input', { 'is-invalid': showError.city }]">
 		<label for="city" class="subtitle">{{ $t( 'donation_form_city_label' ) }}</label>
@@ -42,7 +50,11 @@
 			/>
 		</b-field>
 		<span v-if="showError.city" class="help is-danger">{{ $t('donation_form_city_error') }}</span>
-		<span v-if="cityValueEqualsPlaceholder" class="help">{{ $t('donation_form_city_placeholder_warning') }}</span>
+		<ValueEqualsPlaceholderWarning
+			:value="formData.city.value"
+			:placeholder="$t( 'donation_form_city_placeholder' )"
+			:warning="'donation_form_city_placeholder_warning'"
+		/>
 	</div>
 
 	<div v-bind:class="['form-input', { 'is-invalid': showError.country }]">
@@ -74,6 +86,7 @@ import Vue from 'vue';
 import { AddressValidity, AddressFormData } from '@/view_models/Address';
 import { Country } from '@/view_models/Country';
 import AutocompleteCity from '@/components/shared/AutocompleteCity.vue';
+import ValueEqualsPlaceholderWarning from '@/components/shared/ValueEqualsPlaceholderWarning.vue';
 
 export default Vue.extend( {
 	name: 'postal',
@@ -83,7 +96,7 @@ export default Vue.extend( {
 		countries: Array as () => Array<Country>,
 		postCodeValidation: String,
 	},
-	components: { AutocompleteCity },
+	components: { ValueEqualsPlaceholderWarning, AutocompleteCity },
 	data() {
 		return {
 			showWarning: false,
@@ -152,16 +165,6 @@ export default Vue.extend( {
 		},
 	},
 	computed: {
-		streetValueEqualsPlaceholder(): boolean {
-			return this.$props.formData.street.value === this.$t( 'donation_form_street_placeholder' );
-		},
-		cityValueEqualsPlaceholder(): boolean {
-			return this.$props.formData.city.value === this.$t( 'donation_form_city_placeholder' );
-		},
-		zipValueEqualsPlaceholder(): boolean {
-			return this.$props.formData.postcode.value === this.$t( 'donation_form_zip_placeholder' );
-		},
-
 		filteredCountries(): Array<Country> {
 			const filteredCountries = this.countries.filter( ( countryOption: Country ) => {
 				return countryOption.countryFullName

@@ -98,7 +98,7 @@ describe( 'Name.vue', () => {
 		const wrapper = mount( Name, {
 				localVue,
 				mocks: {
-					$t: () => { },
+					$t: ( key: string ) => key,
 				},
 				propsData: newTestProperties( {} ),
 			} ),
@@ -120,7 +120,7 @@ describe( 'Name.vue', () => {
 		const wrapper = mount( Name, {
 				localVue,
 				mocks: {
-					$t: () => { },
+					$t: ( key: string ) => key,
 				},
 				propsData: newTestProperties( { formData: testFormData } ),
 			} ),
