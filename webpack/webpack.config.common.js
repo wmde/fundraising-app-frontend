@@ -1,7 +1,7 @@
 'use strict';
 
 const ForkTsCheckerWebpackPlugin = require( 'fork-ts-checker-webpack-plugin' );
-const VueLoaderPlugin = require( 'vue-loader/lib/plugin' );
+const { VueLoaderPlugin } = require( 'vue-loader' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const helpers = require( './helpers' );
 const isDev = process.env.NODE_ENV === 'development';
