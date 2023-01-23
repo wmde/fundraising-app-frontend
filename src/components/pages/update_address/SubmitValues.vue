@@ -28,12 +28,12 @@ export default Vue.extend( {
 		'trackingData',
 	],
 	computed: {
-		...mapState( NS_ADDRESS, {
-			address: state => ( state as AddressState ).values,
-			addressType: state => {
-				return addressTypeName( ( state as AddressState ).addressType );
+		...mapState<AddressState>( NS_ADDRESS, {
+			address: ( state: AddressState ) => state.values,
+			addressType: ( state: AddressState ) => {
+				return addressTypeName( state.addressType );
 			},
-			receipt: state => ( state as AddressState ).receipt ? '1' : '0',
+			receipt: ( state: AddressState ) => state.receipt ? '1' : '0',
 		} ),
 	},
 } );

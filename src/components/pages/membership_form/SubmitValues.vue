@@ -41,23 +41,23 @@ import { membershipTypeName } from '@/view_models/MembershipTypeModel';
 export default Vue.extend( {
 	name: 'SubmitValues',
 	computed: {
-		...mapState( NS_MEMBERSHIP_FEE, {
-			fee: state => ( state as Payment ).values,
+		...mapState<Payment>( NS_MEMBERSHIP_FEE, {
+			fee: ( state: Payment ) => state.values,
 		} ),
-		...mapState( NS_MEMBERSHIP_ADDRESS, {
-			address: state => ( state as MembershipAddressState ).values,
-			addressType: state => {
-				return addressTypeName( ( state as MembershipAddressState ).addressType );
+		...mapState<MembershipAddressState>( NS_MEMBERSHIP_ADDRESS, {
+			address: ( state: MembershipAddressState ) => state.values,
+			addressType: ( state: MembershipAddressState ) => {
+				return addressTypeName( state.addressType );
 			},
-			receipt: state => ( state as MembershipAddressState ).receipt ? '1' : '0',
-			incentives: state => ( state as MembershipAddressState ).incentives,
-			membershipType: state => membershipTypeName( ( state as MembershipAddressState ).membershipType ),
-			formattedDateOfBirth: state => {
-				return ( state as MembershipAddressState ).values.date.replaceAll( '/', '-' );
+			receipt: ( state: MembershipAddressState ) => state.receipt ? '1' : '0',
+			incentives: ( state: MembershipAddressState ) => state.incentives,
+			membershipType: ( state: MembershipAddressState ) => membershipTypeName( state.membershipType ),
+			formattedDateOfBirth: ( state: MembershipAddressState ) => {
+				return state.values.date.replaceAll( '/', '-' );
 			},
 		} ),
 		...mapState( NS_BANKDATA, {
-			bankdata: state => ( state as BankAccount ).values,
+			bankdata: ( state: any ) => ( state as BankAccount ).values,
 		} ),
 	},
 } );
