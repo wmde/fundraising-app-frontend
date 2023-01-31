@@ -48,17 +48,17 @@ export default Vue.extend( {
 		campaignValues: Object as () => CampaignValues,
 	},
 	computed: {
-		...mapState( NS_PAYMENT, {
-			payment: state => ( state as Payment ).values,
+		...mapState<Payment>( NS_PAYMENT, {
+			payment: ( state: Payment ) => state.values,
 		} ),
-		...mapState( NS_ADDRESS, {
-			address: state => ( state as AddressState ).values,
-			addressType: state => {
-				return addressTypeName( ( state as AddressState ).addressType );
+		...mapState<AddressState>( NS_ADDRESS, {
+			address: ( state: AddressState ) => state.values,
+			addressType: ( state: AddressState ) => {
+				return addressTypeName( state.addressType );
 			},
 		} ),
-		...mapState( NS_BANKDATA, {
-			bankdata: state => ( state as BankAccount ).values,
+		...mapState<BankAccount>( NS_BANKDATA, {
+			bankdata: ( state: BankAccount ) => state.values,
 		} ),
 		newsletter(): string {
 			return this.$store.getters[ NS_ADDRESS + '/willGetNewsletter' ] ? '1' : '0';
