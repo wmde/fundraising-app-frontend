@@ -16,9 +16,11 @@ steps:
             - echo "$DRONE_BUILD_STARTED" >> dist/DEPLOY_ID
             - cd dist/
             - mkdir -p /build/fundraising-assets
-            - tar -czvf /build/fundraising-assets/$DRONE_BRANCH.tar.gz .
+            # Replace slashes with underscores, add suffix
+            - ARCHIVE_NAME="${DRONE_BRANCH//\//_}.tar.gz"
+            - tar -czvf /build/fundraising-assets/$ARCHIVE_NAME .
             # 1008 is the hardcoded user ID of the deploy user
-            - chown 1008:1008 /build/fundraising-assets/$DRONE_BRANCH.tar.gz
+            - chown 1008:1008 /build/fundraising-assets/$ARCHIVE_NAME
 
 volumes:
     -   name: build-dir
