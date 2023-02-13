@@ -17,6 +17,7 @@
 import Vue from 'vue';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import PaymentSummaryAnonymous from '@/components/shared/payment_summary/PaymentSummaryAnonymous.vue';
+import PaymentSummaryUnset from '@/components/shared/payment_summary/PaymentSummaryUnset.vue';
 import PaymentSummaryCompany from '@/components/shared/payment_summary/PaymentSummaryCompany.vue';
 import PaymentSummaryEmail from '@/components/shared/payment_summary/PaymentSummaryEmail.vue';
 import PaymentSummaryPrivate from '@/components/shared/payment_summary/PaymentSummaryPrivate.vue';
@@ -26,7 +27,7 @@ const addressTypeComponents = {
 	[ addressTypeName( AddressTypeModel.COMPANY ) ]: PaymentSummaryCompany,
 	[ addressTypeName( AddressTypeModel.EMAIL ) ]: PaymentSummaryEmail,
 	[ addressTypeName( AddressTypeModel.PERSON ) ]: PaymentSummaryPrivate,
-	[ addressTypeName( AddressTypeModel.UNSET ) ]: PaymentSummaryAnonymous,
+	[ addressTypeName( AddressTypeModel.UNSET ) ]: PaymentSummaryUnset,
 };
 
 export default Vue.extend( {
