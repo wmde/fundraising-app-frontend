@@ -61,8 +61,7 @@ export default Vue.extend( {
 			if ( !this.address.salutation ) {
 				return '';
 			}
-
-			return this.address.salutation;
+			return this.$props.salutations.find( salutation => salutation.value === this.address.salutation )?.display;
 		},
 	},
 } );

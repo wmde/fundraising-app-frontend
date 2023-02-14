@@ -79,7 +79,7 @@ export default Vue.extend( {
 				return '';
 			}
 
-			return this.address.salutation + ' ';
+			return this.$props.salutations.find( salutation => salutation.value === this.address.salutation )?.display;
 		},
 		renderAmount( amount, interval, intervalTranslation ) {
 			if ( interval === 12 ) {
