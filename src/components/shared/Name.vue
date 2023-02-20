@@ -57,7 +57,11 @@
 				</b-input>
 			</b-field>
 			<span v-if="showError.lastName" class="help is-danger">{{ $t( 'donation_form_lastname_error' ) }}</span>
-			<span v-if="lastNameValueEqualsPlaceholder" class="help">{{ $t( 'donation_form_lastname_placeholder_warning' ) }}</span>
+			<ValueEqualsPlaceholderWarning
+				:value="formData.lastName.value"
+				:placeholder="$t( 'donation_form_lastname_placeholder_check' )"
+				:warning="'donation_form_lastname_placeholder_warning'"
+			/>
 		</div>
 	</div>
 	<div v-if="showCompanyFields" v-bind:class="['form-input', { 'is-invalid': showError.companyName }]">
@@ -83,9 +87,11 @@ import { AddressValidity, AddressFormData } from '@/view_models/Address';
 import { computed } from 'vue';
 import { Salutation } from '@/view_models/Salutation';
 import { adjustSalutationLocaleIfNeeded } from '@/components/shared/SalutationLocaleAdjuster';
+import ValueEqualsPlaceholderWarning from '@/components/shared/ValueEqualsPlaceholderWarning.vue';
 
 export default Vue.extend( {
 	name: 'name',
+	components: { ValueEqualsPlaceholderWarning },
 	props: {
 		showError: Object as () => AddressValidity,
 		formData: Object as () => AddressFormData,
@@ -105,15 +111,8 @@ export default Vue.extend( {
 				props.addressType === AddressTypeModel.EMAIL ||
 				props.addressType === AddressTypeModel.UNSET );
 		const showCompanyFields = computed( () => props.addressType === AddressTypeModel.COMPANY );
-		const lastNameValueEqualsPlaceholder = computed( () => {
-			// This functionality was broken before conversion to composition API and is difficult
-			// to implement without explicit props, we're waiting for
-			// a decision in https://phabricator.wikimedia.org/T286540
-			return false;
-		} );
 
 		return {
-			lastNameValueEqualsPlaceholder,
 			showCompanyFields,
 			showPersonalFields,
 		};

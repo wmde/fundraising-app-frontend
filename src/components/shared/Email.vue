@@ -14,6 +14,11 @@
 			{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
 		</span>
 		<span v-if="showError" class="help is-danger">{{ $t( 'donation_form_email_error' ) }}</span>
+		<ValueEqualsPlaceholderWarning
+			:value="formData.email.value"
+			:placeholder="$t( 'donation_form_email_placeholder' )"
+			:warning="'donation_form_email_placeholder_warning'"
+		/>
     </div>
 </template>
 
@@ -22,9 +27,11 @@ import Vue from 'vue';
 import { computed } from 'vue';
 import { distance, closest } from '@/util/fastest-levenshtein';
 import { AddressFormData } from '@/view_models/Address';
+import ValueEqualsPlaceholderWarning from '@/components/shared/ValueEqualsPlaceholderWarning.vue';
 
 export default Vue.extend( {
 	name: 'Email',
+	components: { ValueEqualsPlaceholderWarning },
 	props: {
 		formData: Object as () => AddressFormData,
 		showError: Boolean,

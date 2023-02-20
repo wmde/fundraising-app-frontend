@@ -39,7 +39,7 @@ describe( 'Address.vue', () => {
 			},
 			store: createStore(),
 			mocks: {
-				$t: () => { },
+				$t: ( key: string ) => key,
 			},
 		} );
 	} );
@@ -130,7 +130,7 @@ describe( 'Address.vue', () => {
 				},
 				store,
 				mocks: {
-					$t: () => { },
+					$t: ( key: string ) => key,
 				},
 			} );
 		} );
