@@ -109,3 +109,30 @@ export const donationExportedConfirmationData = createConfirmationData( {
 		isExported: true,
 	},
 } );
+
+export const companyExportedPayPalConfirmationData = createConfirmationData( {
+	addressType: 'firma',
+	donation: {
+		paymentType: 'PPL',
+		bankTransferCode: testBankTransferCode,
+		isExported: true,
+	},
+} );
+
+export const anonymousExportedPayPalConfirmationData = createConfirmationData( {
+	addressType: 'anonym',
+	donation: {
+		paymentType: 'PPL',
+		bankTransferCode: testBankTransferCode,
+		isExported: true,
+	},
+} );
+
+export const emailExportedPayPalConfirmationData = createConfirmationData( {
+	addressType: 'anonym',
+	donation: {
+		paymentType: 'PPL',
+		bankTransferCode: testBankTransferCode,
+		isExported: true,
+	},
+} );

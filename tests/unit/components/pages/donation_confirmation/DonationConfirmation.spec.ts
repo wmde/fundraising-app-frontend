@@ -5,9 +5,11 @@ import DonationConfirmation from '@/components/pages/DonationConfirmation.vue';
 import { createStore } from '@/store/donation_store';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import {
-	anonymousBankTransferConfirmationData,
-	bankTransferConfirmationData, donationExportedConfirmationData,
-	emailBankTransferConfirmationData,
+	anonymousBankTransferConfirmationData, anonymousExportedPayPalConfirmationData,
+	bankTransferConfirmationData,
+	companyExportedPayPalConfirmationData,
+	donationExportedConfirmationData,
+	emailBankTransferConfirmationData, emailExportedPayPalConfirmationData,
 	payPalConfirmationData,
 } from '../../../../data/confirmationData';
 
@@ -92,7 +94,7 @@ describe( 'DonationConfirmation', () => {
 		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
 	} );
 
-	it( 'displays donation exported card when donation is exported', () => {
+	it( 'displays donation exported card when donation is exported and person', () => {
 		const wrapper = mount( DonationConfirmation, {
 			localVue,
 			propsData: donationExportedConfirmationData,
@@ -104,6 +106,54 @@ describe( 'DonationConfirmation', () => {
 		} );
 
 		expect( wrapper.find( '.exported-donation' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'displays donation exported card when donation is exported and company', () => {
+		const wrapper = mount( DonationConfirmation, {
+			localVue,
+			propsData: companyExportedPayPalConfirmationData,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+				$n: () => {},
+			},
+		} );
+
+		expect( wrapper.find( '.exported-donation' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'does not display donation exported card when donation is anonymous', () => {
+		const wrapper = mount( DonationConfirmation, {
+			localVue,
+			propsData: anonymousExportedPayPalConfirmationData,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+				$n: () => {},
+			},
+		} );
+
+		expect( wrapper.find( '.exported-donation' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'does not display donation exported card when donation is email', () => {
+		const wrapper = mount( DonationConfirmation, {
+			localVue,
+			propsData: emailExportedPayPalConfirmationData,
+			store: createStore(),
+			mocks: {
+				$t: ( key: string ) => key,
+				$n: () => {},
+			},
+		} );
+
+		expect( wrapper.find( '.exported-donation' ).exists() ).toBeFalsy();
 		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
 		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
 	} );
