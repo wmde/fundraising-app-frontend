@@ -38,6 +38,7 @@ import { Donation } from '@/view_models/Donation';
 import { Country } from '@/view_models/Country';
 import SuccessIcon from '@/components/shared/icons/SuccessIcon.vue';
 import { TranslateResult } from 'vue-i18n';
+import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
 	name: 'AddressKnown',
@@ -54,6 +55,7 @@ export default Vue.extend( {
 		address: Object,
 		addressType: String,
 		countries: Array as () => Array<Country>,
+		salutations: Array as () => Array<Salutation>,
 	},
 	computed: {
 		country: function (): string {
@@ -64,7 +66,7 @@ export default Vue.extend( {
 			if ( !this.$props.address.salutation || this.$props.address.salutation === '' ) {
 				return '';
 			}
-			return this.$props.address.salutation + ' ';
+			return this.$props.salutations.find( ( salutation: Salutation ) => salutation.label === this.address.salutation )?.display;
 		},
 	},
 } );
