@@ -15,14 +15,13 @@ steps:
             - echo "$DRONE_COMMIT_SHA" >> dist/DEPLOY_ID
             - echo "$DRONE_BUILD_STARTED" >> dist/DEPLOY_ID
             - cd dist/
-            - mkdir -p /build/fundraising-assets
             # Replace slashes with underscores, add suffix
             - ARCHIVE_NAME="${DRONE_BRANCH//\//_}.tar.gz"
-            - tar -czvf /build/fundraising-assets/$ARCHIVE_NAME .
+            - tar -czvf /build/$ARCHIVE_NAME .
             # 1008 is the hardcoded user ID of the deploy user
-            - chown 1008:1008 /build/fundraising-assets/$ARCHIVE_NAME
+            - chown 1008:1008 /build/$ARCHIVE_NAME
 
 volumes:
     -   name: build-dir
         host:
-            path: /tmp
+            path: /home/deploy/fundraising-app-frontend-builds
