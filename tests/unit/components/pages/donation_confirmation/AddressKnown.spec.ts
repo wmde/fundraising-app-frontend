@@ -14,6 +14,7 @@ describe( 'AddressKnown', () => {
 				address: payPalConfirmationData.address,
 				addressType: payPalConfirmationData.addressType,
 				countries: payPalConfirmationData.countries,
+				salutations: payPalConfirmationData.salutations,
 			},
 			store: createStore(),
 			mocks: {
@@ -37,6 +38,7 @@ describe( 'AddressKnown', () => {
 				address: payPalConfirmationData.address,
 				addressType: payPalConfirmationData.addressType,
 				countries: payPalConfirmationData.countries,
+				salutations: payPalConfirmationData.salutations,
 			},
 			store: createStore(),
 			mocks: {
@@ -56,6 +58,7 @@ describe( 'AddressKnown', () => {
 				address: companyPayPalConfirmationData.address,
 				addressType: companyPayPalConfirmationData.addressType,
 				countries: companyPayPalConfirmationData.countries,
+				salutations: payPalConfirmationData.salutations,
 			},
 			store: createStore(),
 			mocks: {
@@ -75,6 +78,7 @@ describe( 'AddressKnown', () => {
 				address: payPalConfirmationData.address,
 				addressType: payPalConfirmationData.addressType,
 				countries: payPalConfirmationData.countries,
+				salutations: payPalConfirmationData.salutations,
 			},
 			store: createStore(),
 			mocks: {
