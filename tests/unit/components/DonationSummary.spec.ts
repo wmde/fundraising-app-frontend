@@ -48,8 +48,8 @@ describe( 'DonationSummary', () => {
 			firstName: 'Vlad',
 			lastName: 'Dracul',
 			fullName: 'Dr. Vlad Dracul',
-			streetAddress: 'Blutgasse 5',
-			postalCode: '80666',
+			street: 'Blutgasse 5',
+			postcode: '80666',
 			city: 'München',
 			countryCode: 'DE',
 		};
@@ -70,7 +70,7 @@ describe( 'DonationSummary', () => {
 		} );
 		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_person' );
 		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
-		const expectedFields = [ 'salutation', 'fullName', 'streetAddress', 'postalCode', 'city' ];
+		const expectedFields = [ 'salutation', 'fullName', 'street', 'postcode', 'city' ];
 		expectedFields.map( ( fieldName: string ) => expect( params.address ).toContain( address[ fieldName ] ) );
 	} );
 
@@ -78,8 +78,8 @@ describe( 'DonationSummary', () => {
 		const $t = jest.fn();
 		const address:{ [index:string] : string } = {
 			fullName: 'Evil Corp',
-			streetAddress: 'Blutgasse 5',
-			postalCode: '80666',
+			street: 'Blutgasse 5',
+			postcode: '80666',
 			city: 'München',
 			countryCode: 'DE',
 		};
@@ -100,7 +100,7 @@ describe( 'DonationSummary', () => {
 		} );
 		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_company' );
 		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
-		const expectedFields = [ 'fullName', 'streetAddress', 'postalCode', 'city' ];
+		const expectedFields = [ 'fullName', 'street', 'postcode', 'city' ];
 		expectedFields.map( ( fieldName: string ) => expect( params.address ).toContain( address[ fieldName ] ) );
 	} );
 

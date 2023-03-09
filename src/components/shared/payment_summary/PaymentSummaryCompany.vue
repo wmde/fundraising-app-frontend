@@ -39,15 +39,15 @@ export default {
 			}
 			return [
 				this.$props.address.fullName,
-				this.$props.address.streetAddress,
-				this.$props.address.postalCode + ' ' + this.$props.address.city,
+				this.$props.address.street,
+				this.$props.address.postcode + ' ' + this.$props.address.city,
 				this.$props.country,
 			].join( ', ' );
 		},
 		canRenderAddress: function () {
 			return this.$props.address.fullName
-				&& this.$props.address.streetAddress
-				&& this.$props.address.postalCode
+				&& this.$props.address.street
+				&& this.$props.address.postcode
 				&& this.$props.address.city;
 		},
 	},
