@@ -12,23 +12,23 @@
 			<p v-if="addressType === 'person'" v-html="$t( 'donation_confirmation_address_person', {
 				salutation: salutation,
 				fullName: address.fullName,
-				streetAddress: address.streetAddress,
-				postalCode: address.postalCode,
+				streetAddress: address.street,
+				postalCode: address.postcode,
 				city: address.city,
 				country: country
 			} )"></p>
 			<p v-else v-html="$t( 'donation_confirmation_address_company', {
 				fullName: address.fullName,
-				streetAddress: address.streetAddress,
-				postalCode: address.postalCode,
+				streetAddress: address.street,
+				postalCode: address.postcode,
 				city: address.city,
 				country: country
 			} )"></p>
 		</div>
 		<div class="payment-email has-margin-bottom-18" v-html="$t( 'donation_confirmation_email', { email: this.$props.address.email } )"></div>
-		<!--div>{{ $t( 'donation_confirmation_address_update' ) }}
+		<div>{{ $t( 'donation_confirmation_address_update' ) }}
 			<a href="#" id="update-address-link" @click="$emit( 'show-address-modal' )">{{ $t( 'donation_confirmation_address_update_link' ) }}</a>
-		</div-->
+		</div>
 	</div>
 </template>
 
@@ -38,6 +38,7 @@ import { Donation } from '@/view_models/Donation';
 import { Country } from '@/view_models/Country';
 import SuccessIcon from '@/components/shared/icons/SuccessIcon.vue';
 import { TranslateResult } from 'vue-i18n';
+import { Address } from '@/view_models/Address';
 import { Salutation } from '@/view_models/Salutation';
 
 export default Vue.extend( {
@@ -47,12 +48,12 @@ export default Vue.extend( {
 	},
 	data: function () {
 		return {
-			countryCode: this.$props.address.countryCode,
+			countryCode: this.$props.address.country,
 		};
 	},
 	props: {
 		donation: Object as () => Donation,
-		address: Object,
+		address: Object as () => Address,
 		addressType: String,
 		countries: Array as () => Array<Country>,
 		salutations: Array as () => Array<Salutation>,

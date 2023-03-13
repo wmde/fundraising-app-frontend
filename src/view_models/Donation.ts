@@ -11,4 +11,6 @@ export interface Donation {
 	paymentType: String,
 	status: String
 	updateToken: String,
+
+	isExported: Boolean,
 }

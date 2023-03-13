@@ -3,12 +3,14 @@
 		<legend class="subtitle">{{ $t( 'donation_form_section_address_header_type' ) }}</legend>
 		<div class="radio-container">
 			<b-radio
+					id="address-type-person"
 					name="addressTypeInternal"
 					v-model="addressType"
 					native-value="person"
 			>{{ $t( 'donation_form_addresstype_option_private' ) }}
 			</b-radio>
 			<b-radio
+					id="address-type-company"
 					name="addressTypeInternal"
 					v-model="addressType"
 					native-value="company"
@@ -30,7 +32,7 @@ export default defineComponent( {
 	},
 	setup( props, { emit } ) {
 
-		const addressType = ref<string>( props.initialAddressType ? props.initialAddressType : 'unset' );
+		const addressType = ref<string>( props.initialAddressType ?? 'unset' );
 
 		watch( addressType, newAddressType => {
 			switch ( newAddressType ) {

@@ -24,6 +24,7 @@ function createConfirmationData( overrides: any ) {
 			newsletter: false,
 			paymentType: '',
 			updateToken: 'd387cebd6cc05efbd117545492cb0e99',
+			isExported: false,
 		},
 		countries: [
 			{
@@ -98,5 +99,40 @@ export const directDebitConfirmationData = createConfirmationData( {
 	donation: {
 		paymentType: 'BEZ',
 		bankTransferCode: testBankTransferCode,
+	},
+} );
+
+export const donationExportedConfirmationData = createConfirmationData( {
+	donation: {
+		paymentType: 'PPL',
+		bankTransferCode: testBankTransferCode,
+		isExported: true,
+	},
+} );
+
+export const companyExportedPayPalConfirmationData = createConfirmationData( {
+	addressType: 'firma',
+	donation: {
+		paymentType: 'PPL',
+		bankTransferCode: testBankTransferCode,
+		isExported: true,
+	},
+} );
+
+export const anonymousExportedPayPalConfirmationData = createConfirmationData( {
+	addressType: 'anonym',
+	donation: {
+		paymentType: 'PPL',
+		bankTransferCode: testBankTransferCode,
+		isExported: true,
+	},
+} );
+
+export const emailExportedPayPalConfirmationData = createConfirmationData( {
+	addressType: 'anonym',
+	donation: {
+		paymentType: 'PPL',
+		bankTransferCode: testBankTransferCode,
+		isExported: true,
 	},
 } );

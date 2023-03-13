@@ -4,6 +4,21 @@ import { MembershipTypeModel } from './MembershipTypeModel';
 import { AddressRequirements } from '@/store/address/constants';
 import { FieldInitialization } from '@/view_models/FieldInitialization';
 
+export interface Address {
+    addressType: string,
+    salutation: string,
+    title: string,
+    firstName: string,
+    lastName: string,
+    fullName: string,
+    companyName: string,
+    street: string,
+    city: string,
+    postcode: string,
+    country: string,
+    email: string
+}
+
 export interface AddressValidity {
     [key: string]: boolean
 }
@@ -106,4 +121,9 @@ export interface PostData {
 export interface SubmittedAddress {
     addressData: AddressFormData,
     addressType: string
+}
+
+export interface AddressTypeValidationRequest {
+    type: AddressTypeModel,
+    disallowed: AddressTypeModel[]
 }

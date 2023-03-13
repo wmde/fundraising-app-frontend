@@ -2,7 +2,7 @@
 	<div class="donation-confirmation">
 		<a class="mobile-call-to-action is-primary button" href="#membership-application-url"
 			v-on:click="scrollToCallToAction"
-			v-if="isMobileCallToActionButtonVisible">
+			v-if="isMobileCallToActionButtonVisible && !isAddressModalOpen">
 			Jetzt Fördermitglied werden
 			<chevron-down-icon/>
 		</a>
@@ -17,7 +17,7 @@
 					v-on:show-comment-modal="showCommentModal()"
 				/>
 			</div>
-			<div class="column is-half pt-0 pb-0">
+			<div class="column is-half pt-0 pb-0" v-if="!donation.isExported">
 				<address-known
 					v-if="showAddress"
 					v-on:show-address-modal="showAddressModal()"
@@ -28,7 +28,9 @@
 					:salutations="salutations"
 				/>
 				<address-anonymous v-else v-on:show-address-modal="showAddressModal()"/>
-
+			</div>
+			<div class="column is-half pt-0 pb-0" v-else-if="addressType === 'person' || addressType === 'firma'">
+				<donation-exported :address-type="currentAddressType"/>
 			</div>
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
 				<membership-info
@@ -44,7 +46,7 @@
 				:countries="countries"
 				:salutations="salutations"
 				:donation="donation"
-				:updateDonorUrl="updateDonorUrl"
+				:donorResource="donorResource"
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
 				:address-validation-patterns="addressValidationPatterns"
@@ -97,10 +99,13 @@ import AddressAnonymous from '@/components/pages/donation_confirmation/AddressAn
 import Survey from '@/components/pages/donation_confirmation/Survey.vue';
 import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
 import ChevronDownIcon from '@/components/shared/icons/ChevronDown.vue';
+import DonationExported from '@/components/pages/donation_confirmation/DonationExported.vue';
+import DonorResource from '@/api/DonorResource';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
 	components: {
+		DonationExported,
 		ChevronDownIcon,
 		Survey,
 		SuccessMessageBankTransfer,
@@ -128,7 +133,6 @@ export default Vue.extend( {
 		donation: Object as () => Donation,
 		address: Object,
 		addressType: String,
-		updateDonorUrl: String,
 		cancelMembershipUrl: String,
 		validateAddressUrl: String,
 		validateEmailUrl: String,
@@ -137,6 +141,7 @@ export default Vue.extend( {
 		countries: Array as () => Array<Country>,
 		salutations: Array as () => Array<Salutation>,
 		addressValidationPatterns: Object as () => AddressValidation,
+		donorResource: Object as () => DonorResource,
 	},
 	methods: {
 		showAddressModal: function () {

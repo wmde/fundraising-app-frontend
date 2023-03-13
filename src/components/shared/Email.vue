@@ -13,7 +13,7 @@
 		<span v-if="suggestedProvider" @click="onSuggestionClicked(suggestedProvider)" class="help is-clickable">
 			{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
 		</span>
-		<span v-if="showError" class="help is-danger">{{ $t( 'donation_form_email_error' ) }}</span>
+		<span v-if="showError" class="help is-danger error-email">{{ $t( 'donation_form_email_error' ) }}</span>
 		<ValueEqualsPlaceholderWarning
 			:value="formData.email.value"
 			:placeholder="$t( 'donation_form_email_placeholder' )"

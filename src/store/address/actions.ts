@@ -12,7 +12,13 @@ import {
 	validateAddressType,
 	validateCountry,
 } from '@/store/address/actionTypes';
-import { AddressState, CountryValidationFields, InitialAddressValues, InputField } from '@/view_models/Address';
+import {
+	AddressState,
+	AddressTypeValidationRequest,
+	CountryValidationFields,
+	InitialAddressValues,
+	InputField,
+} from '@/view_models/Address';
 import { ValidationResponse } from '@/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import {
@@ -91,8 +97,8 @@ export const actions = {
 		context.commit( SET_ADDRESS_TYPE, type );
 		context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.VALID } );
 	},
-	[ validateAddressType ]( context: ActionContext<AddressState, any>, type: AddressTypeModel ) {
-		if ( type === AddressTypeModel.UNSET ) {
+	[ validateAddressType ]( context: ActionContext<AddressState, any>, request: AddressTypeValidationRequest ) {
+		if ( request.disallowed.includes( request.type ) ) {
 			context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.INVALID } );
 			return Promise.resolve( { status: 'ERR', messages: [] } );
 		}

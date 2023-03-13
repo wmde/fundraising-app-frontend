@@ -15,6 +15,13 @@ import { FeatureTogglePlugin } from '@/FeatureToggle';
 import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
 import { Salutation } from '@/view_models/Salutation';
 import { trackGoal } from '@/tracking';
+import { action } from '@/store/util';
+import { NS_ADDRESS } from '@/store/namespaces';
+import { initializeAddress } from '@/store/address/actionTypes';
+import { addressTypeFromName } from '@/view_models/AddressTypeModel';
+import { Address } from '@/view_models/Address';
+import DonorResource from '@/api/DonorResource';
+import { Validity } from '@/view_models/Validity';
 
 const PAGE_IDENTIFIER = 'donation-confirmation',
 	IS_FULLWIDTH_PAGE = true,
@@ -29,7 +36,7 @@ interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },
 	countries: Array<Country>,
 	donation: Donation,
-	address: Object,
+	address: Address,
 	addressType: String,
 	addressValidationPatterns: AddressValidation,
 	salutations: Array<Salutation>,
@@ -45,35 +52,56 @@ trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
 Vue.use( FeatureTogglePlugin, { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } );
 
-new Vue( {
-	store,
-	i18n,
-	provide: {
-		cityAutocompleteResource: new ApiCityAutocompleteResource(),
-	},
-	render: h => h( App, {
-		props: {
-			assetsPath: pageData.assetsPath,
-			pageIdentifier: PAGE_IDENTIFIER,
-			isFullWidth: IS_FULLWIDTH_PAGE,
-			locale: i18n.locale,
+const address = pageData.applicationVars.address;
+store.dispatch(
+	action( NS_ADDRESS, initializeAddress ),
+	{
+		addressType: addressTypeFromName( pageData.applicationVars.addressType.toString() ),
+		newsletter: pageData.applicationVars.donation.newsletter,
+		fields: [
+			{ name: 'salutation', value: address.salutation ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'title', value: address.title ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'firstName', value: address.firstName ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'lastName', value: address.lastName ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'companyName', value: address.companyName ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'street', value: address.street ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'postcode', value: address.postcode ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'city', value: address.city ?? '', validity: Validity.INCOMPLETE },
+			{ name: 'country', value: address.country ?? 'DE', validity: Validity.INCOMPLETE },
+			{ name: 'email', value: address.email ?? '', validity: Validity.INCOMPLETE },
+		],
+	}
+).then( () => {
+	new Vue( {
+		store,
+		i18n,
+		provide: {
+			cityAutocompleteResource: new ApiCityAutocompleteResource(),
 		},
-	},
-	[
-		h( DonationConfirmation, {
+		render: h => h( App, {
 			props: {
-				donation: pageData.applicationVars.donation,
-				address: pageData.applicationVars.address,
-				addressType: pageData.applicationVars.addressType,
-				countries: pageData.applicationVars.countries,
-				salutations: pageData.applicationVars.salutations,
-				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-				validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-				updateDonorUrl: pageData.applicationVars.urls.updateDonor,
-				cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
-				postCommentUrl: pageData.applicationVars.urls.postComment,
-				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+				assetsPath: pageData.assetsPath,
+				pageIdentifier: PAGE_IDENTIFIER,
+				isFullWidth: IS_FULLWIDTH_PAGE,
+				locale: i18n.locale,
 			},
-		} ),
-	] ),
-} ).$mount( '#app' );
+		},
+		[
+			h( DonationConfirmation, {
+				props: {
+					donation: pageData.applicationVars.donation,
+					address: address,
+					addressType: pageData.applicationVars.addressType,
+					countries: pageData.applicationVars.countries,
+					salutations: pageData.applicationVars.salutations,
+					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+					validateEmailUrl: pageData.applicationVars.urls.validateEmail,
+					cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
+					postCommentUrl: pageData.applicationVars.urls.postComment,
+					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+					donorResource: new DonorResource( pageData.applicationVars.urls.updateDonor ),
+				},
+			} ),
+		] ),
+	} ).$mount( '#app' );
+} );
