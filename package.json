@@ -54,7 +54,7 @@
     "eslint-plugin-jsdoc": "^40.1.2",
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-json-es": "^1.5.7",
-    "eslint-plugin-unicorn": "^46.0.0",
+    "eslint-plugin-unicorn": "^47.0.0",
     "eslint-plugin-vue": "^9.11.1",
     "file-loader": "^6.2.0",
     "fork-ts-checker-webpack-plugin": "^7.3.0",
