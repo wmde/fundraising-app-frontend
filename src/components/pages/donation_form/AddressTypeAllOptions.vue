@@ -33,6 +33,9 @@
 					native-value="anonymous"
 					:disabled="disableAnonymous">
 				{{ $t( 'donation_form_address_choice_noaddress_addresstype' ) }}
+				<div class="info-message has-margin-top-18">
+					{{ $t( 'donation_form_address_choice_noaddress_notice_addresstype' ) }}
+				</div>
 			</b-radio>
 		</div>
 
