@@ -8,17 +8,18 @@
 		<input type="hidden" name="bic" :value="bankdata.bic">
 
 		<input type="hidden" name="addressType" :value="addressType">
-
-		<input type="hidden" name="salutation" :value="address.salutation">
-		<input type="hidden" name="title" :value="address.title">
-		<input type="hidden" name="firstName" :value="address.firstName">
-		<input type="hidden" name="lastName" :value="address.lastName">
-		<input type="hidden" name="companyName" :value="address.companyName">
-		<input type="hidden" name="street" :value="address.street">
-		<input type="hidden" name="postcode" :value="address.postcode">
-		<input type="hidden" name="city" :value="address.city">
-		<input type="hidden" name="country" :value="address.country">
-		<input type="hidden" name="email" :value="address.email">
+		<template v-if="addressType !== 'anonym'">
+			<input type="hidden" name="salutation" :value="address.salutation">
+			<input type="hidden" name="title" :value="address.title">
+			<input type="hidden" name="firstName" :value="address.firstName">
+			<input type="hidden" name="lastName" :value="address.lastName">
+			<input type="hidden" name="companyName" :value="address.companyName">
+			<input type="hidden" name="street" :value="address.street">
+			<input type="hidden" name="postcode" :value="address.postcode">
+			<input type="hidden" name="city" :value="address.city">
+			<input type="hidden" name="country" :value="address.country">
+			<input type="hidden" name="email" :value="address.email">
+		</template>
 		<input type="hidden" name="info" :value="newsletter">
 		<input type="hidden" name="donationReceipt" :value="receipt">
 
