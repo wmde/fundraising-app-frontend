@@ -8,16 +8,19 @@
 		<input type="hidden" name="bic" :value="bankdata.bic">
 
 		<input type="hidden" name="addressType" :value="addressType">
+
 		<template v-if="addressType !== 'anonym'">
+			<template v-if="addressType !== 'email'">
+				<input type="hidden" name="companyName" :value="address.companyName">
+				<input type="hidden" name="street" :value="address.street">
+				<input type="hidden" name="postcode" :value="address.postcode">
+				<input type="hidden" name="city" :value="address.city">
+				<input type="hidden" name="country" :value="address.country">
+			</template>
 			<input type="hidden" name="salutation" :value="address.salutation">
 			<input type="hidden" name="title" :value="address.title">
 			<input type="hidden" name="firstName" :value="address.firstName">
 			<input type="hidden" name="lastName" :value="address.lastName">
-			<input type="hidden" name="companyName" :value="address.companyName">
-			<input type="hidden" name="street" :value="address.street">
-			<input type="hidden" name="postcode" :value="address.postcode">
-			<input type="hidden" name="city" :value="address.city">
-			<input type="hidden" name="country" :value="address.country">
 			<input type="hidden" name="email" :value="address.email">
 		</template>
 		<input type="hidden" name="info" :value="newsletter">
@@ -41,6 +44,7 @@ import { addressTypeName } from '@/view_models/AddressTypeModel';
 import { BankAccount } from '@/view_models/BankAccount';
 import { TrackingData } from '@/view_models/TrackingData';
 import { CampaignValues } from '@/view_models/CampaignValues';
+import addressType from '@/components/pages/membership_form/AddressType.vue';
 
 export default Vue.extend( {
 	name: 'SubmitValues',
@@ -49,6 +53,9 @@ export default Vue.extend( {
 		campaignValues: Object as () => CampaignValues,
 	},
 	computed: {
+		addressType() {
+			return addressType;
+		},
 		...mapState<Payment>( NS_PAYMENT, {
 			payment: ( state: Payment ) => state.values,
 		} ),

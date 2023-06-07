@@ -1,6 +1,196 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SubmitValues.vue renders input fields 1`] = `
+exports[`SubmitValues.vue renders input fields for ANON address type 1`] = `
+<span
+  class="submit-values"
+>
+  <input
+    name="paymentType"
+    type="hidden"
+    value="BEZ"
+  />
+   
+  <input
+    name="interval"
+    type="hidden"
+    value="3"
+  />
+   
+  <input
+    name="amount"
+    type="hidden"
+    value="2349"
+  />
+   
+  <input
+    name="iban"
+    type="hidden"
+    value="DE12500105170648489890"
+  />
+   
+  <input
+    name="bic"
+    type="hidden"
+    value="INGDDEFFXXX"
+  />
+   
+  <input
+    name="addressType"
+    type="hidden"
+    value="anonym"
+  />
+   
+  <!---->
+   
+  <input
+    name="info"
+    type="hidden"
+    value="1"
+  />
+   
+  <input
+    name="donationReceipt"
+    type="hidden"
+    value="1"
+  />
+   
+  <input
+    name="impCount"
+    type="hidden"
+    value="5"
+  />
+   
+  <input
+    name="bImpCount"
+    type="hidden"
+    value="1"
+  />
+   
+  <input
+    name="piwik_campaign"
+    type="hidden"
+    value="nicholas"
+  />
+   
+  <input
+    name="piwik_kwd"
+    type="hidden"
+    value="cage"
+  />
+</span>
+`;
+
+exports[`SubmitValues.vue renders input fields for EMAIL address type 1`] = `
+<span
+  class="submit-values"
+>
+  <input
+    name="paymentType"
+    type="hidden"
+    value="BEZ"
+  />
+   
+  <input
+    name="interval"
+    type="hidden"
+    value="3"
+  />
+   
+  <input
+    name="amount"
+    type="hidden"
+    value="2349"
+  />
+   
+  <input
+    name="iban"
+    type="hidden"
+    value="DE12500105170648489890"
+  />
+   
+  <input
+    name="bic"
+    type="hidden"
+    value="INGDDEFFXXX"
+  />
+   
+  <input
+    name="addressType"
+    type="hidden"
+    value="email"
+  />
+   
+  <!---->
+   
+  <input
+    name="salutation"
+    type="hidden"
+    value="Herr"
+  />
+   
+  <input
+    name="title"
+    type="hidden"
+    value="Dr."
+  />
+   
+  <input
+    name="firstName"
+    type="hidden"
+    value="Victor"
+  />
+   
+  <input
+    name="lastName"
+    type="hidden"
+    value="van Doom"
+  />
+   
+  <input
+    name="email"
+    type="hidden"
+    value="doom@untergang.biz"
+  />
+   
+  <input
+    name="info"
+    type="hidden"
+    value="1"
+  />
+   
+  <input
+    name="donationReceipt"
+    type="hidden"
+    value="1"
+  />
+   
+  <input
+    name="impCount"
+    type="hidden"
+    value="5"
+  />
+   
+  <input
+    name="bImpCount"
+    type="hidden"
+    value="1"
+  />
+   
+  <input
+    name="piwik_campaign"
+    type="hidden"
+    value="nicholas"
+  />
+   
+  <input
+    name="piwik_kwd"
+    type="hidden"
+    value="cage"
+  />
+</span>
+`;
+
+exports[`SubmitValues.vue renders input fields for PERSON address type 1`] = `
 <span
   class="submit-values"
 >
@@ -41,30 +231,6 @@ exports[`SubmitValues.vue renders input fields 1`] = `
   />
    
   <input
-    name="salutation"
-    type="hidden"
-    value="Herr"
-  />
-   
-  <input
-    name="title"
-    type="hidden"
-    value="Dr."
-  />
-   
-  <input
-    name="firstName"
-    type="hidden"
-    value="Victor"
-  />
-   
-  <input
-    name="lastName"
-    type="hidden"
-    value="van Doom"
-  />
-   
-  <input
     name="companyName"
     type="hidden"
   />
@@ -91,6 +257,30 @@ exports[`SubmitValues.vue renders input fields 1`] = `
     name="country"
     type="hidden"
     value="DE"
+  />
+   
+  <input
+    name="salutation"
+    type="hidden"
+    value="Herr"
+  />
+   
+  <input
+    name="title"
+    type="hidden"
+    value="Dr."
+  />
+   
+  <input
+    name="firstName"
+    type="hidden"
+    value="Victor"
+  />
+   
+  <input
+    name="lastName"
+    type="hidden"
+    value="van Doom"
   />
    
   <input
