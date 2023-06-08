@@ -65,7 +65,8 @@ import FundsDistributionInfo from '@/components/pages/use_of_funds/FundsDistribu
 import { defineComponent, computed } from 'vue';
 
 function splitStringAt( splitWords: string[], str: string ) {
-	const rx = new RegExp( '(' + splitWords.join( '|' ) + ')', 'g' );
+	const pattern = /{'(' + splitWords.join( '|' ) + ')'}/;
+	const rx = new RegExp( pattern, 'g' );
 	return str.split( rx ).filter( w => w !== '' );
 }
 
