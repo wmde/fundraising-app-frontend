@@ -42,6 +42,13 @@ exports[`SubmitValues.vue renders input fields for ANON address type 1`] = `
    
   <!---->
    
+  <!---->
+   
+  <input
+    name="companyName"
+    type="hidden"
+  />
+   
   <input
     name="info"
     type="hidden"
@@ -120,8 +127,6 @@ exports[`SubmitValues.vue renders input fields for EMAIL address type 1`] = `
     value="email"
   />
    
-  <!---->
-   
   <input
     name="salutation"
     type="hidden"
@@ -150,6 +155,13 @@ exports[`SubmitValues.vue renders input fields for EMAIL address type 1`] = `
     name="email"
     type="hidden"
     value="doom@untergang.biz"
+  />
+   
+  <!---->
+   
+  <input
+    name="companyName"
+    type="hidden"
   />
    
   <input
@@ -231,35 +243,6 @@ exports[`SubmitValues.vue renders input fields for PERSON address type 1`] = `
   />
    
   <input
-    name="companyName"
-    type="hidden"
-  />
-   
-  <input
-    name="street"
-    type="hidden"
-    value="Untere Straße 5"
-  />
-   
-  <input
-    name="postcode"
-    type="hidden"
-    value="08114"
-  />
-   
-  <input
-    name="city"
-    type="hidden"
-    value="Haasenstadt"
-  />
-   
-  <input
-    name="country"
-    type="hidden"
-    value="DE"
-  />
-   
-  <input
     name="salutation"
     type="hidden"
     value="Herr"
@@ -287,6 +270,35 @@ exports[`SubmitValues.vue renders input fields for PERSON address type 1`] = `
     name="email"
     type="hidden"
     value="doom@untergang.biz"
+  />
+   
+  <input
+    name="street"
+    type="hidden"
+    value="Untere Straße 5"
+  />
+   
+  <input
+    name="postcode"
+    type="hidden"
+    value="08114"
+  />
+   
+  <input
+    name="city"
+    type="hidden"
+    value="Haasenstadt"
+  />
+   
+  <input
+    name="country"
+    type="hidden"
+    value="DE"
+  />
+   
+  <input
+    name="companyName"
+    type="hidden"
   />
    
   <input
