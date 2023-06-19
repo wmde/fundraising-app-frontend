@@ -16,7 +16,7 @@
     "axios": "^1.4.0",
     "buefy": "^0.9.23",
     "bulma-helpers": "^0.4.3",
-    "core-js": "^3.30.2",
+    "core-js": "^3.31.0",
     "format-number": "^3.0.0",
     "js-cookie": "^3.0.5",
     "jsonp": "^0.2.1",
