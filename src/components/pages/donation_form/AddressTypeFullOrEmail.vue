@@ -1,9 +1,6 @@
 <template>
 	<fieldset class="form-input form-input__vertical-option-list">
 		<legend class="subtitle">{{ $t( 'donation_form_provisional_address_choice_title_addresstype_no_anon' ) }}</legend>
-		<div class="info-message has-margin-top-18">
-			{{ $t( 'donation_form_provisional_address_choice_title_notice_addresstype_no_anon' ) }}
-		</div>
 		<div v-show="isDirectDebit" class="info-message has-margin-top-18">
 			{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_no_anon' ) }}
 		</div>
@@ -14,9 +11,9 @@
 					native-value="full"
 					name="addressType"
 			>
-				{{ $t( 'donation_form_provisional_address_choice_fulladdress_addresstype_no_anon' ) }}
-				<div class="info-message has-margin-top-18">
-					{{ $t( 'donation_form_provisional_address_choice_fulladdress_notice_addresstype_no_anon' ) }}
+				{{ $t( 'donation_form_provisional_address_choice_fulladdress_donation_receipt' ) }}
+				<div class="info-message has-margin-top-18 has-text-dark-lighter">
+					{{ $t( 'donation_form_provisional_address_choice_fulladdress_notice_donation_receipt' ) }}
 				</div>
 			</b-radio>
 			<b-radio
@@ -24,9 +21,9 @@
 					v-model="addressType"
 					native-value="email"
 					:disabled="disableEmail">
-				{{ $t( 'donation_form_provisional_address_choice_emailonly_addresstype_no_anon' ) }}
-				<div class="info-message has-margin-top-18">
-					{{ $t( 'donation_form_provisional_address_choice_emailonly_notice_addresstype_no_anon' ) }}
+				{{ $t( 'donation_form_provisional_address_choice_emailonly_donation_receipt' ) }}
+				<div class="info-message has-margin-top-18 has-text-dark-lighter">
+					{{ $t( 'donation_form_provisional_address_choice_emailonly_notice_donation_receipt' ) }}
 				</div>
 			</b-radio>
 		</div>
