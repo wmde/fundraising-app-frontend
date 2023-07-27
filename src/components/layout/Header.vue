@@ -21,7 +21,7 @@
 					<a v-for="( link, index ) in headerMenu"
 						:key="index"
 						:href="link.url"
-						v-bind:class="[{ 'active': link.id === pageIdentifier }, 'navbar-item']">
+						v-bind:class="[{ 'active': link.ids.includes( pageIdentifier ) }, 'navbar-item']">
 						{{ $t( 'header_menu_item_' + link.localeId ) }}
 					</a>
 				</div>
@@ -44,10 +44,10 @@ export default Vue.extend( {
 		return {
 			showNavbarBurger: false,
 			'headerMenu': [
-				{ id: 'donation-form', localeId: 'donate', url: '/' },
-				{ id: 'membership-application', localeId: 'membership_application', url: '/apply-for-membership' },
-				{ id: 'faq-page', localeId: 'faq', url: '/faq' },
-				{ id: 'use-of-funds', localeId: 'use_of_resources', url: '/use-of-funds' },
+				{ ids: [ 'donation-form', 'donation-confirmation' ], localeId: 'donate', url: '/' },
+				{ ids: [ 'membership-application', 'membership-application-confirmation' ], localeId: 'membership_application', url: '/apply-for-membership' },
+				{ ids: [ 'faq-page' ], localeId: 'faq', url: '/faq' },
+				{ ids: [ 'use-of-funds' ], localeId: 'use_of_resources', url: '/use-of-funds' },
 			],
 		};
 	},
