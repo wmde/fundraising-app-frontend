@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@airbrake/browser": "^2.1.8",
-    "@babel/runtime": "^7.22.5",
+    "@babel/runtime": "^7.22.6",
     "axios": "^1.4.0",
     "buefy": "^0.9.23",
     "bulma-helpers": "^0.4.3",
