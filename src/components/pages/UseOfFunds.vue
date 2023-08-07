@@ -43,8 +43,7 @@
 			<div class="use_of_funds__orgchart_text">
 				<h2>{{ content.orgchart.headline }}</h2>
 				<div>
-					<p><span v-for="part in highlightedOrganization" :key="part.text" :class="part.className">{{ ' ' }}{{ part.text }}{{ ' ' }}</span> </p>
-					<p v-for="para in content.orgchart.paragraphs.slice( 1 )" :key="para">{{ para }}</p>
+					<p v-for="para in content.orgchart.paragraphs" :key="para" v-html="highlightOrganisation( para )"></p>
 				</div>
 			</div>
 			<div class="use_of_funds__orgchart_image">
@@ -62,13 +61,7 @@
 import CompanyBudgets from '@/components/pages/use_of_funds/CompanyBudgets.vue';
 import FundsDistributionAccordion from '@/components/pages/use_of_funds/FundsDistributionAccordion.vue';
 import FundsDistributionInfo from '@/components/pages/use_of_funds/FundsDistributionInfo.vue';
-import { defineComponent, computed } from 'vue';
-
-function splitStringAt( splitWords: string[], str: string ) {
-	const pattern = /{'(' + splitWords.join( '|' ) + ')'}/;
-	const rx = new RegExp( pattern, 'g' );
-	return str.split( rx ).filter( w => w !== '' );
-}
+import { defineComponent } from 'vue';
 
 export default defineComponent( {
 	name: 'use-of-funds',
@@ -87,18 +80,12 @@ export default defineComponent( {
 			required: true,
 		},
 	},
-	setup( props ) {
-		const highlightedOrganization = computed( () => {
-			const organizationClassLookup = new Map<string, string>( Object.entries( props.content.orgchart.organizationClasses ) );
-			const getHighlightClassName = ( part: string ) => organizationClassLookup.has( part ) ?
-				`use_of_funds__org use_of_funds__org--${organizationClassLookup.get( part )}` : '';
-
-			return splitStringAt( Array.from( organizationClassLookup.keys() ), props.content.orgchart.paragraphs[ 0 ] ).map( part => {
-				return { text: part, className: getHighlightClassName( part ) };
-			} );
-		} );
+	setup() {
+		const highlightOrganisation = ( content: string ): string => {
+			return content.replace( /<(wmf|wmde)>([^<]*)<\/\1>/g, '<span class="use_of_funds__org--$1">$2</span>' );
+		};
 		return {
-			highlightedOrganization,
+			highlightOrganisation,
 		};
 	},
 } );
