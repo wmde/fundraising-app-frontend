@@ -47,7 +47,7 @@
 				</div>
 			</div>
 			<div class="use_of_funds__orgchart_image">
-				<img :src="assetsPath + '/images/WMDE-funds-forwarding.gif'" />
+				<img :src="'/resources/'+$i18n.locale.replace('-', '_')+'/WMDE-funds-forwarding.svg'" :alt="content.orgchart.imageAltText" />
 			</div>
 		</div>
 		<div class="banner_model__section use_of_funds__section--call_to_action">
