@@ -10,14 +10,16 @@
 						{{ $t( 'contact_form_firstname_label' ) }}
 						<span class="has-text-gray-dark">{{ $t('contact_form_optional') }}</span>
 					</label>
-					<b-field>
-						<b-input type="text"
-								id="firstname"
-								name="firstname"
-								:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
-								v-model="formData.firstname.value">
-						</b-input>
-					</b-field>
+					<div class="field">
+						<TextInput
+							type="text"
+							input-id="firstname"
+							name="firstname"
+							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
+							v-model="formData.firstname.value"
+							:has-error="formData.firstname.validity === Validity.INVALID"
+						/>
+					</div>
 					<span v-if="formData.firstname.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_firstname_error' ) }}</span>
 				</div>
 				<div class="has-margin-top-18">
@@ -25,14 +27,16 @@
 						{{ $t( 'contact_form_lastname_label' ) }}
 						<span class="has-text-gray-dark">{{ $t('contact_form_optional') }}</span>
 					</label>
-					<b-field>
-						<b-input type="text"
-								id="lastname"
-								name="lastname"
-								:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
-								v-model="formData.lastname.value">
-						</b-input>
-					</b-field>
+					<div class="field">
+						<TextInput
+							type="text"
+							input-id="lastname"
+							name="lastname"
+							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
+							v-model="formData.lastname.value"
+							:has-error="formData.lastname.validity === Validity.INVALID"
+						/>
+					</div>
 					<span v-if="formData.lastname.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_lastname_error' ) }}</span>
 				</div>
 				<div class="has-margin-top-18">
@@ -40,28 +44,32 @@
 						{{ $t( 'contact_form_donation_number_label' ) }}
 						<span class="has-text-gray-dark">{{ $t('contact_form_optional') }}</span>
 					</label>
-					<b-field>
-						<b-input type="text"
-								id="donationNumber"
-								name="donationNumber"
-								:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
-								v-model="formData.donationNumber.value">
-						</b-input>
-					</b-field>
+					<div class="field">
+						<TextInput
+							type="text"
+							input-id="donationNumber"
+							name="donationNumber"
+							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
+							v-model="formData.donationNumber.value"
+							:has-error="formData.donationNumber.validity === Validity.INVALID"
+						/>
+					</div>
 					<span v-if="formData.donationNumber.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_donation_number_error' ) }}</span>
 				</div>
 			</fieldset>
 			<fieldset class="has-margin-top-36">
 				<div class="has-margin-top-18">
 				<label for="email" class="subtitle">{{ $t( 'contact_form_email_label' ) }}</label>
-				<b-field>
-					<b-input type="text"
-							id="email"
-							name="email"
-							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_email_placeholder' ) } )"
-							v-model="formData.email.value">
-					</b-input>
-				</b-field>
+				<div class="field">
+					<TextInput
+						type="text"
+						input-id="email"
+						name="email"
+						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_email_placeholder' ) } )"
+						v-model="formData.email.value"
+						:has-error="formData.email.validity === Validity.INVALID"
+					/>
+				</div>
 				<span v-if="formData.email.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_email_error' ) }}</span>
 				</div>
 				<div class="has-margin-top-18">
@@ -78,25 +86,29 @@
 				</div>
 				<div class="has-margin-top-18">
 					<label for="subject" class="subtitle">{{ $t( 'contact_form_subject_label' ) }}</label>
-					<b-field>
-						<b-input type="text"
-								id="subject"
-								name="subject"
-								:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
-								v-model="formData.subject.value">
-						</b-input>
-					</b-field>
+					<div class="field">
+						<TextInput
+							type="text"
+							input-id="subject"
+							name="subject"
+							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
+							v-model="formData.subject.value"
+							:has-error="formData.subject.validity === Validity.INVALID"
+						/>
+					</div>
 					<span v-if="formData.subject.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_subject_error' ) }}</span>
 				</div>
 				<div class="has-margin-top-18">
 					<label for="messageBody" class="subtitle">{{ $t( 'contact_form_body_label' ) }}</label>
-					<b-field>
-						<b-input type="textarea"
-								id="messageBody"
-								name="messageBody"
-								v-model="formData.comment.value">
-						</b-input>
-					</b-field>
+					<div class="field">
+						<TextInput
+							input-type="textarea"
+							input-id="messageBody"
+							name="messageBody"
+							v-model="formData.comment.value"
+							:has-error="formData.comment.validity === Validity.INVALID"
+						/>
+					</div>
 					<span v-if="formData.comment.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_body_error' ) }}</span>
 				</div>
 			</fieldset>
@@ -116,9 +128,11 @@ import { Helper } from '@/store/util';
 import { Validity } from '@/view_models/Validity';
 import { ContactFormValidation } from '@/view_models/Validation';
 import { trackFormSubmission } from '@/tracking';
+import TextInput from '@/components/shared/form_inputs/TextInput.vue';
 
 export default Vue.extend( {
 	name: 'Contact',
+	components: { TextInput },
 	data: function (): { formData: FormData } {
 		return {
 			formData: {

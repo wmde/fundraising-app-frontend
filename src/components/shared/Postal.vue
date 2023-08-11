@@ -2,15 +2,17 @@
 <div>
 	<div v-bind:class="['form-input', { 'is-invalid': showError.street, 'is-warning': showWarning }]">
 		<label for="street" class="subtitle">{{ $t( 'donation_form_street_label' ) }}</label>
-		<b-field :type="{ 'is-danger': showError.street, 'is-warning': showWarning && !showError.street }">
-			<b-input type="text"
-					id="street"
-					:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_placeholder' ) } )"
-					autocomplete="street-address"
-					v-model="formData.street.value"
-					@blur="$emit('field-changed', 'street'); displayStreetWarning()">
-			</b-input>
-		</b-field>
+		<div class="field">
+			<TextInput
+				input-id="street"
+				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_placeholder' ) } )"
+				autocomplete="street-address"
+				v-model="formData.street.value"
+				:has-error="showError.street"
+				:has-message="showWarning && !showError.street"
+				@blur="$emit('field-changed', 'street'); displayStreetWarning()"
+			/>
+		</div>
 		<span v-if="showError.street" class="help is-danger error-street">{{ $t('donation_form_street_error') }}</span>
 		<span v-if="showWarning" class="help">{{ $t('donation_form_street_number_warning') }}</span>
 		<ValueEqualsPlaceholderWarning
@@ -21,15 +23,16 @@
 	</div>
 	<div v-bind:class="['form-input', { 'is-invalid': showError.postcode }]">
 		<label for="post-code" class="subtitle">{{ $t( 'donation_form_zip_label' ) }}</label>
-		<b-field :type="{ 'is-danger': showError.postcode }">
-			<b-input type="text"
-					id="post-code"
-					v-model="formData.postcode.value"
-					:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_zip_placeholder' ) } )"
-					autocomplete="postal-code"
-					@blur="$emit('field-changed', 'postcode')">
-			</b-input>
-		</b-field>
+		<div class="field">
+			<TextInput
+				input-id="post-code"
+				v-model="formData.postcode.value"
+				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_zip_placeholder' ) } )"
+				:has-error="showError.postcode"
+				autocomplete="postal-code"
+				@blur="$emit('field-changed', 'postcode')"
+			/>
+		</div>
 		<span v-if="showError.postcode" class="help is-danger error-postcode">{{ $t('donation_form_zip_error') }}</span>
 		<ValueEqualsPlaceholderWarning
 			:value="formData.postcode.value"
@@ -86,6 +89,7 @@ import { AddressValidity, AddressFormData } from '@/view_models/Address';
 import { Country } from '@/view_models/Country';
 import AutocompleteCity from '@/components/shared/AutocompleteCity.vue';
 import ValueEqualsPlaceholderWarning from '@/components/shared/ValueEqualsPlaceholderWarning.vue';
+import TextInput from '@/components/shared/form_inputs/TextInput.vue';
 
 export default Vue.extend( {
 	name: 'postal',
@@ -95,7 +99,7 @@ export default Vue.extend( {
 		countries: Array as () => Array<Country>,
 		postCodeValidation: String,
 	},
-	components: { ValueEqualsPlaceholderWarning, AutocompleteCity },
+	components: { TextInput, ValueEqualsPlaceholderWarning, AutocompleteCity },
 	data() {
 		return {
 			showWarning: false,
