@@ -4,7 +4,7 @@
 		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
 		<p class="has-margin-bottom-18">
 			<a ref="membership-cta-button" id="membership-application-url" :href="membershipApplicationUrl">
-				<b-button type="is-primary is-main">{{ $t('donation_confirmation_membership_button') }}</b-button>
+				<FunButton class="is-primary is-main">{{ $t('donation_confirmation_membership_button') }}</FunButton>
 			</a>
 		</p>
 		<ul class="membership-benefits">
@@ -21,10 +21,11 @@
 import Vue from 'vue';
 import { Donation } from '@/view_models/Donation';
 import WarningIcon from '@/components/shared/icons/WarningIcon.vue';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'MembershipInfo',
-	components: { WarningIcon },
+	components: { FunButton, WarningIcon },
 	props: {
 		donation: Object as () => Donation,
 	},

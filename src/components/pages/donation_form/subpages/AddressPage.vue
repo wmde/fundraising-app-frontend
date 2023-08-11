@@ -75,23 +75,21 @@
 
 			<div class="columns payment-buttons">
 				<div class="column">
-					<b-button
+					<FunButton
 						id="previous-btn"
-						class="level-item"
+						class="level-item is-primary is-main is-outlined"
 						@click="previousPage"
-						type="is-primary is-main"
-						outlined>
+					>
 						{{ $t( 'donation_form_section_back' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 				<div class="column">
-					<b-button
+					<FunButton
 						id="submit-btn"
-						:class="[ $store.getters.isValidating ? 'is-loading' : '', 'level-item' ]"
-						@click="submit"
-						type="is-primary is-main">
+						:class="[ 'level-item is-primary is-main', { 'is-loading' : $store.getters.isValidating } ]"
+						@click="submit">
 						{{ $t( 'donation_form_finalize' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 			</div>
 			<div class="summary-notice" v-if="isExternalPayment">
@@ -131,10 +129,12 @@ import { CampaignValues } from '@/view_models/CampaignValues';
 import { StoreKey } from '@/store/donation_store';
 import { injectStrict } from '@/util/injectStrict';
 import AddressTypeFullOrEmail from '@/components/pages/donation_form/AddressTypeFullOrEmail.vue';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'AddressPage',
 	components: {
+		FunButton,
 		AddressTypeFullOrEmail,
 		AutofillHandler,
 		AddressForms,

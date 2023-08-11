@@ -19,19 +19,22 @@
 			<submit-values :tracking-data="{}"></submit-values>
 			<div class="columns has-margin-top-18">
 				<div class="column">
-					<b-button id="previous-btn" class="level-item"
+					<FunButton
+						id="previous-btn"
+						class="level-item is-primary is-main is-outlined"
 						@click="$emit( 'previous-page' )"
-						type="is-primary is-main"
-						outlined>
+					>
 						{{ $t('membership_form_section_back') }}
-					</b-button>
+					</FunButton>
 				</div>
 				<div class="column">
-					<b-button id="submit-btn" :class="[ $store.getters.isValidating ? 'is-loading' : '', 'level-item']"
+					<FunButton
+						id="submit-btn"
+						:class="[ 'level-item is-primary is-main', { 'is-loading' : $store.getters.isValidating } ]"
 						@click="submit"
-						type="is-primary is-main">
+					>
 						{{ $t('membership_form_finalize') }}
-					</b-button>
+					</FunButton>
 				</div>
 			</div>
 		</div>
@@ -50,10 +53,12 @@ import { Salutation } from '@/view_models/Salutation';
 import { membershipTypeName } from '@/view_models/MembershipTypeModel';
 import { addressTypeName } from '@/view_models/AddressTypeModel';
 import { mapGetters } from 'vuex';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'AddressPage',
 	components: {
+		FunButton,
 		AddressFields,
 		MembershipSummary,
 		SubmitValues,

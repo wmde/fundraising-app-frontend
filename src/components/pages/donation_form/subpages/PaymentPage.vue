@@ -9,11 +9,13 @@
 		<payment v-bind="$props"></payment>
 		<div class="level has-margin-top-18">
 			<div class="level-left">
-				<b-button id="next" :class="[ 'is-form-input-width', $store.getters.isValidating ? 'is-loading' : '', 'level-item']"
-						@click="next()"
-						type="is-primary is-main">
+				<FunButton
+					id="next"
+					:class="[ 'is-form-input-width is-primary is-main level-item', { 'is-loading': $store.getters.isValidating } ]"
+					@click="next()"
+				>
 					{{ $t('donation_form_section_continue') }}
-				</b-button>
+				</FunButton>
 			</div>
 		</div>
 	</form>
@@ -28,10 +30,12 @@ import { markEmptyValuesAsInvalid } from '@/store/payment/actionTypes';
 import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 import scrollToFirstError from '@/scroll_to_first_error';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'PaymentPage',
 	components: {
+		FunButton,
 		Payment,
 	},
 	props: {

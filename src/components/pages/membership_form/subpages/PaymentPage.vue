@@ -8,11 +8,13 @@
 		<payment class="has-margin-top-36" v-bind="$props"></payment>
 		<div class="level has-margin-top-18">
 			<div class="level-left">
-				<b-button id="next" :class="[ 'is-form-input-width', $store.getters.isValidating ? 'is-loading' : '', 'level-item']"
-          @click="next()"
-          type="is-primary is-main">
+				<FunButton
+					id="next"
+					:class="[ 'is-form-input-width is-primary is-main level-item', { 'is-loading' : $store.getters.isValidating } ]"
+					@click="next()"
+				>
 					{{ $t('donation_form_section_continue') }}
-				</b-button>
+				</FunButton>
 			</div>
 		</div>
 	</div>
@@ -31,10 +33,12 @@ import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { setAddressType } from '@/store/membership_address/actionTypes';
 import { mapGetters } from 'vuex';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'PaymentPage',
 	components: {
+		FunButton,
 		AddressType,
 		Payment,
 		MembershipType,

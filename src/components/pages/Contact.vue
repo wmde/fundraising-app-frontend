@@ -113,9 +113,9 @@
 				</div>
 			</fieldset>
 			<div class="has-margin-top-18">
-				<b-button id="submit-btn" type="is-primary is-main" native-type="submit">
+				<FunButton id="submit-btn" class="is-primary is-main" button-type="submit">
 					{{ $t('contact_form_submit_button') }}
-				</b-button>
+				</FunButton>
 			</div>
 		</form>
 	</div>
@@ -129,10 +129,11 @@ import { Validity } from '@/view_models/Validity';
 import { ContactFormValidation } from '@/view_models/Validation';
 import { trackFormSubmission } from '@/tracking';
 import TextInput from '@/components/shared/form_inputs/TextInput.vue';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'Contact',
-	components: { TextInput },
+	components: { FunButton, TextInput },
 	data: function (): { formData: FormData } {
 		return {
 			formData: {

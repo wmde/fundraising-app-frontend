@@ -5,9 +5,9 @@
 		<input type="hidden" name="isAnonymous" value="1" />
 		<div v-if="commentHasBeenSubmitted">
 			<p v-html="$t( serverResponse )"></p>
-			<b-button type="is-primary is-main has-margin-top-18" @click="$parent.close()" outlined>
+			<FunButton class="is-primary is-main is-outlined has-margin-top-18" @click="$parent.close()">
 				{{ $t( 'back_to_donation_summary' ) }}
-			</b-button>
+			</FunButton>
 		</div>
 		<div v-else>
 			<p class="modal-card-title has-margin-bottom-18">{{ $t( 'donation_comment_popup_title' ) }}</p><br>
@@ -29,14 +29,14 @@
 			</div>
 			<div class="columns">
 				<div class="column">
-					<b-button type="is-primary is-main level-item" @click="$parent.close()" outlined>
+					<FunButton class="is-primary is-main is-outlined level-item" @click="$parent.close()">
 						{{ $t( 'donation_comment_popup_cancel' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 				<div class="column">
-					<b-button type="is-primary is-main level-item" native-type="submit">
+					<FunButton class="is-primary is-main level-item" button-type="submit">
 						{{ $t( 'donation_comment_popup_submit' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 			</div>
 		</div>
@@ -50,10 +50,11 @@ import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { Donation } from '@/view_models/Donation';
 import TextInput from '@/components/shared/form_inputs/TextInput.vue';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'DonationCommentPopUp',
-	components: { TextInput },
+	components: { FunButton, TextInput },
 	data: function () {
 		return {
 			commentIsPublic: false,
