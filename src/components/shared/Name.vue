@@ -4,14 +4,14 @@
 		<fieldset class="form-input form-input__horizontal-option-list">
 			<legend class="subtitle">{{ $t( 'donation_form_salutation_label' ) }}</legend>
 			<div class="radio-container">
-				<b-radio v-for="salutation in salutations" :key="salutation.value"
+				<RadioInput v-for="salutation in salutations" :key="salutation.value"
 						:id="`salutation-${salutation.value}`"
 						name="salutationInternal"
 						:native-value="salutation.label"
 						v-model="formData.salutation.value"
 						@input="$emit('field-changed', 'salutation')">
 					{{ salutation.label }}
-				</b-radio>
+				</RadioInput>
 			</div>
 			<span v-if="showError.salutation" class="help is-danger error-salutation"> {{ $t( 'donation_form_salutation_error' ) }}</span>
 		</fieldset>
@@ -88,10 +88,11 @@ import { computed } from 'vue';
 import { Salutation } from '@/view_models/Salutation';
 import { adjustSalutationLocaleIfNeeded } from '@/components/shared/SalutationLocaleAdjuster';
 import ValueEqualsPlaceholderWarning from '@/components/shared/ValueEqualsPlaceholderWarning.vue';
+import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 
 export default Vue.extend( {
 	name: 'name',
-	components: { ValueEqualsPlaceholderWarning },
+	components: { RadioInput, ValueEqualsPlaceholderWarning },
 	props: {
 		showError: Object as () => AddressValidity,
 		formData: Object as () => AddressFormData,

@@ -2,21 +2,21 @@
 	<fieldset>
 		<legend class="title is-size-5">{{ $t( 'membership_form_section_address_header_type' ) }}</legend>
 		<div>
-			<b-radio id="personal"
+			<RadioInput id="personal"
 					name="addressTypeInternal"
 					v-model="type"
 					:native-value="AddressTypeModel.PERSON"
 					@change.native="setAddressType()">{{ $t( 'donation_form_addresstype_option_private' ) }}
-			</b-radio>
+			</RadioInput>
 		</div>
 		<div>
-			<b-radio id="company"
+			<RadioInput id="company"
 					name="addressTypeInternal"
 					v-model="type"
 					:native-value="AddressTypeModel.COMPANY"
 					@change.native="setAddressType()">
 				{{ $t( 'donation_form_addresstype_option_company' ) }}
-			</b-radio>
+			</RadioInput>
 		</div>
 	</fieldset>
 </template>
@@ -24,9 +24,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
+import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 
 export default Vue.extend( {
 	name: 'AddressType',
+	components: { RadioInput },
 	data: function () {
 		return {
 			type: this.$props.initialValue,

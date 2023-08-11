@@ -3,14 +3,14 @@
 		<legend class="title is-size-5">{{ title }}</legend>
 		<div>
 			<div v-for="paymentType in paymentTypes" :key="paymentType">
-				<b-radio :class="{ 'is-active': selectedType === paymentType }"
+				<RadioInput :class="{ 'is-active': selectedType === paymentType }"
 						:id="'payment-' + paymentType.toLowerCase()"
 						name="payment"
 						v-model="selectedType"
 						:native-value="paymentType"
 						@change.native="setType">
 					{{ $t( paymentType ) }}
-				</b-radio>
+				</RadioInput>
 			</div>
 		</div>
 		<span class="help is-danger" v-if="error">{{ error }}</span>
@@ -20,9 +20,11 @@
 <script lang="ts">
 import { defineComponent, PropType, toRefs } from 'vue';
 import { usePaymentType } from '@/components/shared/usePaymentType';
+import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'PaymentType',
+	components: { RadioInput },
 	props: {
 		currentType: String,
 		error: {
