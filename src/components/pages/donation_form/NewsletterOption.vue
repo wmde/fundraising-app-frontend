@@ -1,12 +1,14 @@
 <template>
 	<div class="option-checkbox">
-		<b-checkbox type="checkbox" class="is-inline-checkbox has-margin-bottom-18"
+		<FunCheckbox
 			id="newsletter"
+			class="is-inline-checkbox has-margin-bottom-18"
 			name="newsletter"
 			v-model="newsletter"
-			@change.native="setNewsletter()">
+			@change.native="setNewsletter()"
+		>
 			<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
-		</b-checkbox>
+		</FunCheckbox>
 		<label class="has-padding-left-36 checkbox"  v-html="$t( 'donation_form_newsletter_label_paragraph_2' )" for="newsletter"></label>
 	</div>
 
@@ -17,10 +19,12 @@ import Vue from 'vue';
 import { NS_ADDRESS } from '@/store/namespaces';
 import { action } from '@/store/util';
 import { setNewsletterChoice } from '@/store/address/actionTypes';
+import FunCheckbox from '@/components/shared/form_inputs/FunCheckbox.vue';
 
 export default Vue.extend( {
 	// TODO change this component to work more like ReceiptOption (send event to the parent component, use initial value in data, etc.)
 	name: 'NewsletterOption',
+	components: { FunCheckbox },
 	data: function () {
 		return {
 			newsletter: false,

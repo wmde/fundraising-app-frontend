@@ -1,21 +1,24 @@
 <template>
 	<div class="option-checkbox">
-		<b-checkbox type="checkbox" class="is-inline-checkbox"
+		<FunCheckbox
 			id="donation_receipt"
+			class="is-inline-checkbox"
 			name="receipt"
 			v-model="receiptNeeded"
-			@change.native="setReceipt()">
+			@change.native="setReceipt()"
+		>
 			{{ message }}
-		</b-checkbox>
+		</FunCheckbox>
 	</div>
-
 </template>
 
 <script>
 import Vue from 'vue';
+import FunCheckbox from '@/components/shared/form_inputs/FunCheckbox.vue';
 
 export default Vue.extend( {
 	name: 'ReceiptOption',
+	components: { FunCheckbox },
 	data: function () {
 		return {
 			receiptNeeded: this.$props.initialReceiptNeeded,

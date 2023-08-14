@@ -18,14 +18,24 @@
 				<p v-if="commentErrored" class="help is-danger"> {{ $t( 'donation_comment_popup_error' ) }}</p>
 			</div>
 			<div class="field has-margin-bottom-18" v-if="showPublishAuthor">
-				<b-checkbox type="checkbox" id="isAnonymous" name="isAnonymous" native-value="0"
-							v-model="commentHasPublicAuthorName">
+				<FunCheckbox
+					id="isAnonymous"
+					name="isAnonymous"
+					native-value="0"
+					v-model="commentHasPublicAuthorName"
+				>
 					<span v-html="$t( 'donation_comment_popup_is_anon' )"></span>
-				</b-checkbox>
+				</FunCheckbox>
 			</div>
 			<div class="field has-margin-bottom-18">
-				<b-checkbox type="checkbox" id="public" name="public" native-value="1"
-							v-model="commentIsPublic">{{ $t( 'donation_comment_popup_is_public' ) }}</b-checkbox>
+				<FunCheckbox
+					id="public"
+					name="public"
+					native-value="1"
+					v-model="commentIsPublic"
+				>
+					{{ $t( 'donation_comment_popup_is_public' ) }}
+				</FunCheckbox>
 			</div>
 			<div class="columns">
 				<div class="column">
@@ -51,10 +61,11 @@ import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressType
 import { Donation } from '@/view_models/Donation';
 import TextInput from '@/components/shared/form_inputs/TextInput.vue';
 import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import FunCheckbox from '@/components/shared/form_inputs/FunCheckbox.vue';
 
 export default Vue.extend( {
 	name: 'DonationCommentPopUp',
-	components: { FunButton, TextInput },
+	components: { FunCheckbox, FunButton, TextInput },
 	data: function () {
 		return {
 			commentIsPublic: false,

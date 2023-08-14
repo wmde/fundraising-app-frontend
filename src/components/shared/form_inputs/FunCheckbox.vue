@@ -1,34 +1,33 @@
 <template>
 	<label
 		ref="label"
-		class="fun-radio radio"
+		class="fun-checkbox checkbox"
 		:class="{ 'is-disabled': disabled }"
 		:disabled="disabled"
 		@click="focus"
 		@keydown.prevent.enter="click"
+		@keydown.prevent.space="click"
 	>
 		<input
 			v-model="computedValue"
-			type="radio"
+			type="checkbox"
 			ref="input"
 			:class="{ 'is-disabled': disabled }"
 			:name="name"
 			:value="nativeValue"
 			:disabled="disabled"
 			:required="required"
-		/>
-		<span class="check"/>
-		<span class="control-label"><slot/></span>
+		>
+		<span class="check checkbox"/><span class="control-label"><slot/></span>
 	</label>
 </template>
 
 <script lang="ts">
-
 import { defineComponent } from 'vue';
 
-// TODO: Merge this and FunCheckbox as a single component when converting to script setup
+// TODO: Merge this and RadioInput as a single component when converting to script setup
 export default defineComponent( {
-	name: 'RadioInput',
+	name: 'FunCheckbox',
 	props: {
 		value: [ String, Number, Boolean, Function, Object, Array ],
 		nativeValue: [ String, Number, Boolean, Function, Object, Array ],
@@ -70,72 +69,39 @@ export default defineComponent( {
 		},
 	},
 } );
-
 </script>
 
 <style lang="scss">
 @import "../../../scss/variables";
 
-.fun-radio {
-	margin-right: 0.5em;
+.fun-checkbox.checkbox {
+
 	outline: none;
 	display: inline-flex;
+	align-items: flex-start;
+	margin-right: 0.5em;
 
-	&[disabled] {
-		opacity: .5;
-	}
-
-	input {
+	input[type="checkbox"] {
 		position: absolute;
 		left: 0;
 		opacity: 0;
 		outline: none;
 		z-index: -1;
-
-		&:focus {
-			+ .check {
-				box-shadow: 0 0 0.5em rgba( $fun-color-gray-dark, 0.8 );
-			}
-			&:checked + .check {
-				box-shadow: 0 0 0.5em rgba( $primary, 0.8 );
-			}
-		}
 	}
 
-	input + .check {
-		display: flex;
-		flex-shrink: 0;
-		position: relative;
-		cursor: pointer;
+	input[type="checkbox"] + .check {
 		width: 1.25em;
 		height: 1.25em;
+		flex-shrink: 0;
+		border-radius: 2px;
+		border: 2px solid hsl( 0, 0%, 48% );
 		transition: background 150ms ease-out;
-		border-radius: 50%;
-		border: 2px solid $fun-color-gray-dark;
-
-		&::before {
-			content: "";
-			display: flex;
-			position: absolute;
-			left: 50%;
-			margin-left: calc(-1.25em * 0.5);
-			bottom: 50%;
-			margin-bottom: calc(-1.25em * 0.5);
-			width: 1.25em;
-			height: 1.25em;
-			transition: transform 150ms ease-out;
-			border-radius: 50%;
-			transform: scale(0);
-			background-color: $primary;
-		}
+		background: transparent;
 	}
 
-	input:checked + .check {
+	input[type="checkbox"]:checked + .check {
+		background: $primary $checkbox-checkmark no-repeat center center;
 		border-color: $primary;
-
-		&::before {
-			transform: scale(0.5);
-		}
 	}
 }
 </style>
