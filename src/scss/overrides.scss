@@ -204,3 +204,12 @@ body {
 main {
 	flex: 1 0 auto;
 }
+
+.icon {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: inherit;
+}
