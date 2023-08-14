@@ -18,17 +18,18 @@
 		<div class="form-input">
 			<label for="title" class="subtitle">{{ $t( 'donation_form_academic_title_label' ) }}</label>
 			<div class="field">
-				<b-select
-						class="is-form-input"
-						v-model="formData.title.value"
-						id="title"
-						name="title"
-						@input="$emit('field-changed', 'title')">
+				<FunSelect
+					class="is-form-input"
+					v-model="formData.title.value"
+					select-id="title"
+					name="title"
+					@input="$emit('field-changed', 'title')"
+				>
 					<option value="">{{ $t( 'donation_form_academic_title_option_none' ) }}</option>
 					<option value="Dr.">Dr.</option>
 					<option value="Prof.">Prof.</option>
 					<option value="Prof. Dr.">Prof. Dr.</option>
-				</b-select>
+				</FunSelect>
 			</div>
 		</div>
 		<div v-bind:class="['form-input', { 'is-invalid': showError.firstName }]">
@@ -93,10 +94,11 @@ import { adjustSalutationLocaleIfNeeded } from '@/components/shared/SalutationLo
 import ValueEqualsPlaceholderWarning from '@/components/shared/ValueEqualsPlaceholderWarning.vue';
 import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 import TextInput from '@/components/shared/form_inputs/TextInput.vue';
+import FunSelect from '@/components/shared/form_inputs/FunSelect.vue';
 
 export default Vue.extend( {
 	name: 'name',
-	components: { TextInput, RadioInput, ValueEqualsPlaceholderWarning },
+	components: { FunSelect, TextInput, RadioInput, ValueEqualsPlaceholderWarning },
 	props: {
 		showError: Object as () => AddressValidity,
 		formData: Object as () => AddressFormData,

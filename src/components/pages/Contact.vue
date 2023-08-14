@@ -74,14 +74,15 @@
 				</div>
 				<div class="has-margin-top-18">
 					<label for="category" class="subtitle">{{ $t( 'contact_form_topic_placeholder' ) }}</label>
-					<b-select
+					<FunSelect
 						class="is-form-input"
 						v-model="formData.topic.value"
-						id="category"
-						name="category">
+						select-id="category"
+						name="category"
+					>
 						<option hidden="hidden" disabled="disabled" value="">{{ $t( 'contact_form_topic_placeholder' ) }}</option>
 						<option v-for="option in contactData.contact_categories">{{ option }}</option>
-					</b-select>
+					</FunSelect>
 					<span v-if="formData.topic.validity === Validity.INVALID" class="help is-danger has-padding-top-18">{{ $t( 'contact_form_topic_error' ) }}</span>
 				</div>
 				<div class="has-margin-top-18">
@@ -130,10 +131,11 @@ import { ContactFormValidation } from '@/view_models/Validation';
 import { trackFormSubmission } from '@/tracking';
 import TextInput from '@/components/shared/form_inputs/TextInput.vue';
 import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import FunSelect from '@/components/shared/form_inputs/FunSelect.vue';
 
 export default Vue.extend( {
 	name: 'Contact',
-	components: { FunButton, TextInput },
+	components: { FunSelect, FunButton, TextInput },
 	data: function (): { formData: FormData } {
 		return {
 			formData: {

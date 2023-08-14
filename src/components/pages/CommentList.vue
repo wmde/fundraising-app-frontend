@@ -14,16 +14,9 @@
 		</div>
 		<div v-if="!isLoading" class="page-selector has-margin-top-36 has-margin-bottom-18">
 			<a class="button mdi mdi-arrow-left" :disabled="currentPage === 1" v-on:click="previousPage"></a>
-			<b-select
-					class="is-form-input"
-					v-model="currentPage"
-					id="page"
-					name="page"
-					@change.native="switchPage">
-				<option v-for="page in pageCount"
-						:value="page"> {{ page }}
-				</option>
-			</b-select>
+			<FunSelect class="is-form-input" v-model="currentPage" name="page" select-id="page">
+				<option v-for="page in pageCount" :value="page"> {{ page }}</option>
+			</FunSelect>
 			<a class="button mdi mdi-arrow-right" :disabled="currentPage === pageCount" v-on:click="nextPage"></a>
 		</div>
 	</div>
@@ -33,11 +26,13 @@
 import Vue from 'vue';
 import axios from 'axios';
 import { commentModelsFromObject } from '@/view_models/Comment';
+import FunSelect from '@/components/shared/form_inputs/FunSelect.vue';
 
 const PAGE_SIZE = 10;
 
 export default Vue.extend( {
 	name: 'CommentList',
+	components: { FunSelect },
 	data() {
 		return {
 			comments: [] as any,
