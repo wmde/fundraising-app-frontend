@@ -5,7 +5,7 @@
 		<input type="hidden" name="isAnonymous" value="1" />
 		<div v-if="commentHasBeenSubmitted">
 			<p v-html="$t( serverResponse )"></p>
-			<FunButton class="is-primary is-main is-outlined has-margin-top-18" @click="$parent.close()">
+			<FunButton class="is-primary is-main is-outlined has-margin-top-18" @click="$emit( 'close' )">
 				{{ $t( 'back_to_donation_summary' ) }}
 			</FunButton>
 		</div>
@@ -39,7 +39,7 @@
 			</div>
 			<div class="columns">
 				<div class="column">
-					<FunButton class="is-primary is-main is-outlined level-item" @click="$parent.close()">
+					<FunButton class="is-primary is-main is-outlined level-item" @click="$emit( 'close' )">
 						{{ $t( 'donation_comment_popup_cancel' ) }}
 					</FunButton>
 				</div>

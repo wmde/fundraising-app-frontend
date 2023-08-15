@@ -19,7 +19,7 @@
 				<div class="column">
 					<FunButton
 						class="is-primary is-main is-outlined has-margin-top-18 level-item"
-						@click="$parent.close()"
+						@click="$emit( 'close' )"
 					>
 						{{ $t( 'donation_confirmation_address_update_cancel' ) }}
 					</FunButton>
@@ -43,7 +43,7 @@
 			<div class="column">
 				<FunButton
 					class="is-primary is-main is-outlined has-margin-top-18"
-					@click="$parent.close()"
+					@click="$emit( 'close' )"
 				>
 					{{ $t( 'back_to_donation_summary' ) }}
 				</FunButton>
