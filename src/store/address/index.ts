@@ -23,7 +23,7 @@ export default function ( requiredFields: AddressRequirements ): Module<AddressS
 			street: '',
 			postcode: '',
 			city: '',
-			country: 'DE',
+			country: '',
 			email: '',
 		},
 		validity: {
@@ -35,7 +35,7 @@ export default function ( requiredFields: AddressRequirements ): Module<AddressS
 			street: Validity.INCOMPLETE,
 			postcode: Validity.INCOMPLETE,
 			city: Validity.INCOMPLETE,
-			country: Validity.VALID,
+			country: Validity.INCOMPLETE,
 			email: Validity.INCOMPLETE,
 			addressType: Validity.VALID,
 		},

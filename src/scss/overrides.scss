@@ -118,6 +118,18 @@
 }
 
 .autocomplete {
+	position: relative;
+
+	.dropdown-menu {
+		display: block;
+		width: 100%;
+	}
+
+	.dropdown-content {
+		overflow: auto;
+		max-height: 200px;
+	}
+
 	.dropdown-item {
 		font-size: 1rem;
 	}
