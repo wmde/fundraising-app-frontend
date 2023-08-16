@@ -3,20 +3,17 @@
 		<legend class="title is-size-5">{{ $t( 'donation_form_payment_bankdata_title' ) }}</legend>
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]">
 			<label for="iban" class="subtitle">{{ $t( labels.iban ) }}</label>
-			<b-field v-bind:class="[{ 'has-margin-bottom-0': !isBankFieldEnabled }]">
-				<b-input
-					class="is-medium"
-					data-content-name="Bank Data Type"
-					:data-track-content="getTrackingCode !== ''"
-					:data-content-piece="getTrackingCode"
-					type="text"
-					id="iban"
-					v-model="accountId"
-					name="iban"
-					:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' )"
-					@blur="validate">
-				</b-input>
-			</b-field>
+			<div class="field" :class="[ { 'has-margin-bottom-0': !isBankFieldEnabled } ]">
+				<div class="control is-medium is-clearfix">
+					<AccountNumberField
+						:id="'iban'"
+						:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' ).toString()"
+						:account-id="accountId"
+						@validate="validate"
+						@input="setAccountId"
+					/>
+				</div>
+			</div>
 		</div>
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]" v-show="isBankFieldEnabled">
 			<label for="bic" class="subtitle">{{ $t( labels.bic ) }}</label>
@@ -54,9 +51,11 @@ import { markBankDataAsIncomplete, markBankDataAsInvalid, setBankData } from '@/
 import { NS_BANKDATA } from '@/store/namespaces';
 import { action } from '@/store/util';
 import { mapGetters } from 'vuex';
+import AccountNumberField from '@/components/shared/AccountNumberField.vue';
 
 export default Vue.extend( {
 	name: 'PaymentBankData',
+	components: { AccountNumberField },
 	data: function (): BankAccountData {
 		return {
 			accountId: this.$store.getters[ NS_BANKDATA + '/getAccountId' ],
@@ -162,6 +161,9 @@ export default Vue.extend( {
 						} as BankAccountRequest
 				);
 			}
+		},
+		setAccountId: function ( accountId: string ) {
+			this.$data.accountId = accountId;
 		},
 		isAccountIdEmpty: function () {
 			return this.$data.accountId === '';

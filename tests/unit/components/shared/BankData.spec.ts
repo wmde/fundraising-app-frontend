@@ -17,6 +17,8 @@ const localVue = createLocalVue();
 localVue.use( Vuex );
 localVue.use( Buefy );
 
+const translator = ( key: string ) => key;
+
 describe( 'BankData', () => {
 
 	it( 'validates IBANs correctly and sets the bank data to the store on success', () => {
@@ -28,7 +30,7 @@ describe( 'BankData', () => {
 			},
 			store: createStore(),
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 		const store = wrapper.vm.$store;
@@ -55,7 +57,7 @@ describe( 'BankData', () => {
 			},
 			store: createStore(),
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 		const store = wrapper.vm.$store;
@@ -82,7 +84,7 @@ describe( 'BankData', () => {
 			},
 			store: createStore(),
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 		const store = wrapper.vm.$store;
@@ -112,7 +114,7 @@ describe( 'BankData', () => {
 			},
 			store: createStore(),
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 		const store = wrapper.vm.$store;
@@ -135,7 +137,7 @@ describe( 'BankData', () => {
 			},
 			store: createStore(),
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 		const store = wrapper.vm.$store;
@@ -157,7 +159,7 @@ describe( 'BankData', () => {
 			localVue,
 			store: createStore(),
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 
@@ -166,7 +168,7 @@ describe( 'BankData', () => {
 		wrapper.setData( { accountId: 'AT12345605171238489890', bankId: 'ABCDDEFFXXX' } );
 		await wrapper.vm.$nextTick();
 
-		expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'AT12345605171238489890' );
+		expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'AT12 3456 0517 1238 4898 90' );
 		expect( ( ( <HTMLInputElement> bic.element ).value ) ).toMatch( 'ABCDDEFFXXX' );
 	} );
 
@@ -175,7 +177,7 @@ describe( 'BankData', () => {
 			localVue,
 			store: createStore(),
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 		const store = wrapper.vm.$store;
@@ -193,6 +195,7 @@ describe( 'BankData', () => {
 			bankDataIsInvalid: () => false,
 			getBankName: () => '',
 			getBankId: () => '',
+			getAccountId: () => '',
 		};
 		store = new Vuex.Store( {
 			modules: {
@@ -209,7 +212,7 @@ describe( 'BankData', () => {
 			localVue,
 			store,
 			mocks: {
-				$t: ( key: string ) => key,
+				$t: translator,
 			},
 		} );
 
@@ -217,6 +220,7 @@ describe( 'BankData', () => {
 		const iban = wrapper.find( '#iban' );
 		iban.trigger( 'blur' );
 		await wrapper.vm.$nextTick();
+
 		const bicInfo = wrapper.find( '#bank-name-not-available' );
 		expect( bicInfo.text() )
 			.toMatch( 'donation_form_payment_bankdata_bank_bic_placeholder_full' );
@@ -227,7 +231,7 @@ describe( 'BankData', () => {
 			localVue,
 			store: createStore(),
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 
@@ -248,6 +252,7 @@ describe( 'BankData', () => {
 			bankDataIsValid: () => true,
 			bankDataIsInvalid: () => false,
 			getBankName: () => 'gute Bank',
+			getAccountId: () => '',
 		};
 		store = new Vuex.Store( {
 			modules: {
@@ -261,7 +266,7 @@ describe( 'BankData', () => {
 			localVue,
 			store,
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 		wrapper.setData( { accountId: 'DE89370400440532013000' } );
@@ -277,6 +282,7 @@ describe( 'BankData', () => {
 			bankDataIsValid: () => false,
 			bankDataIsInvalid: () => true,
 			getBankName: () => '',
+			getAccountId: () => '',
 		};
 		store = new Vuex.Store( {
 			modules: {
@@ -290,7 +296,7 @@ describe( 'BankData', () => {
 			localVue,
 			store,
 			mocks: {
-				$t: () => {},
+				$t: translator,
 			},
 		} );
 		wrapper.setData( { accountId: 'DE89370400440532013000' } );
@@ -304,7 +310,7 @@ describe( 'BankData', () => {
 			localVue,
 			store: createStore(),
 			mocks: {
-				$t: ( key: string ) => key,
+				$t: translator,
 			},
 		} );
 
@@ -318,7 +324,7 @@ describe( 'BankData', () => {
 			localVue,
 			store: createStore(),
 			mocks: {
-				$t: ( key: string ) => key,
+				$t: translator,
 			},
 		} );
 
@@ -334,7 +340,7 @@ describe( 'BankData', () => {
 			localVue,
 			store: createStore(),
 			mocks: {
-				$t: ( key: string ) => key,
+				$t: translator,
 			},
 		} );
 
@@ -356,14 +362,14 @@ describe( 'BankData', () => {
 				localVue,
 				store,
 				mocks: {
-					$t: ( key: string ) => key,
+					$t: translator,
 				},
 			} );
 			const iban = wrapper.find( '#iban' );
 			const bic = wrapper.find( '#bic' );
 			const bankName = wrapper.find( '#bank-name-iban' );
 
-			expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'DE12345605171238489890' );
+			expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'DE12 3456 0517 1238 4898 90' );
 			expect( ( ( <HTMLInputElement> bic.element ).value ) ).toMatch( 'ABCDDEFFXXX' );
 			expect( ( ( <HTMLElement> bankName.element ).textContent ) ).toMatch( 'Cool Bank' );
 		} );
