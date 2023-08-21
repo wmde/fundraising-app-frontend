@@ -1,9 +1,7 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import ReceiptOption from '../../../../src/components/shared/ReceiptOption.vue';
-import Buefy from 'buefy';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 describe( 'ReceiptOption', () => {
 

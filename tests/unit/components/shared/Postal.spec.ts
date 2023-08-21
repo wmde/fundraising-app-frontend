@@ -1,13 +1,10 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Postal from '@/components/shared/Postal.vue';
-import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import countries from '@/../tests/data/countries';
 import { addressValidationPatterns } from '../../../data/validation';
-import { nextTick } from 'vue';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 function newTestProperties( overrides: Object ) {
 	return Object.assign(

@@ -1,11 +1,9 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import AutocompleteCity from '../../../../../src/components/shared/form_inputs/AutocompleteCity.vue';
-import Buefy from 'buefy';
 import { FakeAutocompleteResource } from '../../../TestDoubles/FakeAutocompleteResource';
 import { nextTick } from 'vue';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 const cityAutocompleteResource = new FakeAutocompleteResource();
 const placeholderKey = 'form_for_example';

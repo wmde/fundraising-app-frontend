@@ -1,6 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import { createStore } from '@/store/donation_store';
 import AddressModal from '@/components/pages/donation_confirmation/AddressModal.vue';
 import { action } from '../../../../../src/store/util';
@@ -14,7 +13,6 @@ import { Validity } from '../../../../../src/view_models/Validity';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 const anonAddress = {
 	addressType: 'anonym',

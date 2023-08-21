@@ -1,11 +1,9 @@
 import { createLocalVue, mount } from '@vue/test-utils';
-import Buefy from 'buefy';
 import LocaleSelector from '@/components/shared/LocaleSelector.vue';
 import Cookies from 'js-cookie';
 import { COOKIE_NAME, DEFAULT_LOCALE } from '@/locales';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 describe( 'LocaleSelector.vue', () => {
 

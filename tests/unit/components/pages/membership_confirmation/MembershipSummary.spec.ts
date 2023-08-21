@@ -1,13 +1,11 @@
 import each from 'jest-each';
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import MembershipSummary from '@/components/shared/MembershipSummary.vue';
 import { createStore } from '@/store/donation_store';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 const privateAddress = {
 	applicantType: 'person',

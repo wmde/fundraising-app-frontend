@@ -1,11 +1,9 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import Supporter from '@/components/pages/supporters/Supporter.vue';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 describe( 'Supporter.vue', () => {
 	it( 'shows comment and flips arrow icon if visible supporter ID matches local supporter ID', () => {

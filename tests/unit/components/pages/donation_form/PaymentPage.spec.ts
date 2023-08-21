@@ -4,7 +4,6 @@ import { markEmptyValuesAsInvalid } from '@/store/payment/actionTypes';
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import PaymentPage from '@/components/pages/donation_form/subpages/PaymentPage.vue';
 import { FeatureTogglePlugin } from "@/FeatureToggle";
 
@@ -45,7 +44,6 @@ describe( 'DonationForm', () => {
 		global.window.scrollTo = jest.fn();
 		const localVue = createLocalVue();
 		localVue.use( Vuex );
-		localVue.use( Buefy );
 		localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.encryption_hint.visible' ] } );
 		wrapper = mount( PaymentPage, {
 			localVue,

@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import DonationForm from '@/components/pages/DonationForm.vue';
 import countries from '@/../tests/data/countries';
 
@@ -17,7 +16,6 @@ describe( 'DonationForm', () => {
 		global.window.scrollTo = jest.fn();
 		const localVue = createLocalVue();
 		localVue.use( Vuex );
-		localVue.use( Buefy );
 		wrapper = mount( DonationForm, {
 			localVue,
 			propsData: {

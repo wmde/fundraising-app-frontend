@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import PaymentPage from '@/components/pages/membership_form/subpages/PaymentPage.vue';
 import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import MembershipType from '@/components/pages/membership_form/MembershipType.vue';
@@ -12,7 +11,6 @@ import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 describe( 'PaymentPage.vue', () => {
 	let wrapper: any;

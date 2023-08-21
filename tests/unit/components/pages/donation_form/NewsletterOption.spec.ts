@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import NewsletterOption from '../../../../../src/components/pages/donation_form/NewsletterOption.vue';
 import { createStore } from '@/store/donation_store';
 import { action } from '@/store/util';
@@ -9,7 +8,6 @@ import { setNewsletterChoice } from '@/store/address/actionTypes';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 describe( 'NewsletterOption', () => {
 	it( 'renders the component with the checkbox unselected', () => {

@@ -6,11 +6,9 @@ import { action } from '@/store/util';
 import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
 import { setMembershipType } from '@/store/membership_address/actionTypes';
 import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
-import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 localVue.use( Vuex );
 
 describe( 'MembershipType.vue', () => {

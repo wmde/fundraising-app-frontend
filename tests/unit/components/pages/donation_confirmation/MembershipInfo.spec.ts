@@ -1,12 +1,10 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import MembershipInfo from '@/components/pages/donation_confirmation/MembershipInfo.vue';
 import { createStore } from '@/store/donation_store';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 const testAccessToken = 'a839bc8045aba4c8b600bc0477dbbf10';
 const testId = 123;

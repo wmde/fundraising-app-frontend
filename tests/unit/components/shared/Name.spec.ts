@@ -1,10 +1,8 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Name from '@/components/shared/Name.vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import Buefy from 'buefy';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 const formData = {
 	salutation: {
