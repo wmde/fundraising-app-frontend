@@ -9,6 +9,8 @@
 						:id="'iban'"
 						:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' ).toString()"
 						:account-id="accountId"
+						:data-track-content="getTrackingCode !== ''"
+						:data-content-piece="getTrackingCode"
 						@validate="validate"
 						@input="setAccountId"
 					/>
