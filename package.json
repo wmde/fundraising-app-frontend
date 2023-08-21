@@ -68,7 +68,7 @@
     "jest-transform-stub": "^2.0.0",
     "mini-css-extract-plugin": "^2.7.6",
     "moxios": "^0.4.0",
-    "regenerator-runtime": "^0.13.11",
+    "regenerator-runtime": "^0.14.0",
     "sass": "^1.65.1",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
