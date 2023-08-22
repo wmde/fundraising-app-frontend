@@ -1,40 +1,22 @@
 import 'core-js/stable';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import PageDataInitializer from '@/page_data_initializer';
-import { createI18n } from '@/locales';
-import App from '@/components/App.vue';
-
-import Component from '@/components/pages/PageNotFound.vue';
-import Sidebar from '@/components/layout/Sidebar.vue';
-
-const PAGE_IDENTIFIER = 'page-not-found';
-
-Vue.config.productionTip = false;
-Vue.use( VueI18n );
+import { createVueApp } from '@src/createVueApp';
+import PageDataInitializer from '@src/page_data_initializer';
+import App from '@src/components/App.vue';
+import PageNotFound from '@src/components/pages/PageNotFound.vue';
 
 interface ErrorModel {
 	message: string,
 	locale: string,
 }
 
+const PAGE_IDENTIFIER = 'page-not-found';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-const i18n = createI18n( pageData.messages );
-
-new Vue( {
-	i18n,
-	render: h => h( App, {
-		props: {
-			assetsPath: pageData.assetsPath,
-			pageIdentifier: PAGE_IDENTIFIER,
-			locale: i18n.locale,
-		},
+createVueApp( App, pageData.messages, {
+	assetsPath: pageData.assetsPath,
+	pageIdentifier: PAGE_IDENTIFIER,
+	page: PageNotFound,
+	pageProps: {
+		errorData: pageData.applicationVars,
 	},
-	[
-		h( Component, {} ),
-		h( Sidebar, {
-			slot: 'sidebar',
-		} ),
-	] ),
-} ).$mount( '#app' );
+} ).mount( '#app' );

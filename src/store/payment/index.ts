@@ -1,9 +1,9 @@
 import { Module } from 'vuex';
-import { Validity } from '@/view_models/Validity';
-import { actions } from '@/store/payment/actions';
-import { getters } from '@/store/payment/getters';
-import { mutations } from '@/store/payment/mutations';
-import { DonationPayment } from '@/store/payment/types';
+import { Validity } from '@src/view_models/Validity';
+import { actions } from '@src/store/payment/actions';
+import { getters } from '@src/store/payment/getters';
+import { mutations } from '@src/store/payment/mutations';
+import { DonationPayment } from '@src/store/payment/types';
 
 export default function (): Module<DonationPayment, any> {
 	const state: DonationPayment = {

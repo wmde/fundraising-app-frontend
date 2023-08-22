@@ -1,7 +1,6 @@
 <template>
 	<span class="submit-values">
 		<input type="hidden" name="addressType" :value="addressType">
-
 		<input type="hidden" name="salutation" :value="address.salutation">
 		<input type="hidden" name="title" :value="address.title">
 		<input type="hidden" name="firstName" :value="address.firstName">
@@ -16,13 +15,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import { NS_ADDRESS } from '@/store/namespaces';
-import { AddressState } from '@/view_models/Address';
-import { addressTypeName } from '@/view_models/AddressTypeModel';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { AddressState } from '@src/view_models/Address';
+import { addressTypeName } from '@src/view_models/AddressTypeModel';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'SubmitValues',
 	props: [
 		'trackingData',

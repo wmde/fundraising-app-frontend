@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
 
-import { InitialMembershipFeeValues, IntervalData, MembershipFee, SetFeePayload, TypeData } from '@/view_models/MembershipFee';
+import { InitialMembershipFeeValues, IntervalData, MembershipFee, SetFeePayload, TypeData } from '@src/view_models/MembershipFee';
 
 import {
 	initializeMembershipFee,
@@ -11,7 +11,7 @@ import {
 	setInterval,
 	setType,
 	validateFee,
-} from '@/store/membership_fee/actionTypes';
+} from '@src/store/membership_fee/actionTypes';
 import {
 	MARK_EMPTY_FEE_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -20,13 +20,13 @@ import {
 	SET_INTERVAL,
 	SET_INTERVAL_VALIDITY,
 	SET_IS_VALIDATING,
-} from '@/store/membership_fee/mutationTypes';
-import { ValidationResponse } from '@/store/ValidationResponse';
-import { Validity } from '@/view_models/Validity';
-import { Helper } from '@/store/util';
-import { validateFeeDataRemotely } from '@/store/axios';
-import { SET_TYPE, SET_TYPE_VALIDITY } from '@/store/payment/mutationTypes';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
+} from '@src/store/membership_fee/mutationTypes';
+import { ValidationResponse } from '@src/store/ValidationResponse';
+import { Validity } from '@src/view_models/Validity';
+import { Helper } from '@src/store/util';
+import { validateFeeDataRemotely } from '@src/store/axios';
+import { SET_TYPE, SET_TYPE_VALIDITY } from '@src/store/payment/mutationTypes';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 /**
  * Map source values from WMDE\Fundraising\MembershipContext\Domain\MembershipPaymentValidator to validation mutation functions

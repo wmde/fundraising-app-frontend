@@ -1,13 +1,17 @@
-import VueI18n, { LocaleMessageObject } from 'vue-i18n';
+import { createI18n } from 'vue-i18n';
 import Cookies from 'js-cookie';
 
 export const COOKIE_NAME = 'locale';
 export const DEFAULT_LOCALE = 'de_DE';
 
-export function createI18n( messages: LocaleMessageObject ) {
+export function createLocalisation( messages: { [ key: string ]: string; } ) {
+	type MessageSchema = typeof messages;
 	const locale = ( Cookies.get( COOKIE_NAME ) ?? DEFAULT_LOCALE ).replace( '_', '-' );
-	return new VueI18n( {
+	type LocaleType = typeof locale;
+	return createI18n<[MessageSchema], LocaleType>( {
 		locale: locale,
+		warnHtmlInMessage: 'off',
+		legacy: false,
 		messages: {
 			[ locale ]: messages,
 		},

@@ -7,14 +7,17 @@ const commonSettings = {
 		'ts',
 	],
 	transform: {
-		'^.+\\.vue$': '@vue/vue2-jest',
+		'^.+\\.vue$': '@vue/vue3-jest',
 		'.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
 	},
 	transformIgnorePatterns: [
 		'/node_modules/',
 	],
 	moduleNameMapper: {
-		'^@/(.*)$': '<rootDir>/src/$1',
+		'^@src/(.*)$': '<rootDir>/src/$1',
+	},
+	testEnvironmentOptions: {
+		customExportConditions: [ 'node', 'node-addons' ],
 	},
 };
 
@@ -43,7 +46,7 @@ module.exports = {
 				'jest-serializer-vue',
 			],
 			setupFilesAfterEnv: [
-				'./jest.setup.js',
+				'./jest.setup.ts',
 				'./jest.dom.ts',
 			],
 		},
@@ -56,7 +59,7 @@ module.exports = {
 				'**/tests/unit/store/**/*.spec.(js|ts)',
 			],
 			setupFilesAfterEnv: [
-				'./jest.setup.js',
+				'./jest.setup.ts',
 				'./jest.dom.ts',
 			],
 		},
@@ -69,7 +72,7 @@ module.exports = {
 				'**/tests/unit/utils/**/*.spec.(js|ts)',
 			],
 			setupFilesAfterEnv: [
-				'./jest.setup.js',
+				'./jest.setup.ts',
 			],
 		},
 	],

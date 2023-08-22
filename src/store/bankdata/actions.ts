@@ -4,19 +4,19 @@ import {
 	BankAccount, BankAccountData,
 	BankAccountRequest,
 	BankAccountResponse,
-} from '@/view_models/BankAccount';
+} from '@src/view_models/BankAccount';
 import {
 	initializeBankData, markBankDataAsIncomplete, markBankDataAsInvalid,
 	markEmptyValuesAsInvalid,
 	setBankData,
-} from '@/store/bankdata/actionTypes';
+} from '@src/store/bankdata/actionTypes';
 import {
 	MARK_BANKDATA_INCOMPLETE,
 	MARK_EMPTY_FIELDS_INVALID,
 	SET_BANK_DATA_VALIDITY,
 	SET_BANKDATA, SET_BANKNAME, SET_IS_VALIDATING,
-} from '@/store/bankdata/mutationTypes';
-import { Validity } from '@/view_models/Validity';
+} from '@src/store/bankdata/mutationTypes';
+import { Validity } from '@src/view_models/Validity';
 
 export const actions = {
 	[ setBankData ]( context: ActionContext<BankAccount, any>, payload: BankAccountRequest ): Promise<void> {

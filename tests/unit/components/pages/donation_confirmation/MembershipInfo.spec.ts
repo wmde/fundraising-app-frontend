@@ -1,27 +1,17 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import MembershipInfo from '@/components/pages/donation_confirmation/MembershipInfo.vue';
-import { createStore } from '@/store/donation_store';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount } from '@vue/test-utils';
+import MembershipInfo from '@src/components/pages/donation_confirmation/MembershipInfo.vue';
 
 const testAccessToken = 'a839bc8045aba4c8b600bc0477dbbf10';
 const testId = 123;
 
-describe( 'MembershipInfo', () => {
+describe( 'MembershipInfo.vue', () => {
 	it( 'renders messages', () => {
 		const wrapper = mount( MembershipInfo, {
-			localVue,
-			propsData: {
+			props: {
 				donation: {
 					id: testId,
 					accessToken: testAccessToken,
 				},
-			},
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
 			},
 		} );
 
@@ -37,16 +27,11 @@ describe( 'MembershipInfo', () => {
 
 	it( 'renders access token and donation ID in membership application URL', () => {
 		const wrapper = mount( MembershipInfo, {
-			localVue,
-			propsData: {
+			props: {
 				donation: {
 					id: testId,
 					accessToken: testAccessToken,
 				},
-			},
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
 			},
 		} );
 

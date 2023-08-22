@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex';
-import { BankAccount } from '@/view_models/BankAccount';
-import { Validity } from '@/view_models/Validity';
+import { BankAccount } from '@src/view_models/BankAccount';
+import { Validity } from '@src/view_models/Validity';
 import {
 	MARK_BANKDATA_INCOMPLETE,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -8,7 +8,7 @@ import {
 	SET_BANKDATA,
 	SET_BANKNAME,
 	SET_IS_VALIDATING,
-} from '@/store/bankdata/mutationTypes';
+} from '@src/store/bankdata/mutationTypes';
 
 export const mutations: MutationTree<BankAccount> = {
 	[ SET_BANKDATA ]( state: BankAccount, bankData: any ) {

@@ -1,7 +1,7 @@
 import { GetterTree } from 'vuex';
-import { AmountValidity, Payment } from '@/view_models/Payment';
-import { Validity } from '@/view_models/Validity';
-import { validateAmount } from '@/store/amountValidator';
+import { AmountValidity, Payment } from '@src/view_models/Payment';
+import { Validity } from '@src/view_models/Validity';
+import { validateAmount } from '@src/store/amountValidator';
 
 export const getters: GetterTree<Payment, any> = {
 	amountIsValid: function ( state: Payment ): boolean {

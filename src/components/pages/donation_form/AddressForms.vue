@@ -101,25 +101,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { computed, onBeforeMount, PropType, toRefs } from 'vue';
-import AutofillHandler from '@/components/shared/AutofillHandler.vue';
-import Name from '@/components/shared/Name.vue';
-import Postal from '@/components/shared/Postal.vue';
-import ReceiptOption from '@/components/shared/ReceiptOption.vue';
-import Email from '@/components/shared/Email.vue';
-import NewsletterOption from '@/components/pages/donation_form/NewsletterOption.vue';
-import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { Country } from '@/view_models/Country';
-import { AddressValidation } from '@/view_models/Validation';
+import { computed, defineComponent, onBeforeMount, PropType, toRefs } from 'vue';
+import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import Name from '@src/components/shared/Name.vue';
+import Postal from '@src/components/shared/Postal.vue';
+import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
+import Email from '@src/components/shared/Email.vue';
+import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
+import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { Country } from '@src/view_models/Country';
+import { AddressValidation } from '@src/view_models/Validation';
 import { useAddressFunctions } from './AddressFunctions';
-import { Salutation } from '@/view_models/Salutation';
-import { TrackingData } from '@/view_models/TrackingData';
-import { useMailHostList } from '@/components/shared/useMailHostList';
-import { CampaignValues } from '@/view_models/CampaignValues';
-import { StoreKey } from '@/store/donation_store';
-import { injectStrict } from '@/util/injectStrict';
+import { Salutation } from '@src/view_models/Salutation';
+import { TrackingData } from '@src/view_models/TrackingData';
+import { useMailHostList } from '@src/components/shared/useMailHostList';
+import { CampaignValues } from '@src/view_models/CampaignValues';
+import { StoreKey } from '@src/store/donation_store';
+import { injectStrict } from '@src/util/injectStrict';
 
 export const AddressTypeIds = new Map<number, string>( [
 	[ AddressTypeModel.ANON, 'anonymous' ],
@@ -129,7 +128,7 @@ export const AddressTypeIds = new Map<number, string>( [
 	[ AddressTypeModel.UNSET, 'unset' ],
 ] );
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Address',
 	components: {
 		Name,

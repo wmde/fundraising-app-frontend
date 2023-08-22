@@ -34,7 +34,7 @@ export default defineComponent( {
 	props: {
 		selectId: String,
 		name: String,
-		value: {
+		modelValue: {
 			type: [ String, Number, Boolean, Object, Array, Function, Date ],
 			default: null,
 		},
@@ -43,7 +43,7 @@ export default defineComponent( {
 	},
 	data() {
 		return {
-			selected: this.value,
+			selected: this.modelValue,
 		};
 	},
 	computed: {
@@ -53,13 +53,13 @@ export default defineComponent( {
 			},
 			set( value: any ) {
 				this.selected = value;
-				this.$emit( 'input', value );
+				this.$emit( 'update:modelValue', value );
 			},
 		},
 	},
 	watch: {
-		value( value ) {
-			this.selected = value;
+		modelValue( modelValue ) {
+			this.selected = modelValue;
 		},
 	},
 } );

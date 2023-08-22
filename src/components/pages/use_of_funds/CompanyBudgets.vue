@@ -19,12 +19,7 @@
 
 import { computed, defineComponent, PropType } from 'vue';
 import CompanyCitation from './CompanyCitation.vue';
-
-interface CompanyInterface {
-  name: string;
-  budget: number;
-  budgetCitation?: string
-}
+import { Company } from '@src/components/pages/use_of_funds/Company';
 
 export default defineComponent( {
 	name: 'CompanyBudgets',
@@ -33,7 +28,7 @@ export default defineComponent( {
 	},
 	props: {
 		companies: {
-			type: Array as PropType<Array<CompanyInterface>>,
+			type: Array as PropType<Array<Company>>,
 			required: true,
 		},
 		citationLabel: {
@@ -42,7 +37,7 @@ export default defineComponent( {
 		},
 	},
 	setup( props ) {
-		const highestBudget = computed( () => props.companies.reduce( ( budget: number, company: CompanyInterface ) =>
+		const highestBudget = computed( () => props.companies.reduce( ( budget: number, company: Company ) =>
 			Math.max( budget, company.budget ), 0 )
 		);
 

@@ -1,5 +1,5 @@
-import AccountNumberField from '@/components/shared/AccountNumberField.vue';
-import { mount, Wrapper } from '@vue/test-utils';
+import AccountNumberField from '@src/components/shared/AccountNumberField.vue';
+import { mount, VueWrapper } from '@vue/test-utils';
 import { nextTick } from 'vue';
 
 const IBAN_VALUE = 'DE12500105170648489890';
@@ -7,9 +7,9 @@ const IBAN_DISPLAY = 'DE12 5001 0517 0648 4898 90';
 
 describe( 'AccountNumberField.vue', () => {
 
-	const getWrapper = ( accountId: string = '' ): Wrapper<any> => {
+	const getWrapper = ( accountId: string = '' ): VueWrapper<any> => {
 		return mount( AccountNumberField, {
-			propsData: {
+			props: {
 				placeholder: '',
 				accountId,
 			},

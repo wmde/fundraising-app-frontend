@@ -1,6 +1,6 @@
-import { getters } from '@/store/address/getters';
-import { actions } from '@/store/address/actions';
-import { mutations } from '@/store/address/mutations';
+import { getters } from '@src/store/address/getters';
+import { actions } from '@src/store/address/actions';
+import { mutations } from '@src/store/address/mutations';
 import {
 	VALIDATE_INPUT,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -10,11 +10,11 @@ import {
 	SET_ADDRESS_TYPE,
 	SET_NEWSLETTER,
 	SET_RECEIPT,
-} from '@/store/address/mutationTypes';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { AddressState } from '@/view_models/Address';
-import { Validity } from '@/view_models/Validity';
-import { REQUIRED_FIELDS } from '@/store/address/constants';
+} from '@src/store/address/mutationTypes';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AddressState } from '@src/view_models/Address';
+import { Validity } from '@src/view_models/Validity';
+import { REQUIRED_FIELDS } from '@src/store/address/constants';
 import mockAxios from 'jest-mock-axios';
 
 function newMinimalStore( overrides: Object ): AddressState {

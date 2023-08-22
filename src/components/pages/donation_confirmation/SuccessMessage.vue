@@ -8,20 +8,23 @@
 			{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
 		</div>
 		<div class="has-margin-top-18">
-			<a id="comment-link" @click="$emit( 'show-comment-modal' )" :disabled="commentLinkIsDisabled">
-				{{ commentLinkIsDisabled ? $t( 'donation_comment_popup_thanks' ) : $t( 'donation_confirmation_comment_button' ) }}
+			<span class="comment-thanks" v-if="commentLinkIsDisabled">
+				{{ $t( 'donation_comment_popup_thanks' ) }}
+			</span>
+			<a v-else id="comment-link" @click="$emit( 'show-comment-modal' )">
+				{{ $t( 'donation_confirmation_comment_button' ) }}
 			</a>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Donation } from '@/view_models/Donation';
-import SuccessIcon from '@/components/shared/icons/SuccessIcon.vue';
+import { defineComponent } from 'vue';
+import { Donation } from '@src/view_models/Donation';
+import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 import { TranslateResult } from 'vue-i18n';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'SuccessMessage',
 	components: {
 		SuccessIcon,

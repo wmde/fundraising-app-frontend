@@ -1,36 +1,30 @@
 {
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "target": "esnext",
-    "module": "esnext",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "jest"
-    ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
-  },
-  "include": [
-    "jest.dom.ts",
-    "src/**/*.ts",
-    "src/**/*.vue"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"target": "es5",
+		"skipLibCheck": true,
+		"importHelpers": true,
+		"sourceMap": true,
+		"baseUrl": ".",
+		"esModuleInterop": true,
+		"types": [
+			"webpack-env",
+			"jest"
+		],
+		"paths": {
+			"@src/*": [ "src/*" ],
+			"@test/*": [ "test/*" ]
+		},
+		"lib": [
+			"esnext",
+			"dom",
+			"dom.iterable",
+			"scripthost",
+			"es5",
+			"es2015.promise"
+		]
+	},
+	"exclude": [
+		"node_modules"
+	]
 }

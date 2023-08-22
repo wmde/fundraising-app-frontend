@@ -1,11 +1,11 @@
 import { Module } from 'vuex';
-import { AddressState } from '@/view_models/Address';
-import { Validity } from '@/view_models/Validity';
-import { actions } from '@/store/address/actions';
-import { getters } from '@/store/address/getters';
-import { mutations } from '@/store/address/mutations';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { AddressRequirements } from '@/store/address/constants';
+import { AddressState } from '@src/view_models/Address';
+import { Validity } from '@src/view_models/Validity';
+import { actions } from '@src/store/address/actions';
+import { getters } from '@src/store/address/getters';
+import { mutations } from '@src/store/address/mutations';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AddressRequirements } from '@src/store/address/constants';
 
 export default function ( requiredFields: AddressRequirements ): Module<AddressState, any> {
 	const state: AddressState = {

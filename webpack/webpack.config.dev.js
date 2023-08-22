@@ -10,6 +10,10 @@ const webpackConfig = merge( commonConfig, {
 	devtool: 'eval-cheap-module-source-map',
 	plugins: [
 		new webpack.EnvironmentPlugin( environment ),
+		new webpack.DefinePlugin( {
+			__VUE_OPTIONS_API__: true,
+			__VUE_PROD_DEVTOOLS__: true,
+		} ),
 	],
 	devServer: {
 		compress: true,

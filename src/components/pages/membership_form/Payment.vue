@@ -1,21 +1,21 @@
 <template>
 	<div class="payment-section">
 		<payment-interval
-				:payment-intervals="paymentIntervals"
-				:current-interval="interval"
-				:title="$t( 'membership_form_payment_interval_title' )"
-				v-on:interval-selected="sendIntervalToStore"
-		></payment-interval>
+			:payment-intervals="paymentIntervals"
+			:current-interval="interval"
+			:title="$t( 'membership_form_payment_interval_title' )"
+			v-on:interval-selected="sendIntervalToStore"
+		/>
 		<amount-selection
-				class="has-margin-top-36"
-				:payment-amounts="paymentAmounts"
-				:amount="fee"
-				:minimum-amount="getMinimumAmount"
-				:title="getAmountTitle"
-				:caption="$t('membership_form_payment_amount_description')"
-				:error="feeIsValid ? '' : $t('membership_form_payment_amount_error')"
-				v-on:amount-selected="sendAmountToStore"
-		></amount-selection>
+			class="has-margin-top-36"
+			:payment-amounts="paymentAmounts"
+			:amount="fee"
+			:minimum-amount="getMinimumAmount"
+			:title="getAmountTitle"
+			:caption="$t('membership_form_payment_amount_description')"
+			:error="feeIsValid ? '' : $t('membership_form_payment_amount_error')"
+			v-on:amount-selected="sendAmountToStore"
+		/>
 		<div>{{ $t('membership_form_payment_amount_cap_notice') }}</div>
 
 		<payment-type
@@ -26,32 +26,32 @@
 			:error="typeIsValid ? '' : $t('membership_form_payment_type_error')"
 			:title="$t('membership_form_payment_type_title')"
 			v-on:payment-type-selected="sendTypeToStore"
-		></payment-type>
+		/>
 
 		<payment-bank-data
 			v-if="type === 'BEZ'"
 			class="has-margin-top-36"
 			:validateBankDataUrl="validateBankDataUrl"
 			:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
-		></payment-bank-data>
+		/>
 	</div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import AmountSelection from '@/components/shared/AmountSelection.vue';
-import PaymentInterval from '@/components/shared/PaymentInterval.vue';
-import PaymentBankData from '@/components/shared/PaymentBankData.vue';
-import PaymentType from '@/components/pages/membership_form/PaymentType.vue';
+import { defineComponent } from 'vue';
+import AmountSelection from '@src/components/shared/AmountSelection.vue';
+import PaymentInterval from '@src/components/shared/PaymentInterval.vue';
+import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
+import PaymentType from '@src/components/pages/membership_form/PaymentType.vue';
 
-import { action } from '@/store/util';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
+import { action } from '@src/store/util';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { mapGetters, mapState } from 'vuex';
-import { setFee, setInterval } from '@/store/membership_fee/actionTypes';
-import { IntervalData, SetFeePayload, TypeData } from '@/view_models/MembershipFee';
-import { setType } from '@/store/payment/actionTypes';
+import { setFee, setInterval } from '@src/store/membership_fee/actionTypes';
+import { IntervalData, SetFeePayload, TypeData } from '@src/view_models/MembershipFee';
+import { setType } from '@src/store/payment/actionTypes';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Payment',
 	components: {
 		AmountSelection,

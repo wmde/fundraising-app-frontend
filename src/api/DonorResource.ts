@@ -1,4 +1,4 @@
-import { Address } from '@/view_models/Address';
+import { Address } from '@src/view_models/Address';
 import axios, { AxiosResponse } from 'axios';
 
 interface DonorResource {

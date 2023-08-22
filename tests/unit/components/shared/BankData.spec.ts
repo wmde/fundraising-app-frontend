@@ -1,37 +1,39 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import BankData from '@/components/shared/PaymentBankData.vue';
-import { createStore } from '@/store/donation_store';
-import { NS_BANKDATA } from '@/store/namespaces';
-import { action } from '@/store/util';
+import { mount, VueWrapper } from '@vue/test-utils';
+import Vuex, { Store } from 'vuex';
+import BankData from '@src/components/shared/PaymentBankData.vue';
+import { createStore } from '@src/store/donation_store';
+import { NS_BANKDATA } from '@src/store/namespaces';
+import { action } from '@src/store/util';
 import {
 	initializeBankData,
 	markBankDataAsIncomplete,
 	markBankDataAsInvalid,
 	setBankData,
-} from '@/store/bankdata/actionTypes';
-import { BankAccountRequest } from '@/view_models/BankAccount';
+} from '@src/store/bankdata/actionTypes';
+import { BankAccountRequest } from '@src/view_models/BankAccount';
+import { nextTick } from 'vue';
 
-const localVue = createLocalVue();
-localVue.use( Vuex );
+describe( 'BankData.vue', () => {
 
-const translator = ( key: string ) => key;
-
-describe( 'BankData', () => {
-
-	it( 'validates IBANs correctly and sets the bank data to the store on success', () => {
+	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
 		const wrapper = mount( BankData, {
-			localVue,
-			propsData: {
+			props: {
 				validateBankDataUrl: '/check-iban',
 				validateLegacyBankDataUrl: '/generate-iban',
 			},
-			store: createStore(),
-			mocks: {
-				$t: translator,
+			global: {
+				plugins: [ store ],
 			},
 		} );
-		const store = wrapper.vm.$store;
+
+		return {
+			wrapper,
+			store,
+		};
+	};
+
+	it( 'validates IBANs correctly and sets the bank data to the store on success', () => {
+		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
@@ -47,18 +49,7 @@ describe( 'BankData', () => {
 	} );
 
 	it( 'validates (non-german) IBANs with letters correctly and sets the bank data to the store on success', () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			propsData: {
-				validateBankDataUrl: '/check-iban',
-				validateLegacyBankDataUrl: '/generate-iban',
-			},
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
-		const store = wrapper.vm.$store;
+		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
@@ -74,18 +65,7 @@ describe( 'BankData', () => {
 	} );
 
 	it( 'validates legacy bank data correctly and sets it in the store on success', () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			propsData: {
-				validateBankDataUrl: '/check-iban',
-				validateLegacyBankDataUrl: '/generate-iban',
-			},
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
-		const store = wrapper.vm.$store;
+		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
@@ -104,18 +84,7 @@ describe( 'BankData', () => {
 	} );
 
 	it( 'marks invalid bank account IDs as invalid', () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			propsData: {
-				validateBankDataUrl: '/check-iban',
-				validateLegacyBankDataUrl: '/generate-iban',
-			},
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
-		const store = wrapper.vm.$store;
+		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
@@ -127,21 +96,11 @@ describe( 'BankData', () => {
 	} );
 
 	it( 'marks bank account data as incomplete if valid IBAN is removed', () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			propsData: {
-				validateBankDataUrl: '/check-iban',
-				validateLegacyBankDataUrl: '/generate-iban',
-			},
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
-		const store = wrapper.vm.$store;
+		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
+
 		wrapper.setData( { accountId: 'DE12345605171238489890' } );
 		iban.trigger( 'blur' );
 
@@ -153,223 +112,147 @@ describe( 'BankData', () => {
 	} );
 
 	it( 'renders changes from the store in the input fields', async () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
+		const { wrapper } = getWrapper();
 
 		const iban = wrapper.find( '#iban' );
 		const bic = wrapper.find( '#bic' );
-		wrapper.setData( { accountId: 'AT12345605171238489890', bankId: 'ABCDDEFFXXX' } );
-		await wrapper.vm.$nextTick();
+
+		await wrapper.setData( { accountId: 'AT12345605171238489890', bankId: 'ABCDDEFFXXX' } );
 
 		expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'AT12 3456 0517 1238 4898 90' );
 		expect( ( ( <HTMLInputElement> bic.element ).value ) ).toMatch( 'ABCDDEFFXXX' );
 	} );
 
 	it( 'renders the bank name set in the store', async () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
-		const store = wrapper.vm.$store;
+		const { wrapper, store } = getWrapper();
+
 		store.commit( NS_BANKDATA + '/SET_BANKNAME', 'Test Bank' );
-		const iban = wrapper.find( '#bank-name-iban' );
-		await wrapper.vm.$nextTick();
-		expect( iban.text() ).toMatch( 'Test Bank' );
+		await nextTick();
+
+		expect( wrapper.find( '#bank-name-iban' ).text() ).toMatch( 'Test Bank' );
 	} );
 
 	it( 'renders info message when bank info is valid but no bankname and bankId available', async () => {
-		let getters;
-		let store;
-		getters = {
-			bankDataIsValid: () => true,
-			bankDataIsInvalid: () => false,
-			getBankName: () => '',
-			getBankId: () => '',
-			getAccountId: () => '',
-		};
-		store = new Vuex.Store( {
+		const { wrapper } = getWrapper( new Vuex.Store<any>( {
 			modules: {
 				[ NS_BANKDATA ]: {
 					namespaced: true,
-					getters,
+					getters: {
+						bankDataIsValid: () => true,
+						bankDataIsInvalid: () => false,
+						getBankName: () => '',
+						getBankId: () => '',
+						getAccountId: () => '',
+					},
 					actions: {
 						setBankData: () => {},
 					},
 				},
 			},
-		} );
-		const wrapper = mount( BankData, {
-			localVue,
-			store,
-			mocks: {
-				$t: translator,
-			},
-		} );
+		} ) );
 
-		wrapper.setData( { accountId: 'DE12345605171238489890' } );
-		const iban = wrapper.find( '#iban' );
-		iban.trigger( 'blur' );
-		await wrapper.vm.$nextTick();
+		await wrapper.setData( { accountId: 'DE12345605171238489890' } );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
-		const bicInfo = wrapper.find( '#bank-name-not-available' );
-		expect( bicInfo.text() )
+		expect( wrapper.find( '#bank-name-not-available' ).text() )
 			.toMatch( 'donation_form_payment_bankdata_bank_bic_placeholder_full' );
 	} );
 
 	it( 'renders bank code / BIC field when legacy bank account number is entered', async () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
+		const { wrapper } = getWrapper();
 
-		let bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.isVisible() ).toBe( false );
+		expect( wrapper.find( 'input#bic' ).isVisible() ).toBe( false );
 
-		wrapper.setData( { accountId: '123' } );
-		await wrapper.vm.$nextTick();
+		await wrapper.setData( { accountId: '123' } );
 
-		bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.isVisible() ).toBe( true );
+		expect( wrapper.find( 'input#bic' ).isVisible() ).toBe( true );
 	} );
 
 	it( 'does not render bank code / BIC field when valid IBAN was validated', async () => {
-		let getters;
-		let store;
-		getters = {
-			bankDataIsValid: () => true,
-			bankDataIsInvalid: () => false,
-			getBankName: () => 'gute Bank',
-			getAccountId: () => '',
-		};
-		store = new Vuex.Store( {
+		const { wrapper } = getWrapper( new Vuex.Store<any>( {
 			modules: {
 				[ NS_BANKDATA ]: {
 					namespaced: true,
-					getters,
+					getters: {
+						bankDataIsValid: () => true,
+						bankDataIsInvalid: () => false,
+						getBankName: () => 'gute Bank',
+						getAccountId: () => '',
+					},
 				},
 			},
-		} );
-		const wrapper = mount( BankData, {
-			localVue,
-			store,
-			mocks: {
-				$t: translator,
-			},
-		} );
-		wrapper.setData( { accountId: 'DE89370400440532013000' } );
+		} ) );
 
-		let bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.isVisible() ).toBe( false );
+		await wrapper.setData( { accountId: 'DE89370400440532013000' } );
+
+		expect( wrapper.find( 'input#bic' ).isVisible() ).toBe( false );
 	} );
 
 	it( 'does not render bank code / BIC field if IBAN is invalid', async () => {
-		let getters;
-		let store;
-		getters = {
-			bankDataIsValid: () => false,
-			bankDataIsInvalid: () => true,
-			getBankName: () => '',
-			getAccountId: () => '',
-		};
-		store = new Vuex.Store( {
+		const { wrapper } = getWrapper( new Vuex.Store<any>( {
 			modules: {
 				[ NS_BANKDATA ]: {
 					namespaced: true,
-					getters,
+					getters: {
+						bankDataIsValid: () => false,
+						bankDataIsInvalid: () => true,
+						getBankName: () => '',
+						getAccountId: () => '',
+					},
 				},
 			},
-		} );
-		const wrapper = mount( BankData, {
-			localVue,
-			store,
-			mocks: {
-				$t: translator,
-			},
-		} );
-		wrapper.setData( { accountId: 'DE89370400440532013000' } );
+		} ) );
 
-		let bankInfoInput = wrapper.find( 'input#bic' );
-		expect( bankInfoInput.isVisible() ).toBe( false );
+		await wrapper.setData( { accountId: 'DE89370400440532013000' } );
+
+		expect( wrapper.find( 'input#bic' ).isVisible() ).toBe( false );
 	} );
 
 	it( 'renders the appropriate labels for no value', () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
+		const { wrapper } = getWrapper();
 
 		const bankDataLabels = wrapper.findAll( 'label' );
+
 		expect( bankDataLabels.at( 0 ).text() ).toMatch( 'donation_form_payment_bankdata_account_default_label' );
 		expect( bankDataLabels.at( 1 ).text() ).toMatch( 'donation_form_payment_bankdata_bank_default_label' );
 	} );
 
 	it( 'renders the appropriate labels for IBANs', async () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
+		const { wrapper } = getWrapper();
 
-		wrapper.setData( { accountId: 'DE12345605171238489890', bankId: 'ABCDDEFFXXX' } );
+		await wrapper.setData( { accountId: 'DE12345605171238489890', bankId: 'ABCDDEFFXXX' } );
+
 		const bankDataLabels = wrapper.findAll( 'label' );
-		await wrapper.vm.$nextTick();
 		expect( bankDataLabels.at( 0 ).text() ).toMatch( 'donation_form_payment_bankdata_account_iban_label' );
 		expect( bankDataLabels.at( 1 ).text() ).toMatch( 'donation_form_payment_bankdata_bank_bic_label' );
 	} );
 
 	it( 'renders the appropriate labels for legacy bank accounts', async () => {
-		const wrapper = mount( BankData, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: translator,
-			},
-		} );
+		const { wrapper } = getWrapper();
 
-		wrapper.setData( { accountId: '34560517', bankId: '50010517' } );
+		await wrapper.setData( { accountId: '34560517', bankId: '50010517' } );
+
 		const bankDataLabels = wrapper.findAll( 'label' );
-		await wrapper.vm.$nextTick();
 		expect( bankDataLabels.at( 0 ).text() ).toMatch( 'donation_form_payment_bankdata_account_legacy_label' );
 		expect( bankDataLabels.at( 1 ).text() ).toMatch( 'donation_form_payment_bankdata_bank_legacy_label' );
 	} );
 
-	it( 'puts initial values form the store in the fields', () => {
+	it( 'puts initial values form the store in the fields', async () => {
 		const store = createStore();
-		return store.dispatch( action( NS_BANKDATA, initializeBankData ), {
+		await store.dispatch( action( NS_BANKDATA, initializeBankData ), {
 			accountId: 'DE12345605171238489890',
 			bankId: 'ABCDDEFFXXX',
 			bankName: 'Cool Bank',
-		} ).then( () => {
-			const wrapper = mount( BankData, {
-				localVue,
-				store,
-				mocks: {
-					$t: translator,
-				},
-			} );
-			const iban = wrapper.find( '#iban' );
-			const bic = wrapper.find( '#bic' );
-			const bankName = wrapper.find( '#bank-name-iban' );
-
-			expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'DE12 3456 0517 1238 4898 90' );
-			expect( ( ( <HTMLInputElement> bic.element ).value ) ).toMatch( 'ABCDDEFFXXX' );
-			expect( ( ( <HTMLElement> bankName.element ).textContent ) ).toMatch( 'Cool Bank' );
 		} );
+
+		const { wrapper } = getWrapper( store );
+
+		const iban = wrapper.find<HTMLInputElement>( '#iban' );
+		const bic = wrapper.find<HTMLInputElement>( '#bic' );
+		const bankName = wrapper.find<HTMLElement>( '#bank-name-iban' );
+
+		expect( iban.element.value ).toMatch( 'DE12 3456 0517 1238 4898 90' );
+		expect( bic.element.value ).toMatch( 'ABCDDEFFXXX' );
+		expect( bankName.element.textContent ).toMatch( 'Cool Bank' );
 	} );
 } );

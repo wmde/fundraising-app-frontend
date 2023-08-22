@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { Validity } from '@/view_models/Validity';
+import { Validity } from '@src/view_models/Validity';
 import {
 	MARK_EMPTY_AMOUNT_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -10,8 +10,8 @@ import {
 	SET_TYPE,
 	SET_TYPE_VALIDITY,
 	SET_IS_VALIDATING,
-} from '@/store/payment/mutationTypes';
-import { DonationPayment } from '@/store/payment/types';
+} from '@src/store/payment/mutationTypes';
+import { DonationPayment } from '@src/store/payment/types';
 
 export const mutations: MutationTree<DonationPayment> = {
 	[ MARK_EMPTY_AMOUNT_INVALID ]( state: DonationPayment ) {

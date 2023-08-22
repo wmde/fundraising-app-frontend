@@ -1,10 +1,8 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Postal from '@/components/shared/Postal.vue';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import countries from '@/../tests/data/countries';
+import { mount } from '@vue/test-utils';
+import Postal from '@src/components/shared/Postal.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import countries from '@src/../tests/data/countries';
 import { addressValidationPatterns } from '../../../data/validation';
-
-const localVue = createLocalVue();
 
 function newTestProperties( overrides: Object ) {
 	return Object.assign(
@@ -85,11 +83,7 @@ function newTestProperties( overrides: Object ) {
 describe( 'Postal.vue', () => {
 	it( 'shows street number warning if street field does not contain numbers', () => {
 		const wrapper = mount( Postal, {
-				localVue,
-				mocks: {
-					$t: ( key: string ) => key,
-				},
-				propsData: newTestProperties( {} ),
+				props: newTestProperties( {} ),
 			} ),
 			street = wrapper.find( '#street' );
 		street.trigger( 'blur' );
@@ -98,11 +92,7 @@ describe( 'Postal.vue', () => {
 
 	it( 'emits field changed event on blur', () => {
 		const wrapper = mount( Postal, {
-				localVue,
-				mocks: {
-					$t: ( key: string ) => key,
-				},
-				propsData: newTestProperties( {} ),
+				props: newTestProperties( {} ),
 			} ),
 			field = wrapper.find( '#post-code' );
 
@@ -114,11 +104,7 @@ describe( 'Postal.vue', () => {
 
 	it( 'sets the correct postcode regex on country change', async () => {
 		const wrapper = mount( Postal, {
-			localVue,
-			mocks: {
-				$t: ( key: string ) => key,
-			},
-			propsData: newTestProperties( {} ),
+			props: newTestProperties( {} ),
 		} );
 
 		await wrapper.setData( { country: countries[ 1 ] } );

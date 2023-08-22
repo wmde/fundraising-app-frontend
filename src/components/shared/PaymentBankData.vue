@@ -7,7 +7,7 @@
 				<div class="control is-medium is-clearfix">
 					<AccountNumberField
 						:id="'iban'"
-						:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' ).toString()"
+						:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' )"
 						:account-id="accountId"
 						:data-track-content="getTrackingCode !== ''"
 						:data-content-piece="getTrackingCode"
@@ -26,7 +26,7 @@
 					input-id="bic"
 					v-model="bankIdentifier"
 					name="bic"
-					:placeholder="$t( labels.bicPlaceholder )"
+					:placeholder="labels.bicPlaceholder != '' ? $t( labels.bicPlaceholder ) : ''"
 					@blur="validate"
 				/>
 			</div>
@@ -47,16 +47,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { BankAccountData, BankAccountRequest } from '@/view_models/BankAccount';
-import { markBankDataAsIncomplete, markBankDataAsInvalid, setBankData } from '@/store/bankdata/actionTypes';
-import { NS_BANKDATA } from '@/store/namespaces';
-import { action } from '@/store/util';
+import { defineComponent } from 'vue';
+import { BankAccountData, BankAccountRequest } from '@src/view_models/BankAccount';
+import { markBankDataAsIncomplete, markBankDataAsInvalid, setBankData } from '@src/store/bankdata/actionTypes';
+import { NS_BANKDATA } from '@src/store/namespaces';
+import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
-import AccountNumberField from '@/components/shared/AccountNumberField.vue';
-import TextInput from '@/components/shared/form_inputs/TextInput.vue';
+import AccountNumberField from '@src/components/shared/AccountNumberField.vue';
+import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'PaymentBankData',
 	components: { AccountNumberField, TextInput },
 	data: function (): BankAccountData {

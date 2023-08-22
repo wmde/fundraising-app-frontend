@@ -33,15 +33,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Donation } from '@/view_models/Donation';
-import { Country } from '@/view_models/Country';
-import SuccessIcon from '@/components/shared/icons/SuccessIcon.vue';
+import { defineComponent } from 'vue';
+import { Donation } from '@src/view_models/Donation';
+import { Country } from '@src/view_models/Country';
+import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 import { TranslateResult } from 'vue-i18n';
-import { Address } from '@/view_models/Address';
-import { Salutation } from '@/view_models/Salutation';
+import { Address } from '@src/view_models/Address';
+import { Salutation } from '@src/view_models/Salutation';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AddressKnown',
 	components: {
 		SuccessIcon,

@@ -38,6 +38,9 @@ module.exports = {
 		'jsdoc/require-param': 'off',
 		'jsdoc/require-returns': 'off',
 		'jsdoc/require-param-type': 'off',
+
+		// Allow template literals
+		'quotes': [ 'error', 'single', { allowTemplateLiterals: true } ],
 	},
 
 	parser: 'vue-eslint-parser',

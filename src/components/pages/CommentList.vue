@@ -23,14 +23,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import axios from 'axios';
-import { commentModelsFromObject } from '@/view_models/Comment';
-import FunSelect from '@/components/shared/form_inputs/FunSelect.vue';
+import { commentModelsFromObject } from '@src/view_models/Comment';
+import FunSelect from '@src/components/shared/form_inputs/FunSelect.vue';
 
 const PAGE_SIZE = 10;
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'CommentList',
 	components: { FunSelect },
 	data() {

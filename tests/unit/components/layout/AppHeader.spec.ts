@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
-import Header from '@/components/layout/Header.vue';
+import AppHeader from '@src/components/layout/AppHeader.vue';
 
-describe( 'Header.vue', () => {
+describe( 'AppHeader.vue', () => {
 	it.each( [
 		[ 'donation-form', 1 ],
 		[ 'donation-confirmation', 1 ],
@@ -10,13 +10,10 @@ describe( 'Header.vue', () => {
 		[ 'faq-page', 3 ],
 		[ 'use-of-funds', 4 ],
 	] )( 'highlights the correct navigation items', ( pageIdentifier: string, navItemIndex: number ) => {
-		const wrapper = shallowMount( Header, {
-			propsData: {
+		const wrapper = shallowMount( AppHeader, {
+			props: {
 				assetsPath: '',
 				pageIdentifier,
-			},
-			mocks: {
-				$t: ( key: string ) => key,
 			},
 		} );
 

@@ -1,21 +1,17 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuex from 'vuex';
-import AddressForms from '@/components/pages/donation_form/AddressForms.vue';
-import Name from '@/components/shared/Name.vue';
+import { mount } from '@vue/test-utils';
+import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
+import Name from '@src/components/shared/Name.vue';
 import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
-import Email from '@/components/shared/Email.vue';
-import { createStore, StoreKey } from '@/store/donation_store';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { NS_ADDRESS } from '@/store/namespaces';
-import { initializeAddress, setAddressField, setReceiptChoice } from '@/store/address/actionTypes';
-import { action } from '@/store/util';
-import countries from '@/../tests/data/countries';
-import { Validity } from '@/view_models/Validity';
+import Email from '@src/components/shared/Email.vue';
+import { createStore, StoreKey } from '@src/store/donation_store';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { initializeAddress, setAddressField, setReceiptChoice } from '@src/store/address/actionTypes';
+import { action } from '@src/store/util';
+import countries from '@src/../tests/data/countries';
+import { Validity } from '@src/view_models/Validity';
 import { addressValidationPatterns } from '../../../../data/validation';
 import each from 'jest-each';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
 
 const store = createStore();
 
@@ -24,8 +20,7 @@ describe( 'AddressForms.vue', () => {
 	let originalStoreDispatch: any;
 
 	const createOptionsForAddressType = ( addressType: AddressTypeModel ) => ( {
-		localVue,
-		propsData: {
+		props: {
 			countries: countries,
 			addressValidationPatterns: addressValidationPatterns,
 			addressType,
@@ -39,12 +34,11 @@ describe( 'AddressForms.vue', () => {
 				keyword: 'cage',
 			},
 		},
-		provide: {
-			[ StoreKey as symbol ]: store,
-		},
-		store,
-		mocks: {
-			$t: ( key: string ) => key,
+		global: {
+			plugins: [ store ],
+			provide: {
+				[ StoreKey as symbol ]: store,
+			},
 		},
 	} );
 
@@ -67,7 +61,7 @@ describe( 'AddressForms.vue', () => {
 		[ AddressTypeModel.COMPANY, true, 'address-type-company' ],
 	] ).test( 'adapts the class attribute', ( addressType, isFullSelected, expectedClass ) => {
 		const options = createOptionsForAddressType( addressType );
-		options.propsData.isFullSelected = isFullSelected;
+		options.props.isFullSelected = isFullSelected;
 		wrapper = mount( AddressForms, options );
 		expect( wrapper.classes() ).toContain( expectedClass );
 	} );
@@ -119,8 +113,7 @@ describe( 'AddressForms.vue', () => {
 		};
 		await store.dispatch( action( NS_ADDRESS, initializeAddress ), initialData );
 		wrapper = mount( AddressForms, {
-			localVue,
-			propsData: {
+			props: {
 				validateAddressUrl: 'validate-address',
 				countries: countries,
 				addressValidationPatterns: addressValidationPatterns,
@@ -133,12 +126,14 @@ describe( 'AddressForms.vue', () => {
 					keyword: 'cage',
 				},
 			},
-			store,
-			provide: {
-				[ StoreKey as symbol ]: store,
-			},
-			mocks: {
-				$t: ( key: string ) => key,
+			global: {
+				plugins: [ store ],
+				provide: {
+					[ StoreKey as symbol ]: store,
+				},
+				mocks: {
+					$t: ( key: string ) => key,
+				},
 			},
 		} );
 

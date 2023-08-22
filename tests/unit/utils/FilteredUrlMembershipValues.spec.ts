@@ -1,4 +1,4 @@
-import FilteredUrlMembershipValues from '@/util/FilteredUrlMembershipValues';
+import FilteredUrlMembershipValues from '@src/util/FilteredUrlMembershipValues';
 import each from 'jest-each';
 
 describe( 'FilteredUrlMembershipValues', function () {

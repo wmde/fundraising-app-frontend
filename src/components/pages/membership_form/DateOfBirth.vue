@@ -16,10 +16,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import TextInput from '@/components/shared/form_inputs/TextInput.vue';
+import { defineComponent } from 'vue';
+import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'DateOfBirth',
 	components: { TextInput },
 	props: {

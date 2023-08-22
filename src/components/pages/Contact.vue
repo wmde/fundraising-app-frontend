@@ -123,17 +123,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { FormData } from '@/view_models/Contact';
-import { Helper } from '@/store/util';
-import { Validity } from '@/view_models/Validity';
-import { ContactFormValidation } from '@/view_models/Validation';
-import { trackFormSubmission } from '@/tracking';
-import TextInput from '@/components/shared/form_inputs/TextInput.vue';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
-import FunSelect from '@/components/shared/form_inputs/FunSelect.vue';
+import { defineComponent } from 'vue';
+import { FormData } from '@src/view_models/Contact';
+import { Helper } from '@src/store/util';
+import { Validity } from '@src/view_models/Validity';
+import { ContactFormValidation } from '@src/view_models/Validation';
+import { trackFormSubmission } from '@src/tracking';
+import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import FunSelect from '@src/components/shared/form_inputs/FunSelect.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Contact',
 	components: { FunSelect, FunButton, TextInput },
 	data: function (): { formData: FormData } {

@@ -1,10 +1,7 @@
-import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import createAddress from '@/store/address';
+import createAddress from '@src/store/address';
 import { NS_ADDRESS } from './namespaces';
-import { REQUIRED_FIELDS } from '@/store/address/constants';
-
-Vue.use( Vuex );
+import { REQUIRED_FIELDS } from '@src/store/address/constants';
 
 export function createStore() {
 	const storeBundle: StoreOptions<any> = {

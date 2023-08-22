@@ -7,9 +7,9 @@
 </template>
 
 <script lang="js">
-import Vue from 'vue';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
-import { YearlyMembershipFee } from '@/view_models/MembershipFee';
+import { defineComponent } from 'vue';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
 
 class PrivateApplicantRenderer {
 	static renderAddress( address, country, salutation ) {
@@ -31,7 +31,7 @@ const addressTypeRenderers = {
 	[ addressTypeName( AddressTypeModel.COMPANY ) ]: CompanyApplicantRenderer,
 };
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'MembershipSummary',
 	props: [
 		'address',

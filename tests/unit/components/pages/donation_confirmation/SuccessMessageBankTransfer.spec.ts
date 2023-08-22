@@ -3,25 +3,28 @@ import {
 	payPalConfirmationData,
 	testBankTransferCode,
 } from '../../../../data/confirmationData';
-import { createLocalVue, mount } from '@vue/test-utils';
-import { createStore } from '@/store/donation_store';
-import SuccessMessageBankTransfer from '@/components/pages/donation_confirmation/SuccessMessageBankTransfer.vue';
+import { mount, VueWrapper } from '@vue/test-utils';
+import SuccessMessageBankTransfer from '@src/components/pages/donation_confirmation/SuccessMessageBankTransfer.vue';
+import { Donation } from '@src/view_models/Donation';
 
-const localVue = createLocalVue();
+describe( 'SuccessMessageBankTransfer.vue', () => {
 
-describe( 'SuccessMessageBankTransfer', () => {
-	it( 'renders messages', () => {
-		const wrapper = mount( SuccessMessageBankTransfer, {
-			localVue,
-			propsData: {
-				donation: bankTransferConfirmationData.donation,
+	const getWrapper = ( donation: Donation ): VueWrapper<any> => {
+		return mount( SuccessMessageBankTransfer, {
+			props: {
+				donation,
 			},
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
-				$n: () => {},
+			global: {
+				mocks: {
+					$t: ( key: string ) => key,
+					$n: () => {},
+				},
 			},
 		} );
+	};
+
+	it( 'renders messages', () => {
+		const wrapper = getWrapper( bankTransferConfirmationData.donation );
 
 		expect( wrapper.text() ).toContain( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' );
 		expect( wrapper.text() ).toContain( 'donation_confirmation_payment_bank_transfer_alt' );
@@ -29,33 +32,13 @@ describe( 'SuccessMessageBankTransfer', () => {
 	} );
 
 	it( 'displays bank data', () => {
-		const wrapper = mount( SuccessMessageBankTransfer, {
-			localVue,
-			propsData: {
-				donation: bankTransferConfirmationData.donation,
-			},
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( bankTransferConfirmationData.donation );
 
 		expect( wrapper.find( '.success-message-bank-transfer .bank-data-content' ).html() ).toContain( testBankTransferCode );
 	} );
 
 	it( 'does not render newsletter confirmation message when opted out', () => {
-		const wrapper = mount( SuccessMessageBankTransfer, {
-			localVue,
-			propsData: {
-				donation: payPalConfirmationData.donation,
-			},
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( payPalConfirmationData.donation );
 
 		expect( wrapper.text() ).not.toContain( 'donation_confirmation_newsletter_confirmation' );
 	} );
@@ -64,17 +47,7 @@ describe( 'SuccessMessageBankTransfer', () => {
 		let donation = payPalConfirmationData.donation;
 		donation.newsletter = true;
 
-		const wrapper = mount( SuccessMessageBankTransfer, {
-			localVue,
-			propsData: {
-				donation,
-			},
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( donation );
 
 		expect( wrapper.text() ).toContain( 'donation_confirmation_newsletter_confirmation' );
 	} );

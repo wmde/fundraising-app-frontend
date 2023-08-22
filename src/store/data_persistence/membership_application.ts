@@ -1,14 +1,14 @@
-import { mutation } from '@/store/util';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
+import { mutation } from '@src/store/util';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import {
 	SET_ADDRESS_TYPE,
 	SET_MEMBERSHIP_TYPE,
 	SET_RECEIPT,
 	SET_INCENTIVES,
-} from '@/store/membership_address/mutationTypes';
-import { SET_FEE, SET_INTERVAL, SET_TYPE } from '@/store/membership_fee/mutationTypes';
-import { DataPersistenceMutationType } from '@/view_models/DataPersistence';
-import address from '@/store/data_persistence/address';
+} from '@src/store/membership_address/mutationTypes';
+import { SET_FEE, SET_INTERVAL, SET_TYPE } from '@src/store/membership_fee/mutationTypes';
+import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
+import address from '@src/store/data_persistence/address';
 
 export default [
 	{

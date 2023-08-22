@@ -4,11 +4,3 @@
 		<path d="M16 9.5L11 15.5L8 12.5" stroke="#3BC92F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 	</svg>
 </template>
-
-<script>
-import Vue from 'vue';
-
-export default Vue.extend( {
-	name: 'SuccessIcon',
-} );
-</script>

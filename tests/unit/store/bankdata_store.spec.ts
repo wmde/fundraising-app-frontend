@@ -1,11 +1,11 @@
-import { getters } from '@/store/bankdata/getters';
-import { actions } from '@/store/bankdata/actions';
-import { Validity } from '@/view_models/Validity';
+import { getters } from '@src/store/bankdata/getters';
+import { actions } from '@src/store/bankdata/actions';
+import { Validity } from '@src/view_models/Validity';
 import each from 'jest-each';
-import { BankAccount, BankAccountRequest, BankAccountResponse } from '@/view_models/BankAccount';
+import { BankAccount, BankAccountRequest, BankAccountResponse } from '@src/view_models/BankAccount';
 import mockAxios from 'jest-mock-axios';
-import { mutations } from '@/store/bankdata/mutations';
-import { MARK_BANKDATA_INCOMPLETE } from '@/store/bankdata/mutationTypes';
+import { mutations } from '@src/store/bankdata/mutations';
+import { MARK_BANKDATA_INCOMPLETE } from '@src/store/bankdata/mutationTypes';
 
 function newMinimalStore( overrides: Object ): BankAccount {
 	return Object.assign(

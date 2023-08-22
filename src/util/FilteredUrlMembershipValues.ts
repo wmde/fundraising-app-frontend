@@ -1,4 +1,4 @@
-import { InitialMembershipFeeValues } from '@/view_models/MembershipFee';
+import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
 
 export default class FilteredUrlMembershipValues implements InitialMembershipFeeValues {
 	private params: URLSearchParams;

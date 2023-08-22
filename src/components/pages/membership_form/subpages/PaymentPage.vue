@@ -1,11 +1,11 @@
 <template>
 	<div class="payment-page">
 		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
-    <membership-type v-if="showMembershipTypeOption"></membership-type>
+		<membership-type v-if="showMembershipTypeOption"/>
 		<div class="has-margin-top-36">
 			<address-type :initial-value="addressType" v-on:address-type="setAddressType( $event )" />
 		</div>
-		<payment class="has-margin-top-36" v-bind="$props"></payment>
+		<payment class="has-margin-top-36" v-bind="$props"/>
 		<div class="level has-margin-top-18">
 			<div class="level-left">
 				<FunButton
@@ -21,21 +21,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import MembershipType from '@/components/pages/membership_form//MembershipType.vue';
-import Payment from '@/components/pages/membership_form/Payment.vue';
-import AddressType from '@/components/pages/membership_form/AddressType.vue';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
-import { action } from '@/store/util';
-import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@/store/membership_fee/actionTypes';
-import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@/store/bankdata/actionTypes';
-import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { setAddressType } from '@/store/membership_address/actionTypes';
+import { defineComponent } from 'vue';
+import MembershipType from '@src/components/pages/membership_form//MembershipType.vue';
+import Payment from '@src/components/pages/membership_form/Payment.vue';
+import AddressType from '@src/components/pages/membership_form/AddressType.vue';
+import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { action } from '@src/store/util';
+import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@src/store/membership_fee/actionTypes';
+import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@src/store/bankdata/actionTypes';
+import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { setAddressType } from '@src/store/membership_address/actionTypes';
 import { mapGetters } from 'vuex';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'PaymentPage',
 	components: {
 		FunButton,

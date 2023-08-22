@@ -1,4 +1,4 @@
-import { mergeValidationResults } from '@/merge_validation_results';
+import { mergeValidationResults } from '@src/merge_validation_results';
 
 describe( 'mergeValidationResults', () => {
 	it( 'Keeps OK state if all results are OK', () => {

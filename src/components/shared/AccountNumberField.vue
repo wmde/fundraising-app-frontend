@@ -16,7 +16,7 @@ import { ref, watch } from 'vue';
 
 interface Props {
 	id?: string;
-	placeholder: string;
+	placeholder: String;
 	accountId: string;
 	characterGroupSize?: number;
 }

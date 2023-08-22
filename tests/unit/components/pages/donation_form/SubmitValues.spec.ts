@@ -1,16 +1,61 @@
-import { createLocalVue, mount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import Vuex from 'vuex';
-import SubmitValues from '@/components/pages/donation_form/SubmitValues.vue';
-import { NS_BANKDATA, NS_ADDRESS, NS_PAYMENT } from '@/store/namespaces';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
+import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 const getWrapper = ( addressType: AddressTypeModel ) => {
-	return mount(SubmitValues, {
-		localVue,
-		propsData: {
+	const store = new Vuex.Store( {
+		modules: {
+			[ NS_ADDRESS ]: {
+				namespaced: true,
+				state: {
+					addressType: addressType,
+					values: {
+						firstName: 'Victor',
+						lastName: 'van Doom',
+						salutation: 'Herr',
+						title: 'Dr.',
+						street: 'Untere Straße 5',
+						postcode: '08114',
+						city: 'Haasenstadt',
+						country: 'DE',
+						email: 'doom@untergang.biz',
+					},
+				},
+				getters: {
+					willGetNewsletter() {
+						return true;
+					},
+					willGetReceipt() {
+						return true;
+					},
+				},
+			},
+			[ NS_BANKDATA ]: {
+				namespaced: true,
+				state: {
+					values: {
+						iban: 'DE12500105170648489890',
+						bic: 'INGDDEFFXXX',
+					},
+				},
+			},
+			[ NS_PAYMENT ]: {
+				namespaced: true,
+				state: {
+					values: {
+						amount: '2349',
+						interval: '3',
+						type: 'BEZ',
+					},
+				},
+			},
+		},
+	} );
+
+	return mount( SubmitValues, {
+		props: {
 			trackingData: {
 				bannerImpressionCount: 1,
 				impressionCount: 5,
@@ -20,51 +65,10 @@ const getWrapper = ( addressType: AddressTypeModel ) => {
 				keyword: 'cage',
 			},
 		},
-		store: new Vuex.Store({
-			modules: {
-				[ NS_ADDRESS ]: {
-					namespaced: true,
-					state: {
-						addressType: addressType,
-						values: {
-							firstName: 'Victor',
-							lastName: 'van Doom',
-							salutation: 'Herr',
-							title: 'Dr.',
-							street: 'Untere Straße 5',
-							postcode: '08114',
-							city: 'Haasenstadt',
-							country: 'DE',
-							email: 'doom@untergang.biz',
-						},
-					},
-					getters: {
-						willGetNewsletter() { return true; },
-						willGetReceipt() { return true; },
-					},
-				},
-				[ NS_BANKDATA ]: {
-					namespaced: true,
-					state: {
-						values: {
-							iban: 'DE12500105170648489890',
-							bic: 'INGDDEFFXXX',
-						},
-					},
-				},
-				[ NS_PAYMENT ]: {
-					namespaced: true,
-					state: {
-						values: {
-							amount: '2349',
-							interval: '3',
-							type: 'BEZ',
-						},
-					},
-				},
-			},
-		}),
-	});
+		global: {
+			plugins: [ store ],
+		},
+	} );
 };
 
 describe( 'SubmitValues.vue', () => {
@@ -100,7 +104,7 @@ describe( 'SubmitValues.vue', () => {
 
 	it( 'renders the address type as string for ANON address type', () => {
 		const wrapper = getWrapper( AddressTypeModel.ANON );
-		expect( ( wrapper.find('input[name=addressType]' ).element as HTMLInputElement ).value ).toBe(
+		expect( ( wrapper.find( 'input[name=addressType]' ).element as HTMLInputElement ).value ).toBe(
 			addressTypeName( AddressTypeModel.ANON )
 		);
 	} );
@@ -130,7 +134,7 @@ describe( 'SubmitValues.vue', () => {
 		const wrapper = getWrapper( AddressTypeModel.EMAIL );
 
 		expect( ( wrapper.find( 'input[name=bImpCount]' ).element as HTMLInputElement ).value ).toBe( '1' );
-		expect( (wrapper.find( 'input[name=impCount]' ).element as HTMLInputElement ).value ).toBe( '5' );
+		expect( ( wrapper.find( 'input[name=impCount]' ).element as HTMLInputElement ).value ).toBe( '5' );
 	} );
 
 	it( 'sends tracking values for PERSON address type', () => {
@@ -143,8 +147,8 @@ describe( 'SubmitValues.vue', () => {
 	it( 'sends campaign values for ANON address type', () => {
 		const wrapper = getWrapper( AddressTypeModel.ANON );
 
-		expect( ( wrapper.find( 'input[name=piwik_campaign]' ).element as HTMLInputElement ).value).toBe( 'nicholas' );
-		expect( ( wrapper.find( 'input[name=piwik_kwd]' ).element as HTMLInputElement ).value).toBe( 'cage' );
+		expect( ( wrapper.find( 'input[name=piwik_campaign]' ).element as HTMLInputElement ).value ).toBe( 'nicholas' );
+		expect( ( wrapper.find( 'input[name=piwik_kwd]' ).element as HTMLInputElement ).value ).toBe( 'cage' );
 	} );
 
 	it( 'sends campaign values for EMAIL address type', () => {

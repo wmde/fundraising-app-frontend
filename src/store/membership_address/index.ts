@@ -1,11 +1,11 @@
 import { Module } from 'vuex';
-import { MembershipAddressState } from '@/view_models/Address';
-import { Validity } from '@/view_models/Validity';
-import { actions } from '@/store/membership_address/actions';
-import { getters } from '@/store/membership_address/getters';
-import { mutations } from '@/store/membership_address/mutations';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
+import { MembershipAddressState } from '@src/view_models/Address';
+import { Validity } from '@src/view_models/Validity';
+import { actions } from '@src/store/membership_address/actions';
+import { getters } from '@src/store/membership_address/getters';
+import { mutations } from '@src/store/membership_address/mutations';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 
 export default function (): Module<MembershipAddressState, any> {
 	const state: MembershipAddressState = {

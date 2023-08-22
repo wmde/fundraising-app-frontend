@@ -1,6 +1,6 @@
-import { DataPersistenceMutationType } from '@/view_models/DataPersistence';
-import { mutation } from '@/store/util';
-import { SET_ADDRESS_FIELD } from '@/store/address/mutationTypes';
+import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
+import { mutation } from '@src/store/util';
+import { SET_ADDRESS_FIELD } from '@src/store/address/mutationTypes';
 
 export default ( namespace: string ) => {
 	return {

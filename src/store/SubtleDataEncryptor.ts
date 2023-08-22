@@ -1,4 +1,4 @@
-import { DataEncryptor } from '@/view_models/DataEncryptor';
+import { DataEncryptor } from '@src/view_models/DataEncryptor';
 
 const ENCODING_ALGORITHM = {
 	name: 'AES-GCM',

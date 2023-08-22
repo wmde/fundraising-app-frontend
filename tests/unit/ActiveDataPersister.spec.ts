@@ -1,4 +1,4 @@
-import { ActiveDataPersister as DataPersister } from '@/store/data_persistence/ActiveDataPersister';
+import { ActiveDataPersister as DataPersister } from '@src/store/data_persistence/ActiveDataPersister';
 import FakeDataPersistenceRepository from './TestDoubles/FakeDataPersistenceRepository';
 import { FakeDataEncryptor, FakeFailingDataEncryptor } from './TestDoubles/FakeDataEncryptor';
 

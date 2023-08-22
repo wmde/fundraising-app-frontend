@@ -1,6 +1,6 @@
-import { Validity } from '@/view_models/Validity';
-import { AddressFormData, PostData } from '@/view_models/Address';
-import { ValidationResponse } from '@/store/ValidationResponse';
+import { Validity } from '@src/view_models/Validity';
+import { AddressFormData, PostData } from '@src/view_models/Address';
+import { ValidationResponse } from '@src/store/ValidationResponse';
 
 /**
  * @param namespacesAndName namespace1, namespace2, ..., mutationOrActionName

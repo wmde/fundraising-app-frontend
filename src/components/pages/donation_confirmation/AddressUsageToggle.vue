@@ -5,20 +5,13 @@
     </div>
 </template>
 
-<script>
-import Vue from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 
-export default Vue.extend( {
-	name: 'AddressUsageToggle',
-	data: function () {
-		return {
-			contentOpen: false,
-		};
-	},
-	methods: {
-		toggleContent: function () {
-			this.$data.contentOpen = !this.$data.contentOpen;
-		},
-	},
-} );
+const contentOpen = ref<boolean>( false );
+
+const toggleContent = (): void => {
+	contentOpen.value = !contentOpen.value;
+};
+
 </script>

@@ -1,66 +1,67 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuex from 'vuex';
-import SubmitValues from '@/components/pages/update_address/SubmitValues.vue';
-import { NS_BANKDATA, NS_ADDRESS, NS_PAYMENT } from '@/store/namespaces';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
+import { mount, VueWrapper } from '@vue/test-utils';
+import { createStore } from 'vuex';
+import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
+import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
-const localVue = createLocalVue();
-localVue.use( Vuex );
+describe( 'SubmitValues.vue', () => {
+	let wrapper: VueWrapper<any>;
 
-describe( 'Address.vue', () => {
-	let wrapper: any;
 	beforeEach( () => {
+		const store = createStore( {
+			modules: {
+				[ NS_ADDRESS ]: {
+					namespaced: true,
+					state: {
+						receipt: true,
+						newsletter: true,
+						addressType: AddressTypeModel.PERSON,
+						values: {
+							firstName: 'Victoria',
+							lastName: 'van Doom',
+							salutation: 'Frau',
+							title: 'Dr.',
+							street: 'Untere Straße 5',
+							postcode: '08114',
+							city: 'Haasenstadt',
+							country: 'DE',
+							email: 'doom@untergang.biz',
+						},
+					},
+
+				},
+				[ NS_BANKDATA ]: {
+					namespaced: true,
+					state: {
+						values: {
+							iban: 'DE12500105170648489890',
+							bic: 'INGDDEFFXXX',
+						},
+					},
+				},
+				[ NS_PAYMENT ]: {
+					namespaced: true,
+					state: {
+						values: {
+							amount: '2349',
+							interval: '3',
+							type: 'BEZ',
+						},
+					},
+				},
+			},
+		} );
+
 		wrapper = mount( SubmitValues, {
-			localVue,
-			propsData: {
+			props: {
 				trackingData: {
 					bannerImpressionCount: 1,
 					impressionCount: 5,
 				},
 			},
-			store: new Vuex.Store( {
-				modules: {
-					[ NS_ADDRESS ]: {
-						namespaced: true,
-						state: {
-							receipt: true,
-							newsletter: true,
-							addressType: AddressTypeModel.PERSON,
-							values: {
-								firstName: 'Victoria',
-								lastName: 'van Doom',
-								salutation: 'Frau',
-								title: 'Dr.',
-								street: 'Untere Straße 5',
-								postcode: '08114',
-								city: 'Haasenstadt',
-								country: 'DE',
-								email: 'doom@untergang.biz',
-							},
-						},
-
-					},
-					[ NS_BANKDATA ]: {
-						namespaced: true,
-						state: {
-							values: {
-								iban: 'DE12500105170648489890',
-								bic: 'INGDDEFFXXX',
-							},
-						},
-					},
-					[ NS_PAYMENT ]: {
-						namespaced: true,
-						state: {
-							values: {
-								amount: '2349',
-								interval: '3',
-								type: 'BEZ',
-							},
-						},
-					},
-				},
-			} ),
+			global: {
+				plugins: [ store ],
+			},
 		} );
 	} );
 
@@ -69,6 +70,7 @@ describe( 'Address.vue', () => {
 	} );
 
 	it( 'renders the address type as string', () => {
-		expect( ( wrapper.find( 'input[name=addressType]' ).element as HTMLInputElement ).value ).toBe( addressTypeName( AddressTypeModel.PERSON ) );
+		const input = wrapper.find<HTMLInputElement>( 'input[name=addressType]' );
+		expect( input.element.value ).toBe( addressTypeName( AddressTypeModel.PERSON ) );
 	} );
 } );

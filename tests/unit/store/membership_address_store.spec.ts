@@ -1,11 +1,11 @@
-import { getters } from '@/store/membership_address/getters';
-import { actions } from '@/store/membership_address/actions';
-import { mutations } from '@/store/membership_address/mutations';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
-import { MembershipAddressState } from '@/view_models/Address';
-import { Validity } from '@/view_models/Validity';
-import { REQUIRED_FIELDS } from '@/store/membership_address/constants';
+import { getters } from '@src/store/membership_address/getters';
+import { actions } from '@src/store/membership_address/actions';
+import { mutations } from '@src/store/membership_address/mutations';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
+import { MembershipAddressState } from '@src/view_models/Address';
+import { Validity } from '@src/view_models/Validity';
+import { REQUIRED_FIELDS } from '@src/store/membership_address/constants';
 import mockAxios from 'jest-mock-axios';
 import { NS_MEMBERSHIP_FEE } from '../../../src/store/namespaces';
 

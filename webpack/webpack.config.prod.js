@@ -32,10 +32,14 @@ const webpackConfig = merge( commonConfig, {
 	},
 	output: {
 		filename: 'js/[name].[chunkhash].js',
-		clean: true
+		clean: true,
 	},
 	plugins: [
 		new webpack.EnvironmentPlugin( environment ),
+		new webpack.DefinePlugin( {
+			__VUE_OPTIONS_API__: true,
+			__VUE_PROD_DEVTOOLS__: false,
+		} ),
 		new WebpackManifestPlugin( {
 			filter: ( { name } ) => name.endsWith( '.js' ) || name.endsWith( '.css' ),
 			generate( seed, files ) {

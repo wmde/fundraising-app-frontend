@@ -1,4 +1,4 @@
-import { bucketIdToCssClass } from '@/bucket_id_to_css_class';
+import { bucketIdToCssClass } from '@src/bucket_id_to_css_class';
 
 describe( 'bucketIdToCssClass', () => {
 	it( 'returns multiple class names', () => {

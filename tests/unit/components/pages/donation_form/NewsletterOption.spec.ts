@@ -1,41 +1,46 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
+import { mount, VueWrapper } from '@vue/test-utils';
 import NewsletterOption from '../../../../../src/components/pages/donation_form/NewsletterOption.vue';
-import { createStore } from '@/store/donation_store';
-import { action } from '@/store/util';
-import { NS_ADDRESS } from '@/store/namespaces';
-import { setNewsletterChoice } from '@/store/address/actionTypes';
+import { createStore } from '@src/store/donation_store';
+import { action } from '@src/store/util';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { setNewsletterChoice } from '@src/store/address/actionTypes';
+import { Store } from 'vuex';
 
-const localVue = createLocalVue();
-localVue.use( Vuex );
-
-describe( 'NewsletterOption', () => {
-	it( 'renders the component with the checkbox unselected', () => {
-		const wrapper = mount( NewsletterOption, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: () => { },
+describe( 'NewsletterOption.vue', () => {
+	const getWrapper = ( store: Store<any> ): VueWrapper<any> => {
+		return mount( NewsletterOption, {
+			global: {
+				plugins: [ store ],
 			},
 		} );
-		const checkbox = wrapper.find( '#newsletter' );
-		expect( checkbox.props().value ).toBe( false );
+	};
+
+	it( 'renders the component with the checkbox unselected', async () => {
+		const store = createStore();
+		await store.dispatch( action( NS_ADDRESS, setNewsletterChoice ), false );
+
+		const wrapper = getWrapper( store );
+
+		expect( wrapper.find<HTMLInputElement>( '#newsletter input' ).element.value ).toBe( 'false' );
 	} );
 
-	it( 'sends changed preference to store on change', () => {
-		const wrapper = mount( NewsletterOption, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: () => { },
-			},
-		} );
-		const store = wrapper.vm.$store;
+	it( 'renders the component with the checkbox selected', async () => {
+		const store = createStore();
+		await store.dispatch( action( NS_ADDRESS, setNewsletterChoice ), true );
+
+		const wrapper = getWrapper( store );
+
+		expect( wrapper.find<HTMLInputElement>( '#newsletter input' ).element.value ).toBe( 'true' );
+	} );
+
+	it( 'sends changed preference to store on change', async () => {
+		const store = createStore();
 		store.dispatch = jest.fn();
+		const wrapper = getWrapper( store );
 		const expectedAction = action( NS_ADDRESS, setNewsletterChoice );
-		const checkbox = wrapper.find( '#newsletter' );
-		wrapper.setData( { newsletter: true } );
-		checkbox.trigger( 'change' );
+
+		await wrapper.find( '#newsletter input' ).trigger( 'change' );
+
 		expect( store.dispatch ).toBeCalledWith( expectedAction, true );
 	} );
 } );

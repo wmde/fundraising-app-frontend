@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex';
-import { MembershipFee } from '@/view_models/MembershipFee';
-import { Validity } from '@/view_models/Validity';
+import { MembershipFee } from '@src/view_models/MembershipFee';
+import { Validity } from '@src/view_models/Validity';
 import {
 	MARK_EMPTY_FEE_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -11,7 +11,7 @@ import {
 	SET_IS_VALIDATING,
 	SET_TYPE,
 	SET_TYPE_VALIDITY,
-} from '@/store/membership_fee/mutationTypes';
+} from '@src/store/membership_fee/mutationTypes';
 
 export const mutations: MutationTree<MembershipFee> = {
 	[ MARK_EMPTY_FEE_INVALID ]( state: MembershipFee ) {

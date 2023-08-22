@@ -1,24 +1,23 @@
-import { action } from '@/store/util';
-import { NS_PAYMENT } from '@/store/namespaces';
-import { markEmptyValuesAsInvalid } from '@/store/payment/actionTypes';
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vue from 'vue';
-import Vuex from 'vuex';
-import PaymentPage from '@/components/pages/donation_form/subpages/PaymentPage.vue';
-import { FeatureTogglePlugin } from "@/FeatureToggle";
+import { action } from '@src/store/util';
+import { NS_PAYMENT } from '@src/store/namespaces';
+import { markEmptyValuesAsInvalid } from '@src/store/payment/actionTypes';
+import { mount } from '@vue/test-utils';
+import { createStore } from 'vuex';
+import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
+import { nextTick } from 'vue';
 
-jest.mock( '@/tracking', () => {
+jest.mock( '@src/tracking', () => {
 	return {
 		trackFormSubmission: jest.fn(),
 		trackDynamicForm: jest.fn(),
 	};
 } );
 
-jest.mock( '@/scroll_to_first_error', () => {
+jest.mock( '@src/scroll_to_first_error', () => {
 	return jest.fn();
 } );
 
-describe( 'DonationForm', () => {
+describe( 'PaymentPage.vue', () => {
 	let wrapper: any;
 
 	const actions = {
@@ -42,37 +41,36 @@ describe( 'DonationForm', () => {
 	];
 	beforeEach( () => {
 		global.window.scrollTo = jest.fn();
-		const localVue = createLocalVue();
-		localVue.use( Vuex );
-		localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.encryption_hint.visible' ] } );
+		const store = createStore( {
+			actions,
+			getters,
+		} );
 		wrapper = mount( PaymentPage, {
-			localVue,
-			propsData: {
-				paymentAmounts: [ 5 ],
+			props: {
+				paymentAmounts: [ '5' ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
 				salutations,
 			},
-			store: new Vuex.Store( {
-				actions,
-				getters,
-			} ),
-			mocks: {
-				$t: jest.fn(),
-			},
-			stubs: {
-				Payment: { template: '<div class="i-am-payment" />' },
+			global: {
+				plugins: [ store ],
+				stubs: {
+					Payment: { template: '<div class="i-am-payment" />' },
+				},
 			},
 		} );
 	} );
 
-	it( 'validates the input before going to the next page', () => {
+	it( 'validates the input before going to the next page', async () => {
 		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn().mockResolvedValue( true );
 		const expectedAction = action( NS_PAYMENT, markEmptyValuesAsInvalid );
 		getters[ 'payment/paymentDataIsValid' ].mockReturnValueOnce( true );
 		wrapper.find( '#next' ).trigger( 'click' );
-		return Vue.nextTick().then( () => expect( store.dispatch ).toHaveBeenCalledWith( expectedAction ) );
+
+		await nextTick();
+
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction );
 	} );
 
 	it( 'doesn\'t load the next page if there are validation errors', () => {

@@ -1,9 +1,9 @@
 import { GetterTree } from 'vuex';
-import { MembershipAddressState } from '@/view_models/Address';
-import { Validity } from '@/view_models/Validity';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
-import { REQUIRED_FIELDS } from '@/store/membership_address/constants';
+import { MembershipAddressState } from '@src/view_models/Address';
+import { Validity } from '@src/view_models/Validity';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
+import { REQUIRED_FIELDS } from '@src/store/membership_address/constants';
 
 export const getters: GetterTree<MembershipAddressState, any> = {
 	invalidFields: ( state: MembershipAddressState ): Array<string> => {

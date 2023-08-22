@@ -1,10 +1,7 @@
-import Vue from 'vue';
 import Vuex, { Store, StoreOptions } from 'vuex';
-import createAddress from '@/store/address';
+import createAddress from '@src/store/address';
 import { NS_ADDRESS } from './namespaces';
-import { REQUIRED_FIELDS_ADDRESS_UPDATE } from '@/store/address/constants';
-
-Vue.use( Vuex );
+import { REQUIRED_FIELDS_ADDRESS_UPDATE } from '@src/store/address/constants';
 
 export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) {
 	const storeBundle: StoreOptions<any> = {

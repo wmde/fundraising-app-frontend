@@ -13,7 +13,7 @@
 				@blur="$emit('field-changed', 'email')"
 			/>
 		</div>
-		<span v-if="suggestedProvider" @click="onSuggestionClicked(suggestedProvider)" class="help is-clickable">
+		<span v-if="suggestedProvider" @click="onSuggestionClicked( suggestedProvider )" class="help is-clickable">
 			{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
 		</span>
 		<span v-if="showError" class="help is-danger error-email">{{ $t( 'donation_form_email_error' ) }}</span>
@@ -26,14 +26,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { computed } from 'vue';
-import { distance, closest } from '@/util/fastest-levenshtein';
-import { AddressFormData } from '@/view_models/Address';
-import ValueEqualsPlaceholderWarning from '@/components/shared/ValueEqualsPlaceholderWarning.vue';
-import TextInput from '@/components/shared/form_inputs/TextInput.vue';
+import { computed, defineComponent } from 'vue';
+import { closest, distance } from '@src/util/fastest-levenshtein';
+import { AddressFormData } from '@src/view_models/Address';
+import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
+import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Email',
 	components: { TextInput, ValueEqualsPlaceholderWarning },
 	props: {

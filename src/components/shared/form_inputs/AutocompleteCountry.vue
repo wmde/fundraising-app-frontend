@@ -26,16 +26,16 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, ref, watch } from 'vue';
-import TextInput from '@/components/shared/form_inputs/TextInput.vue';
-import { Country } from '@/view_models/Country';
-import { useFilteredCountries } from '@/components/shared/form_inputs/useFilteredCountries';
-import { useCountryInput } from '@/components/shared/form_inputs/useCountryInput';
+import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
+import { Country } from '@src/view_models/Country';
+import { useFilteredCountries } from '@src/components/shared/form_inputs/useFilteredCountries';
+import { useCountryInput } from '@src/components/shared/form_inputs/useCountryInput';
 
 export default defineComponent( {
 	name: 'AutocompleteCountry',
 	components: { TextInput },
 	props: {
-		value: Object as () => Country,
+		modelValue: Object as () => Country,
 		initialCountryCode: String,
 		placeholder: String,
 		countries: {
@@ -78,7 +78,7 @@ export default defineComponent( {
 		};
 
 		watch( country, ( newCountry: Country|undefined ) => {
-			emit( 'input', newCountry );
+			emit( 'update:modelValue', newCountry );
 		} );
 
 		// Emit when mounted because the country value has now been set

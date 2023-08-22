@@ -1,8 +1,6 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import DonationConfirmation from '@/components/pages/DonationConfirmation.vue';
-import { createStore } from '@/store/donation_store';
-import { FeatureTogglePlugin } from '@/FeatureToggle';
+import { mount } from '@vue/test-utils';
+import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
+import { createStore } from '@src/store/donation_store';
 import {
 	anonymousBankTransferConfirmationData,
 	anonymousExportedPayPalConfirmationData,
@@ -15,16 +13,11 @@ import {
 } from '../../../../data/confirmationData';
 import { addressValidationPatterns } from '../../../../data/validation';
 
-const localVue = createLocalVue();
-localVue.use( Vuex );
-localVue.use( FeatureTogglePlugin );
-
-describe( 'DonationConfirmation', () => {
+describe( 'DonationConfirmation.vue', () => {
 
 	const getWrapper = ( bankData: Object ) => {
 		return mount( DonationConfirmation, {
-			localVue,
-			propsData: {
+			props: {
 				validateEmailUrl: '',
 				validateAddressUrl: '',
 				hasErrored: false,
@@ -33,10 +26,12 @@ describe( 'DonationConfirmation', () => {
 				donorResource: {},
 				...bankData,
 			},
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
-				$n: () => {},
+			global: {
+				plugins: [ createStore() ],
+				mocks: {
+					$t: ( key: string ) => key,
+					$n: () => {},
+				},
 			},
 		} );
 	};

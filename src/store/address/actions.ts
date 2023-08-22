@@ -11,16 +11,16 @@ import {
 	initializeAddress,
 	validateAddressType,
 	validateCountry,
-} from '@/store/address/actionTypes';
+} from '@src/store/address/actionTypes';
 import {
 	AddressState,
 	AddressTypeValidationRequest,
 	CountryValidationFields,
 	InitialAddressValues,
 	InputField,
-} from '@/view_models/Address';
-import { ValidationResponse } from '@/store/ValidationResponse';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
+} from '@src/view_models/Address';
+import { ValidationResponse } from '@src/store/ValidationResponse';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import {
 	BEGIN_ADDRESS_VALIDATION,
 	FINISH_ADDRESS_VALIDATION,
@@ -33,8 +33,8 @@ import {
 	SET_RECEIPT,
 	SET_VALIDITY,
 	VALIDATE_INPUT,
-} from '@/store/address/mutationTypes';
-import { Validity } from '@/view_models/Validity';
+} from '@src/store/address/mutationTypes';
+import { Validity } from '@src/view_models/Validity';
 
 export const actions = {
 	[ validateAddressField ]( context: ActionContext<AddressState, any>, field: InputField ) {

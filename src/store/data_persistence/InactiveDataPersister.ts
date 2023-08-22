@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DataPersistenceItem, DataPersister } from '@/view_models/DataPersistence';
+import { DataPersistenceItem, DataPersister } from '@src/view_models/DataPersistence';
 
 export class InactiveDataPersister implements DataPersister {
 	initialize( items: DataPersistenceItem[] ): Promise<void> {

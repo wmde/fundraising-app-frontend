@@ -1,4 +1,4 @@
-import { ValidationResult } from '@/view_models/Address';
+import { ValidationResult } from '@src/view_models/Address';
 
 export function mergeValidationResults( results: ValidationResult[] ) {
 	return results.reduce(

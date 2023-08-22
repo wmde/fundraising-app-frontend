@@ -1,14 +1,14 @@
-import { AddressFormData, AddressValidity } from '@/view_models/Address';
+import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import { computed, reactive } from 'vue';
-import { Validity } from '@/view_models/Validity';
+import { Validity } from '@src/view_models/Validity';
 import {
 	setAddressField,
 	setReceiptChoice,
 	validateAddressField,
-} from '@/store/address/actionTypes';
-import { NS_ADDRESS } from '@/store/namespaces';
-import { action } from '@/store/util';
-import { camelizeName } from '@/camlize_name';
+} from '@src/store/address/actionTypes';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { action } from '@src/store/util';
+import { camelizeName } from '@src/camlize_name';
 
 interface AddressValidationPatterns {
 	salutation: string,

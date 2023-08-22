@@ -1,30 +1,27 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import MembershipType from '@/components/pages/membership_form/MembershipType.vue';
-import { createStore } from '@/store/membership_store';
-import { action } from '@/store/util';
-import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
-import { setMembershipType } from '@/store/membership_address/actionTypes';
-import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount, VueWrapper } from '@vue/test-utils';
+import MembershipType from '@src/components/pages/membership_form/MembershipType.vue';
+import { createStore } from '@src/store/membership_store';
+import { action } from '@src/store/util';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
+import { setMembershipType } from '@src/store/membership_address/actionTypes';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { Store } from 'vuex';
 
 describe( 'MembershipType.vue', () => {
-	let wrapper: any;
+	let wrapper: VueWrapper<any>;
+	let store: Store<any>;
+
 	beforeEach( () => {
+		store = createStore();
 		wrapper = mount( MembershipType, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: () => { },
+			global: {
+				plugins: [ store ],
 			},
 		} );
 	} );
 
 	it( 'sends selected membership type to the store on change', async () => {
-		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn();
 		await wrapper.find( '#active input' ).trigger( 'change' );
 		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setMembershipType );
@@ -38,7 +35,7 @@ describe( 'MembershipType.vue', () => {
 		const comp = wrapper.vm.$options!.computed;
 		if ( typeof comp.isActiveTypeDisabled === 'function' ) {
 			comp.isActiveTypeDisabled = jest.fn( () => true );
-			expect( wrapper.find( '#active' ).attributes( 'disabled' ) ).toBe( true );
+			expect( wrapper.find( '#active' ).attributes( 'disabled' ) ).toBeTruthy();
 		}
 	} );
 
@@ -48,7 +45,7 @@ describe( 'MembershipType.vue', () => {
 		const comp = wrapper.vm.$options!.computed;
 		if ( typeof comp.isActiveTypeDisabled === 'function' ) {
 			comp.isActiveTypeDisabled = jest.fn( () => true );
-			expect( wrapper.contains( 'span[class="help is-danger"]' ) ).toBe( true );
+			expect( wrapper.find( 'span[class="help is-danger"]' ).exists() ).toBeTruthy();
 		}
 	} );
 
@@ -58,10 +55,10 @@ describe( 'MembershipType.vue', () => {
 		const comp = wrapper.vm.$options!.computed;
 		if ( typeof comp.isActiveTypeDisabled === 'function' ) {
 			comp.isActiveTypeDisabled = jest.fn( () => true );
-			expect( wrapper.contains( 'span[class="help is-danger"]' ) ).toBe( true );
+			expect( wrapper.find( 'span[class="help is-danger"]' ).exists() ).toBeTruthy();
 
 			wrapper.find( '#sustaining' ).trigger( 'click' );
-			expect( wrapper.contains( 'span[class="help is-danger"]' ) ).toBe( false );
+			expect( wrapper.find( 'span[class="help is-danger"]' ).exists() ).toBeFalsy();
 		}
 	} );
 
@@ -71,11 +68,10 @@ describe( 'MembershipType.vue', () => {
 		const comp = wrapper.vm.$options!.computed;
 		if ( typeof comp.isActiveTypeDisabled === 'function' ) {
 			comp.isActiveTypeDisabled = jest.fn( () => true );
-			expect( wrapper.contains( 'span[class="help is-danger"]' ) ).toBe( true );
+			expect( wrapper.find( 'span[class="help is-danger"]' ).exists() ).toBeTruthy();
 
-			const store = wrapper.vm.$store;
 			store.getters.addressType = jest.fn( () => AddressTypeModel.PERSON );
-			expect( wrapper.contains( 'span[class="help is-danger"]' ) ).toBe( false );
+			expect( wrapper.find( 'span[class="help is-danger"]' ).exists() ).toBe( false );
 		}
 	} );
 } );

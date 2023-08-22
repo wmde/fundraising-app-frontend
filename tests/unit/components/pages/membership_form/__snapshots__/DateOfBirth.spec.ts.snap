@@ -6,9 +6,8 @@ exports[`DateOfBirth.vue renders error message 1`] = `
     class="subtitle has-margin-top-36"
     for="birthDate"
   >
-    
+    membership_form_birth_date_label
   </label>
-   
   <div
     class="field"
   >
@@ -19,11 +18,10 @@ exports[`DateOfBirth.vue renders error message 1`] = `
         autocomplete="on"
         class="input is-danger"
         id="birthDate"
+        placeholder="membership_form_birth_date_placeholder"
         type="text"
       />
-       
-      <!---->
-       
+      <!--v-if-->
       <span
         class="icon is-right has-text-danger"
       >
@@ -31,17 +29,14 @@ exports[`DateOfBirth.vue renders error message 1`] = `
           class="mdi mdi-alert-circle mdi-24px"
         />
       </span>
-       
-      <!---->
+      <!--v-if-->
     </div>
   </div>
-   
-  <!---->
-   
+  <!--v-if-->
   <span
     class="help is-danger"
   >
-    
+    membership_form_birth_date_error
   </span>
 </fieldset>
 `;
@@ -52,9 +47,8 @@ exports[`DateOfBirth.vue renders field 1`] = `
     class="subtitle has-margin-top-36"
     for="birthDate"
   >
-    
+    membership_form_birth_date_label
   </label>
-   
   <div
     class="field"
   >
@@ -65,23 +59,19 @@ exports[`DateOfBirth.vue renders field 1`] = `
         autocomplete="on"
         class="input"
         id="birthDate"
+        placeholder="membership_form_birth_date_placeholder"
         type="text"
       />
-       
-      <!---->
-       
-      <!---->
-       
-      <!---->
+      <!--v-if-->
+      <!--v-if-->
+      <!--v-if-->
     </div>
   </div>
-   
   <span
     class="help has-text-dark-lighter"
   >
-    
+    membership_form_birth_date_help_text
   </span>
-   
-  <!---->
+  <!--v-if-->
 </fieldset>
 `;

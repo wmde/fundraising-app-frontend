@@ -1,21 +1,21 @@
-import { getters } from '@/store/payment/getters';
-import { actions } from '@/store/payment/actions';
-import { mutations } from '@/store/payment/mutations';
-import { Validity } from '@/view_models/Validity';
-import { AmountValidity } from '@/view_models/Payment';
+import { getters } from '@src/store/payment/getters';
+import { actions } from '@src/store/payment/actions';
+import { mutations } from '@src/store/payment/mutations';
+import { Validity } from '@src/view_models/Validity';
+import { AmountValidity } from '@src/view_models/Payment';
 import {
 	initializePayment,
 	markEmptyAmountAsInvalid, setAmount,
-} from '@/store/payment/actionTypes';
+} from '@src/store/payment/actionTypes';
 import {
 	SET_AMOUNT,
 	SET_AMOUNT_VALIDITY,
 	SET_INTERVAL,
 	SET_TYPE,
 	SET_TYPE_VALIDITY,
-} from '@/store/payment/mutationTypes';
+} from '@src/store/payment/mutationTypes';
 import each from 'jest-each';
-import { DonationPayment } from '@/store/payment/types';
+import { DonationPayment } from '@src/store/payment/types';
 import { ActionContext } from 'vuex';
 
 function newMinimalStore( overrides: Object ): DonationPayment {

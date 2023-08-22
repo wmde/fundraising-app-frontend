@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { QuestionModel } from '@/view_models/faq';
-import ArrowUp from '@/components/shared/icons/ArrowUp.vue';
-import ArrowDown from '@/components/shared/icons/ArrowDown.vue';
+import { defineComponent } from 'vue';
+import { QuestionModel } from '@src/view_models/faq';
+import ArrowUp from '@src/components/shared/icons/ArrowUp.vue';
+import ArrowDown from '@src/components/shared/icons/ArrowDown.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'question',
 	components: { ArrowDown, ArrowUp },
 	props: {

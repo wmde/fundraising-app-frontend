@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Question from '@/components/pages/frequently_asked_questions/Question.vue';
-import { FaqContent, Topic, QuestionModel } from '@/view_models/faq';
+import { defineComponent } from 'vue';
+import Question from '@src/components/pages/frequently_asked_questions/Question.vue';
+import { FaqContent, QuestionModel, Topic } from '@src/view_models/faq';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'faq',
 	components: {
 		Question,

@@ -1,4 +1,4 @@
-import { Country } from '@/view_models/Country';
+import { Country } from '@src/view_models/Country';
 import { computed, ComputedRef, ref, Ref, watch } from 'vue';
 
 type ReturnType = { filteredCountries: ComputedRef<Array<Country>>, groupSeparatorIndex: Ref<Number> };

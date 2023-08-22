@@ -22,17 +22,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Payment from '@/components/pages/donation_form/Payment.vue';
-import { action } from '@/store/util';
-import { NS_PAYMENT } from '@/store/namespaces';
-import { markEmptyValuesAsInvalid } from '@/store/payment/actionTypes';
-import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
-import { trackDynamicForm, trackFormSubmission } from '@/tracking';
-import scrollToFirstError from '@/scroll_to_first_error';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import { defineComponent } from 'vue';
+import Payment from '@src/components/pages/donation_form/Payment.vue';
+import { action } from '@src/store/util';
+import { NS_PAYMENT } from '@src/store/namespaces';
+import { markEmptyValuesAsInvalid } from '@src/store/payment/actionTypes';
+import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
+import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
+import scrollToFirstError from '@src/scroll_to_first_error';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'PaymentPage',
 	components: {
 		FunButton,

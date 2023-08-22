@@ -1,23 +1,19 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import AmountSelection from '@/components/shared/AmountSelection.vue';
+import { mount, VueWrapper } from '@vue/test-utils';
+import AmountSelection from '@src/components/shared/AmountSelection.vue';
 
-const localVue = createLocalVue();
-localVue.use( Vuex );
-
-describe( 'AmountSelection', () => {
-
-	it( 'emits amount event when amount is selected', async () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
+describe( 'AmountSelection.vue', () => {
+	const getWrapper = ( amount: string, paymentAmounts: number[] = [ 500, 1000, 10000, 29900 ], minimumAmount: number = 0 ): VueWrapper<any> => {
+		return mount( AmountSelection, {
+			props: {
+				amount,
+				minimumAmount,
+				paymentAmounts,
 			},
 		} );
+	};
+
+	it( 'emits amount event when amount is selected', async () => {
+		const wrapper = getWrapper( '' );
 
 		await wrapper.find( '#amount-29900' ).trigger( 'change' );
 
@@ -26,16 +22,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'emits amount event when custom amount is entered', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '', [ 500 ] );
 
 		const customAmountInput = wrapper.find( '#amount-custom' );
 		customAmountInput.setValue( '23' );
@@ -46,16 +33,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'converts custom amounts with decimal point to cent amounts', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '', [ 500 ] );
 
 		const customAmountInput = wrapper.find( '#amount-custom' );
 		customAmountInput.setValue( '12.34' );
@@ -66,16 +44,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'converts custom amounts with comma to cent amounts', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '', [ 500 ] );
 
 		const customAmountInput = wrapper.find( '#amount-custom' );
 		customAmountInput.setValue( '23,42' );
@@ -86,16 +55,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'cuts off cent fractions from custom amounts', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '', [ 500 ] );
 
 		const customAmountInput = wrapper.find( '#amount-custom' );
 		customAmountInput.setValue( '23,429' );
@@ -106,16 +66,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'emits empty string when custom amount is invalid', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '', [ 500 ] );
 
 		const customAmountInput = wrapper.find( '#amount-custom' );
 		customAmountInput.setValue( 'hi mom!' );
@@ -126,16 +77,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'does not trigger an amount check when amount is selected and custom amount is empty', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '500',
-				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '500' );
 
 		const customAmountInput = wrapper.find( '#amount-custom' );
 		customAmountInput.setValue( '' );
@@ -145,16 +87,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'triggers an amount check in the store when custom value is empty and no amount is selected', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '' );
 
 		const customAmountInput = wrapper.find( '#amount-custom' );
 		customAmountInput.setValue( '' );
@@ -165,16 +98,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'clears selected amount when custom amount is entered', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '' );
 
 		const presetAmount = wrapper.find( '#amount-29900' );
 		const customAmountInput = wrapper.find( '#amount-custom' );
@@ -188,16 +112,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'clears custom amount when amount is selected', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '' );
 
 		const customAmountInput = wrapper.find( '#amount-custom' );
 		customAmountInput.setValue( '5' );
@@ -208,21 +123,11 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'prevents amount selection for choices that are below minimum amount', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '',
-				minimumAmount: 1000,
-				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '', [ 500, 1000, 10000, 29900 ], 1000 );
 
 		const belowChoice = wrapper.find( '#amount-500' );
 
-		expect( belowChoice.element.getAttribute( 'disabled' ) ).toBeTruthy();
+		expect( belowChoice.attributes().disabled ).toBeDefined();
 		expect( belowChoice.element.parentElement!.className ).toContain( 'inactive' );
 
 		[ 1000, 10000, 29900 ].forEach( amount => {
@@ -234,17 +139,7 @@ describe( 'AmountSelection', () => {
 	} );
 
 	it( 'does not select amounts for choices that are below minimum amount', () => {
-		const wrapper = mount( AmountSelection, {
-			propsData: {
-				amount: '500',
-				minimumAmount: 1000,
-				paymentAmounts: [ 500, 1000, 10000, 29900 ],
-			},
-			mocks: {
-				$t: () => {},
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( '500', [ 500, 1000, 10000, 29900 ], 1000 );
 
 		const belowChoice = wrapper.find( '#amount-500' );
 
@@ -254,15 +149,16 @@ describe( 'AmountSelection', () => {
 	it( 'localises choices', () => {
 		const $n = jest.fn();
 		mount( AmountSelection, {
-			propsData: {
+			props: {
 				amount: '',
 				minimumAmount: 1000,
 				paymentAmounts: [ 500, 1000, 10000, 29900 ],
 				validateAmountUrl: 'https://example.com/amount-check',
 			},
-			mocks: {
-				$t: () => {},
-				$n,
+			global: {
+				mocks: {
+					$n,
+				},
 			},
 		} );
 

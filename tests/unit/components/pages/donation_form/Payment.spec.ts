@@ -1,35 +1,34 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils';
-import Vuex from 'vuex';
-import { FeatureTogglePlugin } from '@/FeatureToggle';
-import { createStore } from '@/store/donation_store';
-import { action } from '@/store/util';
+import { shallowMount, VueWrapper } from '@vue/test-utils';
+import { createStore } from '@src/store/donation_store';
+import { action } from '@src/store/util';
 
-import Payment from '@/components/pages/donation_form/Payment.vue';
-import { NS_PAYMENT } from '@/store/namespaces';
-import { setAmount, setInterval, setType } from '@/store/payment/actionTypes';
-import PaymentInterval from '@/components/shared/PaymentInterval.vue';
-import AmountSelection from '@/components/shared/AmountSelection.vue';
-import PaymentType from '@/components/pages/donation_form/PaymentType.vue';
+import Payment from '@src/components/pages/donation_form/Payment.vue';
+import { NS_PAYMENT } from '@src/store/namespaces';
+import { setAmount, setInterval, setType } from '@src/store/payment/actionTypes';
+import PaymentInterval from '@src/components/shared/PaymentInterval.vue';
+import AmountSelection from '@src/components/shared/AmountSelection.vue';
+import PaymentType from '@src/components/pages/donation_form/PaymentType.vue';
+import { Store } from 'vuex';
 
-const localVue = createLocalVue();
-localVue.use( Vuex );
-localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.address_type.preselection' ] } );
+describe( 'Payment.vue', () => {
+	let store: Store<any>;
 
-describe( 'Payment', () => {
-	it( 'sends amount to store when amount selection emits event ', () => {
-		const wrapper = shallowMount( Payment, {
-			localVue,
-			propsData: {
+	const getWrapper = (): VueWrapper<any> => {
+		store = createStore();
+		return shallowMount( Payment, {
+			props: {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
 			},
-			store: createStore(),
-			mocks: {
-				$t: jest.fn(),
+			global: {
+				plugins: [ store ],
 			},
 		} );
-		const store = wrapper.vm.$store;
+	};
+
+	it( 'sends amount to store when amount selection emits event ', () => {
+		const wrapper = getWrapper();
 		store.dispatch = jest.fn();
 		const payload = '1500';
 
@@ -39,19 +38,7 @@ describe( 'Payment', () => {
 	} );
 
 	it( 'sends interval to store when interval selection emits event ', () => {
-		const wrapper = shallowMount( Payment, {
-			localVue,
-			propsData: {
-				paymentAmounts: [ 5 ],
-				paymentIntervals: [ 0, 1, 3, 6, 12 ],
-				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
-			},
-			store: createStore(),
-			mocks: {
-				$t: jest.fn(),
-			},
-		} );
-		const store = wrapper.vm.$store;
+		const wrapper = getWrapper();
 		store.dispatch = jest.fn();
 
 		wrapper.findComponent( PaymentInterval ).vm.$emit( 'interval-selected', 6 );
@@ -60,19 +47,7 @@ describe( 'Payment', () => {
 	} );
 
 	it( 'sends payment type to store when payment selection emits event ', () => {
-		const wrapper = shallowMount( Payment, {
-			localVue,
-			propsData: {
-				paymentAmounts: [ 5 ],
-				paymentIntervals: [ 0, 1, 3, 6, 12 ],
-				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
-			},
-			store: createStore(),
-			mocks: {
-				$t: jest.fn(),
-			},
-		} );
-		const store = wrapper.vm.$store;
+		const wrapper = getWrapper();
 		store.dispatch = jest.fn();
 
 		wrapper.findComponent( PaymentType ).vm.$emit( 'payment-type-selected', 'PPL' );

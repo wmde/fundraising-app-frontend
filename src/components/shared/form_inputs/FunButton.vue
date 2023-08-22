@@ -3,7 +3,6 @@
 		class="button"
 		:type="buttonType"
 		v-bind="$attrs"
-		v-on="$listeners"
 	>
 		<slot/>
 	</button>

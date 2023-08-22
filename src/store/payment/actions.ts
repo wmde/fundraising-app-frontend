@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
-import { InitialPaymentValues, IntervalData, TypeData } from '@/view_models/Payment';
-import { DonationPayment } from '@/store/payment/types';
+import { InitialPaymentValues, IntervalData, TypeData } from '@src/view_models/Payment';
+import { DonationPayment } from '@src/store/payment/types';
 
 import {
 	discardInitialization,
@@ -10,7 +10,7 @@ import {
 	setAmount,
 	setInterval,
 	setType,
-} from '@/store/payment/actionTypes';
+} from '@src/store/payment/actionTypes';
 import {
 	MARK_EMPTY_AMOUNT_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -20,9 +20,9 @@ import {
 	SET_INTERVAL,
 	SET_TYPE,
 	SET_TYPE_VALIDITY,
-} from '@/store/payment/mutationTypes';
-import { Validity } from '@/view_models/Validity';
-import { isValidAmount } from '@/store/amountValidator';
+} from '@src/store/payment/mutationTypes';
+import { Validity } from '@src/view_models/Validity';
+import { isValidAmount } from '@src/store/amountValidator';
 
 export const actions = {
 	[ discardInitialization ]( context: ActionContext<DonationPayment, any> ): void {

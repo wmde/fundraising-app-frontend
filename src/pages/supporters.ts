@@ -1,47 +1,25 @@
 import 'core-js/stable';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import PageDataInitializer from '@/page_data_initializer';
-import { createI18n } from '@/locales';
-import App from '@/components/App.vue';
-
-import Component from '@/components/pages/Supporters.vue';
-import Sidebar from '@/components/layout/Sidebar.vue';
-import { supportersFromObject } from '@/view_models/supporters';
-
-const staticPage: any = document.getElementById( 'appdata' );
-const PAGE_IDENTIFIER = 'supporters';
-
-Vue.config.productionTip = false;
-Vue.use( VueI18n );
+import { createVueApp } from '@src/createVueApp';
+import PageDataInitializer from '@src/page_data_initializer';
+import { supportersFromObject } from '@src/view_models/supporters';
+import App from '@src/components/App.vue';
+import Supporters from '@src/components/pages/Supporters.vue';
 
 interface ErrorModel {
 	message: string,
 	supporters: string,
 }
 
+const PAGE_IDENTIFIER = 'supporters';
+const staticPage: any = document.getElementById( 'appdata' );
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-const i18n = createI18n( pageData.messages );
-
-new Vue( {
-	i18n,
-	render: h => h( App, {
-		props: {
-			assetsPath: pageData.assetsPath,
-			pageIdentifier: PAGE_IDENTIFIER,
-			locale: i18n.locale,
-		},
+createVueApp( App, pageData.messages, {
+	assetsPath: pageData.assetsPath,
+	pageIdentifier: PAGE_IDENTIFIER,
+	page: Supporters,
+	pageProps: {
+		pageTitle: staticPage.getAttribute( 'data-page-title' ),
+		supporters: supportersFromObject( pageData.applicationVars ),
 	},
-	[
-		h( Component, {
-			props: {
-				pageTitle: staticPage.getAttribute( 'data-page-title' ),
-				supporters: supportersFromObject( pageData.applicationVars ),
-			},
-		} ),
-		h( Sidebar, {
-			slot: 'sidebar',
-		} ),
-	] ),
-} ).$mount( '#app' );
+} ).mount( '#app' );

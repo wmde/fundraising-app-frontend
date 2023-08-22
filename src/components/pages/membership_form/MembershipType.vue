@@ -28,16 +28,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
-import { setMembershipType } from '@/store/membership_address/actionTypes';
-import { action } from '@/store/util';
+import { defineComponent } from 'vue';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
+import { setMembershipType } from '@src/store/membership_address/actionTypes';
+import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
-import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
+import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'MembershipType',
 	components: { RadioInput },
 	data: function () {

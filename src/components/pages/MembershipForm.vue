@@ -14,15 +14,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import PaymentPage from '@/components/pages/membership_form/subpages/PaymentPage.vue';
-import AddressPage from '@/components/pages/membership_form/subpages/AddressPage.vue';
-import { trackFormSubmission } from '@/tracking';
-import { Country } from '@/view_models/Country';
-import { AddressValidation } from '@/view_models/Validation';
-import { Salutation } from '@/view_models/Salutation';
+import { defineComponent } from 'vue';
+import PaymentPage from '@src/components/pages/membership_form/subpages/PaymentPage.vue';
+import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
+import { trackFormSubmission } from '@src/tracking';
+import { Country } from '@src/view_models/Country';
+import { AddressValidation } from '@src/view_models/Validation';
+import { Salutation } from '@src/view_models/Salutation';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'MembershipForm',
 	components: {
 		PaymentPage,

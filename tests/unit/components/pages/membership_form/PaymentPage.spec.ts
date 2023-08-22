@@ -1,54 +1,52 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import PaymentPage from '@/components/pages/membership_form/subpages/PaymentPage.vue';
-import AddressType from '@/components/pages/membership_form/AddressType.vue';
-import MembershipType from '@/components/pages/membership_form/MembershipType.vue';
-import { createStore } from '@/store/membership_store';
-import { action } from '@/store/util';
-import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
-import { setAddressType } from '@/store/membership_address/actionTypes';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount, VueWrapper } from '@vue/test-utils';
+import PaymentPage from '@src/components/pages/membership_form/subpages/PaymentPage.vue';
+import AddressType from '@src/components/pages/membership_form/AddressType.vue';
+import MembershipType from '@src/components/pages/membership_form/MembershipType.vue';
+import { createStore } from '@src/store/membership_store';
+import { action } from '@src/store/util';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
+import { setAddressType } from '@src/store/membership_address/actionTypes';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { Store } from 'vuex';
 
 describe( 'PaymentPage.vue', () => {
-	let wrapper: any;
+	let wrapper: VueWrapper<any>;
+	let store: Store<any>;
+
 	beforeEach( () => {
+		store = createStore();
 		wrapper = mount( PaymentPage, {
-			localVue,
-			propsData: {
+			props: {
 				validateFeeUrl: 'https://example.com/amount-check',
-				paymentAmounts: [ 5 ],
+				paymentAmounts: [ '5' ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'UEB' ],
 				validateBankDataUrl: 'https://example.com/amount-check',
 				validateLegacyBankDataUrl: 'https://example.com/amount-check',
 				showMembershipTypeOption: true,
 			},
-			store: createStore(),
-			stubs: {
-				AmountSelection: true,
-			},
-			mocks: {
-				$t: ( key: string ): string => { return key; },
+			global: {
+				plugins: [ store ],
 			},
 		} );
 	} );
 
 	it( 'sets address type in store when it receives address-type event', () => {
-		const store = wrapper.vm.$store;
 		store.dispatch = jest.fn( () => Promise.resolve() );
 		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setAddressType );
 		const expectedPayload = AddressTypeModel.PERSON;
+
 		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
+
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
 	it( 'toggle membership type visibility', async () => {
 		wrapper.findComponent( MembershipType );
 		expect( wrapper.findComponent( MembershipType ).exists() ).toBe( true );
+
 		await wrapper.setProps( { showMembershipTypeOption: false } );
+
 		expect( wrapper.findComponent( MembershipType ).exists() ).toBe( false );
 	} );
 

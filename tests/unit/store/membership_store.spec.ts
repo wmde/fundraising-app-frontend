@@ -1,14 +1,14 @@
-import { createStore } from '@/store/membership_store';
-import { Validity } from '@/view_models/Validity';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { action } from '@/store/util';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
-import { initializeAddress } from '@/store/membership_address/actionTypes';
-import { initializeMembershipFee } from '@/store/membership_fee/actionTypes';
-import { initializeBankData } from '@/store/bankdata/actionTypes';
-import { validateFeeDataRemotely } from '@/store/axios';
+import { createStore } from '@src/store/membership_store';
+import { Validity } from '@src/view_models/Validity';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { action } from '@src/store/util';
+import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { initializeAddress } from '@src/store/membership_address/actionTypes';
+import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
+import { initializeBankData } from '@src/store/bankdata/actionTypes';
+import { validateFeeDataRemotely } from '@src/store/axios';
 
-jest.mock( '@/store/axios' );
+jest.mock( '@src/store/axios' );
 
 describe( 'Membership Store', () => {
 

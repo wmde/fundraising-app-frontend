@@ -21,12 +21,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Donation } from '@/view_models/Donation';
-import BankData from '@/components/BankData.vue';
-import WarningIcon from '@/components/shared/icons/WarningIcon.vue';
+import { defineComponent } from 'vue';
+import { Donation } from '@src/view_models/Donation';
+import BankData from '@src/components/BankData.vue';
+import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'SuccessMessageBankTransfer',
 	components: {
 		WarningIcon,

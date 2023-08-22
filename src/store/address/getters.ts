@@ -1,7 +1,7 @@
 import { GetterTree } from 'vuex';
-import { AddressState } from '@/view_models/Address';
-import { Validity } from '@/view_models/Validity';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
+import { AddressState } from '@src/view_models/Address';
+import { Validity } from '@src/view_models/Validity';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 export const getters: GetterTree<AddressState, any> = {
 	invalidFields: ( state: AddressState ): Array<string> => {

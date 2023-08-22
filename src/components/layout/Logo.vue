@@ -18,12 +18,11 @@
 	</div>
 </template>
 
-<script type="ts">
-import Vue from 'vue';
+<script lang="ts">
 
-export default Vue.extend( {
+export default {
 	name: 'Logo',
-} );
+};
 
 </script>
 

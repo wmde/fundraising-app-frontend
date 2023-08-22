@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
 /**
  * Number of milliseconds in which all autofill "events" are collected until they are emitted
@@ -22,7 +22,7 @@ const AUTOFILL_DEBOUNCE_PERIOD = 50;
  *
  * Based on the comments at https://stackoverflow.com/q/11708092/130121
  */
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AutofillHandler',
 	props: {
 		inputSelector: {

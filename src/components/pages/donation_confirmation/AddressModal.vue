@@ -14,7 +14,10 @@
 				<postal :show-error="fieldErrors" :form-data="formData" :countries="countries" v-on:field-changed="onFieldChange"/>
 				<email :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange" :common-mail-providers="mailHostList" />
 			</AutofillHandler>
-			<newsletter-option/>
+			<NewsletterOption
+				:checked-by-default="$store.state.address.newsletter"
+				@value-changed="updateNewsletterOption"
+			/>
 			<div class="columns has-margin-top-18 has-padding-bottom-18">
 				<div class="column">
 					<FunButton
@@ -53,40 +56,40 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import AddressTypeFull from '@/components/pages/donation_confirmation/AddressTypeFull.vue';
-import Name from '@/components/shared/Name.vue';
-import Postal from '@/components/shared/Postal.vue';
-import ReceiptOption from '@/components/shared/ReceiptOption.vue';
-import Email from '@/components/shared/Email.vue';
-import NewsletterOption from '@/components/pages/donation_form/NewsletterOption.vue';
-import AutofillHandler from '@/components/shared/AutofillHandler.vue';
-import { AddressValidity, AddressFormData, ValidationResult, Address } from '@/view_models/Address';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
-import { Validity } from '@/view_models/Validity';
-import { NS_ADDRESS } from '@/store/namespaces';
+import { defineComponent } from 'vue';
+import AddressTypeFull from '@src/components/pages/donation_confirmation/AddressTypeFull.vue';
+import Name from '@src/components/shared/Name.vue';
+import Postal from '@src/components/shared/Postal.vue';
+import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
+import Email from '@src/components/shared/Email.vue';
+import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
+import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { Validity } from '@src/view_models/Validity';
+import { NS_ADDRESS } from '@src/store/namespaces';
 import {
 	setAddressField,
+	setAddressType, setNewsletterChoice,
 	validateAddress,
-	validateEmail,
-	setAddressType,
 	validateAddressField,
 	validateAddressType,
-} from '@/store/address/actionTypes';
-import { action } from '@/store/util';
-import PaymentBankData from '@/components/shared/PaymentBankData.vue';
-import SubmitValues from '@/components/pages/update_address/SubmitValues.vue';
-import { trackDynamicForm, trackFormSubmission } from '@/tracking';
-import { mergeValidationResults } from '@/merge_validation_results';
-import { camelizeName } from '@/camlize_name';
-import { Country } from '@/view_models/Country';
-import { AddressValidation } from '@/view_models/Validation';
-import { Salutation } from '@/view_models/Salutation';
-import { useMailHostList } from '@/components/shared/useMailHostList';
-import DonorResource from '@/api/DonorResource';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+	validateEmail,
+} from '@src/store/address/actionTypes';
+import { action } from '@src/store/util';
+import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
+import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
+import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
+import { mergeValidationResults } from '@src/merge_validation_results';
+import { camelizeName } from '@src/camlize_name';
+import { Country } from '@src/view_models/Country';
+import { AddressValidation } from '@src/view_models/Validation';
+import { Salutation } from '@src/view_models/Salutation';
+import { useMailHostList } from '@src/components/shared/useMailHostList';
+import DonorResource from '@src/api/DonorResource';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AddressModal',
 	components: {
 		FunButton,
@@ -282,6 +285,9 @@ export default Vue.extend( {
 				data[ fieldName ] = this.$data.formData[ fieldName ].value;
 			} );
 			return data as Address;
+		},
+		updateNewsletterOption( wantsNewsletter: boolean ): void {
+			this.$store.dispatch( action( NS_ADDRESS, setNewsletterChoice ), wantsNewsletter );
 		},
 	},
 } );

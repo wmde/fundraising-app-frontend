@@ -3,16 +3,18 @@
 		<legend class="title is-size-5">{{ title }}</legend>
 		<div>
 			<div v-for="paymentType in paymentTypes" :key="paymentType">
-				<RadioInput :class="{ 'is-active': selectedType === paymentType }"
-						:id="'payment-' + paymentType.toLowerCase()"
-						name="payment"
-						v-model="selectedType"
-						:native-value="paymentType"
-						:disabled="disabledPaymentTypes.indexOf( paymentType ) > -1"
-						@change.native="setType">
+				<RadioInput
+					:class="{ 'is-active': selectedType === paymentType }"
+					:id="'payment-' + paymentType.toLowerCase()"
+					name="payment"
+					v-model="selectedType"
+					:native-value="paymentType"
+					:disabled="paymentIsDisabled( paymentType )"
+					@change.native="setType"
+				>
 					{{ $t( paymentType ) }}
-					<div v-show="disabledPaymentMessages[paymentType]" class="has-text-dark-lighter has-margin-top-18">
-						{{ $t( disabledPaymentMessages[paymentType] ) }}
+					<div v-if="paymentIsDisabled( paymentType )" class="has-text-dark-lighter has-margin-top-18">
+						{{ $t( disabledPaymentMessages[ paymentType ] ) }}
 					</div>
 				</RadioInput>
 			</div>
@@ -23,8 +25,8 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType, toRefs } from 'vue';
-import { usePaymentType } from '@/components/shared/usePaymentType';
-import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
+import { usePaymentType } from '@src/components/shared/usePaymentType';
+import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'PaymentType',
@@ -56,13 +58,14 @@ export default defineComponent( {
 		// An object with i18n messages for each unavailable payment type, empty strings if the payment is available
 		// We only need keys for payments that show messages when disabled
 		const disabledPaymentMessages = computed( () => ( {
-			SUB: paymentIsDisabled( 'SUB' ) ? 'donation_form_SUB_payment_type_info' : '',
-			BEZ: paymentIsDisabled( 'BEZ' ) ? 'donation_form_address_choice_direct_debit_disclaimer' : '',
+			SUB: 'donation_form_SUB_payment_type_info',
+			BEZ: 'donation_form_address_choice_direct_debit_disclaimer',
 		} ) );
 
 		return {
 			selectedType,
 			setType,
+			paymentIsDisabled,
 			disabledPaymentMessages,
 		};
 	},

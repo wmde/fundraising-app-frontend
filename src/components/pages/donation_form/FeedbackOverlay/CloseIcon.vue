@@ -10,11 +10,3 @@
 			16.6292L12.0013 13.7691L14.8614 16.6292Z" fill="#AAAAAA"/>
 	</svg>
 </template>
-
-<script>
-import Vue from 'vue';
-
-export default Vue.extend( {
-	name: 'CloseIcon',
-} );
-</script>

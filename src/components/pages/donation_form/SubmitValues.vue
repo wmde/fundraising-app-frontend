@@ -36,18 +36,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
-import { Payment } from '@/view_models/Payment';
-import { AddressState } from '@/view_models/Address';
-import { addressTypeName } from '@/view_models/AddressTypeModel';
-import { BankAccount } from '@/view_models/BankAccount';
-import { TrackingData } from '@/view_models/TrackingData';
-import { CampaignValues } from '@/view_models/CampaignValues';
-import addressType from '@/components/pages/membership_form/AddressType.vue';
+import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import { Payment } from '@src/view_models/Payment';
+import { AddressState } from '@src/view_models/Address';
+import { addressTypeName } from '@src/view_models/AddressTypeModel';
+import { BankAccount } from '@src/view_models/BankAccount';
+import { TrackingData } from '@src/view_models/TrackingData';
+import { CampaignValues } from '@src/view_models/CampaignValues';
+import addressType from '@src/components/pages/membership_form/AddressType.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'SubmitValues',
 	props: {
 		trackingData: Object as () => TrackingData,
