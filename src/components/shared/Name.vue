@@ -12,7 +12,7 @@
 					name="salutationInternal"
 					:native-value="salutation.label"
 					v-model="formData.salutation.value"
-					@input="$emit('field-changed', 'salutation')"
+					@update:modelValue="$emit('field-changed', 'salutation')"
 				>
 					{{ salutation.label }}
 				</RadioInput>
@@ -27,7 +27,7 @@
 					v-model="formData.title.value"
 					select-id="title"
 					name="title"
-					@input="$emit('field-changed', 'title')"
+					@update:modelValue="$emit('field-changed', 'title')"
 				>
 					<option value="">{{ $t( 'donation_form_academic_title_option_none' ) }}</option>
 					<option value="Dr.">Dr.</option>
