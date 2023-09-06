@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import Name from '@src/components/shared/Name.vue';
 import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
-import Email from '@src/components/shared/Email.vue';
+import EmailAddress from '@src/components/shared/EmailAddress.vue';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@src/store/namespaces';
@@ -95,7 +95,7 @@ describe( 'AddressForms.vue', () => {
 		await wrapper.find( '#email' ).setValue( testEmail );
 
 		const expectedAction = action( NS_ADDRESS, setAddressField );
-		wrapper.findComponent( Email ).vm.$emit( 'field-changed', 'email' );
+		wrapper.findComponent( EmailAddress ).vm.$emit( 'field-changed', 'email' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'email',
 			'optionalField': false,

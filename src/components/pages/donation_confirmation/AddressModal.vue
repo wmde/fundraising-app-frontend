@@ -12,7 +12,7 @@
 				<span v-if="addressTypeIsInvalid" class="help is-danger error-address-type">{{ $t( 'donation_form_section_address_error' ) }}</span>
 				<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"/>
 				<postal :show-error="fieldErrors" :form-data="formData" :countries="countries" v-on:field-changed="onFieldChange"/>
-				<email :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange" :common-mail-providers="mailHostList" />
+				<EmailAddress :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange" :common-mail-providers="mailHostList" />
 			</AutofillHandler>
 			<NewsletterOption
 				:checked-by-default="$store.state.address.newsletter"
@@ -61,7 +61,7 @@ import AddressTypeFull from '@src/components/pages/donation_confirmation/Address
 import Name from '@src/components/shared/Name.vue';
 import Postal from '@src/components/shared/Postal.vue';
 import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
-import Email from '@src/components/shared/Email.vue';
+import EmailAddress from '@src/components/shared/EmailAddress.vue';
 import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
@@ -97,7 +97,7 @@ export default defineComponent( {
 		Postal,
 		AddressTypeFull,
 		ReceiptOption,
-		Email,
+		EmailAddress,
 		NewsletterOption,
 		PaymentBankData,
 		SubmitValues,

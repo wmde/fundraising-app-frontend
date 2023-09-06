@@ -1,10 +1,10 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import Email from '@src/components/shared/Email.vue';
+import EmailAddress from '@src/components/shared/EmailAddress.vue';
 
-describe( 'Email.vue', () => {
+describe( 'EmailAddress.vue', () => {
 
 	const getWrapper = ( email: string, commonMailProviders: string[] = [], showError: boolean = false ): VueWrapper<any> => {
-		return mount( Email, {
+		return mount( EmailAddress, {
 			props: {
 				showError,
 				commonMailProviders,

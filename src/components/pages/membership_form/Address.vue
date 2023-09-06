@@ -26,7 +26,7 @@
 				v-on:field-changed="onFieldChange"
 				:show-error="fieldErrors.date"
 				:form-data="formData"/>
-			<email
+			<EmailAddress
 				:show-error="fieldErrors.email"
 				:form-data="formData"
 				v-on:field-changed="onFieldChange"
@@ -43,7 +43,7 @@ import Postal from '@src/components/shared/Postal.vue';
 import DateOfBirth from '@src/components/pages/membership_form/DateOfBirth.vue';
 import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
 import Incentives from '@src/components/pages/membership_form/Incentives.vue';
-import Email from '@src/components/shared/Email.vue';
+import EmailAddress from '@src/components/shared/EmailAddress.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import { AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { AddressValidation } from '@src/view_models/Validation';
@@ -73,7 +73,7 @@ export default defineComponent( {
 		DateOfBirth,
 		ReceiptOption,
 		Incentives,
-		Email,
+		EmailAddress,
 		AutofillHandler,
 	},
 	data: function (): { formData: AddressFormData } {

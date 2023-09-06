@@ -3,7 +3,7 @@ import Address from '@src/components/pages/membership_form/Address.vue';
 import Name from '@src/components/shared/Name.vue';
 import Postal from '@src/components/shared/Postal.vue';
 import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
-import Email from '@src/components/shared/Email.vue';
+import EmailAddress from '@src/components/shared/EmailAddress.vue';
 import DateOfBirth from '@src/components/pages/membership_form/DateOfBirth.vue';
 import { createStore } from '@src/store/membership_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -37,7 +37,7 @@ describe( 'Address.vue', () => {
 		expect( wrapper.findComponent( Name ).exists() ).toBe( true );
 		expect( wrapper.findComponent( Postal ).exists() ).toBe( true );
 		expect( wrapper.findComponent( ReceiptOption ).exists() ).toBe( true );
-		expect( wrapper.findComponent( Email ).exists() ).toBe( true );
+		expect( wrapper.findComponent( EmailAddress ).exists() ).toBe( true );
 		expect( wrapper.findComponent( DateOfBirth ).exists() ).toBe( true );
 	} );
 
@@ -76,7 +76,7 @@ describe( 'Address.vue', () => {
 		wrapper.vm.$data.formData.email.value = testEmail;
 		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setAddressField );
 
-		wrapper.findComponent( Email ).vm.$emit( 'field-changed', 'email' );
+		wrapper.findComponent( EmailAddress ).vm.$emit( 'field-changed', 'email' );
 
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'email',

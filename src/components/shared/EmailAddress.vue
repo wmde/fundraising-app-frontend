@@ -25,47 +25,44 @@
     </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { closest, distance } from '@src/util/fastest-levenshtein';
 import { AddressFormData } from '@src/view_models/Address';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
 
-export default defineComponent( {
-	name: 'Email',
-	components: { TextInput, ValueEqualsPlaceholderWarning },
-	props: {
-		formData: Object as () => AddressFormData,
-		showError: Boolean,
-		commonMailProviders: { type: Array, default: () => { return []; } },
-	},
-	setup( props: any, { emit } ) {
-		const suggestedProvider = computed( () => {
-			if ( props.commonMailProviders.length === 0 ) {
-				return '';
-			}
-			const mailUserInput = props.formData.email.value;
-			if ( mailUserInput.indexOf( '@' ) === -1 ) {
-				return '';
-			}
-			const mailHost = mailUserInput.slice( Math.max( 0, mailUserInput.lastIndexOf( '@' ) + 1 ) );
-			if ( mailHost.match( /^\w+\.\w{2}/ ) ) {
-				const closestFit = closest( mailHost, props.commonMailProviders );
-				const calculatedDistance = distance( mailHost, closestFit );
-				if ( calculatedDistance > 0 && calculatedDistance <= 3 ) {
-					return closestFit;
-				}
-			}
-			return '';
-		} );
+interface Props {
+	formData: AddressFormData,
+	showError: boolean,
+	commonMailProviders: string[],
+}
 
-		const onSuggestionClicked = ( suggestion:string ) => {
-			props.formData.email.value = props.formData.email.value.split( '@', 1 ).toString() + '@' + suggestion;
-			emit( 'field-changed', 'email' );
-		};
+const props = defineProps<Props>();
+const emit = defineEmits( [ 'field-changed' ] );
 
-		return { suggestedProvider, onSuggestionClicked };
-	},
+const suggestedProvider = computed( () => {
+	if ( props.commonMailProviders.length === 0 ) {
+		return '';
+	}
+	const mailUserInput = props.formData.email.value;
+	if ( mailUserInput.indexOf( '@' ) === -1 ) {
+		return '';
+	}
+	const mailHost = mailUserInput.slice( Math.max( 0, mailUserInput.lastIndexOf( '@' ) + 1 ) );
+	if ( mailHost.match( /^\w+\.\w{2}/ ) ) {
+		const closestFit = closest( mailHost, props.commonMailProviders );
+		const calculatedDistance = distance( mailHost, closestFit );
+		if ( calculatedDistance > 0 && calculatedDistance <= 3 ) {
+			return closestFit;
+		}
+	}
+	return '';
 } );
+
+const onSuggestionClicked = ( suggestion:string ) => {
+	props.formData.email.value = props.formData.email.value.split( '@', 1 ).toString() + '@' + suggestion;
+	emit( 'field-changed', 'email' );
+};
+
 </script>

@@ -1,98 +1,108 @@
 <template>
 	<div :class="`address-section address-type-${ addressTypeId }`">
 		<form
-				name="laika-donation-personal-data-person"
-        id="laika-donation-personal-data-person"
-        action="/donation/add"
-        method="post"
+			name="laika-donation-personal-data-person"
+			id="laika-donation-personal-data-person"
+			action="/donation/add"
+			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
 				<name
-						:show-error="fieldErrors"
-						:form-data="formData"
-						:address-type="AddressTypeModel.PERSON"
-						:salutations="salutations"
-						v-on:field-changed="onFieldChange"/>
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:address-type="AddressTypeModel.PERSON"
+					:salutations="salutations"
+					v-on:field-changed="onFieldChange"
+				/>
 				<postal
-						:show-error="fieldErrors"
-						:form-data="formData"
-						:countries="countries"
-						:post-code-validation="addressValidationPatterns.postcode"
-						v-on:field-changed="onFieldChange"/>
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:countries="countries"
+					:post-code-validation="addressValidationPatterns.postcode"
+					v-on:field-changed="onFieldChange"
+				/>
 				<receipt-option
-						:message="$t( 'receipt_needed_donation_page' )"
-						:initial-receipt-needed="receiptNeeded"
-						v-on:receipt-changed="setReceipt( $event )"/>
-				<email
-						:show-error="fieldErrors.email"
-						:form-data="formData"
-						v-on:field-changed="onFieldChange"
-						:common-mail-providers="mailHostList" />
+					:message="$t( 'receipt_needed_donation_page' )"
+					:initial-receipt-needed="receiptNeeded"
+					v-on:receipt-changed="setReceipt( $event )"
+				/>
+				<EmailAddress
+					:show-error="fieldErrors.email"
+					:form-data="formData"
+					v-on:field-changed="onFieldChange"
+					:common-mail-providers="mailHostList"
+				/>
 				<newsletter-option/>
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
-				name="laika-donation-personal-data-company"
-				id="laika-donation-personal-data-company"
-				action="/donation/add"
-				method="post"
+			name="laika-donation-personal-data-company"
+			id="laika-donation-personal-data-company"
+			action="/donation/add"
+			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
 				<name
-						:show-error="fieldErrors"
-						:form-data="formData"
-						:address-type="AddressTypeModel.COMPANY"
-						:salutations="salutations"
-						v-on:field-changed="onFieldChange"/>
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:address-type="AddressTypeModel.COMPANY"
+					:salutations="salutations"
+					v-on:field-changed="onFieldChange"
+				/>
 				<postal
-						:show-error="fieldErrors"
-						:form-data="formData"
-						:countries="countries"
-						:post-code-validation="addressValidationPatterns.postcode"
-						v-on:field-changed="onFieldChange"/>
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:countries="countries"
+					:post-code-validation="addressValidationPatterns.postcode"
+					v-on:field-changed="onFieldChange"
+				/>
 				<receipt-option
-						:message="$t( 'receipt_needed_donation_page' )"
-						:initial-receipt-needed="receiptNeeded"
-						v-on:receipt-changed="setReceipt( $event )"/>
-				<email
-						:show-error="fieldErrors.email"
-						:form-data="formData"
-						v-on:field-changed="onFieldChange"
-						:common-mail-providers="mailHostList" />
+					:message="$t( 'receipt_needed_donation_page' )"
+					:initial-receipt-needed="receiptNeeded"
+					v-on:receipt-changed="setReceipt( $event )"
+				/>
+				<EmailAddress
+					:show-error="fieldErrors.email"
+					:form-data="formData"
+					v-on:field-changed="onFieldChange"
+					:common-mail-providers="mailHostList"
+				/>
 				<newsletter-option/>
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
-				name="laika-donation-personal-data-email"
-				id="laika-donation-personal-data-email"
-				action="/donation/add"
-				method="post"
+			name="laika-donation-personal-data-email"
+			id="laika-donation-personal-data-email"
+			action="/donation/add"
+			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
 				<name
-						:show-error="fieldErrors"
-						:form-data="formData"
-						:address-type="AddressTypeModel.PERSON"
-						:salutations="salutations"
-						v-on:field-changed="onFieldChange"/>
-				<email
-						:show-error="fieldErrors.email"
-						:form-data="formData"
-						v-on:field-changed="onFieldChange"
-						:common-mail-providers="mailHostList" />
-				<newsletter-option />
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:address-type="AddressTypeModel.PERSON"
+					:salutations="salutations"
+					v-on:field-changed="onFieldChange"
+				/>
+				<EmailAddress
+					:show-error="fieldErrors.email"
+					:form-data="formData"
+					v-on:field-changed="onFieldChange"
+					:common-mail-providers="mailHostList"
+				/>
+				<newsletter-option/>
 			</AutofillHandler>
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
-				id="laika-donation-personal-data-anonymous"
-				action="/donation/add"
-				method="post"
+			id="laika-donation-personal-data-anonymous"
+			action="/donation/add"
+			method="post"
 		>
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
@@ -106,7 +116,7 @@ import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import Name from '@src/components/shared/Name.vue';
 import Postal from '@src/components/shared/Postal.vue';
 import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
-import Email from '@src/components/shared/Email.vue';
+import EmailAddress from '@src/components/shared/EmailAddress.vue';
 import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -134,7 +144,7 @@ export default defineComponent( {
 		Name,
 		Postal,
 		ReceiptOption,
-		Email,
+		EmailAddress,
 		NewsletterOption,
 		AutofillHandler,
 		SubmitValues,
