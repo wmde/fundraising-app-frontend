@@ -1,16 +1,16 @@
 <template>
 	<div class="address-page">
 		<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
-		<payment-summary
+		<PaymentSummary
 			v-if="paymentWasInitialized"
 			:amount="paymentSummary.amount"
 			:payment-type="paymentSummary.paymentType"
 			:interval="paymentSummary.interval"
-			v-on:previous-page="previousPage">
-		</payment-summary>
+			@previous-page="previousPage">
+		</PaymentSummary>
 
 		<form v-if="isDirectDebit" id="bank-data-details" @submit="evt => evt.preventDefault()">
-			<payment-bank-data
+			<PaymentBankData
 				:validateBankDataUrl="validateBankDataUrl"
 				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
 			/>
@@ -19,27 +19,27 @@
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
 			<FeatureToggle>
 				<template #campaigns.address_type_steps.direct>
-					<address-type-basic
-						v-on:address-type="setAddressType( $event )"
-						v-on:set-full-selected="setFullSelected"
+					<AddressTypeBasic
+						@address-type="setAddressType( $event )"
+						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebit"
 						:initial-address-type="addressTypeName"
 					/>
 				</template>
 				<template #campaigns.address_type_steps.preselect>
-					<address-type-all-options
-						v-on:address-type="setAddressType( $event )"
-						v-on:set-full-selected="setFullSelected"
+					<AddressTypeAllOptions
+						@address-type="setAddressType( $event )"
+						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebit"
 						:initial-address-type="addressTypeName"
 					/>
 				</template>
 				<template #campaigns.address_type_steps.full_or_email>
-					<address-type-full-or-email
-						v-on:address-type="setAddressType( $event )"
-						v-on:set-full-selected="setFullSelected"
+					<AddressTypeFullOrEmail
+						@address-type="setAddressType( $event )"
+						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebit"
 						:initial-address-type="addressTypeName"
@@ -56,7 +56,7 @@
 			</div>
 		</form>
 
-		<address-forms
+		<AddressForms
 			:countries="countries"
 			:salutations="salutations"
 			:address-validation-patterns="addressValidationPatterns"
@@ -64,10 +64,10 @@
 			:address-type="addressType"
 			:tracking-data="trackingData"
 			:campaign-values="campaignValues">
-		</address-forms>
+		</AddressForms>
 
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
-			<donation-summary
+			<DonationSummary
 				:payment="paymentSummary"
 				:address-type="addressTypeName"
 				:address="addressSummary"
@@ -105,182 +105,75 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
-import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
-import AddressForms, { AddressTypeIds } from '@src/components/pages/donation_form/AddressForms.vue';
-import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
+import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressTypeFullOrEmail.vue';
+import DonationSummary from '@src/components/shared/DonationSummary.vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
-import DonationSummary from '@src/components/shared/DonationSummary.vue';
-import { TrackingData } from '@src/view_models/TrackingData';
 import { AddressValidation } from '@src/view_models/Validation';
-import { Country } from '@src/view_models/Country';
-import { action } from '@src/store/util';
-import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
-import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
-import { discardInitialization } from '@src/store/payment/actionTypes';
-import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
-import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
-import { validateAddress, validateAddressType, validateEmail } from '@src/store/address/actionTypes';
-import { Salutation } from '@src/view_models/Salutation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
+import { Country } from '@src/view_models/Country';
+import { Salutation } from '@src/view_models/Salutation';
 import { StoreKey } from '@src/store/donation_store';
+import { TrackingData } from '@src/view_models/TrackingData';
 import { injectStrict } from '@src/util/injectStrict';
-import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressTypeFullOrEmail.vue';
-import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import { trackDynamicForm } from '@src/tracking';
+import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/useAddressFormEventHandlers';
+import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
+import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
+import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 
-export default defineComponent( {
-	name: 'AddressPage',
-	components: {
-		FunButton,
-		AddressTypeFullOrEmail,
-		AutofillHandler,
-		AddressForms,
-		AddressTypeAllOptions,
-		AddressTypeBasic,
-		PaymentBankData,
-		PaymentSummary,
-		DonationSummary,
-	},
-	props: {
-		assetsPath: String,
-		validateAddressUrl: String,
-		validateEmailUrl: String,
-		validateBankDataUrl: String,
-		validateLegacyBankDataUrl: String,
-		countries: Array as () => Array<Country>,
-		salutations: Array as () => Array<Salutation>,
-		trackingData: Object as () => TrackingData,
-		campaignValues: Object as () => CampaignValues,
-		addressValidationPatterns: Object as () => AddressValidation,
-	},
-	setup( props: any, { emit } ) {
-		const isFullSelected = ref( false );
-		const store = injectStrict( StoreKey );
-		const setFullSelected = ( selected: boolean ) => {
-			isFullSelected.value = selected;
-		};
+interface Props {
+	assetsPath: string;
+	validateAddressUrl: string;
+	validateEmailUrl: string;
+	validateBankDataUrl: string;
+	validateLegacyBankDataUrl: string;
+	countries: Country[];
+	salutations: Salutation[];
+	trackingData: TrackingData;
+	campaignValues: CampaignValues;
+	addressValidationPatterns: AddressValidation;
+}
 
-		onMounted( trackDynamicForm );
+const props = defineProps<Props>();
+const emit = defineEmits( [ 'previous-page' ] );
 
-		const {
-			disabledAddressTypes,
-			addressType,
-			addressTypeIsNotAnon,
-			addressTypeIsInvalid,
-			addressTypeName,
-			setAddressType,
-		} = useAddressTypeFunctions( store );
+const isFullSelected = ref( false );
+const store = injectStrict( StoreKey );
+const setFullSelected = ( selected: boolean ) => {
+	isFullSelected.value = selected;
+};
 
-		// Payment functions
-		const isExternalPayment = computed( (): boolean => store.getters[ NS_PAYMENT + '/isExternalPayment' ] );
-		const isBankTransferPayment = computed( (): boolean => store.getters[ NS_PAYMENT + '/isBankTransferPayment' ] );
-		const isDirectDebit = computed( (): boolean => store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] );
-		const paymentWasInitialized = computed( (): boolean => store.state[ NS_PAYMENT ].initialized );
-		const paymentSummary = computed( () => {
-			const payment = store.state[ NS_PAYMENT ].values;
-			return {
-				interval: payment.interval,
-				amount: payment.amount / 100,
-				paymentType: payment.type,
-			};
-		} );
+onMounted( trackDynamicForm );
 
-		// Summary functions
-		const addressSummary = computed( () => ( {
-			...store.state[ NS_ADDRESS ].values,
-			fullName: store.getters[ NS_ADDRESS + '/fullName' ],
-			streetAddress: store.state[ NS_ADDRESS ].values.street,
-			postalCode: store.state[ NS_ADDRESS ].values.postcode,
-			country: store.state[ NS_ADDRESS ].values.country,
-		} ) );
-		const inlineSummaryLanguageItem = computed( (): string => {
-			switch ( store.state[ NS_ADDRESS ].addressType ) {
-				case AddressTypeModel.ANON:
-				case AddressTypeModel.UNSET:
-					return 'donation_confirmation_inline_summary_anonymous';
-				case AddressTypeModel.EMAIL:
-					return 'donation_confirmation_inline_summary_email';
-				case AddressTypeModel.COMPANY:
-				case AddressTypeModel.PERSON:
-				default:
-					return 'donation_confirmation_inline_summary_address';
-			}
-		} );
+const {
+	disabledAddressTypes,
+	addressType,
+	addressTypeIsNotAnon,
+	addressTypeIsInvalid,
+	addressTypeName,
+	setAddressType,
+} = useAddressTypeFunctions( store );
 
-		const previousPage = () => {
-			store.dispatch( action( NS_PAYMENT, discardInitialization ) );
-			emit( 'previous-page' );
-		};
-		const submitHtmlForm = () => {
-			const formId = `laika-donation-personal-data-${ AddressTypeIds.get( addressType.value ) }`;
-			const currentAddressForm: HTMLFormElement = document.getElementById( formId ) as HTMLFormElement;
-			if ( !currentAddressForm ) {
-				// This should only happen if the child component has the wrong ID
-				throw new Error( `Address form with ID "${ formId }" not found.` );
-			}
+const {
+	isBankTransferPayment,
+	isDirectDebit,
+	isExternalPayment,
+	paymentSummary,
+	paymentWasInitialized,
+} = usePaymentFunctions( store );
 
-			trackFormSubmission( currentAddressForm );
-			currentAddressForm.submit();
-		};
-		const scrollToFirstError = () => document.getElementsByClassName( 'help is-danger' )[ 0 ]
-			.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-		const submit = () => {
-			const validationCalls = [
-				store.dispatch( action( NS_ADDRESS, validateAddressType ), {
-					type: store.state.address.addressType,
-					disallowed: [ AddressTypeModel.UNSET ],
-				} ),
-				store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
-				store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
-			];
-			if ( isDirectDebit.value ) {
-				validationCalls.push( store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
-			}
-			Promise.all( validationCalls ).then( () => {
-				// We need to wait for the asynchronous bank data validation, that might still be going on
-				waitForServerValidationToFinish( store ).then( () => {
-					if ( !store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
-						scrollToFirstError();
-						return;
-					}
-					if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
-						scrollToFirstError();
-						return;
-					}
-					submitHtmlForm();
-				} );
-			} );
-		};
+const {
+	addressSummary,
+	inlineSummaryLanguageItem,
+} = useAddressSummary( store );
 
-		return {
-			// Accessors
-			addressSummary,
-			addressType,
-			addressTypeIsNotAnon,
-			addressTypeIsInvalid,
-			addressTypeName,
-			disabledAddressTypes,
-			isFullSelected,
-			isBankTransferPayment,
-			isDirectDebit,
-			isExternalPayment,
-			inlineSummaryLanguageItem,
-			paymentWasInitialized,
-			paymentSummary,
+const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
 
-			// Mutators
-			setAddressType,
-			setFullSelected,
-
-			// Event handlers
-			previousPage,
-			submit,
-		};
-	},
-} );
 </script>
