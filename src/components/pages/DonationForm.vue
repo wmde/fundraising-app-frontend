@@ -13,7 +13,7 @@
 				v-else
 				@previous-page="currentPageIndex = 0"
 				:assets-path="assetsPath"
-				:validate-addressUrl="validateAddressUrl"
+				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
 				:validate-bank-data-url="validateBankDataUrl"
 				:validate-legacy-bank-data-url="validateLegacyBankDataUrl"

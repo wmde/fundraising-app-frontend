@@ -129,14 +129,7 @@ import { useMailHostList } from '@src/components/shared/useMailHostList';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { StoreKey } from '@src/store/donation_store';
 import { injectStrict } from '@src/util/injectStrict';
-
-export const AddressTypeIds = new Map<number, string>( [
-	[ AddressTypeModel.ANON, 'anonymous' ],
-	[ AddressTypeModel.EMAIL, 'email' ],
-	[ AddressTypeModel.PERSON, 'person' ],
-	[ AddressTypeModel.COMPANY, 'company' ],
-	[ AddressTypeModel.UNSET, 'unset' ],
-] );
+import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 
 export default defineComponent( {
 	name: 'Address',
