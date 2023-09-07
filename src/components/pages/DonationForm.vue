@@ -1,19 +1,34 @@
 <template>
 	<div id="laika-donation">
 		<keep-alive>
-			<component
-				ref="currentPage"
-				:is="currentFormComponent"
-				v-on:next-page="changePageIndex( 1 )"
-				v-on:previous-page="changePageIndex( -1 )"
-				v-bind="currentProperties">
-			</component>
+			<PaymentPage
+				v-if="currentPageIndex === 0"
+				@next-page="currentPageIndex = 1"
+				:assets-path="assetsPath"
+				:payment-amounts="paymentAmounts"
+				:payment-intervals="paymentIntervals"
+				:payment-types="paymentTypes"
+			/>
+			<AddressPage
+				v-else
+				@previous-page="currentPageIndex = 0"
+				:assets-path="assetsPath"
+				:validate-addressUrl="validateAddressUrl"
+				:validate-email-url="validateEmailUrl"
+				:validate-bank-data-url="validateBankDataUrl"
+				:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
+				:countries="countries"
+				:salutations="salutations"
+				:tracking-data="trackingData"
+				:campaign-values="campaignValues"
+				:address-validation-patterns="addressValidationPatterns"
+			/>
 		</keep-alive>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 import { TrackingData } from '@src/view_models/TrackingData';
 import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
 import AddressPage from '@src/components/pages/donation_form/subpages/AddressPage.vue';
@@ -22,84 +37,29 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 
-export default defineComponent( {
-	name: 'DonationForm',
-	components: {
-		PaymentPage,
-		AddressPage,
-	},
-	props: {
-		assetsPath: String,
-		validateAddressUrl: String,
-		validateEmailUrl: String,
-		validateBankDataUrl: String,
-		validateLegacyBankDataUrl: String,
-		paymentAmounts: Array as () => Array<String>,
-		paymentIntervals: Array as () => Array<Number>,
-		paymentTypes: Array as () => Array<String>,
-		countries: Array as () => Array<Country>,
-		salutations: Array as () => Array<Salutation>,
-		trackingData: Object as () => TrackingData,
-		campaignValues: Object as () => CampaignValues,
-		addressValidationPatterns: Object as () => AddressValidation,
-		startPage: {
-			type: String,
-			default: () => 'PaymentPage',
-		},
-	},
-	data: function () {
-		const pages = [ 'PaymentPage', 'AddressPage' ];
-		const currentPageIndex = pages.indexOf( this.$props.startPage );
-		if ( currentPageIndex < 0 ) {
-			throw new Error( `Unknown initial page name '${this.$props.startPage}'. Valid page names are: ${pages.join( ', ' )}` );
-		}
-		return {
-			pages,
-			currentPageIndex,
-		};
-	},
-	computed: {
-		currentFormComponent: {
-			get(): string {
-				return this.$data.pages[ this.$data.currentPageIndex ];
-			},
-		},
-		currentProperties: {
-			get(): object {
-				if ( this.currentFormComponent === 'AddressPage' ) {
-					return {
-						assetsPath: this.$props.assetsPath,
-						validateAddressUrl: this.$props.validateAddressUrl,
-						validateEmailUrl: this.$props.validateEmailUrl,
-						validateBankDataUrl: this.$props.validateBankDataUrl,
-						validateLegacyBankDataUrl: this.$props.validateLegacyBankDataUrl,
-						countries: this.$props.countries,
-						salutations: this.$props.salutations,
-						trackingData: this.$props.trackingData,
-						campaignValues: this.$props.campaignValues,
-						addressValidationPatterns: this.$props.addressValidationPatterns,
-					};
-				}
-				return {
-					assetsPath: this.$props.assetsPath,
-					paymentAmounts: this.$props.paymentAmounts,
-					paymentIntervals: this.$props.paymentIntervals,
-					paymentTypes: this.$props.paymentTypes,
-				};
-			},
-		},
-	},
-	methods: {
-		changePageIndex( indexChange: number ): void {
-			const newIndex = this.$data.currentPageIndex + indexChange;
-			if ( newIndex >= 0 && newIndex < this.$data.pages.length ) {
-				this.$data.currentPageIndex = newIndex;
-				this.scrollToTop();
-			}
-		},
-		scrollToTop(): void {
-			window.scrollTo( 0, 0 );
-		},
-	},
+interface Props {
+	assetsPath: string;
+	validateAddressUrl: string;
+	validateEmailUrl: string;
+	validateBankDataUrl: string;
+	validateLegacyBankDataUrl: string;
+	paymentAmounts: string[];
+	paymentIntervals: number[];
+	paymentTypes: string[];
+	countries: Country[];
+	salutations: Salutation[];
+	trackingData: TrackingData;
+	campaignValues: CampaignValues;
+	addressValidationPatterns: AddressValidation;
+	startPageIndex: number;
+}
+
+const props = defineProps<Props>();
+
+const currentPageIndex = ref<number>( props.startPageIndex );
+
+watch( currentPageIndex, () => {
+	window.scrollTo( 0, 0 );
 } );
+
 </script>
