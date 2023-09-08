@@ -9,7 +9,7 @@
 			v-on:previous-page="previousPage">
 		</payment-summary>
 
-		<form v-if="isDirectDebit" id="bank-data-details" @submit="evt => evt.preventDefault()">
+		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<payment-bank-data
 				:validateBankDataUrl="validateBankDataUrl"
 				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
@@ -23,7 +23,7 @@
 						v-on:address-type="setAddressType( $event )"
 						v-on:set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebit"
+						:is-direct-debit="isDirectDebitPayment"
 						:initial-address-type="addressTypeName"
 					/>
 				</template>
@@ -32,7 +32,7 @@
 						v-on:address-type="setAddressType( $event )"
 						v-on:set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebit"
+						:is-direct-debit="isDirectDebitPayment"
 						:initial-address-type="addressTypeName"
 					/>
 				</template>
@@ -41,7 +41,7 @@
 						v-on:address-type="setAddressType( $event )"
 						v-on:set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebit"
+						:is-direct-debit="isDirectDebitPayment"
 						:initial-address-type="addressTypeName"
 					/>
 				</template>
@@ -87,12 +87,12 @@
 					</FunButton>
 				</div>
 				<div class="column">
-					<FunButton
+					<FunDynamicSubmitButton
 						id="submit-btn"
 						:class="[ 'level-item is-primary is-main', { 'is-loading' : $store.getters.isValidating } ]"
-						@click="submit">
-						{{ $t( 'donation_form_finalize' ) }}
-					</FunButton>
+						:payment-type="paymentSummary.paymentType"
+						@click="submit"
+					/>
 				</div>
 			</div>
 			<div class="summary-notice" v-if="isExternalPayment">
@@ -132,10 +132,12 @@ import { StoreKey } from '@src/store/donation_store';
 import { injectStrict } from '@src/util/injectStrict';
 import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressTypeFullOrEmail.vue';
 import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import FunDynamicSubmitButton from '@src/components/shared/form_inputs/FunDynamicSubmitButton.vue';
 
 export default defineComponent( {
 	name: 'AddressPage',
 	components: {
+		FunDynamicSubmitButton,
 		FunButton,
 		AddressTypeFullOrEmail,
 		AutofillHandler,
@@ -179,7 +181,7 @@ export default defineComponent( {
 		// Payment functions
 		const isExternalPayment = computed( (): boolean => store.getters[ NS_PAYMENT + '/isExternalPayment' ] );
 		const isBankTransferPayment = computed( (): boolean => store.getters[ NS_PAYMENT + '/isBankTransferPayment' ] );
-		const isDirectDebit = computed( (): boolean => store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] );
+		const isDirectDebitPayment = computed( (): boolean => store.getters[ NS_PAYMENT + '/isDirectDebitPayment' ] );
 		const paymentWasInitialized = computed( (): boolean => store.state[ NS_PAYMENT ].initialized );
 		const paymentSummary = computed( () => {
 			const payment = store.state[ NS_PAYMENT ].values;
@@ -238,7 +240,7 @@ export default defineComponent( {
 				store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
 				store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
 			];
-			if ( isDirectDebit.value ) {
+			if ( isDirectDebitPayment.value ) {
 				validationCalls.push( store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
 			}
 			Promise.all( validationCalls ).then( () => {
@@ -248,7 +250,7 @@ export default defineComponent( {
 						scrollToFirstError();
 						return;
 					}
-					if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+					if ( isDirectDebitPayment.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
 						scrollToFirstError();
 						return;
 					}
@@ -267,7 +269,7 @@ export default defineComponent( {
 			disabledAddressTypes,
 			isFullSelected,
 			isBankTransferPayment,
-			isDirectDebit,
+			isDirectDebitPayment,
 			isExternalPayment,
 			inlineSummaryLanguageItem,
 			paymentWasInitialized,
