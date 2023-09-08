@@ -26,10 +26,10 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, ref, watch } from 'vue';
-import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
+import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 import { Country } from '@src/view_models/Country';
-import { useFilteredCountries } from '@src/components/shared/form_inputs/useFilteredCountries';
-import { useCountryInput } from '@src/components/shared/form_inputs/useCountryInput';
+import { useFilteredCountries } from '@src/components/shared/legacy_form_inputs/useFilteredCountries';
+import { useCountryInput } from '@src/components/shared/legacy_form_inputs/useCountryInput';
 
 export default defineComponent( {
 	name: 'AutocompleteCountry',

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import AutocompleteCity from '../../../../../src/components/shared/form_inputs/AutocompleteCity.vue';
+import AutocompleteCity from '@src/components/shared/legacy_form_inputs/AutocompleteCity.vue';
 import { FakeAutocompleteResource } from '../../../TestDoubles/FakeAutocompleteResource';
 import { nextTick } from 'vue';
 

@@ -66,7 +66,7 @@
 <script lang="ts">
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { computed, defineComponent, PropType, Ref, ref, watch } from 'vue';
-import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
+import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
 
 type fullAddressStates = '' | 'person' | 'company';
 

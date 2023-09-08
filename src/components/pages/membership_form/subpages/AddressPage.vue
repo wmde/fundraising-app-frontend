@@ -53,7 +53,7 @@ import { Salutation } from '@src/view_models/Salutation';
 import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import { mapGetters } from 'vuex';
-import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
 export default defineComponent( {
 	name: 'AddressPage',
