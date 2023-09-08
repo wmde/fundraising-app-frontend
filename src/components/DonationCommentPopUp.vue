@@ -59,9 +59,9 @@ import axios, { AxiosResponse } from 'axios';
 import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Donation } from '@src/view_models/Donation';
-import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
-import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
-import FunCheckbox from '@src/components/shared/form_inputs/FunCheckbox.vue';
+import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
+import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
+import FunCheckbox from '@src/components/shared/legacy_form_inputs/FunCheckbox.vue';
 
 export default defineComponent( {
 	name: 'DonationCommentPopUp',

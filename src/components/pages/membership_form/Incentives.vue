@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import FunCheckbox from '@src/components/shared/form_inputs/FunCheckbox.vue';
+import FunCheckbox from '@src/components/shared/legacy_form_inputs/FunCheckbox.vue';
 
 export default defineComponent( {
 	name: 'Incentives',

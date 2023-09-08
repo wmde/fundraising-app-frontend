@@ -35,7 +35,7 @@ import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { setMembershipType } from '@src/store/membership_address/actionTypes';
 import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
-import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
+import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'MembershipType',

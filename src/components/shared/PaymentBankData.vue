@@ -54,7 +54,7 @@ import { NS_BANKDATA } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
 import AccountNumberField from '@src/components/shared/AccountNumberField.vue';
-import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
+import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 
 export default defineComponent( {
 	name: 'PaymentBankData',

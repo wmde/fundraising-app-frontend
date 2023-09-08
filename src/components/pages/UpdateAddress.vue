@@ -51,7 +51,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { mapGetters } from 'vuex';
 import { trackFormSubmission } from '@src/tracking';
 import { Salutation } from '@src/view_models/Salutation';
-import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
 export default defineComponent( {
 	name: 'UpdateAddress',

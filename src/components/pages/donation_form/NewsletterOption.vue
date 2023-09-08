@@ -21,7 +21,7 @@ import { ref } from 'vue';
 import { NS_ADDRESS } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { setNewsletterChoice } from '@src/store/address/actionTypes';
-import FunCheckbox from '@src/components/shared/form_inputs/FunCheckbox.vue';
+import FunCheckbox from '@src/components/shared/legacy_form_inputs/FunCheckbox.vue';
 import { useStore } from 'vuex';
 
 const store = useStore();

@@ -26,7 +26,7 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import { commentModelsFromObject } from '@src/view_models/Comment';
-import FunSelect from '@src/components/shared/form_inputs/FunSelect.vue';
+import FunSelect from '@src/components/shared/legacy_form_inputs/FunSelect.vue';
 
 const PAGE_SIZE = 10;
 

@@ -87,7 +87,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { useMailHostList } from '@src/components/shared/useMailHostList';
 import DonorResource from '@src/api/DonorResource';
-import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
 export default defineComponent( {
 	name: 'AddressModal',
