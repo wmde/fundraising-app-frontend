@@ -1,5 +1,5 @@
 <template>
-	<fieldset class="form-field form-field-radio">
+	<fieldset class="form-field form-field-radio" :class="{ 'is-invalid': showError }">
 		<legend class="form-field-label">{{ label }}</legend>
 		<div class="form-field-radio-container">
 			<RadioFormInput
