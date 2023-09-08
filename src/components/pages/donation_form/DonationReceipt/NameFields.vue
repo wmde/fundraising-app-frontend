@@ -11,23 +11,18 @@
 			@field-changed="$emit('field-changed', 'salutation')"
 		/>
 
-		<div class="form-input">
-			<label for="title" class="subtitle">{{ $t( 'donation_form_academic_title_label' ) }}</label>
-			<div class="field">
-				<FunSelect
-					class="is-form-input"
-					v-model="formData.title.value"
-					select-id="title"
-					name="title"
-					@update:modelValue="$emit('field-changed', 'title')"
-				>
-					<option value="">{{ $t( 'donation_form_academic_title_option_none' ) }}</option>
-					<option value="Dr.">Dr.</option>
-					<option value="Prof.">Prof.</option>
-					<option value="Prof. Dr.">Prof. Dr.</option>
-				</FunSelect>
-			</div>
-		</div>
+		<SelectField
+			:label="$t( 'donation_form_academic_title_label' )"
+			v-model="formData.title.value"
+			name="title"
+			:options="[
+				{ label: $t( 'donation_form_academic_title_option_none' ), value: '' },
+				{ label: 'Dr.', value: 'Dr.' },
+				{ label: 'Prof.', value: 'Prof.' },
+				{ label: 'Prof. Dr.', value: 'Prof. Dr.' },
+			]"
+			@field-changed="$emit('field-changed', 'title')"
+		/>
 
 		<div v-bind:class="['form-input', { 'is-invalid': showError.firstName }]">
 			<label for="first-name" class="subtitle">{{ $t( 'donation_form_firstname_label' ) }}</label>
@@ -72,9 +67,9 @@
 import { Salutation } from '@src/view_models/Salutation';
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import FunSelect from '@src/components/shared/legacy_form_inputs/FunSelect.vue';
 import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 
 interface Props {
 	salutations: Salutation[];
