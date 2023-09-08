@@ -1,18 +1,16 @@
 <template>
 	<div class="form-field form-field-select">
-		<label for="title" class="form-field-label">{{ label }}</label>
-		<div class="field">
-			<SelectFormInput
-				v-model="fieldModel"
-				:select-id="name"
-				:name="name"
-				@update:modelValue="onFieldChange"
-			>
-				<option v-for="option in options" :key="option.value" :value="option.value">
-					{{ option.label }}
-				</option>
-			</SelectFormInput>
-		</div>
+		<label :for="name" class="form-field-label">{{ label }}</label>
+		<SelectFormInput
+			v-model="fieldModel"
+			:select-id="name"
+			:name="name"
+			@update:modelValue="onFieldChange"
+		>
+			<option v-for="option in options" :key="option.value" :value="option.value">
+				{{ option.label }}
+			</option>
+		</SelectFormInput>
 	</div>
 </template>
 

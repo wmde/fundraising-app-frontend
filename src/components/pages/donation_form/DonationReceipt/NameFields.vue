@@ -12,9 +12,9 @@
 		/>
 
 		<SelectField
-			:label="$t( 'donation_form_academic_title_label' )"
-			v-model="formData.title.value"
 			name="title"
+			v-model="formData.title.value"
+			:label="$t( 'donation_form_academic_title_label' )"
 			:options="[
 				{ label: $t( 'donation_form_academic_title_option_none' ), value: '' },
 				{ label: 'Dr.', value: 'Dr.' },
@@ -23,6 +23,38 @@
 			]"
 			@field-changed="$emit('field-changed', 'title')"
 		/>
+
+		<TextField
+			name="firstName"
+			input-id="first-name"
+			v-model="formData.firstName.value"
+			:show-error="showError.firstName"
+			:error-message="$t( 'donation_form_firstname_error' )"
+			autocomplete="given-name"
+			:label="$t( 'donation_form_firstname_label' )"
+			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_firstname_placeholder' ) } )"
+			@field-changed="$emit('field-changed', 'firstName')"
+		/>
+
+		<TextField
+			name="lastName"
+			input-id="last-name"
+			v-model="formData.lastName.value"
+			:show-error="showError.lastName"
+			:error-message="$t( 'donation_form_lastname_error' )"
+			autocomplete="family-name"
+			:label="$t( 'donation_form_lastname_label' )"
+			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_lastname_placeholder' ) } )"
+			@field-changed="$emit('field-changed', 'lastName')"
+		>
+			<template #message>
+				<ValueEqualsPlaceholderWarning
+					:value="formData.lastName.value"
+					:placeholder="$t( 'donation_form_lastname_placeholder_check' )"
+					:warning="'donation_form_lastname_placeholder_warning'"
+				/>
+			</template>
+		</TextField>
 
 		<div v-bind:class="['form-input', { 'is-invalid': showError.firstName }]">
 			<label for="first-name" class="subtitle">{{ $t( 'donation_form_firstname_label' ) }}</label>
@@ -70,6 +102,7 @@ import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPla
 import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
 
 interface Props {
 	salutations: Salutation[];
