@@ -1,6 +1,7 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import DonationForm from '@src/components/pages/DonationForm.vue';
 import countries from '@src/../tests/data/countries';
+import { AddressValidation } from '@src/view_models/Validation';
 
 declare global {
 	namespace NodeJS {
@@ -34,7 +35,7 @@ describe( 'DonationForm.vue', () => {
 				validateBankDataUrl: '',
 				validateLegacyBankDataUrl: '',
 				salutations: [],
-				addressValidationPatterns: {},
+				addressValidationPatterns: {} as AddressValidation,
 				startPageIndex,
 			},
 			global: {
