@@ -102,12 +102,13 @@ export default defineComponent( {
 	}
 
 	input + .check {
+		box-sizing: border-box;
 		display: flex;
 		flex-shrink: 0;
 		position: relative;
 		cursor: pointer;
-		width: 1.25em;
-		height: 1.25em;
+		width: 16px;
+		height: 16px;
 		transition: background 150ms ease-out;
 		border-radius: 50%;
 		border: 2px solid $fun-color-gray-dark;
@@ -117,14 +118,14 @@ export default defineComponent( {
 			display: flex;
 			position: absolute;
 			left: 50%;
-			margin-left: calc(-1.25em * 0.5);
-			bottom: 50%;
-			margin-bottom: calc(-1.25em * 0.5);
-			width: 1.25em;
-			height: 1.25em;
+			margin-left: -8px;
+			top: 50%;
+			margin-top: -8px;
+			width: 16px;
+			height: 16px;
 			transition: transform 150ms ease-out;
 			border-radius: 50%;
-			transform: scale(0);
+			transform: scale( 0 );
 			background-color: $primary;
 		}
 	}
@@ -133,7 +134,7 @@ export default defineComponent( {
 		border-color: $primary;
 
 		&::before {
-			transform: scale(0.5);
+			transform: scale( 0.5 );
 		}
 	}
 }
