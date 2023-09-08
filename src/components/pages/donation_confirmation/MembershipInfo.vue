@@ -21,7 +21,7 @@
 import { defineComponent } from 'vue';
 import { Donation } from '@src/view_models/Donation';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
-import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
 export default defineComponent( {
 	name: 'MembershipInfo',

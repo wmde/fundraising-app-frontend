@@ -22,7 +22,7 @@
 <script lang="ts">
 import { defineComponent, PropType, toRefs } from 'vue';
 import { usePaymentType } from '@src/components/shared/usePaymentType';
-import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
+import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'PaymentType',

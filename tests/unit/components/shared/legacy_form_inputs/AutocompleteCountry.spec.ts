@@ -1,5 +1,5 @@
 import { DOMWrapper, mount } from '@vue/test-utils';
-import AutocompleteCountry from '@src/components/shared/form_inputs/AutocompleteCountry.vue';
+import AutocompleteCountry from '@src/components/shared/legacy_form_inputs/AutocompleteCountry.vue';
 import countries from '@src/../tests/data/countries';
 import { nextTick } from 'vue';
 

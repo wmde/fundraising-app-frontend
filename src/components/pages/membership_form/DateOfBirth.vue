@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
+import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 
 export default defineComponent( {
 	name: 'DateOfBirth',

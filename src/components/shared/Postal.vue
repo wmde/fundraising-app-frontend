@@ -83,10 +83,10 @@
 import { defineComponent } from 'vue';
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import { Country } from '@src/view_models/Country';
-import AutocompleteCity from '@src/components/shared/form_inputs/AutocompleteCity.vue';
+import AutocompleteCity from '@src/components/shared/legacy_form_inputs/AutocompleteCity.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
-import AutocompleteCountry from '@src/components/shared/form_inputs/AutocompleteCountry.vue';
+import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
+import AutocompleteCountry from '@src/components/shared/legacy_form_inputs/AutocompleteCountry.vue';
 
 export default defineComponent( {
 	name: 'postal',

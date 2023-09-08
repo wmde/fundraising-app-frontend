@@ -100,7 +100,7 @@ import DonationCommentPopUp from '@src/components/DonationCommentPopUp.vue';
 import ChevronDownIcon from '@src/components/shared/icons/ChevronDown.vue';
 import DonationExported from '@src/components/pages/donation_confirmation/DonationExported.vue';
 import DonorResource from '@src/api/DonorResource';
-import FunModal from '@src/components/shared/form_inputs/FunModal.vue';
+import FunModal from '@src/components/shared/legacy_form_inputs/FunModal.vue';
 
 export default defineComponent( {
 	name: 'DonationConfirmation',

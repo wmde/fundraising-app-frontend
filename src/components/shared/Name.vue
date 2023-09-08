@@ -98,9 +98,9 @@ import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import { Salutation } from '@src/view_models/Salutation';
 import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
-import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
-import FunSelect from '@src/components/shared/form_inputs/FunSelect.vue';
+import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
+import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
+import FunSelect from '@src/components/shared/legacy_form_inputs/FunSelect.vue';
 
 export default defineComponent( {
 	name: 'name',

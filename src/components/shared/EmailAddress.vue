@@ -31,7 +31,7 @@ import { computed } from 'vue';
 import { closest, distance } from '@src/util/fastest-levenshtein';
 import { AddressFormData } from '@src/view_models/Address';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
+import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 
 interface Props {
 	formData: AddressFormData,
