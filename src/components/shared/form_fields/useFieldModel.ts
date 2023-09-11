@@ -1,9 +1,9 @@
-import { Ref, ref, watch } from 'vue';
+import { Ref, ref, UnwrapRef, watch } from 'vue';
 
-export function useFieldModel( modelValue: () => string | number, initialValue: string | number ): Ref<string | number> {
-	const fieldModel = ref<string | number>( initialValue );
+export function useFieldModel<T>( modelValue: () => UnwrapRef<T>, initialValue: T ): Ref<UnwrapRef<T>> {
+	const fieldModel = ref<T>( initialValue );
 
-	watch( modelValue, ( newValue: string | number ) => {
+	watch( modelValue, ( newValue: UnwrapRef<T> ) => {
 		fieldModel.value = newValue;
 	} );
 

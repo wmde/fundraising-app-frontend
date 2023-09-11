@@ -158,7 +158,7 @@ export default defineComponent( {
 		dateOfBirthValidationPattern: String,
 	},
 	setup() {
-		const { mailHostList } = useMailHostList();
+		const mailHostList = useMailHostList();
 		return { mailHostList };
 	},
 	// TODO move computed and state into composition-api's setup() method

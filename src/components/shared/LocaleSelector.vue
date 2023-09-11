@@ -12,7 +12,7 @@
 <script lang="ts">
 import { ref } from 'vue';
 import Cookies from 'js-cookie';
-import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/locales';
+import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/createLocalisation';
 
 export default {
 	name: 'LocaleSelector',
