@@ -171,7 +171,7 @@ export default defineComponent( {
 			}
 			return AddressTypeIds.has( addressType.value ) ? AddressTypeIds.get( addressType.value ) : '';
 		} );
-		const { mailHostList } = useMailHostList();
+		const mailHostList = useMailHostList();
 
 		onBeforeMount( initializeDataFromStore );
 

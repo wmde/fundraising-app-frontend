@@ -22,6 +22,19 @@
 			:salutations="salutations"
 		/>
 
+		<EmailField
+			:show-error="fieldErrors.email"
+			v-model="formData.email.value"
+		>
+			<template #message>
+				<ValueEqualsPlaceholderWarning
+					:value="formData.email.value"
+					:placeholder="$t( 'donation_form_email_placeholder' )"
+					warning="donation_form_email_placeholder_warning"
+				/>
+			</template>
+		</EmailField>
+
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
 			<DonationSummary
 				:payment="paymentSummary"
@@ -81,6 +94,9 @@ import { useAddressTypeFunctions } from '@src/components/pages/donation_form/Add
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
+import EmailField from '@src/components/shared/form_fields/EmailField.vue';
+import { useMailHostList } from '@src/components/shared/useMailHostList';
+import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 
 interface Props {
 	assetsPath: string;
@@ -134,6 +150,8 @@ const {
 	addressSummary,
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
+
+const mailHostList = useMailHostList();
 
 const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
 

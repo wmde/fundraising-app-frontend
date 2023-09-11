@@ -104,7 +104,7 @@ export default defineComponent( {
 		AutofillHandler,
 	},
 	setup() {
-		const { mailHostList } = useMailHostList();
+		const mailHostList = useMailHostList();
 		return { mailHostList };
 	},
 	// TODO move computed etc into composition-api's setup() method

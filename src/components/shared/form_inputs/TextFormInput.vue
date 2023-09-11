@@ -1,5 +1,5 @@
 <template>
-	<div class="control" :class="{ 'has-icons-right': hasError || hasMessage }">
+	<div class="control" :class="{ 'has-icons-right': hasError || hasMessage, 'is-disabled': disabled }">
 		<input
 			v-if="inputType === 'text'"
 			:name="name"
@@ -9,8 +9,9 @@
 			:class="{ 'is-danger': hasError }"
 			type="text"
 			:autocomplete="autocomplete"
-			:maxlength="maxlength"
 			:placeholder="placeholder"
+			:disabled="disabled"
+			:required="required"
 			@blur="$emit( 'blur' )"
 			@focus="$emit( 'focus' )"
 		/>
@@ -22,8 +23,9 @@
 			:id="inputId"
 			:class="{ 'is-danger': hasError }"
 			:autocomplete="autocomplete"
-			:maxlength="maxlength"
 			:placeholder="placeholder"
+			:disabled="disabled"
+			:required="required"
 			@blur="$emit( 'blur' )"
 			@focus="$emit( 'focus' )"
 		/>
@@ -45,17 +47,18 @@ interface Props {
 	name: string;
 	modelValue: string|number;
 	autocomplete?: string;
-	maxlength: number;
 	inputId: string;
 	placeholder: string;
 	hasMessage: boolean;
 	hasError: boolean;
 	disabled?: boolean;
+	required?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
-	disabled: false,
 	autocomplete: 'on',
+	disabled: false,
+	required: false,
 } );
 const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur' ] );
 

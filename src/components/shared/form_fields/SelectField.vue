@@ -30,7 +30,7 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
-const fieldModel = useFieldModel( () => props.modelValue, props.modelValue );
+const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
 
 const onFieldChange = ( newValue: string | number ): void => {
 	emit( 'update:modelValue', newValue );

@@ -10,8 +10,8 @@ export function createLocalisation( messages: { [ key: string ]: string; } ) {
 	type LocaleType = typeof locale;
 	return createI18n<[MessageSchema], LocaleType>( {
 		locale: locale,
-		warnHtmlInMessage: 'off',
 		legacy: false,
+		warnHtmlMessage: false,
 		messages: {
 			[ locale ]: messages,
 		},
