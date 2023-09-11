@@ -1,5 +1,5 @@
 import { App, Component, createApp } from 'vue';
-import { createLocalisation } from '@src/locales';
+import { createLocalisation } from '@src/createLocalisation';
 import createLogger from '@src/logger';
 
 type Data = Record<string, unknown>;
