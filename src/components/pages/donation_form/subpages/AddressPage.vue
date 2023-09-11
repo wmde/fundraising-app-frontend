@@ -95,12 +95,6 @@
 					/>
 				</div>
 			</div>
-			<div class="summary-notice" v-if="isExternalPayment">
-				{{ $t( 'donation_form_summary_external_payment' ) }}
-			</div>
-			<div class="summary-notice" v-if="isBankTransferPayment">
-				{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
-			</div>
 		</div>
 	</div>
 </template>
