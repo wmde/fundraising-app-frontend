@@ -35,7 +35,7 @@
 			<span v-show="bankInfoValidated" class="help">
 				<span id="bank-name-legacy">
 					<span id="bank-name-iban">{{ getBankName }}</span>
-					<span v-show="showBankId">({{ bankIdentifier }})</span>
+					<span v-show="showBankId"> ({{ bankIdentifier }})</span>
 				</span>
 			</span>
 			<span v-if="bankInfoValidatedButInfoMissing" id="bank-name-not-available" class="help">
