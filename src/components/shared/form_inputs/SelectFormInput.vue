@@ -19,7 +19,7 @@
 import { useInputModel } from '@src/components/shared/form_inputs/useInputModel';
 
 interface Props {
-	modelValue: string|number;
+	modelValue: string | number;
 	name: string;
 	selectId: string;
 	disabled?: boolean;
@@ -33,7 +33,7 @@ const props = withDefaults( defineProps<Props>(), {
 } );
 const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur' ] );
 
-const inputModel = useInputModel( () => props.modelValue, props.modelValue, emit );
+const inputModel = useInputModel<string | number>( () => props.modelValue, props.modelValue, emit );
 
 </script>
 
