@@ -1,23 +1,23 @@
-import { computed, ComputedRef, ref, watch } from 'vue';
+import { computed, ref, UnwrapRef, watch, WritableComputedRef } from 'vue';
 
-export function useInputModel(
-	modelValue: () => string | number,
-	initialValue: string | number,
-	emit: ( event: string, value: string|number ) => void
-): ComputedRef<string | number> {
-	const backingValue = ref<string | number>( initialValue );
+export function useInputModel<T>(
+	modelValue: () => UnwrapRef<T>,
+	initialValue: T,
+	emit: ( event: string, value: UnwrapRef<T> ) => void
+): WritableComputedRef<UnwrapRef<T>> {
+	const backingValue = ref<T>( initialValue );
 
-	const inputModel = computed( {
+	const inputModel = computed<UnwrapRef<T>>( {
 		get: () => backingValue.value,
-		set: ( newValue: string|number ): void => {
+		set: ( newValue: UnwrapRef<T> ): void => {
 			backingValue.value = newValue;
 			emit( 'update:modelValue', newValue );
 		},
 	} );
 
-	watch( modelValue, ( newModelValue: string | number ) => {
+	watch( modelValue, ( newModelValue: UnwrapRef<T> ) => {
 		backingValue.value = newModelValue;
 	} );
 
-	return inputModel as ComputedRef<string | number>;
+	return inputModel;
 }

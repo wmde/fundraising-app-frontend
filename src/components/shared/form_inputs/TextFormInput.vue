@@ -43,9 +43,9 @@
 import { useInputModel } from '@src/components/shared/form_inputs/useInputModel';
 
 interface Props {
-	inputType: 'text'|'textarea';
+	inputType: 'text' | 'textarea';
 	name: string;
-	modelValue: string|number;
+	modelValue: string | number;
 	autocomplete?: string;
 	inputId: string;
 	placeholder: string;
@@ -62,7 +62,7 @@ const props = withDefaults( defineProps<Props>(), {
 } );
 const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur' ] );
 
-const inputModel = useInputModel( () => props.modelValue, props.modelValue, emit );
+const inputModel = useInputModel<string | number>( () => props.modelValue, props.modelValue, emit );
 
 </script>
 
