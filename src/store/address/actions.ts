@@ -122,6 +122,7 @@ export const actions = {
 		}
 		if ( initialValues.receipt !== null ) {
 			context.commit( SET_RECEIPT, initialValues.receipt );
+			context.commit( SET_VALIDITY, { name: 'receipt', value: Validity.RESTORED } );
 		}
 		context.commit( INITIALIZE_ADDRESS, initialValues.fields );
 	},
