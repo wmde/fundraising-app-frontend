@@ -22,6 +22,7 @@ import PaymentSummaryPrivate from '@src/components/shared/payment_summary/Paymen
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
 
 interface Props {
 	address : Record<string, string>;
@@ -44,11 +45,14 @@ const addressTypeComponents = [
 ];
 
 // TODO: Extract this into a composable to make testing easier
-const addressTypeComponent = addressTypeComponents.find( x => x.key === props.addressType ).component;
-const paymentType = t( props.payment.paymentType );
-const interval = t( 'donation_form_payment_interval_' + props.payment.interval );
-const formattedAmount = n( props.payment.amount, { key: 'currency', currencyDisplay: 'name' } );
-const country = props.countries.find( c => ( c.countryCode === props.address.countryCode || c.countryCode === props.address.country ) ) ?? '';
-const salutation = props.address.salutation ? props.salutations.find( s => s.value === props.address.salutation )?.display : '';
+const addressTypeComponent = computed( () => addressTypeComponents.find( x => x.key === props.addressType ).component );
+const paymentType = computed( () => t( props.payment.paymentType ) );
+const interval = computed( () => t( 'donation_form_payment_interval_' + props.payment.interval ) );
+const formattedAmount = computed( () => n( props.payment.amount, { key: 'currency', currencyDisplay: 'name' } ) );
+const country = computed( () => {
+	const countryObject = props.countries.find( c => ( c.countryCode === props.address.countryCode || c.countryCode === props.address.country ) );
+	return countryObject ? countryObject.countryFullName : '';
+} );
+const salutation = computed( () => props.address.salutation ? props.salutations.find( s => s.value === props.address.salutation )?.display : '' );
 
 </script>
