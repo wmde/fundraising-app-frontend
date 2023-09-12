@@ -35,6 +35,8 @@
 			</template>
 		</EmailField>
 
+		<MailingListField v-model="mailingList"/>
+
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
 			<DonationSummary
 				:payment="paymentSummary"
@@ -75,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import DonationSummary from '@src/components/shared/DonationSummary.vue';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
@@ -97,6 +99,11 @@ import { useAddressFunctions } from '@src/components/pages/donation_form/Address
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import { useMailHostList } from '@src/components/shared/useMailHostList';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
+import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
+import { action } from '@src/store/util';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { setNewsletterChoice } from '@src/store/address/actionTypes';
+import { useMailingListModel } from '@src/components/pages/donation_form/useMailingListModel';
 
 interface Props {
 	assetsPath: string;
@@ -151,7 +158,7 @@ const {
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
 
-const mailHostList = useMailHostList();
+const mailingList = useMailingListModel( store );
 
 const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
 

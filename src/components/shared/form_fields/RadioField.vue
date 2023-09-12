@@ -5,6 +5,7 @@
 			<RadioFormInput
 				v-for="option in options"
 				:key="option.value"
+				input-type="radio"
 				:class="{ 'is-active': modelValue === option.value }"
 				:id="`${name}-${option.value}`"
 				:name="name"
@@ -31,7 +32,7 @@ interface Props {
 	name: string;
 	modelValue: string|number;
 	options: FormOption[];
-	disabled?: string[];
+	disabled?: Array<string|number>;
 	required?: boolean;
 	errorMessage: String;
 	showError?: boolean;

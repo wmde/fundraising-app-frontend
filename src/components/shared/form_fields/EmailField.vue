@@ -41,7 +41,7 @@ const mailHostList = useMailHostList();
 const fieldModel = useFieldModel<string>( () => props.modelValue, props.modelValue );
 const { suggestedProvider, onSuggestionClicked } = useSuggestedEmailProvider( fieldModel, mailHostList, emit );
 
-const onUpdateModel = ( newValue: string|number ): void => {
+const onUpdateModel = ( newValue: string ): void => {
 	emit( 'update:modelValue', newValue );
 };
 
