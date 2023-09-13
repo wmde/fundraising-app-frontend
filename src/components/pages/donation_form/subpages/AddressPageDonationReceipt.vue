@@ -58,6 +58,7 @@
 					:form-data="formData"
 					:countries="countries"
 					:post-code-validation="addressValidationPatterns.postcode"
+					:country-was-restored="countryWasRestored"
 					@field-changed="onFieldChange"
 				/>
 
@@ -104,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import DonationSummary from '@src/components/shared/DonationSummary.vue';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
@@ -131,6 +132,7 @@ import AddressFields from '@src/components/pages/donation_form/DonationReceipt/A
 import { useAddressType } from '@src/components/pages/donation_form/DonationReceipt/useAddressType';
 import { useStore } from 'vuex';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import { Validity } from '@src/view_models/Validity';
 
 interface Props {
 	assetsPath: string;
@@ -153,6 +155,7 @@ const { addressType, addressTypeName } = useAddressType( store );
 const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
 const mailingList = useMailingListModel( store );
 const receiptModel = useReceiptModel( store );
+const countryWasRestored = ref<boolean>( false );
 
 const {
 	formData,
@@ -172,7 +175,10 @@ const {
 
 const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
 
-onBeforeMount( initializeDataFromStore );
+onBeforeMount( () => {
+	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
+	initializeDataFromStore();
+} );
 onMounted( trackDynamicForm );
 
 </script>

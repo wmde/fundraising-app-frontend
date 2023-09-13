@@ -48,7 +48,7 @@ interface Props {
 	modelValue: string | number;
 	autocomplete?: string;
 	inputId: string;
-	placeholder: string;
+	placeholder: String;
 	hasMessage: boolean;
 	hasError: boolean;
 	disabled?: boolean;

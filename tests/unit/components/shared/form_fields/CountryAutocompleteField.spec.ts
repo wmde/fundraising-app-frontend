@@ -5,45 +5,43 @@ import countries from '@test/data/countries';
 
 describe( 'CountryAutocompleteField.vue', () => {
 
-	const getWrapper = ( initialCountryCode: string = '' ): VueWrapper<any> => {
+	const getWrapper = ( modelValue: string = '', wasRestored: boolean = false ): VueWrapper<any> => {
 		return mount( CountryAutocompleteField, {
 			props: {
-				modelValue: undefined,
+				modelValue,
 				countries,
-				initialCountryCode,
 				label: '',
 				placeholder: '',
 				showError: false,
 				errorMessage: 'I haz error',
+				wasRestored,
 			},
 		} );
 	};
 
-	it( 'sets default country on mount when there is no country code provided', async () => {
-		const wrapper = getWrapper();
-		const field = wrapper.find<HTMLInputElement>( '#country' );
-		await nextTick();
-
-		expect( field.element.value ).toBe( countries[ 0 ].countryFullName );
-		expect( wrapper.emitted( 'initialised' )[ 0 ][ 0 ] ).toStrictEqual( countries[ 0 ] );
+	beforeEach( () => {
+		jest.useFakeTimers();
 	} );
 
-	it( 'sets country on mount when a country code is provided', async () => {
+	afterEach( () => {
+		jest.resetAllMocks();
+	} );
+
+	it( 'sets country on mount', async () => {
 		const wrapper = getWrapper( countries[ 1 ].countryCode );
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 		await nextTick();
 
 		expect( field.element.value ).toBe( countries[ 1 ].countryFullName );
-		expect( wrapper.emitted( 'initialised' )[ 0 ][ 0 ] ).toStrictEqual( countries[ 1 ] );
 	} );
 
-	it( 'emits undefined when the inputted name does not exist', async () => {
+	it( 'emits empty string when the inputted name does not exist', async () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.setValue( 'NOT A COUNTRY' );
 
-		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( undefined );
+		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( '' );
 	} );
 
 	it( 'emits country when the inputted name exists', async () => {
@@ -52,7 +50,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 
 		await field.setValue( 'Ireland' );
 
-		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( countries[ 2 ] );
+		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( countries[ 2 ].countryCode );
 	} );
 
 	it( 'shows the autocomplete when the input field is focused', async () => {
@@ -65,8 +63,6 @@ describe( 'CountryAutocompleteField.vue', () => {
 	} );
 
 	it( 'hides the autocomplete when the input field is blurred', async () => {
-		jest.useFakeTimers();
-
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
@@ -76,8 +72,6 @@ describe( 'CountryAutocompleteField.vue', () => {
 		await jest.runAllTimersAsync();
 
 		expect( wrapper.find( '.dropdown-menu' ).isVisible() ).toBeFalsy();
-
-		jest.resetAllMocks();
 	} );
 
 	it( 'emits the field changed event when the input field is blurred', async () => {
@@ -85,6 +79,8 @@ describe( 'CountryAutocompleteField.vue', () => {
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
 
 		expect( wrapper.emitted( 'field-changed' ).length ).toBe( 1 );
 	} );
@@ -99,7 +95,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 	} );
 
 	it( 'selects the input text on focus when initialised with country code', async () => {
-		const wrapper = getWrapper( 'IE' );
+		const wrapper = getWrapper( 'IE', true );
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.trigger( 'focus' );
