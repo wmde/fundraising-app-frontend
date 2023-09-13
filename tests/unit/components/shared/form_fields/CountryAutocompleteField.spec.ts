@@ -1,25 +1,22 @@
-import { DOMWrapper, mount } from '@vue/test-utils';
-import AutocompleteCountry from '@src/components/shared/legacy_form_inputs/AutocompleteCountry.vue';
-import countries from '@test/data/countries';
+import { DOMWrapper, mount, VueWrapper } from '@vue/test-utils';
 import { nextTick } from 'vue';
+import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
+import countries from '@test/data/countries';
 
-describe( 'AutocompleteCountry.vue', () => {
+describe( 'CountryAutocompleteField.vue', () => {
 
-	const getWrapper = ( initialCountryCode: string = '' ) => {
-		return mount( AutocompleteCountry, {
+	const getWrapper = ( initialCountryCode: string = '' ): VueWrapper<any> => {
+		return mount( CountryAutocompleteField, {
 			props: {
 				modelValue: undefined,
 				countries,
 				initialCountryCode,
+				label: '',
+				placeholder: '',
+				showError: false,
+				errorMessage: 'I haz error',
 			},
 		} );
-	};
-
-	// TODO: Jest has a trigger focus bug
-	//  Replace this with `await field.trigger( 'focus' )` when we move to vitest
-	const focusField = ( field: DOMWrapper<HTMLInputElement> ): Promise<void> => {
-		field.element.dispatchEvent( new FocusEvent( 'focus' ) );
-		return nextTick();
 	};
 
 	it( 'sets default country on mount when there is no country code provided', async () => {
@@ -62,7 +59,7 @@ describe( 'AutocompleteCountry.vue', () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
-		await focusField( field );
+		await field.trigger( 'focus' );
 
 		expect( wrapper.find( '.dropdown-menu' ).isVisible() ).toBeTruthy();
 	} );
@@ -73,7 +70,7 @@ describe( 'AutocompleteCountry.vue', () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
-		await focusField( field );
+		await field.trigger( 'focus' );
 		await field.trigger( 'blur' );
 
 		await jest.runAllTimersAsync();
@@ -96,7 +93,7 @@ describe( 'AutocompleteCountry.vue', () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
-		await focusField( field );
+		await field.trigger( 'focus' );
 
 		expect( field.element.value ).toBe( '' );
 	} );
@@ -105,7 +102,7 @@ describe( 'AutocompleteCountry.vue', () => {
 		const wrapper = getWrapper( 'IE' );
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
-		await focusField( field );
+		await field.trigger( 'focus' );
 
 		expect( field.element.value ).toBe( countries[ 2 ].countryFullName );
 		expect( field.element.selectionEnd ).toBe( 7 );
@@ -115,7 +112,7 @@ describe( 'AutocompleteCountry.vue', () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
-		await focusField( field );
+		await field.trigger( 'focus' );
 		await wrapper.find( '.dropdown-item:nth-of-type(3)' ).trigger( 'click' );
 
 		expect( field.element.value ).toBe( countries[ 2 ].countryFullName );
@@ -125,10 +122,10 @@ describe( 'AutocompleteCountry.vue', () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
-		await focusField( field );
+		await field.trigger( 'focus' );
 		await wrapper.find( '.dropdown-item:nth-of-type(3)' ).trigger( 'click' );
 		await field.trigger( 'blur' );
-		await focusField( field );
+		await field.trigger( 'focus' );
 
 		expect( field.element.selectionEnd ).toBe( 7 );
 	} );
@@ -137,7 +134,7 @@ describe( 'AutocompleteCountry.vue', () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
-		await focusField( field );
+		await field.trigger( 'focus' );
 
 		expect( wrapper.find( '.dropdown-content > *:nth-child(3)' ).classes() ).toContain( 'dropdown-separator' );
 

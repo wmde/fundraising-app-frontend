@@ -1,7 +1,7 @@
 import { nextTick } from 'vue';
 import { mount, VueWrapper } from '@vue/test-utils';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
-import { FakeAutocompleteResource } from '../../../TestDoubles/FakeAutocompleteResource';
+import { FakeAutocompleteResource } from '@test/unit/TestDoubles/FakeAutocompleteResource';
 
 const cityAutocompleteResource = new FakeAutocompleteResource();
 const placeholderKey = 'form_for_example';
