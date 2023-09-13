@@ -1,6 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import AddressForms from '@/components/pages/donation_form/AddressForms.vue';
 import Name from '@/components/shared/Name.vue';
 import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
@@ -17,7 +16,6 @@ import each from 'jest-each';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 const store = createStore();
 

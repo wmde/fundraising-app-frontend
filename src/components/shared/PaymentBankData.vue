@@ -9,6 +9,8 @@
 						:id="'iban'"
 						:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' ).toString()"
 						:account-id="accountId"
+						:data-track-content="getTrackingCode !== ''"
+						:data-content-piece="getTrackingCode"
 						@validate="validate"
 						@input="setAccountId"
 					/>
@@ -17,17 +19,17 @@
 		</div>
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]" v-show="isBankFieldEnabled">
 			<label for="bic" class="subtitle">{{ $t( labels.bic ) }}</label>
-			<b-field>
-				<b-input
+			<div class="field">
+				<TextInput
 					class="is-medium"
 					type="text"
-					id="bic"
+					input-id="bic"
 					v-model="bankIdentifier"
 					name="bic"
 					:placeholder="$t( labels.bicPlaceholder )"
-					@blur="validate">
-				</b-input>
-			</b-field>
+					@blur="validate"
+				/>
+			</div>
 		</div>
 		<div id="bank-name-info">
 			<span v-show="bankInfoValidated" class="help">
@@ -52,10 +54,11 @@ import { NS_BANKDATA } from '@/store/namespaces';
 import { action } from '@/store/util';
 import { mapGetters } from 'vuex';
 import AccountNumberField from '@/components/shared/AccountNumberField.vue';
+import TextInput from '@/components/shared/form_inputs/TextInput.vue';
 
 export default Vue.extend( {
 	name: 'PaymentBankData',
-	components: { AccountNumberField },
+	components: { AccountNumberField, TextInput },
 	data: function (): BankAccountData {
 		return {
 			accountId: this.$store.getters[ NS_BANKDATA + '/getAccountId' ],

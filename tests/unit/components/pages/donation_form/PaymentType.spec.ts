@@ -1,12 +1,10 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import PaymentType from '@/components/pages/donation_form/PaymentType.vue';
 import { createStore } from '@/store/donation_store';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 const testPaymentMethods = [ 'BEZ', 'PPL', 'UEB' ];
 

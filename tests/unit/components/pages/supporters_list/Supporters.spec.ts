@@ -1,11 +1,9 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import Supporters from '@/components/pages/Supporters.vue';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 describe( 'Supporters.vue', () => {
 	it( 'reacts to emitted supporter-opened event by setting the visible supporter ID', () => {

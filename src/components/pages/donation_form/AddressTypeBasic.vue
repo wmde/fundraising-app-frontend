@@ -7,29 +7,29 @@
 
 		<div class="radio-container">
 
-      <b-radio
+      <RadioInput
           name="addressType"
           v-model="addressType"
           native-value="person"
       >{{ $t( 'donation_form_addresstype_option_private_addresstype_basic' ) }}
-      </b-radio>
+      </RadioInput>
 
-      <b-radio
+      <RadioInput
           name="addressType"
           v-model="addressType"
           native-value="company"
       >
         {{ $t( 'donation_form_addresstype_option_company_addresstype_basic' ) }}
-      </b-radio>
+      </RadioInput>
 
-      <b-radio
+      <RadioInput
           id="anonymous"
           name="addressType"
           v-model="addressType"
           native-value="anonymous"
           :disabled="disableAnonymous">
         {{ $t( 'donation_form_addresstype_option_anonymous_addresstype_basic' ) }}
-      </b-radio>
+      </RadioInput>
 
 		</div>
 
@@ -39,9 +39,11 @@
 <script lang="ts">
 import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { computed, defineComponent, PropType, Ref, ref, watch } from 'vue';
+import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'AddressTypeBasic',
+	components: { RadioInput },
 	props: {
 		disabledAddressTypes: Array as PropType<Array<AddressTypeModel>>,
 		initialAddressType: String,

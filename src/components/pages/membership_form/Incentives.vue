@@ -1,25 +1,28 @@
 <template>
 	<div class="option-checkbox">
-		<b-checkbox
+		<FunCheckbox
 			v-for="incentive in incentiveChoices"
 			:key="incentive"
-			type="checkbox"
 			class="is-inline-checkbox"
 			:class="'incentive-' + incentive.replace( ' ', '-' )"
 			:native-value="incentive"
 			v-model="incentives"
-			@change.native="onChange()">
+			name="incentives"
+			@change.native="onChange()"
+		>
 			{{ message }}
-		</b-checkbox>
+		</FunCheckbox>
 	</div>
 
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import FunCheckbox from '@/components/shared/form_inputs/FunCheckbox.vue';
 
 export default Vue.extend( {
 	name: 'Incentives',
+	components: { FunCheckbox },
 	data: function () {
 		return {
 			incentives: this.$props.defaultIncentives,

@@ -7,8 +7,8 @@
 					<span class="column is-narrow">
 						<span class="is-nowrap-whitespace is-narrow has-padding-right-18">{{ content.amount }}</span>
 						<span class="icon-aligned">
-							<b-icon v-if="isExpandable && isOpen" icon="arrow-up" class="icon-size"></b-icon>
-							<b-icon v-else-if="isExpandable && !isOpen" icon="arrow-down" class="icon-size"></b-icon>
+							<ArrowUp v-if="isExpandable && isOpen"/>
+							<ArrowDown v-else-if="isExpandable && !isOpen"/>
 						</span>
 					</span>
 				</span>
@@ -21,9 +21,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Supporter } from '@/view_models/supporters';
+import ArrowUp from '@/components/shared/icons/ArrowUp.vue';
+import ArrowDown from '@/components/shared/icons/ArrowDown.vue';
 
 export default Vue.extend( {
 	name: 'Supporter',
+	components: { ArrowDown, ArrowUp },
 	props: {
 		content: {
 			type: Object as () => Supporter,

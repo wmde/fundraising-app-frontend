@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import Address from '@/components/pages/membership_form/Address.vue';
 import Name from '@/components/shared/Name.vue';
 import Postal from '@/components/shared/Postal.vue';
@@ -23,7 +22,6 @@ import { FeatureTogglePlugin } from '@/FeatureToggle';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 localVue.use( FeatureTogglePlugin, { activeFeatures: [] } );
 

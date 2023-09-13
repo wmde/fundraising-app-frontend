@@ -1,10 +1,8 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import AddressAnonymous from '@/components/pages/donation_confirmation/AddressAnonymous.vue';
 import { createStore } from '@/store/donation_store';
-import Buefy from 'buefy';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 describe( 'AddressAnonymous', () => {
 	it( 'renders messages', () => {

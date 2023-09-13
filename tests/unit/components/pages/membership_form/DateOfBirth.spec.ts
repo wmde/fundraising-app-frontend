@@ -1,12 +1,10 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
 import { createStore } from '@/store/membership_store';
 import { InputField } from '@/view_models/Address';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 localVue.use( Vuex );
 
 const newDateImportFieldMetadata = ( value: string ): InputField => ( {

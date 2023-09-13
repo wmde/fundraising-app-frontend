@@ -11,10 +11,9 @@
 		</p>
 
 		<div class="button-group has-margin-top-18" >
-			<b-button @click="$emit( 'collapse-feedback-box' )"
-				class="button is-primary">
+			<FunButton @click="$emit( 'collapse-feedback-box' )" class="button is-primary">
 				{{ $t( 'donation_page_feedback_box_content_option_decline' ) }}
-			</b-button>
+			</FunButton>
 			<a :href="$t( 'donation_page_feedback_box_content_survey_link' )"
 				target="_blank"
 				class="button is-primary">
@@ -28,10 +27,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import CloseIcon from '@/components/pages/donation_form/FeedbackOverlay/CloseIcon.vue';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'FeedbackBoxContent',
-	components: { CloseIcon },
+	components: { FunButton, CloseIcon },
 	data() {
 		return {
 			isExpanded: this.$props.isExpanded,

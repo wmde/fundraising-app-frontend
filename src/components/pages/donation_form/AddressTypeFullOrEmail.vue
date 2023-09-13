@@ -6,7 +6,7 @@
 		</div>
 
 		<div class="radio-container">
-			<b-radio
+			<RadioInput
 					v-model="addressType"
 					native-value="full"
 					name="addressType"
@@ -15,8 +15,8 @@
 				<div class="info-message has-margin-top-18 has-text-dark-lighter">
 					{{ $t( 'donation_form_provisional_address_choice_fulladdress_notice_donation_receipt' ) }}
 				</div>
-			</b-radio>
-			<b-radio
+			</RadioInput>
+			<RadioInput
 					name="addressType"
 					v-model="addressType"
 					native-value="email"
@@ -25,7 +25,7 @@
 				<div class="info-message has-margin-top-18 has-text-dark-lighter">
 					{{ $t( 'donation_form_provisional_address_choice_emailonly_notice_donation_receipt' ) }}
 				</div>
-			</b-radio>
+			</RadioInput>
 		</div>
 
 		<legend class="subtitle" v-show="isFullAddressSelected">{{
@@ -33,20 +33,20 @@
 			}}
 		</legend>
 		<div class="radio-container" v-show="isFullAddressSelected">
-			<b-radio
+			<RadioInput
 					name="addressTypeInternal"
 					v-model="fullAddressType"
 					native-value="person"
 			>{{ $t( 'donation_form_addresstype_option_private_addresstype_no_anon' ) }}
-			</b-radio>
-			<b-radio
+			</RadioInput>
+			<RadioInput
 					v-show="isFullAddressSelected"
 					name="addressTypeInternal"
 					v-model="fullAddressType"
 					native-value="company"
 			>
 				{{ $t( 'donation_form_addresstype_option_company_addresstype_no_anon' ) }}
-			</b-radio>
+			</RadioInput>
 		</div>
 
 	</fieldset>
@@ -55,6 +55,7 @@
 <script lang="ts">
 import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { computed, defineComponent, PropType, Ref, ref, watch } from 'vue';
+import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 
 type fullAddressStates = '' | 'person' | 'company';
 
@@ -68,6 +69,7 @@ const fullAddressTypeToModel: Record<fullAddressStates, AddressTypeModel> = {
 //       This will allow it to be saved and restored from local storage and simplify states here
 export default defineComponent( {
 	name: 'AddressTypeFullOrEmail',
+	components: { RadioInput },
 	props: {
 		disabledAddressTypes: Array as PropType<Array<AddressTypeModel>>,
 		initialAddressType: String,

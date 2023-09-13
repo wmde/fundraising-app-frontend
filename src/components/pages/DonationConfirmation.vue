@@ -41,7 +41,7 @@
 			</div>
 		</div>
 
-		<b-modal :active.sync="isAddressModalOpen" scroll="keep" class="address-modal" has-modal-card>
+		<FunModal v-show="isAddressModalOpen" class="address-modal" @close="isAddressModalOpen = false">
 			<address-modal
 				:countries="countries"
 				:salutations="salutations"
@@ -50,20 +50,20 @@
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
 				:address-validation-patterns="addressValidationPatterns"
-				v-on:address-updated="updateAddress( $event )"
-			>
-			</address-modal>
-		</b-modal>
+				@address-updated="updateAddress( $event )"
+				@close="isAddressModalOpen = false"
+			/>
+		</FunModal>
 
-		<b-modal :active.sync="openCommentPopUp" scroll="keep" has-modal-card>
+		<FunModal v-show="openCommentPopUp" @close="openCommentPopUp = false">
 			<donation-comment-pop-up
-				v-on:disable-comment-link="commentLinkIsDisabled = true"
-				v-if="openCommentPopUp"
 				:donation="donation"
 				:address-type="addressType"
 				:post-comment-url="postCommentUrl"
+				@disable-comment-link="commentLinkIsDisabled = true"
+				@close="openCommentPopUp = false"
 			/>
-		</b-modal>
+		</FunModal>
 
 		<img
 			:src="'https://de.wikipedia.org/wiki/Special:HideBanners?duration=' + donation.cookieDuration + '&reason=donate'"
@@ -83,7 +83,6 @@
 import Vue from 'vue';
 import BankData from '@/components/BankData.vue';
 import MembershipInfo from '@/components/pages/donation_confirmation/MembershipInfo.vue';
-import SummaryLinks from '@/components/pages/donation_confirmation/SummaryLinks.vue';
 import AddressUsageToggle from '@/components/pages/donation_confirmation/AddressUsageToggle.vue';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 import AddressModal from '@/components/pages/donation_confirmation/AddressModal.vue';
@@ -101,10 +100,12 @@ import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
 import ChevronDownIcon from '@/components/shared/icons/ChevronDown.vue';
 import DonationExported from '@/components/pages/donation_confirmation/DonationExported.vue';
 import DonorResource from '@/api/DonorResource';
+import FunModal from '@/components/shared/form_inputs/FunModal.vue';
 
 export default Vue.extend( {
 	name: 'DonationConfirmation',
 	components: {
+		FunModal,
 		DonationExported,
 		ChevronDownIcon,
 		Survey,
@@ -113,7 +114,6 @@ export default Vue.extend( {
 		BankData,
 		DonationCommentPopUp,
 		MembershipInfo,
-		SummaryLinks,
 		AddressUsageToggle,
 		AddressModal,
 		AddressKnown,

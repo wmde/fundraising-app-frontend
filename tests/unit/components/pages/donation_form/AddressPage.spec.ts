@@ -2,7 +2,6 @@ import { createLocalVue, shallowMount } from '@vue/test-utils';
 
 import AddressPage from '@/components/pages/donation_form/subpages/AddressPage.vue';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import { createStore, StoreKey } from '@/store/donation_store';
 import { action } from '@/store/util';
 import { NS_ADDRESS, NS_PAYMENT } from '@/store/namespaces';
@@ -15,7 +14,6 @@ import AddressType from '../../../../../src/components/pages/donation_form/Addre
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 localVue.use( FeatureTogglePlugin, { activeFeatures: [
 	'campaigns.encryption_hint',

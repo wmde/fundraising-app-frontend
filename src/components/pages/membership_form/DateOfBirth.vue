@@ -1,14 +1,15 @@
 <template>
 	<fieldset>
 		<label for="birthDate" class="subtitle has-margin-top-36">{{ $t( 'membership_form_birth_date_label' ) }}</label>
-		<b-field :type="{ 'is-danger': showError }">
-			<b-input type="text"
-				id="birthDate"
+		<div class="field">
+			<TextInput
+				input-id="birthDate"
 				:placeholder="$t( 'membership_form_birth_date_placeholder' )"
 				v-model="formData.date.value"
-				@blur="$emit('field-changed', 'date')">>
-			</b-input>
-		</b-field>
+				@blur="$emit('field-changed', 'date')"
+				:has-error="showError"
+			/>
+		</div>
 		<span v-if="!showError" class="help has-text-dark-lighter">{{ $t( 'membership_form_birth_date_help_text' ) }}</span>
 		<span v-if="showError" class="help is-danger">{{ $t( 'membership_form_birth_date_error' ) }}</span>
 	</fieldset>
@@ -16,9 +17,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import TextInput from '@/components/shared/form_inputs/TextInput.vue';
 
 export default Vue.extend( {
 	name: 'DateOfBirth',
+	components: { TextInput },
 	props: {
 		formData: Object as () => FormData,
 		showError: Boolean,

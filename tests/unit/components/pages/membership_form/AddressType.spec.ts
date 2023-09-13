@@ -1,10 +1,8 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import AddressType from '@/components/pages/membership_form/AddressType.vue';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import Buefy from 'buefy';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 describe( 'AddressType.vue', () => {
 

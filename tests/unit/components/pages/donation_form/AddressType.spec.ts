@@ -1,10 +1,8 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import AddressType from '../../../../../src/components/pages/donation_form/AddressTypeAllOptions.vue';
-import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 describe( 'AddressTypeAllOptions.vue', () => {
 

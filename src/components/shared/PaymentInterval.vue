@@ -3,19 +3,22 @@
 		<legend class="title is-size-5">{{ title }}</legend>
 		<div>
 			<div class="wrap-radio" v-for="interval in paymentIntervals" :key="'interval-' + interval">
-				<b-radio :class="{ 'is-active': selectedInterval === interval.toString() }"
-						:id="'interval-' + interval"
-						name="interval"
-						v-model="selectedInterval"
-						:native-value="interval.toString()"
-						:disabled="disabledPaymentIntervals.indexOf( interval.toString() ) > -1"
-						@change.native="setInterval">
+				<RadioInput
+					:class="{ 'is-active': selectedInterval === interval.toString() }"
+					:id="'interval-' + interval"
+					name="interval"
+					v-model="selectedInterval"
+					:native-value="interval.toString()"
+					:disabled="disabledPaymentIntervals.indexOf( interval.toString() ) > -1"
+					@change.native="setInterval"
+				>
 					{{ $t( 'donation_form_payment_interval_' + interval.toString() ) }}
-					<div v-show="disabledPaymentIntervals.length && disabledPaymentIntervals.indexOf( interval.toString() ) === -1"
-						class="has-text-dark-lighter has-margin-top-18" >
+					<div
+						v-show="disabledPaymentIntervals.length && disabledPaymentIntervals.indexOf( interval.toString() ) === -1"
+						class="has-text-dark-lighter has-margin-top-18">
 						{{ $t( 'donation_form_SUB_payment_type_info' ) }}
 					</div>
-				</b-radio>
+				</RadioInput>
 			</div>
 		</div>
 	</fieldset>
@@ -24,9 +27,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import { IntervalData } from '@/view_models/Payment';
+import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 
 export default Vue.extend( {
 	name: 'PaymentInterval',
+	components: { RadioInput },
 	data: function (): IntervalData {
 		return {
 			selectedInterval: this.$props.currentInterval,

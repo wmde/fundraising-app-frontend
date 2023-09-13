@@ -2,7 +2,7 @@
 	<fieldset class="has-margin-top-18">
 		<legend class="title is-size-5">{{ $t('membership_form_membershiptype_legend') }}</legend>
 		<div class="membership-type">
-			<b-radio :class="{ 'is-active': selectedType === MembershipTypeModel.SUSTAINING }"
+			<RadioInput :class="{ 'is-active': selectedType === MembershipTypeModel.SUSTAINING }"
 					id="sustaining"
 					name="type"
 					v-model="selectedType"
@@ -10,8 +10,8 @@
 					@change.native="setType">
 				{{ $t( 'membership_form_membershiptype_option_sustaining' ) }}
 				<p class="has-text-dark-lighter">{{ $t( 'membership_form_membershiptype_option_sustaining_legend' ) }}</p>
-			</b-radio>
-			<b-radio :class="{ 'is-active': selectedType === MembershipTypeModel.ACTIVE && !isActiveTypeDisabled }"
+			</RadioInput>
+			<RadioInput :class="{ 'is-active': selectedType === MembershipTypeModel.ACTIVE && !isActiveTypeDisabled }"
 					id="active"
 					name="type"
 					:type="isActiveTypeDisabled ? 'is-gray-dark' : ''"
@@ -21,7 +21,7 @@
 					@change.native="setType">
 				{{ $t( 'membership_form_membershiptype_option_active' ) }}
 				<p class="has-text-dark-lighter">{{ $t( 'membership_form_membershiptype_option_active_legend' ) }}</p>
-			</b-radio>
+			</RadioInput>
 			<span v-if="activeTypeSelectedAndDisabled" class="help is-danger">{{ $t( 'membership_form_membershiptype_error' ) }}</span>
 		</div>
 	</fieldset>
@@ -35,9 +35,11 @@ import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
 import { setMembershipType } from '@/store/membership_address/actionTypes';
 import { action } from '@/store/util';
 import { mapGetters } from 'vuex';
+import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 
 export default Vue.extend( {
 	name: 'MembershipType',
+	components: { RadioInput },
 	data: function () {
 		return {
 			selectedType: MembershipTypeModel.SUSTAINING,
@@ -78,7 +80,7 @@ export default Vue.extend( {
 </script>
 <style lang="scss">
 	.membership-type {
-		.b-radio.radio {
+		.fun-radio.radio {
 			height: auto;
 			padding-bottom: .5em;
 			& + .radio {

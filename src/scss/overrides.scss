@@ -29,7 +29,7 @@
 	margin-top: 18px;
 }
 
-.b-radio.radio {
+.fun-radio.radio {
 	height: auto;
 	width: 380px;
 	@include from($tablet) {
@@ -49,7 +49,7 @@
 		}
 	}
 	+ .radio {
-		margin-left: 0; /* Remove margin added by Buefy, since each button is on its own line */
+		margin-left: 0; /* Remove margin added by Bulma, since each button is on its own line */
 	}
 	.check {
 		margin-top: 3px; // visually align the radio box with the label text
@@ -60,7 +60,8 @@
 	}
 }
 
-.b-checkbox.checkbox {
+.b-checkbox.checkbox,
+.fun-checkbox.checkbox {
 	align-items: flex-start;
 	.control-label {
 		padding-left: 18px;
@@ -117,6 +118,18 @@
 }
 
 .autocomplete {
+	position: relative;
+
+	.dropdown-menu {
+		display: block;
+		width: 100%;
+	}
+
+	.dropdown-content {
+		overflow: auto;
+		max-height: 200px;
+	}
+
 	.dropdown-item {
 		font-size: 1rem;
 	}
@@ -202,4 +215,13 @@ body {
 }
 main {
 	flex: 1 0 auto;
+}
+
+.icon {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: inherit;
 }

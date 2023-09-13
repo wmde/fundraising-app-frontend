@@ -2,20 +2,20 @@
 	<fieldset class="form-input form-input__vertical-option-list">
 		<legend class="subtitle">{{ $t( 'donation_form_section_address_header_type' ) }}</legend>
 		<div class="radio-container">
-			<b-radio
+			<RadioInput
 					id="address-type-person"
 					name="addressTypeInternal"
 					v-model="addressType"
 					native-value="person"
 			>{{ $t( 'donation_form_addresstype_option_private' ) }}
-			</b-radio>
-			<b-radio
+			</RadioInput>
+			<RadioInput
 					id="address-type-company"
 					name="addressTypeInternal"
 					v-model="addressType"
 					native-value="company"
 			>{{ $t( 'donation_form_addresstype_option_company' ) }}
-			</b-radio>
+			</RadioInput>
 		</div>
 
 	</fieldset>
@@ -24,9 +24,11 @@
 <script lang="ts">
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { defineComponent, ref, watch } from 'vue';
+import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'AddressTypeFull',
+	components: { RadioInput },
 	props: {
 		initialAddressType: String,
 	},

@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import Payment from '@/components/pages/membership_form/Payment.vue';
 import PaymentType from '@/components/pages/membership_form/PaymentType.vue';
 import AmountSelection from '@/components/shared/AmountSelection.vue';
@@ -13,7 +12,6 @@ import { setFee, setInterval, setType } from '@/store/membership_fee/actionTypes
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 describe( 'Payment.vue', () => {
 	let wrapper: any;

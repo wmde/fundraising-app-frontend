@@ -7,8 +7,8 @@
 			:data-content-piece="isOpen ? content.question : ''">
 			<div v-bind:class="[ isOpen ? 'has-text-primary' : 'accordion-heading', 'icon-inline', 'accordion-title' ] ">
 				{{ content.question }}
-				<b-icon v-if="isOpen" icon="arrow-up" class="icon-size"></b-icon>
-				<b-icon v-else icon="arrow-down" class="icon-size"></b-icon>
+				<ArrowUp v-if="isOpen"/>
+				<ArrowDown v-else/>
 			</div>
 		</div>
 		<div v-show="isOpen" v-html="content.visibleText" class="accordion-content"></div>
@@ -18,9 +18,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { QuestionModel } from '@/view_models/faq';
+import ArrowUp from '@/components/shared/icons/ArrowUp.vue';
+import ArrowDown from '@/components/shared/icons/ArrowDown.vue';
 
 export default Vue.extend( {
 	name: 'question',
+	components: { ArrowDown, ArrowUp },
 	props: {
 		content: {
 			type: Object as () => QuestionModel,

@@ -1,9 +1,7 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Incentives from '@/components/pages/membership_form/Incentives.vue';
-import Buefy from 'buefy';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 describe( 'Incentives', () => {
 

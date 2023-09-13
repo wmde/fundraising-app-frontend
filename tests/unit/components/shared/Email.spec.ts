@@ -2,11 +2,9 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Email from '@/components/shared/Email.vue';
 import { createStore } from '@/store/donation_store';
-import Buefy from 'buefy';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 describe( 'Email', () => {
 

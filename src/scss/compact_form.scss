@@ -41,13 +41,13 @@
 					display: flex;
 				}
 
-				.b-radio.radio {
+				.fun-radio.radio {
 					width: 40%;
 					flex: 1 1 40%;
 					margin-right: $column-gap * 2;
 				}
 
-				.b-radio.radio:last-child {
+				.fun-radio.radio:last-child {
 					margin-right: 0;
 				}
 
@@ -67,11 +67,11 @@
 					width: 100%;
 				}
 
-				.b-radio.radio {
+				.fun-radio.radio {
 					margin-right: $column-gap * 2;
 				}
 
-				.b-radio.radio:last-child {
+				.fun-radio.radio:last-child {
 					margin-right: 0;
 				}
 

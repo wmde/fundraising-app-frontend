@@ -17,16 +17,20 @@
 			<newsletter-option/>
 			<div class="columns has-margin-top-18 has-padding-bottom-18">
 				<div class="column">
-					<b-button type="is-primary is-main has-margin-top-18 level-item" @click="$parent.close()" outlined>
+					<FunButton
+						class="is-primary is-main is-outlined has-margin-top-18 level-item"
+						@click="$emit( 'close' )"
+					>
 						{{ $t( 'donation_confirmation_address_update_cancel' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 				<div class="column">
-					<b-button type="is-primary is-main has-margin-top-18 level-item modal-submit"
-								:class="isValidating ? 'is-loading' : ''"
-								native-type="submit">
+					<FunButton
+						:class="[ 'is-primary is-main has-margin-top-18 level-item modal-submit', { 'is-loading': isValidating } ]"
+						button-type="submit"
+					>
 						{{ $t( 'donation_confirmation_address_update_confirm' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 			</div>
 			<div v-if="serverMessage !== ''" class="columns error-server">
@@ -37,9 +41,12 @@
 		</div>
 		<div v-else class="columns has-margin-top-18 has-padding-bottom-18">
 			<div class="column">
-				<b-button type="is-primary is-main has-margin-top-18" @click="$parent.close()" outlined>
+				<FunButton
+					class="is-primary is-main is-outlined has-margin-top-18"
+					@click="$emit( 'close' )"
+				>
 					{{ $t( 'back_to_donation_summary' ) }}
-				</b-button>
+				</FunButton>
 			</div>
 		</div>
 	</form>
@@ -77,10 +84,12 @@ import { AddressValidation } from '@/view_models/Validation';
 import { Salutation } from '@/view_models/Salutation';
 import { useMailHostList } from '@/components/shared/useMailHostList';
 import DonorResource from '@/api/DonorResource';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'AddressModal',
 	components: {
+		FunButton,
 		Name,
 		Postal,
 		AddressTypeFull,

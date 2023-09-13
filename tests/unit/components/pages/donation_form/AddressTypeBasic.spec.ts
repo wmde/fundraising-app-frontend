@@ -1,10 +1,8 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import AddressTypeBasic from '@/components/pages/donation_form/AddressTypeBasic.vue';
-import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 describe( 'AddressTypeBasic.vue', () => {
 	it( 'emits field changed events', async () => {

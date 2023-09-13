@@ -15,13 +15,13 @@ describe( 'DonationSummary', () => {
 		{
 			'countryCode': 'DE',
 			'countryFullName': 'Deutschland',
-			'isFrequentCountry': true,
+			'group': '',
 			'postCodeValidation': '^[0-9]{5}$',
 		},
 		{
 			'countryCode': 'AT',
 			'countryFullName': 'Österreich',
-			'isFrequentCountry': true,
+			'group': '',
 			'postCodeValidation': '^[0-9]{4}$',
 		},
 	];

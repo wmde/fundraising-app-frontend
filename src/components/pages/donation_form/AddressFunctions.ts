@@ -80,7 +80,7 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 			},
 			country: {
 				name: 'country',
-				value: 'DE',
+				value: '',
 				pattern: props.addressValidationPatterns.country,
 				optionalField: false,
 			},

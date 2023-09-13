@@ -2,7 +2,6 @@ import { createLocalVue, mount } from '@vue/test-utils';
 import { createStore } from '@/store/donation_store';
 import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
 
 jest.mock( '@/tracking', () => {
@@ -14,7 +13,6 @@ jest.mock( '@/tracking', () => {
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 describe( 'DonationCommentPopUp', () => {
 	function getDefaultConfirmationData( isAnonymous: boolean ): any {

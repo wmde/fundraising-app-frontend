@@ -1,12 +1,10 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Postal from '@/components/shared/Postal.vue';
-import Buefy from 'buefy';
 import { AddressTypeModel } from '@/view_models/AddressTypeModel';
 import countries from '@/../tests/data/countries';
 import { addressValidationPatterns } from '../../../data/validation';
 
 const localVue = createLocalVue();
-localVue.use( Buefy );
 
 function newTestProperties( overrides: Object ) {
 	return Object.assign(
@@ -106,35 +104,29 @@ describe( 'Postal.vue', () => {
 				},
 				propsData: newTestProperties( {} ),
 			} ),
-			event = 'field-changed',
 			field = wrapper.find( '#post-code' );
+
 		field.trigger( 'blur' );
-		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ 'postcode' ] );
+
+		expect( wrapper.emitted( 'field-changed' )![ 0 ] ).toEqual( [ 'country' ] );
+		expect( wrapper.emitted( 'field-changed' )![ 1 ] ).toEqual( [ 'postcode' ] );
 	} );
 
 	it( 'sets the correct postcode regex on country change', async () => {
 		const wrapper = mount( Postal, {
-				localVue,
-				mocks: {
-					$t: ( key: string ) => key,
-				},
-				propsData: newTestProperties( {} ),
-			} ),
-			event = 'field-changed',
-			field = wrapper.find( '#country' );
+			localVue,
+			mocks: {
+				$t: ( key: string ) => key,
+			},
+			propsData: newTestProperties( {} ),
+		} );
 
-		field.trigger( 'focus' );
-		wrapper.vm.$data.countryInput = '';
-		field.trigger( 'blur' );
+		await wrapper.setData( { country: countries[ 1 ] } );
 
-		await wrapper.vm.$nextTick();
+		expect( wrapper.vm.$props.formData.postcode.pattern ).toEqual( countries[ 1 ].postCodeValidation );
+
+		await wrapper.setData( { country: undefined } );
+
 		expect( wrapper.vm.$props.formData.postcode.pattern ).toEqual( addressValidationPatterns.postcode );
-
-		field.trigger( 'focus' );
-		wrapper.vm.$data.countryInput = countries[ 0 ].countryFullName;
-		field.trigger( 'blur' );
-
-		await wrapper.vm.$nextTick();
-		expect( wrapper.vm.$props.formData.postcode.pattern ).toEqual( countries[ 0 ].postCodeValidation );
 	} );
 } );

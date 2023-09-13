@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import BankData from '@/components/shared/PaymentBankData.vue';
 import { createStore } from '@/store/donation_store';
 import { NS_BANKDATA } from '@/store/namespaces';
@@ -15,7 +14,6 @@ import { BankAccountRequest } from '@/view_models/BankAccount';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 
 const translator = ( key: string ) => key;
 

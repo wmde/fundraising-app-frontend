@@ -22,11 +22,13 @@
 			</div>
 			<div class="level has-margin-top-36">
 				<div class="level-right">
-					<b-button id="next" :class="[ 'is-form-input-width', $store.getters.isValidating ? 'is-loading' : '', 'level-item' ]"
-							@click.prevent="submit()"
-							type="is-primary is-main">
+					<FunButton
+						id="next"
+						:class="[ 'is-form-input-width is-primary is-main level-item', { 'is-loading': $store.getters.isValidating } ]"
+						@click.prevent="submit()"
+					>
 						{{ $t( 'address_change_form_submit' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 			</div>
 		</form>
@@ -49,10 +51,12 @@ import { AddressValidation } from '@/view_models/Validation';
 import { mapGetters } from 'vuex';
 import { trackFormSubmission } from '@/tracking';
 import { Salutation } from '@/view_models/Salutation';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
 
 export default Vue.extend( {
 	name: 'UpdateAddress',
 	components: {
+		FunButton,
 		Name,
 		Postal,
 		ReceiptOption,

@@ -1,6 +1,6 @@
 export interface Country {
 	countryCode: string,
 	countryFullName: string,
-	isFrequentCountry: boolean,
+	group: string,
 	postCodeValidation: string,
 }

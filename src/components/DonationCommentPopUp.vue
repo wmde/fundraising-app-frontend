@@ -5,38 +5,48 @@
 		<input type="hidden" name="isAnonymous" value="1" />
 		<div v-if="commentHasBeenSubmitted">
 			<p v-html="$t( serverResponse )"></p>
-			<b-button type="is-primary is-main has-margin-top-18" @click="$parent.close()" outlined>
+			<FunButton class="is-primary is-main is-outlined has-margin-top-18" @click="$emit( 'close' )">
 				{{ $t( 'back_to_donation_summary' ) }}
-			</b-button>
+			</FunButton>
 		</div>
 		<div v-else>
 			<p class="modal-card-title has-margin-bottom-18">{{ $t( 'donation_comment_popup_title' ) }}</p><br>
 			<p class="has-margin-bottom-18">{{ $t( 'donation_comment_popup_explanation' ) }}</p>
 			<div class="has-margin-bottom-18">
 				<label for="comment">{{ $t( 'donation_comment_popup_label' ) }}</label>
-				<b-input id="comment" name="comment" type="textarea"></b-input>
+				<TextInput input-id="comment" name="comment" type="textarea"/>
 				<p v-if="commentErrored" class="help is-danger"> {{ $t( 'donation_comment_popup_error' ) }}</p>
 			</div>
 			<div class="field has-margin-bottom-18" v-if="showPublishAuthor">
-				<b-checkbox type="checkbox" id="isAnonymous" name="isAnonymous" native-value="0"
-							v-model="commentHasPublicAuthorName">
+				<FunCheckbox
+					id="isAnonymous"
+					name="isAnonymous"
+					native-value="0"
+					v-model="commentHasPublicAuthorName"
+				>
 					<span v-html="$t( 'donation_comment_popup_is_anon' )"></span>
-				</b-checkbox>
+				</FunCheckbox>
 			</div>
 			<div class="field has-margin-bottom-18">
-				<b-checkbox type="checkbox" id="public" name="public" native-value="1"
-							v-model="commentIsPublic">{{ $t( 'donation_comment_popup_is_public' ) }}</b-checkbox>
+				<FunCheckbox
+					id="public"
+					name="public"
+					native-value="1"
+					v-model="commentIsPublic"
+				>
+					{{ $t( 'donation_comment_popup_is_public' ) }}
+				</FunCheckbox>
 			</div>
 			<div class="columns">
 				<div class="column">
-					<b-button type="is-primary is-main level-item" @click="$parent.close()" outlined>
+					<FunButton class="is-primary is-main is-outlined level-item" @click="$emit( 'close' )">
 						{{ $t( 'donation_comment_popup_cancel' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 				<div class="column">
-					<b-button type="is-primary is-main level-item" native-type="submit">
+					<FunButton class="is-primary is-main level-item" button-type="submit">
 						{{ $t( 'donation_comment_popup_submit' ) }}
-					</b-button>
+					</FunButton>
 				</div>
 			</div>
 		</div>
@@ -49,9 +59,13 @@ import axios, { AxiosResponse } from 'axios';
 import { trackDynamicForm, trackFormSubmission } from '@/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressTypeModel';
 import { Donation } from '@/view_models/Donation';
+import TextInput from '@/components/shared/form_inputs/TextInput.vue';
+import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import FunCheckbox from '@/components/shared/form_inputs/FunCheckbox.vue';
 
 export default Vue.extend( {
 	name: 'DonationCommentPopUp',
+	components: { FunCheckbox, FunButton, TextInput },
 	data: function () {
 		return {
 			commentIsPublic: false,

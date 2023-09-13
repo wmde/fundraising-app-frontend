@@ -1,6 +1,5 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Buefy from 'buefy';
 import { FeatureTogglePlugin } from '@/FeatureToggle';
 import { createStore } from '@/store/donation_store';
 import { action } from '@/store/util';
@@ -14,7 +13,6 @@ import PaymentType from '@/components/pages/donation_form/PaymentType.vue';
 
 const localVue = createLocalVue();
 localVue.use( Vuex );
-localVue.use( Buefy );
 localVue.use( FeatureTogglePlugin, { activeFeatures: [ 'campaigns.address_type.preselection' ] } );
 
 describe( 'Payment', () => {
