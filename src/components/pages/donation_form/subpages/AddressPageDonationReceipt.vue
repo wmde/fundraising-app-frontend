@@ -33,7 +33,7 @@
 					<template #message>
 						<ValueEqualsPlaceholderWarning
 							:value="formData.email.value"
-							:placeholder="$t( 'donation_form_email_placeholder' )"
+							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
 							warning="donation_form_email_placeholder_warning"
 						/>
 					</template>

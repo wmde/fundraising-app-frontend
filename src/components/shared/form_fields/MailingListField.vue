@@ -8,7 +8,7 @@
 		>
 			<span class="form-field-newsletter-label-content">
 				<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
-				<span v-html="$t( 'donation_form_newsletter_label_paragraph_2' )"/>
+				<span v-html="$t( 'donation_form_newsletter_label_paragraph_2_vuei18n_v3' )"/>
 			</span>
 		</CheckboxSingleFormInput>
 	</div>
