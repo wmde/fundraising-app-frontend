@@ -1,6 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
-import { createStore } from '@src/store/donation_store';
 
 const privateAddress = {
 	applicantType: 'person',

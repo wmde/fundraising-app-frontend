@@ -1,7 +1,8 @@
 import DonationSummary from '@src/components/shared/DonationSummary.vue';
-import { config, mount } from '@vue/test-utils';
+import { config, mount, VueWrapper } from '@vue/test-utils';
 import { Salutation } from '@src/view_models/Salutation';
 import { createI18n } from 'vue-i18n';
+import { nextTick } from 'vue';
 
 const i18n = createI18n( {
 	locale: 'en-US',
@@ -77,24 +78,25 @@ describe( 'DonationSummary.vue', () => {
 		},
 	];
 
+	const privateAddress = {
+		salutation: 'Herr',
+		title: 'Dr.',
+		firstName: 'Vlad',
+		lastName: 'Dracul',
+		fullName: 'Dr. Vlad Dracul',
+		streetAddress: 'Blutgasse 5',
+		postalCode: '80666',
+		city: 'München',
+		countryCode: 'DE',
+	};
+
 	const findTranslationCallParams = ( messageKey: string, calls: any[] ) => calls.find( call => call[ 0 ] === messageKey )[ 1 ];
 
 	it( 'renders private addresses', () => {
 		const $t = jest.fn();
-		const address: { [ index: string ]: string } = {
-			salutation: 'Herr',
-			title: 'Dr.',
-			firstName: 'Vlad',
-			lastName: 'Dracul',
-			fullName: 'Dr. Vlad Dracul',
-			streetAddress: 'Blutgasse 5',
-			postalCode: '80666',
-			city: 'München',
-			countryCode: 'DE',
-		};
 		mount( DonationSummary, {
 			props: {
-				address,
+				address: privateAddress,
 				payment,
 				addressType: 'person',
 				countries,
@@ -112,7 +114,7 @@ describe( 'DonationSummary.vue', () => {
 		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_person' );
 		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
 		const expectedFields = [ 'salutation', 'fullName', 'streetAddress', 'postalCode', 'city' ];
-		expectedFields.map( ( fieldName: string ) => expect( params.address ).toContain( address[ fieldName ] ) );
+		expectedFields.map( ( fieldName: string ) => expect( params.address ).toContain( privateAddress[ fieldName ] ) );
 	} );
 
 	it( 'renders company addresses', () => {
@@ -160,14 +162,14 @@ describe( 'DonationSummary.vue', () => {
 		};
 	}
 
-	it( 'translates payment information', () => {
+	const getWrapper = ( address ): VueWrapper<any> => {
 		const $t = getLanguageItemMock();
 		const $n = jest.fn( x => x );
 
-		const wrapper = mount( DonationSummary, {
+		return mount( DonationSummary, {
 			props: {
 				payment,
-				address: {},
+				address: address,
 				addressType: 'person',
 				countries,
 				salutations,
@@ -180,6 +182,10 @@ describe( 'DonationSummary.vue', () => {
 				},
 			},
 		} );
+	};
+
+	it( 'translates payment information', () => {
+		const wrapper = getWrapper( {} );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toStrictEqual( [
 			'interval:donation_form_payment_interval_12',
@@ -191,4 +197,28 @@ describe( 'DonationSummary.vue', () => {
 		].join( ' ' ) );
 	} );
 
+	it( 'updates payment information from private person to anonymous', async () => {
+		const wrapper = getWrapper( privateAddress );
+
+		expect( wrapper.find( '.payment-summary' ).text() ).toStrictEqual( [
+			'interval:donation_form_payment_interval_12',
+			'formattedAmount:14.99 euros',
+			'paymentType:BEZ',
+			'personType:donation_confirmation_topbox_donor_type_person',
+			'address:Herr Dr. Vlad Dracul, Blutgasse 5, 80666 München, Deutschland',
+			'email:donation_confirmation_review_email_missing',
+		].join( ' ' ) );
+
+		await wrapper.setProps( { address: {} } );
+		await nextTick();
+
+		expect( wrapper.find( '.payment-summary' ).text() ).toStrictEqual( [
+			'interval:donation_form_payment_interval_12',
+			'formattedAmount:14.99 euros',
+			'paymentType:BEZ',
+			'personType:donation_confirmation_topbox_donor_type_person',
+			'address:donation_confirmation_review_address_missing',
+			'email:donation_confirmation_review_email_missing',
+		].join( ' ' ) );
+	} );
 } );
