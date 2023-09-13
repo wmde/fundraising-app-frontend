@@ -30,12 +30,12 @@ import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel'
 interface Props {
 	label: String;
 	name: string;
-	modelValue: string|number;
+	modelValue: string | number | boolean | null;
 	options: FormOption[];
-	disabled?: Array<string|number>;
+	disabled?: Array<string | number | boolean>;
 	required?: boolean;
-	errorMessage: String;
 	showError?: boolean;
+	errorMessage?: String;
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -45,9 +45,9 @@ const props = withDefaults( defineProps<Props>(), {
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
-const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
+const fieldModel = useFieldModel<string | number | boolean | null>( () => props.modelValue, props.modelValue );
 
-const onFieldChange = ( newValue: string | number ): void => {
+const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 	emit( 'update:modelValue', newValue );
 	emit( 'field-changed', props.name );
 };

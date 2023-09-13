@@ -1,4 +1,4 @@
 export interface FormOption {
-	value: string|number;
+	value: string | number | boolean;
 	label: string;
 }
