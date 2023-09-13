@@ -15,6 +15,7 @@ const commonSettings = {
 	],
 	moduleNameMapper: {
 		'^@src/(.*)$': '<rootDir>/src/$1',
+		'^@test/(.*)$': '<rootDir>/tests/$1',
 	},
 	testEnvironmentOptions: {
 		customExportConditions: [ 'node', 'node-addons' ],
