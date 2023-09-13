@@ -45,13 +45,46 @@ describe( 'RadioFormInput.vue', () => {
 		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( 'elephant' );
 	} );
 
-	it( 'updates value on model change', async () => {
+	it( 'updates on model change', async () => {
 		const wrapper = getWrapper();
 		const radio = wrapper.find<HTMLInputElement>( 'input' );
 
 		expect( radio.element.checked ).toBeFalsy();
 
 		await wrapper.setProps( { modelValue: 'elephant' } );
+
+		expect( radio.element.checked ).toBeTruthy();
+	} );
+
+	it( 'emits boolean values', async () => {
+		const wrapper = mount( RadioFormInput, {
+			props: {
+				modelValue: false,
+				nativeValue: true,
+				name: '',
+			},
+		} );
+
+		await wrapper.find( 'input' ).trigger( 'change' );
+
+		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
+		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( true );
+	} );
+
+	it( 'updates boolean on model change', async () => {
+		const wrapper = mount( RadioFormInput, {
+			props: {
+				modelValue: false,
+				nativeValue: true,
+				name: '',
+			},
+		} );
+
+		const radio = wrapper.find<HTMLInputElement>( 'input' );
+
+		expect( radio.element.checked ).toBeFalsy();
+
+		await wrapper.setProps( { modelValue: true } );
 
 		expect( radio.element.checked ).toBeTruthy();
 	} );

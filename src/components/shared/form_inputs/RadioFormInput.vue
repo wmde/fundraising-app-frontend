@@ -26,8 +26,8 @@ import { useInputFocusing } from '@src/components/shared/form_inputs/useInputFoc
 import { useInputModel } from '@src/components/shared/form_inputs/useInputModel';
 
 interface Props {
-	modelValue: string | number;
-	nativeValue: string | number;
+	modelValue: string | number | boolean | null;
+	nativeValue: string | number | boolean;
 	name: string;
 	disabled?: boolean;
 	required?: boolean;
@@ -40,7 +40,7 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue' ] );
 
 const { labelRef, inputRef, focus, click } = useInputFocusing();
-const inputModel = useInputModel<string | number>( () => props.modelValue, props.modelValue, emit );
+const inputModel = useInputModel<string | number | boolean | null>( () => props.modelValue, props.modelValue, emit );
 
 </script>
 
