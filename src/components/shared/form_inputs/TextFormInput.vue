@@ -12,8 +12,8 @@
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:required="required"
-			@blur="$emit( 'blur' )"
-			@focus="$emit( 'focus' )"
+			@blur="onBlur"
+			@focus="onFocus"
 		/>
 		<textarea
 			v-if="inputType === 'textarea'"
@@ -26,8 +26,8 @@
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:required="required"
-			@blur="$emit( 'blur' )"
-			@focus="$emit( 'focus' )"
+			@blur="onBlur"
+			@focus="onFocus"
 		/>
 		<span v-if="hasError" class="icon is-right has-text-danger">
 			<i class="mdi mdi-alert-circle mdi-24px"></i>
@@ -63,6 +63,9 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur' ] );
 
 const inputModel = useInputModel<string | number>( () => props.modelValue, props.modelValue, emit );
+
+const onFocus = ( event: Event ): void => emit( 'focus', event );
+const onBlur = ( event: Event ): void => emit( 'blur', event );
 
 </script>
 
