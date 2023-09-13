@@ -5,7 +5,7 @@
 			<TextInput
 				type="text"
 				input-id="email"
-				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_email_placeholder' ) } )"
+				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_email_placeholder_vuei18n_v3' ) } )"
 				autocomplete="email"
 				v-model="formData.email.value"
 				:has-error="showError"
@@ -19,7 +19,7 @@
 		<span v-if="showError" class="help is-danger error-email">{{ $t( 'donation_form_email_error' ) }}</span>
 		<ValueEqualsPlaceholderWarning
 			:value="formData.email.value"
-			:placeholder="$t( 'donation_form_email_placeholder' )"
+			:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
 			:warning="'donation_form_email_placeholder_warning'"
 		/>
     </div>
