@@ -41,10 +41,10 @@ import { useAutocompleteEvents } from '@src/components/shared/form_fields/useAut
 import TextFormInput from '@src/components/shared/form_inputs/TextFormInput.vue';
 
 interface Props {
-	modelValue: Country;
+	modelValue: Country | undefined;
 	initialCountryCode: string;
 	label: String;
-	placeholder: string;
+	placeholder: String;
 	countries?: Array<Country>;
 	showError: boolean;
 	errorMessage: String;
