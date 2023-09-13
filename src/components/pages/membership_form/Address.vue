@@ -4,16 +4,17 @@
 		<AutofillHandler @autofill="onAutofill">
 			<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"/>
 			<postal
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:countries="countries"
-					:post-code-validation="addressValidationPatterns.postcode"
-					v-on:field-changed="onFieldChange"
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:countries="countries"
+				:post-code-validation="addressValidationPatterns.postcode"
+				:country-was-restored="countryWasRestored"
+				v-on:field-changed="onFieldChange"
 			/>
 			<receipt-option
-					:message="$t( 'receipt_needed_membership_page' )"
-					:initial-receipt-needed="receiptNeeded"
-					v-on:receipt-changed="setReceipt( $event )"
+				:message="$t( 'receipt_needed_membership_page' )"
+				:initial-receipt-needed="receiptNeeded"
+				v-on:receipt-changed="setReceipt( $event )"
 			/>
 			<incentives
 				:message="$t( 'membership_form_incentive' )"
@@ -76,8 +77,9 @@ export default defineComponent( {
 		EmailAddress,
 		AutofillHandler,
 	},
-	data: function (): { formData: AddressFormData } {
+	data: function (): { countryWasRestored: boolean, formData: AddressFormData } {
 		return {
+			countryWasRestored: false,
 			formData: {
 				salutation: {
 					name: 'salutation',
@@ -188,6 +190,7 @@ export default defineComponent( {
 		},
 	},
 	beforeMount() {
+		this.$data.countryWasRestored = this.$store.state[ NS_MEMBERSHIP_ADDRESS ].validity.country === Validity.RESTORED;
 		Object.entries( this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values ).forEach( ( entry ) => {
 			const name: string = entry[ 0 ];
 			const value: string = entry[ 1 ] as string;

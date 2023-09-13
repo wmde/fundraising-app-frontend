@@ -1,6 +1,6 @@
 import { nextTick, Ref, ref } from 'vue';
 
-export function useAutocompleteEvents( item: Ref<string>, emit: ( event: string ) => void ) {
+export function useCityAutocompleteEvents( city: Ref<string>, emit: ( event: string ) => void ) {
 	const autocompleteIsActive = ref<Boolean>( false );
 
 	const onFocus = ( event: Event ) => {
@@ -15,8 +15,8 @@ export function useAutocompleteEvents( item: Ref<string>, emit: ( event: string 
 		emit( 'field-changed' );
 	};
 
-	const onSelectItem = async ( newItem: string ) => {
-		item.value = newItem;
+	const onSelectItem = async ( newCity: string ) => {
+		city.value = newCity;
 		await nextTick();
 		emit( 'field-changed' );
 	};
