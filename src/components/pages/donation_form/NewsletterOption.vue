@@ -10,7 +10,7 @@
 		>
 			<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
 		</FunCheckbox>
-		<label class="has-padding-left-36 checkbox"  v-html="$t( 'donation_form_newsletter_label_paragraph_2' )" for="newsletter"></label>
+		<label class="has-padding-left-36 checkbox"  v-html="$t( 'donation_form_newsletter_label_paragraph_2_vuei18n_v3' )" for="newsletter"></label>
 	</div>
 
 </template>

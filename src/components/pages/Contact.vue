@@ -65,7 +65,7 @@
 						type="text"
 						input-id="email"
 						name="email"
-						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_email_placeholder' ) } )"
+						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_email_placeholder_vuei18n_v3' ) } )"
 						v-model="formData.email.value"
 						:has-error="formData.email.validity === Validity.INVALID"
 					/>
