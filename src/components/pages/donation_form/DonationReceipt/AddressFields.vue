@@ -68,7 +68,7 @@
 			:error-message="$t( 'donation_form_city_error' )"
 			:postcode="formData.postcode.value"
 			example-placeholder="donation_form_city_placeholder"
-			@field-changed="$emit('field-changed', 'city')"
+			@field-changed="$emit('field-changed', 'city' )"
 		>
 			<ValueEqualsPlaceholderWarning
 				:value="formData.city.value"
@@ -78,15 +78,14 @@
 		</CityAutocompleteField>
 
 		<CountryAutocompleteField
-			v-model="country"
+			v-model="formData.country.value"
 			:countries="countries"
-			:initial-country-code="formData.country.value"
+			:was-restored="countryWasRestored"
 			:show-error="showError.country"
 			:error-message="$t('donation_form_country_error')"
 			:label="$t( 'donation_form_country_label' )"
 			:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
-			@field-changed="$emit('field-changed', 'country')"
-			@initialised="initialiseCountry"
+			@field-changed="onCountryFieldChanged"
 		/>
 
 	</div>
@@ -106,13 +105,13 @@ import { computed } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import { Country } from '@src/view_models/Country';
-import { useCountryModel } from '@src/components/pages/donation_form/DonationReceipt/useCountryModel';
 
 interface Props {
 	formData: AddressFormData;
 	showError: AddressValidity;
 	countries: Country[];
 	postCodeValidation: string;
+	countryWasRestored: boolean;
 }
 
 const props = defineProps<Props>();
@@ -125,7 +124,19 @@ const showStreetWarning = computed<boolean>( () => {
 	return /^\D+$/.test( props.formData.street.value );
 } );
 
-const { country, initialiseCountry } = useCountryModel( props.formData, props.postCodeValidation, emit );
+const onCountryFieldChanged = ( country: Country | undefined ) => {
+	if ( country ) {
+		props.formData.postcode.pattern = country.postCodeValidation;
+	} else {
+		props.formData.postcode.pattern = props.postCodeValidation;
+	}
+
+	emit( 'field-changed', 'country' );
+
+	if ( props.formData.postcode.value !== '' ) {
+		emit( 'field-changed', 'postcode' );
+	}
+};
 
 </script>
 

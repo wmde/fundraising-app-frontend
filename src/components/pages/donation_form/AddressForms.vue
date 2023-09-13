@@ -19,6 +19,7 @@
 					:form-data="formData"
 					:countries="countries"
 					:post-code-validation="addressValidationPatterns.postcode"
+					:country-was-restored="countryWasRestored"
 					v-on:field-changed="onFieldChange"
 				/>
 				<receipt-option
@@ -56,6 +57,7 @@
 					:form-data="formData"
 					:countries="countries"
 					:post-code-validation="addressValidationPatterns.postcode"
+					:country-was-restored="countryWasRestored"
 					v-on:field-changed="onFieldChange"
 				/>
 				<receipt-option
@@ -111,7 +113,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, PropType, toRefs } from 'vue';
+import { computed, defineComponent, onBeforeMount, PropType, ref, toRefs } from 'vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import Name from '@src/components/shared/Name.vue';
 import Postal from '@src/components/shared/Postal.vue';
@@ -130,6 +132,7 @@ import { CampaignValues } from '@src/view_models/CampaignValues';
 import { StoreKey } from '@src/store/donation_store';
 import { injectStrict } from '@src/util/injectStrict';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
+import { Validity } from '@src/view_models/Validity';
 
 export default defineComponent( {
 	name: 'Address',
@@ -173,7 +176,12 @@ export default defineComponent( {
 		} );
 		const mailHostList = useMailHostList();
 
-		onBeforeMount( initializeDataFromStore );
+		const countryWasRestored = ref<boolean>( false );
+
+		onBeforeMount( () => {
+			countryWasRestored.value = $store.state.address.validity.country === Validity.RESTORED;
+			initializeDataFromStore();
+		} );
 
 		return {
 			formData,
@@ -182,10 +190,10 @@ export default defineComponent( {
 			AddressTypeModel,
 			addressTypeId,
 			mailHostList,
-
 			onFieldChange,
 			onAutofill,
 			setReceipt,
+			countryWasRestored,
 		};
 	},
 } );

@@ -34,7 +34,7 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesResource';
 import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/CityAutocompleteResource';
-import { useAutocompleteEvents } from '@src/components/shared/form_fields/useAutocompleteEvents';
+import { useCityAutocompleteEvents } from '@src/components/shared/form_fields/useCityAutocompleteEvents';
 import TextFormInput from '@src/components/shared/form_inputs/TextFormInput.vue';
 
 interface Props {
@@ -50,7 +50,7 @@ const props = defineProps<Props>();
 const emit = defineEmits( [ 'field-changed', 'update:modelValue' ] );
 
 const city = ref<string>( props.modelValue );
-const { autocompleteIsActive, onFocus, onBlur, onSelectItem } = useAutocompleteEvents( city, emit );
+const { autocompleteIsActive, onFocus, onBlur, onSelectItem } = useCityAutocompleteEvents( city, emit );
 const { cities, fetchCitiesForPostcode } = useCitiesResource( inject<CityAutocompleteResource>( 'cityAutocompleteResource', NullCityAutocompleteResource ) );
 
 const placeholder = computed( () => {
