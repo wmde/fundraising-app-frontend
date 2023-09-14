@@ -1,5 +1,5 @@
 <template>
-	<div class="control" :class="{ 'is-disabled': disabled }">
+	<div class="control select-form-input" :class="{ 'is-disabled': disabled }">
 		<span class="select">
 			<select
 				v-model="inputModel"

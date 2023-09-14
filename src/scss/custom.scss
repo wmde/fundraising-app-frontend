@@ -3,8 +3,9 @@
 @import "variables";
 @import "fonts";
 
-// Import Bulma's utility mixins
-@import "~bulma/sass/utilities/_all";
+// Import Bulma styles
+@import "~bulma";
+@import "~bulma-helpers/sass/helpers/spacing/margin-padding";
 
 .is-two-thirds.column {
 	@include from($tablet) {
@@ -169,10 +170,6 @@ h1.icon-title svg {
 		}
 	}
 }
-
-// Import Bulma styles
-@import "~bulma";
-@import "~bulma-helpers/sass/helpers/spacing/margin-padding";
 
 .summary-wrapper {
 	@include until($widescreen) {
@@ -361,3 +358,10 @@ h1.icon-title svg {
 @import "components/donation_comment_popup";
 @import "locale_overrides/en-GB";
 @import "components/feedback_box";
+
+// New style guide
+@import "components/form_field";
+@import "components/radio_form_input";
+@import "components/select_form_input";
+@import "components/text_form_input";
+@import "components/checkbox_single_form_input";

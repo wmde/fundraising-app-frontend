@@ -1,0 +1,70 @@
+@use './units';
+@use './colors';
+@use "sass:map";
+
+$form: (
+	'padding': map.get( units.$spacing, 'x-large' )
+);
+
+$section: (
+	'margin': 0 0 map.get( units.$spacing, 'x-large' )
+);
+
+$section-label: (
+	'font-weight': normal
+);
+
+$field: (
+	'margin': 0 0 map.get( units.$spacing, 'large' ),
+);
+
+$input: (
+	'border-radius': 0,
+	'height': 50px,
+	'font-size': 14px,
+	'min-width': 272px,
+	'max-width': 350px,
+);
+
+$text-input: (
+	'padding': 0 map.get( units.$spacing, 'small' )
+);
+
+$select-input: (
+	'padding': 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' )
+);
+
+$label: (
+	'margin': 0 0 map.get( units.$spacing, 'xx-small' ),
+	'font-weight': bold,
+	'line-height': 1,
+);
+
+$summary: (
+	'padding': map.get( units.$spacing, 'large' ) map.get( units.$spacing, 'small' )
+);
+
+$radio-input: (
+	'margin': 0 map.get( units.$spacing, 'large' ) 0 0,
+	'padding': map.get( units.$spacing, 'small' ) 0,
+	'width': map.get( units.$spacing, 'xxx-large' ),
+	'line-height': map.get( units.$spacing, 'small' )
+);
+
+$radio-check: (
+	'size': map.get( units.$spacing, 'small' ),
+	'margin': map.get( units.$spacing, 'small' ) map.get( units.$spacing, 'small' ) map.get( units.$spacing, 'small' ) 0,
+	'color': colors.$gray-dark,
+	'color-highlighted': colors.$primary,
+);
+
+$checkbox-input: (
+	'padding': 0 0 0 map.get( units.$spacing, 'medium' )
+);
+
+$checkbox-check: (
+	'size': map.get( units.$spacing, 'small' ),
+	'margin': 0 0 0 (-( map.get( units.$spacing, 'medium' ) ) ),
+	'color': colors.$gray-dark,
+	'color-highlighted': colors.$primary,
+);

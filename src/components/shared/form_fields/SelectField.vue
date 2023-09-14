@@ -7,7 +7,7 @@
 			:name="name"
 			@update:modelValue="onFieldChange"
 		>
-			<option v-for="option in options" :key="option.value" :value="option.value">
+			<option v-for="( option, index ) in options" :key="index" :value="option.value">
 				{{ option.label }}
 			</option>
 		</SelectFormInput>

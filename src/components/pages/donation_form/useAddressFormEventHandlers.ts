@@ -22,8 +22,10 @@ const submitHtmlForm = ( addressType: number ) => {
 	currentAddressForm.submit();
 };
 
-const scrollToFirstError = () => document.getElementsByClassName( 'help is-danger' )[ 0 ]
-	.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+const scrollToFirstError = () => {
+	document.getElementsByClassName( 'help is-danger' )[ 0 ]
+		.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+};
 
 type ReturnType = {
 	submit: () => void,

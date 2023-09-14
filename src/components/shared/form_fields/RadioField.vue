@@ -1,10 +1,10 @@
 <template>
 	<fieldset class="form-field form-field-radio" :class="{ 'is-invalid': showError }">
 		<legend class="form-field-label">{{ label }}</legend>
-		<div class="form-field-radio-container">
+		<div class="control form-field-radio-container">
 			<RadioFormInput
-				v-for="option in options"
-				:key="option.value"
+				v-for="( option, index ) in options"
+				:key="index"
 				input-type="radio"
 				:class="{ 'is-active': modelValue === option.value }"
 				:id="`${name}-${option.value}`"

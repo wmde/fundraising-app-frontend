@@ -1,20 +1,18 @@
 <template>
-	<div class="form-field form-field-email">
+	<div class="form-field form-field-email" :class="{ 'is-invalid': showError }">
 		<label for="email" class="form-field-label">{{ $t( 'donation_form_email_label' ) }}</label>
-		<div class="field">
-			<TextFormInput
-				input-type="text"
-				input-id="email"
-				name="email"
-				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_email_placeholder_vuei18n_v3' ) } )"
-				autocomplete="email"
-				v-model="fieldModel"
-				:has-error="showError"
-				:has-message="suggestedProvider !== ''"
-				@update:modelValue="onUpdateModel"
-				@blur="$emit('field-changed', 'email')"
-			/>
-		</div>
+		<TextFormInput
+			input-type="text"
+			input-id="email"
+			name="email"
+			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_email_placeholder_vuei18n_v3' ) } )"
+			autocomplete="email"
+			v-model="fieldModel"
+			:has-error="showError"
+			:has-message="suggestedProvider !== ''"
+			@update:modelValue="onUpdateModel"
+			@blur="$emit('field-changed', 'email')"
+		/>
 		<span v-if="suggestedProvider" @click="onSuggestionClicked( suggestedProvider )" class="help is-clickable">
 			{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
 		</span>

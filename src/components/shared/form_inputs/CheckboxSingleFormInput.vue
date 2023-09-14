@@ -1,23 +1,25 @@
 <template>
-	<label
-		ref="labelRef"
-		class="radio"
-		:class="{ 'is-disabled': disabled }"
-		@click="focus"
-		@keydown.prevent.enter="click"
-	>
-		<input
-			v-model="inputModel"
-			type="checkbox"
-			ref="inputRef"
-			:name="name"
-			:id="inputId"
-			:disabled="disabled"
-			:required="required"
-		/>
-		<span class="check"/>
-		<span class="control-label"><slot/></span>
-	</label>
+	<div class="control checkbox-single-form-input" :class="{ 'is-disabled': disabled }">
+		<label
+			ref="labelRef"
+			class="radio"
+			:class="{ 'is-disabled': disabled }"
+			@click="focus"
+			@keydown.prevent.enter="click"
+		>
+			<input
+				v-model="inputModel"
+				type="checkbox"
+				ref="inputRef"
+				:name="name"
+				:id="inputId"
+				:disabled="disabled"
+				:required="required"
+			/>
+			<span class="check"/>
+			<span class="control-label"><slot/></span>
+		</label>
+	</div>
 </template>
 
 <script setup lang="ts">
