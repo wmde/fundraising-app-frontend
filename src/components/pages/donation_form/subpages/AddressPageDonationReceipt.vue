@@ -87,7 +87,7 @@
 					<div class="column">
 						<FunButton
 							id="submit-btn"
-							:class="[ 'level-item is-primary is-main', { 'is-loading' : $store.getters.isValidating } ]"
+							:class="[ 'level-item is-primary is-main', { 'is-loading' : store.getters.isValidating } ]"
 							@click="submit">
 							{{ $t( 'donation_form_finalize' ) }}
 						</FunButton>
@@ -100,6 +100,16 @@
 					{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
 				</div>
 			</div>
+
+			<input v-if="!receiptModel" type="hidden" name="addressType" :value="AddressTypeModel.EMAIL">
+			<input type="hidden" name="paymentType" :value="paymentType">
+			<input type="hidden" name="interval" :value="interval">
+			<input type="hidden" name="amount" :value="amount">
+			<input type="hidden" name="impCount" :value="trackingData.impressionCount">
+			<input type="hidden" name="bImpCount" :value="trackingData.bannerImpressionCount">
+			<input type="hidden" name="piwik_campaign" :value="campaignValues.campaign">
+			<input type="hidden" name="piwik_kwd" :value="campaignValues.keyword">
+
 		</form>
 	</div>
 </template>
@@ -134,6 +144,7 @@ import { useStore } from 'vuex';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
 
 interface Props {
 	assetsPath: string;
@@ -154,6 +165,7 @@ const store = useStore( StoreKey );
 
 const { addressType, addressTypeName } = useAddressType( store );
 const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
+const { amount, interval, paymentType } = usePaymentValues( store );
 const mailingList = useMailingListModel( store );
 const receiptModel = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
