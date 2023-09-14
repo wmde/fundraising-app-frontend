@@ -9,6 +9,8 @@
 				{ value: AddressTypeModel.COMPANY, label: $t( 'donation_form_addresstype_option_company_addresstype' ) },
 			]"
 			:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
+			:show-error="showAddressTypeError"
+			:error-message="$t( 'donation_form_section_address_error' )"
 		/>
 
 		<TextField
@@ -120,9 +122,8 @@ const emit = defineEmits( [ 'field-changed' ] );
 const store = useStore( StoreKey );
 const addressType = useAddressTypeModel( store );
 
-const showStreetWarning = computed<boolean>( () => {
-	return /^\D+$/.test( props.formData.street.value );
-} );
+const showStreetWarning = computed<boolean>( () => /^\D+$/.test( props.formData.street.value ) );
+const showAddressTypeError = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {

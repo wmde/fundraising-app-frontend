@@ -133,6 +133,7 @@ import { useAddressType } from '@src/components/pages/donation_form/DonationRece
 import { useStore } from 'vuex';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import { Validity } from '@src/view_models/Validity';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 interface Props {
 	assetsPath: string;

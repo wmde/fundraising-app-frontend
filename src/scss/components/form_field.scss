@@ -1,0 +1,39 @@
+@use '../settings/forms';
+@use 'sass:map';
+
+.form-field {
+	margin: map.get( forms.$field, 'margin' );
+	font-size: map.get( forms.$input, 'font-size' );
+
+	.control {
+		font-size: 1rem;
+	}
+
+	&-text,
+	&-select,
+	&-email,
+	&-autocomplete {
+		max-width: map.get( forms.$input, 'max-width' );
+	}
+
+	&-autocomplete-container {
+		position: relative;
+	}
+
+	&-label {
+		display: block;
+		margin: map.get( forms.$label, 'margin' );
+		font-weight: map.get( forms.$label, 'font-weight' );
+		line-height: map.get( forms.$label, 'line-height' );
+	}
+
+	&-radio-container {
+		display: flex;
+	}
+
+	&-select {
+		.select:not( .is-multiple ) {
+			height: auto;
+		}
+	}
+}

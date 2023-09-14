@@ -1,0 +1,64 @@
+@use '../settings/forms';
+@use 'sass:map';
+@use 'sass:math';
+
+$check-size: map.get( forms.$radio-check, 'size' );
+
+.radio-form-input {
+	flex: 0 0 auto;
+	margin: map.get( forms.$radio-input, 'margin' );
+	padding: map.get( forms.$radio-input, 'padding' );
+	width: map.get( forms.$radio-input, 'width' );
+	line-height: map.get( forms.$radio-input, 'line-height' );
+
+	&:last-child {
+		margin: 0;
+		flex: 1 0 auto;
+	}
+
+	.check {
+		display: block;
+		float: left;
+		box-sizing: border-box;
+		position: relative;
+		cursor: pointer;
+		width: $check-size;
+		height: $check-size;
+		margin-right: math.div( $check-size, 2 );
+		transition: background 150ms ease-out;
+		border-radius: 50%;
+		border: 2px solid map.get( forms.$radio-check, 'color' );
+
+		&::before {
+			content: "";
+			display: flex;
+			position: absolute;
+			left: 50%;
+			margin-left: -( math.div( $check-size, 2 ) );
+			top: 50%;
+			margin-top: -( math.div( $check-size, 2 ) );
+			width: $check-size;
+			height: $check-size;
+			border-radius: 50%;
+			background-color: map.get( forms.$radio-check, 'color-highlighted' );
+			transform: scale( 0 );
+			transition: transform 150ms ease-out;
+		}
+	}
+
+	input {
+		position: absolute;
+		left: 0;
+		opacity: 0;
+		outline: none;
+		z-index: -1;
+	}
+
+	input:checked + .check {
+		border-color: map.get( forms.$radio-check, 'color-highlighted' );
+
+		&::before {
+			transform: scale( 0.5 );
+		}
+	}
+}

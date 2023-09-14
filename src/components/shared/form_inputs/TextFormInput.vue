@@ -1,5 +1,5 @@
 <template>
-	<div class="control" :class="{ 'has-icons-right': hasError || hasMessage, 'is-disabled': disabled }">
+	<div class="control text-form-input" :class="{ 'has-icons-right': hasError || hasMessage, 'is-disabled': disabled }">
 		<input
 			v-if="inputType === 'text'"
 			:name="name"
