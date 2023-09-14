@@ -1,15 +1,12 @@
-import Vue from 'vue';
 import Vuex, { Store, StoreOptions } from 'vuex';
-import createAddress from '@/store/membership_address';
-import createBankData from '@/store/bankdata';
-import createPayment from '@/store/membership_fee';
+import createAddress from '@src/store/membership_address';
+import createBankData from '@src/store/bankdata';
+import createPayment from '@src/store/membership_fee';
 import {
 	NS_BANKDATA,
 	NS_MEMBERSHIP_ADDRESS,
 	NS_MEMBERSHIP_FEE,
 } from './namespaces';
-
-Vue.use( Vuex );
 
 export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) {
 	const storeBundle: StoreOptions<any> = {

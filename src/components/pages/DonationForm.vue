@@ -13,16 +13,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { TrackingData } from '@/view_models/TrackingData';
-import PaymentPage from '@/components/pages/donation_form/subpages/PaymentPage.vue';
-import AddressPage from '@/components/pages/donation_form/subpages/AddressPage.vue';
-import { Country } from '@/view_models/Country';
-import { AddressValidation } from '@/view_models/Validation';
-import { Salutation } from '@/view_models/Salutation';
-import { CampaignValues } from '@/view_models/CampaignValues';
+import { defineComponent } from 'vue';
+import { TrackingData } from '@src/view_models/TrackingData';
+import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
+import AddressPage from '@src/components/pages/donation_form/subpages/AddressPage.vue';
+import { Country } from '@src/view_models/Country';
+import { AddressValidation } from '@src/view_models/Validation';
+import { Salutation } from '@src/view_models/Salutation';
+import { CampaignValues } from '@src/view_models/CampaignValues';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'DonationForm',
 	components: {
 		PaymentPage,

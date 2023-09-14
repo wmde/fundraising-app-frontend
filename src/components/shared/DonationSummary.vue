@@ -1,5 +1,5 @@
 <template>
-	<div class="donation-summary has-margin-bottom-18">
+	<div class="donation-summary">
 		<component
 			:is="addressTypeComponent"
 			:address="address"
@@ -9,60 +9,50 @@
 			:country="country"
 			:language-item="languageItem"
 			:salutation="salutation"
-		></component>
+		/>
 	</div>
 </template>
 
-<script lang="js">
-import Vue from 'vue';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
-import PaymentSummaryAnonymous from '@/components/shared/payment_summary/PaymentSummaryAnonymous.vue';
-import PaymentSummaryUnset from '@/components/shared/payment_summary/PaymentSummaryUnset.vue';
-import PaymentSummaryCompany from '@/components/shared/payment_summary/PaymentSummaryCompany.vue';
-import PaymentSummaryEmail from '@/components/shared/payment_summary/PaymentSummaryEmail.vue';
-import PaymentSummaryPrivate from '@/components/shared/payment_summary/PaymentSummaryPrivate.vue';
+<script setup lang="ts">
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import PaymentSummaryAnonymous from '@src/components/shared/payment_summary/PaymentSummaryAnonymous.vue';
+import PaymentSummaryCompany from '@src/components/shared/payment_summary/PaymentSummaryCompany.vue';
+import PaymentSummaryEmail from '@src/components/shared/payment_summary/PaymentSummaryEmail.vue';
+import PaymentSummaryPrivate from '@src/components/shared/payment_summary/PaymentSummaryPrivate.vue';
+import { Country } from '@src/view_models/Country';
+import { Salutation } from '@src/view_models/Salutation';
+import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
 
-const addressTypeComponents = {
-	[ addressTypeName( AddressTypeModel.ANON ) ]: PaymentSummaryAnonymous,
-	[ addressTypeName( AddressTypeModel.COMPANY ) ]: PaymentSummaryCompany,
-	[ addressTypeName( AddressTypeModel.EMAIL ) ]: PaymentSummaryEmail,
-	[ addressTypeName( AddressTypeModel.PERSON ) ]: PaymentSummaryPrivate,
-	[ addressTypeName( AddressTypeModel.UNSET ) ]: PaymentSummaryUnset,
-};
+interface Props {
+	address : Record<string, string>;
+	addressType: String;
+	payment: { interval: any, amount: number, paymentType: any };
+	countries: Array<Country>;
+	languageItem: String;
+	salutations: Array<Salutation>;
+}
 
-export default Vue.extend( {
-	name: 'DonationSummary',
-	props: [
-		'address',
-		'addressType',
-		'payment',
-		'countries',
-		'languageItem',
-		'salutations',
-	],
-	computed: {
-		addressTypeComponent: function () {
-			return addressTypeComponents[ this.$props.addressType ];
-		},
-		paymentType: function () {
-			return this.$t( this.payment.paymentType );
-		},
-		interval: function () {
-			return this.$t( 'donation_form_payment_interval_' + this.payment.interval );
-		},
-		formattedAmount: function () {
-			return this.$n( this.payment.amount, { key: 'currency', currencyDisplay: 'name' } );
-		},
-		country: function () {
-			const countryObject = this.countries.find( c => ( c.countryCode === this.address.countryCode || c.countryCode === this.address.country ) );
-			return countryObject ? countryObject.countryFullName : '';
-		},
-		salutation: function () {
-			if ( !this.address.salutation ) {
-				return '';
-			}
-			return this.$props.salutations.find( salutation => salutation.value === this.address.salutation )?.display;
-		},
-	},
+const { t, n } = useI18n();
+const props = defineProps<Props>();
+
+const addressTypeComponents = [
+	{ key: addressTypeName( AddressTypeModel.ANON ), component: PaymentSummaryAnonymous },
+	{ key: addressTypeName( AddressTypeModel.COMPANY ), component: PaymentSummaryCompany },
+	{ key: addressTypeName( AddressTypeModel.EMAIL ), component: PaymentSummaryEmail },
+	{ key: addressTypeName( AddressTypeModel.PERSON ), component: PaymentSummaryPrivate },
+	{ key: addressTypeName( AddressTypeModel.UNSET ), component: PaymentSummaryAnonymous },
+];
+
+// TODO: Extract this into a composable to make testing easier
+const addressTypeComponent = computed( () => addressTypeComponents.find( x => x.key === props.addressType ).component );
+const paymentType = computed( () => t( props.payment.paymentType ) );
+const interval = computed( () => t( 'donation_form_payment_interval_' + props.payment.interval ) );
+const formattedAmount = computed( () => n( props.payment.amount, { key: 'currency', currencyDisplay: 'name' } ) );
+const country = computed( () => {
+	const countryObject = props.countries.find( c => ( c.countryCode === props.address.countryCode || c.countryCode === props.address.country ) );
+	return countryObject ? countryObject.countryFullName : '';
 } );
+const salutation = computed( () => props.address.salutation ? props.salutations.find( s => s.value === props.address.salutation )?.display : '' );
+
 </script>

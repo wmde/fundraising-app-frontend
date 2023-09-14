@@ -1,24 +1,16 @@
 import 'core-js/stable';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import PageDataInitializer from '@/page_data_initializer';
-import { createI18n } from '@/locales';
-import { createStore } from '@/store/update_address_store';
+import { createVueApp } from '@src/createVueApp';
+import { createStore } from '@src/store/update_address_store';
 
-import App from '@/components/App.vue';
-import Component from '@/components/pages/UpdateAddress.vue';
-import Sidebar from '@/components/layout/Sidebar.vue';
-import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
-import { AddressValidation } from '@/view_models/Validation';
-import { Country } from '@/view_models/Country';
-import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
-import { Salutation } from '@/view_models/Salutation';
+import PageDataInitializer from '@src/page_data_initializer';
+import { AddressValidation } from '@src/view_models/Validation';
+import { ApiCityAutocompleteResource } from '@src/CityAutocompleteResource';
+import { Country } from '@src/view_models/Country';
+import { Salutation } from '@src/view_models/Salutation';
+import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
 
-const PAGE_IDENTIFIER = 'update-address';
-const FORM_NAMESPACE = 'update_address';
-
-Vue.config.productionTip = false;
-Vue.use( VueI18n );
+import App from '@src/components/App.vue';
+import UpdateAddress from '@src/components/pages/UpdateAddress.vue';
 
 interface UpdateAddressModel {
 	isCompany: boolean,
@@ -28,39 +20,25 @@ interface UpdateAddressModel {
 	addressValidationPatterns: AddressValidation,
 }
 
+const PAGE_IDENTIFIER = 'update-address';
+const FORM_NAMESPACE = 'update_address';
 const pageData = new PageDataInitializer<UpdateAddressModel>( '#appdata' );
-const store = createStore( [
-	createTrackFormErrorsPlugin( FORM_NAMESPACE ),
-] );
+const store = createStore( [ createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 
-const i18n = createI18n( pageData.messages );
+const app = createVueApp( App, pageData.messages, {
+	assetsPath: pageData.assetsPath,
+	pageIdentifier: PAGE_IDENTIFIER,
+	page: UpdateAddress,
+	pageProps: {
+		validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+		updateAddressURL: pageData.applicationVars.urls.updateAddress,
+		isCompany: pageData.applicationVars.isCompany,
+		countries: pageData.applicationVars.countries,
+		salutations: pageData.applicationVars.salutations,
+		addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+	},
+} );
 
-new Vue( {
-	store,
-	i18n,
-	provide: {
-		cityAutocompleteResource: new ApiCityAutocompleteResource(),
-	},
-	render: h => h( App, {
-		props: {
-			assetsPath: pageData.assetsPath,
-			pageIdentifier: PAGE_IDENTIFIER,
-			locale: i18n.locale,
-		},
-	},
-	[
-		h( Component, {
-			props: {
-				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-				updateAddressURL: pageData.applicationVars.urls.updateAddress,
-				isCompany: pageData.applicationVars.isCompany,
-				countries: pageData.applicationVars.countries,
-				salutations: pageData.applicationVars.salutations,
-				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-			},
-		} ),
-		h( Sidebar, {
-			slot: 'sidebar',
-		} ),
-	] ),
-} ).$mount( '#app' );
+app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
+app.use( store );
+app.mount( '#app' );

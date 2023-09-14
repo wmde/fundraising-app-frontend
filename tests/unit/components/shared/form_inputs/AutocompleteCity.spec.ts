@@ -1,9 +1,7 @@
-import { createLocalVue, mount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import AutocompleteCity from '../../../../../src/components/shared/form_inputs/AutocompleteCity.vue';
 import { FakeAutocompleteResource } from '../../../TestDoubles/FakeAutocompleteResource';
 import { nextTick } from 'vue';
-
-const localVue = createLocalVue();
 
 const cityAutocompleteResource = new FakeAutocompleteResource();
 const placeholderKey = 'form_for_example';
@@ -13,18 +11,16 @@ describe( 'AutocompleteCity.vue', () => {
 
 	const getWrapper = ( postcode: string = '' ) => {
 		return mount( AutocompleteCity, {
-			localVue,
-			mocks: {
-				$t: () => { },
-			},
-			provide: {
-				cityAutocompleteResource,
-			},
-			propsData: {
+			props: {
 				examplePlaceholder: '',
 				city: { value: '' },
 				hasError: false,
 				postcode,
+			},
+			global: {
+				provide: {
+					cityAutocompleteResource,
+				},
 			},
 		} );
 	};
@@ -76,16 +72,17 @@ describe( 'AutocompleteCity.vue', () => {
 
 		await field.setValue( 'Berlin' );
 
-		expect( wrapper.emitted( 'input' )[ 0 ][ 0 ] ).toBe( 'Berlin' );
+		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toBe( 'Berlin' );
 	} );
 
 	it( 'emits input event when an autocomplete item is selected', async () => {
 		const wrapper = getWrapper( '12345' );
 		await nextTick();
+		await nextTick();
 
 		await wrapper.find( '.dropdown-item:nth-child( 6 )' ).trigger( 'click' );
 
-		expect( wrapper.emitted( 'input' )[ 0 ][ 0 ] ).toBe( 'Satan City' );
+		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toBe( 'Satan City' );
 	} );
 
 	it( 'emits field changed event when text input is blurred', async () => {
@@ -98,6 +95,7 @@ describe( 'AutocompleteCity.vue', () => {
 
 	it( 'emits field changed event when an autocomplete item is selected', async () => {
 		const wrapper = getWrapper( '12345' );
+		await nextTick();
 		await nextTick();
 
 		await wrapper.find( '.dropdown-item:nth-child( 1 )' ).trigger( 'click' );

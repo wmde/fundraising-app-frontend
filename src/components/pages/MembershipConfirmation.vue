@@ -22,13 +22,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import MembershipSummary from '@/components/shared/MembershipSummary.vue';
-import SummaryLinks from '@/components/pages/membership_confirmation/SummaryLinks.vue';
+import { defineComponent } from 'vue';
+import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
+import SummaryLinks from '@src/components/pages/membership_confirmation/SummaryLinks.vue';
 import MembershipConfirmationBannerNotifier
-	from '@/components/pages/membership_confirmation/MembershipConfirmationBannerNotifier.vue';
+	from '@src/components/pages/membership_confirmation/MembershipConfirmationBannerNotifier.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'MembershipConfirmation',
 	components: {
 		MembershipConfirmationBannerNotifier,

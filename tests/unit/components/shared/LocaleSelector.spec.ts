@@ -1,9 +1,7 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import LocaleSelector from '@/components/shared/LocaleSelector.vue';
+import { mount } from '@vue/test-utils';
+import LocaleSelector from '@src/components/shared/LocaleSelector.vue';
 import Cookies from 'js-cookie';
-import { COOKIE_NAME, DEFAULT_LOCALE } from '@/locales';
-
-const localVue = createLocalVue();
+import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/locales';
 
 describe( 'LocaleSelector.vue', () => {
 
@@ -12,13 +10,7 @@ describe( 'LocaleSelector.vue', () => {
 		// @ts-ignore
 		jest.spyOn( Cookies, 'get' ).mockReturnValue( undefined );
 
-		const wrapper = mount( LocaleSelector, {
-			localVue,
-			mocks: {
-				$t: () => { },
-			},
-			propsData: { assetsPath: '' },
-		} );
+		const wrapper = mount( LocaleSelector, { props: { assetsPath: '' } } );
 
 		expect( ( wrapper.vm as any ).locale ).toEqual( DEFAULT_LOCALE );
 	} );
@@ -29,13 +21,7 @@ describe( 'LocaleSelector.vue', () => {
 		// @ts-ignore
 		jest.spyOn( Cookies, 'get' ).mockReturnValue( cookieValue );
 
-		const wrapper = mount( LocaleSelector, {
-			localVue,
-			mocks: {
-				$t: () => { },
-			},
-			propsData: { assetsPath: '' },
-		} );
+		const wrapper = mount( LocaleSelector, { props: { assetsPath: '' } } );
 
 		expect( ( wrapper.vm as any ).locale ).toEqual( cookieValue );
 	} );
@@ -56,13 +42,7 @@ describe( 'LocaleSelector.vue', () => {
 				return undefined;
 			} );
 
-		const wrapper = mount( LocaleSelector, {
-			localVue,
-			mocks: {
-				$t: () => { },
-			},
-			propsData: { assetsPath: '' },
-		} );
+		const wrapper = mount( LocaleSelector, { props: { assetsPath: '' } } );
 
 		( wrapper.vm as any ).setCookie( cookieValue );
 
@@ -75,13 +55,7 @@ describe( 'LocaleSelector.vue', () => {
 			value: { reload: jest.fn() },
 		} );
 
-		const wrapper = mount( LocaleSelector, {
-			localVue,
-			mocks: {
-				$t: () => { },
-			},
-			propsData: { assetsPath: '' },
-		} );
+		const wrapper = mount( LocaleSelector, { props: { assetsPath: '' } } );
 
 		( wrapper.vm as any ).setCookie( 'cookieValueOfTheLivingDead' );
 

@@ -1,16 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import Supporter from '@/components/pages/supporters/Supporter.vue';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount } from '@vue/test-utils';
+import Supporter from '@src/components/pages/supporters/Supporter.vue';
 
 describe( 'Supporter.vue', () => {
 	it( 'shows comment and flips arrow icon if visible supporter ID matches local supporter ID', () => {
 		const sampleText = 'Blah blah!';
 		const wrapper = mount( Supporter, {
-			localVue,
-			propsData: {
+			props: {
 				content: {
 					name: 'Some Donor',
 					amount: '2019,00 €',
@@ -18,9 +13,6 @@ describe( 'Supporter.vue', () => {
 				},
 				visibleSupporterId: 5,
 				supporterId: 5,
-			},
-			mocks: {
-				$t: ( key: string ) => key,
 			},
 		} );
 		expect( wrapper.find( '.mdi-arrow-up' ).isVisible() ).toBe( true );
@@ -30,8 +22,7 @@ describe( 'Supporter.vue', () => {
 
 	it( 'emits the open event on click if a comment is supplied', () => {
 		const wrapper = mount( Supporter, {
-			localVue,
-			propsData: {
+			props: {
 				content: {
 					name: 'Some Donor',
 					amount: '2019,00 €',
@@ -39,9 +30,6 @@ describe( 'Supporter.vue', () => {
 				},
 				visibleSupporterId: null,
 				supporterId: 5,
-			},
-			mocks: {
-				$t: ( key: string ) => key,
 			},
 		} );
 		wrapper.find<HTMLElement>( '.accordion-item > div' ).element.click();
@@ -53,8 +41,7 @@ describe( 'Supporter.vue', () => {
 
 	it( 'emits a close event on click if comment is supplied and comment is open', () => {
 		const wrapper = mount( Supporter, {
-			localVue,
-			propsData: {
+			props: {
 				content: {
 					name: 'Some Donor',
 					amount: '2019,00 €',
@@ -62,9 +49,6 @@ describe( 'Supporter.vue', () => {
 				},
 				visibleSupporterId: 5,
 				supporterId: 5,
-			},
-			mocks: {
-				$t: ( key: string ) => key,
 			},
 		} );
 		wrapper.find<HTMLElement>( '.accordion-item > div' ).element.click();
@@ -76,8 +60,7 @@ describe( 'Supporter.vue', () => {
 	it( 'does not show a comment if the visible supporter ID does not match ID of the current supporter', () => {
 		const sampleText = 'Blah blah!';
 		const wrapper = mount( Supporter, {
-			localVue,
-			propsData: {
+			props: {
 				content: {
 					name: 'Some Donor',
 					amount: '2019,00 €',
@@ -86,9 +69,6 @@ describe( 'Supporter.vue', () => {
 				visibleSupporterId: 123,
 				supporterId: 5,
 			},
-			mocks: {
-				$t: ( key: string ) => key,
-			},
 		} );
 		expect( wrapper.find( '.mdi-arrow-down' ).isVisible() ).toBe( true );
 		expect( wrapper.find( '.accordion-content' ).isVisible() ).toBe( false );
@@ -96,8 +76,7 @@ describe( 'Supporter.vue', () => {
 
 	it( 'disables comment functionality and hides arrows if no comment is supplied', () => {
 		const wrapper = mount( Supporter, {
-			localVue,
-			propsData: {
+			props: {
 				content: {
 					name: 'Some Donor',
 					amount: '2019,00 €',
@@ -105,9 +84,6 @@ describe( 'Supporter.vue', () => {
 				},
 				visibleSupporterId: null,
 				supporterId: 5,
-			},
-			mocks: {
-				$t: ( key: string ) => key,
 			},
 		} );
 

@@ -1,4 +1,4 @@
-import { CampaignValues } from '@/view_models/CampaignValues';
+import { CampaignValues } from '@src/view_models/CampaignValues';
 import Cookies from 'js-cookie';
 
 export const campaignKey = 'piwik_campaign';

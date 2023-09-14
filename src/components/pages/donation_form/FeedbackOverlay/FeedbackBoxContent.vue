@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import CloseIcon from '@/components/pages/donation_form/FeedbackOverlay/CloseIcon.vue';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import { defineComponent } from 'vue';
+import CloseIcon from '@src/components/pages/donation_form/FeedbackOverlay/CloseIcon.vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'FeedbackBoxContent',
 	components: { FunButton, CloseIcon },
 	data() {

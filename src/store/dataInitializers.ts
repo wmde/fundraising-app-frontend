@@ -1,14 +1,14 @@
-import { FieldInitialization } from '@/view_models/FieldInitialization';
-import persistenceAddress from '@/store/data_persistence/address';
-import { Validity } from '@/view_models/Validity';
-import { DataPersister } from '@/view_models/DataPersistence';
-import { NS_ADDRESS, NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
-import { InitialAddressValues, InitialMembershipAddressValues } from '@/view_models/Address';
-import { addressTypeFromName } from '@/view_models/AddressTypeModel';
-import { InitialPaymentValues } from '@/view_models/Payment';
-import { BankAccountData, InitialBankAccountData } from '@/view_models/BankAccount';
-import { InitialMembershipFeeValues } from '@/view_models/MembershipFee';
-import { trackFormFieldRestored } from '@/tracking';
+import { FieldInitialization } from '@src/view_models/FieldInitialization';
+import persistenceAddress from '@src/store/data_persistence/address';
+import { Validity } from '@src/view_models/Validity';
+import { DataPersister } from '@src/view_models/DataPersistence';
+import { NS_ADDRESS, NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
+import { InitialAddressValues, InitialMembershipAddressValues } from '@src/view_models/Address';
+import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
+import { InitialPaymentValues } from '@src/view_models/Payment';
+import { BankAccountData, InitialBankAccountData } from '@src/view_models/BankAccount';
+import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
+import { trackFormFieldRestored } from '@src/tracking';
 
 const replaceInitialValue = ( defaultValue: any, replacement: any ): any => {
 	if ( replacement !== undefined && replacement !== null && replacement !== '' ) {

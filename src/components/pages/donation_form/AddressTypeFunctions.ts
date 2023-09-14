@@ -1,8 +1,8 @@
 import { computed } from 'vue';
-import { AddressTypeModel, addressTypeName as getAddressTypeName } from '@/view_models/AddressTypeModel';
-import { action } from '@/store/util';
-import { NS_ADDRESS } from '@/store/namespaces';
-import { setAddressType as setAddressTypeActionType } from '@/store/address/actionTypes';
+import { AddressTypeModel, addressTypeName as getAddressTypeName } from '@src/view_models/AddressTypeModel';
+import { action } from '@src/store/util';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { setAddressType as setAddressTypeActionType } from '@src/store/address/actionTypes';
 
 export const useAddressTypeFunctions = ( store: any ) => {
 	const disabledAddressTypes = computed(

@@ -3,7 +3,6 @@
 		ref="label"
 		class="fun-checkbox checkbox"
 		:class="{ 'is-disabled': disabled }"
-		:disabled="disabled"
 		@click="focus"
 		@keydown.prevent.enter="click"
 		@keydown.prevent.space="click"
@@ -17,8 +16,9 @@
 			:value="nativeValue"
 			:disabled="disabled"
 			:required="required"
-		>
-		<span class="check checkbox"/><span class="control-label"><slot/></span>
+		/>
+		<span class="check checkbox"/>
+		<span class="control-label"><slot/></span>
 	</label>
 </template>
 
@@ -29,7 +29,7 @@ import { defineComponent } from 'vue';
 export default defineComponent( {
 	name: 'FunCheckbox',
 	props: {
-		value: [ String, Number, Boolean, Function, Object, Array ],
+		modelValue: [ String, Number, Boolean, Function, Object, Array ],
 		nativeValue: [ String, Number, Boolean, Function, Object, Array ],
 		name: String,
 		disabled: Boolean,
@@ -37,7 +37,7 @@ export default defineComponent( {
 	},
 	data() {
 		return {
-			newValue: this.value,
+			newValue: this.modelValue,
 		};
 	},
 	computed: {
@@ -47,7 +47,7 @@ export default defineComponent( {
 			},
 			set( value: any ) {
 				this.newValue = value;
-				this.$emit( 'input', value );
+				this.$emit( 'update:modelValue', value );
 			},
 		},
 	},
@@ -55,8 +55,8 @@ export default defineComponent( {
 		/**
 		 * When v-model change, set internal value.
 		 */
-		value( value ) {
-			this.newValue = value;
+		modelValue( modelValue ) {
+			this.newValue = modelValue;
 		},
 	},
 	methods: {

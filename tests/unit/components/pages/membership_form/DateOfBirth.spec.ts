@@ -1,11 +1,6 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
-import { createStore } from '@/store/membership_store';
-import { InputField } from '@/view_models/Address';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount, VueWrapper } from '@vue/test-utils';
+import DateOfBirth from '@src/components/pages/membership_form/DateOfBirth.vue';
+import { InputField } from '@src/view_models/Address';
 
 const newDateImportFieldMetadata = ( value: string ): InputField => ( {
 	name: 'date',
@@ -17,36 +12,24 @@ const newDateImportFieldMetadata = ( value: string ): InputField => ( {
 
 describe( 'DateOfBirth.vue', () => {
 
-	it( 'renders field', () => {
-		const wrapper = mount( DateOfBirth, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: () => { },
-			},
-			propsData: {
+	const getWrapper = ( date: string, showError: boolean ): VueWrapper<any> => {
+		return mount( DateOfBirth, {
+			props: {
 				formData: {
-					date: newDateImportFieldMetadata( '' ),
+					date: newDateImportFieldMetadata( date ),
 				},
+				showError,
 			},
 		} );
+	};
+
+	it( 'renders field', () => {
+		const wrapper = getWrapper( '', false );
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
 	it( 'renders error message', () => {
-		const wrapper = mount( DateOfBirth, {
-			localVue,
-			store: createStore(),
-			mocks: {
-				$t: () => { },
-			},
-			propsData: {
-				formData: {
-					date: newDateImportFieldMetadata( '12/27/1987' ),
-				},
-				showError: true,
-			},
-		} );
+		const wrapper = getWrapper( '12/27/1987', true );
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 

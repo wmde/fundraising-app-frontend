@@ -4,12 +4,16 @@
 		<fieldset class="form-input form-input__horizontal-option-list">
 			<legend class="subtitle">{{ $t( 'donation_form_salutation_label' ) }}</legend>
 			<div class="radio-container">
-				<RadioInput v-for="salutation in salutations" :key="salutation.value"
-						:id="`salutation-${salutation.value}`"
-						name="salutationInternal"
-						:native-value="salutation.label"
-						v-model="formData.salutation.value"
-						@input="$emit('field-changed', 'salutation')">
+				<RadioInput
+					v-for="salutation in salutations"
+					:key="salutation.value"
+					:class="{ 'is-active': formData.salutation.value === salutation.label }"
+					:id="`salutation-${salutation.value}`"
+					name="salutationInternal"
+					:native-value="salutation.label"
+					v-model="formData.salutation.value"
+					@update:modelValue="$emit('field-changed', 'salutation')"
+				>
 					{{ salutation.label }}
 				</RadioInput>
 			</div>
@@ -23,7 +27,7 @@
 					v-model="formData.title.value"
 					select-id="title"
 					name="title"
-					@input="$emit('field-changed', 'title')"
+					@update:modelValue="$emit('field-changed', 'title')"
 				>
 					<option value="">{{ $t( 'donation_form_academic_title_option_none' ) }}</option>
 					<option value="Dr.">Dr.</option>
@@ -85,18 +89,17 @@
 </template>
 
 <script lang="ts">
-import Vue, { onMounted } from 'vue';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { AddressValidity, AddressFormData } from '@/view_models/Address';
-import { computed } from 'vue';
-import { Salutation } from '@/view_models/Salutation';
-import { adjustSalutationLocaleIfNeeded } from '@/components/shared/SalutationLocaleAdjuster';
-import ValueEqualsPlaceholderWarning from '@/components/shared/ValueEqualsPlaceholderWarning.vue';
-import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
-import TextInput from '@/components/shared/form_inputs/TextInput.vue';
-import FunSelect from '@/components/shared/form_inputs/FunSelect.vue';
+import { computed, defineComponent, onMounted } from 'vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AddressFormData, AddressValidity } from '@src/view_models/Address';
+import { Salutation } from '@src/view_models/Salutation';
+import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
+import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
+import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
+import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
+import FunSelect from '@src/components/shared/form_inputs/FunSelect.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'name',
 	components: { FunSelect, TextInput, RadioInput, ValueEqualsPlaceholderWarning },
 	props: {

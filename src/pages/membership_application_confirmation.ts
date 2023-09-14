@@ -1,24 +1,15 @@
 import 'core-js/stable';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import PageDataInitializer from '@/page_data_initializer';
-import { createI18n } from '@/locales';
-import App from '@/components/App.vue';
-import Component from '@/components/pages/MembershipConfirmation.vue';
-import { clearPersistentData } from '@/store/create_data_persister';
-import LocalStorageRepository from '@/store/LocalStorageRepository';
-import { trackGoal } from '@/tracking';
-import { Salutation } from '@/view_models/Salutation';
-import { YearlyMembershipFee } from '@/view_models/MembershipFee';
+import { createVueApp } from '@src/createVueApp';
 
-const PAGE_IDENTIFIER = 'membership-application-confirmation',
-	IS_FULLWIDTH_PAGE = true,
-	LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_application' ];
+import LocalStorageRepository from '@src/store/LocalStorageRepository';
+import PageDataInitializer from '@src/page_data_initializer';
+import { Salutation } from '@src/view_models/Salutation';
+import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
+import { clearPersistentData } from '@src/store/create_data_persister';
+import { trackGoal } from '@src/tracking';
 
-Vue.config.productionTip = false;
-Vue.use( VueI18n );
-
-clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
+import App from '@src/components/App.vue';
+import MembershipConfirmation from '@src/components/pages/MembershipConfirmation.vue';
 
 // TODO move this model, see https://phabricator.wikimedia.org/T298372
 interface MembershipApplicationConfirmationModel {
@@ -35,32 +26,24 @@ interface MembershipApplicationConfirmationModel {
 	// TODO add address property, see MembershipSummary.vue
 }
 
+const PAGE_IDENTIFIER = 'membership-application-confirmation';
+const LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_application' ];
 const pageData = new PageDataInitializer<MembershipApplicationConfirmationModel>( '#appdata' );
-
-const i18n = createI18n( pageData.messages );
-
 const yearlyFee = new YearlyMembershipFee(
 	pageData.applicationVars.membershipApplication.paymentIntervalInMonths,
 	pageData.applicationVars.membershipApplication.membershipFee
 );
+
+clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId, yearlyFee.yearlyFee );
 
-new Vue( {
-	i18n,
-	render: h => h( App, {
-		props: {
-			assetsPath: pageData.assetsPath,
-			pageIdentifier: PAGE_IDENTIFIER,
-			isFullWidth: IS_FULLWIDTH_PAGE,
-			locale: i18n.locale,
-		},
+createVueApp( App, pageData.messages, {
+	assetsPath: pageData.assetsPath,
+	isFullWidth: true,
+	pageIdentifier: PAGE_IDENTIFIER,
+	page: MembershipConfirmation,
+	pageProps: {
+		confirmationData: pageData.applicationVars,
+		salutations: pageData.applicationVars.salutations,
 	},
-	[
-		h( Component, {
-			props: {
-				confirmationData: pageData.applicationVars,
-				salutations: pageData.applicationVars.salutations,
-			},
-		} ),
-	] ),
-} ).$mount( '#app' );
+} ).mount( '#app' );

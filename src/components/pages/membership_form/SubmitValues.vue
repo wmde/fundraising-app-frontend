@@ -29,16 +29,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
-import { Payment } from '@/view_models/Payment';
-import { MembershipAddressState } from '@/view_models/Address';
-import { addressTypeName } from '@/view_models/AddressTypeModel';
-import { BankAccount } from '@/view_models/BankAccount';
-import { membershipTypeName } from '@/view_models/MembershipTypeModel';
+import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { Payment } from '@src/view_models/Payment';
+import { MembershipAddressState } from '@src/view_models/Address';
+import { addressTypeName } from '@src/view_models/AddressTypeModel';
+import { BankAccount } from '@src/view_models/BankAccount';
+import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'SubmitValues',
 	computed: {
 		...mapState<Payment>( NS_MEMBERSHIP_FEE, {

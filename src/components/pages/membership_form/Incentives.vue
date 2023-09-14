@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import FunCheckbox from '@/components/shared/form_inputs/FunCheckbox.vue';
+import { defineComponent } from 'vue';
+import FunCheckbox from '@src/components/shared/form_inputs/FunCheckbox.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Incentives',
 	components: { FunCheckbox },
 	data: function () {
@@ -30,8 +30,8 @@ export default Vue.extend( {
 	},
 	props: {
 		message: String,
-		incentiveChoices: Array as () => Array<String>,
-		defaultIncentives: Array as () => Array<String>,
+		incentiveChoices: Array as () => Array<string>,
+		defaultIncentives: Array as () => Array<string>,
 	},
 	methods: {
 		onChange: function () {

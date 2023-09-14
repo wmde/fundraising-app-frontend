@@ -14,12 +14,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import AddressUsageToggle from '@/components/pages/donation_confirmation/AddressUsageToggle.vue';
-import WarningIcon from '@/components/shared/icons/WarningIcon.vue';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import { defineComponent } from 'vue';
+import AddressUsageToggle from '@src/components/pages/donation_confirmation/AddressUsageToggle.vue';
+import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AddressAnonymous',
 	components: {
 		FunButton,

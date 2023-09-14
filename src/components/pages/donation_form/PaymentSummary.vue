@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import { defineComponent } from 'vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'PaymentSummary',
 	components: { FunButton },
 	props: [ 'amount', 'interval', 'paymentType' ],

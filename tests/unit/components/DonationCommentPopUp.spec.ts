@@ -1,20 +1,8 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import { createStore } from '@/store/donation_store';
-import DonationCommentPopUp from '@/components/DonationCommentPopUp.vue';
-import Vuex from 'vuex';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
+import { mount } from '@vue/test-utils';
+import DonationCommentPopUp from '@src/components/DonationCommentPopUp.vue';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
-jest.mock( '@/tracking', () => {
-	return {
-		trackDynamicForm: jest.fn(),
-		trackFormSubmission: jest.fn(),
-	};
-} );
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
-
-describe( 'DonationCommentPopUp', () => {
+describe( 'DonationCommentPopUp.vue', () => {
 	function getDefaultConfirmationData( isAnonymous: boolean ): any {
 		const sampleDonationData = {
 			accessToken: 'a839bc8045aba4c8b600bc0477dbbf10',
@@ -53,12 +41,7 @@ describe( 'DonationCommentPopUp', () => {
 
 	it( 'displays anyonmous comment toggle for private / company donations', () => {
 		const wrapper = mount( DonationCommentPopUp, {
-			localVue,
-			propsData: getDefaultConfirmationData( false ),
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
-			},
+			props: getDefaultConfirmationData( false ),
 		} );
 
 		expect( wrapper.find( '#isAnonymous' ).exists() ).toBeTruthy();
@@ -66,12 +49,7 @@ describe( 'DonationCommentPopUp', () => {
 
 	it( 'hides anyonmous comment toggle for anonymous donations', () => {
 		const wrapper = mount( DonationCommentPopUp, {
-			localVue,
-			propsData: getDefaultConfirmationData( true ),
-			store: createStore(),
-			mocks: {
-				$t: ( key: string ) => key,
-			},
+			props: getDefaultConfirmationData( true ),
 		} );
 
 		expect( wrapper.find( '#isAnonymous' ).exists() ).toBeFalsy();

@@ -1,11 +1,5 @@
-import each from 'jest-each';
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import MembershipSummary from '@/components/shared/MembershipSummary.vue';
-import { createStore } from '@/store/donation_store';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount, VueWrapper } from '@vue/test-utils';
+import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
 
 const privateAddress = {
 	applicantType: 'person',
@@ -53,24 +47,6 @@ const yearlyPayment = {
 	paymentIntervalInMonths: 12,
 };
 
-const missingFee = {
-	membershipFee: '',
-	paymentIntervalInMonths: 1,
-	paymentType: 'BEZ',
-};
-
-const missingInterval = {
-	membershipFee: '45.00',
-	paymentIntervalInMonths: '',
-	paymentType: 'BEZ',
-};
-
-const missingPaymentType = {
-	membershipFee: '45.00',
-	paymentIntervalInMonths: 1,
-	paymentType: '',
-};
-
 const salutations = [
 	{
 		'label': 'Herr',
@@ -88,21 +64,27 @@ const mockTranslate = function ( key: string, params?: Object ) {
 	return key + ( params ? ': ' + JSON.stringify( params, null, 2 ) : '' );
 };
 
-describe( 'MembershipSummary', () => {
-	it( 'renders personal membership confirmation data', () => {
-		const wrapper = mount( MembershipSummary, {
-			localVue,
-			propsData: {
-				address: privateAddress,
-				membershipApplication: monthlyPayment,
+describe( 'MembershipSummary.vue', () => {
+
+	const getWrapper = ( address: Object, membershipApplication: Object, addressIsInvalid: boolean = false ): VueWrapper<any> => {
+		return mount( MembershipSummary, {
+			props: {
+				address,
+				membershipApplication,
 				salutations,
+				addressIsInvalid,
 			},
-			store: createStore(),
-			mocks: {
-				$t: mockTranslate,
-				$n: () => {},
+			global: {
+				mocks: {
+					$t: mockTranslate,
+					$n: ( amount: string ) => amount,
+				},
 			},
 		} );
+	};
+
+	it( 'renders personal membership confirmation data', () => {
+		const wrapper = getWrapper( privateAddress, monthlyPayment );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain(
 			'Herr Prof. Dr. Testy MacTest, Tempelhofer Ufer 26, 10963 Berlin, donation_form_country_option_DE E-Mail: testperson@wikimedia.de'
@@ -110,19 +92,7 @@ describe( 'MembershipSummary', () => {
 	} );
 
 	it( 'renders company membership confirmation data', () => {
-		const wrapper = mount( MembershipSummary, {
-			localVue,
-			propsData: {
-				address: companyAddress,
-				membershipApplication: monthlyPayment,
-				salutations,
-			},
-			store: createStore(),
-			mocks: {
-				$t: mockTranslate,
-				$n: () => {},
-			},
-		} );
+		const wrapper = getWrapper( companyAddress, monthlyPayment );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain(
 			'Test Company, Teststreet 123, 12345 Company City, donation_form_country_option_DE E-Mail: testcompany@wikimedia.de'
@@ -133,77 +103,28 @@ describe( 'MembershipSummary', () => {
 	/* eslint-disable no-useless-escape */
 
 	it( 'renders monthly payments', () => {
-		const wrapper = mount( MembershipSummary, {
-			localVue,
-			propsData: {
-				address: companyAddress,
-				membershipApplication: monthlyPayment,
-				salutations,
-			},
-			store: createStore(),
-			mocks: {
-				$t: mockTranslate,
-				$n: ( amount: string ) => amount,
-			},
-		} );
+		const wrapper = getWrapper( companyAddress, monthlyPayment );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 15' );
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 donation_form_payment_interval_12)\"' );
 	} );
 
 	it( 'renders quarterly payments', () => {
-		const wrapper = mount( MembershipSummary, {
-			localVue,
-			propsData: {
-				address: companyAddress,
-				membershipApplication: quarterlyPayment,
-				salutations,
-			},
-			store: createStore(),
-			mocks: {
-				$t: mockTranslate,
-				$n: ( amount: string ) => amount,
-			},
-		} );
+		const wrapper = getWrapper( companyAddress, quarterlyPayment );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 45' );
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 donation_form_payment_interval_12)\"' );
 	} );
 
 	it( 'renders yearly payments', () => {
-		const wrapper = mount( MembershipSummary, {
-			localVue,
-			propsData: {
-				address: companyAddress,
-				membershipApplication: yearlyPayment,
-				salutations,
-			},
-			store: createStore(),
-			mocks: {
-				$t: mockTranslate,
-				$n: ( amount: string ) => amount,
-			},
-		} );
+		const wrapper = getWrapper( companyAddress, yearlyPayment );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 180' );
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"\"' );
 	} );
 
 	test( 'Does not render summary when address is invalid', () => {
-		const wrapper = mount( MembershipSummary, {
-			localVue,
-			propsData: {
-				address: companyAddress,
-				membershipApplication: monthlyPayment,
-				salutations,
-				addressIsInvalid: true
-			},
-			store: createStore(),
-			mocks: {
-				$t: mockTranslate,
-				$n: ( amount: string ) => amount,
-			},
-		} );
+		const wrapper = getWrapper( companyAddress, monthlyPayment, true );
 
 		expect( wrapper.find( '.payment-summary' ).text() ).toContain( 'membership_form_review_address_is_invalid' );
 		expect( wrapper.find( '.payment-summary' ).text() ).not.toContain( 'membershipFeeYearlyFormatted' );

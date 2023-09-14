@@ -3,11 +3,3 @@
 		<path d="M2 1.5L9 8.5L16 1.5" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 	</svg>
 </template>
-
-<script>
-import Vue from 'vue';
-
-export default Vue.extend( {
-	name: 'ChevronDownIcon',
-} );
-</script>

@@ -1,43 +1,21 @@
 import 'core-js/stable';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import PageDataInitializer from '@/page_data_initializer';
-import { createI18n } from '@/locales';
-import App from '@/components/App.vue';
-
-import Component from '@/components/pages/AccessDenied.vue';
-import Sidebar from '@/components/layout/Sidebar.vue';
-
-const PAGE_IDENTIFIER = 'access-denied';
-
-Vue.config.productionTip = false;
-Vue.use( VueI18n );
+import { createVueApp } from '@src/createVueApp';
+import PageDataInitializer from '@src/page_data_initializer';
+import App from '@src/components/App.vue';
+import AccessDenied from '@src/components/pages/AccessDenied.vue';
 
 interface ErrorModel {
 	message: string,
 }
 
+const PAGE_IDENTIFIER = 'access-denied';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-const i18n = createI18n( pageData.messages );
-
-new Vue( {
-	i18n,
-	render: h => h( App, {
-		props: {
-			assetsPath: pageData.assetsPath,
-			pageIdentifier: PAGE_IDENTIFIER,
-			locale: i18n.locale,
-		},
+createVueApp( App, pageData.messages, {
+	assetsPath: pageData.assetsPath,
+	pageIdentifier: PAGE_IDENTIFIER,
+	page: AccessDenied,
+	pageProps: {
+		errorData: pageData.applicationVars,
 	},
-	[
-		h( Component, {
-			props: {
-				errorData: pageData.applicationVars,
-			},
-		} ),
-		h( Sidebar, {
-			slot: 'sidebar',
-		} ),
-	] ),
-} ).$mount( '#app' );
+} ).mount( '#app' );

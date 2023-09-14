@@ -1,12 +1,9 @@
-import { ValidationState, waitForServerValidationToFinish } from '@/wait_for_server_validation';
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use( Vuex );
+import { ValidationState, waitForServerValidationToFinish } from '@src/wait_for_server_validation';
+import { createStore } from 'vuex';
 
 describe( 'waitForServerValidationToFinish', () => {
 	it( 'instantly returns when not validating', () => {
-		const store = new Vuex.Store( {
+		const store = createStore( {
 			getters: {
 				isValidating: () => false,
 			},
@@ -17,7 +14,7 @@ describe( 'waitForServerValidationToFinish', () => {
 	} );
 
 	it( 'delays resolution until validation finishes', () => {
-		const store = new Vuex.Store( {
+		const store = createStore( {
 			state: {
 				validationInProgress: true,
 			},

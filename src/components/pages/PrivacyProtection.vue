@@ -7,9 +7,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'PrivacyProtection',
 	data: function () {
 		const splitContent = this.$props.pageContent.split( '<!-- placeholder_matomo -->' );

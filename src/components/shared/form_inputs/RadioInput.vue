@@ -3,7 +3,6 @@
 		ref="label"
 		class="fun-radio radio"
 		:class="{ 'is-disabled': disabled }"
-		:disabled="disabled"
 		@click="focus"
 		@keydown.prevent.enter="click"
 	>
@@ -30,7 +29,7 @@ import { defineComponent } from 'vue';
 export default defineComponent( {
 	name: 'RadioInput',
 	props: {
-		value: [ String, Number, Boolean, Function, Object, Array ],
+		modelValue: [ String, Number, Boolean, Function, Object, Array ],
 		nativeValue: [ String, Number, Boolean, Function, Object, Array ],
 		name: String,
 		disabled: Boolean,
@@ -38,7 +37,7 @@ export default defineComponent( {
 	},
 	data() {
 		return {
-			newValue: this.value,
+			newValue: this.modelValue,
 		};
 	},
 	computed: {
@@ -48,7 +47,7 @@ export default defineComponent( {
 			},
 			set( value: any ) {
 				this.newValue = value;
-				this.$emit( 'input', value );
+				this.$emit( 'update:modelValue', value );
 			},
 		},
 	},
@@ -56,8 +55,8 @@ export default defineComponent( {
 		/**
 		 * When v-model change, set internal value.
 		 */
-		value( value ) {
-			this.newValue = value;
+		modelValue( modelValue ) {
+			this.newValue = modelValue;
 		},
 	},
 	methods: {
@@ -76,12 +75,12 @@ export default defineComponent( {
 <style lang="scss">
 @import "../../../scss/variables";
 
-.fun-radio {
+.radio.fun-radio {
 	margin-right: 0.5em;
 	outline: none;
 	display: inline-flex;
 
-	&[disabled] {
+	&.is-disabled {
 		opacity: .5;
 	}
 

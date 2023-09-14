@@ -1,26 +1,21 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuex from 'vuex';
-import PaymentType from '@/components/pages/membership_form/PaymentType.vue';
-import { createStore } from '@/store/membership_store';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount, VueWrapper } from '@vue/test-utils';
+import PaymentType from '@src/components/pages/membership_form/PaymentType.vue';
+import { nextTick } from 'vue';
 
 const testPaymentMethods = [ 'BEZ', 'UEB' ];
 
-describe( 'PaymentType', () => {
+describe( 'PaymentType.vue', () => {
 
-	it( 'emits new payment type when it is selected', async () => {
-		const wrapper = mount( PaymentType, {
-			localVue,
-			propsData: {
+	const getWrapper = (): VueWrapper<any> => {
+		return mount( PaymentType, {
+			props: {
 				paymentTypes: testPaymentMethods,
 			},
-			store: createStore(),
-			mocks: {
-				$t: () => {},
-			},
 		} );
+	};
+
+	it( 'emits new payment type when it is selected', async () => {
+		const wrapper = getWrapper();
 
 		await wrapper.find( '#payment-bez input' ).trigger( 'change' );
 
@@ -29,27 +24,19 @@ describe( 'PaymentType', () => {
 	} );
 
 	it( 'updates the selected type when the property changes', async () => {
-		const wrapper = mount( PaymentType, {
-			localVue,
-			propsData: {
-				paymentTypes: testPaymentMethods,
-			},
-			store: createStore(),
-			mocks: {
-				$t: () => {},
-			},
-		} );
+		const wrapper = getWrapper();
 
-		const uebInput = await wrapper.find( '#payment-ueb input' );
+		const input = wrapper.find<HTMLInputElement>( '#payment-ueb input' );
 
 		// Check that PPL is not checked by default, because we passed empty props
-		expect( ( uebInput.element as HTMLInputElement ).checked ).toBeFalsy();
+		// Setting the v-model on a radio doesn't seem to update the checked attribute so check for the is-active class
+		expect( input.element.checked ).toBeFalsy();
 
 		// explicitly simulate a prop change from the parent of the wrapper
-		wrapper.setProps( { currentType: 'UEB' } );
-		await wrapper.vm.$nextTick();
+		await wrapper.setProps( { currentType: 'UEB' } );
+		await nextTick();
 
-		expect( ( uebInput.element as HTMLInputElement ).checked ).toBeTruthy();
+		expect( input.element.checked ).toBeTruthy();
 	} );
 
 } );

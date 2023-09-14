@@ -58,9 +58,9 @@
 
 <script lang="ts">
 
-import CompanyBudgets from '@/components/pages/use_of_funds/CompanyBudgets.vue';
-import FundsDistributionAccordion from '@/components/pages/use_of_funds/FundsDistributionAccordion.vue';
-import FundsDistributionInfo from '@/components/pages/use_of_funds/FundsDistributionInfo.vue';
+import CompanyBudgets from '@src/components/pages/use_of_funds/CompanyBudgets.vue';
+import FundsDistributionAccordion from '@src/components/pages/use_of_funds/FundsDistributionAccordion.vue';
+import FundsDistributionInfo from '@src/components/pages/use_of_funds/FundsDistributionInfo.vue';
 import { defineComponent } from 'vue';
 export default defineComponent( {
 	name: 'use-of-funds',

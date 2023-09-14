@@ -1,24 +1,19 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import Payment from '@/components/pages/membership_form/Payment.vue';
-import PaymentType from '@/components/pages/membership_form/PaymentType.vue';
-import AmountSelection from '@/components/shared/AmountSelection.vue';
-import PaymentBankData from '@/components/shared/PaymentBankData.vue';
-import PaymentInterval from '@/components/shared/PaymentInterval.vue';
-import { createStore } from '@/store/membership_store';
-import { action } from '@/store/util';
-import { NS_MEMBERSHIP_FEE } from '@/store/namespaces';
-import { setFee, setInterval, setType } from '@/store/membership_fee/actionTypes';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount } from '@vue/test-utils';
+import Payment from '@src/components/pages/membership_form/Payment.vue';
+import PaymentType from '@src/components/pages/membership_form/PaymentType.vue';
+import AmountSelection from '@src/components/shared/AmountSelection.vue';
+import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
+import PaymentInterval from '@src/components/shared/PaymentInterval.vue';
+import { createStore } from '@src/store/membership_store';
+import { action } from '@src/store/util';
+import { NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
 
 describe( 'Payment.vue', () => {
 	let wrapper: any;
 	beforeEach( () => {
 		wrapper = mount( Payment, {
-			localVue,
-			propsData: {
+			props: {
 				validateFeeUrl: 'https://example.com/amount-check',
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
@@ -26,12 +21,8 @@ describe( 'Payment.vue', () => {
 				validateBankDataUrl: 'https://example.com/amount-check',
 				validateLegacyBankDataUrl: 'https://example.com/amount-check',
 			},
-			store: createStore(),
-			stubs: {
-				AmountSelection: true,
-			},
-			mocks: {
-				$t: ( key: string ): string => { return key; },
+			global: {
+				plugins: [ createStore() ],
 			},
 		} );
 	} );
@@ -51,12 +42,11 @@ describe( 'Payment.vue', () => {
 	} );
 
 	it( 'shows bank data when payment type is selected', async () => {
-		expect( wrapper.findComponent( PaymentBankData ).element ).toBeUndefined();
+		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
 
-		const typeBEZ = wrapper.find( '#payment-bez input' );
-		await typeBEZ.trigger( 'change' );
+		await wrapper.find( '#payment-bez input' ).trigger( 'change' );
 
-		expect( wrapper.findComponent( PaymentBankData ).element ).toBeDefined();
+		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
 	} );
 
 	it( 'sends interval to store when interval selection emits event ', () => {

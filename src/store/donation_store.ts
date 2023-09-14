@@ -1,17 +1,15 @@
-import Vue, { InjectionKey } from 'vue';
+import { InjectionKey } from 'vue';
 import Vuex, { Store, StoreOptions } from 'vuex';
-import createPayment from '@/store/payment';
-import createAddress from '@/store/address';
-import createBankData from '@/store/bankdata';
+import createPayment from '@src/store/payment';
+import createAddress from '@src/store/address';
+import createBankData from '@src/store/bankdata';
 
-import { REQUIRED_FIELDS } from '@/store/address/constants';
+import { REQUIRED_FIELDS } from '@src/store/address/constants';
 import {
 	NS_PAYMENT,
 	NS_ADDRESS,
 	NS_BANKDATA,
 } from './namespaces';
-
-Vue.use( Vuex );
 
 export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) {
 	const storeBundle: StoreOptions<any> = {

@@ -35,25 +35,25 @@
 	</div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import Name from '@/components/shared/Name.vue';
-import Postal from '@/components/shared/Postal.vue';
-import ReceiptOption from '@/components/shared/ReceiptOption.vue';
-import SubmitValues from '@/components/pages/update_address/SubmitValues.vue';
-import { AddressValidity, AddressFormData, ValidationResult } from '@/view_models/Address';
-import { Validity } from '@/view_models/Validity';
-import { Country } from '@/view_models/Country';
-import { NS_ADDRESS } from '@/store/namespaces';
-import { setAddressField, validateAddress, setReceiptChoice, setAddressType } from '@/store/address/actionTypes';
-import { action } from '@/store/util';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
-import { AddressValidation } from '@/view_models/Validation';
+import { defineComponent } from 'vue';
+import Name from '@src/components/shared/Name.vue';
+import Postal from '@src/components/shared/Postal.vue';
+import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
+import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
+import { AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
+import { Validity } from '@src/view_models/Validity';
+import { Country } from '@src/view_models/Country';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { setAddressField, setAddressType, setReceiptChoice, validateAddress } from '@src/store/address/actionTypes';
+import { action } from '@src/store/util';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { AddressValidation } from '@src/view_models/Validation';
 import { mapGetters } from 'vuex';
-import { trackFormSubmission } from '@/tracking';
-import { Salutation } from '@/view_models/Salutation';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import { trackFormSubmission } from '@src/tracking';
+import { Salutation } from '@src/view_models/Salutation';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'UpdateAddress',
 	components: {
 		FunButton,

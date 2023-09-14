@@ -1,49 +1,41 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import Supporters from '@/components/pages/Supporters.vue';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount, VueWrapper } from '@vue/test-utils';
+import Supporters from '@src/components/pages/Supporters.vue';
 
 describe( 'Supporters.vue', () => {
-	it( 'reacts to emitted supporter-opened event by setting the visible supporter ID', () => {
-		const wrapper = mount( Supporters, {
-			localVue,
-			propsData: {
+
+	const getWrapper = (): VueWrapper<any> => {
+		return mount( Supporters, {
+			props: {
 				supporters: [
 					{
 						name: 'Test',
 						amount: '1234,00 €',
 						comment: 'Blah',
 					},
+					{
+						name: 'Test 2',
+						amount: '1234,00 €',
+						comment: 'Blah 2',
+					},
 				],
 			},
-			mocks: {
-				$t: ( key: string ) => key,
-			},
 		} );
-		( wrapper.find( '.accordion-item' ) as any ).vm.$emit( 'supporter-opened', 1 );
+	};
+
+	it( 'reacts to emitted supporter-opened event by setting the visible supporter ID', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( '.accordion-item:nth-of-type(2) > div' ).trigger( 'click' );
+
 		expect( wrapper.vm.$data.visibleSupporterId ).toBe( 1 );
 	} );
 
-	it( 'reacts to emitted supporter-closed event by setting the visible supporter ID to null', () => {
-		const wrapper = mount( Supporters, {
-			localVue,
-			propsData: {
-				supporters: [
-					{
-						name: 'Test',
-						amount: '1234,00 €',
-						comment: 'Blah',
-					},
-				],
-			},
-			mocks: {
-				$t: ( key: string ) => key,
-			},
-		} );
-		wrapper.setData( { visibleSupporterId: 123 } );
-		( wrapper.find( '.accordion-item' ) as any ).vm.$emit( 'supporter-closed' );
+	it( 'reacts to emitted supporter-closed event by setting the visible supporter ID to null', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.setData( { visibleSupporterId: 1 } );
+		await wrapper.find( '.accordion-item:nth-of-type(2) > div' ).trigger( 'click' );
+
 		expect( wrapper.vm.$data.visibleSupporterId ).toBeNull();
 	} );
 } );

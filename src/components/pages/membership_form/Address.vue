@@ -26,7 +26,7 @@
 				v-on:field-changed="onFieldChange"
 				:show-error="fieldErrors.date"
 				:form-data="formData"/>
-			<email
+			<EmailAddress
 				:show-error="fieldErrors.email"
 				:form-data="formData"
 				v-on:field-changed="onFieldChange"
@@ -36,36 +36,36 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapGetters } from 'vuex';
-import Name from '@/components/shared/Name.vue';
-import Postal from '@/components/shared/Postal.vue';
-import DateOfBirth from '@/components/pages/membership_form/DateOfBirth.vue';
-import ReceiptOption from '@/components/shared/ReceiptOption.vue';
-import Incentives from '@/components/pages/membership_form/Incentives.vue';
-import Email from '@/components/shared/Email.vue';
-import AutofillHandler from '@/components/shared/AutofillHandler.vue';
-import { AddressValidity, AddressFormData, ValidationResult } from '@/view_models/Address';
-import { AddressValidation } from '@/view_models/Validation';
-import { Validity } from '@/view_models/Validity';
-import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
+import Name from '@src/components/shared/Name.vue';
+import Postal from '@src/components/shared/Postal.vue';
+import DateOfBirth from '@src/components/pages/membership_form/DateOfBirth.vue';
+import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
+import Incentives from '@src/components/pages/membership_form/Incentives.vue';
+import EmailAddress from '@src/components/shared/EmailAddress.vue';
+import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import { AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
+import { AddressValidation } from '@src/view_models/Validation';
+import { Validity } from '@src/view_models/Validity';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import {
 	setAddressField,
-	validateAddress,
-	validateEmail,
-	setReceiptChoice,
 	setIncentives,
-	validateCountry,
+	setReceiptChoice,
+	validateAddress,
 	validateAddressField,
+	validateCountry,
 	validateDateOfBirth,
-} from '@/store/membership_address/actionTypes';
-import { action } from '@/store/util';
-import { mergeValidationResults } from '@/merge_validation_results';
-import { camelizeName } from '@/camlize_name';
-import { Salutation } from '@/view_models/Salutation';
-import { useMailHostList } from '@/components/shared/useMailHostList';
+	validateEmail,
+} from '@src/store/membership_address/actionTypes';
+import { action } from '@src/store/util';
+import { mergeValidationResults } from '@src/merge_validation_results';
+import { camelizeName } from '@src/camlize_name';
+import { Salutation } from '@src/view_models/Salutation';
+import { useMailHostList } from '@src/components/shared/useMailHostList';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Address',
 	components: {
 		Name,
@@ -73,7 +73,7 @@ export default Vue.extend( {
 		DateOfBirth,
 		ReceiptOption,
 		Incentives,
-		Email,
+		EmailAddress,
 		AutofillHandler,
 	},
 	data: function (): { formData: AddressFormData } {

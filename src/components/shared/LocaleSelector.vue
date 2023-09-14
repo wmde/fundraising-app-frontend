@@ -10,12 +10,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { ref } from 'vue';
 import Cookies from 'js-cookie';
-import { COOKIE_NAME, DEFAULT_LOCALE } from '@/locales';
+import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/locales';
 
-export default Vue.extend( {
+export default {
 	name: 'LocaleSelector',
 	props: [ 'assetsPath' ],
 	setup() {
@@ -32,5 +31,5 @@ export default Vue.extend( {
 			setCookie,
 		};
 	},
-} );
+};
 </script>

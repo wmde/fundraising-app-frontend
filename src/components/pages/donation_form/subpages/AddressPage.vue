@@ -17,32 +17,35 @@
 		</form>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
-			<feature-toggle>
-				<address-type-basic
-					slot="campaigns.address_type_steps.direct"
-					v-on:address-type="setAddressType( $event )"
-					v-on:set-full-selected="setFullSelected"
-					:disabledAddressTypes="disabledAddressTypes"
-					:is-direct-debit="isDirectDebit"
-					:initial-address-type="addressTypeName"
-				/>
-				<address-type-all-options
-					slot="campaigns.address_type_steps.preselect"
-					v-on:address-type="setAddressType( $event )"
-					v-on:set-full-selected="setFullSelected"
-					:disabledAddressTypes="disabledAddressTypes"
-					:is-direct-debit="isDirectDebit"
-					:initial-address-type="addressTypeName"
-				/>
-				<address-type-full-or-email
-					slot="campaigns.address_type_steps.full_or_email"
-					v-on:address-type="setAddressType( $event )"
-					v-on:set-full-selected="setFullSelected"
-					:disabledAddressTypes="disabledAddressTypes"
-					:is-direct-debit="isDirectDebit"
-					:initial-address-type="addressTypeName"
-				/>
-			</feature-toggle>
+			<FeatureToggle>
+				<template #campaigns.address_type_steps.direct>
+					<address-type-basic
+						v-on:address-type="setAddressType( $event )"
+						v-on:set-full-selected="setFullSelected"
+						:disabledAddressTypes="disabledAddressTypes"
+						:is-direct-debit="isDirectDebit"
+						:initial-address-type="addressTypeName"
+					/>
+				</template>
+				<template #campaigns.address_type_steps.preselect>
+					<address-type-all-options
+						v-on:address-type="setAddressType( $event )"
+						v-on:set-full-selected="setFullSelected"
+						:disabledAddressTypes="disabledAddressTypes"
+						:is-direct-debit="isDirectDebit"
+						:initial-address-type="addressTypeName"
+					/>
+				</template>
+				<template #campaigns.address_type_steps.full_or_email>
+					<address-type-full-or-email
+						v-on:address-type="setAddressType( $event )"
+						v-on:set-full-selected="setFullSelected"
+						:disabledAddressTypes="disabledAddressTypes"
+						:is-direct-debit="isDirectDebit"
+						:initial-address-type="addressTypeName"
+					/>
+				</template>
+			</FeatureToggle>
 			<span
 				v-if="addressTypeIsInvalid"
 				class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
@@ -103,35 +106,34 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@/store/namespaces';
-import AddressTypeBasic from '@/components/pages/donation_form/AddressTypeBasic.vue';
-import AddressTypeAllOptions from '@/components/pages/donation_form/AddressTypeAllOptions.vue';
-import AddressForms, { AddressTypeIds } from '@/components/pages/donation_form/AddressForms.vue';
-import AutofillHandler from '@/components/shared/AutofillHandler.vue';
-import PaymentBankData from '@/components/shared/PaymentBankData.vue';
-import PaymentSummary from '@/components/pages/donation_form/PaymentSummary.vue';
-import DonationSummary from '@/components/shared/DonationSummary.vue';
-import { TrackingData } from '@/view_models/TrackingData';
-import { AddressValidation } from '@/view_models/Validation';
-import { Country } from '@/view_models/Country';
-import { action } from '@/store/util';
-import { markEmptyValuesAsInvalid } from '@/store/bankdata/actionTypes';
-import { waitForServerValidationToFinish } from '@/wait_for_server_validation';
-import { discardInitialization } from '@/store/payment/actionTypes';
-import { trackDynamicForm, trackFormSubmission } from '@/tracking';
-import { useAddressTypeFunctions } from '@/components/pages/donation_form/AddressTypeFunctions';
-import { computed, ref, onMounted } from 'vue';
-import { validateAddress, validateAddressType, validateEmail } from '@/store/address/actionTypes';
-import { Salutation } from '@/view_models/Salutation';
-import { CampaignValues } from '@/view_models/CampaignValues';
-import { StoreKey } from '@/store/donation_store';
-import { injectStrict } from '@/util/injectStrict';
-import AddressTypeFullOrEmail from '@/components/pages/donation_form/AddressTypeFullOrEmail.vue';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
+import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
+import AddressForms, { AddressTypeIds } from '@src/components/pages/donation_form/AddressForms.vue';
+import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
+import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import DonationSummary from '@src/components/shared/DonationSummary.vue';
+import { TrackingData } from '@src/view_models/TrackingData';
+import { AddressValidation } from '@src/view_models/Validation';
+import { Country } from '@src/view_models/Country';
+import { action } from '@src/store/util';
+import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
+import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
+import { discardInitialization } from '@src/store/payment/actionTypes';
+import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
+import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
+import { validateAddress, validateAddressType, validateEmail } from '@src/store/address/actionTypes';
+import { Salutation } from '@src/view_models/Salutation';
+import { CampaignValues } from '@src/view_models/CampaignValues';
+import { StoreKey } from '@src/store/donation_store';
+import { injectStrict } from '@src/util/injectStrict';
+import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressTypeFullOrEmail.vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AddressPage',
 	components: {
 		FunButton,

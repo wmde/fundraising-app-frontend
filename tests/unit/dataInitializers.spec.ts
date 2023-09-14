@@ -1,14 +1,14 @@
 import FakeDataPersister from './TestDoubles/FakeDataPersister';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
-import persistenceAddress from '@/store/data_persistence/address';
-import { NS_MEMBERSHIP_ADDRESS } from '@/store/namespaces';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
+import persistenceAddress from '@src/store/data_persistence/address';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import {
 	createInitialBankDataValues,
 	createInitialDonationAddressValues,
 	createInitialDonationPaymentValues,
 	createInitialMembershipAddressValues, createInitialMembershipFeeValues,
-} from '@/store/dataInitializers';
+} from '@src/store/dataInitializers';
 
 describe( 'createInitialDonationAddressValues', () => {
 	it( 'fills data from storage', () => {

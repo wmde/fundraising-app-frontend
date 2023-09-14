@@ -6,14 +6,6 @@
 	</div>
 </template>
 
-<script>
-import Vue from 'vue';
-import DonorIcon from '@/components/shared/icons/DonorIcon.vue';
-
-export default Vue.extend( {
-	name: 'Survey',
-	components: {
-		DonorIcon,
-	},
-} );
+<script setup lang="ts">
+import DonorIcon from '@src/components/shared/icons/DonorIcon.vue';
 </script>

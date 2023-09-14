@@ -1,40 +1,28 @@
 import 'core-js/stable';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import PageDataInitializer from '@/page_data_initializer';
-import { createI18n } from '@/locales';
-import App from '@/components/App.vue';
-import { createStore } from '@/store/membership_store';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
-import { initializeAddress } from '@/store/membership_address/actionTypes';
-import { action } from '@/store/util';
-import { createDataPersister } from '@/store/create_data_persister';
-import {
-	createInitialMembershipAddressValues,
-	createInitialBankDataValues,
-	createInitialMembershipFeeValues,
-} from '@/store/dataInitializers';
-import LocalStorageRepository from '@/store/LocalStorageRepository';
-import persistenceItems from '@/store/data_persistence/membership_application';
+import { createVueApp } from '@src/createVueApp';
+import { createStore } from '@src/store/membership_store';
 
-import Component from '@/components/pages/MembershipForm.vue';
-import Sidebar from '@/components/layout/Sidebar.vue';
-import { InitialMembershipData } from '@/view_models/Address';
-import { initializeBankData } from '@/store/bankdata/actionTypes';
-import { initializeMembershipFee } from '@/store/membership_fee/actionTypes';
-import { Country } from '@/view_models/Country';
-import { createTrackFormErrorsPlugin } from '@/store/track_form_errors_plugin';
-import { AddressValidation } from '@/view_models/Validation';
-import { FeatureTogglePlugin } from '@/FeatureToggle';
-import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
-import { Salutation } from '@/view_models/Salutation';
-import FilteredUrlMembershipValues from '@/util/FilteredUrlMembershipValues';
+import FilteredUrlMembershipValues from '@src/util/FilteredUrlMembershipValues';
+import LocalStorageRepository from '@src/store/LocalStorageRepository';
+import PageDataInitializer from '@src/page_data_initializer';
+import persistenceItems from '@src/store/data_persistence/membership_application';
+import { AddressValidation } from '@src/view_models/Validation';
+import { ApiCityAutocompleteResource } from '@src/CityAutocompleteResource';
+import { Country } from '@src/view_models/Country';
+import { InitialMembershipData } from '@src/view_models/Address';
+import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { Salutation } from '@src/view_models/Salutation';
+import { action } from '@src/store/util';
+import { createDataPersister } from '@src/store/create_data_persister';
+import { createFeatureToggle } from '@src/createFeatureToggle';
+import { createInitialBankDataValues, createInitialMembershipAddressValues, createInitialMembershipFeeValues } from '@src/store/dataInitializers';
+import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
+import { initializeAddress } from '@src/store/membership_address/actionTypes';
+import { initializeBankData } from '@src/store/bankdata/actionTypes';
+import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 
-const PAGE_IDENTIFIER = 'membership-application';
-const FORM_NAMESPACE = 'membership_application';
-
-Vue.config.productionTip = false;
-Vue.use( VueI18n );
+import MembershipForm from '@src/components/pages/MembershipForm.vue';
+import App from '@src/components/App.vue';
 
 interface MembershipAmountModel {
 	presetAmounts: Array<string>,
@@ -51,22 +39,11 @@ interface MembershipAmountModel {
 	dateOfBirthValidationPattern: String,
 }
 
+const PAGE_IDENTIFIER = 'membership-application';
+const FORM_NAMESPACE = 'membership_application';
 const pageData = new PageDataInitializer<MembershipAmountModel>( '#appdata' );
-
-const dataPersister = createDataPersister(
-	new LocalStorageRepository(),
-	FORM_NAMESPACE,
-	pageData.applicationVars.userDataKey
-);
-
-const i18n = createI18n( pageData.messages );
-
-const store = createStore( [
-	dataPersister.getPlugin( persistenceItems ),
-	createTrackFormErrorsPlugin( FORM_NAMESPACE ),
-] );
-
-Vue.use( FeatureTogglePlugin, { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } );
+const dataPersister = createDataPersister( new LocalStorageRepository(), FORM_NAMESPACE, pageData.applicationVars.userDataKey );
+const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 
 dataPersister.initialize( persistenceItems ).then( () => {
 
@@ -101,41 +78,29 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			createInitialBankDataValues( initialBankAccountData ),
 		),
 	] ).then( () => {
-		new Vue( {
-			store,
-			i18n,
-			provide: {
-				cityAutocompleteResource: new ApiCityAutocompleteResource(),
+		const app = createVueApp( App, pageData.messages, {
+			assetsPath: pageData.assetsPath,
+			pageIdentifier: PAGE_IDENTIFIER,
+			page: MembershipForm,
+			pageProps: {
+				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+				validateEmailUrl: pageData.applicationVars.urls.validateEmail,
+				validateFeeUrl: pageData.applicationVars.urls.validateMembershipFee,
+				validateBankDataUrl: pageData.applicationVars.urls.validateIban,
+				validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
+				paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),
+				countries: pageData.applicationVars.countries,
+				salutations: pageData.applicationVars.salutations,
+				showMembershipTypeOption: pageData.applicationVars.showMembershipTypeOption,
+				paymentIntervals: pageData.applicationVars.paymentIntervals,
+				paymentTypes: pageData.applicationVars.paymentTypes,
+				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+				dateOfBirthValidationPattern: pageData.applicationVars.dateOfBirthValidationPattern,
 			},
-			render: h => h( App, {
-				props: {
-					assetsPath: pageData.assetsPath,
-					pageIdentifier: PAGE_IDENTIFIER,
-					locale: i18n.locale,
-				},
-			},
-			[
-				h( Component, {
-					props: {
-						validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-						validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-						validateFeeUrl: pageData.applicationVars.urls.validateMembershipFee,
-						validateBankDataUrl: pageData.applicationVars.urls.validateIban,
-						validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
-						paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),
-						countries: pageData.applicationVars.countries,
-						salutations: pageData.applicationVars.salutations,
-						showMembershipTypeOption: pageData.applicationVars.showMembershipTypeOption,
-						paymentIntervals: pageData.applicationVars.paymentIntervals,
-						paymentTypes: pageData.applicationVars.paymentTypes,
-						addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-						dateOfBirthValidationPattern: pageData.applicationVars.dateOfBirthValidationPattern,
-					},
-				} ),
-				h( Sidebar, {
-					slot: 'sidebar',
-				} ),
-			] ),
-		} ).$mount( '#app' );
+		} );
+		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
+		app.use( store );
+		app.component( 'FeatureToggle', createFeatureToggle( { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } ) );
+		app.mount( '#app' );
 	} );
 } );

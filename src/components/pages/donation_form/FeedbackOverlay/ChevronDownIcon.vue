@@ -6,11 +6,3 @@
 			6.42982C5.60427 6.91798 6.39573 6.91798 6.88388 6.42982L10.773 2.54074Z" fill="white"/>
 	</svg>
 </template>
-
-<script>
-import Vue from 'vue';
-
-export default Vue.extend( {
-	name: 'ChevronDownIcon',
-} );
-</script>

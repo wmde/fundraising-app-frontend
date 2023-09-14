@@ -1,14 +1,14 @@
-import { mount, Wrapper } from '@vue/test-utils';
-import AutocompleteCountry from '@/components/shared/form_inputs/AutocompleteCountry.vue';
-import countries from '@/../tests/data/countries';
-import Vue, { nextTick } from 'vue';
+import { DOMWrapper, mount } from '@vue/test-utils';
+import AutocompleteCountry from '@src/components/shared/form_inputs/AutocompleteCountry.vue';
+import countries from '@src/../tests/data/countries';
+import { nextTick } from 'vue';
 
 describe( 'AutocompleteCountry.vue', () => {
 
 	const getWrapper = ( initialCountryCode: string = '' ) => {
 		return mount( AutocompleteCountry, {
-			propsData: {
-				value: undefined,
+			props: {
+				modelValue: undefined,
 				countries,
 				initialCountryCode,
 			},
@@ -17,7 +17,7 @@ describe( 'AutocompleteCountry.vue', () => {
 
 	// TODO: Jest has a trigger focus bug
 	//  Replace this with `await field.trigger( 'focus' )` when we move to vitest
-	const focusField = ( field: Wrapper<Vue, HTMLInputElement> ): Promise<void> => {
+	const focusField = ( field: DOMWrapper<HTMLInputElement> ): Promise<void> => {
 		field.element.dispatchEvent( new FocusEvent( 'focus' ) );
 		return nextTick();
 	};
@@ -28,7 +28,7 @@ describe( 'AutocompleteCountry.vue', () => {
 		await nextTick();
 
 		expect( field.element.value ).toBe( countries[ 0 ].countryFullName );
-		expect( wrapper.emitted( 'initialised' )[ 0 ][ 0 ] ).toBe( countries[ 0 ] );
+		expect( wrapper.emitted( 'initialised' )[ 0 ][ 0 ] ).toStrictEqual( countries[ 0 ] );
 	} );
 
 	it( 'sets country on mount when a country code is provided', async () => {
@@ -37,7 +37,7 @@ describe( 'AutocompleteCountry.vue', () => {
 		await nextTick();
 
 		expect( field.element.value ).toBe( countries[ 1 ].countryFullName );
-		expect( wrapper.emitted( 'initialised' )[ 0 ][ 0 ] ).toBe( countries[ 1 ] );
+		expect( wrapper.emitted( 'initialised' )[ 0 ][ 0 ] ).toStrictEqual( countries[ 1 ] );
 	} );
 
 	it( 'emits undefined when the inputted name does not exist', async () => {
@@ -46,7 +46,7 @@ describe( 'AutocompleteCountry.vue', () => {
 
 		await field.setValue( 'NOT A COUNTRY' );
 
-		expect( wrapper.emitted( 'input' )[ 0 ][ 0 ] ).toBe( undefined );
+		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( undefined );
 	} );
 
 	it( 'emits country when the inputted name exists', async () => {
@@ -55,7 +55,7 @@ describe( 'AutocompleteCountry.vue', () => {
 
 		await field.setValue( 'Ireland' );
 
-		expect( wrapper.emitted( 'input' )[ 0 ][ 0 ] ).toBe( countries[ 2 ] );
+		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( countries[ 2 ] );
 	} );
 
 	it( 'shows the autocomplete when the input field is focused', async () => {

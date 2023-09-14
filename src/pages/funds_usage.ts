@@ -1,38 +1,19 @@
 import 'core-js/stable';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import PageDataInitializer from '@/page_data_initializer';
-import { createI18n } from '@/locales';
-import App from '@/components/App.vue';
+import { createVueApp } from '@src/createVueApp';
+import PageDataInitializer from '@src/page_data_initializer';
+import App from '@src/components/App.vue';
+import UseOfFunds from '@src/components/pages/UseOfFunds.vue';
 
-import Component from '@/components/pages/UseOfFunds.vue';
-
-const PAGE_IDENTIFIER = 'use-of-funds',
-	IS_FULLWIDTH_PAGE = true;
-
-Vue.config.productionTip = false;
-Vue.use( VueI18n );
-
+const PAGE_IDENTIFIER = 'use-of-funds';
 const pageData = new PageDataInitializer<any>( '#appdata' );
 
-const i18n = createI18n( pageData.messages );
-
-new Vue( {
-	i18n,
-	render: h => h( App, {
-		props: {
-			assetsPath: pageData.assetsPath,
-			pageIdentifier: PAGE_IDENTIFIER,
-			isFullWidth: IS_FULLWIDTH_PAGE,
-			locale: i18n.locale,
-		},
+createVueApp( App, pageData.messages, {
+	assetsPath: pageData.assetsPath,
+	isFullWidth: true,
+	pageIdentifier: PAGE_IDENTIFIER,
+	page: UseOfFunds,
+	pageProps: {
+		content: pageData.applicationVars,
+		assetsPath: pageData.assetsPath,
 	},
-	[
-		h( Component, {
-			props: {
-				content: pageData.applicationVars,
-				assetsPath: pageData.assetsPath,
-			},
-		} ),
-	] ),
-} ).$mount( '#app' );
+} ).mount( '#app' );

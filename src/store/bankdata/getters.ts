@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex';
-import { BankAccount } from '@/view_models/BankAccount';
-import { Validity } from '@/view_models/Validity';
+import { BankAccount } from '@src/view_models/BankAccount';
+import { Validity } from '@src/view_models/Validity';
 
 export const getters: GetterTree<BankAccount, any> = {
 	bankDataIsInvalid: function ( state: BankAccount ): boolean {

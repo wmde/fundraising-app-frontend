@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import BankData from '@/components/BankData.vue';
+import BankData from '@src/components/BankData.vue';
 export default {
 	name: 'Footer',
 	components: { BankData },

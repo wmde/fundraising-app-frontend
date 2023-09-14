@@ -13,11 +13,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Supporter from '@/components/pages/supporters/Supporter.vue';
-import { SupportersData, Supporter as SupporterInfo } from '@/view_models/supporters';
+import { defineComponent } from 'vue';
+import Supporter from '@src/components/pages/supporters/Supporter.vue';
+import { Supporter as SupporterInfo, SupportersData } from '@src/view_models/supporters';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Supporters',
 	components: {
 		Supporter,

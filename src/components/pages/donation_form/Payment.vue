@@ -1,45 +1,45 @@
 <template>
 	<div class="payment-section">
 		<amount-selection
-				:payment-amounts="paymentAmounts"
-				:amount="amount"
-				:title="$t('donation_form_payment_amount_title')"
-				:error="showErrorMessage"
-				v-on:amount-selected="sendAmountToStore"
-		></amount-selection>
+			:payment-amounts="paymentAmounts"
+			:amount="amount"
+			:title="$t('donation_form_payment_amount_title')"
+			:error="showErrorMessage"
+			v-on:amount-selected="sendAmountToStore"
+		/>
 		<payment-interval
-				class="has-margin-top-36"
-				:payment-intervals="paymentIntervals"
-				:current-interval="interval"
-				:title="$t('donation_form_payment_interval_title')"
-				:disabled-payment-intervals="disabledPaymentIntervals"
-				v-on:interval-selected="sendIntervalToStore"
-		></payment-interval>
+			class="has-margin-top-36"
+			:payment-intervals="paymentIntervals"
+			:current-interval="interval"
+			:title="$t('donation_form_payment_interval_title')"
+			:disabled-payment-intervals="disabledPaymentIntervals"
+			v-on:interval-selected="sendIntervalToStore"
+		/>
 		<payment-type
-				class="has-margin-top-36"
-				:current-type="type"
-				:payment-types="paymentTypes"
-				:error="typeIsValid ? '' : $t('donation_form_payment_type_error')"
-				:title="$t('donation_form_payment_type_title')"
-				:disabled-payment-types="disabledPaymentTypes"
-				v-on:payment-type-selected="sendTypeToStore"
-		></payment-type>
+			class="has-margin-top-36"
+			:current-type="type"
+			:payment-types="paymentTypes"
+			:error="typeIsValid ? '' : $t('donation_form_payment_type_error')"
+			:title="$t('donation_form_payment_type_title')"
+			:disabled-payment-types="disabledPaymentTypes"
+			v-on:payment-type-selected="sendTypeToStore"
+		/>
 	</div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import AmountSelection from '@/components/shared/AmountSelection.vue';
-import PaymentInterval from '@/components/shared/PaymentInterval.vue';
-import PaymentType from '@/components/pages/donation_form/PaymentType.vue';
-import { action } from '@/store/util';
-import { NS_ADDRESS, NS_PAYMENT } from '@/store/namespaces';
-import { setAmount, setInterval, setType } from '@/store/payment/actionTypes';
+import { defineComponent } from 'vue';
+import AmountSelection from '@src/components/shared/AmountSelection.vue';
+import PaymentInterval from '@src/components/shared/PaymentInterval.vue';
+import PaymentType from '@src/components/pages/donation_form/PaymentType.vue';
+import { action } from '@src/store/util';
+import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
+import { setAmount, setInterval, setType } from '@src/store/payment/actionTypes';
 import { mapGetters, mapState } from 'vuex';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { AmountValidity } from '@/view_models/Payment';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AmountValidity } from '@src/view_models/Payment';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'Payment',
 	components: {
 		AmountSelection,

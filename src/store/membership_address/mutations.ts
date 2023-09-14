@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { Helper } from '@/store/util';
+import { Helper } from '@src/store/util';
 import {
 	VALIDATE_INPUT,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -15,12 +15,12 @@ import {
 	SET_INCENTIVES,
 	SET_MEMBERSHIP_TYPE,
 	SET_MEMBERSHIP_TYPE_VALIDITY,
-} from '@/store/membership_address/mutationTypes';
-import { REQUIRED_FIELDS } from '@/store/membership_address/constants';
-import { Validity } from '@/view_models/Validity';
-import { MembershipAddressState, InputField } from '@/view_models/Address';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
+} from '@src/store/membership_address/mutationTypes';
+import { REQUIRED_FIELDS } from '@src/store/membership_address/constants';
+import { Validity } from '@src/view_models/Validity';
+import { MembershipAddressState, InputField } from '@src/view_models/Address';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 
 export const mutations: MutationTree<MembershipAddressState> = {
 	[ VALIDATE_INPUT ]( state: MembershipAddressState, field: InputField ) {

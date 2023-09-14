@@ -1,36 +1,26 @@
 import 'core-js/stable';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import PageDataInitializer from '@/page_data_initializer';
-import { createI18n } from '@/locales';
-import { createStore } from '@/store/donor_update_store';
-import { clearPersistentData } from '@/store/create_data_persister';
-import LocalStorageRepository from '@/store/LocalStorageRepository';
-import App from '@/components/App.vue';
-import DonationConfirmation from '@/components/pages/DonationConfirmation.vue';
-import { Country } from '@/view_models/Country';
-import { Donation } from '@/view_models/Donation';
-import { AddressValidation } from '@/view_models/Validation';
-import { FeatureTogglePlugin } from '@/FeatureToggle';
-import { ApiCityAutocompleteResource } from '@/CityAutocompleteResource';
-import { Salutation } from '@/view_models/Salutation';
-import { trackGoal } from '@/tracking';
-import { action } from '@/store/util';
-import { NS_ADDRESS } from '@/store/namespaces';
-import { initializeAddress } from '@/store/address/actionTypes';
-import { addressTypeFromName } from '@/view_models/AddressTypeModel';
-import { Address } from '@/view_models/Address';
-import DonorResource from '@/api/DonorResource';
-import { Validity } from '@/view_models/Validity';
+import { createVueApp } from '@src/createVueApp';
+import { createStore } from '@src/store/donor_update_store';
 
-const PAGE_IDENTIFIER = 'donation-confirmation',
-	IS_FULLWIDTH_PAGE = true,
-	LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_application' ];
+import DonorResource from '@src/api/DonorResource';
+import LocalStorageRepository from '@src/store/LocalStorageRepository';
+import PageDataInitializer from '@src/page_data_initializer';
+import { Address } from '@src/view_models/Address';
+import { AddressValidation } from '@src/view_models/Validation';
+import { Country } from '@src/view_models/Country';
+import { Donation } from '@src/view_models/Donation';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { Salutation } from '@src/view_models/Salutation';
+import { Validity } from '@src/view_models/Validity';
+import { action } from '@src/store/util';
+import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
+import { clearPersistentData } from '@src/store/create_data_persister';
+import { createFeatureToggle } from '@src/createFeatureToggle';
+import { initializeAddress } from '@src/store/address/actionTypes';
+import { trackGoal } from '@src/tracking';
 
-Vue.config.productionTip = false;
-Vue.use( VueI18n );
-
-clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
+import App from '@src/components/App.vue';
+import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
 
 interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },
@@ -43,16 +33,15 @@ interface DonationConfirmationModel {
 	piwik: { donationConfirmationGoalId: number; },
 }
 
+const PAGE_IDENTIFIER = 'donation-confirmation';
+const LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_application' ];
 const pageData = new PageDataInitializer<DonationConfirmationModel>( '#appdata' );
 const store = createStore();
+const address = pageData.applicationVars.address;
 
-const i18n = createI18n( pageData.messages );
-
+clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
-Vue.use( FeatureTogglePlugin, { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } );
-
-const address = pageData.applicationVars.address;
 store.dispatch(
 	action( NS_ADDRESS, initializeAddress ),
 	{
@@ -72,36 +61,26 @@ store.dispatch(
 		],
 	}
 ).then( () => {
-	new Vue( {
-		store,
-		i18n,
-		provide: {
-			cityAutocompleteResource: new ApiCityAutocompleteResource(),
+	const app = createVueApp( App, pageData.messages, {
+		isFullWidth: true,
+		assetsPath: pageData.assetsPath,
+		pageIdentifier: PAGE_IDENTIFIER,
+		page: DonationConfirmation,
+		pageProps: {
+			donation: pageData.applicationVars.donation,
+			address: address,
+			addressType: pageData.applicationVars.addressType,
+			countries: pageData.applicationVars.countries,
+			salutations: pageData.applicationVars.salutations,
+			validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+			validateEmailUrl: pageData.applicationVars.urls.validateEmail,
+			cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
+			postCommentUrl: pageData.applicationVars.urls.postComment,
+			addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+			donorResource: new DonorResource( pageData.applicationVars.urls.updateDonor ),
 		},
-		render: h => h( App, {
-			props: {
-				assetsPath: pageData.assetsPath,
-				pageIdentifier: PAGE_IDENTIFIER,
-				isFullWidth: IS_FULLWIDTH_PAGE,
-				locale: i18n.locale,
-			},
-		},
-		[
-			h( DonationConfirmation, {
-				props: {
-					donation: pageData.applicationVars.donation,
-					address: address,
-					addressType: pageData.applicationVars.addressType,
-					countries: pageData.applicationVars.countries,
-					salutations: pageData.applicationVars.salutations,
-					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-					validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-					cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
-					postCommentUrl: pageData.applicationVars.urls.postComment,
-					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-					donorResource: new DonorResource( pageData.applicationVars.urls.updateDonor ),
-				},
-			} ),
-		] ),
-	} ).$mount( '#app' );
+	} );
+	app.use( store );
+	app.component( 'FeatureToggle', createFeatureToggle( { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } ) );
+	app.mount( '#app' );
 } );

@@ -38,13 +38,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import FeedbackBoxContent from '@/components/pages/donation_form/FeedbackOverlay/FeedbackBoxContent.vue';
-import ChevronUpIcon from '@/components/pages/donation_form/FeedbackOverlay/ChevronUpIcon.vue';
-import ChevronDownIcon from '@/components/pages/donation_form/FeedbackOverlay/ChevronDownIcon.vue';
-import ChevronRightIcon from '@/components/pages/donation_form/FeedbackOverlay/ChevronRightIcon.vue';
+import { defineComponent } from 'vue';
+import FeedbackBoxContent from '@src/components/pages/donation_form/FeedbackOverlay/FeedbackBoxContent.vue';
+import ChevronUpIcon from '@src/components/pages/donation_form/FeedbackOverlay/ChevronUpIcon.vue';
+import ChevronDownIcon from '@src/components/pages/donation_form/FeedbackOverlay/ChevronDownIcon.vue';
+import ChevronRightIcon from '@src/components/pages/donation_form/FeedbackOverlay/ChevronRightIcon.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'FeedbackBox',
 	components: { ChevronRightIcon, ChevronDownIcon, ChevronUpIcon, FeedbackBoxContent },
 	data() {

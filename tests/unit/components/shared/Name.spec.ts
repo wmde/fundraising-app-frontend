@@ -1,8 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Name from '@/components/shared/Name.vue';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-
-const localVue = createLocalVue();
+import { mount, VueWrapper } from '@vue/test-utils';
+import Name from '@src/components/shared/Name.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { nextTick } from 'vue';
 
 const formData = {
 	salutation: {
@@ -61,52 +60,50 @@ const formData = {
 	},
 };
 
-function newTestProperties( overrides: Object ) {
-	return Object.assign(
-		{
-			showError: {
-				salutation: false,
-				companyName: false,
-				firstName: false,
-				lastName: false,
-				street: false,
-				city: false,
-				postcode: false,
-			},
-			formData: formData,
-			addressType: AddressTypeModel.PERSON,
-			salutations: [
-				{
-					label: 'Mr',
-					value: 'Mr',
-				},
-				{
-					label: 'Ms',
-					value: 'Ms',
-				},
-			],
-		},
-		overrides
-	);
-}
-
 describe( 'Name.vue', () => {
 
-	it( 'emits field changed event on blur', () => {
-		const wrapper = mount( Name, {
-				localVue,
-				mocks: {
-					$t: ( key: string ) => key,
+	const getWrapper = ( overrides: Object ): VueWrapper<any> => {
+		return mount( Name, {
+			props: Object.assign(
+				{
+					showError: {
+						salutation: false,
+						companyName: false,
+						firstName: false,
+						lastName: false,
+						street: false,
+						city: false,
+						postcode: false,
+					},
+					formData: formData,
+					addressType: AddressTypeModel.PERSON,
+					salutations: [
+						{
+							label: 'Mr',
+							value: 'Mr',
+						},
+						{
+							label: 'Ms',
+							value: 'Ms',
+						},
+					],
 				},
-				propsData: newTestProperties( {} ),
-			} ),
-			event = 'field-changed',
-			first = wrapper.find( '#first-name' );
+				overrides
+			),
+		} );
+	};
+
+	it( 'emits field changed event on blur', () => {
+		const wrapper = getWrapper( {} );
+		const event = 'field-changed';
+		const first = wrapper.find( '#first-name' );
+
 		first.trigger( 'blur' );
+
 		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ 'firstName' ] );
 	} );
 
-	it( 'adjusts salutation locale is needed', async () => {
+	it( 'adjusts salutation locale if needed', async () => {
 		const testFormData = formData;
 		testFormData.salutation = {
 			name: 'salutation',
@@ -115,16 +112,10 @@ describe( 'Name.vue', () => {
 			optionalField: false,
 		};
 
-		const wrapper = mount( Name, {
-				localVue,
-				mocks: {
-					$t: ( key: string ) => key,
-				},
-				propsData: newTestProperties( { formData: testFormData } ),
-			} ),
-			salutation = wrapper.find( '#salutation-Mr input' );
+		const wrapper = getWrapper( { formData: testFormData } );
 
-		await wrapper.vm.$nextTick();
-		expect( ( salutation.element as HTMLInputElement ).checked ).toBeTruthy();
+		await nextTick();
+
+		expect( wrapper.find<HTMLInputElement>( '#salutation-Mr input' ).element.checked ).toBeTruthy();
 	} );
 } );

@@ -1,10 +1,10 @@
-import { createStore } from '@/store/donation_store';
-import { Validity } from '@/view_models/Validity';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { action } from '@/store/util';
-import { NS_ADDRESS, NS_PAYMENT } from '@/store/namespaces';
-import { initializeAddress } from '@/store/address/actionTypes';
-import { initializePayment } from '@/store/payment/actionTypes';
+import { createStore } from '@src/store/donation_store';
+import { Validity } from '@src/view_models/Validity';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { action } from '@src/store/util';
+import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
+import { initializeAddress } from '@src/store/address/actionTypes';
+import { initializePayment } from '@src/store/payment/actionTypes';
 
 describe( 'Donation Store', () => {
 

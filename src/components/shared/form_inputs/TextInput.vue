@@ -43,7 +43,7 @@ import { defineComponent } from 'vue';
 export default defineComponent( {
 	name: 'TextInput',
 	props: {
-		value: [ String, Number ],
+		modelValue: [ String, Number ],
 		autocomplete: String,
 		maxlength: [ Number, String ],
 		hasError: Boolean,
@@ -58,7 +58,7 @@ export default defineComponent( {
 	data() {
 		return {
 			newAutocomplete: this.autocomplete || 'on',
-			newValue: this.value,
+			newValue: this.modelValue,
 		};
 	},
 	computed: {
@@ -68,7 +68,7 @@ export default defineComponent( {
 			},
 			set( value: any ) {
 				this.newValue = value;
-				this.$emit( 'input', value );
+				this.$emit( 'update:modelValue', value );
 			},
 		},
 	},
@@ -87,8 +87,8 @@ export default defineComponent( {
 		},
 	},
 	watch: {
-		value( value: String|Number ) {
-			this.newValue = value;
+		modelValue( modelValue: String|Number ) {
+			this.newValue = modelValue;
 		},
 	},
 } );

@@ -12,11 +12,11 @@ import {
 	validateCountry,
 	validateDateOfBirth,
 	validateEmail,
-} from '@/store/membership_address/actionTypes';
-import { CountryValidationFields, InitialMembershipAddressValues, InputField, MembershipAddressState } from '@/view_models/Address';
-import { ValidationResponse } from '@/store/ValidationResponse';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
-import { MembershipTypeModel } from '@/view_models/MembershipTypeModel';
+} from '@src/store/membership_address/actionTypes';
+import { CountryValidationFields, InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
+import { ValidationResponse } from '@src/store/ValidationResponse';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import {
 	BEGIN_ADDRESS_VALIDATION,
 	BEGIN_EMAIL_VALIDATION,
@@ -31,12 +31,12 @@ import {
 	SET_MEMBERSHIP_TYPE_VALIDITY,
 	SET_RECEIPT,
 	VALIDATE_INPUT,
-} from '@/store/membership_address/mutationTypes';
-import { Validity } from '@/view_models/Validity';
-import { FieldInitialization } from '@/view_models/FieldInitialization';
-import { resetFeeForAddressType, validateFee } from '@/store/membership_fee/actionTypes';
-import { NS_MEMBERSHIP_FEE } from '@/store/namespaces';
-import { action } from '@/store/util';
+} from '@src/store/membership_address/mutationTypes';
+import { Validity } from '@src/view_models/Validity';
+import { FieldInitialization } from '@src/view_models/FieldInitialization';
+import { resetFeeForAddressType, validateFee } from '@src/store/membership_fee/actionTypes';
+import { NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { action } from '@src/store/util';
 
 export const actions = {
 	[ initializeAddress ]( context: ActionContext<MembershipAddressState, any>, initialData: InitialMembershipAddressValues ) {

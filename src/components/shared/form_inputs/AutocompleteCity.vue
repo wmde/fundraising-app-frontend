@@ -24,24 +24,23 @@
 </template>
 
 <script lang="ts">
-import Vue, { nextTick } from 'vue';
-import { onMounted, ref, watch, computed, inject } from 'vue';
-import { CityAutocompleteResource, NullCityAutocompleteResource } from '@/CityAutocompleteResource';
-import TextInput from '@/components/shared/form_inputs/TextInput.vue';
-import { useCitiesResource } from '@/components/shared/form_inputs/useCitiesResource';
+import { computed, defineComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/CityAutocompleteResource';
+import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
+import { useCitiesResource } from '@src/components/shared/form_inputs/useCitiesResource';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AutocompleteCity',
 	components: { TextInput },
 	props: {
 		examplePlaceholder: String,
-		value: String,
+		modelValue: String,
 		hasError: Boolean,
 		postcode: String,
 	},
 	setup( props, { emit } ) {
 		const autocompleteIsActive = ref<Boolean>( false );
-		const city = ref<string>( props.value );
+		const city = ref<string>( props.modelValue );
 		const { cities, fetchCitiesForPostcode } = useCitiesResource( inject<CityAutocompleteResource>( 'cityAutocompleteResource', NullCityAutocompleteResource ) );
 
 		const placeholder = computed( () => {
@@ -78,7 +77,7 @@ export default Vue.extend( {
 		} );
 
 		watch( city, ( newCity: string ) => {
-			emit( 'input', newCity );
+			emit( 'update:modelValue', newCity );
 		} );
 
 		return {

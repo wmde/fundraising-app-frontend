@@ -3,9 +3,9 @@
 </template>
 
 <script lang="ts">
-import Vue, { computed } from 'vue';
+import { computed, defineComponent } from 'vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'ValueEqualsPlaceholderWarning',
 	props: {
 		value: String,

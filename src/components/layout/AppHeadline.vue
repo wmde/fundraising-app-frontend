@@ -6,9 +6,12 @@
 	</div>
 </template>
 
-<script>
-export default {
-	name: 'Headline',
-	props: [ 'isFullWidth' ],
-};
+<script setup lang="ts">
+
+interface Props {
+	isFullWidth: boolean,
+}
+
+defineProps<Props>();
+
 </script>

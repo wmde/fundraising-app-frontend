@@ -1,4 +1,4 @@
-import { Salutation } from '@/view_models/Salutation';
+import { Salutation } from '@src/view_models/Salutation';
 
 /*
 * This is used when a user changes language on the address form

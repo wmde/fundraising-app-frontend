@@ -1,4 +1,4 @@
-import { Validity } from '@/view_models/Validity';
+import { Validity } from '@src/view_models/Validity';
 
 export interface FieldInitialization {
     name: string,

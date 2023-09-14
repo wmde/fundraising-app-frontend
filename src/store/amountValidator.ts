@@ -1,4 +1,4 @@
-import { AmountValidity } from '@/view_models/Payment';
+import { AmountValidity } from '@src/view_models/Payment';
 
 const minCentAmount = 100;
 const maxCentAmount = 9999999;

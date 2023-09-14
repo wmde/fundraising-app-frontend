@@ -43,19 +43,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import MembershipSummary from '@/components/shared/MembershipSummary.vue';
-import AddressFields from '@/components/pages/membership_form/Address.vue';
-import SubmitValues from '@/components/pages/membership_form/SubmitValues.vue';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@/store/namespaces';
-import { AddressValidation } from '@/view_models/Validation';
-import { Salutation } from '@/view_models/Salutation';
-import { membershipTypeName } from '@/view_models/MembershipTypeModel';
-import { addressTypeName } from '@/view_models/AddressTypeModel';
+import { defineComponent } from 'vue';
+import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
+import AddressFields from '@src/components/pages/membership_form/Address.vue';
+import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { AddressValidation } from '@src/view_models/Validation';
+import { Salutation } from '@src/view_models/Salutation';
+import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
+import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import { mapGetters } from 'vuex';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AddressPage',
 	components: {
 		FunButton,

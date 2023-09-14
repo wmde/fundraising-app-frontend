@@ -18,12 +18,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Donation } from '@/view_models/Donation';
-import WarningIcon from '@/components/shared/icons/WarningIcon.vue';
-import FunButton from '@/components/shared/form_inputs/FunButton.vue';
+import { defineComponent } from 'vue';
+import { Donation } from '@src/view_models/Donation';
+import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
+import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'MembershipInfo',
 	components: { FunButton, WarningIcon },
 	props: {

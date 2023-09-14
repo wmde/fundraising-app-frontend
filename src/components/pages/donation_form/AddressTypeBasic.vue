@@ -37,9 +37,9 @@
 </template>
 
 <script lang="ts">
-import { addressTypeFromName, AddressTypeModel } from '@/view_models/AddressTypeModel';
+import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { computed, defineComponent, PropType, Ref, ref, watch } from 'vue';
-import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
+import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'AddressTypeBasic',

@@ -1,5 +1,5 @@
 import { ref, Ref, watch } from 'vue';
-import { Country } from '@/view_models/Country';
+import { Country } from '@src/view_models/Country';
 
 type ReturnType = { country: Ref<Country|undefined>, countryName: Ref<string>, initialisedWithValue: Boolean };
 

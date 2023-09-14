@@ -1,26 +1,21 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuex from 'vuex';
-import PaymentType from '@/components/pages/donation_form/PaymentType.vue';
-import { createStore } from '@/store/donation_store';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount, VueWrapper } from '@vue/test-utils';
+import PaymentType from '@src/components/pages/donation_form/PaymentType.vue';
+import { nextTick } from 'vue';
 
 const testPaymentMethods = [ 'BEZ', 'PPL', 'UEB' ];
 
-describe( 'PaymentType', () => {
+describe( 'PaymentType.vue', () => {
 
-	it( 'emits new payment type when it is selected', async () => {
-		const wrapper = mount( PaymentType, {
-			localVue,
-			propsData: {
+	const getWrapper = (): VueWrapper<any> => {
+		return mount( PaymentType, {
+			props: {
 				paymentTypes: testPaymentMethods,
 			},
-			store: createStore(),
-			mocks: {
-				$t: () => {},
-			},
 		} );
+	};
+
+	it( 'emits new payment type when it is selected', async () => {
+		const wrapper = getWrapper();
 
 		await wrapper.find( '#payment-ueb input' ).trigger( 'change' );
 
@@ -29,26 +24,17 @@ describe( 'PaymentType', () => {
 	} );
 
 	it( 'updates the selected type when the property changes', async () => {
-		const wrapper = mount( PaymentType, {
-			localVue,
-			propsData: {
-				paymentTypes: testPaymentMethods,
-			},
-			store: createStore(),
-			mocks: {
-				$t: () => {},
-			},
-		} );
-		const pplInput = await wrapper.find( '#payment-ppl input' );
+		const wrapper = getWrapper();
+		const pplInput = wrapper.find<HTMLInputElement>( '#payment-ppl input' );
 
 		// Check that PPL is not checked by default, because we passed empty props
-		expect( ( pplInput.element as HTMLInputElement ).checked ).toBeFalsy();
+		expect( pplInput.element.checked ).toBeFalsy();
 
 		// explicitly simulate a prop change from the parent of the wrapper
-		wrapper.setProps( { currentType: 'PPL' } );
-		await wrapper.vm.$nextTick();
+		await wrapper.setProps( { currentType: 'PPL' } );
+		await nextTick();
 
-		expect( ( pplInput.element as HTMLInputElement ).checked ).toBeTruthy();
+		expect( pplInput.element.checked ).toBeTruthy();
 	} );
 
 } );

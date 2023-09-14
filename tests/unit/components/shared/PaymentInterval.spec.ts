@@ -1,26 +1,16 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuex from 'vuex';
-import PaymentInterval from '@/components/shared/PaymentInterval.vue';
-import { createStore } from '@/store/donation_store';
-
-const localVue = createLocalVue();
-localVue.use( Vuex );
+import { mount } from '@vue/test-utils';
+import PaymentInterval from '@src/components/shared/PaymentInterval.vue';
 
 const YEARLY = 12;
 const testIntervals: Array<number> = [ 0, 1, 3, 6, YEARLY ];
 
-describe( 'PaymentInterval', () => {
+describe( 'PaymentInterval.vue', () => {
 
 	it( 'emits new interval when it is selected', async () => {
 		const wrapper = mount( PaymentInterval, {
-			localVue,
-			propsData: {
+			props: {
 				currentInterval: '0',
 				paymentIntervals: testIntervals,
-			},
-			store: createStore(),
-			mocks: {
-				$t: () => {},
 			},
 		} );
 
@@ -32,13 +22,8 @@ describe( 'PaymentInterval', () => {
 
 	it( 'updates the selected interval when the incoming property changes', async () => {
 		const wrapper = mount( PaymentInterval, {
-			localVue,
-			propsData: {
+			props: {
 				paymentIntervals: testIntervals,
-			},
-			store: createStore(),
-			mocks: {
-				$t: () => {},
 			},
 		} );
 

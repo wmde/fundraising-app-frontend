@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex';
-import { MembershipFee } from '@/view_models/MembershipFee';
-import { Validity } from '@/view_models/Validity';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import { MEMBERSHIP_MINIMUM_CENTS_FEE_COMPANY, MEMBERSHIP_MINIMUM_CENTS_FEE_PERSONAL } from '@/store/membership_fee/constants';
+import { MembershipFee } from '@src/view_models/MembershipFee';
+import { Validity } from '@src/view_models/Validity';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { MEMBERSHIP_MINIMUM_CENTS_FEE_COMPANY, MEMBERSHIP_MINIMUM_CENTS_FEE_PERSONAL } from '@src/store/membership_fee/constants';
 
 export const getters: GetterTree<MembershipFee, any> = {
 	feeIsValid: function ( state: MembershipFee ): boolean {

@@ -22,11 +22,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
+import { defineComponent } from 'vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'AddressType',
 	components: { RadioInput },
 	data: function () {

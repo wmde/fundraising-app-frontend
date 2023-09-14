@@ -1,4 +1,4 @@
-import CampaignParameters, { campaignKey, cookieKey, defaultKeyword, keywordKey } from '@/util/CampaignParameters';
+import CampaignParameters, { campaignKey, cookieKey, defaultKeyword, keywordKey } from '@src/util/CampaignParameters';
 import Cookies from 'js-cookie';
 
 describe( 'FilteredUrlMembershipValues', function () {

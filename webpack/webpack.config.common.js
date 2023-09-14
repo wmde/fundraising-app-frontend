@@ -1,9 +1,10 @@
 'use strict';
-
+const webpack = require( 'webpack' );
 const ForkTsCheckerWebpackPlugin = require( 'fork-ts-checker-webpack-plugin' );
 const { VueLoaderPlugin } = require( 'vue-loader' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
 const helpers = require( './helpers' );
+const path = require( 'path' );
 const isDev = process.env.NODE_ENV === 'development';
 
 const webpackConfig = {
@@ -28,7 +29,7 @@ const webpackConfig = {
 		'system_message': './src/pages/system_message.ts',
 		'supporters': './src/pages/supporters.ts',
 		'update_address': './src/pages/update_address.ts',
-		'subscription_confirmation': './src/pages/subscription_confirmation.ts'
+		'subscription_confirmation': './src/pages/subscription_confirmation.ts',
 	},
 	output: {
 		path: helpers.root( 'dist' ),
@@ -39,8 +40,7 @@ const webpackConfig = {
 	resolve: {
 		extensions: [ '.ts', '.js', '.vue' ],
 		alias: {
-			'vue$': isDev ? 'vue/dist/vue.runtime.js' : 'vue/dist/vue.runtime.min.js',
-			'@': helpers.root( 'src' ),
+			'@src': path.resolve( __dirname, '../src' ),
 		},
 	},
 	module: {
@@ -48,7 +48,6 @@ const webpackConfig = {
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
-				include: [ helpers.root( 'src' ) ],
 			},
 			{
 				test: /\.js$/,
@@ -56,31 +55,20 @@ const webpackConfig = {
 				include: [ helpers.root( 'src' ) ],
 			},
 			{
-				test: /\.tsx?$/,
-				use: [
-					{ loader: 'babel-loader' },
-					{
-						loader: 'ts-loader',
-						options: {
-							appendTsSuffixTo: [ /\.vue$/ ],
-							// Type check happens in ForkTsCheckerWebpackPlugin
-							transpileOnly: true,
-						},
-					},
-				],
-				exclude: /node_modules/,
+				test: /\.ts$/,
+				use: [ 'babel-loader', { loader: 'ts-loader', options: { appendTsSuffixTo: [ /\.vue$/ ] } } ],
 			},
 			{
 				test: /\.css$/,
 				use: [
-					{ loader: isDev ? 'vue-style-loader' : MiniCSSExtractPlugin.loader },
+					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
 					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
 				],
 			},
 			{
 				test: /\.scss$/,
 				use: [
-					{ loader: isDev ? 'vue-style-loader' : MiniCSSExtractPlugin.loader },
+					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
 					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
 					{ loader: 'sass-loader', options: { sourceMap: isDev } },
 				],
@@ -88,18 +76,14 @@ const webpackConfig = {
 			{
 				test: /\.sass$/,
 				use: [
-					{ loader: isDev ? 'vue-style-loader' : MiniCSSExtractPlugin.loader },
+					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
 					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
 					{ loader: 'sass-loader', options: { sourceMap: isDev } },
 				],
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf|ico)$/i,
-				use: [
-					{
-						loader: 'file-loader',
-					},
-				],
+				type: 'asset/resource',
 			},
 		],
 	},
@@ -130,6 +114,9 @@ const webpackConfig = {
 					vue: true,
 				},
 			},
+		} ),
+		new webpack.ProvidePlugin( {
+			process: 'process/browser',
 		} ),
 	],
 };

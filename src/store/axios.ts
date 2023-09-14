@@ -1,7 +1,7 @@
 import { ActionContext } from 'vuex';
-import { MembershipFee } from '@/view_models/MembershipFee';
-import { AddressTypeModel, addressTypeName } from '@/view_models/AddressTypeModel';
-import { ValidationResponse } from '@/store/ValidationResponse';
+import { MembershipFee } from '@src/view_models/MembershipFee';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { ValidationResponse } from '@src/store/ValidationResponse';
 import axios, { AxiosResponse } from 'axios';
 
 // Membership fee call

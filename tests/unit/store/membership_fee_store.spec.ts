@@ -1,13 +1,13 @@
-import { getters } from '@/store/membership_fee/getters';
-import { actions } from '@/store/membership_fee/actions';
-import { mutations } from '@/store/membership_fee/mutations';
-import { IntervalData, MembershipFee } from '@/view_models/MembershipFee';
-import { Validity } from '@/view_models/Validity';
-import { markEmptyFeeAsInvalid, validateFee } from '@/store/membership_fee/actionTypes';
-import { MARK_EMPTY_FEE_INVALID, SET_FEE, SET_FEE_VALIDITY, SET_INTERVAL, SET_INTERVAL_VALIDITY } from '@/store/membership_fee/mutationTypes';
+import { getters } from '@src/store/membership_fee/getters';
+import { actions } from '@src/store/membership_fee/actions';
+import { mutations } from '@src/store/membership_fee/mutations';
+import { IntervalData, MembershipFee } from '@src/view_models/MembershipFee';
+import { Validity } from '@src/view_models/Validity';
+import { markEmptyFeeAsInvalid, validateFee } from '@src/store/membership_fee/actionTypes';
+import { MARK_EMPTY_FEE_INVALID, SET_FEE, SET_FEE_VALIDITY, SET_INTERVAL, SET_INTERVAL_VALIDITY } from '@src/store/membership_fee/mutationTypes';
 import each from 'jest-each';
 import mockAxios from 'jest-mock-axios';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 function newMinimalStore( overrides: Object ): MembershipFee {
 	return Object.assign(

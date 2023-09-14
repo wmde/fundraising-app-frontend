@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex';
-import { Validity } from '@/view_models/Validity';
-import { Helper } from '@/store/util';
+import { Validity } from '@src/view_models/Validity';
+import { Helper } from '@src/store/util';
 import {
 	BEGIN_ADDRESS_VALIDATION,
 	BEGIN_EMAIL_VALIDATION,
@@ -15,9 +15,9 @@ import {
 	SET_RECEIPT,
 	SET_VALIDITY,
 	VALIDATE_INPUT,
-} from '@/store/address/mutationTypes';
-import { AddressState, InputField } from '@/view_models/Address';
-import { FieldInitialization } from '@/view_models/FieldInitialization';
+} from '@src/store/address/mutationTypes';
+import { AddressState, InputField } from '@src/view_models/Address';
+import { FieldInitialization } from '@src/view_models/FieldInitialization';
 
 export const mutations: MutationTree<AddressState> = {
 	[ VALIDATE_INPUT ]( state: AddressState, field: InputField ) {

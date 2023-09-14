@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { FundsItem } from '@/view_models/useOfFunds';
+import { FundsItem } from '@src/view_models/useOfFunds';
 
 export default defineComponent( {
 	name: 'FundsDistributionInfo',

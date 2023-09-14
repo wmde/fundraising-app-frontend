@@ -35,6 +35,7 @@ class ConsoleLogger implements Logger {
 	}
 }
 
+// TODO: See if there's an alternative to using process.env here
 export default function createLogger(): Logger {
 	switch ( process.env.VUE_APP_LOGGER ) {
 		case LOGGER_CONSOLE:

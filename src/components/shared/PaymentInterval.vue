@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { IntervalData } from '@/view_models/Payment';
-import RadioInput from '@/components/shared/form_inputs/RadioInput.vue';
+import { defineComponent } from 'vue';
+import { IntervalData } from '@src/view_models/Payment';
+import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
 
-export default Vue.extend( {
+export default defineComponent( {
 	name: 'PaymentInterval',
 	components: { RadioInput },
 	data: function (): IntervalData {

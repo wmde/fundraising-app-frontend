@@ -12,26 +12,21 @@
 	</div>
 </template>
 
-<script>
-import Vue from 'vue';
-import FunCheckbox from '@/components/shared/form_inputs/FunCheckbox.vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import FunCheckbox from '@src/components/shared/form_inputs/FunCheckbox.vue';
 
-export default Vue.extend( {
-	name: 'ReceiptOption',
-	components: { FunCheckbox },
-	data: function () {
-		return {
-			receiptNeeded: this.$props.initialReceiptNeeded,
-		};
-	},
-	props: {
-		message: String,
-		initialReceiptNeeded: Boolean,
-	},
-	methods: {
-		setReceipt: function () {
-			this.$emit( 'receipt-changed', this.receiptNeeded );
-		},
-	},
-} );
+interface Props {
+	message: String;
+	initialReceiptNeeded: Boolean;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits( [ 'receipt-changed' ] );
+
+const receiptNeeded = ref<Boolean>( props.initialReceiptNeeded );
+const setReceipt = (): void => {
+	emit( 'receipt-changed', receiptNeeded.value );
+};
+
 </script>

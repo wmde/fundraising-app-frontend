@@ -1,17 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import AddressTypeFull from '@/components/pages/donation_confirmation/AddressTypeFull.vue';
-import { AddressTypeModel } from '@/view_models/AddressTypeModel';
-
-const localVue = createLocalVue();
+import { mount } from '@vue/test-utils';
+import AddressTypeFull from '@src/components/pages/donation_confirmation/AddressTypeFull.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 describe( 'AddressTypeFull.vue', () => {
 	it( 'selected initial address type when given one', async () => {
 		const wrapper = mount( AddressTypeFull, {
-			localVue,
-			mocks: {
-				$t: () => { },
-			},
-			propsData: {
+			props: {
 				initialAddressType: 'person',
 			},
 		} );
@@ -21,11 +15,7 @@ describe( 'AddressTypeFull.vue', () => {
 
 	it( 'emits field changed event when changed', async () => {
 		const wrapper = mount( AddressTypeFull, {
-				localVue,
-				mocks: {
-					$t: () => { },
-				},
-				propsData: {
+				props: {
 					initialAddressType: '',
 				},
 			} ),
