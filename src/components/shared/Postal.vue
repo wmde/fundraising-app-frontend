@@ -61,16 +61,18 @@
 		/>
 	</div>
 
-	<CountryAutocompleteField
-		v-model="formData.country.value"
-		:countries="countries"
-		:was-restored="countryWasRestored"
-		:show-error="showError.country"
-		:error-message="$t('donation_form_country_error')"
-		:label="$t( 'donation_form_country_label' )"
-		:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
-		@field-changed="onCountryFieldChanged"
-	/>
+	<div style="margin-top: 36px;">
+		<CountryAutocompleteField
+			v-model="formData.country.value"
+			:countries="countries"
+			:was-restored="countryWasRestored"
+			:show-error="showError.country"
+			:error-message="$t('donation_form_country_error')"
+			:label="$t( 'donation_form_country_label' )"
+			:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
+			@field-changed="onCountryFieldChanged"
+		/>
+	</div>
 
 </div>
 </template>

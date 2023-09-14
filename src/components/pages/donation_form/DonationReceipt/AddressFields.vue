@@ -3,10 +3,10 @@
 
 		<RadioField
 			v-model="addressType"
-			name="addressType"
+			name="addressTypeSelector"
 			:options="[
 				{ value: AddressTypeModel.PERSON, label: $t( 'donation_form_addresstype_option_private_addresstype' ) },
-				{ value: AddressTypeModel.COMPANY, label: $t( 'donation_form_addresstype_option_company_addresstype' ) },
+				{ value: AddressTypeModel.COMPANY_WITH_CONTACT, label: $t( 'donation_form_addresstype_option_company_addresstype' ) },
 			]"
 			:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
 			:show-error="showAddressTypeError"
@@ -14,8 +14,8 @@
 		/>
 
 		<TextField
-			v-if="addressType === AddressTypeModel.COMPANY"
-			name="company-name"
+			v-if="addressType === AddressTypeModel.COMPANY_WITH_CONTACT"
+			name="companyName"
 			input-id="company-name"
 			v-model="formData.companyName.value"
 			:show-error="showError.companyName"

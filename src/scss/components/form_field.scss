@@ -13,10 +13,13 @@
 	&-select,
 	&-email,
 	&-autocomplete {
-		max-width: map.get( forms.$input, 'max-width' );
+		.control {
+			max-width: map.get( forms.$input, 'max-width' );
+		}
 	}
 
 	&-autocomplete-container {
+		max-width: map.get( forms.$input, 'max-width' );
 		position: relative;
 	}
 

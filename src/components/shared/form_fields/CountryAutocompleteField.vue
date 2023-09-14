@@ -1,7 +1,7 @@
 <template>
 	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
 		<label for="country" class="form-field-label">{{ label }}</label>
-		<div class="autocomplete control">
+		<div class="form-field-autocomplete-container">
 			<TextFormInput
 				v-model="countryName"
 				input-type="text"

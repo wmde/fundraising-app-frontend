@@ -9,6 +9,7 @@
 		>
 			<input
 				v-model="inputModel"
+				:value="inputModel"
 				type="checkbox"
 				ref="inputRef"
 				:name="name"
