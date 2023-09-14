@@ -2,7 +2,7 @@
 	<div class="form-field form-field-checkbox">
 		<CheckboxSingleFormInput
 			v-model="fieldModel"
-			name="newsletter"
+			name="info"
 			input-id="newsletter"
 			@update:modelValue="onUpdateModel"
 		>

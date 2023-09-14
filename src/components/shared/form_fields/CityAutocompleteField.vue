@@ -14,7 +14,7 @@
 				@blur="onBlur"
 			/>
 			<transition name="fade">
-				<div class="dropdown-menu" v-show="autocompleteIsActive">
+				<div class="dropdown-menu" v-show="autocompleteIsActive && cities.length > 0">
 					<div class="dropdown-content">
 						<template v-for="city in cities">
 							<a class="dropdown-item" role="button" tabindex="0" @click.stop="onSelectItem( city )">

@@ -1,6 +1,7 @@
 <template>
 	<div class="address-page">
 		<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
+
 		<PaymentSummary
 			v-if="paymentWasInitialized"
 			:amount="paymentSummary.amount"
@@ -9,7 +10,7 @@
 			@previous-page="previousPage">
 		</PaymentSummary>
 
-		<form @submit="evt => evt.preventDefault()">
+		<form @submit="submit" action="/donation/add" method="post">
 			<AutofillHandler @autofill="onAutofill">
 
 				<PaymentBankData
@@ -43,10 +44,10 @@
 
 				<RadioField
 					v-model="receiptModel"
-					name="receipt"
+					name="donationReceipt"
 					:options="[
-						{ value: true, label: $t( 'yes' ) },
 						{ value: false, label: $t( 'no' ) },
+						{ value: true, label: $t( 'yes' ) },
 					]"
 					:label="$t( 'donation_confirmation_cta_title_alt' )"
 					@field-changed="onFieldChange"
@@ -88,7 +89,8 @@
 						<FunButton
 							id="submit-btn"
 							:class="[ 'level-item is-primary is-main', { 'is-loading' : store.getters.isValidating } ]"
-							@click="submit">
+							button-type="submit"
+						>
 							{{ $t( 'donation_form_finalize' ) }}
 						</FunButton>
 					</div>
@@ -101,7 +103,7 @@
 				</div>
 			</div>
 
-			<input v-if="!receiptModel" type="hidden" name="addressType" :value="AddressTypeModel.EMAIL">
+			<input type="hidden" name="addressType" :value="addressTypeName">
 			<input type="hidden" name="paymentType" :value="paymentType">
 			<input type="hidden" name="interval" :value="interval">
 			<input type="hidden" name="amount" :value="amount">
@@ -127,7 +129,7 @@ import { Salutation } from '@src/view_models/Salutation';
 import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { trackDynamicForm } from '@src/tracking';
-import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/useAddressFormEventHandlers';
+import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/DonationReceipt/useAddressFormEventHandlers';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
@@ -143,8 +145,8 @@ import { useAddressType } from '@src/components/pages/donation_form/DonationRece
 import { useStore } from 'vuex';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import { Validity } from '@src/view_models/Validity';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
+import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
 
 interface Props {
 	assetsPath: string;
@@ -186,12 +188,15 @@ const {
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
-const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
+const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
+
+useAddressTypeFromReceiptSetter( receiptModel, addressType, store );
 
 onBeforeMount( () => {
 	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
 	initializeDataFromStore();
 } );
+
 onMounted( trackDynamicForm );
 
 </script>

@@ -1,7 +1,8 @@
 <template>
 	<div class="name-section">
+
 		<RadioField
-			name="salutationInternal"
+			name="salutation"
 			v-model="formData.salutation.value"
 			:label="$t( 'donation_form_salutation_label' )"
 			:options="salutations"
