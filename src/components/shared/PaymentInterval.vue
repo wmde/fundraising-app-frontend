@@ -1,26 +1,16 @@
 <template>
 	<fieldset>
 		<legend class="title is-size-5">{{ title }}</legend>
-		<div>
-			<div class="wrap-radio" v-for="interval in paymentIntervals" :key="'interval-' + interval">
-				<RadioInput
-					:class="{ 'is-active': selectedInterval === interval.toString() }"
-					:id="'interval-' + interval"
-					name="interval"
-					v-model="selectedInterval"
-					:native-value="interval.toString()"
-					:disabled="disabledPaymentIntervals.indexOf( interval.toString() ) > -1"
-					@change.native="setInterval"
-				>
-					{{ $t( 'donation_form_payment_interval_' + interval.toString() ) }}
-					<div
-						v-show="disabledPaymentIntervals.length && disabledPaymentIntervals.indexOf( interval.toString() ) === -1"
-						class="has-text-dark-lighter has-margin-top-18">
-						{{ $t( 'donation_form_SUB_payment_type_info' ) }}
-					</div>
-				</RadioInput>
-			</div>
-		</div>
+		<RadioField
+			name="interval"
+			v-model="selectedInterval"
+			:options="getPaymentIntervalOptions"
+			@field-changed="setInterval"
+			:required="true"
+			:disabled="disabledPaymentIntervals"
+			alignment="column"
+			label=""
+		/>
 	</fieldset>
 </template>
 
@@ -28,10 +18,12 @@
 import { defineComponent } from 'vue';
 import { IntervalData } from '@src/view_models/Payment';
 import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import { FormOption } from '@src/components/shared/form_fields/FormOption';
 
 export default defineComponent( {
 	name: 'PaymentInterval',
-	components: { RadioInput },
+	components: { RadioField, RadioInput },
 	data: function (): IntervalData {
 		return {
 			selectedInterval: this.$props.currentInterval,
@@ -39,16 +31,23 @@ export default defineComponent( {
 	},
 	props: {
 		currentInterval: String,
-		paymentIntervals: Array,
+		paymentIntervals: Array<number>,
 		title: String,
 		disabledPaymentIntervals: {
-			type: Array,
+			type: Array<number>,
 			default: () => [],
 		},
 	},
 	methods: {
 		setInterval(): void {
 			this.$emit( 'interval-selected', this.$data.selectedInterval );
+		},
+	},
+	computed: {
+		getPaymentIntervalOptions(): Array<FormOption> {
+			return this.$props.paymentIntervals.map( ( intervalValue: number ) => (
+				{ value: intervalValue.toString(), label: this.$t( 'payment_interval_' + intervalValue ) }
+			) );
 		},
 	},
 	watch: {

@@ -36,6 +36,7 @@ interface Props {
 	required?: boolean;
 	showError?: boolean;
 	errorMessage?: String;
+	alignment?: 'row' | 'column';
 }
 
 const props = withDefaults( defineProps<Props>(), {
