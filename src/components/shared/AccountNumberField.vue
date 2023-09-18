@@ -2,6 +2,7 @@
 	<input
 		id="iban"
 		class="input"
+		name="iban"
 		:placeholder="placeholder"
 		:value="displayValue"
 		@blur="$emit( 'validate' )"
@@ -16,7 +17,7 @@ import { ref, watch } from 'vue';
 
 interface Props {
 	id?: string;
-	placeholder: String;
+	placeholder: string;
 	accountId: string;
 	characterGroupSize?: number;
 }
