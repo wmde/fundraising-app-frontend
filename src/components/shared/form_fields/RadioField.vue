@@ -1,7 +1,7 @@
 <template>
 	<fieldset class="form-field form-field-radio" :class="{ 'is-invalid': showError }">
 		<legend class="form-field-label">{{ label }}</legend>
-		<div class="control form-field-radio-container">
+		<div class="control form-field-radio-container" :class="alignment+ '-alignment'">
 			<RadioFormInput
 				v-for="( option, index ) in options"
 				:key="index"
@@ -36,6 +36,7 @@ interface Props {
 	required?: boolean;
 	showError?: boolean;
 	errorMessage?: String;
+  alignment: 'row' | 'column';
 }
 
 const props = withDefaults( defineProps<Props>(), {

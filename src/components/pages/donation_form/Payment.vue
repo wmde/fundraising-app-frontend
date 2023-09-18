@@ -8,21 +8,17 @@
 			:show-error="amountErrorMessage !== ''"
 		/>
 
-		<AmountSelection
-			:payment-amounts="paymentAmounts"
-			:amount="amount"
-			:title="$t('donation_form_payment_amount_title')"
-			:error="amountErrorMessage"
-			v-on:amount-selected="sendAmountToStore"
-		/>
-		<PaymentInterval
-			class="has-margin-top-36"
-			:payment-intervals="paymentIntervals"
-			:current-interval="interval"
-			:title="$t('donation_form_payment_interval_title')"
-			:disabled-payment-intervals="disabledPaymentIntervals"
-			v-on:interval-selected="sendIntervalToStore"
-		/>
+    <div class="title is-size-5">{{ $t('donation_form_payment_interval_title') }}</div>
+		<RadioField
+			name="interval"
+			v-model="interval"
+			:options="paymentIntervalsAsOptions"
+			:required="true"
+			:disabled="disabledPaymentIntervals"
+			alignment="column"
+			:label="$t('donation_form_payment_interval_title')">
+		</RadioField>
+
 		<PaymentType
 			class="has-margin-top-36"
 			:current-type="paymentType"
@@ -36,9 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import AmountSelection from '@src/components/shared/AmountSelection.vue';
-import PaymentInterval from '@src/components/shared/PaymentInterval.vue';
+import { computed, ref, watch } from 'vue';
 import PaymentType from '@src/components/pages/donation_form/PaymentType.vue';
 import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
@@ -48,6 +42,8 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { AmountValidity } from '@src/view_models/Payment';
 import { useI18n } from 'vue-i18n';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import { FormOption } from '@src/components/shared/form_fields/FormOption';
 
 interface Props {
 	paymentAmounts: number[];
@@ -55,13 +51,17 @@ interface Props {
 	paymentTypes: string[];
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const store = useStore();
 const { t } = useI18n();
 
-const amount = computed<string>( () => store.state[ NS_PAYMENT ].values.amount );
-const interval = computed<string>( () => store.state[ NS_PAYMENT ].values.interval );
+const amountFromStore = computed<string>( () => store.state[ NS_PAYMENT ].values.amount );
+const amount = ref<string>( amountFromStore.value );
+
+const intervalFromStore = computed<string>( () => store.state[ NS_PAYMENT ].values.interval );
+const interval = ref<string>( intervalFromStore.value );
+
 const paymentType = computed<string>( () => store.state[ NS_PAYMENT ].values.type );
 const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type );
 const disabledPaymentTypes = computed<string[]>( () => {
@@ -74,10 +74,17 @@ const disabledPaymentTypes = computed<string[]>( () => {
 	}
 	return disabledTypes;
 } );
+
+const paymentIntervalsAsOptions = computed<FormOption[]>( () => {
+	return props.paymentIntervals.map(
+		( intervalValue: number ) => (
+			{ value: intervalValue.toString(), label: t( 'donation_form_payment_interval_' + intervalValue ) }
+		) );
+} );
 const disabledPaymentIntervals = computed<string[]>( () => {
 	let disabledIntervals : string[] = [];
 	if ( store.state[ NS_PAYMENT ].values.type === 'SUB' ) {
-		disabledIntervals = ( this as any ).$props.paymentIntervals
+		disabledIntervals = props.paymentIntervals
 			.filter( ( x: number ) => Number( x ) > 0 )
 			.map( ( x: number ) => String( x ) );
 	}
@@ -101,4 +108,14 @@ const sendIntervalToStore = ( newInterval: string ): void => {
 const sendTypeToStore = ( newPaymentType: string ): void => {
 	store.dispatch( action( NS_PAYMENT, setType ), newPaymentType );
 };
+
+watch( amount, sendAmountToStore );
+watch( amountFromStore, ( newValue ) => {
+	amount.value = newValue;
+} );
+
+watch( interval, sendIntervalToStore );
+watch( intervalFromStore, ( newValue ) => {
+	interval.value = newValue;
+} );
 </script>
