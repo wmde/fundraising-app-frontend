@@ -50,13 +50,14 @@ interface Props {
 	inputId: string;
 	placeholder: String;
 	hasMessage: boolean;
-	hasError: boolean;
+	hasError?: boolean;
 	disabled?: boolean;
 	required?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	autocomplete: 'on',
+	hasError: false,
 	disabled: false,
 	required: false,
 } );

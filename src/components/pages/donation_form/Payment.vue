@@ -1,10 +1,18 @@
 <template>
 	<div class="payment-section">
+		<AmountField
+			v-model="amount"
+			:title="$t('donation_form_payment_amount_title')"
+			:payment-amounts="paymentAmounts"
+			:error-message="amountErrorMessage"
+			:show-error="amountErrorMessage !== ''"
+		/>
+
 		<AmountSelection
 			:payment-amounts="paymentAmounts"
 			:amount="amount"
 			:title="$t('donation_form_payment_amount_title')"
-			:error="showAmountErrorMessage"
+			:error="amountErrorMessage"
 			v-on:amount-selected="sendAmountToStore"
 		/>
 		<PaymentInterval
@@ -39,6 +47,7 @@ import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { AmountValidity } from '@src/view_models/Payment';
 import { useI18n } from 'vue-i18n';
+import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 
 interface Props {
 	paymentAmounts: number[];
@@ -51,7 +60,7 @@ defineProps<Props>();
 const store = useStore();
 const { t } = useI18n();
 
-const amount = computed<number>( () => store.state[ NS_PAYMENT ].values.amount );
+const amount = computed<string>( () => store.state[ NS_PAYMENT ].values.amount );
 const interval = computed<string>( () => store.state[ NS_PAYMENT ].values.interval );
 const paymentType = computed<string>( () => store.state[ NS_PAYMENT ].values.type );
 const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type );
@@ -74,7 +83,7 @@ const disabledPaymentIntervals = computed<string[]>( () => {
 	}
 	return disabledIntervals;
 } );
-const showAmountErrorMessage = computed<String>( () => {
+const amountErrorMessage = computed<String>( () => {
 	const messages : { [ key:number ]:string; } = {
 		[ AmountValidity.AMOUNT_VALID ]: '',
 		[ AmountValidity.AMOUNT_TOO_LOW ]: t( 'donation_form_payment_amount_error' ),
