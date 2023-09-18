@@ -5,6 +5,7 @@
 		<div class="field">
 			<TextInput
 				input-id="street"
+				name="street"
 				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_placeholder' ) } )"
 				autocomplete="street-address"
 				v-model="formData.street.value"
@@ -26,6 +27,7 @@
 		<div class="field">
 			<TextInput
 				input-id="post-code"
+				name="zip"
 				v-model="formData.postcode.value"
 				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_zip_placeholder' ) } )"
 				:has-error="showError.postcode"

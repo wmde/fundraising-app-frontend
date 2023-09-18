@@ -4,6 +4,7 @@
 		<div class="field">
 			<TextInput
 				input-id="birthDate"
+				name="birthDate"
 				:placeholder="$t( 'membership_form_birth_date_placeholder' )"
 				v-model="formData.date.value"
 				@blur="$emit('field-changed', 'date')"

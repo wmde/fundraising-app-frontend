@@ -41,6 +41,7 @@
 			<div class="field">
 				<TextInput
 					class="is-medium"
+					name="firstName"
 					input-id="first-name"
 					v-model="formData.firstName.value"
 					:has-error="showError.firstName"
@@ -56,6 +57,7 @@
 			<div class="field">
 				<TextInput
 					input-id="last-name"
+					name="lastName"
 					v-model="formData.lastName.value"
 					:has-error="showError.lastName"
 					:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_lastname_placeholder' ) } )"
@@ -76,6 +78,7 @@
 		<div class="field">
 			<TextInput
 				input-id="company-name"
+				name="companyName"
 				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_companyname_placeholder' ) } )"
 				autocomplete="organization"
 				v-model="formData.companyName.value"

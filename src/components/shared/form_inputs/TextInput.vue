@@ -4,6 +4,7 @@
 			v-if="inputType === 'text'"
 			class="input"
 			:id="inputId"
+			:name="name"
 			:class="{ 'is-danger': hasError }"
 			type="text"
 			:autocomplete="newAutocomplete"
@@ -19,6 +20,7 @@
 			v-if="inputType === 'textarea'"
 			class="textarea"
 			:id="inputId"
+			:name="name"
 			:class="{ 'is-danger': hasError }"
 			:maxlength="maxlength"
 			:value="computedValue"
@@ -44,6 +46,7 @@ export default defineComponent( {
 	name: 'TextInput',
 	props: {
 		modelValue: [ String, Number ],
+		name: String,
 		autocomplete: String,
 		maxlength: [ Number, String ],
 		hasError: Boolean,
