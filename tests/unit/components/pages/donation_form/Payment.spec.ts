@@ -1,5 +1,5 @@
 import { shallowMount, VueWrapper } from '@vue/test-utils';
-import { createStore } from '@src/store/donation_store';
+import { createStore, StoreKey } from '@src/store/donation_store';
 import { action } from '@src/store/util';
 
 import Payment from '@src/components/pages/donation_form/Payment.vue';
