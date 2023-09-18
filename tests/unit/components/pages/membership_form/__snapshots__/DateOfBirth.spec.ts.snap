@@ -18,6 +18,7 @@ exports[`DateOfBirth.vue renders error message 1`] = `
         autocomplete="on"
         class="input is-danger"
         id="birthDate"
+        name="birthDate"
         placeholder="membership_form_birth_date_placeholder"
         type="text"
       />
@@ -59,6 +60,7 @@ exports[`DateOfBirth.vue renders field 1`] = `
         autocomplete="on"
         class="input"
         id="birthDate"
+        name="birthDate"
         placeholder="membership_form_birth_date_placeholder"
         type="text"
       />
