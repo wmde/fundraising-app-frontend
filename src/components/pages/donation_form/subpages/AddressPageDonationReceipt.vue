@@ -147,6 +147,7 @@ import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import { Validity } from '@src/view_models/Validity';
 import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
 import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
+import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
 
 interface Props {
 	assetsPath: string;
@@ -197,6 +198,15 @@ onBeforeMount( () => {
 	initializeDataFromStore();
 } );
 
-onMounted( trackDynamicForm );
+onMounted( () => {
+	trackDynamicForm();
+
+	// TODO: This should probably be initialised elsewhere maybe in the entry point?
+	const translatedSalutation = adjustSalutationLocaleIfNeeded( props.salutations, formData.salutation.value );
+	if ( translatedSalutation !== '' ) {
+		formData.salutation.value = translatedSalutation;
+		onFieldChange( 'salutation' );
+	}
+} );
 
 </script>
