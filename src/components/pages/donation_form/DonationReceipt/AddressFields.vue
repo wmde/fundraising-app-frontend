@@ -5,10 +5,10 @@
 			v-model="addressType"
 			name="addressTypeSelector"
 			:options="[
-				{ value: AddressTypeModel.PERSON, label: $t( 'donation_form_addresstype_option_private_addresstype' ) },
-				{ value: AddressTypeModel.COMPANY_WITH_CONTACT, label: $t( 'donation_form_addresstype_option_company_addresstype' ) },
+				{ value: AddressTypeModel.PERSON, label: $t( 'C23_WMDE_Desktop_DE_05_contact_details_private' ) },
+				{ value: AddressTypeModel.COMPANY_WITH_CONTACT, label: $t( 'C23_WMDE_Desktop_DE_05_contact_details_company' ) },
 			]"
-			:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
+			:label="$t( 'C23_WMDE_Desktop_DE_05_contact_details_label' )"
 			:show-error="showAddressTypeError"
 			:error-message="$t( 'donation_form_section_address_error' )"
 		/>
