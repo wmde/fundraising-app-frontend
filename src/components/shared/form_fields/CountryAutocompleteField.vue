@@ -9,10 +9,11 @@
 				:has-error="showError"
 				:has-message="false"
 				input-id="country"
-				name="country"
+				name="countrySelector"
 				@focus="onFocus"
 				@blur="() => onBlur( country )"
 			/>
+			<input type="hidden" name="country" :value="country?.countryCode">
 			<transition name="fade">
 				<div class="dropdown-menu" v-show="autocompleteIsActive">
 					<div class="dropdown-content">
