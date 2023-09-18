@@ -1,0 +1,9 @@
+@use '../settings/units';
+@use 'sass:map';
+
+.form-field-newsletter-label-content {
+	strong {
+		display: block;
+		margin-bottom: map.get( units.$spacing, 'x-small' );
+	}
+}

@@ -17,6 +17,7 @@
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import PaymentSummaryAnonymous from '@src/components/shared/payment_summary/PaymentSummaryAnonymous.vue';
 import PaymentSummaryCompany from '@src/components/shared/payment_summary/PaymentSummaryCompany.vue';
+import PaymentSummaryCompanyWithContact from '@src/components/shared/payment_summary/PaymentSummaryCompanyWithContact.vue';
 import PaymentSummaryEmail from '@src/components/shared/payment_summary/PaymentSummaryEmail.vue';
 import PaymentSummaryPrivate from '@src/components/shared/payment_summary/PaymentSummaryPrivate.vue';
 import { Country } from '@src/view_models/Country';
@@ -39,6 +40,7 @@ const props = defineProps<Props>();
 const addressTypeComponents = [
 	{ key: addressTypeName( AddressTypeModel.ANON ), component: PaymentSummaryAnonymous },
 	{ key: addressTypeName( AddressTypeModel.COMPANY ), component: PaymentSummaryCompany },
+	{ key: addressTypeName( AddressTypeModel.COMPANY_WITH_CONTACT ), component: PaymentSummaryCompanyWithContact },
 	{ key: addressTypeName( AddressTypeModel.EMAIL ), component: PaymentSummaryEmail },
 	{ key: addressTypeName( AddressTypeModel.PERSON ), component: PaymentSummaryPrivate },
 	{ key: addressTypeName( AddressTypeModel.UNSET ), component: PaymentSummaryAnonymous },

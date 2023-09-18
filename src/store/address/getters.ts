@@ -21,12 +21,19 @@ export const getters: GetterTree<AddressState, any> = {
 		const address = state.values;
 		const nonEmpty = ( v: string ): boolean => !!v;
 		const companyName = state.addressType === AddressTypeModel.COMPANY ? address.companyName : '';
+
+		let companyNameWithContact = '';
+		if ( state.addressType === AddressTypeModel.COMPANY_WITH_CONTACT ) {
+			const contactName = [ address.salutation, address.title, address.firstName, address.lastName ].filter( nonEmpty ).join( ' ' );
+			companyNameWithContact = address.companyName + ( contactName !== '' ? `, ${contactName}` : '' );
+		}
+
 		// remove ternary operator in the following line when we implement contact person, https://phabricator.wikimedia.org/T220366
 		let privateName = '';
 		if ( state.addressType === AddressTypeModel.PERSON || state.addressType === AddressTypeModel.EMAIL ) {
 			privateName = [ address.title, address.firstName, address.lastName ].filter( nonEmpty ).join( ' ' );
 		}
-		return [ companyName, privateName ].filter( nonEmpty ).join( ', ' );
+		return [ companyName, privateName, companyNameWithContact ].filter( nonEmpty ).join( ', ' );
 	},
 	isValidating: ( state: AddressState ): boolean => {
 		return state.serverSideValidationCount > 0;
