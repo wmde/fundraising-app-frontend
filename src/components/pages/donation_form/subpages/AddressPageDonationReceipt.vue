@@ -43,18 +43,20 @@
 				<MailingListField v-model="mailingList"/>
 
 				<RadioField
-					v-model="receiptModel"
+					v-model="receiptNeeded"
 					name="donationReceipt"
 					:options="[
-						{ value: false, label: $t( 'no' ) },
 						{ value: true, label: $t( 'yes' ) },
+						{ value: false, label: $t( 'no' ) },
 					]"
 					:label="$t( 'donation_confirmation_cta_title_alt' )"
 					@field-changed="onFieldChange"
+					:show-error="showReceiptOptionError"
+					:error-message="$t( 'C23_WMDE_Desktop_DE_05_receipt_error' )"
 				/>
 
 				<AddressFields
-					v-if="receiptModel"
+					v-if="receiptNeeded"
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
@@ -170,7 +172,7 @@ const { addressType, addressTypeName } = useAddressType( store );
 const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
 const { amount, interval, paymentType } = usePaymentValues( store );
 const mailingList = useMailingListModel( store );
-const receiptModel = useReceiptModel( store );
+const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
 
 const {
@@ -191,7 +193,7 @@ const {
 
 const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
 
-useAddressTypeFromReceiptSetter( receiptModel, addressType, store );
+useAddressTypeFromReceiptSetter( receiptNeeded, addressType, store );
 
 onBeforeMount( () => {
 	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;

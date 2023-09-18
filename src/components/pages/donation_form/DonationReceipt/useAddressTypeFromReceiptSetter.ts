@@ -8,9 +8,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 export function useAddressTypeFromReceiptSetter( receiptModel: Ref<boolean | null>, addressType: ComputedRef<number>, store: Store<any> ): void {
 	const lastAddressType = ref<number>( addressType.value );
 
-	if ( !receiptModel.value ) {
-		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), AddressTypeModel.EMAIL );
-	} else if ( ![ AddressTypeModel.PERSON, AddressTypeModel.COMPANY_WITH_CONTACT ].includes( addressType.value ) ) {
+	if ( receiptModel.value && ![ AddressTypeModel.PERSON, AddressTypeModel.EMAIL, AddressTypeModel.COMPANY_WITH_CONTACT ].includes( addressType.value ) ) {
 		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), AddressTypeModel.UNSET );
 	}
 
