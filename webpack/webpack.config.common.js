@@ -1,5 +1,4 @@
 'use strict';
-const webpack = require( 'webpack' );
 const ForkTsCheckerWebpackPlugin = require( 'fork-ts-checker-webpack-plugin' );
 const { VueLoaderPlugin } = require( 'vue-loader' );
 const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
@@ -114,9 +113,6 @@ const webpackConfig = {
 					vue: true,
 				},
 			},
-		} ),
-		new webpack.ProvidePlugin( {
-			process: 'process/browser',
 		} ),
 	],
 };

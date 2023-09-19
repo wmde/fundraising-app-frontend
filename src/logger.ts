@@ -35,7 +35,14 @@ class ConsoleLogger implements Logger {
 	}
 }
 
-// TODO: See if there's an alternative to using process.env here
+/**
+ * Factory function to create a logger based on the VUE_APP_LOGGER environment variable.
+ * The variable can be set to 'errbit' or 'console'.
+ *
+ * When using Webpack >=5, the variable needs to be defined in webpack configuration
+ * using the DefinePlugin ('process.env.VUE_APP_LOGGER': JSON.stringify( 'errbit' ))
+ * or the EnvironmentPlugin ({'VUE_APP_LOGGER': 'errbit'}).
+ */
 export default function createLogger(): Logger {
 	switch ( process.env.VUE_APP_LOGGER ) {
 		case LOGGER_CONSOLE:

@@ -1,3 +1,6 @@
 module.exports = {
 	NODE_ENV: 'production',
+	VUE_APP_LOGGER: 'errbit',
+	VUE_APP_ERRBIT_HOST: 'https://logging.wikimedia.de',
+	VUE_APP_ERRBIT_PROJECT_KEY: '6dfc2d772bf50af73ff529af47b20614',
 };

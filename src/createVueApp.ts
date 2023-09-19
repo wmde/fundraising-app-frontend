@@ -12,12 +12,14 @@ export function createVueApp( rootComponent: Component, messages: Messages, root
 	} );
 	app.use( i18n );
 
-	app.config.errorHandler = ( err, vm, info ) => {
-		createLogger().notify( {
-			error: err,
-			params: { info: info },
-		} );
-	};
+	if ( process.env.NODE_ENV === 'production' ) {
+		app.config.errorHandler = ( err, vm, info ) => {
+			createLogger().notify( {
+				error: err,
+				params: { info: info },
+			} );
+		};
+	}
 
 	return app;
 }
