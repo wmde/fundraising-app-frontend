@@ -174,6 +174,7 @@ const { amount, interval, paymentType } = usePaymentValues( store );
 const mailingList = useMailingListModel( store );
 const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
+const urlQuery = window.location.search;
 
 const {
 	formData,
