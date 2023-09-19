@@ -8,6 +8,9 @@ steps:
         volumes:
             -   name: build-dir
                 path: /build
+        environment:
+          VUE_APP_ERRBIT_PROJECT_KEY:
+            from_secret: errbit_key
         commands:
             - npm install
             - npm run build
