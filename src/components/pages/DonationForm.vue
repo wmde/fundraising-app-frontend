@@ -1,6 +1,6 @@
 <template>
 	<div id="laika-donation">
-		<FeatureToggle>
+		<FeatureToggle default-template="campaigns.address_pages.legacy">
 			<template #campaigns.address_pages.legacy>
 				<keep-alive>
 					<PaymentPage

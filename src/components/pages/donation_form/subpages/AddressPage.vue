@@ -17,7 +17,7 @@
 		</form>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
-			<FeatureToggle>
+			<FeatureToggle default-template="campaigns.address_type_steps.direct">
 				<template #campaigns.address_type_steps.direct>
 					<AddressTypeBasic
 						@address-type="setAddressType( $event )"
