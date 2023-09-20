@@ -1,4 +1,4 @@
-import DonationSummary from '@src/components/shared/DonationSummary.vue';
+import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import { config, mount, VueWrapper } from '@vue/test-utils';
 import { Salutation } from '@src/view_models/Salutation';
 import { createI18n } from 'vue-i18n';

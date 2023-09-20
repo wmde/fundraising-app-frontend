@@ -1,5 +1,5 @@
 <template>
-	<div class="donation-summary">
+	<div class="form-summary-content">
 		<component
 			:is="addressTypeComponent"
 			:address="address"
@@ -15,11 +15,11 @@
 
 <script setup lang="ts">
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
-import PaymentSummaryAnonymous from '@src/components/shared/payment_summary/PaymentSummaryAnonymous.vue';
-import PaymentSummaryCompany from '@src/components/shared/payment_summary/PaymentSummaryCompany.vue';
-import PaymentSummaryCompanyWithContact from '@src/components/shared/payment_summary/PaymentSummaryCompanyWithContact.vue';
-import PaymentSummaryEmail from '@src/components/shared/payment_summary/PaymentSummaryEmail.vue';
-import PaymentSummaryPrivate from '@src/components/shared/payment_summary/PaymentSummaryPrivate.vue';
+import PaymentSummaryAnonymous from '@src/components/pages/donation_form/summary_content/PaymentSummaryAnonymous.vue';
+import PaymentSummaryCompany from '@src/components/pages/donation_form/summary_content/PaymentSummaryCompany.vue';
+import PaymentSummaryCompanyWithContact from '@src/components/pages/donation_form/summary_content/PaymentSummaryCompanyWithContact.vue';
+import PaymentSummaryEmail from '@src/components/pages/donation_form/summary_content/PaymentSummaryEmail.vue';
+import PaymentSummaryPrivate from '@src/components/pages/donation_form/summary_content/PaymentSummaryPrivate.vue';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { useI18n } from 'vue-i18n';
@@ -46,7 +46,7 @@ const addressTypeComponents = [
 	{ key: addressTypeName( AddressTypeModel.UNSET ), component: PaymentSummaryAnonymous },
 ];
 
-// TODO: Extract this into a composable to make testing easier
+// TODO: Extract this into a composable
 const addressTypeComponent = computed( () => addressTypeComponents.find( x => x.key === props.addressType ).component );
 const paymentType = computed( () => t( props.payment.paymentType ) );
 const interval = computed( () => t( 'donation_form_payment_interval_' + props.payment.interval ) );

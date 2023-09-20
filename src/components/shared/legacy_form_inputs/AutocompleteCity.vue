@@ -27,7 +27,7 @@
 import { computed, defineComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/CityAutocompleteResource';
 import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
-import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesResource';
+import { useCitiesResource } from '@src/components/shared/form_elements/useCitiesResource';
 
 export default defineComponent( {
 	name: 'AutocompleteCity',

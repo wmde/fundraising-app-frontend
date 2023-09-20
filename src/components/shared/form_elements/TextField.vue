@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 
-import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
+import { useFieldModel } from '@src/components/shared/form_elements/useFieldModel';
 import TextFormInput from '@src/components/shared/form_inputs/TextFormInput.vue';
 
 interface Props {

@@ -67,7 +67,7 @@
 
 			</AutofillHandler>
 
-			<div class="summary-wrapper has-margin-top-18 has-outside-border">
+			<div class="form-summary">
 				<DonationSummary
 					:payment="paymentSummary"
 					:address-type="addressTypeName"
@@ -77,30 +77,28 @@
 					:language-item="inlineSummaryLanguageItem"
 				/>
 
-				<div class="columns payment-buttons">
-					<div class="column">
-						<FunButton
-							id="previous-btn"
-							class="level-item is-primary is-main is-outlined"
-							@click="previousPage"
-						>
-							{{ $t( 'donation_form_section_back' ) }}
-						</FunButton>
-					</div>
-					<div class="column">
-						<FunButton
-							id="submit-btn"
-							:class="[ 'level-item is-primary is-main', { 'is-loading' : store.getters.isValidating } ]"
-							button-type="submit"
-						>
-							{{ $t( 'donation_form_finalize' ) }}
-						</FunButton>
-					</div>
+				<div class="form-summary-buttons">
+					<FormButton
+						id="previous-btn"
+						:outlined="true"
+						@click="previousPage"
+					>
+						{{ $t( 'donation_form_section_back' ) }}
+					</FormButton>
+					<FormButton
+						id="submit-btn"
+						button-type="submit"
+						:is-loading="store.getters.isValidating"
+					>
+						{{ $t( 'donation_form_finalize' ) }}
+					</FormButton>
 				</div>
-				<div class="summary-notice" v-if="isExternalPayment">
+
+				<div class="form-summary-notice" v-if="isExternalPayment">
 					{{ $t( 'donation_form_summary_external_payment' ) }}
 				</div>
-				<div class="summary-notice" v-if="isBankTransferPayment">
+
+				<div class="form-summary-notice" v-if="isBankTransferPayment">
 					{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
 				</div>
 			</div>
@@ -120,36 +118,36 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref } from 'vue';
-import DonationSummary from '@src/components/shared/DonationSummary.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
+import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
+import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
+import EmailField from '@src/components/shared/form_elements/EmailField.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import MailingListField from '@src/components/shared/form_elements/MailingListField.vue';
+import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import RadioField from '@src/components/shared/form_elements/RadioField.vue';
+import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
+import { Validity } from '@src/view_models/Validity';
+import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
 import { trackDynamicForm } from '@src/tracking';
 import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/DonationReceipt/useAddressFormEventHandlers';
-import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
-import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
-import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
-import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
-import { useMailingListModel } from '@src/components/pages/donation_form/DonationReceipt/useMailingListModel';
-import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
-import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
+import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressType } from '@src/components/pages/donation_form/DonationReceipt/useAddressType';
-import { useStore } from 'vuex';
-import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import { Validity } from '@src/view_models/Validity';
-import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
 import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
-import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
+import { useMailingListModel } from '@src/components/pages/donation_form/DonationReceipt/useMailingListModel';
+import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
+import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
+import { useStore } from 'vuex';
 
 interface Props {
 	assetsPath: string;
@@ -174,7 +172,6 @@ const { amount, interval, paymentType } = usePaymentValues( store );
 const mailingList = useMailingListModel( store );
 const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
-const urlQuery = window.location.search;
 
 const {
 	formData,

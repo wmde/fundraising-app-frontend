@@ -111,7 +111,7 @@ import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressTypeFullOrEmail.vue';
-import DonationSummary from '@src/components/shared/DonationSummary.vue';
+import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';

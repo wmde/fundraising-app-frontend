@@ -63,9 +63,9 @@
 import { Salutation } from '@src/view_models/Salutation';
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import SelectField from '@src/components/shared/form_fields/SelectField.vue';
-import TextField from '@src/components/shared/form_fields/TextField.vue';
+import RadioField from '@src/components/shared/form_elements/RadioField.vue';
+import SelectField from '@src/components/shared/form_elements/SelectField.vue';
+import TextField from '@src/components/shared/form_elements/TextField.vue';
 
 interface Props {
 	salutations: Salutation[];

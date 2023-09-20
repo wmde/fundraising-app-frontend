@@ -16,8 +16,8 @@
 
 <script setup lang="ts">
 
-import { FormOption } from '@src/components/shared/form_fields/FormOption';
-import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
+import { FormOption } from '@src/components/shared/form_elements/FormOption';
+import { useFieldModel } from '@src/components/shared/form_elements/useFieldModel';
 import SelectFormInput from '@src/components/shared/form_inputs/SelectFormInput.vue';
 
 interface Props {

@@ -17,7 +17,7 @@
 <script setup lang="ts">
 
 import CheckboxSingleFormInput from '@src/components/shared/form_inputs/CheckboxSingleFormInput.vue';
-import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
+import { useFieldModel } from '@src/components/shared/form_elements/useFieldModel';
 
 interface Props {
 	modelValue: boolean;

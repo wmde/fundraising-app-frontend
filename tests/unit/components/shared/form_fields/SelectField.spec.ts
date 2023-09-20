@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import SelectField from '@src/components/shared/form_fields/SelectField.vue';
+import SelectField from '@src/components/shared/form_elements/SelectField.vue';
 
 describe( 'SelectField.vue', () => {
 

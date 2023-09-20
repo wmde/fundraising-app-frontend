@@ -1,5 +1,5 @@
 <template>
-	<div class="payment-summary" v-html="getSummary"></div>
+	<span v-html="getSummary"/>
 </template>
 
 <script>

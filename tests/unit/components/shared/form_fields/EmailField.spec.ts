@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import EmailField from '@src/components/shared/form_fields/EmailField.vue';
+import EmailField from '@src/components/shared/form_elements/EmailField.vue';
 import mockAxios from 'jest-mock-axios';
 
 describe( 'EmailField.vue', () => {

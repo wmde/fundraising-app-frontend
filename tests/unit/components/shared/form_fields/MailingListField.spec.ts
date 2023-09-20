@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
+import MailingListField from '@src/components/shared/form_elements/MailingListField.vue';
 
 describe( 'MailingListField.vue', () => {
 
