@@ -8,32 +8,32 @@
 			:show-error="amountErrorMessage !== ''"
 		/>
 
-    <div class="title is-size-5">{{ $t('donation_form_payment_interval_title') }}</div>
+		<div class="title is-size-5">{{ $t('donation_form_payment_interval_title') }}</div>
 		<RadioField
 			name="interval"
 			v-model="interval"
 			:options="paymentIntervalsAsOptions"
 			:required="true"
 			:disabled="disabledPaymentIntervals"
-			alignment="column"
-			:label="$t('donation_form_payment_interval_title')">
+			alignment="column">
 		</RadioField>
 
-		<PaymentType
-			class="has-margin-top-36"
-			:current-type="paymentType"
-			:payment-types="paymentTypes"
-			:error="paymentTypeIsValid ? '' : $t('donation_form_payment_type_error')"
-			:title="$t('donation_form_payment_type_title')"
-			:disabled-payment-types="disabledPaymentTypes"
-			v-on:payment-type-selected="sendTypeToStore"
-		/>
+		<div class="title is-size-5">{{ $t('donation_form_payment_type_title') }}</div>
+		<RadioField
+			name="paymentType"
+			v-model="paymentType"
+			:options="paymentTypesAsOptions"
+			:required="true"
+			:disabled="disabledPaymentTypes"
+			alignment="column"
+			:show-error="paymentTypeIsValid"
+			:error-message="$t('donation_form_payment_type_error')">
+		</RadioField>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import PaymentType from '@src/components/pages/donation_form/PaymentType.vue';
 import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { setAmount, setInterval, setType } from '@src/store/payment/actionTypes';
@@ -62,7 +62,9 @@ const amount = ref<string>( amountFromStore.value );
 const intervalFromStore = computed<string>( () => store.state[ NS_PAYMENT ].values.interval );
 const interval = ref<string>( intervalFromStore.value );
 
-const paymentType = computed<string>( () => store.state[ NS_PAYMENT ].values.type );
+const paymentTypeFromStore = computed<string>( () => store.state[ NS_PAYMENT ].values.type );
+const paymentType = ref<string>( paymentTypeFromStore.value );
+
 const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type );
 const disabledPaymentTypes = computed<string[]>( () => {
 	let disabledTypes : string[] = [];
@@ -81,6 +83,14 @@ const paymentIntervalsAsOptions = computed<FormOption[]>( () => {
 			{ value: intervalValue.toString(), label: t( 'donation_form_payment_interval_' + intervalValue ) }
 		) );
 } );
+
+const paymentTypesAsOptions = computed<FormOption[]>( () => {
+	return props.paymentTypes.map(
+		( paymentTypeValue: string ) => (
+			{ value: paymentTypeValue, label: t( paymentTypeValue ) }
+		) );
+} );
+
 const disabledPaymentIntervals = computed<string[]>( () => {
 	let disabledIntervals : string[] = [];
 	if ( store.state[ NS_PAYMENT ].values.type === 'SUB' ) {
@@ -117,5 +127,10 @@ watch( amountFromStore, ( newValue ) => {
 watch( interval, sendIntervalToStore );
 watch( intervalFromStore, ( newValue ) => {
 	interval.value = newValue;
+} );
+
+watch( paymentType, sendTypeToStore );
+watch( paymentTypeFromStore, ( newValue ) => {
+	paymentType.value = newValue;
 } );
 </script>
