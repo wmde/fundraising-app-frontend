@@ -67,20 +67,22 @@
 
 			</AutofillHandler>
 
-			<div class="form-summary">
-				<DonationSummary
-					:payment="paymentSummary"
-					:address-type="addressTypeName"
-					:address="addressSummary"
-					:countries="countries"
-					:salutations="salutations"
-					:language-item="inlineSummaryLanguageItem"
-				/>
+			<FormSummary>
+				<template #summary-content>
+					<DonationSummary
+						:payment="paymentSummary"
+						:address-type="addressTypeName"
+						:address="addressSummary"
+						:countries="countries"
+						:salutations="salutations"
+						:language-item="inlineSummaryLanguageItem"
+					/>
+				</template>
 
-				<div class="form-summary-buttons">
+				<template #summary-buttons>
 					<FormButton
 						id="previous-btn"
-						:outlined="true"
+						:is-outlined="true"
 						@click="previousPage"
 					>
 						{{ $t( 'donation_form_section_back' ) }}
@@ -91,16 +93,17 @@
 						:payment-type="paymentSummary.paymentType"
 						@click="submit"
 					/>
-				</div>
+				</template>
 
-				<div class="form-summary-notice" v-if="isExternalPayment">
-					{{ $t( 'donation_form_summary_external_payment' ) }}
-				</div>
-
-				<div class="form-summary-notice" v-if="isBankTransferPayment">
-					{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
-				</div>
-			</div>
+				<template #summary-notice>
+					<div class="form-summary-notice" v-if="isExternalPayment">
+						{{ $t( 'donation_form_summary_external_payment' ) }}
+					</div>
+					<div class="form-summary-notice" v-if="isBankTransferPayment">
+						{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
+					</div>
+				</template>
+			</FormSummary>
 
 			<input type="hidden" name="addressType" :value="addressTypeName">
 			<input type="hidden" name="paymentType" :value="paymentType">
@@ -148,6 +151,7 @@ import { usePaymentValues } from '@src/components/pages/donation_form/DonationRe
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
+import FormSummary from '@src/components/shared/FormSummary.vue';
 
 interface Props {
 	assetsPath: string;
