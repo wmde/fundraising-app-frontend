@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import TextFormInput from '@src/components/shared/form_inputs/TextFormInput.vue';
+import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 
 describe( 'TextFormInput.vue', () => {
 

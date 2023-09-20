@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import TextField from '@src/components/shared/form_elements/TextField.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
 
 describe( 'TextField.vue', () => {
 

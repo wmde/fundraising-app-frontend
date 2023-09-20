@@ -85,12 +85,12 @@
 					>
 						{{ $t( 'donation_form_section_back' ) }}
 					</FormButton>
-          <PaymentTextFormButton
-              id="submit-btn"
-              :is-loading="$store.getters.isValidating"
-              :payment-type="paymentSummary.paymentType"
-              @click="submit"
-          />
+					<PaymentTextFormButton
+						id="submit-btn"
+						:is-loading="$store.getters.isValidating"
+						:payment-type="paymentSummary.paymentType"
+						@click="submit"
+					/>
 				</div>
 
 				<div class="form-summary-notice" v-if="isExternalPayment">
@@ -120,13 +120,13 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
-import EmailField from '@src/components/shared/form_elements/EmailField.vue';
+import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import MailingListField from '@src/components/shared/form_elements/MailingListField.vue';
+import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
-import RadioField from '@src/components/shared/form_elements/RadioField.vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';

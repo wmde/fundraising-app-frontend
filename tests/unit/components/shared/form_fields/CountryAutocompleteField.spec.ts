@@ -1,6 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import CountryAutocompleteField from '@src/components/shared/form_elements/CountryAutocompleteField.vue';
+import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import countries from '@test/data/countries';
 
 describe( 'CountryAutocompleteField.vue', () => {

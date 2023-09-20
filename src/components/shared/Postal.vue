@@ -84,7 +84,7 @@ import { Country } from '@src/view_models/Country';
 import AutocompleteCity from '@src/components/shared/legacy_form_inputs/AutocompleteCity.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
-import CountryAutocompleteField from '@src/components/shared/form_elements/CountryAutocompleteField.vue';
+import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 
 export default defineComponent( {
 	name: 'postal',

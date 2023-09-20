@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { useInputFocusing } from '@src/components/shared/form_inputs/useInputFocusing';
-import { useInputModel } from '@src/components/shared/form_inputs/useInputModel';
+import { useInputFocusing } from '@src/components/shared/form_elements/useInputFocusing';
+import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
 
 interface Props {
 	modelValue: boolean;

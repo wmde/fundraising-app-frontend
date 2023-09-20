@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
 
-import { useFieldModel } from '@src/components/shared/form_elements/useFieldModel';
-import TextFormInput from '@src/components/shared/form_inputs/TextFormInput.vue';
+import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
+import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 
 interface Props {
 	inputType?: 'text'|'textarea';

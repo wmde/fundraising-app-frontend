@@ -32,10 +32,10 @@
 
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
-import { useCitiesResource } from '@src/components/shared/form_elements/useCitiesResource';
+import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesResource';
 import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/CityAutocompleteResource';
-import { useCityAutocompleteEvents } from '@src/components/shared/form_elements/useCityAutocompleteEvents';
-import TextFormInput from '@src/components/shared/form_inputs/TextFormInput.vue';
+import { useCityAutocompleteEvents } from '@src/components/shared/form_fields/useCityAutocompleteEvents';
+import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 
 interface Props {
 	modelValue: string;

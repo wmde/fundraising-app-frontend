@@ -1,14 +1,14 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import CheckboxMultipleFormInput from '@src/components/shared/form_inputs/CheckboxMultipleFormInput.vue';
+import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
 
-describe( 'CheckboxMultipleFormInput.vue', () => {
+describe( 'CheckboxSingleFormInput.vue', () => {
 
-	const getWrapper = (): VueWrapper<any> => {
-		return mount( CheckboxMultipleFormInput, {
+	const getWrapper = ( modelValue: boolean ): VueWrapper<any> => {
+		return mount( CheckboxSingleFormInput, {
 			props: {
-				modelValue: [],
-				nativeValue: 'pike',
-				name: 'captain',
+				modelValue,
+				name: '',
+				inputId: '',
 				disabled: false,
 				required: false,
 			},
@@ -16,7 +16,7 @@ describe( 'CheckboxMultipleFormInput.vue', () => {
 	};
 
 	it( 'sets disabled', async () => {
-		const wrapper = getWrapper();
+		const wrapper = getWrapper( false );
 
 		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'disabled' ) ).toBeUndefined();
 
@@ -27,7 +27,7 @@ describe( 'CheckboxMultipleFormInput.vue', () => {
 	} );
 
 	it( 'sets required', async () => {
-		const wrapper = getWrapper();
+		const wrapper = getWrapper( false );
 
 		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'required' ) ).toBeUndefined();
 
@@ -37,22 +37,22 @@ describe( 'CheckboxMultipleFormInput.vue', () => {
 	} );
 
 	it( 'emits on value change', async () => {
-		const wrapper = getWrapper();
+		const wrapper = getWrapper( true );
 
-		await wrapper.find( 'input' ).setValue();
+		await wrapper.find( 'input' ).trigger( 'change' );
 
 		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
-		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( [ 'pike' ] );
+		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( true );
 	} );
 
 	it( 'updates value on model change', async () => {
-		const wrapper = getWrapper();
+		const wrapper = getWrapper( true );
 		const radio = wrapper.find<HTMLInputElement>( 'input' );
 
-		expect( radio.element.checked ).toBeFalsy();
-
-		await wrapper.setProps( { modelValue: [ 'pike' ] } );
-
 		expect( radio.element.checked ).toBeTruthy();
+
+		await wrapper.setProps( { modelValue: false } );
+
+		expect( radio.element.checked ).toBeFalsy();
 	} );
 } );

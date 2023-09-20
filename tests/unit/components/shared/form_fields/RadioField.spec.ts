@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import RadioField from '@src/components/shared/form_elements/RadioField.vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 
 describe( 'RadioField.vue', () => {
 

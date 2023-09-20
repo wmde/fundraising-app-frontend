@@ -95,17 +95,17 @@
 
 <script setup lang="ts">
 
-import RadioField from '@src/components/shared/form_elements/RadioField.vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
 import { StoreKey } from '@src/store/donation_store';
 import { useAddressTypeModel } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeModel';
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
-import TextField from '@src/components/shared/form_elements/TextField.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { computed } from 'vue';
-import CityAutocompleteField from '@src/components/shared/form_elements/CityAutocompleteField.vue';
-import CountryAutocompleteField from '@src/components/shared/form_elements/CountryAutocompleteField.vue';
+import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
+import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import { Country } from '@src/view_models/Country';
 
 interface Props {
