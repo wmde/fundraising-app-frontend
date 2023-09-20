@@ -30,26 +30,6 @@
 		line-height: map.get( forms.$label, 'line-height' );
 	}
 
-	&-radio-container {
-		display: flex;
-		&.row-alignment {
-			flex-direction: row;
-		}
-		&.column-alignment {
-			flex-direction: column;
-			.radio-form-input {
-				width: 350px;
-				border-bottom: 2px solid rgba(0, 0, 0, 0.14);
-				&.is-active {
-					border-bottom: 2px solid #0065a4;
-				}
-				&:hover {
-					border-bottom: 2px solid #808080;
-				}
-			}
-		}
-	}
-
 	&-select {
 		.select:not( .is-multiple ) {
 			height: auto;

@@ -10,6 +10,7 @@
 				name="amount"
 				v-model="amount"
 				:class="{ 'inactive': paymentAmount < minimumAmount }"
+				@update:modelValue="onFieldChange"
 			>
 				{{ $n( paymentAmount / 100, 'euros' ) }}
 			</RadioFormInput>
@@ -23,6 +24,7 @@
 				:has-message="false"
 				name="custom-amount"
 				:placeholder="$t('donation_form_custom_placeholder')"
+				@update:modelValue="onFieldChange"
 			/>
 			<label for="form-field-amount-custom">{{ $t('donation_form_payment_amount_legend') }}</label>
 		</div>
@@ -50,6 +52,7 @@ const props = withDefaults( defineProps<Props>(), {
 	minimumAmount: 0,
 	showError: false,
 } );
+const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const amount = ref<string>( props.modelValue );
 const customAmount = ref<string>( props.modelValue );
@@ -57,6 +60,11 @@ const customAmount = ref<string>( props.modelValue );
 watch( () => props.modelValue, ( newValue: string ) => {
 	amount.value = newValue;
 } );
+
+const onFieldChange = ( newValue: string | number | boolean | null ): void => {
+	emit( 'update:modelValue', newValue );
+	emit( 'field-changed', 'amount' );
+};
 
 </script>
 
