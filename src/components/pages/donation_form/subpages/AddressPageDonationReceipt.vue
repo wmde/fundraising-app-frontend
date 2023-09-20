@@ -14,7 +14,7 @@
 			<AutofillHandler @autofill="onAutofill">
 
 				<PaymentBankData
-					v-if="isDirectDebit"
+					v-if="isDirectDebitPayment"
 					:validateBankDataUrl="validateBankDataUrl"
 					:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
 				/>
@@ -85,13 +85,12 @@
 					>
 						{{ $t( 'donation_form_section_back' ) }}
 					</FormButton>
-					<FormButton
-						id="submit-btn"
-						button-type="submit"
-						:is-loading="store.getters.isValidating"
-					>
-						{{ $t( 'donation_form_finalize' ) }}
-					</FormButton>
+          <PaymentTextFormButton
+              id="submit-btn"
+              :is-loading="$store.getters.isValidating"
+              :payment-type="paymentSummary.paymentType"
+              @click="submit"
+          />
 				</div>
 
 				<div class="form-summary-notice" v-if="isExternalPayment">
@@ -148,6 +147,7 @@ import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaym
 import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
+import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 
 interface Props {
 	assetsPath: string;
@@ -183,13 +183,13 @@ const {
 
 const {
 	isBankTransferPayment,
-	isDirectDebit,
+	isDirectDebitPayment,
 	isExternalPayment,
 	paymentSummary,
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
-const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
+const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
 
 useAddressTypeFromReceiptSetter( receiptNeeded, addressType, store );
 

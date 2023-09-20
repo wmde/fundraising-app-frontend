@@ -4,7 +4,7 @@ import { computed, ComputedRef } from 'vue';
 
 type ReturnType = {
 	isBankTransferPayment: ComputedRef<boolean>,
-	isDirectDebit: ComputedRef<boolean>,
+	isDirectDebitPayment: ComputedRef<boolean>,
 	isExternalPayment: ComputedRef<boolean>,
 	paymentSummary: ComputedRef<{ amount: number, interval: any, paymentType: any }>,
 	paymentWasInitialized: ComputedRef<boolean>
@@ -26,7 +26,7 @@ export function usePaymentFunctions( store: Store<any> ): ReturnType {
 
 	return {
 		isBankTransferPayment,
-		isDirectDebit,
+		isDirectDebitPayment: isDirectDebit,
 		isExternalPayment,
 		paymentSummary,
 		paymentWasInitialized,

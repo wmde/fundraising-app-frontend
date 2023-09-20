@@ -9,7 +9,7 @@
 			@previous-page="previousPage">
 		</PaymentSummary>
 
-		<form v-if="isDirectDebit" id="bank-data-details" @submit="evt => evt.preventDefault()">
+		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<PaymentBankData
 				:validateBankDataUrl="validateBankDataUrl"
 				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
@@ -23,7 +23,7 @@
 						@address-type="setAddressType( $event )"
 						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebit"
+						:is-direct-debit="isDirectDebitPayment"
 						:initial-address-type="addressTypeName"
 					/>
 				</template>
@@ -32,7 +32,7 @@
 						@address-type="setAddressType( $event )"
 						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebit"
+						:is-direct-debit="isDirectDebitPayment"
 						:initial-address-type="addressTypeName"
 					/>
 				</template>
@@ -41,7 +41,7 @@
 						@address-type="setAddressType( $event )"
 						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebit"
+						:is-direct-debit="isDirectDebitPayment"
 						:initial-address-type="addressTypeName"
 					/>
 				</template>
@@ -87,19 +87,13 @@
 					</FunButton>
 				</div>
 				<div class="column">
-					<FunButton
+					<PaymentTextFormButton
 						id="submit-btn"
-						:class="[ 'level-item is-primary is-main', { 'is-loading' : $store.getters.isValidating } ]"
-						@click="submit">
-						{{ $t( 'donation_form_finalize' ) }}
-					</FunButton>
+						:is-loading="$store.getters.isValidating"
+						:payment-type="paymentSummary.paymentType"
+						@click="submit"
+					/>
 				</div>
-			</div>
-			<div class="summary-notice" v-if="isExternalPayment">
-				{{ $t( 'donation_form_summary_external_payment' ) }}
-			</div>
-			<div class="summary-notice" v-if="isBankTransferPayment">
-				{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
 			</div>
 		</div>
 	</div>
@@ -127,6 +121,7 @@ import { useAddressFormEventHandlers } from '@src/components/pages/donation_form
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 
 interface Props {
 	assetsPath: string;
@@ -162,9 +157,7 @@ const {
 } = useAddressTypeFunctions( store );
 
 const {
-	isBankTransferPayment,
-	isDirectDebit,
-	isExternalPayment,
+	isDirectDebitPayment,
 	paymentSummary,
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
@@ -174,6 +167,6 @@ const {
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
 
-const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
+const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
 
 </script>
