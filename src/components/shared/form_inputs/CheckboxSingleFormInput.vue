@@ -46,6 +46,40 @@ const inputModel = useInputModel<boolean>( () => props.modelValue, props.modelVa
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/colors';
+@use '@src/scss/settings/forms';
+@use 'sass:map';
 
+$checkbox-size: map.get( units.$spacing, 'small' );
+
+.checkbox-single-form-input {
+	padding: 0 0 0 map.get( units.$spacing, 'medium' );
+
+	input[type="checkbox"] {
+		position: absolute;
+		left: 0;
+		opacity: 0;
+		outline: none;
+		z-index: -1;
+	}
+
+	.check {
+		display: block;
+		float: left;
+		width: $checkbox-size;
+		height: $checkbox-size;
+		margin: 0 0 0 (-( map.get( units.$spacing, 'medium' ) ) );
+		border-radius: 2px;
+		border: 2px solid colors.$gray-dark;
+		transition: background 150ms ease-out;
+		background: transparent;
+	}
+
+	input[type="checkbox"]:checked + .check {
+		background: colors.$primary forms.$checkbox-checkmark no-repeat center center;
+		border-color: colors.$primary;
+	}
+}
 </style>
