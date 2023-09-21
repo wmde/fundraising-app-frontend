@@ -39,6 +39,10 @@ const onFieldChange = ( newValue: string | number ): void => {
 
 </script>
 
-<style scoped lang="scss">
-
+<style lang="scss">
+.form-field-select {
+	.select:not( .is-multiple ) {
+		height: auto;
+	}
+}
 </style>

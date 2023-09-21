@@ -55,5 +55,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 </script>
 
 <style lang="scss">
-
+.form-field-radio-container {
+	display: flex;
+}
 </style>
