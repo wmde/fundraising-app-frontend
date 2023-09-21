@@ -10,10 +10,6 @@ $input: (
 	'max-width': 350px,
 );
 
-$text-input: (
-	'padding': 0 map.get( units.$spacing, 'small' )
-);
-
 $select-input: (
 	'padding': 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' )
 );
