@@ -1,4 +1,4 @@
-import DonationSummary from '@src/components/shared/DonationSummary.vue';
+import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import { config, mount, VueWrapper } from '@vue/test-utils';
 import { Salutation } from '@src/view_models/Salutation';
 import { createI18n } from 'vue-i18n';
@@ -187,7 +187,7 @@ describe( 'DonationSummary.vue', () => {
 	it( 'translates payment information', () => {
 		const wrapper = getWrapper( {} );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toStrictEqual( [
+		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
 			'interval:donation_form_payment_interval_12',
 			'formattedAmount:14.99 euros',
 			'paymentType:BEZ',
@@ -200,7 +200,7 @@ describe( 'DonationSummary.vue', () => {
 	it( 'updates payment information from private person to anonymous', async () => {
 		const wrapper = getWrapper( privateAddress );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toStrictEqual( [
+		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
 			'interval:donation_form_payment_interval_12',
 			'formattedAmount:14.99 euros',
 			'paymentType:BEZ',
@@ -212,7 +212,7 @@ describe( 'DonationSummary.vue', () => {
 		await wrapper.setProps( { address: {} } );
 		await nextTick();
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toStrictEqual( [
+		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
 			'interval:donation_form_payment_interval_12',
 			'formattedAmount:14.99 euros',
 			'paymentType:BEZ',

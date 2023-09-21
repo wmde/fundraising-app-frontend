@@ -18,7 +18,7 @@
 
 import { FormOption } from '@src/components/shared/form_fields/FormOption';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
-import SelectFormInput from '@src/components/shared/form_inputs/SelectFormInput.vue';
+import SelectFormInput from '@src/components/shared/form_elements/SelectFormInput.vue';
 
 interface Props {
 	label: String;

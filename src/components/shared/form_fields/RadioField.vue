@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { FormOption } from '@src/components/shared/form_fields/FormOption';
-import RadioFormInput from '@src/components/shared/form_inputs/RadioFormInput.vue';
+import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 
 interface Props {

@@ -4,6 +4,8 @@
 @import "fonts";
 
 // Import Bulma styles
+// TODO: Look through what Bulma elements are being used and only import styles for them
+//    This will reduce the css file size
 @import "~bulma";
 @import "~bulma-helpers/sass/helpers/spacing/margin-padding";
 
@@ -178,10 +180,6 @@ h1.icon-title svg {
 			margin: 0 0 5px;
 		}
 	}
-}
-
-.summary-notice {
-	color: $fun-color-dark-lighter;
 }
 
 .has-negative-margin-bottom-18 {

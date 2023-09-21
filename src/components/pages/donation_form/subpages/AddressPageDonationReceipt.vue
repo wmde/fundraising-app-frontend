@@ -14,7 +14,7 @@
 			<AutofillHandler @autofill="onAutofill">
 
 				<PaymentBankData
-					v-if="isDirectDebit"
+					v-if="isDirectDebitPayment"
 					:validateBankDataUrl="validateBankDataUrl"
 					:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
 				/>
@@ -67,43 +67,43 @@
 
 			</AutofillHandler>
 
-			<div class="summary-wrapper has-margin-top-18 has-outside-border">
-				<DonationSummary
-					:payment="paymentSummary"
-					:address-type="addressTypeName"
-					:address="addressSummary"
-					:countries="countries"
-					:salutations="salutations"
-					:language-item="inlineSummaryLanguageItem"
-				/>
+			<FormSummary>
+				<template #summary-content>
+					<DonationSummary
+						:payment="paymentSummary"
+						:address-type="addressTypeName"
+						:address="addressSummary"
+						:countries="countries"
+						:salutations="salutations"
+						:language-item="inlineSummaryLanguageItem"
+					/>
+				</template>
 
-				<div class="columns payment-buttons">
-					<div class="column">
-						<FunButton
-							id="previous-btn"
-							class="level-item is-primary is-main is-outlined"
-							@click="previousPage"
-						>
-							{{ $t( 'donation_form_section_back' ) }}
-						</FunButton>
+				<template #summary-buttons>
+					<FormButton
+						id="previous-btn"
+						:is-outlined="true"
+						@click="previousPage"
+					>
+						{{ $t( 'donation_form_section_back' ) }}
+					</FormButton>
+					<PaymentTextFormButton
+						id="submit-btn"
+						:is-loading="$store.getters.isValidating"
+						:payment-type="paymentSummary.paymentType"
+						@click="submit"
+					/>
+				</template>
+
+				<template #summary-notice>
+					<div class="form-summary-notice" v-if="isExternalPayment">
+						{{ $t( 'donation_form_summary_external_payment' ) }}
 					</div>
-					<div class="column">
-						<FunButton
-							id="submit-btn"
-							:class="[ 'level-item is-primary is-main', { 'is-loading' : store.getters.isValidating } ]"
-							button-type="submit"
-						>
-							{{ $t( 'donation_form_finalize' ) }}
-						</FunButton>
+					<div class="form-summary-notice" v-if="isBankTransferPayment">
+						{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
 					</div>
-				</div>
-				<div class="summary-notice" v-if="isExternalPayment">
-					{{ $t( 'donation_form_summary_external_payment' ) }}
-				</div>
-				<div class="summary-notice" v-if="isBankTransferPayment">
-					{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
-				</div>
-			</div>
+				</template>
+			</FormSummary>
 
 			<input type="hidden" name="addressType" :value="addressTypeName">
 			<input type="hidden" name="paymentType" :value="paymentType">
@@ -120,36 +120,38 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onMounted, ref } from 'vue';
-import DonationSummary from '@src/components/shared/DonationSummary.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
+import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
+import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
+import EmailField from '@src/components/shared/form_fields/EmailField.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
+import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
+import { Validity } from '@src/view_models/Validity';
+import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
 import { trackDynamicForm } from '@src/tracking';
 import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/DonationReceipt/useAddressFormEventHandlers';
-import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
-import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
-import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
-import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
-import { useMailingListModel } from '@src/components/pages/donation_form/DonationReceipt/useMailingListModel';
-import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
-import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
+import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressType } from '@src/components/pages/donation_form/DonationReceipt/useAddressType';
-import { useStore } from 'vuex';
-import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import { Validity } from '@src/view_models/Validity';
-import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
 import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
-import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
+import { useMailingListModel } from '@src/components/pages/donation_form/DonationReceipt/useMailingListModel';
+import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
+import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
+import { useStore } from 'vuex';
+import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
+import FormSummary from '@src/components/shared/FormSummary.vue';
 
 interface Props {
 	assetsPath: string;
@@ -185,13 +187,13 @@ const {
 
 const {
 	isBankTransferPayment,
-	isDirectDebit,
+	isDirectDebitPayment,
 	isExternalPayment,
 	paymentSummary,
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
-const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebit, props.validateAddressUrl, props.validateEmailUrl );
+const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
 
 useAddressTypeFromReceiptSetter( receiptNeeded, addressType, store );
 

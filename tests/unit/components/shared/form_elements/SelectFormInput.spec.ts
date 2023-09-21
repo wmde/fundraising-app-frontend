@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import SelectFormInput from '@src/components/shared/form_inputs/SelectFormInput.vue';
+import SelectFormInput from '@src/components/shared/form_elements/SelectFormInput.vue';
 
 describe( 'SelectFormInput.vue', () => {
 

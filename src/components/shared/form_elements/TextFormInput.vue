@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 
-import { useInputModel } from '@src/components/shared/form_inputs/useInputModel';
+import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
 
 interface Props {
 	inputType: 'text' | 'textarea';

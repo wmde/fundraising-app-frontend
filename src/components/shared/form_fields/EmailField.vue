@@ -25,7 +25,7 @@
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import { useSuggestedEmailProvider } from '@src/components/shared/form_fields/useSuggestedEmailProvider';
 import { useMailHostList } from '@src/components/shared/useMailHostList';
-import TextFormInput from '@src/components/shared/form_inputs/TextFormInput.vue';
+import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 
 interface Props {
 	modelValue: string;
