@@ -2,22 +2,6 @@
 @use './colors';
 @use "sass:map";
 
-$form: (
-	'padding': map.get( units.$spacing, 'x-large' )
-);
-
-$section: (
-	'margin': 0 0 map.get( units.$spacing, 'x-large' )
-);
-
-$section-label: (
-	'font-weight': normal
-);
-
-$field: (
-	'margin': 0 0 map.get( units.$spacing, 'large' ),
-);
-
 $input: (
 	'border-radius': 0,
 	'height': 50px,
