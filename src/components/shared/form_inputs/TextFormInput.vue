@@ -69,6 +69,19 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/forms';
+@use 'sass:map';
 
+.text-form-input {
+	input {
+		border-radius: map.get( forms.$input, 'border-radius' );
+		padding: 0 map.get( units.$spacing, 'small' );
+	}
+
+	&.has-icons-right .icon {
+		height: 44px;
+	}
+}
 </style>

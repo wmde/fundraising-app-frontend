@@ -44,6 +44,70 @@ const inputModel = useInputModel<string | number | boolean | null>( () => props.
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/colors';
+@use 'sass:map';
+@use 'sass:math';
 
+$check-size: map.get( units.$spacing, 'small' );
+
+.radio-form-input {
+	flex: 0 0 auto;
+	margin: 0 map.get( units.$spacing, 'large' ) 0 0;
+	padding: map.get( units.$spacing, 'small' ) 0;
+	width: map.get( units.$spacing, 'xxx-large' );
+	line-height: map.get( units.$spacing, 'small' );
+
+	&:last-child {
+		margin: 0;
+		flex: 1 0 auto;
+	}
+
+	.check {
+		display: block;
+		float: left;
+		box-sizing: border-box;
+		position: relative;
+		cursor: pointer;
+		width: $check-size;
+		height: $check-size;
+		margin-right: math.div( $check-size, 2 );
+		transition: background 150ms ease-out;
+		border-radius: 50%;
+		border: 2px solid colors.$gray-dark;
+
+		&::before {
+			content: "";
+			display: flex;
+			position: absolute;
+			left: 50%;
+			margin-left: -( math.div( $check-size, 2 ) );
+			top: 50%;
+			margin-top: -( math.div( $check-size, 2 ) );
+			width: $check-size;
+			height: $check-size;
+			border-radius: 50%;
+			background-color: colors.$primary;
+			transform: scale( 0 );
+			transition: transform 150ms ease-out;
+		}
+	}
+
+	input {
+		position: absolute;
+		left: 0;
+		opacity: 0;
+		outline: none;
+		z-index: -1;
+	}
+
+	input:checked + .check {
+		border-color: colors.$primary;
+
+		&::before {
+			transform: scale( 0.5 );
+		}
+	}
+}
 </style>

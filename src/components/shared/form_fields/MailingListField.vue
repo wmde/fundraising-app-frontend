@@ -1,12 +1,12 @@
 <template>
-	<div class="form-field form-field-checkbox">
+	<div class="form-field form-field-mailing-list">
 		<CheckboxSingleFormInput
 			v-model="fieldModel"
 			name="info"
 			input-id="newsletter"
 			@update:modelValue="onUpdateModel"
 		>
-			<span class="form-field-newsletter-label-content">
+			<span class="form-field-mailing-list-label-content">
 				<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
 				<span v-html="$t( 'donation_form_newsletter_label_paragraph_2_vuei18n_v3' )"/>
 			</span>
@@ -34,6 +34,15 @@ const onUpdateModel = ( newValue: boolean ): void => {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use 'sass:map';
+
+.form-field-mailing-list-label-content {
+	strong {
+		display: block;
+		margin-bottom: map.get( units.$spacing, 'x-small' );
+	}
+}
 
 </style>
