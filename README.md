@@ -23,6 +23,13 @@ them into the directory `web/skins/laika` in the Fundraising Application
 directory. You can ignore or delete the generated HTML files, they are an
 unused byproduct of the build process.
 
+By default, the production build will send errors to our error collection
+service. When building for production, you must provide the API key for
+the service in the environment variable `VUE_APP_ERRBIT_PROJECT_KEY`. Our
+CI/CD system does this automatically, if you're building locally, you can
+run the command like this:
+
+	VUE_APP_ERRBIT_PROJECT_KEY=<INSERT_KEY_HERE> npm run build
 
 ## Where to put images and fonts and how to reference them
 Put all images, fonts and other non-bundled resources into subdirectories
