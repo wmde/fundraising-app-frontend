@@ -37,6 +37,31 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/forms';
+@use 'sass:map';
+// TODO: Replace this with custom breakpoint mixins in scss/settings/_breakpoints.scss
+@import "~bulma/sass/utilities/mixins";
 
+.select-form-input {
+	select {
+		border-radius: map.get( forms.$input, 'border-radius' );
+		width: map.get( forms.$input, 'max-width' );
+		padding: 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' );
+
+		@include from( $tablet ) {
+			width: map.get( forms.$input, 'max-width' );
+		}
+
+		font-size: map.get( forms.$input, 'font-size' );
+		height: map.get( forms.$input, 'height' );
+	}
+
+	.select:not(.is-multiple):not(.is-loading)::after {
+		width: 1em;
+		height: 1em;
+		margin-top: -0.6em;
+	}
+}
 </style>
