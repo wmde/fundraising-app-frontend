@@ -11,6 +11,7 @@
 			:label="$t( 'C23_WMDE_Desktop_DE_05_contact_details_label' )"
 			:show-error="showAddressTypeError"
 			:error-message="$t( 'donation_form_section_address_error' )"
+			alignment="row"
 		/>
 
 		<TextField

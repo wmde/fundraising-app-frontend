@@ -63,7 +63,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 	&-container {
 		display: flex;
 		.radio + .radio {
-			margin: 0;
+			margin-left: 0;
 		}
 		&.row-alignment {
 			flex-direction: row;

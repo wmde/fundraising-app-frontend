@@ -1,8 +1,8 @@
 <template>
 	<div class="payment-section">
+		<div class="title is-size-5">{{ $t('donation_form_payment_amount_title') }}</div>
 		<AmountField
 			v-model="amount"
-			:title="$t('donation_form_payment_amount_title')"
 			:payment-amounts="paymentAmounts"
 			:error-message="amountErrorMessage"
 			:show-error="amountErrorMessage !== ''"
@@ -15,8 +15,8 @@
 			:options="paymentIntervalsAsOptions"
 			:required="true"
 			:disabled="disabledPaymentIntervals"
-			alignment="column">
-		</RadioField>
+			alignment="column"
+		/>
 
 		<div class="title is-size-5">{{ $t('donation_form_payment_type_title') }}</div>
 		<RadioField
@@ -26,9 +26,9 @@
 			:required="true"
 			:disabled="disabledPaymentTypes"
 			alignment="column"
-			:show-error="paymentTypeIsValid"
-			:error-message="$t('donation_form_payment_type_error')">
-		</RadioField>
+			:show-error="!paymentTypeIsValid"
+			:error-message="$t('donation_form_payment_type_error')"
+		/>
 	</div>
 </template>
 
@@ -44,6 +44,7 @@ import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { FormOption } from '@src/components/shared/form_fields/FormOption';
 import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePaymentFieldModel';
+import { Validity } from '@src/view_models/Validity';
 
 interface Props {
 	paymentAmounts: number[];
@@ -59,8 +60,7 @@ const { t } = useI18n();
 const amount = usePaymentFieldModel( store, 'amount', setAmount );
 const interval = usePaymentFieldModel( store, 'interval', setInterval );
 const paymentType = usePaymentFieldModel( store, 'type', setType );
-
-const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type );
+const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type !== Validity.INVALID );
 
 const paymentIntervalsAsOptions = computed<FormOption[]>( () => {
 	return props.paymentIntervals.map(
@@ -105,4 +105,5 @@ const amountErrorMessage = computed<String>( () => {
 	};
 	return messages[ store.getters[ NS_PAYMENT + '/amountValidity' ] ];
 } );
+
 </script>

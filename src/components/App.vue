@@ -1,5 +1,5 @@
 <template>
-	<div class="app-container" :class="bucketClasses" :id="`locale-${ $i18n.locale }`">
+	<div class="app-container" :class="bucketClasses">
 		<header>
 			<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
 		</header>

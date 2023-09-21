@@ -53,6 +53,7 @@
 					@field-changed="onFieldChange"
 					:show-error="showReceiptOptionError"
 					:error-message="$t( 'C23_WMDE_Desktop_DE_05_receipt_error' )"
+					alignment="row"
 				/>
 
 				<AddressFields

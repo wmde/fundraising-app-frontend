@@ -4,7 +4,8 @@
 @use 'sass:color';
 
 $input: (
-	'border-radius': 0,
+	'border-radius': 2px,
+	'border': 1px solid colors.$gray-mid,
 	'height': 50px,
 	'font-size': 14px,
 	'min-width': 272px,
