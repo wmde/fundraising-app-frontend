@@ -33,8 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { action } from '@src/store/util';
+import { computed } from 'vue';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { setAmount, setInterval, setType } from '@src/store/payment/actionTypes';
 import { useStore } from 'vuex';
@@ -44,6 +43,7 @@ import { useI18n } from 'vue-i18n';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { FormOption } from '@src/components/shared/form_fields/FormOption';
+import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePaymentFieldModel';
 
 interface Props {
 	paymentAmounts: number[];
@@ -56,26 +56,11 @@ const props = defineProps<Props>();
 const store = useStore();
 const { t } = useI18n();
 
-const amountFromStore = computed<string>( () => store.state[ NS_PAYMENT ].values.amount );
-const amount = ref<string>( amountFromStore.value );
-
-const intervalFromStore = computed<string>( () => store.state[ NS_PAYMENT ].values.interval );
-const interval = ref<string>( intervalFromStore.value );
-
-const paymentTypeFromStore = computed<string>( () => store.state[ NS_PAYMENT ].values.type );
-const paymentType = ref<string>( paymentTypeFromStore.value );
+const amount = usePaymentFieldModel( store, 'amount', setAmount );
+const interval = usePaymentFieldModel( store, 'interval', setInterval );
+const paymentType = usePaymentFieldModel( store, 'type', setType );
 
 const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type );
-const disabledPaymentTypes = computed<string[]>( () => {
-	let disabledTypes : string[] = [];
-	if ( store.state[ NS_ADDRESS ].addressType === AddressTypeModel.ANON ) {
-		disabledTypes.push( 'BEZ' );
-	}
-	if ( store.state[ NS_PAYMENT ].values.interval !== '0' ) {
-		disabledTypes.push( 'SUB' );
-	}
-	return disabledTypes;
-} );
 
 const paymentIntervalsAsOptions = computed<FormOption[]>( () => {
 	return props.paymentIntervals.map(
@@ -91,6 +76,17 @@ const paymentTypesAsOptions = computed<FormOption[]>( () => {
 		) );
 } );
 
+const disabledPaymentTypes = computed<string[]>( () => {
+	let disabledTypes : string[] = [];
+	if ( store.state[ NS_ADDRESS ].addressType === AddressTypeModel.ANON ) {
+		disabledTypes.push( 'BEZ' );
+	}
+	if ( store.state[ NS_PAYMENT ].values.interval !== '0' ) {
+		disabledTypes.push( 'SUB' );
+	}
+	return disabledTypes;
+} );
+
 const disabledPaymentIntervals = computed<string[]>( () => {
 	let disabledIntervals : string[] = [];
 	if ( store.state[ NS_PAYMENT ].values.type === 'SUB' ) {
@@ -100,6 +96,7 @@ const disabledPaymentIntervals = computed<string[]>( () => {
 	}
 	return disabledIntervals;
 } );
+
 const amountErrorMessage = computed<String>( () => {
 	const messages : { [ key:number ]:string; } = {
 		[ AmountValidity.AMOUNT_VALID ]: '',
@@ -107,30 +104,5 @@ const amountErrorMessage = computed<String>( () => {
 		[ AmountValidity.AMOUNT_TOO_HIGH ]: t( 'donation_form_payment_amount_too_high' ),
 	};
 	return messages[ store.getters[ NS_PAYMENT + '/amountValidity' ] ];
-} );
-
-const sendAmountToStore = ( newAmount: string ): void => {
-	store.dispatch( action( NS_PAYMENT, setAmount ), newAmount );
-};
-const sendIntervalToStore = ( newInterval: string ): void => {
-	store.dispatch( action( NS_PAYMENT, setInterval ), newInterval );
-};
-const sendTypeToStore = ( newPaymentType: string ): void => {
-	store.dispatch( action( NS_PAYMENT, setType ), newPaymentType );
-};
-
-watch( amount, sendAmountToStore );
-watch( amountFromStore, ( newValue ) => {
-	amount.value = newValue;
-} );
-
-watch( interval, sendIntervalToStore );
-watch( intervalFromStore, ( newValue ) => {
-	interval.value = newValue;
-} );
-
-watch( paymentType, sendTypeToStore );
-watch( paymentTypeFromStore, ( newValue ) => {
-	paymentType.value = newValue;
 } );
 </script>
