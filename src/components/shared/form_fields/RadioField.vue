@@ -57,6 +57,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 
 <style lang="scss">
 @use '@src/scss/settings/units';
+@use '@src/scss/settings/forms';
 @use 'sass:map';
 
 .form-field-radio {
@@ -71,15 +72,22 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 		&.column-alignment {
 			flex-direction: column;
 			.radio-form-input {
-				width: 350px;
+				width: 100%;
+				max-width: map.get( forms.$input, 'max-width' );
 				border-bottom: 2px solid rgba(0, 0, 0, 0.14);
-				padding-top: map.get( units.$spacing, 'medium' );
+
+				&:not( :first-child ) {
+					padding-top: map.get( units.$spacing, 'medium' );
+				}
+
 				.check {
 					margin-right: map.get( units.$spacing, 'small' );
 				}
+
 				&.is-active {
 					border-bottom: 2px solid #0065a4;
 				}
+
 				&:hover {
 					border-bottom: 2px solid #808080;
 				}

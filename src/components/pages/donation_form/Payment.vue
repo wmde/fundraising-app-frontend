@@ -1,34 +1,37 @@
 <template>
-	<div class="payment-section">
-		<div class="title is-size-5">{{ $t('donation_form_payment_amount_title') }}</div>
-		<AmountField
-			v-model="amount"
-			:payment-amounts="paymentAmounts"
-			:error-message="amountErrorMessage"
-			:show-error="amountErrorMessage !== ''"
-		/>
+	<div class="payment-form">
+		<FormSection :title="$t('donation_form_payment_amount_title')" title-margin="small">
+			<AmountField
+				v-model="amount"
+				:payment-amounts="paymentAmounts"
+				:error-message="amountErrorMessage"
+				:show-error="amountErrorMessage !== ''"
+			/>
+		</FormSection>
 
-		<div class="title is-size-5">{{ $t('donation_form_payment_interval_title') }}</div>
-		<RadioField
-			name="interval"
-			v-model="interval"
-			:options="paymentIntervalsAsOptions"
-			:required="true"
-			:disabled="disabledPaymentIntervals"
-			alignment="column"
-		/>
+		<FormSection :title="$t('donation_form_payment_interval_title')" title-margin="x-small">
+			<RadioField
+				name="interval"
+				v-model="interval"
+				:options="paymentIntervalsAsOptions"
+				:required="true"
+				:disabled="disabledPaymentIntervals"
+				alignment="column"
+			/>
+		</FormSection>
 
-		<div class="title is-size-5">{{ $t('donation_form_payment_type_title') }}</div>
-		<RadioField
-			name="paymentType"
-			v-model="paymentType"
-			:options="paymentTypesAsOptions"
-			:required="true"
-			:disabled="disabledPaymentTypes"
-			alignment="column"
-			:show-error="!paymentTypeIsValid"
-			:error-message="$t('donation_form_payment_type_error')"
-		/>
+		<FormSection :title="$t('donation_form_payment_type_title')" title-margin="x-small">
+			<RadioField
+				name="paymentType"
+				v-model="paymentType"
+				:options="paymentTypesAsOptions"
+				:required="true"
+				:disabled="disabledPaymentTypes"
+				alignment="column"
+				:show-error="!paymentTypeIsValid"
+				:error-message="$t('donation_form_payment_type_error')"
+			/>
+		</FormSection>
 	</div>
 </template>
 
@@ -45,6 +48,7 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { FormOption } from '@src/components/shared/form_fields/FormOption';
 import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePaymentFieldModel';
 import { Validity } from '@src/view_models/Validity';
+import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 
 interface Props {
 	paymentAmounts: number[];
@@ -77,7 +81,7 @@ const paymentTypesAsOptions = computed<FormOption[]>( () => {
 } );
 
 const disabledPaymentTypes = computed<string[]>( () => {
-	let disabledTypes : string[] = [];
+	let disabledTypes: string[] = [];
 	if ( store.state[ NS_ADDRESS ].addressType === AddressTypeModel.ANON ) {
 		disabledTypes.push( 'BEZ' );
 	}
@@ -88,7 +92,7 @@ const disabledPaymentTypes = computed<string[]>( () => {
 } );
 
 const disabledPaymentIntervals = computed<string[]>( () => {
-	let disabledIntervals : string[] = [];
+	let disabledIntervals: string[] = [];
 	if ( store.state[ NS_PAYMENT ].values.type === 'SUB' ) {
 		disabledIntervals = props.paymentIntervals
 			.filter( ( x: number ) => Number( x ) > 0 )
@@ -98,7 +102,7 @@ const disabledPaymentIntervals = computed<string[]>( () => {
 } );
 
 const amountErrorMessage = computed<String>( () => {
-	const messages : { [ key:number ]:string; } = {
+	const messages: { [ key: number ]: string; } = {
 		[ AmountValidity.AMOUNT_VALID ]: '',
 		[ AmountValidity.AMOUNT_TOO_LOW ]: t( 'donation_form_payment_amount_error' ),
 		[ AmountValidity.AMOUNT_TOO_HIGH ]: t( 'donation_form_payment_amount_too_high' ),

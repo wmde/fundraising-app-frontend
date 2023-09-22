@@ -1,4 +1,4 @@
-import { shallowMount, VueWrapper } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
 
@@ -15,7 +15,7 @@ describe( 'Payment.vue', () => {
 
 	const getWrapper = (): VueWrapper<any> => {
 		store = createStore();
-		return shallowMount( Payment, {
+		return mount( Payment, {
 			props: {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],

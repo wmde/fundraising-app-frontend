@@ -14,6 +14,7 @@ describe( 'RadioField.vue', () => {
 					{ value: 'elephant', label: 'Elephant' },
 				],
 				errorMessage: 'error_message',
+				alignment: 'row',
 			},
 		} );
 	};
