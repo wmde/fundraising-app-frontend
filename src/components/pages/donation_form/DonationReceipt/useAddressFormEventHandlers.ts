@@ -1,5 +1,4 @@
 import { Store } from 'vuex';
-import { trackFormSubmission } from '@src/tracking';
 import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
 import { validateAddress, validateAddressType, validateEmail } from '@src/store/address/actionTypes';
@@ -7,7 +6,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
 import { discardInitialization } from '@src/store/payment/actionTypes';
-import { ComputedRef } from 'vue';
+import { ComputedRef, Ref } from 'vue';
 
 const scrollToFirstError = () => {
 	document.getElementsByClassName( 'help is-danger' )[ 0 ]
@@ -15,7 +14,7 @@ const scrollToFirstError = () => {
 };
 
 type ReturnType = {
-	submit: ( e: Event ) => Promise<void>,
+	submit: () => Promise<void>,
 	previousPage: () => void,
 }
 
@@ -24,22 +23,24 @@ export function useAddressFormEventHandlers(
 	emit: ( eventName: string ) => void,
 	isDirectDebit: ComputedRef<any>,
 	validateAddressUrl: string,
-	validateEmailUrl: string
+	validateEmailUrl: string,
+	submitForm: Ref<HTMLFormElement>
 ): ReturnType {
-	const submit = async ( e: Event ) => {
-		e.preventDefault();
-
-		await store.dispatch( action( NS_ADDRESS, validateAddressType ), {
-			type: store.state.address.addressType,
-			disallowed: [ AddressTypeModel.UNSET ],
-		} );
-		await store.dispatch( action( NS_ADDRESS, validateAddress ), validateAddressUrl );
-		await store.dispatch( action( NS_ADDRESS, validateEmail ), validateEmailUrl );
+	const submit = async () => {
+		const validationCalls: Promise<any>[] = [
+			store.dispatch( action( NS_ADDRESS, validateAddressType ), {
+				type: store.state.address.addressType,
+				disallowed: [ AddressTypeModel.UNSET ],
+			} ),
+			store.dispatch( action( NS_ADDRESS, validateAddress ), validateAddressUrl ),
+			store.dispatch( action( NS_ADDRESS, validateEmail ), validateEmailUrl ),
+		];
 
 		if ( isDirectDebit.value ) {
-			await store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) );
+			validationCalls.push( store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
 		}
 
+		await Promise.all( validationCalls );
 		// We need to wait for the asynchronous bank data validation, that might still be going on
 		await waitForServerValidationToFinish( store );
 
@@ -53,10 +54,7 @@ export function useAddressFormEventHandlers(
 			return;
 		}
 
-		const form = e.target as HTMLFormElement;
-
-		trackFormSubmission( form );
-		form.submit();
+		submitForm.value.submit();
 	};
 
 	const previousPage = async () => {

@@ -28,7 +28,7 @@ const scrollToFirstError = () => {
 };
 
 type ReturnType = {
-	submit: () => void,
+	submit: () => Promise<void>,
 	previousPage: () => void,
 }
 
@@ -40,8 +40,8 @@ export function useAddressFormEventHandlers(
 	validateAddressUrl: string,
 	validateEmailUrl: string
 ): ReturnType {
-	const submit = () => {
-		const validationCalls = [
+	const submit = async () => {
+		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( NS_ADDRESS, validateAddressType ), {
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
@@ -54,20 +54,21 @@ export function useAddressFormEventHandlers(
 			validationCalls.push( store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
 		}
 
-		Promise.all( validationCalls ).then( () => {
-			// We need to wait for the asynchronous bank data validation, that might still be going on
-			waitForServerValidationToFinish( store ).then( () => {
-				if ( !store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
-					scrollToFirstError();
-					return;
-				}
-				if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
-					scrollToFirstError();
-					return;
-				}
-				submitHtmlForm( addressType.value );
-			} );
-		} );
+		await Promise.all( validationCalls );
+		// We need to wait for the asynchronous bank data validation, that might still be going on
+		await waitForServerValidationToFinish( store );
+
+		if ( !store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
+			scrollToFirstError();
+			return;
+		}
+
+		if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+			scrollToFirstError();
+			return;
+		}
+
+		submitHtmlForm( addressType.value );
 	};
 
 	const previousPage = async () => {

@@ -10,7 +10,7 @@
 			@previous-page="previousPage">
 		</PaymentSummary>
 
-		<form @submit="submit" action="/donation/add" method="post">
+		<form @submit.prevent="submit" action="/donation/add" method="post">
 			<AutofillHandler @autofill="onAutofill">
 
 				<PaymentBankData
@@ -104,16 +104,9 @@
 					</div>
 				</template>
 			</FormSummary>
-
-			<input type="hidden" name="addressType" :value="addressTypeName">
-			<input type="hidden" name="paymentType" :value="paymentType">
-			<input type="hidden" name="interval" :value="interval">
-			<input type="hidden" name="amount" :value="amount">
-			<input type="hidden" name="impCount" :value="trackingData.impressionCount">
-			<input type="hidden" name="bImpCount" :value="trackingData.bannerImpressionCount">
-			<input type="hidden" name="piwik_campaign" :value="campaignValues.campaign">
-			<input type="hidden" name="piwik_kwd" :value="campaignValues.keyword">
-
+		</form>
+		<form id="donation-form-submit-values" ref="submitValuesForm" action="/donation/add" method="post">
+			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 	</div>
 </template>
@@ -147,11 +140,11 @@ import { useAddressType } from '@src/components/pages/donation_form/DonationRece
 import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
 import { useMailingListModel } from '@src/components/pages/donation_form/DonationReceipt/useMailingListModel';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
-import { usePaymentValues } from '@src/components/pages/donation_form/DonationReceipt/usePaymentValues';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
+import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 
 interface Props {
 	assetsPath: string;
@@ -172,10 +165,10 @@ const store = useStore( StoreKey );
 
 const { addressType, addressTypeName } = useAddressType( store );
 const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
-const { amount, interval, paymentType } = usePaymentValues( store );
 const mailingList = useMailingListModel( store );
 const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
+const submitValuesForm = ref<HTMLFormElement>();
 
 const {
 	formData,
@@ -193,7 +186,7 @@ const {
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
-const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
+const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl, submitValuesForm );
 
 useAddressTypeFromReceiptSetter( receiptNeeded, addressType, store );
 
