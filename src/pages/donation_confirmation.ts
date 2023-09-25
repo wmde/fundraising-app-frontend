@@ -15,12 +15,12 @@ import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { clearPersistentData } from '@src/store/create_data_persister';
-import { createFeatureToggle } from '@src/createFeatureToggle';
 import { initializeAddress } from '@src/store/address/actionTypes';
 import { trackGoal } from '@src/tracking';
 
 import App from '@src/components/App.vue';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
+import { createFeatureFetcher } from '@src/FeatureFetcher';
 
 interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },
@@ -38,6 +38,7 @@ const LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_applica
 const pageData = new PageDataInitializer<DonationConfirmationModel>( '#appdata' );
 const store = createStore();
 const address = pageData.applicationVars.address;
+const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
@@ -61,7 +62,7 @@ store.dispatch(
 		],
 	}
 ).then( () => {
-	const app = createVueApp( App, pageData.messages, {
+	const app = createVueApp( App, pageData.messages, featureFetcher, {
 		isFullWidth: true,
 		assetsPath: pageData.assetsPath,
 		pageIdentifier: PAGE_IDENTIFIER,
@@ -81,6 +82,5 @@ store.dispatch(
 		},
 	} );
 	app.use( store );
-	app.component( 'FeatureToggle', createFeatureToggle( { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } ) );
 	app.mount( '#app' );
 } );

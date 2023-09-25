@@ -3,6 +3,7 @@ import { createVueApp } from '@src/createVueApp';
 import PageDataInitializer from '@src/page_data_initializer';
 import App from '@src/components/App.vue';
 import SubscriptionConfirmation from '@src/components/pages/SubscriptionConfirmation.vue';
+import { createNullFeatureFetcher } from '@src/FeatureFetcher';
 
 interface ErrorModel {
 	error_message: string,
@@ -11,7 +12,7 @@ interface ErrorModel {
 const PAGE_IDENTIFIER = 'subscription-confirmation';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: SubscriptionConfirmation,

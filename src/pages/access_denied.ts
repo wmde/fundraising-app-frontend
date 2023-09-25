@@ -3,6 +3,7 @@ import { createVueApp } from '@src/createVueApp';
 import PageDataInitializer from '@src/page_data_initializer';
 import App from '@src/components/App.vue';
 import AccessDenied from '@src/components/pages/AccessDenied.vue';
+import { createNullFeatureFetcher } from '@src/FeatureFetcher';
 
 interface ErrorModel {
 	message: string,
@@ -11,7 +12,7 @@ interface ErrorModel {
 const PAGE_IDENTIFIER = 'access-denied';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: AccessDenied,

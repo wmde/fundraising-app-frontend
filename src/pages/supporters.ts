@@ -4,6 +4,7 @@ import PageDataInitializer from '@src/page_data_initializer';
 import { supportersFromObject } from '@src/view_models/supporters';
 import App from '@src/components/App.vue';
 import Supporters from '@src/components/pages/Supporters.vue';
+import { createNullFeatureFetcher } from '@src/FeatureFetcher';
 
 interface ErrorModel {
 	message: string,
@@ -14,7 +15,7 @@ const PAGE_IDENTIFIER = 'supporters';
 const staticPage: any = document.getElementById( 'appdata' );
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: Supporters,

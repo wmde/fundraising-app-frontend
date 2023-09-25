@@ -1,10 +1,6 @@
 import { useSlots } from 'vue';
 
-export interface FeatureTogglePluginOptions {
-	activeFeatures: string[],
-}
-
-export function createFeatureToggle( options?: FeatureTogglePluginOptions ) {
+export function createFeatureToggle( activeFeatures?: string[] ) {
 	return {
 		props: {
 			defaultTemplate: {
@@ -13,7 +9,6 @@ export function createFeatureToggle( options?: FeatureTogglePluginOptions ) {
 			},
 		},
 		setup() {
-			const activeFeatures = options?.activeFeatures;
 			const slots = useSlots();
 			const usedSlotNames = Object.keys( slots );
 			const slotsToShow = usedSlotNames.filter( ( slotName: string ) => activeFeatures.indexOf( slotName ) > -1 );

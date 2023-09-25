@@ -3,6 +3,7 @@ import { createVueApp } from '@src/createVueApp';
 import PageDataInitializer from '@src/page_data_initializer';
 import App from '@src/components/App.vue';
 import SystemMessage from '@src/components/pages/SystemMessage.vue';
+import { createNullFeatureFetcher } from '@src/FeatureFetcher';
 
 interface ErrorModel {
 	message: string,
@@ -12,7 +13,7 @@ interface ErrorModel {
 const PAGE_IDENTIFIER = 'system-message';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: SystemMessage,

@@ -45,7 +45,7 @@ describe( 'DonationForm.vue', () => {
 					AddressPage,
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( { activeFeatures: [ 'campaigns.address_pages.legacy' ] } ),
+					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
 				},
 			},
 		} );

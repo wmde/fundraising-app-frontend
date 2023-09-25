@@ -1,11 +1,18 @@
 import { App, Component, createApp } from 'vue';
 import { createLocalisation } from '@src/createLocalisation';
 import createLogger from '@src/logger';
+import { createFeatureToggle } from '@src/createFeatureToggle';
+import { FeatureFetcher } from '@src/FeatureFetcher';
 
 type Data = Record<string, unknown>;
 type Messages = Record<string, string>;
 
-export function createVueApp( rootComponent: Component, messages: Messages, rootProps?: Data ): App {
+export function createVueApp(
+	rootComponent: Component,
+	messages: Messages,
+	featureFetcher: FeatureFetcher,
+	rootProps?: Data
+): App {
 	const i18n = createLocalisation( messages );
 	const app = createApp( rootComponent, {
 		...rootProps,
@@ -20,6 +27,8 @@ export function createVueApp( rootComponent: Component, messages: Messages, root
 			} );
 		};
 	}
+
+	app.component( 'FeatureToggle', createFeatureToggle( featureFetcher.getFeatures() ) );
 
 	return app;
 }
