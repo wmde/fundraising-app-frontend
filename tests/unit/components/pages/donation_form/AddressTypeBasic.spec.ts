@@ -36,8 +36,9 @@ describe( 'AddressTypeBasic.vue', () => {
 		const wrapper = getWrapper( [ AddressTypeModel.ANON, AddressTypeModel.PERSON ], true );
 		const person = wrapper.find( 'input[value=person]' );
 		const company = wrapper.find( 'input[value=company]' );
-		const anonymous = wrapper.find( 'input[value=anonymous]' );
+		const anonymous = wrapper.find<HTMLInputElement>( 'input[value=anonymous]' );
 
+		// "person" can't be disabled
 		expect( person.attributes( 'disabled' ) ).toBeUndefined();
 		expect( company.attributes( 'disabled' ) ).toBeUndefined();
 		expect( anonymous.attributes( 'disabled' ) ).toBeDefined();

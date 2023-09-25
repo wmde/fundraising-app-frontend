@@ -7,6 +7,8 @@ export enum AddressTypeModel {
 	UNSET,
 }
 
+// AddressTypeNames and the AddressTypes maps have some German names in them because that's what the backend uses.
+
 export const AddressTypeNames = new Map<number, string>( [
 	[ AddressTypeModel.PERSON, 'person' ],
 	[ AddressTypeModel.COMPANY, 'firma' ],
