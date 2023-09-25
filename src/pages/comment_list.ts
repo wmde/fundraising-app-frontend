@@ -7,7 +7,7 @@ import CommentList from '@src/components/pages/CommentList.vue';
 const PAGE_IDENTIFIER = 'comment-list';
 const pageData = new PageDataInitializer<any>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: CommentList,

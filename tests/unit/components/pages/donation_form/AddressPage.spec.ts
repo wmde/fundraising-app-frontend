@@ -63,7 +63,7 @@ describe( 'AddressPage.vue', () => {
 					[ StoreKey as symbol ]: store,
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( { activeFeatures: [ 'campaigns.address_type_steps.preselect' ] } ),
+					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
 				},
 			},
 		} );

@@ -11,7 +11,7 @@ interface ErrorModel {
 const PAGE_IDENTIFIER = 'access-denied';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: AccessDenied,

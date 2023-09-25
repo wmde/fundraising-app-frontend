@@ -25,7 +25,7 @@ const FORM_NAMESPACE = 'update_address';
 const pageData = new PageDataInitializer<UpdateAddressModel>( '#appdata' );
 const store = createStore( [ createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 
-const app = createVueApp( App, pageData.messages, {
+const app = createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: UpdateAddress,

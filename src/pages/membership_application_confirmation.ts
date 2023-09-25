@@ -37,7 +37,7 @@ const yearlyFee = new YearlyMembershipFee(
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId, yearlyFee.yearlyFee );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	isFullWidth: true,
 	pageIdentifier: PAGE_IDENTIFIER,

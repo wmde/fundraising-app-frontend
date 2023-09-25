@@ -8,7 +8,7 @@ const staticPage: any = document.getElementById( 'appdata' );
 const PAGE_IDENTIFIER = staticPage.getAttribute( 'data-page-id' );
 const pageData = new PageDataInitializer<any>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: PrivacyProtection,

@@ -7,7 +7,7 @@ import UpdateAddressSuccess from '@src/components/pages/UpdateAddressSuccess.vue
 const PAGE_IDENTIFIER = 'address-update-success';
 const pageData = new PageDataInitializer<any>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: UpdateAddressSuccess,

@@ -13,7 +13,7 @@ interface ContactFormModel {
 const PAGE_IDENTIFIER = 'contact-form';
 const pageData = new PageDataInitializer<ContactFormModel>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: Contact,

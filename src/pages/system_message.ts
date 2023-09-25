@@ -12,7 +12,7 @@ interface ErrorModel {
 const PAGE_IDENTIFIER = 'system-message';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: SystemMessage,

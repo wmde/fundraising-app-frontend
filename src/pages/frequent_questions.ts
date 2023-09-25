@@ -8,7 +8,7 @@ import Faq from '@src/components/pages/Faq.vue';
 const PAGE_IDENTIFIER = 'faq-page';
 const pageData = new PageDataInitializer<any>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: Faq,

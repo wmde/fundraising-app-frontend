@@ -15,7 +15,6 @@ import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { clearPersistentData } from '@src/store/create_data_persister';
-import { createFeatureToggle } from '@src/createFeatureToggle';
 import { initializeAddress } from '@src/store/address/actionTypes';
 import { trackGoal } from '@src/tracking';
 
@@ -61,7 +60,7 @@ store.dispatch(
 		],
 	}
 ).then( () => {
-	const app = createVueApp( App, pageData.messages, {
+	const app = createVueApp( App, pageData.messages, [ ...pageData.selectedBuckets, ...pageData.activeFeatures ], {
 		isFullWidth: true,
 		assetsPath: pageData.assetsPath,
 		pageIdentifier: PAGE_IDENTIFIER,
@@ -81,6 +80,5 @@ store.dispatch(
 		},
 	} );
 	app.use( store );
-	app.component( 'FeatureToggle', createFeatureToggle( { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } ) );
 	app.mount( '#app' );
 } );

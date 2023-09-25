@@ -7,7 +7,7 @@ import UseOfFunds from '@src/components/pages/UseOfFunds.vue';
 const PAGE_IDENTIFIER = 'use-of-funds';
 const pageData = new PageDataInitializer<any>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	isFullWidth: true,
 	pageIdentifier: PAGE_IDENTIFIER,

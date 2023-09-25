@@ -14,7 +14,7 @@ const PAGE_IDENTIFIER = 'supporters';
 const staticPage: any = document.getElementById( 'appdata' );
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 
-createVueApp( App, pageData.messages, {
+createVueApp( App, pageData.messages, [], {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: Supporters,
