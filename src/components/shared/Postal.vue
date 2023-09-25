@@ -61,21 +61,19 @@
 		/>
 	</div>
 
-	<div v-bind:class="['form-input', { 'is-invalid': showError.country }]">
-		<label for="country" class="subtitle">{{ $t( 'donation_form_country_label' ) }}</label>
-		<div class="field" :class="{ 'is-danger': showError.country }">
-			<AutocompleteCountry
-				:countries="countries"
-				:has-error="showError.country"
-				v-model="country"
-				:initial-country-code="formData.country.value"
-				:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } ).toString()"
-				@field-changed="$emit('field-changed', 'country')"
-				@initialised="initialiseCountry"
-			/>
-		</div>
-		<span v-if="showError.country" class="help is-danger error-country">{{ $t('donation_form_country_error') }}</span>
+	<div style="margin-top: 36px;">
+		<CountryAutocompleteField
+			v-model="formData.country.value"
+			:countries="countries"
+			:was-restored="countryWasRestored"
+			:show-error="showError.country"
+			:error-message="$t('donation_form_country_error')"
+			:label="$t( 'donation_form_country_label' )"
+			:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
+			@field-changed="onCountryFieldChanged"
+		/>
 	</div>
+
 </div>
 </template>
 
@@ -83,10 +81,10 @@
 import { defineComponent } from 'vue';
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import { Country } from '@src/view_models/Country';
-import AutocompleteCity from '@src/components/shared/form_inputs/AutocompleteCity.vue';
+import AutocompleteCity from '@src/components/shared/legacy_form_inputs/AutocompleteCity.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import TextInput from '@src/components/shared/form_inputs/TextInput.vue';
-import AutocompleteCountry from '@src/components/shared/form_inputs/AutocompleteCountry.vue';
+import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
+import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 
 export default defineComponent( {
 	name: 'postal',
@@ -95,33 +93,26 @@ export default defineComponent( {
 		formData: Object as () => AddressFormData,
 		countries: Array as () => Array<Country>,
 		postCodeValidation: String,
+		countryWasRestored: Boolean,
 	},
-	components: { AutocompleteCountry, TextInput, ValueEqualsPlaceholderWarning, AutocompleteCity },
+	components: { CountryAutocompleteField, TextInput, ValueEqualsPlaceholderWarning, AutocompleteCity },
 	data() {
 		return {
 			showWarning: false,
-			country: undefined,
 		};
 	},
-	watch: {
-		country: function ( newCountry: Country|undefined ) {
-			this.setCountry( newCountry );
-			this.$emit( 'field-changed', 'country' );
-			this.$emit( 'field-changed', 'postcode' );
-		},
-	},
 	methods: {
-		initialiseCountry( newCountry: Country|undefined ) {
-			this.setCountry( newCountry );
-			this.$emit( 'field-changed', 'country' );
-		},
-		setCountry( newCountry: Country|undefined ) {
-			if ( newCountry ) {
-				this.$props.formData.country.value = newCountry.countryCode;
-				this.$props.formData.postcode.pattern = newCountry.postCodeValidation;
+		onCountryFieldChanged( country: Country | undefined ) {
+			if ( country ) {
+				this.$props.formData.postcode.pattern = country.postCodeValidation;
 			} else {
-				this.$props.formData.country.value = '';
 				this.$props.formData.postcode.pattern = this.$props.postCodeValidation;
+			}
+
+			this.$emit( 'field-changed', 'country' );
+
+			if ( this.$props.formData.postcode.value !== '' ) {
+				this.$emit( 'field-changed', 'postcode' );
 			}
 		},
 		displayStreetWarning() {

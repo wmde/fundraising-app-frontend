@@ -33,7 +33,7 @@ import { waitForServerValidationToFinish } from '@src/wait_for_server_validation
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { setAddressType } from '@src/store/membership_address/actionTypes';
 import { mapGetters } from 'vuex';
-import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
 export default defineComponent( {
 	name: 'PaymentPage',

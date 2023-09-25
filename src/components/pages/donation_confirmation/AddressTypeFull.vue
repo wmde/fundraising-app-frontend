@@ -24,7 +24,7 @@
 <script lang="ts">
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { defineComponent, ref, watch } from 'vue';
-import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
+import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'AddressTypeFull',

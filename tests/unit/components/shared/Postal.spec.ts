@@ -15,6 +15,7 @@ function newTestProperties( overrides: Object ) {
 				street: false,
 				city: false,
 				postcode: false,
+				country: false,
 			},
 			formData: {
 				salutation: {
@@ -98,21 +99,28 @@ describe( 'Postal.vue', () => {
 
 		field.trigger( 'blur' );
 
-		expect( wrapper.emitted( 'field-changed' )![ 0 ] ).toEqual( [ 'country' ] );
-		expect( wrapper.emitted( 'field-changed' )![ 1 ] ).toEqual( [ 'postcode' ] );
+		expect( wrapper.emitted( 'field-changed' )[ 0 ] ).toEqual( [ 'postcode' ] );
 	} );
 
 	it( 'sets the correct postcode regex on country change', async () => {
+		jest.useFakeTimers();
+
 		const wrapper = mount( Postal, {
 			props: newTestProperties( {} ),
 		} );
 
-		await wrapper.setData( { country: countries[ 1 ] } );
+		await wrapper.find( '#country' ).setValue( countries[ 1 ].countryFullName );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+		await jest.runAllTimersAsync();
 
 		expect( wrapper.vm.$props.formData.postcode.pattern ).toEqual( countries[ 1 ].postCodeValidation );
 
-		await wrapper.setData( { country: undefined } );
+		await wrapper.find( '#country' ).setValue( '' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+		await jest.runAllTimersAsync();
 
 		expect( wrapper.vm.$props.formData.postcode.pattern ).toEqual( addressValidationPatterns.postcode );
+
+		jest.resetAllMocks();
 	} );
 } );

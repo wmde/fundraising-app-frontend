@@ -1,0 +1,33 @@
+@use '../settings/units';
+@use '../settings/forms';
+@use 'sass:map';
+
+.form-field {
+	margin: 0 0 map.get( units.$spacing, 'large' );
+	font-size: map.get( forms.$input, 'font-size' );
+
+	.control {
+		font-size: 1rem;
+	}
+
+	&-text,
+	&-select,
+	&-email,
+	&-autocomplete {
+		.control {
+			max-width: map.get( forms.$input, 'max-width' );
+		}
+	}
+
+	&-autocomplete-container {
+		max-width: map.get( forms.$input, 'max-width' );
+		position: relative;
+	}
+
+	&-label {
+		display: block;
+		margin: 0 0 map.get( units.$spacing, 'xx-small' );
+		font-weight: bold;
+		line-height: 1;
+	}
+}

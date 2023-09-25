@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import axios from 'axios';
 
 /**
@@ -6,7 +6,7 @@ import axios from 'axios';
  *
  * Right now it's used in the Email component to check for typos.
  */
-export function useMailHostList() {
+export function useMailHostList(): Ref<string[]> {
 	const mailHostList = ref( [] );
 
 	axios.get( '/resources/mail_provider_suggestions.json' )
@@ -18,5 +18,5 @@ export function useMailHostList() {
 			// but still have the empty array that the code can work with
 		} );
 
-	return { mailHostList };
+	return mailHostList;
 }

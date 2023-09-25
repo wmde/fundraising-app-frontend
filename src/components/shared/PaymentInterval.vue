@@ -27,7 +27,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { IntervalData } from '@src/view_models/Payment';
-import RadioInput from '@src/components/shared/form_inputs/RadioInput.vue';
+import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
 
 export default defineComponent( {
 	name: 'PaymentInterval',

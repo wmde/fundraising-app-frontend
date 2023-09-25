@@ -30,7 +30,7 @@ import { markEmptyValuesAsInvalid } from '@src/store/payment/actionTypes';
 import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
 import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
 import scrollToFirstError from '@src/scroll_to_first_error';
-import FunButton from '@src/components/shared/form_inputs/FunButton.vue';
+import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
 export default defineComponent( {
 	name: 'PaymentPage',

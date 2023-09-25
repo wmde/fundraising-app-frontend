@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import FunCheckbox from '@src/components/shared/form_inputs/FunCheckbox.vue';
+import FunCheckbox from '@src/components/shared/legacy_form_inputs/FunCheckbox.vue';
 
 interface Props {
 	message: String;

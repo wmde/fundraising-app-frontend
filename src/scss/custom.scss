@@ -3,8 +3,11 @@
 @import "variables";
 @import "fonts";
 
-// Import Bulma's utility mixins
-@import "~bulma/sass/utilities/_all";
+// Import Bulma styles
+// TODO: Look through what Bulma elements are being used and only import styles for them
+//    This will reduce the css file size
+@import "~bulma";
+@import "~bulma-helpers/sass/helpers/spacing/margin-padding";
 
 .is-two-thirds.column {
 	@include from($tablet) {
@@ -170,10 +173,6 @@ h1.icon-title svg {
 	}
 }
 
-// Import Bulma styles
-@import "~bulma";
-@import "~bulma-helpers/sass/helpers/spacing/margin-padding";
-
 .summary-wrapper {
 	@include until($widescreen) {
 		button.is-main {
@@ -181,10 +180,6 @@ h1.icon-title svg {
 			margin: 0 0 5px;
 		}
 	}
-}
-
-.summary-notice {
-	color: $fun-color-dark-lighter;
 }
 
 .has-negative-margin-bottom-18 {
@@ -361,3 +356,6 @@ h1.icon-title svg {
 @import "components/donation_comment_popup";
 @import "locale_overrides/en-GB";
 @import "components/feedback_box";
+
+// New style guide
+@import "components/form_field";
