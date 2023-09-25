@@ -9,6 +9,9 @@
 			</div>
 			<div class="container">
 				<AppContent :is-full-width="isFullWidth">
+					<template #headline>
+
+					</template>
 					<template #content>
 						<component :is="page" v-bind="pageProps"/>
 					</template>
@@ -48,14 +51,20 @@ withDefaults( defineProps<Props>(), {
 </script>
 
 <style lang="scss">
-	@import "../scss/custom";
-	#app {
-		display: flex;
-		min-height: 100vh;
-		flex-direction: column;
-		flex: 1;
+@use '@src/scss/settings/breakpoints';
+@import "../scss/custom";
+
+#app {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	flex: 1;
+}
+.main-wrapper {
+	padding: $navbar-height 6px 0;
+
+	@include breakpoints.tablet-up {
+		padding: $navbar-height 18px 0;
 	}
-	.main-wrapper {
-		padding: $navbar-height 18px;
-	}
+}
 </style>

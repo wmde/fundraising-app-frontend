@@ -1,9 +1,12 @@
 <template>
-	<div class="columns content-wrapper">
-		<div v-bind:class="[ isFullWidth ? 'column is-full' : 'is-two-thirds column has-background-bright' ]">
+	<div class="app-content">
+		<div class="app-content-main">
+			<slot name="headline"/>
 			<slot name="content"/>
 		</div>
-		<slot v-if="!isFullWidth" name="sidebar"/>
+		<div v-if="!isFullWidth" class="app-content-sidebar">
+			<slot name="sidebar"/>
+		</div>
 	</div>
 </template>
 
@@ -18,7 +21,36 @@ defineProps<Props>();
 </script>
 
 <style lang="scss">
-.columns.content-wrapper {
-	margin: 0 -12px;
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/colors';
+@use '@src/scss/settings/breakpoints';
+@use 'sass:map';
+
+.app-content {
+	display: flex;
+	flex-direction: column;
+
+	@include breakpoints.tablet-up {
+		flex-direction: row;
+	}
+
+	&-main,
+	&-sidebar {
+		margin-bottom: map.get( units.$spacing, 'small' );
+	}
+
+	&-main {
+		flex: 1 1 auto;
+		background: colors.$white;
+		padding: map.get( units.$spacing, 'large' );
+	}
+
+	&-sidebar {
+		@include breakpoints.tablet-up {
+			flex: 0 0 33.3333%;
+			width: 33.3333%;
+			padding: map.get( units.$spacing, 'small' );
+		}
+	}
 }
 </style>
