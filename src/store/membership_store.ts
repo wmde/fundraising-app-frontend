@@ -7,6 +7,7 @@ import {
 	NS_MEMBERSHIP_ADDRESS,
 	NS_MEMBERSHIP_FEE,
 } from './namespaces';
+import { InjectionKey } from 'vue';
 
 export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) {
 	const storeBundle: StoreOptions<any> = {
@@ -40,3 +41,5 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 
 	return new Vuex.Store<any>( storeBundle );
 }
+
+export const StoreKeyMembership: InjectionKey<Store<any>> = Symbol( 'Store' );
