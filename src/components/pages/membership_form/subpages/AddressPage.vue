@@ -1,13 +1,13 @@
 <template>
 	<div class="address-page">
 		<address-fields
-				:validate-address-url="validateAddressUrl"
-				:validate-email-url="validateEmailUrl"
-				:countries="countries"
-				:salutations="salutations"
-				:address-validation-patterns="addressValidationPatterns"
-				:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
-				ref="address">
+			:validate-address-url="validateAddressUrl"
+			:validate-email-url="validateEmailUrl"
+			:countries="countries"
+			:salutations="salutations"
+			:address-validation-patterns="addressValidationPatterns"
+			:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
+			ref="addressFieldsRef">
 		</address-fields>
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
 			<membership-summary
@@ -42,8 +42,8 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
 import AddressFields from '@src/components/pages/membership_form/Address.vue';
 import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
@@ -52,75 +52,67 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
-import { mapGetters } from 'vuex';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
+import { Country } from '@src/view_models/Country';
+import { useStore } from 'vuex';
 
-export default defineComponent( {
-	name: 'AddressPage',
-	components: {
-		FunButton,
-		AddressFields,
-		MembershipSummary,
-		SubmitValues,
-	},
-	props: {
-		validateAddressUrl: String,
-		validateEmailUrl: String,
-		countries: Array as () => Array<String>,
-		salutations: Array as () => Array<Salutation>,
-		addressValidationPatterns: Object as () => AddressValidation,
-		dateOfBirthValidationPattern: String,
-	},
-	computed: {
-		...mapGetters( NS_MEMBERSHIP_ADDRESS, [ 'addressType' ] ),
-		addressIsInvalid: {
-			get(): boolean {
-				return !this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ];
-			},
-		},
-		membershipApplication: {
-			get(): object {
-				const payment = this.$store.state[ NS_MEMBERSHIP_FEE ].values;
-				return {
-					paymentIntervalInMonths: payment.interval,
-					membershipFee: payment.fee / 100,
-					paymentType: payment.type,
-					membershipType: membershipTypeName( this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipType' ] ),
-				};
-			},
-		},
-		addressSummary: {
-			get(): object {
-				return {
-					...this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values,
-					fullName: this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/fullName' ],
-					streetAddress: this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values.street,
-					postalCode: this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values.postcode,
-					countryCode: this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values.country,
-					applicantType: addressTypeName( this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/addressType' ] ),
-				};
-			},
-		},
-	},
-	methods: {
-		submit() {
-			( this.$refs.address as any ).validateForm().then( () => {
-				if ( this.formIsValid() ) {
-					this.$emit( 'submit-membership' );
-				} else {
-					document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-				}
-			} );
-		},
-		formIsValid() {
-			if ( !this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] ) {
-				return false;
-			}
-			if ( !this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ] ) {
-				return false;
-			}
-			return true;
-		},
-	},
+interface Props {
+	validateAddressUrl: String;
+	validateEmailUrl: String;
+	countries: Country[];
+	salutations: Salutation[];
+	addressValidationPatterns: AddressValidation;
+	dateOfBirthValidationPattern: String;
+}
+
+defineProps<Props>();
+const emit = defineEmits( [ 'previous-page', 'submit-membership' ] );
+const store = useStore();
+
+const addressFieldsRef = ref();
+const addressIsInvalid = computed( (): boolean => !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] );
+
+const membershipApplication = computed( (): object => {
+	const payment = store.state[ NS_MEMBERSHIP_FEE ].values;
+	return {
+		paymentIntervalInMonths: payment.interval,
+		membershipFee: payment.fee / 100,
+		paymentType: payment.type,
+		membershipType: membershipTypeName( store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipType' ] ),
+	};
 } );
+
+const addressSummary = computed( (): object => {
+	return {
+		...store.state[ NS_MEMBERSHIP_ADDRESS ].values,
+		fullName: store.getters[ NS_MEMBERSHIP_ADDRESS + '/fullName' ],
+		streetAddress: store.state[ NS_MEMBERSHIP_ADDRESS ].values.street,
+		postalCode: store.state[ NS_MEMBERSHIP_ADDRESS ].values.postcode,
+		countryCode: store.state[ NS_MEMBERSHIP_ADDRESS ].values.country,
+		applicantType: addressTypeName( store.getters[ NS_MEMBERSHIP_ADDRESS + '/addressType' ] ),
+	};
+} );
+
+const formIsValid = () => {
+	if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] ) {
+		return false;
+	}
+	if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ] ) {
+		return false;
+	}
+	return true;
+};
+
+const submit = () => {
+	addressFieldsRef.value.validateForm().then( () => {
+		if ( formIsValid() ) {
+			emit( 'submit-membership' );
+		} else {
+			document
+				.getElementsByClassName( 'is-danger' )[ 0 ]
+				.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+		}
+	} );
+};
+
 </script>
