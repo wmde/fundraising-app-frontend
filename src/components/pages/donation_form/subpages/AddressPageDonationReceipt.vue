@@ -168,7 +168,6 @@ const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store )
 const mailingList = useMailingListModel( store );
 const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
-const submitValuesForm = ref<HTMLFormElement>();
 
 const {
 	formData,
@@ -186,7 +185,8 @@ const {
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
-const { submit, previousPage } = useAddressFormEventHandlers( store, emit, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl, submitValuesForm );
+const { submit, previousPage, submitValuesForm } =
+	useAddressFormEventHandlers( store, emit, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
 
 useAddressTypeFromReceiptSetter( receiptNeeded, addressType, store );
 

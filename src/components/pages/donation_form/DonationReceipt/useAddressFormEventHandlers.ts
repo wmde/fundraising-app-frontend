@@ -6,7 +6,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
 import { discardInitialization } from '@src/store/payment/actionTypes';
-import { ComputedRef, Ref } from 'vue';
+import { ComputedRef, ref, Ref } from 'vue';
 
 const scrollToFirstError = () => {
 	document.getElementsByClassName( 'help is-danger' )[ 0 ]
@@ -16,6 +16,7 @@ const scrollToFirstError = () => {
 type ReturnType = {
 	submit: () => Promise<void>,
 	previousPage: () => void,
+	submitValuesForm: Ref<HTMLFormElement>,
 }
 
 export function useAddressFormEventHandlers(
@@ -23,9 +24,9 @@ export function useAddressFormEventHandlers(
 	emit: ( eventName: string ) => void,
 	isDirectDebit: ComputedRef<any>,
 	validateAddressUrl: string,
-	validateEmailUrl: string,
-	submitForm: Ref<HTMLFormElement>
+	validateEmailUrl: string
 ): ReturnType {
+	const submitValuesForm = ref<HTMLFormElement>();
 	const submit = async () => {
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( NS_ADDRESS, validateAddressType ), {
@@ -54,7 +55,7 @@ export function useAddressFormEventHandlers(
 			return;
 		}
 
-		submitForm.value.submit();
+		submitValuesForm.value.submit();
 	};
 
 	const previousPage = async () => {
@@ -65,5 +66,6 @@ export function useAddressFormEventHandlers(
 	return {
 		submit,
 		previousPage,
+		submitValuesForm,
 	};
 }
