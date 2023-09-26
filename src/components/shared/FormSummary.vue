@@ -16,7 +16,7 @@
 @use 'sass:map';
 
 .form-summary {
-	border: 2px solid colors.$gray-lighter;
+	border: 2px solid colors.$gray-light;
 	padding: map.get( units.$spacing, 'xx-small' );
 	margin: 0 ( -( map.get( units.$spacing, 'xx-small' ) ) );
 
