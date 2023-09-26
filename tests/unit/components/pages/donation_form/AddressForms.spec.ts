@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
-import Name from '@src/components/shared/Name.vue';
 import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
 import EmailAddress from '@src/components/shared/EmailAddress.vue';
+import NameFields from '@src/components/shared/NameFields.vue';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@src/store/namespaces';
@@ -14,6 +14,21 @@ import { addressValidationPatterns } from '../../../../data/validation';
 import each from 'jest-each';
 
 const store = createStore();
+
+const EXAMPLE_SALUTATIONS = [
+	{
+		label: 'Mr',
+		value: 'Herr',
+	},
+	{
+		label: 'Ms',
+		value: 'Frau',
+	},
+	{
+		label: 'No Salutation',
+		value: 'Divers',
+	},
+];
 
 describe( 'AddressForms.vue', () => {
 
@@ -33,6 +48,7 @@ describe( 'AddressForms.vue', () => {
 				campaign: 'nicholas',
 				keyword: 'cage',
 			},
+			salutations: EXAMPLE_SALUTATIONS,
 		},
 		global: {
 			plugins: [ store ],
@@ -72,7 +88,7 @@ describe( 'AddressForms.vue', () => {
 		const firstNameValue = 'Vuetiful';
 		await wrapper.find( '#first-name' ).setValue( firstNameValue );
 
-		wrapper.findComponent( Name ).vm.$emit( 'field-changed', 'firstName' );
+		wrapper.findComponent( NameFields ).vm.$emit( 'field-changed', 'firstName' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'firstName',
 			'optionalField': false,
@@ -125,6 +141,7 @@ describe( 'AddressForms.vue', () => {
 					campaign: 'nicholas',
 					keyword: 'cage',
 				},
+				salutations: EXAMPLE_SALUTATIONS,
 			},
 			global: {
 				plugins: [ store ],

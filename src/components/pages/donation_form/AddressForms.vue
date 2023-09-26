@@ -7,7 +7,7 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name
+				<name-fields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.PERSON"
@@ -45,7 +45,7 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name
+				<name-fields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.COMPANY"
@@ -83,7 +83,7 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name
+				<name-fields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.PERSON"
@@ -115,7 +115,6 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, PropType, ref, toRefs } from 'vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import Name from '@src/components/shared/Name.vue';
 import Postal from '@src/components/shared/Postal.vue';
 import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
 import EmailAddress from '@src/components/shared/EmailAddress.vue';
@@ -133,11 +132,12 @@ import { StoreKey } from '@src/store/donation_store';
 import { injectStrict } from '@src/util/injectStrict';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { Validity } from '@src/view_models/Validity';
+import NameFields from '@src/components/shared/NameFields.vue';
 
 export default defineComponent( {
 	name: 'Address',
 	components: {
-		Name,
+		NameFields,
 		Postal,
 		ReceiptOption,
 		EmailAddress,
