@@ -73,11 +73,25 @@ const paymentIntervalsAsOptions = computed<FormOption[]>( () => {
 		) );
 } );
 
+const disabledPaymentTypeMessages = {
+	SUB: 'donation_form_SUB_payment_type_info',
+	BEZ: 'donation_form_address_choice_direct_debit_disclaimer',
+};
+
 const paymentTypesAsOptions = computed<FormOption[]>( () => {
 	return props.paymentTypes.map(
-		( paymentTypeValue: string ) => (
-			{ value: paymentTypeValue, label: t( paymentTypeValue ) }
-		) );
+		( paymentTypeValue: string ) => {
+			let message = '';
+			if ( paymentTypeValue in disabledPaymentTypeMessages ) {
+				message = disabledPaymentTypeMessages[ paymentTypeValue ];
+			}
+			return {
+				value: paymentTypeValue,
+				label: t( paymentTypeValue ),
+				infoMessage: t( message ),
+			};
+		}
+	);
 } );
 
 const disabledPaymentTypes = computed<string[]>( () => {

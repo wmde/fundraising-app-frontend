@@ -16,6 +16,9 @@
 				@update:modelValue="onFieldChange"
 			>
 				{{ option.label }}
+				<div v-if="disabled.includes( option.value )" class="disabled-message">
+					{{ option.infoMessage }}
+				</div>
 			</RadioFormInput>
 		</div>
 		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
@@ -75,6 +78,8 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 				width: 100%;
 				max-width: map.get( forms.$input, 'max-width' );
 				border-bottom: 2px solid rgba(0, 0, 0, 0.14);
+				display: inline-flex;
+				align-items: flex-start;
 
 				&:not( :first-child ) {
 					padding-top: map.get( units.$spacing, 'medium' );
@@ -82,10 +87,22 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 
 				.check {
 					margin-right: map.get( units.$spacing, 'small' );
+					display: flex;
+					flex-shrink: 0;
+				}
+
+				.disabled-message {
+					color: rgba(0,0,0,.6);
+					margin-top: map.get( units.$spacing, 'small' );;
 				}
 
 				&.is-active {
 					border-bottom: 2px solid #0065a4;
+				}
+
+				&.is-disabled {
+					opacity: 0.5;
+					cursor: not-allowed;
 				}
 
 				&:hover {
