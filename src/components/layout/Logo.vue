@@ -18,14 +18,6 @@
 	</div>
 </template>
 
-<script lang="ts">
-
-export default {
-	name: 'Logo',
-};
-
-</script>
-
 <style lang="scss">
 	@import "../../scss/variables";
 	@import "~bulma/sass/utilities/mixins";

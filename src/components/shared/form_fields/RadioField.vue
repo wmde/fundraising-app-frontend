@@ -58,6 +58,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 <style lang="scss">
 @use '@src/scss/settings/units';
 @use '@src/scss/settings/forms';
+@use '@src/scss/settings/colors';
 @use 'sass:map';
 
 .form-field-radio {
@@ -85,11 +86,11 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 				}
 
 				&.is-active {
-					border-bottom: 2px solid #0065a4;
+					border-bottom: 2px solid colors.$primary;
 				}
 
 				&:hover {
-					border-bottom: 2px solid #808080;
+					border-bottom: 2px solid colors.$gray-dark;
 				}
 			}
 		}

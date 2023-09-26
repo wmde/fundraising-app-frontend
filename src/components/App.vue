@@ -1,7 +1,14 @@
 <template>
 	<div class="app-container" :class="bucketClasses">
 		<header>
-			<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
+			<FeatureToggle default-template="campaigns.new_design.legacy">
+				<template #campaigns.new_design.legacy>
+					<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
+				</template>
+				<template #campaigns.new_design.new>
+					<AppHeaderVar :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
+				</template>
+			</FeatureToggle>
 		</header>
 		<main class="main-wrapper">
 			<div class="container">
@@ -29,6 +36,7 @@
 
 <script setup lang="ts">
 import AppHeader from '@src/components/layout/AppHeader.vue';
+import AppHeaderVar from '@src/components/layout/AppHeader_var.vue';
 import AppHeadline from '@src/components/layout/AppHeadline.vue';
 import AppContent from '@src/components/layout/AppContent.vue';
 import Sidebar from '@src/components/layout/Sidebar.vue';
@@ -51,6 +59,7 @@ withDefaults( defineProps<Props>(), {
 </script>
 
 <style lang="scss">
+@use '@src/scss/settings/global';
 @use '@src/scss/settings/breakpoints';
 @import "../scss/custom";
 
@@ -61,10 +70,10 @@ withDefaults( defineProps<Props>(), {
 	flex: 1;
 }
 .main-wrapper {
-	padding: $navbar-height 6px 0;
+	padding: global.$navbar-height 6px 0;
 
 	@include breakpoints.tablet-up {
-		padding: $navbar-height 18px 0;
+		padding: global.$navbar-height 18px 0;
 	}
 }
 </style>
