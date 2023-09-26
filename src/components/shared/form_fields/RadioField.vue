@@ -1,7 +1,7 @@
 <template>
 	<fieldset class="form-field form-field-radio" :class="{ 'is-invalid': showError }">
-		<legend class="form-field-label">{{ label }}</legend>
-		<div class="control form-field-radio-container">
+		<legend v-if="label" class="form-field-label">{{ label }}</legend>
+		<div class="control form-field-radio-container" :class="alignment+ '-alignment'">
 			<RadioFormInput
 				v-for="( option, index ) in options"
 				:key="index"
@@ -28,7 +28,7 @@ import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 
 interface Props {
-	label: String;
+	label?: String;
 	name: string;
 	modelValue: string | number | boolean | null;
 	options: FormOption[];
@@ -36,6 +36,7 @@ interface Props {
 	required?: boolean;
 	showError?: boolean;
 	errorMessage?: String;
+	alignment: 'row' | 'column';
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -55,7 +56,44 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 </script>
 
 <style lang="scss">
-.form-field-radio-container {
-	display: flex;
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/forms';
+@use 'sass:map';
+
+.form-field-radio {
+	&-container {
+		display: flex;
+		.radio + .radio {
+			margin-left: 0;
+		}
+		&.row-alignment {
+			flex-direction: row;
+		}
+		&.column-alignment {
+			flex-direction: column;
+			.radio-form-input {
+				width: 100%;
+				max-width: map.get( forms.$input, 'max-width' );
+				border-bottom: 2px solid rgba(0, 0, 0, 0.14);
+
+				&:not( :first-child ) {
+					padding-top: map.get( units.$spacing, 'medium' );
+				}
+
+				.check {
+					margin-right: map.get( units.$spacing, 'small' );
+				}
+
+				&.is-active {
+					border-bottom: 2px solid #0065a4;
+				}
+
+				&:hover {
+					border-bottom: 2px solid #808080;
+				}
+			}
+		}
+	}
 }
+
 </style>

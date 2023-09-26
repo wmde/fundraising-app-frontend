@@ -15,6 +15,16 @@ describe( 'RadioFormInput.vue', () => {
 		} );
 	};
 
+	it( 'sets active', async () => {
+		const wrapper = getWrapper();
+
+		expect( wrapper.classes() ).not.toContain( 'active' );
+
+		await wrapper.setProps( { modelValue: 'elephant' } );
+
+		expect( wrapper.classes() ).toContain( 'active' );
+	} );
+
 	it( 'sets disabled', async () => {
 		const wrapper = getWrapper();
 

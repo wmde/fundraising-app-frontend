@@ -50,13 +50,14 @@ interface Props {
 	inputId: string;
 	placeholder: String;
 	hasMessage: boolean;
-	hasError: boolean;
+	hasError?: boolean;
 	disabled?: boolean;
 	required?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	autocomplete: 'on',
+	hasError: false,
 	disabled: false,
 	required: false,
 } );
@@ -71,13 +72,26 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 
 <style lang="scss">
 @use '@src/scss/settings/units';
+@use '@src/scss/settings/colors';
 @use '@src/scss/settings/forms';
 @use 'sass:map';
 
 .text-form-input {
-	input {
+	input,
+	textarea {
+		border: map.get( forms.$input, 'border' );
+		font-size: map.get( forms.$input, 'font-size' );
 		border-radius: map.get( forms.$input, 'border-radius' );
 		padding: 0 map.get( units.$spacing, 'small' );
+
+		&:active {
+			background-color: colors.$white;
+		}
+
+		&:focus {
+			border-color: colors.$primary;
+			box-shadow: 0 1px 0 0 colors.$primary;
+		}
 	}
 
 	&.has-icons-right .icon {

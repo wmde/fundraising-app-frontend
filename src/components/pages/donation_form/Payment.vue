@@ -1,103 +1,113 @@
 <template>
-	<div class="payment-section">
-		<amount-selection
-			:payment-amounts="paymentAmounts"
-			:amount="amount"
-			:title="$t('donation_form_payment_amount_title')"
-			:error="showErrorMessage"
-			v-on:amount-selected="sendAmountToStore"
-		/>
-		<payment-interval
-			class="has-margin-top-36"
-			:payment-intervals="paymentIntervals"
-			:current-interval="interval"
-			:title="$t('donation_form_payment_interval_title')"
-			:disabled-payment-intervals="disabledPaymentIntervals"
-			v-on:interval-selected="sendIntervalToStore"
-		/>
-		<payment-type
-			class="has-margin-top-36"
-			:current-type="type"
-			:payment-types="paymentTypes"
-			:error="typeIsValid ? '' : $t('donation_form_payment_type_error')"
-			:title="$t('donation_form_payment_type_title')"
-			:disabled-payment-types="disabledPaymentTypes"
-			v-on:payment-type-selected="sendTypeToStore"
-		/>
+	<div class="payment-form">
+		<FormSection :title="$t('donation_form_payment_amount_title')" title-margin="small">
+			<AmountField
+				v-model="amount"
+				:payment-amounts="paymentAmounts"
+				:error-message="amountErrorMessage"
+				:show-error="amountErrorMessage !== ''"
+			/>
+		</FormSection>
+
+		<FormSection :title="$t('donation_form_payment_interval_title')" title-margin="x-small">
+			<RadioField
+				name="interval"
+				v-model="interval"
+				:options="paymentIntervalsAsOptions"
+				:required="true"
+				:disabled="disabledPaymentIntervals"
+				alignment="column"
+			/>
+		</FormSection>
+
+		<FormSection :title="$t('donation_form_payment_type_title')" title-margin="x-small">
+			<RadioField
+				name="paymentType"
+				v-model="paymentType"
+				:options="paymentTypesAsOptions"
+				:required="true"
+				:disabled="disabledPaymentTypes"
+				alignment="column"
+				:show-error="!paymentTypeIsValid"
+				:error-message="$t('donation_form_payment_type_error')"
+			/>
+		</FormSection>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import AmountSelection from '@src/components/shared/AmountSelection.vue';
-import PaymentInterval from '@src/components/shared/PaymentInterval.vue';
-import PaymentType from '@src/components/pages/donation_form/PaymentType.vue';
-import { action } from '@src/store/util';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { setAmount, setInterval, setType } from '@src/store/payment/actionTypes';
-import { mapGetters, mapState } from 'vuex';
+import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { AmountValidity } from '@src/view_models/Payment';
+import { useI18n } from 'vue-i18n';
+import AmountField from '@src/components/shared/form_fields/AmountField.vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import { FormOption } from '@src/components/shared/form_fields/FormOption';
+import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePaymentFieldModel';
+import { Validity } from '@src/view_models/Validity';
+import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 
-export default defineComponent( {
-	name: 'Payment',
-	components: {
-		AmountSelection,
-		PaymentInterval,
-		PaymentType,
-	},
-	props: [ 'paymentAmounts', 'paymentIntervals', 'paymentTypes' ],
-	computed: {
-		...mapState( {
-			amount: ( state: any ) => state[ NS_PAYMENT ].values.amount,
-			interval: ( state: any ) => state[ NS_PAYMENT ].values.interval,
-			type: ( state: any ) => state[ NS_PAYMENT ].values.type,
-			disabledPaymentTypes: ( state: any ) => {
-				var disabledTypes : String[] = [];
-				if ( state[ NS_ADDRESS ].addressType === AddressTypeModel.ANON ) {
-					disabledTypes.push( 'BEZ' );
-				}
-				if ( state[ NS_PAYMENT ].values.interval !== '0' ) {
-					disabledTypes.push( 'SUB' );
-				}
-				return disabledTypes;
-			},
-			emailOnlyDisabledPaymentTypes: ( state: any ) => {
-				if ( state[ NS_PAYMENT ].values.interval !== '0' ) {
-					return [ 'SUB' ];
-				}
-				return [];
-			},
-			disabledPaymentIntervals: function ( state: any ) {
-				var disabledIntervals : String[] = [];
-				if ( state[ NS_PAYMENT ].values.type === 'SUB' ) {
-					disabledIntervals = ( this as any ).$props.paymentIntervals
-						.filter( ( interval:Number ) => Number( interval ) > 0 )
-						.map( ( interval:Number ) => String( interval ) );
-				}
-				return disabledIntervals;
-			},
-		} ),
-		...mapGetters( NS_PAYMENT, [ 'amountValidity', 'typeIsValid' ] ),
-		showErrorMessage(): String {
-			const messages : { [ key:number ]:string; } = {
-				[ AmountValidity.AMOUNT_VALID ]: '',
-				[ AmountValidity.AMOUNT_TOO_LOW ]: this.$t( 'donation_form_payment_amount_error' ) as string,
-				[ AmountValidity.AMOUNT_TOO_HIGH ]: this.$t( 'donation_form_payment_amount_too_high' ) as string,
-			};
-			return messages[ this.$store.getters[ NS_PAYMENT + '/amountValidity' ] ];
-		},
-	},
-	methods: {
-		sendAmountToStore( amountValue: string ): void {
-			this.$store.dispatch( action( NS_PAYMENT, setAmount ), amountValue );
-		},
-		sendIntervalToStore( interval: string ): void {
-			this.$store.dispatch( action( NS_PAYMENT, setInterval ), interval );
-		},
-		sendTypeToStore( paymentType: string ): void {
-			this.$store.dispatch( action( NS_PAYMENT, setType ), paymentType );
-		},
-	},
+interface Props {
+	paymentAmounts: number[];
+	paymentIntervals: number[];
+	paymentTypes: string[];
+}
+
+const props = defineProps<Props>();
+
+const store = useStore();
+const { t } = useI18n();
+
+const amount = usePaymentFieldModel( store, 'amount', setAmount );
+const interval = usePaymentFieldModel( store, 'interval', setInterval );
+const paymentType = usePaymentFieldModel( store, 'type', setType );
+const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type !== Validity.INVALID );
+
+const paymentIntervalsAsOptions = computed<FormOption[]>( () => {
+	return props.paymentIntervals.map(
+		( intervalValue: number ) => (
+			{ value: intervalValue.toString(), label: t( 'donation_form_payment_interval_' + intervalValue ) }
+		) );
 } );
+
+const paymentTypesAsOptions = computed<FormOption[]>( () => {
+	return props.paymentTypes.map(
+		( paymentTypeValue: string ) => (
+			{ value: paymentTypeValue, label: t( paymentTypeValue ) }
+		) );
+} );
+
+const disabledPaymentTypes = computed<string[]>( () => {
+	let disabledTypes: string[] = [];
+	if ( store.state[ NS_ADDRESS ].addressType === AddressTypeModel.ANON ) {
+		disabledTypes.push( 'BEZ' );
+	}
+	if ( store.state[ NS_PAYMENT ].values.interval !== '0' ) {
+		disabledTypes.push( 'SUB' );
+	}
+	return disabledTypes;
+} );
+
+const disabledPaymentIntervals = computed<string[]>( () => {
+	let disabledIntervals: string[] = [];
+	if ( store.state[ NS_PAYMENT ].values.type === 'SUB' ) {
+		disabledIntervals = props.paymentIntervals
+			.filter( ( x: number ) => Number( x ) > 0 )
+			.map( ( x: number ) => String( x ) );
+	}
+	return disabledIntervals;
+} );
+
+const amountErrorMessage = computed<String>( () => {
+	const messages: { [ key: number ]: string; } = {
+		[ AmountValidity.AMOUNT_VALID ]: '',
+		[ AmountValidity.AMOUNT_TOO_LOW ]: t( 'donation_form_payment_amount_error' ),
+		[ AmountValidity.AMOUNT_TOO_HIGH ]: t( 'donation_form_payment_amount_too_high' ),
+	};
+	return messages[ store.getters[ NS_PAYMENT + '/amountValidity' ] ];
+} );
+
 </script>

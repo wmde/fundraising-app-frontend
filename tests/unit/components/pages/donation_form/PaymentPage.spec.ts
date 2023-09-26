@@ -1,10 +1,10 @@
 import { action } from '@src/store/util';
 import { NS_PAYMENT } from '@src/store/namespaces';
 import { markEmptyValuesAsInvalid } from '@src/store/payment/actionTypes';
-import { mount } from '@vue/test-utils';
-import { createStore } from 'vuex';
+import { mount, VueWrapper } from '@vue/test-utils';
+import { Store } from 'vuex';
 import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
-import { nextTick } from 'vue';
+import { createStore } from '@src/store/donation_store';
 
 jest.mock( '@src/tracking', () => {
 	return {
@@ -17,37 +17,25 @@ jest.mock( '@src/scroll_to_first_error', () => {
 	return jest.fn();
 } );
 
-describe( 'PaymentPage.vue', () => {
-	let wrapper: any;
+const salutations = [
+	{
+		'label': 'Herr',
+		'value': 'Herr',
+		'display': 'Herr',
+	},
+	{
+		'label': 'Frau',
+		'value': 'Frau',
+		'display': 'Frau',
+	},
+];
 
-	const actions = {
-		'payment/markEmptyValuesAsInvalid': jest.fn(),
-	};
-	const getters = {
-		'payment/paymentDataIsValid': jest.fn(),
-		'isValidating': () => false,
-	};
-	const salutations = [
-		{
-			'label': 'Herr',
-			'value': 'Herr',
-			'display': 'Herr',
-		},
-		{
-			'label': 'Frau',
-			'value': 'Frau',
-			'display': 'Frau',
-		},
-	];
-	beforeEach( () => {
-		global.window.scrollTo = jest.fn();
-		const store = createStore( {
-			actions,
-			getters,
-		} );
-		wrapper = mount( PaymentPage, {
+describe( 'PaymentPage.vue', () => {
+
+	const getWrapper = ( store: Store<any> ): VueWrapper<any> => {
+		return mount( PaymentPage, {
 			props: {
-				paymentAmounts: [ '5' ],
+				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
 				salutations,
@@ -59,25 +47,29 @@ describe( 'PaymentPage.vue', () => {
 				},
 			},
 		} );
+	};
+
+	beforeEach( () => {
+		global.window.scrollTo = jest.fn();
 	} );
 
 	it( 'validates the input before going to the next page', async () => {
-		const store = wrapper.vm.$store;
+		const store = createStore();
 		store.dispatch = jest.fn().mockResolvedValue( true );
-		const expectedAction = action( NS_PAYMENT, markEmptyValuesAsInvalid );
-		getters[ 'payment/paymentDataIsValid' ].mockReturnValueOnce( true );
-		wrapper.find( '#next' ).trigger( 'click' );
+		const wrapper = getWrapper( store );
 
-		await nextTick();
+		await wrapper.find( '#next' ).trigger( 'click' );
 
-		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction );
+		expect( store.dispatch ).toHaveBeenCalledWith( action( NS_PAYMENT, markEmptyValuesAsInvalid ) );
 	} );
 
-	it( 'doesn\'t load the next page if there are validation errors', () => {
-		const store = wrapper.vm.$store;
+	it( 'doesn\'t load the next page if there are validation errors', async () => {
+		const store = createStore();
 		store.dispatch = jest.fn().mockResolvedValue( true );
-		getters[ 'payment/paymentDataIsValid' ].mockReturnValueOnce( false );
-		wrapper.find( '#next' ).trigger( 'click' );
+		const wrapper = getWrapper( store );
+
+		await wrapper.find( '#next' ).trigger( 'click' );
+
 		expect( wrapper.find( '.i-am-address-form' ).exists() ).toBe( false );
 		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
 	} );

@@ -2,7 +2,7 @@
 	<label
 		ref="labelRef"
 		class="radio radio-form-input"
-		:class="{ 'is-disabled': disabled }"
+		:class="{ 'is-disabled': disabled, 'active': inputModel === nativeValue }"
 		@click="focus"
 		@keydown.prevent.enter="click"
 	>

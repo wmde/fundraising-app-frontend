@@ -9,6 +9,7 @@
 			:show-error="showError.salutation"
 			:error-message="$t( 'donation_form_salutation_error' )"
 			@field-changed="$emit('field-changed', 'salutation')"
+			alignment="row"
 		/>
 
 		<SelectField
