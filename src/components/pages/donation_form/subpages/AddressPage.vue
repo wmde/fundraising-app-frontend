@@ -91,10 +91,14 @@
 						id="submit-btn"
 						:is-loading="$store.getters.isValidating"
 						:payment-type="paymentSummary.paymentType"
-						@click="submit"
+						@click="onSubmit"
 					/>
 				</div>
 			</div>
+
+			<form action="/donation/add" method="post" ref="submitValuesForm">
+				<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
+			</form>
 		</div>
 	</div>
 </template>
@@ -106,9 +110,11 @@ import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTy
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressTypeFullOrEmail.vue';
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
+import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
-import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
@@ -121,7 +127,6 @@ import { useAddressFormEventHandlers } from '@src/components/pages/donation_form
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
-import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 
 interface Props {
 	assetsPath: string;
@@ -139,6 +144,7 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'previous-page' ] );
 
+const submitValuesForm = ref();
 const isFullSelected = ref( false );
 const store = injectStrict( StoreKey );
 const setFullSelected = ( selected: boolean ) => {
@@ -168,5 +174,12 @@ const {
 } = useAddressSummary( store );
 
 const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
+
+const onSubmit = () => {
+	if ( !submitValuesForm.value ) {
+		return;
+	}
+	submit( submitValuesForm.value );
+};
 
 </script>

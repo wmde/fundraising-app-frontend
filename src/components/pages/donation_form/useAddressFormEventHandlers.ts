@@ -10,7 +10,11 @@ import { discardInitialization } from '@src/store/payment/actionTypes';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { ComputedRef } from 'vue';
 
-const submitHtmlForm = ( addressType: number ) => {
+const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
+	if ( addressType === AddressTypeModel.ANON ) {
+		// We don't have a separate form for Matomo here
+		return;
+	}
 	const formId = `laika-donation-personal-data-${ AddressTypeIds.get( addressType ) }`;
 	const currentAddressForm: HTMLFormElement = document.getElementById( formId ) as HTMLFormElement;
 	if ( !currentAddressForm ) {
@@ -19,7 +23,6 @@ const submitHtmlForm = ( addressType: number ) => {
 	}
 
 	trackFormSubmission( currentAddressForm );
-	currentAddressForm.submit();
 };
 
 const scrollToFirstError = () => {
@@ -28,19 +31,19 @@ const scrollToFirstError = () => {
 };
 
 type ReturnType = {
-	submit: () => Promise<void>,
+	submit: ( submitValuesForm: HTMLFormElement ) => Promise<void>,
 	previousPage: () => void,
 }
 
 export function useAddressFormEventHandlers(
 	store: Store<any>,
 	emit: ( eventName: string ) => void,
-	addressType: ComputedRef<any>,
-	isDirectDebit: ComputedRef<any>,
+	addressType: ComputedRef<AddressTypeModel>,
+	isDirectDebit: ComputedRef<boolean>,
 	validateAddressUrl: string,
-	validateEmailUrl: string
+	validateEmailUrl: string,
 ): ReturnType {
-	const submit = async () => {
+	const submit = async ( submitValuesForm: HTMLFormElement ): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( NS_ADDRESS, validateAddressType ), {
 				type: store.state.address.addressType,
@@ -62,13 +65,15 @@ export function useAddressFormEventHandlers(
 			scrollToFirstError();
 			return;
 		}
-
 		if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
 			scrollToFirstError();
 			return;
 		}
 
-		submitHtmlForm( addressType.value );
+		// Track the form submission with the Matomo Form Analytics plugin
+		// The form is a different one than the one for the submitValuesForm
+		trackFormSubmissionForAddressType( addressType.value );
+		submitValuesForm.submit();
 	};
 
 	const previousPage = async () => {

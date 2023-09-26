@@ -35,7 +35,6 @@
 				/>
 				<newsletter-option/>
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
@@ -73,7 +72,6 @@
 				/>
 				<newsletter-option/>
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
@@ -98,15 +96,6 @@
 				/>
 				<newsletter-option/>
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
-		</form>
-
-		<form
-			id="laika-donation-personal-data-anonymous"
-			action="/donation/add"
-			method="post"
-		>
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 	</div>
@@ -119,7 +108,6 @@ import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
 import EmailAddress from '@src/components/shared/EmailAddress.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
-import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
@@ -143,7 +131,6 @@ export default defineComponent( {
 		EmailAddress,
 		NewsletterOption,
 		AutofillHandler,
-		SubmitValues,
 	},
 	props: {
 		countries: Array as PropType<Array<Country>>,
