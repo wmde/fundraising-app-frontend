@@ -1,7 +1,6 @@
 <template>
 	<div class="app-content">
 		<div class="app-content-main">
-			<slot name="headline"/>
 			<slot name="content"/>
 		</div>
 		<div v-if="!isFullWidth" class="app-content-sidebar">
@@ -49,7 +48,6 @@ defineProps<Props>();
 		@include breakpoints.tablet-up {
 			flex: 0 0 33.3333%;
 			width: 33.3333%;
-			padding: map.get( units.$spacing, 'small' );
 		}
 	}
 }

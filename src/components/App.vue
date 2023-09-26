@@ -16,14 +16,18 @@
 			</div>
 			<div class="container">
 				<AppContent :is-full-width="isFullWidth">
-					<template #headline>
-
-					</template>
 					<template #content>
 						<component :is="page" v-bind="pageProps"/>
 					</template>
 					<template #sidebar>
-						<Sidebar/>
+						<FeatureToggle default-template="campaigns.new_design.legacy">
+							<template #campaigns.new_design.legacy>
+								<Sidebar/>
+							</template>
+							<template #campaigns.new_design.new>
+								<SidebarVar/>
+							</template>
+						</FeatureToggle>
 					</template>
 				</AppContent>
 			</div>
@@ -40,6 +44,7 @@ import AppHeaderVar from '@src/components/layout/AppHeader_var.vue';
 import AppHeadline from '@src/components/layout/AppHeadline.vue';
 import AppContent from '@src/components/layout/AppContent.vue';
 import Sidebar from '@src/components/layout/Sidebar.vue';
+import SidebarVar from '@src/components/layout/Sidebar_var.vue';
 import Footer from '@src/components/layout/Footer.vue';
 
 interface Props {
