@@ -33,7 +33,14 @@
 			</div>
 		</main>
 		<footer class="is-hidden-print">
-			<Footer :assets-path="assetsPath"></Footer>
+			<FeatureToggle default-template="campaigns.new_design.legacy">
+				<template #campaigns.new_design.legacy>
+					<Footer :assets-path="assetsPath"></Footer>
+				</template>
+				<template #campaigns.new_design.new>
+					<FooterVar :assets-path="assetsPath"/>
+				</template>
+			</FeatureToggle>
 		</footer>
 	</div>
 </template>
@@ -46,6 +53,7 @@ import AppContent from '@src/components/layout/AppContent.vue';
 import Sidebar from '@src/components/layout/Sidebar.vue';
 import SidebarVar from '@src/components/layout/Sidebar_var.vue';
 import Footer from '@src/components/layout/Footer.vue';
+import FooterVar from '@src/components/layout/Footer_var.vue';
 
 interface Props {
 	assetsPath: string;
