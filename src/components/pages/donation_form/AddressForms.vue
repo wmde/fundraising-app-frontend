@@ -14,7 +14,7 @@
 					:salutations="salutations"
 					v-on:field-changed="onFieldChange"
 				/>
-				<postal
+				<postal-address-fields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
@@ -52,7 +52,7 @@
 					:salutations="salutations"
 					v-on:field-changed="onFieldChange"
 				/>
-				<postal
+				<postal-address-fields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
@@ -115,9 +115,9 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, PropType, ref, toRefs } from 'vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import Postal from '@src/components/shared/Postal.vue';
 import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
 import EmailAddress from '@src/components/shared/EmailAddress.vue';
+import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -137,8 +137,8 @@ import NameFields from '@src/components/shared/NameFields.vue';
 export default defineComponent( {
 	name: 'Address',
 	components: {
+		PostalAddressFields,
 		NameFields,
-		Postal,
 		ReceiptOption,
 		EmailAddress,
 		NewsletterOption,

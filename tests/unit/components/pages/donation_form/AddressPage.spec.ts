@@ -52,7 +52,7 @@ describe( 'AddressPage.vue', () => {
 				salutations,
 				trackingData: {} as TrackingData,
 				campaignValues: {} as CampaignValues,
-				addressValidationPatterns: {} as AddressValidation,
+				addressValidationPatterns: { postcode: '' } as AddressValidation,
 			},
 			global: {
 				plugins: [ store ],
