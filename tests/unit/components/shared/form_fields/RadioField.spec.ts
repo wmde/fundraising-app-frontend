@@ -11,7 +11,7 @@ describe( 'RadioField.vue', () => {
 				name: 'animal',
 				options: [
 					{ value: 'mouse', label: 'Mouse' },
-					{ value: 'elephant', label: 'Elephant', infoMessage: 'DANGEROUS' },
+					{ value: 'elephant', label: 'Elephant' },
 				],
 				errorMessage: 'error_message',
 				alignment: 'row',
@@ -33,15 +33,6 @@ describe( 'RadioField.vue', () => {
 
 		expect( wrapper.find( '.is-danger' ).exists() ).toBeTruthy();
 		expect( wrapper.find( '.is-danger' ).text() ).toStrictEqual( 'error_message' );
-	} );
-
-	it( 'shows an optional info message for disabled options', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.setProps( { disabled: [ 'elephant' ] } );
-
-		expect( wrapper.find( '.disabled-message' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.disabled-message' ).text() ).toStrictEqual( 'DANGEROUS' );
 	} );
 
 	it( 'sets disabled options', async () => {

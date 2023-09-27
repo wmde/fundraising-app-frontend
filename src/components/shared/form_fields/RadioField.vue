@@ -16,9 +16,7 @@
 				@update:modelValue="onFieldChange"
 			>
 				{{ option.label }}
-				<div v-if="disabled.includes( option.value )" class="disabled-message">
-					{{ option.infoMessage }}
-				</div>
+				<slot :name="`message-${option.value}`"/>
 			</RadioFormInput>
 		</div>
 		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
@@ -91,7 +89,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 					flex-shrink: 0;
 				}
 
-				.disabled-message {
+				.option-info-message {
 					color: rgba(0,0,0,.6);
 					margin-top: map.get( units.$spacing, 'small' );;
 				}

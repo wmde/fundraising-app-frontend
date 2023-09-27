@@ -30,7 +30,18 @@
 				alignment="column"
 				:show-error="!paymentTypeIsValid"
 				:error-message="$t('donation_form_payment_type_error')"
-			/>
+			>
+				<template #message-BEZ>
+					<div v-if="showBEZMessage" class="option-info-message">
+						{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
+					</div>
+				</template>
+				<template #message-SUB>
+					<div v-if="showSUBMessage" class="option-info-message">
+						{{ $t( 'donation_form_SUB_payment_type_info' ) }}
+					</div>
+				</template>
+			</RadioField>
 		</FormSection>
 	</div>
 </template>
@@ -103,6 +114,14 @@ const disabledPaymentTypes = computed<string[]>( () => {
 		disabledTypes.push( 'SUB' );
 	}
 	return disabledTypes;
+} );
+
+const showBEZMessage = computed( (): boolean => {
+	return disabledPaymentTypes.value.includes( 'BEZ' );
+} );
+
+const showSUBMessage = computed( (): boolean => {
+	return disabledPaymentTypes.value.includes( 'SUB' );
 } );
 
 const disabledPaymentIntervals = computed<string[]>( () => {
