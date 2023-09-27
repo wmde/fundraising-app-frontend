@@ -111,16 +111,16 @@ export const actions = {
 		context.commit( SET_RECEIPT, choice );
 	},
 	[ initializeAddress ]( context: ActionContext<AddressState, any>, initialValues: InitialAddressValues ): void {
-		if ( initialValues.addressType !== null ) {
+		if ( initialValues.addressType !== null && initialValues.addressType !== undefined ) {
 			context.commit( SET_ADDRESS_TYPE, initialValues.addressType );
 			context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.VALID } );
 		} else {
 			context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.INCOMPLETE } );
 		}
-		if ( initialValues.newsletter !== null ) {
+		if ( initialValues.newsletter !== null && initialValues.newsletter !== undefined ) {
 			context.commit( SET_NEWSLETTER, initialValues.newsletter );
 		}
-		if ( initialValues.receipt !== null ) {
+		if ( initialValues.receipt !== null && initialValues.receipt !== undefined ) {
 			context.commit( SET_RECEIPT, initialValues.receipt );
 			context.commit( SET_VALIDITY, { name: 'receipt', value: Validity.RESTORED } );
 		}

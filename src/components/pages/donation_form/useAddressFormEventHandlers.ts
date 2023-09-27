@@ -8,7 +8,7 @@ import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
 import { discardInitialization } from '@src/store/payment/actionTypes';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
-import { ComputedRef } from 'vue';
+import { ComputedRef, ref, Ref } from 'vue';
 
 const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 	if ( addressType === AddressTypeModel.ANON ) {
@@ -31,8 +31,9 @@ const scrollToFirstError = () => {
 };
 
 type ReturnType = {
-	submit: ( submitValuesForm: HTMLFormElement ) => Promise<void>,
+	submit: () => Promise<void>,
 	previousPage: () => void,
+    submitValuesForm: Ref<HTMLFormElement>,
 }
 
 export function useAddressFormEventHandlers(
@@ -43,7 +44,8 @@ export function useAddressFormEventHandlers(
 	validateAddressUrl: string,
 	validateEmailUrl: string,
 ): ReturnType {
-	const submit = async ( submitValuesForm: HTMLFormElement ): Promise<void> => {
+	const submitValuesForm = ref<HTMLFormElement>();
+	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( NS_ADDRESS, validateAddressType ), {
 				type: store.state.address.addressType,
@@ -73,7 +75,7 @@ export function useAddressFormEventHandlers(
 		// Track the form submission with the Matomo Form Analytics plugin
 		// The form is a different one than the one for the submitValuesForm
 		trackFormSubmissionForAddressType( addressType.value );
-		submitValuesForm.submit();
+		submitValuesForm.value.submit();
 	};
 
 	const previousPage = async () => {
@@ -84,5 +86,6 @@ export function useAddressFormEventHandlers(
 	return {
 		submit,
 		previousPage,
+		submitValuesForm,
 	};
 }

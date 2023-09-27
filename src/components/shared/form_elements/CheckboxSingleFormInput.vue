@@ -28,7 +28,7 @@ import { useInputFocusing } from '@src/components/shared/form_elements/useInputF
 import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
 
 interface Props {
-	modelValue: boolean;
+	modelValue: boolean|null;
 	name: string;
 	inputId: string;
 	disabled?: boolean;

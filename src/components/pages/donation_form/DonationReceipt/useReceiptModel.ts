@@ -6,12 +6,12 @@ import { setReceiptChoice } from '@src/store/address/actionTypes';
 import { Validity } from '@src/view_models/Validity';
 
 type ReturnType = {
-	receiptNeeded: Ref<boolean>,
+	receiptNeeded: Ref<boolean|null>,
 	showReceiptOptionError: ComputedRef<any>
 };
 
 export function useReceiptModel( store: Store<any> ): ReturnType {
-	// Receipt choice defaults true in the store initialisation
+	// Receipt choice defaults true in the store initialization
 	// so set it to null if the validity isn't restored
 	if ( store.state.address.validity.receipt !== Validity.RESTORED ) {
 		store.dispatch( action( NS_ADDRESS, setReceiptChoice ), null );

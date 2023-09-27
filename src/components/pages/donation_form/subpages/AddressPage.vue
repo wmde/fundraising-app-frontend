@@ -66,40 +66,46 @@
 			:campaign-values="campaignValues">
 		</AddressForms>
 
-		<div class="summary-wrapper has-margin-top-18 has-outside-border">
-			<DonationSummary
-				:payment="paymentSummary"
-				:address-type="addressTypeName"
-				:address="addressSummary"
-				:countries="countries"
-				:salutations="salutations"
-				:language-item="inlineSummaryLanguageItem"
-			/>
+		<FormSummary>
+			<template #summary-content>
+				<DonationSummary
+						:payment="paymentSummary"
+						:address-type="addressTypeName"
+						:address="addressSummary"
+						:countries="countries"
+						:salutations="salutations"
+						:language-item="inlineSummaryLanguageItem"
+				/>
+			</template>
 
-			<div class="columns payment-buttons">
-				<div class="column">
-					<FunButton
+			<template #summary-buttons>
+				<FormButton
 						id="previous-btn"
-						class="level-item is-primary is-main is-outlined"
+						:is-outlined="true"
 						@click="previousPage"
-					>
-						{{ $t( 'donation_form_section_back' ) }}
-					</FunButton>
-				</div>
-				<div class="column">
-					<PaymentTextFormButton
+				>
+					{{ $t( 'donation_form_section_back' ) }}
+				</FormButton>
+				<PaymentTextFormButton
 						id="submit-btn"
 						:is-loading="$store.getters.isValidating"
 						:payment-type="paymentSummary.paymentType"
-						@click="onSubmit"
-					/>
-				</div>
-			</div>
+						@click="submit"
+				/>
+			</template>
 
-			<form action="/donation/add" method="post" ref="submitValuesForm">
-				<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
-			</form>
-		</div>
+			<template #summary-notice>
+				<div class="form-summary-notice" v-if="isExternalPayment">
+					{{ $t( 'donation_form_summary_external_payment' ) }}
+				</div>
+				<div class="form-summary-notice" v-if="isBankTransferPayment">
+					{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
+				</div>
+			</template>
+		</FormSummary>
+		<form action="/donation/add" method="post" ref="submitValuesForm">
+			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
+		</form>
 	</div>
 </template>
 
@@ -112,9 +118,10 @@ import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressT
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import FormSummary from '@src/components/shared/FormSummary.vue';
 import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
@@ -144,7 +151,6 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'previous-page' ] );
 
-const submitValuesForm = ref();
 const isFullSelected = ref( false );
 const store = injectStrict( StoreKey );
 const setFullSelected = ( selected: boolean ) => {
@@ -164,6 +170,8 @@ const {
 
 const {
 	isDirectDebitPayment,
+	isBankTransferPayment,
+	isExternalPayment,
 	paymentSummary,
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
@@ -173,13 +181,13 @@ const {
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
 
-const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
-
-const onSubmit = () => {
-	if ( !submitValuesForm.value ) {
-		return;
-	}
-	submit( submitValuesForm.value );
-};
+const { submit, previousPage, submitValuesForm } = useAddressFormEventHandlers(
+	store,
+	emit,
+	addressType,
+	isDirectDebitPayment,
+	props.validateAddressUrl,
+	props.validateEmailUrl
+);
 
 </script>
