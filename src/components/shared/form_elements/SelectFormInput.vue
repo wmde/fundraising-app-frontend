@@ -45,14 +45,13 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 @import "~bulma/sass/utilities/mixins";
 
 .select-form-input {
+	.select {
+		width: 100%;
+	}
 	select {
 		border-radius: map.get( forms.$input, 'border-radius' );
-		width: map.get( forms.$input, 'max-width' );
+		width: 100%;
 		padding: 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' );
-
-		@include from( $tablet ) {
-			width: map.get( forms.$input, 'max-width' );
-		}
 
 		font-size: map.get( forms.$input, 'font-size' );
 		height: map.get( forms.$input, 'height' );

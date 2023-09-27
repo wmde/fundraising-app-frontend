@@ -109,6 +109,7 @@ $side-width: 80px;
 		padding: map.get( units.$spacing, 'small' );
 		color: colors.$black;
 		border-bottom: 2px solid colors.$gray-light;
+		transition: border-bottom-color 200ms global.$easing, color 200ms global.$easing;
 
 		&:hover,
 		&:focus,
