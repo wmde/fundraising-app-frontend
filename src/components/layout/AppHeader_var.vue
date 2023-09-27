@@ -147,23 +147,6 @@ $side-width: 80px;
 			width: $side-width;
 		}
 	}
-
-	&-menu {
-		padding: 0;
-
-		.navigation-item {
-			padding: 18px;
-
-			@media ( min-width: 820px) {
-				padding: 18px 9px;
-			}
-
-			@media ( min-width: $navbar-breakpoint ) {
-				padding: 18px;
-				border-bottom: 2px solid colors.$gray-dark;
-			}
-		}
-	}
 }
 
 </style>
