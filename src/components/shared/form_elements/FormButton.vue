@@ -25,6 +25,7 @@ withDefaults( defineProps<Props>(), {
 <style lang="scss">
 @use '@src/scss/settings/forms';
 @use '@src/scss/settings/colors';
+@use '@src/scss/settings/global';
 @use 'sass:color';
 
 .form-button {
@@ -39,6 +40,7 @@ withDefaults( defineProps<Props>(), {
 	height: 54px;
 	width: 240px;
 	cursor: pointer;
+	transition: background-color 200ms global.$easing, color 200ms global.$easing;
 
 	&:hover {
 		background: color.adjust( colors.$primary, $lightness: -5% );

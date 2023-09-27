@@ -72,6 +72,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 		}
 		&.column-alignment {
 			flex-direction: column;
+
 			.radio-form-input {
 				width: 100%;
 				max-width: map.get( forms.$input, 'max-width' );
