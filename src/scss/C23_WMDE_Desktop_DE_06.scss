@@ -24,6 +24,15 @@ changes must be updated in the settings files before this file is deleted.
  */
 
 .campaigns--new-design--new {
+	font-size: 16px;
+
+	.control {
+		font-size: 16px;
+	}
+
+	* {
+		font-family: "Source Sans Pro", "Open Sans", Helvetica,Arial, sans-serif;
+	}
 
 	a:not( .navigation-item ):not( .footer-var-list a ):not( .dropdown-menu a ) {
 		color: $primary;
@@ -58,6 +67,7 @@ changes must be updated in the settings files before this file is deleted.
 
 	.form-field-label {
 		margin: 0 0 map.get( units.$spacing, 'small' );
+		font-size: 16px;
 	}
 
 	.form-field-text .control,
@@ -80,12 +90,21 @@ changes must be updated in the settings files before this file is deleted.
 	.text-form-input textarea,
 	.select-form-input select {
 		border-radius: map.get( $input, 'border-radius' );
+		font-size: 16px;
 	}
 
 	.text-form-input input,
 	.select-form-input select {
 		border-radius: map.get( $input, 'border-radius' );
 		height: map.get( $input, 'height' );
+	}
+
+	.form-field-autocomplete .dropdown-item {
+		font-size: 16px;
+	}
+
+	.select:not(.is-multiple):not(.is-loading)::after {
+		font-size: 12px;
 	}
 
 	// The error icon inside the text fields needs an alignment bump
@@ -96,6 +115,10 @@ changes must be updated in the settings files before this file is deleted.
 	// The custom amount text field is still 50px
 	#amount-custom {
 		height: 50px;
+	}
+
+	.checkbox-single-form-input .check {
+		margin-top: 2px;
 	}
 
 	.form-field-amount-radio .radio-form-input {
