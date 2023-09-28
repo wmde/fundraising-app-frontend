@@ -3,9 +3,9 @@
 		<div class="app-content-main">
 			<slot name="content"/>
 		</div>
-		<div v-if="!isFullWidth" class="app-content-sidebar">
+		<aside v-if="!isFullWidth" class="app-content-sidebar">
 			<slot name="sidebar"/>
-		</div>
+		</aside>
 	</div>
 </template>
 
@@ -41,7 +41,11 @@ defineProps<Props>();
 	&-main {
 		flex: 1 1 auto;
 		background: colors.$white;
-		padding: map.get( units.$spacing, 'large' );
+		padding: map.get( units.$spacing, 'small' );
+
+		@include breakpoints.tablet-up {
+			padding: map.get( units.$spacing, 'large' );
+		}
 	}
 
 	&-sidebar {

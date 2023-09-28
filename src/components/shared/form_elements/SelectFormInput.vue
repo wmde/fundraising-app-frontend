@@ -49,6 +49,7 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 		width: 100%;
 	}
 	select {
+		border: map.get( forms.$input, 'border' );
 		border-radius: map.get( forms.$input, 'border-radius' );
 		width: 100%;
 		padding: 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' );

@@ -51,12 +51,12 @@ const footerMenu = [
 .footer-var {
 	display: flex;
 	flex-direction: column;
-	padding: map.get( units.$spacing, 'small' );
+	padding: map.get( units.$spacing, 'small' ) 0;
 
 	@include breakpoints.tablet-up {
 		flex-direction: row;
 		flex-wrap: nowrap;
-		padding: map.get( units.$spacing, 'large' );
+		padding: map.get( units.$spacing, 'large' ) 0;
 	}
 
 	&-wrapper {
@@ -71,6 +71,7 @@ const footerMenu = [
 	&-logo {
 		flex: 1 0 106px;
 		max-width: 106px;
+		margin: 0 map.get( units.$spacing, 'small' );
 	}
 
 	&-text {
@@ -82,10 +83,11 @@ const footerMenu = [
 	}
 
 	&-right {
+		padding: 0 map.get( units.$spacing, 'small' );
+
 		@include breakpoints.tablet-up {
 			flex: 0 0 33.3333%;
 			width: 33.3333%;
-			padding: 0 map.get( units.$spacing, 'small' );
 		}
 	}
 

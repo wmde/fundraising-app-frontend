@@ -31,6 +31,7 @@ export default defineComponent( {
 <style lang="scss">
 @use '@src/scss/settings/colors';
 @use '@src/scss/settings/units';
+@use '@src/scss/settings/breakpoints';
 @use 'sass:map';
 
 .payment-summary {
@@ -38,7 +39,11 @@ export default defineComponent( {
 	align-items: center;
 	border: 2px solid colors.$gray-light;
 	padding: map.get( units.$spacing, 'small' );
-	margin: 0 ( -( map.get( units.$spacing, 'xx-small' ) ) ) map.get( units.$spacing, 'large' );
+	margin: 0 0 map.get( units.$spacing, 'large' );
+
+	@include breakpoints.tablet-up {
+		margin: 0 ( -( map.get( units.$spacing, 'xx-small' ) ) ) map.get( units.$spacing, 'large' );
+	}
 
 	&-text {
 		flex: 1 1 auto;

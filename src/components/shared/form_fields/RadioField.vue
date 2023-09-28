@@ -59,6 +59,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 @use '@src/scss/settings/units';
 @use '@src/scss/settings/forms';
 @use '@src/scss/settings/colors';
+@use '@src/scss/settings/breakpoints';
 @use 'sass:map';
 
 .form-field-radio {
@@ -68,7 +69,11 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 			margin-left: 0;
 		}
 		&.row-alignment {
-			flex-direction: row;
+			flex-direction: column;
+
+			@include breakpoints.tablet-up {
+				flex-direction: row;
+			}
 		}
 		&.column-alignment {
 			flex-direction: column;

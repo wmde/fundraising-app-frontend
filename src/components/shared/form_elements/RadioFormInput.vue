@@ -47,6 +47,7 @@ const inputModel = useInputModel<string | number | boolean | null>( () => props.
 <style lang="scss">
 @use '@src/scss/settings/units';
 @use '@src/scss/settings/colors';
+@use '@src/scss/settings/breakpoints';
 @use 'sass:map';
 @use 'sass:math';
 
@@ -54,10 +55,15 @@ $check-size: map.get( units.$spacing, 'small' );
 
 .radio-form-input {
 	flex: 0 0 auto;
-	margin: 0 map.get( units.$spacing, 'large' ) 0 0;
+	margin: 0 0 map.get( units.$spacing, 'small' );
+	width: 100%;
 	padding: map.get( units.$spacing, 'small' ) 0;
-	width: map.get( units.$spacing, 'xxx-large' );
 	line-height: map.get( units.$spacing, 'small' );
+
+	@include breakpoints.tablet-up {
+		margin: 0 map.get( units.$spacing, 'large' ) 0 0;
+		width: map.get( units.$spacing, 'xxx-large' );
+	}
 
 	&:last-child {
 		margin: 0;
