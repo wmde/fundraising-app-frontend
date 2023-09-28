@@ -90,7 +90,6 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 
 		&:focus {
 			border-color: colors.$primary;
-			box-shadow: 0 1px 0 0 colors.$primary;
 		}
 	}
 

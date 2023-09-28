@@ -7,6 +7,7 @@ $error: #DD3333;
 $white: #FFFFFF;
 $black: #000000;
 $gray-mid: #B7B7B7;
+$gray-dark: #808080;
 
 $input: (
 	'border-radius': 8px,
@@ -31,6 +32,10 @@ changes must be updated in the settings files before this file is deleted.
 		&:focus {
 			color: $black;
 		}
+	}
+
+	.bank-data-content {
+		word-wrap: break-word;
 	}
 
 	.navigation-item:hover,
@@ -59,7 +64,8 @@ changes must be updated in the settings files before this file is deleted.
 	.form-field-select .control,
 	.form-field-email .control,
 	.form-field-autocomplete .control,
-	.form-field-autocomplete-container {
+	.form-field-autocomplete-container,
+	.form-field-radio-container.column-alignment .radio-form-input {
 		max-width: map.get( $input, 'max-width' );
 	}
 
@@ -138,7 +144,7 @@ changes must be updated in the settings files before this file is deleted.
 
 		&:hover,
 		&:focus {
-			border-bottom: 1px solid $gray-mid;
+			border: 1px solid $gray-dark;
 		}
 
 		&.is-active {
@@ -152,6 +158,7 @@ changes must be updated in the settings files before this file is deleted.
 	}
 
 	.form-field-radio-container.column-alignment .radio-form-input {
+		border-bottom: 1px solid $gray-mid;
 
 		&:not( :last-child ) {
 			margin-bottom: map.get( units.$spacing, 'small' );
@@ -164,6 +171,11 @@ changes must be updated in the settings files before this file is deleted.
 
 		&:not( :first-child ) {
 			padding-top: map.get( units.$spacing, 'x-small' );
+		}
+
+		&:hover,
+		&:focus {
+			border: 1px solid $gray-dark;
 		}
 	}
 
