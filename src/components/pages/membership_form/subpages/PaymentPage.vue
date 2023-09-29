@@ -5,7 +5,15 @@
 		<div class="has-margin-top-36">
 			<AddressType :initial-value="addressTypeFromStore" v-on:address-type="sendAddressTypeToStore( $event )" />
 		</div>
-		<payment class="has-margin-top-36" v-bind="$props"/>
+		<Payment
+			class="has-margin-top-36"
+			:payment-amounts="props.paymentAmounts"
+			:payment-intervals="props.paymentIntervals"
+			:payment-types="props.paymentTypes"
+			:validate-fee-url="props.validateFeeUrl"
+			:validate-bank-data-url="props.validateBankDataUrl"
+			:validate-legacy-bank-data-url="props.validateLegacyBankDataUrl"
+		/>
 		<div class="level has-margin-top-18">
 			<div class="level-left">
 				<FunButton
@@ -45,7 +53,7 @@ interface Props {
 	showMembershipTypeOption: Boolean,
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 const emit = defineEmits( [ 'next-page' ] );
 const store = useStore();
 

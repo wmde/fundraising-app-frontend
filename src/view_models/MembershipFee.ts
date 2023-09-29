@@ -16,18 +16,8 @@ export interface InitialMembershipFeeValues {
 	interval: string|null,
 }
 
-export interface TypeData {
-	selectedType: string,
-	validateFeeUrl: string,
-}
-
-export interface IntervalData {
-	selectedInterval: string,
-	validateFeeUrl: string,
-}
-
-export interface SetFeePayload {
-	feeValue: string,
+export interface GenericValuePayload {
+	selectedValue: string,
 	validateFeeUrl: string,
 }
 
