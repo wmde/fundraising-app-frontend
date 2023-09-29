@@ -28,7 +28,7 @@ interface Props {
 	validateBankDataUrl: string;
 	validateLegacyBankDataUrl: string;
 	validateFeeUrl: string;
-	paymentAmounts: string[];
+	paymentAmounts: number[];
 	paymentIntervals: number[];
 	paymentTypes: string[];
 	countries: Country[];

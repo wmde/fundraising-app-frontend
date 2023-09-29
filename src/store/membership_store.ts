@@ -20,8 +20,7 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 		getters: {
 			isValidating: function ( state ): boolean {
 				return state[ NS_MEMBERSHIP_FEE ].isValidating ||
-					// TODO use getters instead
-					state[ NS_MEMBERSHIP_ADDRESS ].serverSideValidationCount > 0 ||
+					state[ NS_MEMBERSHIP_ADDRESS ].isValidating ||
 					state[ NS_BANKDATA ].isValidating;
 			},
 			paymentDataIsValid: function ( state, getters ): boolean {
