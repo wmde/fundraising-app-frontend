@@ -1,6 +1,7 @@
 <template>
 	<fieldset class="form-field form-field-radio" :class="{ 'is-invalid': showError }">
 		<legend v-if="label" class="form-field-label">{{ label }}</legend>
+    <slot name="intro-message"></slot>
 		<div class="control form-field-radio-container" :class="alignment+ '-alignment'">
 			<RadioFormInput
 				v-for="( option, index ) in options"

@@ -1,10 +1,10 @@
 <template>
-	<fieldset class="has-margin-bottom-36">
+	<fieldset class="payment-bank-data-section">
 		<legend class="title is-size-5">{{ $t( 'donation_form_payment_bankdata_title' ) }}</legend>
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]">
 			<label for="iban" class="subtitle">{{ $t( labels.iban ) }}</label>
-			<div class="field" :class="[ { 'has-margin-bottom-0': !isBankFieldEnabled } ]">
-				<div class="control is-medium is-clearfix">
+			<div class="form-field form-field-text">
+				<div class="control text-form-input">
 					<AccountNumberField
 						:id="'iban'"
 						:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' )"
@@ -14,23 +14,22 @@
 						@validate="validate"
 						@input="setAccountId"
 					/>
-				</div>
+        </div>
 			</div>
 		</div>
-		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]" v-show="isBankFieldEnabled">
-			<label for="bic" class="subtitle">{{ $t( labels.bic ) }}</label>
-			<div class="field">
-				<TextInput
-					class="is-medium"
-					type="text"
-					input-id="bic"
-					v-model="bankIdentifier"
-					name="bic"
-					:placeholder="labels.bicPlaceholder != '' ? $t( labels.bicPlaceholder ) : ''"
-					@blur="validate"
-				/>
-			</div>
-		</div>
+
+    <TextField
+        v-show="isBankFieldEnabled"
+        :label="$t( labels.bic )"
+        :placeholder="labels.bicPlaceholder != '' ? $t( labels.bicPlaceholder ) : ''"
+        v-model="bankIdentifier"
+        name="bic"
+        input-id="bic"
+        :show-error="bankDataIsInvalid"
+        :error-message="''"
+        @field-changed="validate"
+    />
+
 		<div id="bank-name-info">
 			<span v-show="bankInfoValidated" class="help">
 				<span id="bank-name-legacy">
@@ -54,11 +53,14 @@ import { NS_BANKDATA } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
 import AccountNumberField from '@src/components/shared/AccountNumberField.vue';
-import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
 
 export default defineComponent( {
 	name: 'PaymentBankData',
-	components: { AccountNumberField, TextInput },
+	components: {
+		TextField,
+		AccountNumberField,
+	},
 	data: function (): BankAccountData {
 		return {
 			accountId: this.$store.getters[ NS_BANKDATA + '/getAccountId' ],
@@ -189,3 +191,13 @@ export default defineComponent( {
 	},
 } );
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/forms';
+@use 'sass:map';
+
+.payment-bank-data-section {
+  margin-bottom: 1.5rem;
+}
+</style>

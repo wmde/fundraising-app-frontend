@@ -5,13 +5,17 @@
 			:options="addressTypeOptions"
 			:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
 			:disabled="disabledAddressTypesForModel"
+      :show-error="addressTypeIsInvalid"
+      :error-message="$t( 'donation_form_section_address_error' )"
 			v-model="addressType"
 			alignment="column"
-	/>
-
-	<div v-show="isDirectDebit" class="info-message has-margin-top-18">
-		{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_basic' ) }}
-	</div>
+	>
+    <template #intro-message>
+      <div v-show="isDirectDebit" class="info-message address-type-direct-debit-disclaimer">
+        {{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_basic' ) }}
+      </div>
+    </template>
+  </RadioField>
 
 </template>
 
@@ -27,6 +31,7 @@ type AddressStates = 'anonymous' | 'person' | 'company' | 'unset';
 interface Props {
 	disabledAddressTypes: AddressTypeModel[]
 	isDirectDebit: boolean;
+  addressTypeIsInvalid: boolean;
 	initialAddressType?: AddressStates;
 }
 const props = defineProps<Props>();

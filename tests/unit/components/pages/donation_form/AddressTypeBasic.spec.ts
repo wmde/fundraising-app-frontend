@@ -9,6 +9,7 @@ describe( 'AddressTypeBasic.vue', () => {
 			props: {
 				disabledAddressTypes,
 				isDirectDebit,
+				addressTypeIsInvalid: false,
 			},
 		} );
 	};

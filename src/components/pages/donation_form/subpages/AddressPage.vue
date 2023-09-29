@@ -25,6 +25,7 @@
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebitPayment"
 						:initial-address-type="addressTypeName"
+						:address-type-is-invalid="addressTypeIsInvalid"
 					/>
 				</template>
 				<template #campaigns.address_type_steps.preselect>
@@ -46,12 +47,8 @@
 					/>
 				</template>
 			</FeatureToggle>
-			<span
-				v-if="addressTypeIsInvalid"
-				class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
-			</span>
 			<div
-				class="has-margin-top-18"
+				class="address-type-anonymous-disclaimer"
 				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
 			</div>
 		</form>
@@ -191,3 +188,12 @@ const { submit, previousPage, submitValuesForm } = useAddressFormEventHandlers(
 );
 
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use 'sass:map';
+
+.address-type-anonymous-disclaimer {
+	margin-top: map.get( units.$spacing, 'medium' );
+}
+</style>
