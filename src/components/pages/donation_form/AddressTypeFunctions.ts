@@ -1,5 +1,6 @@
 import { computed } from 'vue';
-import { AddressTypeModel, addressTypeName as getAddressTypeName } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AddressTypes } from '@src/view_models/Address';
 import { action } from '@src/store/util';
 import { NS_ADDRESS } from '@src/store/namespaces';
 import { setAddressType as setAddressTypeActionType } from '@src/store/address/actionTypes';
@@ -14,11 +15,7 @@ export const useAddressTypeFunctions = ( store: any ) => {
 	const addressTypeIsNotAnon = computed( () => store.getters[ 'address/addressTypeIsNotAnon' ] );
 	const addressTypeIsInvalid = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 
-	const addressTypeName = computed(
-		(): string => getAddressTypeName( store.state.address.addressType )
-	);
-
-	function setAddressType( newAddressType: AddressTypeModel ): void {
+	function setAddressType( newAddressType: AddressTypes ): void {
 		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), newAddressType );
 	}
 
@@ -27,7 +24,6 @@ export const useAddressTypeFunctions = ( store: any ) => {
 		addressType,
 		addressTypeIsNotAnon,
 		addressTypeIsInvalid,
-		addressTypeName,
 
 		setAddressType,
 	};

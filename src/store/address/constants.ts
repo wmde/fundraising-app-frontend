@@ -1,9 +1,7 @@
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 /** AddressTypeModel: String array of required fields */
-export interface AddressRequirements {
-	[ key: number ]: string[]
-}
+export type AddressRequirements = Record<string, string[]>
 
 export const REQUIRED_FIELDS: AddressRequirements = {
 	[ AddressTypeModel.PERSON ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],

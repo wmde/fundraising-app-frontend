@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import PaymentSummaryAnonymous from '@src/components/pages/donation_form/summary_content/PaymentSummaryAnonymous.vue';
 import PaymentSummaryCompany from '@src/components/pages/donation_form/summary_content/PaymentSummaryCompany.vue';
 import PaymentSummaryCompanyWithContact from '@src/components/pages/donation_form/summary_content/PaymentSummaryCompanyWithContact.vue';
@@ -24,10 +24,11 @@ import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
+import { AddressTypes } from '@src/view_models/Address';
 
 interface Props {
 	address : Record<string, string>;
-	addressType: String;
+	addressType: AddressTypes;
 	payment: { interval: any, amount: number, paymentType: any };
 	countries: Array<Country>;
 	languageItem: String;
@@ -38,12 +39,12 @@ const { t, n } = useI18n();
 const props = defineProps<Props>();
 
 const addressTypeComponents = [
-	{ key: addressTypeName( AddressTypeModel.ANON ), component: PaymentSummaryAnonymous },
-	{ key: addressTypeName( AddressTypeModel.COMPANY ), component: PaymentSummaryCompany },
-	{ key: addressTypeName( AddressTypeModel.COMPANY_WITH_CONTACT ), component: PaymentSummaryCompanyWithContact },
-	{ key: addressTypeName( AddressTypeModel.EMAIL ), component: PaymentSummaryEmail },
-	{ key: addressTypeName( AddressTypeModel.PERSON ), component: PaymentSummaryPrivate },
-	{ key: addressTypeName( AddressTypeModel.UNSET ), component: PaymentSummaryAnonymous },
+	{ key: AddressTypeModel.ANON, component: PaymentSummaryAnonymous },
+	{ key: AddressTypeModel.COMPANY, component: PaymentSummaryCompany },
+	{ key: AddressTypeModel.COMPANY_WITH_CONTACT, component: PaymentSummaryCompanyWithContact },
+	{ key: AddressTypeModel.EMAIL, component: PaymentSummaryEmail },
+	{ key: AddressTypeModel.PERSON, component: PaymentSummaryPrivate },
+	{ key: AddressTypeModel.UNSET, component: PaymentSummaryAnonymous },
 ];
 
 // TODO: Extract this into a composable

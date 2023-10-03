@@ -12,7 +12,7 @@ import {
 	SET_RECEIPT,
 } from '@src/store/address/mutationTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { AddressState } from '@src/view_models/Address';
+import { AddressState, AddressTypes } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { REQUIRED_FIELDS } from '@src/store/address/constants';
 import mockAxios from 'jest-mock-axios';
@@ -21,7 +21,7 @@ function newMinimalStore( overrides: Object ): AddressState {
 	return Object.assign(
 		{
 			serverSideValidationCount: 0,
-			addressType: AddressTypeModel.PERSON,
+			addressType: 'person' as AddressTypes,
 			newsletter: false,
 			receipt: false,
 			requiredFields: REQUIRED_FIELDS,

@@ -24,7 +24,7 @@
 						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressTypeName"
+						:initial-address-type="addressType"
 						:address-type-is-invalid="addressTypeIsInvalid"
 					/>
 				</template>
@@ -34,7 +34,7 @@
 						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressTypeName"
+						:initial-address-type="addressType"
 					/>
 				</template>
 				<template #campaigns.address_type_steps.full_or_email>
@@ -43,7 +43,7 @@
 						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressTypeName"
+						:initial-address-type="addressType"
 					/>
 				</template>
 			</FeatureToggle>
@@ -67,7 +67,7 @@
 			<template #summary-content>
 				<DonationSummary
 						:payment="paymentSummary"
-						:address-type="addressTypeName"
+						:address-type="addressType"
 						:address="addressSummary"
 						:countries="countries"
 						:salutations="salutations"
@@ -161,7 +161,6 @@ const {
 	addressType,
 	addressTypeIsNotAnon,
 	addressTypeIsInvalid,
-	addressTypeName,
 	setAddressType,
 } = useAddressTypeFunctions( store );
 

@@ -1,11 +1,12 @@
 import { Validity } from './Validity';
-import { AddressTypeModel } from './AddressTypeModel';
 import { MembershipTypeModel } from './MembershipTypeModel';
 import { AddressRequirements } from '@src/store/address/constants';
 import { FieldInitialization } from '@src/view_models/FieldInitialization';
 
+export type AddressTypes = 'unset' | 'invalid' | 'person' | 'company' | 'company_with_contact' | 'email' | 'anonymous';
+
 export interface Address {
-    addressType: string,
+    addressType: AddressTypes,
     salutation: string,
     title: string,
     firstName: string,
@@ -49,7 +50,7 @@ export interface FormValues {
 
 export interface AddressState {
     serverSideValidationCount: number,
-    addressType: AddressTypeModel,
+    addressType: AddressTypes,
     newsletter: boolean,
     receipt: boolean,
     values: FormValues,
@@ -59,7 +60,7 @@ export interface AddressState {
 
 export interface MembershipAddressState {
     serverSideValidationCount: number,
-    addressType: AddressTypeModel,
+    addressType: AddressTypes,
     membershipType: MembershipTypeModel,
     receipt: boolean,
     incentives: string[],
@@ -68,14 +69,14 @@ export interface MembershipAddressState {
 }
 
 export interface InitialAddressValues {
-    addressType: AddressTypeModel,
+    addressType: AddressTypes,
     newsletter: boolean,
     receipt: boolean,
     fields: FieldInitialization[],
 }
 
 export interface InitialMembershipAddressValues {
-    addressType?: AddressTypeModel,
+    addressType?: AddressTypes,
     membershipType?: MembershipTypeModel,
     date?: string|null,
     receipt: boolean,
@@ -124,6 +125,6 @@ export interface SubmittedAddress {
 }
 
 export interface AddressTypeValidationRequest {
-    type: AddressTypeModel,
-    disallowed: AddressTypeModel[]
+    type: AddressTypes,
+    disallowed: AddressTypes[]
 }

@@ -172,7 +172,7 @@ export default defineComponent( {
 	props: {
 		countries: Array as PropType<Array<Country>>,
 		addressValidationPatterns: Object as PropType<AddressValidation>,
-		addressType: Number,
+		addressType: String,
 		isFullSelected: Boolean,
 		salutations: Array as () => Array<Salutation>,
 		trackingData: Object as () => TrackingData,

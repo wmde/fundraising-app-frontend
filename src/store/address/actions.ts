@@ -14,13 +14,13 @@ import {
 } from '@src/store/address/actionTypes';
 import {
 	AddressState,
+	AddressTypes,
 	AddressTypeValidationRequest,
 	CountryValidationFields,
 	InitialAddressValues,
 	InputField,
 } from '@src/view_models/Address';
 import { ValidationResponse } from '@src/store/ValidationResponse';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import {
 	BEGIN_ADDRESS_VALIDATION,
 	FINISH_ADDRESS_VALIDATION,
@@ -35,6 +35,7 @@ import {
 	VALIDATE_INPUT,
 } from '@src/store/address/mutationTypes';
 import { Validity } from '@src/view_models/Validity';
+import { addressTypeToServerValue } from '@src/addressTypeConversion';
 
 export const actions = {
 	[ validateAddressField ]( context: ActionContext<AddressState, any>, field: InputField ) {
@@ -62,7 +63,7 @@ export const actions = {
 		Object.keys( context.state.values ).forEach(
 			field => bodyFormData.append( field, context.state.values[ field ] )
 		);
-		bodyFormData.append( 'addressType', addressTypeName( context.state.addressType ) );
+		bodyFormData.append( 'addressType', addressTypeToServerValue( context.state.addressType ) );
 		return axios( validateAddressUrl, {
 			method: 'post',
 			data: bodyFormData,
@@ -93,8 +94,8 @@ export const actions = {
 		} );
 
 	},
-	[ setAddressType ]( context: ActionContext<AddressState, any>, type: AddressTypeModel ) {
-		context.commit( SET_ADDRESS_TYPE, type );
+	[ setAddressType ]( context: ActionContext<AddressState, any>, addressType: AddressTypes ) {
+		context.commit( SET_ADDRESS_TYPE, addressType );
 		context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.VALID } );
 	},
 	[ validateAddressType ]( context: ActionContext<AddressState, any>, request: AddressTypeValidationRequest ) {
