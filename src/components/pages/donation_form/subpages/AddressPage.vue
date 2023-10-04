@@ -24,7 +24,7 @@
 						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressTypeName"
+						:initial-address-type="addressType"
 						:address-type-is-invalid="addressTypeIsInvalid"
 					/>
 				</template>
@@ -85,7 +85,7 @@
 				</FormButton>
 				<PaymentTextFormButton
 						id="submit-btn"
-						:is-loading="$store.getters.isValidating"
+						:is-loading="store.getters.isValidating"
 						:payment-type="paymentSummary.paymentType"
 						@click="submit"
 				/>
