@@ -2,7 +2,20 @@
 
 	<RadioField
 		name="addressType"
-		:options="addressTypeOptions"
+		:options="[
+			{
+				value: AddressTypeModel.PERSON,
+				label: $t( 'donation_form_addresstype_option_private_addresstype_basic' ),
+			},
+			{
+				value: AddressTypeModel.COMPANY,
+				label: $t( 'donation_form_addresstype_option_company_addresstype_basic' ),
+			},
+			{
+				value: AddressTypeModel.ANON,
+				label: $t( 'donation_form_addresstype_option_anonymous_addresstype_basic' ),
+			},
+		]"
 		:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
 		:disabled="disabledAddressTypes"
 		:show-error="addressTypeIsInvalid"
@@ -24,7 +37,6 @@
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 interface Props {
 	disabledAddressTypes: AddressTypeModel[]
@@ -37,23 +49,6 @@ const props = defineProps<Props>();
 const emit = defineEmits( [ 'address-type', 'set-full-selected' ] );
 
 const addressType = ref<AddressTypeModel>( props.initialAddressType ?? AddressTypeModel.UNSET );
-
-const { t } = useI18n();
-
-const addressTypeOptions = [
-	{
-		value: AddressTypeModel.PERSON,
-		label: t( 'donation_form_addresstype_option_private_addresstype_basic' ),
-	},
-	{
-		value: AddressTypeModel.COMPANY,
-		label: t( 'donation_form_addresstype_option_company_addresstype_basic' ),
-	},
-	{
-		value: AddressTypeModel.ANON,
-		label: t( 'donation_form_addresstype_option_anonymous_addresstype_basic' ),
-	},
-];
 
 emit( 'set-full-selected', true );
 
