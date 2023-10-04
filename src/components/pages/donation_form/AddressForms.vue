@@ -180,7 +180,7 @@ export default defineComponent( {
 	},
 	setup( props: any ) {
 		const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );
-		const $store = injectStrict( StoreKey );
+		const store = injectStrict( StoreKey );
 		const {
 			formData,
 			fieldErrors,
@@ -188,10 +188,10 @@ export default defineComponent( {
 			initializeDataFromStore,
 			onFieldChange,
 			onAutofill,
-		} = useAddressFunctions( { addressValidationPatterns: addressValidationPatterns.value }, $store );
-		const mailingList = useMailingListModel( $store );
+		} = useAddressFunctions( { addressValidationPatterns: addressValidationPatterns.value }, store );
+		const mailingList = useMailingListModel( store );
 
-		const { receiptNeeded } = useReceiptModel( $store );
+		const { receiptNeeded } = useReceiptModel( store, true );
 
 		const addressTypeId = computed( () => {
 			if ( isFullSelected.value && addressType.value === AddressTypeModel.UNSET ) {
@@ -204,7 +204,7 @@ export default defineComponent( {
 		const countryWasRestored = ref<boolean>( false );
 
 		onBeforeMount( () => {
-			countryWasRestored.value = $store.state.address.validity.country === Validity.RESTORED;
+			countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
 			initializeDataFromStore();
 		} );
 

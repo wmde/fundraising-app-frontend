@@ -117,8 +117,8 @@ describe( 'AddressForms.vue', () => {
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		store.dispatch = jest.fn();
 		const expectedAction = action( NS_ADDRESS, setReceiptChoice );
-		const expectedPayload = true;
-		await wrapper.find( '#receipt-option-company' ).setValue( true );
+		const expectedPayload = false;
+		await wrapper.find( '#receipt-option-company' ).setValue( false );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
