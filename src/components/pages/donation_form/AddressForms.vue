@@ -7,14 +7,14 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name-fields
+				<NameFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.PERSON"
 					:salutations="salutations"
 					v-on:field-changed="onFieldChange"
 				/>
-				<postal-address-fields
+				<PostalAddressFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
@@ -54,14 +54,14 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name-fields
+				<NameFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.COMPANY"
 					:salutations="salutations"
 					v-on:field-changed="onFieldChange"
 				/>
-				<postal-address-fields
+				<PostalAddressFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
@@ -101,7 +101,7 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name-fields
+				<NameFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.PERSON"
