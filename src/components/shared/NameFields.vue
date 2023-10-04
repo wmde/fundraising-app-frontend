@@ -97,9 +97,13 @@ interface Props {
 const props = defineProps<Props>();
 defineEmits( [ 'field-changed' ] );
 
-const showPersonalFields = computed( () => props.addressType === AddressTypeModel.PERSON ||
-		props.addressType === AddressTypeModel.EMAIL ||
-		props.addressType === AddressTypeModel.UNSET );
+const showPersonalFields = computed( () =>
+	[
+		AddressTypeModel.PERSON,
+		AddressTypeModel.EMAIL,
+		AddressTypeModel.UNSET,
+	].includes( props.addressType )
+);
 const showCompanyFields = computed( () => props.addressType === AddressTypeModel.COMPANY );
 
 </script>
