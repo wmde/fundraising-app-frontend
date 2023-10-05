@@ -8,7 +8,7 @@ import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { InitialPaymentValues } from '@src/view_models/Payment';
 import { BankAccountData, InitialBankAccountData } from '@src/view_models/BankAccount';
 import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
-import { trackFormFieldRestored } from '@src/tracking';
+import { trackFormFieldRestored } from '@src/util/tracking';
 
 const replaceInitialValue = ( defaultValue: any, replacement: any ): any => {
 	if ( replacement !== undefined && replacement !== null && replacement !== '' ) {

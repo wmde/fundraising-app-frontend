@@ -4,10 +4,10 @@ import { createStore } from '@src/store/membership_store';
 
 import FilteredUrlMembershipValues from '@src/util/FilteredUrlMembershipValues';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
-import PageDataInitializer from '@src/page_data_initializer';
+import PageDataInitializer from '@src/util/page_data_initializer';
 import persistenceItems from '@src/store/data_persistence/membership_application';
 import { AddressValidation } from '@src/view_models/Validation';
-import { ApiCityAutocompleteResource } from '@src/CityAutocompleteResource';
+import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import { Country } from '@src/view_models/Country';
 import { InitialMembershipData } from '@src/view_models/Address';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
@@ -26,7 +26,7 @@ import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 
 import MembershipForm from '@src/components/pages/MembershipForm.vue';
 import App from '@src/components/App.vue';
-import { createFeatureFetcher } from '@src/FeatureFetcher';
+import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 
 interface MembershipAmountModel {
 	presetAmounts: Array<string>,

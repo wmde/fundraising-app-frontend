@@ -79,9 +79,9 @@ import {
 import { action } from '@src/store/util';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
-import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
-import { mergeValidationResults } from '@src/merge_validation_results';
-import { camelizeName } from '@src/camlize_name';
+import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
+import { mergeValidationResults } from '@src/util/merge_validation_results';
+import { camelizeName } from '@src/util/camlize_name';
 import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';

@@ -128,7 +128,7 @@ import { FormData } from '@src/view_models/Contact';
 import { Helper } from '@src/store/util';
 import { Validity } from '@src/view_models/Validity';
 import { ContactFormValidation } from '@src/view_models/Validation';
-import { trackFormSubmission } from '@src/tracking';
+import { trackFormSubmission } from '@src/util/tracking';
 import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import FunSelect from '@src/components/shared/legacy_form_inputs/FunSelect.vue';

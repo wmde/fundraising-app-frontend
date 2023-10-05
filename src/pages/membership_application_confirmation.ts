@@ -2,15 +2,15 @@ import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
 
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
-import PageDataInitializer from '@src/page_data_initializer';
+import PageDataInitializer from '@src/util/page_data_initializer';
 import { Salutation } from '@src/view_models/Salutation';
 import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
 import { clearPersistentData } from '@src/store/create_data_persister';
-import { trackGoal } from '@src/tracking';
+import { trackGoal } from '@src/util/tracking';
 
 import App from '@src/components/App.vue';
 import MembershipConfirmation from '@src/components/pages/MembershipConfirmation.vue';
-import { createFeatureFetcher } from '@src/FeatureFetcher';
+import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 
 // TODO move this model, see https://phabricator.wikimedia.org/T298372
 interface MembershipApplicationConfirmationModel {

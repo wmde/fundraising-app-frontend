@@ -132,7 +132,7 @@ import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { Validity } from '@src/view_models/Validity';
 import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
-import { trackDynamicForm } from '@src/tracking';
+import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/DonationReceipt/useAddressFormEventHandlers';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';

@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
-import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/CityAutocompleteResource';
+import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesResource';
 

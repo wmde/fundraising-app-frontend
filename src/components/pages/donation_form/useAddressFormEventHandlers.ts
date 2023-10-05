@@ -1,11 +1,11 @@
 import { Store } from 'vuex';
-import { trackFormSubmission } from '@src/tracking';
+import { trackFormSubmission } from '@src/util/tracking';
 import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
 import { validateAddress, validateAddressType, validateEmail } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
-import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
+import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { discardInitialization } from '@src/store/payment/actionTypes';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { ComputedRef, ref, Ref } from 'vue';

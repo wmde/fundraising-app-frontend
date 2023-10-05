@@ -1,8 +1,8 @@
 import { App, Component, createApp } from 'vue';
-import { createLocalisation } from '@src/createLocalisation';
-import createLogger from '@src/logger';
-import { createFeatureToggle } from '@src/createFeatureToggle';
-import { FeatureFetcher } from '@src/FeatureFetcher';
+import { createLocalisation } from '@src/util/createLocalisation';
+import createLogger from '@src/util/logger';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
+import { FeatureFetcher } from '@src/util/FeatureFetcher';
 
 type Data = Record<string, unknown>;
 type Messages = Record<string, string>;

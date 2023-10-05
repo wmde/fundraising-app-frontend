@@ -140,7 +140,7 @@ import { Salutation } from '@src/view_models/Salutation';
 import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { injectStrict } from '@src/util/injectStrict';
-import { trackDynamicForm } from '@src/tracking';
+import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/useAddressFormEventHandlers';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';

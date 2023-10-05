@@ -56,7 +56,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import axios, { AxiosResponse } from 'axios';
-import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
+import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Donation } from '@src/view_models/Donation';
 import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';

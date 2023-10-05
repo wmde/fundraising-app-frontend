@@ -29,7 +29,7 @@ import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/stor
 import { action } from '@src/store/util';
 import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@src/store/membership_fee/actionTypes';
 import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@src/store/bankdata/actionTypes';
-import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
+import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { setAddressType } from '@src/store/membership_address/actionTypes';
 import { mapGetters } from 'vuex';

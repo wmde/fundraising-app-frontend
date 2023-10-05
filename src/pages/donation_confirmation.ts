@@ -4,7 +4,7 @@ import { createStore } from '@src/store/donor_update_store';
 
 import DonorResource from '@src/api/DonorResource';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
-import PageDataInitializer from '@src/page_data_initializer';
+import PageDataInitializer from '@src/util/page_data_initializer';
 import { Address } from '@src/view_models/Address';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Country } from '@src/view_models/Country';
@@ -16,11 +16,11 @@ import { action } from '@src/store/util';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { clearPersistentData } from '@src/store/create_data_persister';
 import { initializeAddress } from '@src/store/address/actionTypes';
-import { trackGoal } from '@src/tracking';
+import { trackGoal } from '@src/util/tracking';
 
 import App from '@src/components/App.vue';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
-import { createFeatureFetcher } from '@src/FeatureFetcher';
+import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 
 interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },

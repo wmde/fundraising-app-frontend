@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Cookies from 'js-cookie';
-import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/createLocalisation';
+import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/util/createLocalisation';
 import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
 import Checkmark from '@src/components/shared/icons/Checkmark.vue';
 

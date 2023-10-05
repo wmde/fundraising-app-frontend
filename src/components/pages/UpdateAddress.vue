@@ -49,7 +49,7 @@ import { action } from '@src/store/util';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { AddressValidation } from '@src/view_models/Validation';
 import { mapGetters } from 'vuex';
-import { trackFormSubmission } from '@src/tracking';
+import { trackFormSubmission } from '@src/util/tracking';
 import { Salutation } from '@src/view_models/Salutation';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
