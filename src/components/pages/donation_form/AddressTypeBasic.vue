@@ -41,7 +41,7 @@ import { ref, watch } from 'vue';
 interface Props {
 	disabledAddressTypes: AddressTypeModel[]
 	isDirectDebit: boolean;
-  addressTypeIsInvalid: boolean;
+	addressTypeIsInvalid: boolean;
 	initialAddressType?: AddressTypeModel;
 }
 const props = defineProps<Props>();

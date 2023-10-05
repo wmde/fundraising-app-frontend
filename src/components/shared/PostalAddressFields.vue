@@ -14,9 +14,9 @@
 		>
 			<template #message>
 				<span
-						v-if="showStreetWarning"
-						class="street-number-warning help"
-				>{{ $t('donation_form_street_number_warning') }}</span>
+					v-if="showStreetWarning"
+					class="street-number-warning help"
+				>{{ $t( 'donation_form_street_number_warning' ) }}</span>
 				<ValueEqualsPlaceholderWarning
 					:value="formData.street.value"
 					:placeholder="$t( 'donation_form_street_placeholder' )"
@@ -37,11 +37,11 @@
 			@field-changed="$emit('field-changed', 'postcode')"
 		>
 			<template #message>
-			<ValueEqualsPlaceholderWarning
-				:value="formData.postcode.value"
-				:placeholder="$t( 'donation_form_zip_placeholder' )"
-				:warning="'donation_form_zip_placeholder_warning'"
-			/>
+				<ValueEqualsPlaceholderWarning
+					:value="formData.postcode.value"
+					:placeholder="$t( 'donation_form_zip_placeholder' )"
+					:warning="'donation_form_zip_placeholder_warning'"
+				/>
 			</template>
 		</TextField>
 

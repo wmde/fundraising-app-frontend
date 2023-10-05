@@ -22,28 +22,29 @@
 					:country-was-restored="countryWasRestored"
 					v-on:field-changed="onFieldChange"
 				/>
-        <div class="form-field form-field-donation-receipt">
-          <CheckboxSingleFormInput
-              input-id="receipt-option-person"
-              name="receipt-option"
-              v-model="receiptNeeded">
-            {{ $t( 'receipt_needed_donation_page' ) }}
-          </CheckboxSingleFormInput>
-        </div>
+				<div class="form-field form-field-donation-receipt">
+					<CheckboxSingleFormInput
+						input-id="receipt-option-person"
+						name="receipt-option"
+						v-model="receiptNeeded"
+					>
+						{{ $t( 'receipt_needed_donation_page' ) }}
+					</CheckboxSingleFormInput>
+				</div>
 				<EmailField
-            :show-error="fieldErrors.email"
-            v-model="formData.email.value"
-            @field-changed="onFieldChange"
+					:show-error="fieldErrors.email"
+					v-model="formData.email.value"
+					@field-changed="onFieldChange"
 				>
-          <template #message>
-            <ValueEqualsPlaceholderWarning
-                :value="formData.email.value"
-                :placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
-                warning="donation_form_email_placeholder_warning"
-            />
-          </template>
-        </EmailField>
-        <MailingListField v-model="mailingList"/>
+					<template #message>
+						<ValueEqualsPlaceholderWarning
+							:value="formData.email.value"
+							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							warning="donation_form_email_placeholder_warning"
+						/>
+					</template>
+				</EmailField>
+				<MailingListField v-model="mailingList"/>
 			</AutofillHandler>
 		</form>
 
@@ -69,28 +70,28 @@
 					:country-was-restored="countryWasRestored"
 					v-on:field-changed="onFieldChange"
 				/>
-        <div class="form-field form-field-donation-receipt">
-          <CheckboxSingleFormInput
-              input-id="receipt-option-company"
-              name="receipt-option"
-              v-model="receiptNeeded">
-            {{ $t( 'receipt_needed_donation_page' ) }}
-          </CheckboxSingleFormInput>
-        </div>
-        <EmailField
-            :show-error="fieldErrors.email"
-            v-model="formData.email.value"
-            @field-changed="onFieldChange"
-        >
-          <template #message>
-            <ValueEqualsPlaceholderWarning
-                :value="formData.email.value"
-                :placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
-                warning="donation_form_email_placeholder_warning"
-            />
-          </template>
-        </EmailField>
-        <MailingListField v-model="mailingList"/>
+				<div class="form-field form-field-donation-receipt">
+					<CheckboxSingleFormInput
+						input-id="receipt-option-company"
+						name="receipt-option"
+						v-model="receiptNeeded">
+						{{ $t( 'receipt_needed_donation_page' ) }}
+					</CheckboxSingleFormInput>
+				</div>
+				<EmailField
+					:show-error="fieldErrors.email"
+					v-model="formData.email.value"
+					@field-changed="onFieldChange"
+				>
+					<template #message>
+						<ValueEqualsPlaceholderWarning
+							:value="formData.email.value"
+							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							warning="donation_form_email_placeholder_warning"
+						/>
+					</template>
+				</EmailField>
+				<MailingListField v-model="mailingList"/>
 			</AutofillHandler>
 		</form>
 
@@ -108,20 +109,20 @@
 					:salutations="salutations"
 					v-on:field-changed="onFieldChange"
 				/>
-        <EmailField
-            :show-error="fieldErrors.email"
-            v-model="formData.email.value"
-            @field-changed="onFieldChange"
-        >
-          <template #message>
-            <ValueEqualsPlaceholderWarning
-                :value="formData.email.value"
-                :placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
-                warning="donation_form_email_placeholder_warning"
-            />
-          </template>
-        </EmailField>
-        <MailingListField v-model="mailingList"/>
+				<EmailField
+					:show-error="fieldErrors.email"
+					v-model="formData.email.value"
+					@field-changed="onFieldChange"
+				>
+					<template #message>
+						<ValueEqualsPlaceholderWarning
+							:value="formData.email.value"
+							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							warning="donation_form_email_placeholder_warning"
+						/>
+					</template>
+				</EmailField>
+				<MailingListField v-model="mailingList"/>
 			</AutofillHandler>
 		</form>
 
