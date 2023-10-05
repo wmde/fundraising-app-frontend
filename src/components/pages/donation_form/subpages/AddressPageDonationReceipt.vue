@@ -166,7 +166,7 @@ const store = useStore( StoreKey );
 const { addressType, addressTypeName } = useAddressType( store );
 const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
 const mailingList = useMailingListModel( store );
-const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store, false );
+const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
 
 const {

@@ -192,7 +192,7 @@ export default defineComponent( {
 		} = useAddressFunctions( { addressValidationPatterns: addressValidationPatterns.value }, store );
 		const mailingList = useMailingListModel( store );
 
-		const { receiptNeeded } = useReceiptModel( store, true );
+		const { receiptNeeded } = useReceiptModel( store );
 
 		const addressTypeId = computed( () => {
 			if ( isFullSelected.value && addressType.value === AddressTypeModel.UNSET ) {
