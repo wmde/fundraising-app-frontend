@@ -69,6 +69,12 @@ changes must be updated in the settings files before this file is deleted.
 		border-bottom-color: $primary;
 	}
 
+	.form-title {
+		margin: 0 0 map.get( units.$spacing, 'large' );
+		font-size: 24px;
+		line-height: 26px;
+	}
+
 	.form-field-label {
 		margin: 0 0 map.get( units.$spacing, 'small' );
 		font-size: 16px;

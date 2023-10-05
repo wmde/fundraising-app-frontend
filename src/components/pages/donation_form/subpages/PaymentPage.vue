@@ -8,6 +8,12 @@
 		method="post"
 		@keydown.enter.prevent="next()"
 	>
+		<FeatureToggle>
+			<template #campaigns.new_design.new>
+				<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
+			</template>
+		</FeatureToggle>
+
 		<Payment
 			:payment-amounts="paymentAmounts"
 			:payment-intervals="paymentIntervals"
