@@ -1,8 +1,7 @@
 import { mount } from '@vue/test-utils';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
-import Name from '@src/components/shared/Name.vue';
-import ReceiptOption from '../../../../../src/components/shared/ReceiptOption.vue';
-import EmailAddress from '@src/components/shared/EmailAddress.vue';
+import NameFields from '@src/components/shared/NameFields.vue';
+import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@src/store/namespaces';
@@ -10,10 +9,43 @@ import { initializeAddress, setAddressField, setReceiptChoice } from '@src/store
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
-import { addressValidationPatterns } from '../../../../data/validation';
+import { addressValidationPatterns } from '@test/data/validation';
 import each from 'jest-each';
 
 const store = createStore();
+
+const EXAMPLE_SALUTATIONS = [
+	{
+		label: 'Mr',
+		value: 'Herr',
+		display: 'Herr',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'Ms',
+		value: 'Frau',
+		display: 'Frau',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'No Salutation',
+		value: 'Divers',
+		display: 'Divers',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+];
 
 describe( 'AddressForms.vue', () => {
 
@@ -33,6 +65,7 @@ describe( 'AddressForms.vue', () => {
 				campaign: 'nicholas',
 				keyword: 'cage',
 			},
+			salutations: EXAMPLE_SALUTATIONS,
 		},
 		global: {
 			plugins: [ store ],
@@ -72,7 +105,7 @@ describe( 'AddressForms.vue', () => {
 		const firstNameValue = 'Vuetiful';
 		await wrapper.find( '#first-name' ).setValue( firstNameValue );
 
-		wrapper.findComponent( Name ).vm.$emit( 'field-changed', 'firstName' );
+		wrapper.findComponent( NameFields ).vm.$emit( 'field-changed', 'firstName' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'firstName',
 			'optionalField': false,
@@ -84,8 +117,8 @@ describe( 'AddressForms.vue', () => {
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		store.dispatch = jest.fn();
 		const expectedAction = action( NS_ADDRESS, setReceiptChoice );
-		const expectedPayload = true;
-		wrapper.findComponent( ReceiptOption ).vm.$emit( 'receipt-changed', true );
+		const expectedPayload = false;
+		await wrapper.find( '#receipt-option-company' ).setValue( false );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
@@ -95,7 +128,7 @@ describe( 'AddressForms.vue', () => {
 		await wrapper.find( '#email' ).setValue( testEmail );
 
 		const expectedAction = action( NS_ADDRESS, setAddressField );
-		wrapper.findComponent( EmailAddress ).vm.$emit( 'field-changed', 'email' );
+		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'email',
 			'optionalField': false,
@@ -125,6 +158,7 @@ describe( 'AddressForms.vue', () => {
 					campaign: 'nicholas',
 					keyword: 'cage',
 				},
+				salutations: EXAMPLE_SALUTATIONS,
 			},
 			global: {
 				plugins: [ store ],

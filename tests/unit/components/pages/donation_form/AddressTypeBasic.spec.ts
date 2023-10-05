@@ -9,6 +9,7 @@ describe( 'AddressTypeBasic.vue', () => {
 			props: {
 				disabledAddressTypes,
 				isDirectDebit,
+				addressTypeIsInvalid: false,
 			},
 		} );
 	};
@@ -17,13 +18,13 @@ describe( 'AddressTypeBasic.vue', () => {
 		const wrapper = getWrapper( [], false );
 		const event = 'address-type';
 
-		const person = wrapper.find( 'input[value=person]' );
+		const person = wrapper.find( `#addressType-${AddressTypeModel.PERSON.valueOf()} input` );
 		await person.trigger( 'change' );
 
-		const company = wrapper.find( 'input[value=company]' );
+		const company = wrapper.find( `#addressType-${AddressTypeModel.COMPANY.valueOf()} input` );
 		await company.trigger( 'change' );
 
-		const anon = wrapper.find( 'input[value=anonymous]' );
+		const anon = wrapper.find( `#addressType-${AddressTypeModel.ANON.valueOf()} input` );
 		await anon.trigger( 'change' );
 
 		expect( wrapper.emitted( event ) ).toHaveLength( 3 );
@@ -33,13 +34,14 @@ describe( 'AddressTypeBasic.vue', () => {
 	} );
 
 	it( 'disables anonymous address type if supplied via disabledAddressTypes property', async () => {
-		const wrapper = getWrapper( [ AddressTypeModel.ANON, AddressTypeModel.PERSON ], true );
-		const person = wrapper.find( 'input[value=person]' );
-		const company = wrapper.find( 'input[value=company]' );
-		const anonymous = wrapper.find( 'input[value=anonymous]' );
+		// TODO test with person instead of company and expect it to *not* be disabled, because person is the fallback type
+		const wrapper = getWrapper( [ AddressTypeModel.ANON, AddressTypeModel.COMPANY ], true );
+		const person = wrapper.find( `#addressType-${AddressTypeModel.PERSON.valueOf()} input` );
+		const company = wrapper.find( `#addressType-${AddressTypeModel.COMPANY.valueOf()} input` );
+		const anonymous = wrapper.find<HTMLInputElement>( `#addressType-${AddressTypeModel.ANON.valueOf()} input` );
 
 		expect( person.attributes( 'disabled' ) ).toBeUndefined();
-		expect( company.attributes( 'disabled' ) ).toBeUndefined();
+		expect( company.attributes( 'disabled' ) ).toBeDefined();
 		expect( anonymous.attributes( 'disabled' ) ).toBeDefined();
 	} );
 

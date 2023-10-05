@@ -24,7 +24,8 @@
 						@set-full-selected="setFullSelected"
 						:disabledAddressTypes="disabledAddressTypes"
 						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressTypeName"
+						:initial-address-type="addressType"
+						:address-type-is-invalid="addressTypeIsInvalid"
 					/>
 				</template>
 				<template #campaigns.address_type_steps.preselect>
@@ -46,12 +47,8 @@
 					/>
 				</template>
 			</FeatureToggle>
-			<span
-				v-if="addressTypeIsInvalid"
-				class="help is-danger">{{ $t( 'donation_form_section_address_error' ) }}
-			</span>
 			<div
-				class="has-margin-top-18"
+				class="address-type-anonymous-disclaimer"
 				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
 			</div>
 		</form>
@@ -66,36 +63,46 @@
 			:campaign-values="campaignValues">
 		</AddressForms>
 
-		<div class="summary-wrapper has-margin-top-18 has-outside-border">
-			<DonationSummary
-				:payment="paymentSummary"
-				:address-type="addressTypeName"
-				:address="addressSummary"
-				:countries="countries"
-				:salutations="salutations"
-				:language-item="inlineSummaryLanguageItem"
-			/>
+		<FormSummary>
+			<template #summary-content>
+				<DonationSummary
+						:payment="paymentSummary"
+						:address-type="addressTypeName"
+						:address="addressSummary"
+						:countries="countries"
+						:salutations="salutations"
+						:language-item="inlineSummaryLanguageItem"
+				/>
+			</template>
 
-			<div class="columns payment-buttons">
-				<div class="column">
-					<FunButton
+			<template #summary-buttons>
+				<FormButton
 						id="previous-btn"
-						class="level-item is-primary is-main is-outlined"
+						:is-outlined="true"
 						@click="previousPage"
-					>
-						{{ $t( 'donation_form_section_back' ) }}
-					</FunButton>
-				</div>
-				<div class="column">
-					<PaymentTextFormButton
+				>
+					{{ $t( 'donation_form_section_back' ) }}
+				</FormButton>
+				<PaymentTextFormButton
 						id="submit-btn"
-						:is-loading="$store.getters.isValidating"
+						:is-loading="store.getters.isValidating"
 						:payment-type="paymentSummary.paymentType"
 						@click="submit"
-					/>
+				/>
+			</template>
+
+			<template #summary-notice>
+				<div class="form-summary-notice" v-if="isExternalPayment">
+					{{ $t( 'donation_form_summary_external_payment' ) }}
 				</div>
-			</div>
-		</div>
+				<div class="form-summary-notice" v-if="isBankTransferPayment">
+					{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
+				</div>
+			</template>
+		</FormSummary>
+		<form action="/donation/add" method="post" ref="submitValuesForm">
+			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
+		</form>
 	</div>
 </template>
 
@@ -106,9 +113,12 @@ import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTy
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressTypeFullOrEmail.vue';
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
+import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
+import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import FormSummary from '@src/components/shared/FormSummary.vue';
 import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
@@ -121,7 +131,6 @@ import { useAddressFormEventHandlers } from '@src/components/pages/donation_form
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
-import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 
 interface Props {
 	assetsPath: string;
@@ -158,6 +167,8 @@ const {
 
 const {
 	isDirectDebitPayment,
+	isBankTransferPayment,
+	isExternalPayment,
 	paymentSummary,
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
@@ -167,6 +178,22 @@ const {
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
 
-const { submit, previousPage } = useAddressFormEventHandlers( store, emit, addressType, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
+const { submit, previousPage, submitValuesForm } = useAddressFormEventHandlers(
+	store,
+	emit,
+	addressType,
+	isDirectDebitPayment,
+	props.validateAddressUrl,
+	props.validateEmailUrl
+);
 
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use 'sass:map';
+
+.address-type-anonymous-disclaimer {
+	margin-top: map.get( units.$spacing, 'medium' );
+}
+</style>

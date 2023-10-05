@@ -1,108 +1,69 @@
 <template>
-	<fieldset class="form-input form-input__vertical-option-list">
-		<legend class="subtitle">{{ $t( 'donation_form_address_choice_title_addresstype_basic' ) }}</legend>
-		<div v-show="isDirectDebit" class="info-message has-margin-top-18">
+
+	<RadioField
+		name="addressType"
+		:options="[
+			{
+				value: AddressTypeModel.PERSON,
+				label: $t( 'donation_form_addresstype_option_private_addresstype_basic' ),
+			},
+			{
+				value: AddressTypeModel.COMPANY,
+				label: $t( 'donation_form_addresstype_option_company_addresstype_basic' ),
+			},
+			{
+				value: AddressTypeModel.ANON,
+				label: $t( 'donation_form_addresstype_option_anonymous_addresstype_basic' ),
+			},
+		]"
+		:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
+		:disabled="disabledAddressTypes"
+		:show-error="addressTypeIsInvalid"
+		:error-message="$t( 'donation_form_section_address_error' )"
+		v-model="addressType"
+		alignment="column"
+	>
+	<template #intro-message>
+		<div v-show="isDirectDebit" class="info-message address-type-direct-debit-disclaimer">
 			{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_basic' ) }}
 		</div>
+	</template>
+  </RadioField>
 
-		<div class="radio-container">
-
-      <RadioInput
-          name="addressType"
-          v-model="addressType"
-          native-value="person"
-      >{{ $t( 'donation_form_addresstype_option_private_addresstype_basic' ) }}
-      </RadioInput>
-
-      <RadioInput
-          name="addressType"
-          v-model="addressType"
-          native-value="company"
-      >
-        {{ $t( 'donation_form_addresstype_option_company_addresstype_basic' ) }}
-      </RadioInput>
-
-      <RadioInput
-          id="anonymous"
-          name="addressType"
-          v-model="addressType"
-          native-value="anonymous"
-          :disabled="disableAnonymous">
-        {{ $t( 'donation_form_addresstype_option_anonymous_addresstype_basic' ) }}
-      </RadioInput>
-
-		</div>
-
-	</fieldset>
 </template>
 
-<script lang="ts">
-import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { computed, defineComponent, PropType, Ref, ref, watch } from 'vue';
-import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
+<script setup lang="ts">
 
-export default defineComponent( {
-	name: 'AddressTypeBasic',
-	components: { RadioInput },
-	props: {
-		disabledAddressTypes: Array as PropType<Array<AddressTypeModel>>,
-		initialAddressType: String,
-		isDirectDebit: Boolean,
-	},
-	setup( props, { emit } ) {
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { ref, watch } from 'vue';
 
-		const addressType = ref( '' );
+interface Props {
+	disabledAddressTypes: AddressTypeModel[]
+	isDirectDebit: boolean;
+	addressTypeIsInvalid: boolean;
+	initialAddressType?: AddressTypeModel;
+}
+const props = defineProps<Props>();
 
-		const initialAddressTypeString = props.initialAddressType ? props.initialAddressType : 'unset';
+const emit = defineEmits( [ 'address-type', 'set-full-selected' ] );
 
-		switch ( addressTypeFromName( initialAddressTypeString ) ) {
-			case AddressTypeModel.ANON:
-				addressType.value = 'anonymous';
-				break;
-			case AddressTypeModel.UNSET:
-				addressType.value = initialAddressTypeString;
-				break;
-			case AddressTypeModel.PERSON:
-				addressType.value = 'person';
-				break;
-			case AddressTypeModel.COMPANY:
-				addressType.value = 'company';
-				break;
-		}
-		const type: Ref<AddressTypeModel> = ref( addressTypeFromName( initialAddressTypeString ) );
+const addressType = ref<AddressTypeModel>( props.initialAddressType ?? AddressTypeModel.UNSET );
 
-		emit( 'set-full-selected', true );
+emit( 'set-full-selected', true );
 
-		const disableAnonymous = computed( (): boolean => props.disabledAddressTypes !== undefined && props.disabledAddressTypes.includes( AddressTypeModel.ANON ) );
-
-		// When disabled address type is selected, revert to person type
-		watch( () => props.disabledAddressTypes, disabledAddressTypes => {
-			if ( disabledAddressTypes !== undefined && type.value !== null && disabledAddressTypes.includes( type.value ) ) {
-				addressType.value = 'person';
-			}
-		} );
-
-		// Convert addressType to AddressTypeModel
-		watch( addressType, newAddressType => {
-			switch ( newAddressType ) {
-				case 'person':
-					type.value = AddressTypeModel.PERSON;
-					break;
-				case 'company':
-					type.value = AddressTypeModel.COMPANY;
-					break;
-				case 'anonymous':
-					type.value = AddressTypeModel.ANON;
-					break;
-			}
-			emit( 'address-type', type.value );
-		} );
-
-		return {
-			type,
-			addressType,
-			disableAnonymous,
-		};
-	},
+watch( addressType, newAddressType => {
+	emit( 'address-type', newAddressType );
 } );
+
+// When disabled address type is selected, revert to person type
+watch( () => props.disabledAddressTypes, disabledAddressTypes => {
+	// TODO This assumes that person will never be disabled.
+	//      If this assumption is wrong, we need to have a fallback.
+	if ( disabledAddressTypes !== undefined &&
+			disabledAddressTypes.includes( addressType.value ) ) {
+		addressType.value = AddressTypeModel.PERSON;
+	}
+} );
+
 </script>

@@ -7,14 +7,14 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name
+				<NameFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.PERSON"
 					:salutations="salutations"
 					v-on:field-changed="onFieldChange"
 				/>
-				<postal
+				<PostalAddressFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
@@ -22,20 +22,30 @@
 					:country-was-restored="countryWasRestored"
 					v-on:field-changed="onFieldChange"
 				/>
-				<receipt-option
-					:message="$t( 'receipt_needed_donation_page' )"
-					:initial-receipt-needed="receiptNeeded"
-					v-on:receipt-changed="setReceipt( $event )"
-				/>
-				<EmailAddress
+				<div class="form-field form-field-donation-receipt">
+					<CheckboxSingleFormInput
+						input-id="receipt-option-person"
+						name="receipt-option"
+						v-model="receiptNeeded"
+					>
+						{{ $t( 'receipt_needed_donation_page' ) }}
+					</CheckboxSingleFormInput>
+				</div>
+				<EmailField
 					:show-error="fieldErrors.email"
-					:form-data="formData"
-					v-on:field-changed="onFieldChange"
-					:common-mail-providers="mailHostList"
-				/>
-				<newsletter-option/>
+					v-model="formData.email.value"
+					@field-changed="onFieldChange"
+				>
+					<template #message>
+						<ValueEqualsPlaceholderWarning
+							:value="formData.email.value"
+							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							warning="donation_form_email_placeholder_warning"
+						/>
+					</template>
+				</EmailField>
+				<MailingListField v-model="mailingList"/>
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
@@ -45,14 +55,14 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name
+				<NameFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.COMPANY"
 					:salutations="salutations"
 					v-on:field-changed="onFieldChange"
 				/>
-				<postal
+				<PostalAddressFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
@@ -60,20 +70,29 @@
 					:country-was-restored="countryWasRestored"
 					v-on:field-changed="onFieldChange"
 				/>
-				<receipt-option
-					:message="$t( 'receipt_needed_donation_page' )"
-					:initial-receipt-needed="receiptNeeded"
-					v-on:receipt-changed="setReceipt( $event )"
-				/>
-				<EmailAddress
+				<div class="form-field form-field-donation-receipt">
+					<CheckboxSingleFormInput
+						input-id="receipt-option-company"
+						name="receipt-option"
+						v-model="receiptNeeded">
+						{{ $t( 'receipt_needed_donation_page' ) }}
+					</CheckboxSingleFormInput>
+				</div>
+				<EmailField
 					:show-error="fieldErrors.email"
-					:form-data="formData"
-					v-on:field-changed="onFieldChange"
-					:common-mail-providers="mailHostList"
-				/>
-				<newsletter-option/>
+					v-model="formData.email.value"
+					@field-changed="onFieldChange"
+				>
+					<template #message>
+						<ValueEqualsPlaceholderWarning
+							:value="formData.email.value"
+							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							warning="donation_form_email_placeholder_warning"
+						/>
+					</template>
+				</EmailField>
+				<MailingListField v-model="mailingList"/>
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 		<form
@@ -83,30 +102,28 @@
 			method="post"
 		>
 			<AutofillHandler @autofill="onAutofill">
-				<name
+				<NameFields
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:address-type="AddressTypeModel.PERSON"
 					:salutations="salutations"
 					v-on:field-changed="onFieldChange"
 				/>
-				<EmailAddress
+				<EmailField
 					:show-error="fieldErrors.email"
-					:form-data="formData"
-					v-on:field-changed="onFieldChange"
-					:common-mail-providers="mailHostList"
-				/>
-				<newsletter-option/>
+					v-model="formData.email.value"
+					@field-changed="onFieldChange"
+				>
+					<template #message>
+						<ValueEqualsPlaceholderWarning
+							:value="formData.email.value"
+							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							warning="donation_form_email_placeholder_warning"
+						/>
+					</template>
+				</EmailField>
+				<MailingListField v-model="mailingList"/>
 			</AutofillHandler>
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
-		</form>
-
-		<form
-			id="laika-donation-personal-data-anonymous"
-			action="/donation/add"
-			method="post"
-		>
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 
 	</div>
@@ -114,13 +131,15 @@
 
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, PropType, ref, toRefs } from 'vue';
+import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
+import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import Name from '@src/components/shared/Name.vue';
-import Postal from '@src/components/shared/Postal.vue';
 import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
 import EmailAddress from '@src/components/shared/EmailAddress.vue';
-import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
-import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
+import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
+import EmailField from '@src/components/shared/form_fields/EmailField.vue';
+import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
+import NameFields from '@src/components/shared/NameFields.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
@@ -133,17 +152,23 @@ import { StoreKey } from '@src/store/donation_store';
 import { injectStrict } from '@src/util/injectStrict';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { Validity } from '@src/view_models/Validity';
+import { useMailingListModel } from '@src/components/pages/donation_form/DonationReceipt/useMailingListModel';
+import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
+import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 
 export default defineComponent( {
 	name: 'Address',
 	components: {
-		Name,
-		Postal,
+		CheckboxSingleFormInput,
+		ValueEqualsPlaceholderWarning,
+		EmailField,
+		MailingListField,
+		PostalAddressFields,
+		NameFields,
 		ReceiptOption,
 		EmailAddress,
 		NewsletterOption,
 		AutofillHandler,
-		SubmitValues,
 	},
 	props: {
 		countries: Array as PropType<Array<Country>>,
@@ -156,17 +181,18 @@ export default defineComponent( {
 	},
 	setup( props: any ) {
 		const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );
-		const $store = injectStrict( StoreKey );
+		const store = injectStrict( StoreKey );
 		const {
 			formData,
 			fieldErrors,
-			receiptNeeded,
 
 			initializeDataFromStore,
 			onFieldChange,
 			onAutofill,
-			setReceipt,
-		} = useAddressFunctions( { addressValidationPatterns: addressValidationPatterns.value }, $store );
+		} = useAddressFunctions( { addressValidationPatterns: addressValidationPatterns.value }, store );
+		const mailingList = useMailingListModel( store );
+
+		const { receiptNeeded } = useReceiptModel( store, true );
 
 		const addressTypeId = computed( () => {
 			if ( isFullSelected.value && addressType.value === AddressTypeModel.UNSET ) {
@@ -179,7 +205,7 @@ export default defineComponent( {
 		const countryWasRestored = ref<boolean>( false );
 
 		onBeforeMount( () => {
-			countryWasRestored.value = $store.state.address.validity.country === Validity.RESTORED;
+			countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
 			initializeDataFromStore();
 		} );
 
@@ -190,9 +216,9 @@ export default defineComponent( {
 			AddressTypeModel,
 			addressTypeId,
 			mailHostList,
+			mailingList,
 			onFieldChange,
 			onAutofill,
-			setReceipt,
 			countryWasRestored,
 		};
 	},
