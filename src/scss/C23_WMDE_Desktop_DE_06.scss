@@ -34,6 +34,10 @@ changes must be updated in the settings files before this file is deleted.
 		font-family: "Source Sans Pro", "Open Sans", Helvetica,Arial, sans-serif;
 	}
 
+	.app-content {
+		padding: map.get( units.$spacing, 'large' ) 0;
+	}
+
 	a:not( .navigation-item ):not( .footer-var-list a ):not( .dropdown-menu a ) {
 		color: $primary;
 

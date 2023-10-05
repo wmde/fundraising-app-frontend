@@ -24,7 +24,7 @@
 		alignment="column"
 	>
 	<template #intro-message>
-		<div v-show="isDirectDebit" class="info-message address-type-direct-debit-disclaimer">
+		<div v-show="isDirectDebit" class="form-field-intro">
 			{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_basic' ) }}
 		</div>
 	</template>

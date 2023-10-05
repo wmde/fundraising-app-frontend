@@ -18,13 +18,14 @@ defineProps<Props>();
 
 <style lang="scss">
 @use '@src/scss/settings/units';
+@use '@src/scss/settings/global';
 @use '@src/scss/settings/breakpoints';
 @use 'sass:map';
 
 .app-headline {
 
 	@include breakpoints.tablet-up {
-		padding-right: 33.3333%;
+		padding-right: global.$sidebar-width;
 
 		&.full-width {
 			padding-right: 0;

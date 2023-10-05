@@ -2,8 +2,7 @@
 	<div class="sidebar-cards">
 		<div class="sidebar-card">
 			<p class="sidebar-card-title"><InfoIcon/><strong>{{ $t('sidebar_getintouch_headline') }}</strong></p>
-			<p v-html="$t('sidebar_getintouch_text')"></p>
-			<p class="has-margin-top-18">{{ $t('sidebar_getintouch_text_phone') }}</p>
+			<p v-html="$t('sidebar_getintouch_mixed')"></p>
 			<slot name="default"/>
 		</div>
 		<div class="sidebar-card">
@@ -27,7 +26,7 @@ import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
 
 .sidebar-cards {
 	@include breakpoints.tablet-up {
-		padding: 0 map.get( units.$spacing, 'small' );
+		padding: 0 0 0 map.get( units.$spacing, 'small' );
 	}
 }
 
@@ -36,6 +35,7 @@ import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
 	padding: map.get( units.$spacing, 'small' );
 	border-bottom: 1px solid colors.$primary;
 	margin-bottom: map.get( units.$spacing, 'small' );
+	line-height: 1.5;
 
 	&:last-child {
 		margin-bottom: 0;

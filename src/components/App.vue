@@ -11,9 +11,14 @@
 			</FeatureToggle>
 		</header>
 		<main class="main-wrapper">
-			<div class="container">
-				<AppHeadline :is-full-width="isFullWidth"/>
-			</div>
+			<FeatureToggle default-template="campaigns.new_design.legacy">
+				<template #campaigns.new_design.legacy>
+					<div class="container">
+						<AppHeadline :is-full-width="isFullWidth"/>
+					</div>
+				</template>
+				<template #campaigns.new_design.new/>
+			</FeatureToggle>
 			<div class="container">
 				<AppContent :is-full-width="isFullWidth">
 					<template #content>

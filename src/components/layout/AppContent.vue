@@ -21,6 +21,7 @@ defineProps<Props>();
 
 <style lang="scss">
 @use '@src/scss/settings/units';
+@use '@src/scss/settings/global';
 @use '@src/scss/settings/colors';
 @use '@src/scss/settings/breakpoints';
 @use 'sass:map';
@@ -50,8 +51,8 @@ defineProps<Props>();
 
 	&-sidebar {
 		@include breakpoints.tablet-up {
-			flex: 0 0 33.3333%;
-			width: 33.3333%;
+			flex: 0 0 global.$sidebar-width;
+			width: global.$sidebar-width;
 		}
 	}
 }

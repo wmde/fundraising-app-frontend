@@ -32,12 +32,12 @@
 				:error-message="$t('donation_form_payment_type_error')"
 			>
 				<template #message-BEZ>
-					<div v-if="showBEZMessage" class="option-info-message">
+					<div v-if="disabledPaymentTypes.includes( 'BEZ' )" class="option-info-message">
 						{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
 					</div>
 				</template>
 				<template #message-SUB>
-					<div v-if="showSUBMessage" class="option-info-message">
+					<div v-if="disabledPaymentTypes.includes( 'SUB' )" class="option-info-message">
 						{{ $t( 'donation_form_SUB_payment_type_info' ) }}
 					</div>
 				</template>
@@ -84,24 +84,9 @@ const paymentIntervalsAsOptions = computed<FormOption[]>( () => {
 		) );
 } );
 
-const disabledPaymentTypeMessages = {
-	SUB: 'donation_form_SUB_payment_type_info',
-	BEZ: 'donation_form_address_choice_direct_debit_disclaimer',
-};
-
 const paymentTypesAsOptions = computed<FormOption[]>( () => {
 	return props.paymentTypes.map(
-		( paymentTypeValue: string ) => {
-			let message = '';
-			if ( paymentTypeValue in disabledPaymentTypeMessages ) {
-				message = disabledPaymentTypeMessages[ paymentTypeValue ];
-			}
-			return {
-				value: paymentTypeValue,
-				label: t( paymentTypeValue ),
-				infoMessage: t( message ),
-			};
-		}
+		( paymentTypeValue: string ) => ( { value: paymentTypeValue, label: t( paymentTypeValue ) } )
 	);
 } );
 
@@ -114,14 +99,6 @@ const disabledPaymentTypes = computed<string[]>( () => {
 		disabledTypes.push( 'SUB' );
 	}
 	return disabledTypes;
-} );
-
-const showBEZMessage = computed( (): boolean => {
-	return disabledPaymentTypes.value.includes( 'BEZ' );
-} );
-
-const showSUBMessage = computed( (): boolean => {
-	return disabledPaymentTypes.value.includes( 'SUB' );
 } );
 
 const disabledPaymentIntervals = computed<string[]>( () => {
