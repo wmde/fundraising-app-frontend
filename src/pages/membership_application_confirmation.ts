@@ -10,7 +10,7 @@ import { trackGoal } from '@src/tracking';
 
 import App from '@src/components/App.vue';
 import MembershipConfirmation from '@src/components/pages/MembershipConfirmation.vue';
-import { createNullFeatureFetcher } from '@src/FeatureFetcher';
+import { createFeatureFetcher } from '@src/FeatureFetcher';
 
 // TODO move this model, see https://phabricator.wikimedia.org/T298372
 interface MembershipApplicationConfirmationModel {
@@ -34,11 +34,12 @@ const yearlyFee = new YearlyMembershipFee(
 	pageData.applicationVars.membershipApplication.paymentIntervalInMonths,
 	pageData.applicationVars.membershipApplication.membershipFee
 );
+const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId, yearlyFee.yearlyFee );
 
-createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
+createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
 	isFullWidth: true,
 	usesContentCards: true,

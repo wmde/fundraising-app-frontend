@@ -11,7 +11,7 @@ import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin
 
 import App from '@src/components/App.vue';
 import UpdateAddress from '@src/components/pages/UpdateAddress.vue';
-import { createNullFeatureFetcher } from '@src/FeatureFetcher';
+import { createFeatureFetcher } from '@src/FeatureFetcher';
 
 interface UpdateAddressModel {
 	isCompany: boolean,
@@ -25,8 +25,9 @@ const PAGE_IDENTIFIER = 'update-address';
 const FORM_NAMESPACE = 'update_address';
 const pageData = new PageDataInitializer<UpdateAddressModel>( '#appdata' );
 const store = createStore( [ createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
+const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-const app = createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
+const app = createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: UpdateAddress,

@@ -3,7 +3,7 @@ import { createVueApp } from '@src/createVueApp';
 import PageDataInitializer from '@src/page_data_initializer';
 import App from '@src/components/App.vue';
 import PageNotFound from '@src/components/pages/PageNotFound.vue';
-import { createNullFeatureFetcher } from '@src/FeatureFetcher';
+import { createFeatureFetcher } from '@src/FeatureFetcher';
 
 interface ErrorModel {
 	message: string,
@@ -12,8 +12,9 @@ interface ErrorModel {
 
 const PAGE_IDENTIFIER = 'page-not-found';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
+const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
+createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: PageNotFound,

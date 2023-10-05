@@ -7,9 +7,3 @@ export function createFeatureFetcher( selectedBuckets: string[], activeFeatures:
 		getFeatures: () => [ ...selectedBuckets, ...activeFeatures ],
 	};
 }
-
-export function createNullFeatureFetcher(): FeatureFetcher {
-	return {
-		getFeatures: () => [],
-	};
-}
