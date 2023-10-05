@@ -27,6 +27,7 @@ import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 import MembershipForm from '@src/components/pages/MembershipForm.vue';
 import App from '@src/components/App.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface MembershipAmountModel {
 	presetAmounts: Array<string>,
@@ -85,6 +86,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	] ).then( () => {
 		const app = createVueApp( App, pageData.messages, featureFetcher, {
 			assetsPath: pageData.assetsPath,
+			bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 			pageIdentifier: PAGE_IDENTIFIER,
 			page: MembershipForm,
 			pageProps: {

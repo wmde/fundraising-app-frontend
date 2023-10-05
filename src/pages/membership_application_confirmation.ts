@@ -11,6 +11,7 @@ import { trackGoal } from '@src/util/tracking';
 import App from '@src/components/App.vue';
 import MembershipConfirmation from '@src/components/pages/MembershipConfirmation.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 // TODO move this model, see https://phabricator.wikimedia.org/T298372
 interface MembershipApplicationConfirmationModel {
@@ -41,6 +42,7 @@ trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalI
 
 createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
+	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 	isFullWidth: true,
 	usesContentCards: true,
 	pageIdentifier: PAGE_IDENTIFIER,

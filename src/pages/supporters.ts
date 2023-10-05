@@ -5,6 +5,7 @@ import { supportersFromObject } from '@src/view_models/supporters';
 import App from '@src/components/App.vue';
 import Supporters from '@src/components/pages/Supporters.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface ErrorModel {
 	message: string,
@@ -18,10 +19,11 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 
 createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
+	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: Supporters,
 	pageProps: {
 		pageTitle: staticPage.getAttribute( 'data-page-title' ),
-		supporters: supportersFromObject( pageData.applicationVars ),
+		supporters: supportersFromObject( JSON.parse( pageData.applicationVars.supporters ) ),
 	},
 } ).mount( '#app' );

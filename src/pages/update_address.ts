@@ -12,6 +12,7 @@ import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin
 import App from '@src/components/App.vue';
 import UpdateAddress from '@src/components/pages/UpdateAddress.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface UpdateAddressModel {
 	isCompany: boolean,
@@ -29,6 +30,7 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 
 const app = createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
+	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: UpdateAddress,
 	pageProps: {

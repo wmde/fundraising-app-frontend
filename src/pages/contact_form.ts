@@ -5,6 +5,7 @@ import { ContactFormValidation } from '@src/view_models/Validation';
 import App from '@src/components/App.vue';
 import Contact from '@src/components/pages/Contact.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface ContactFormModel {
 	message: string,
@@ -17,6 +18,7 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 
 createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
+	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: Contact,
 	pageProps: {

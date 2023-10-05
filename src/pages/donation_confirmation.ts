@@ -21,6 +21,7 @@ import { trackGoal } from '@src/util/tracking';
 import App from '@src/components/App.vue';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },
@@ -66,6 +67,7 @@ store.dispatch(
 		isFullWidth: true,
 		usesContentCards: true,
 		assetsPath: pageData.assetsPath,
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: DonationConfirmation,
 		pageProps: {

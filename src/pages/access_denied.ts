@@ -4,6 +4,7 @@ import PageDataInitializer from '@src/util/page_data_initializer';
 import App from '@src/components/App.vue';
 import AccessDenied from '@src/components/pages/AccessDenied.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface ErrorModel {
 	message: string,
@@ -15,6 +16,7 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 
 createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
+	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: AccessDenied,
 	pageProps: {
