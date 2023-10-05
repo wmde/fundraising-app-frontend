@@ -34,24 +34,26 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { inject } from 'vue';
 import BankData from '@src/components/BankData.vue';
-export default {
-	name: 'Footer',
-	components: { BankData },
-	props: [ 'assetsPath' ],
-	data: function () {
-		return {
-			'footerMenu': [
-				{ id: 'contact', url: '/contact/get-in-touch' },
-				{ id: 'imprint', url: '/page/Impressum' },
-				{ id: 'data_protection', url: '/page/Datenschutz' },
-				{ id: 'supporters_list', url: '/page/hall-of-fame' },
-				{ id: 'donor_comments', url: '/list-comments.html' },
-			],
-		};
-	},
-};
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+
+interface Props {
+	assetsPath: string,
+}
+
+defineProps<Props>();
+
+const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
+const footerMenu = [
+	{ id: 'contact', url: `/contact/get-in-touch?${ campaignParams }` },
+	{ id: 'imprint', url: `/page/Impressum?${ campaignParams }` },
+	{ id: 'data_protection', url: `/page/Datenschutz?${ campaignParams }` },
+	{ id: 'supporters_list', url: `/page/hall-of-fame?${ campaignParams }` },
+	{ id: 'donor_comments', url: `/list-comments.html?${ campaignParams }` },
+];
+
 </script>
 
 <style lang="scss">
