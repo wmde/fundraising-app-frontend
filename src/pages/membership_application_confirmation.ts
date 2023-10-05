@@ -41,6 +41,7 @@ trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalI
 createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
 	assetsPath: pageData.assetsPath,
 	isFullWidth: true,
+	usesContentCards: true,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: MembershipConfirmation,
 	pageProps: {

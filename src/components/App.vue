@@ -20,7 +20,7 @@
 				<template #campaigns.new_design.new/>
 			</FeatureToggle>
 			<div class="container">
-				<AppContent :is-full-width="isFullWidth">
+				<AppContent :is-full-width="isFullWidth" :uses-content-cards="usesContentCards">
 					<template #content>
 						<component :is="page" v-bind="pageProps"/>
 					</template>
@@ -66,12 +66,14 @@ interface Props {
 	page: Object;
 	pageProps?: Object;
 	isFullWidth?: boolean;
+	usesContentCards?: boolean;
 	bucketClasses?: string[];
 }
 
 withDefaults( defineProps<Props>(), {
 	isFullWidth: false,
 	bucketClasses: () => [],
+	usesContentCards: false,
 } );
 
 </script>

@@ -64,6 +64,7 @@ store.dispatch(
 ).then( () => {
 	const app = createVueApp( App, pageData.messages, featureFetcher, {
 		isFullWidth: true,
+		usesContentCards: true,
 		assetsPath: pageData.assetsPath,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: DonationConfirmation,

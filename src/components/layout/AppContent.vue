@@ -1,6 +1,6 @@
 <template>
 	<div class="app-content">
-		<div class="app-content-main">
+		<div class="app-content-main" :class="{ 'uses-cards': usesContentCards }">
 			<slot name="content"/>
 		</div>
 		<aside v-if="!isFullWidth" class="app-content-sidebar">
@@ -13,6 +13,7 @@
 
 interface Props {
 	isFullWidth: boolean,
+	usesContentCards: boolean,
 }
 
 defineProps<Props>();
@@ -46,6 +47,11 @@ defineProps<Props>();
 
 		@include breakpoints.tablet-up {
 			padding: map.get( units.$spacing, 'large' );
+		}
+
+		&.uses-cards {
+			background: transparent;
+			padding: map.get( units.$spacing, 'small' ) 0;
 		}
 	}
 

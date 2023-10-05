@@ -182,9 +182,6 @@ export default defineComponent( {
 @import "../../scss/variables";
 
 .donation-confirmation {
-	margin-left: -18px;
-	margin-right: -18px;
-
 	&-card {
 		border: 1px solid $fun-color-gray-mid;
 		border-radius: 2px;
