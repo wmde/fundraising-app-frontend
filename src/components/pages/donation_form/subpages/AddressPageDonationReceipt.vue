@@ -94,15 +94,6 @@
 						@click="submit"
 					/>
 				</template>
-
-				<template #summary-notice>
-					<div class="form-summary-notice" v-if="isExternalPayment">
-						{{ $t( 'donation_form_summary_external_payment' ) }}
-					</div>
-					<div class="form-summary-notice" v-if="isBankTransferPayment">
-						{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
-					</div>
-				</template>
 			</FormSummary>
 		</form>
 		<form id="donation-form-submit-values" ref="submitValuesForm" action="/donation/add" method="post">
@@ -178,9 +169,7 @@ const {
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
 const {
-	isBankTransferPayment,
 	isDirectDebitPayment,
-	isExternalPayment,
 	paymentSummary,
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
