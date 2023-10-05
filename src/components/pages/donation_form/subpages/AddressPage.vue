@@ -91,14 +91,6 @@
 				/>
 			</template>
 
-			<template #summary-notice>
-				<div class="form-summary-notice" v-if="isExternalPayment">
-					{{ $t( 'donation_form_summary_external_payment' ) }}
-				</div>
-				<div class="form-summary-notice" v-if="isBankTransferPayment">
-					{{ $t( 'donation_form_summary_bank_transfer_payment' ) }}
-				</div>
-			</template>
 		</FormSummary>
 		<form action="/donation/add" method="post" ref="submitValuesForm">
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
@@ -167,8 +159,6 @@ const {
 
 const {
 	isDirectDebitPayment,
-	isBankTransferPayment,
-	isExternalPayment,
 	paymentSummary,
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
