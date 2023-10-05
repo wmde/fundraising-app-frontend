@@ -2,7 +2,7 @@
 	<div class="error-page">
 		<h1 class="title">{{ $t( 'error_page_header' ) }}</h1>
 		<p>
-			<span v-html="$t( 'error_page' )"></span>
+			<span v-html="appendCampaignQueryParams( $t( 'error_page' ), campaignParams )"></span>
 		</p>
 
 		<pre v-if="errorMessage">
@@ -25,9 +25,25 @@
 	</div>
 </template>
 
-<script>
-export default {
-	name: 'Error',
-	props: [ 'errorMessage', 'errorTrace' ],
-};
+<script setup lang="ts">
+import { inject } from 'vue';
+import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+
+interface TraceItem {
+	'class': string,
+	type: string,
+	'function': string,
+	file: string,
+	line: string
+}
+
+interface Props {
+	errorMessage: string,
+	errorTrace: TraceItem[]
+}
+defineProps<Props>();
+
+const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
+
 </script>

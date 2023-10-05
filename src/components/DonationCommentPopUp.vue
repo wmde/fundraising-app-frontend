@@ -62,6 +62,7 @@ import { Donation } from '@src/view_models/Donation';
 import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import FunCheckbox from '@src/components/shared/legacy_form_inputs/FunCheckbox.vue';
+import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
 
 export default defineComponent( {
 	name: 'DonationCommentPopUp',
@@ -91,6 +92,7 @@ export default defineComponent( {
 		trackDynamicForm();
 	},
 	methods: {
+		appendCampaignQueryParams,
 		postComment() {
 			let form = this.$refs.form as HTMLFormElement;
 			trackFormSubmission( form );

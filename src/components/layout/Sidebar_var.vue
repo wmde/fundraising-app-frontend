@@ -2,7 +2,7 @@
 	<div class="sidebar-cards">
 		<div class="sidebar-card">
 			<p class="sidebar-card-title"><InfoIcon/><strong>{{ $t('sidebar_getintouch_headline') }}</strong></p>
-			<p v-html="$t('sidebar_getintouch_mixed')"></p>
+			<p v-html="appendCampaignQueryParams( $t('sidebar_getintouch_mixed'), campaignParams )"></p>
 			<slot name="default"/>
 		</div>
 		<div class="sidebar-card">
@@ -13,9 +13,15 @@
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue';
 import BankData from '@src/components/BankData.vue';
 import BankIcon from '@src/components/shared/icons/BankIcon.vue';
 import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
+import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+
+const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
+
 </script>
 
 <style lang="scss">
