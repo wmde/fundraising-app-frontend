@@ -8,7 +8,7 @@
 		>
 			<span class="form-field-mailing-list-label-content">
 				<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
-				<span v-html="$t( 'donation_form_newsletter_label_paragraph_2_vuei18n_v3' )"/>
+				<span v-html="appendCampaignQueryParams( $t( 'donation_form_newsletter_label_paragraph_2_vuei18n_v3'), campaignParams )"/>
 			</span>
 		</CheckboxSingleFormInput>
 	</div>
@@ -18,6 +18,9 @@
 
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
+import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
+import { inject } from 'vue';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
 	modelValue: boolean;
@@ -31,6 +34,8 @@ const fieldModel = useFieldModel<boolean>( () => props.modelValue, props.modelVa
 const onUpdateModel = ( newValue: boolean ): void => {
 	emit( 'update:modelValue', newValue );
 };
+
+const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
 </script>
 
