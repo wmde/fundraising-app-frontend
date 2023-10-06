@@ -114,14 +114,14 @@
 				</div>
 			</template>
 		</FormSummary>
-		<form action="/donation/add" method="post" ref="submitValuesForm">
+		<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm">
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, inject } from 'vue';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
@@ -145,6 +145,7 @@ import { useAddressFormEventHandlers } from '@src/components/pages/donation_form
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
 	assetsPath: string;
@@ -162,6 +163,7 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'previous-page' ] );
 
+const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const isFullSelected = ref( false );
 const store = injectStrict( StoreKey );
 const setFullSelected = ( selected: boolean ) => {
