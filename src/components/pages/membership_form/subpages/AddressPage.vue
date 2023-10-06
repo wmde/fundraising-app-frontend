@@ -1,8 +1,8 @@
 <template>
 	<div class="address-page">
 		<address-fields
-			:validate-address-url="validateAddressUrl"
-			:validate-email-url="validateEmailUrl"
+			:validate-address-url="validateAddressUrl.toString()"
+			:validate-email-url="validateEmailUrl.toString()"
 			:countries="countries"
 			:salutations="salutations"
 			:address-validation-patterns="addressValidationPatterns"
@@ -22,7 +22,7 @@
 					<FunButton
 						id="previous-btn"
 						class="level-item is-primary is-main is-outlined"
-						@click="$emit( 'previous-page' )"
+						@click="previousPage"
 					>
 						{{ $t('membership_form_section_back') }}
 					</FunButton>
@@ -30,7 +30,7 @@
 				<div class="column">
 					<FunButton
 						id="submit-btn"
-						:class="[ 'level-item is-primary is-main', { 'is-loading' : $store.getters.isValidating } ]"
+						:class="[ 'level-item is-primary is-main', { 'is-loading' : store.getters.isValidating } ]"
 						@click="submit"
 					>
 						{{ $t('membership_form_finalize') }}
@@ -39,6 +39,9 @@
 			</div>
 		</div>
 
+		<form action="/apply-for-membership" method="post" ref="submitValuesForm">
+			<submit-values/>
+		</form>
 	</div>
 </template>
 
@@ -55,6 +58,7 @@ import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import { Country } from '@src/view_models/Country';
 import { useStore } from 'vuex';
+import { useAddressFormEventHandlers } from '@src/components/pages/membership_form/useAddressFormEventHandlers';
 
 interface Props {
 	validateAddressUrl: String;
@@ -65,7 +69,7 @@ interface Props {
 	dateOfBirthValidationPattern: String;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 const emit = defineEmits( [ 'previous-page', 'submit-membership' ] );
 const store = useStore();
 
@@ -82,6 +86,8 @@ const membershipApplication = computed( (): object => {
 	};
 } );
 
+const isDirectDebitPayment = computed( (): boolean => store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' );
+
 const addressSummary = computed( (): object => {
 	return {
 		...store.state[ NS_MEMBERSHIP_ADDRESS ].values,
@@ -93,26 +99,12 @@ const addressSummary = computed( (): object => {
 	};
 } );
 
-const formIsValid = () => {
-	if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] ) {
-		return false;
-	}
-	if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ] ) {
-		return false;
-	}
-	return true;
-};
-
-const submit = () => {
-	addressFieldsRef.value.validateForm().then( () => {
-		if ( formIsValid() ) {
-			emit( 'submit-membership' );
-		} else {
-			document
-				.getElementsByClassName( 'is-danger' )[ 0 ]
-				.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-		}
-	} );
-};
+const { submit, previousPage, submitValuesForm } = useAddressFormEventHandlers(
+	store,
+	emit,
+	isDirectDebitPayment,
+	props.validateAddressUrl.toString(),
+	props.validateEmailUrl.toString()
+);
 
 </script>

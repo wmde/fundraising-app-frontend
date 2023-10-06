@@ -18,7 +18,9 @@
 			@update:modelValue="onUpdateModel"
 		/>
 		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
-		<slot name="message"/>
+		<span class="field-info-message">
+			<slot name="message"/>
+		</span>
 	</div>
 </template>
 
@@ -59,5 +61,9 @@ const onUpdateModel = ( newValue: string|number ): void => {
 </script>
 
 <style scoped lang="scss">
+
+.field-info-message {
+	color: rgba(0,0,0,.6);
+}
 
 </style>

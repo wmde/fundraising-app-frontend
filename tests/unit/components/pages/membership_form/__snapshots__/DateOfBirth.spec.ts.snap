@@ -44,29 +44,40 @@ exports[`DateOfBirth.vue renders error message 1`] = `
 
 exports[`DateOfBirth.vue renders field 1`] = `
 <fieldset>
-  <label
-    class="subtitle has-margin-top-36"
-    for="birthDate"
-  >
-    membership_form_birth_date_label
-  </label>
   <div
     class="field"
   >
     <div
-      class="control is-clearfix"
+      class="form-field form-field-text"
     >
-      <input
-        autocomplete="on"
-        class="input"
-        id="birthDate"
-        name="birthDate"
-        placeholder="membership_form_birth_date_placeholder"
-        type="text"
-      />
+      <label
+        class="form-field-label"
+        for="birthDate"
+      >
+        membership_form_birth_date_label
+      </label>
+      <div
+        class="control text-form-input"
+      >
+        <input
+          autocomplete="on"
+          class="input"
+          id="birthDate"
+          name="birthDate"
+          placeholder="membership_form_birth_date_placeholder"
+          type="text"
+        />
+        <!--v-if-->
+        <!--v-if-->
+        <!--v-if-->
+      </div>
       <!--v-if-->
-      <!--v-if-->
-      <!--v-if-->
+      <span
+        class="field-info-message"
+      >
+        
+        
+      </span>
     </div>
   </div>
   <span
@@ -74,6 +85,5 @@ exports[`DateOfBirth.vue renders field 1`] = `
   >
     membership_form_birth_date_help_text
   </span>
-  <!--v-if-->
 </fieldset>
 `;

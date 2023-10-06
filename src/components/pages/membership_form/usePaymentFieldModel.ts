@@ -10,6 +10,7 @@ import { Store } from 'vuex';
  * @param {Store<any>} store The Vuex store
  * @param {string} fieldName Name of the value field in the payment store
  * @param {string} setterAction Name of the store action that changes the value field in the store
+ * @param validateFeeUrl URL that checks the integrity of the fee
  */
 export function usePaymentFieldModel( store: Store<any>, fieldName: string, setterAction: string, validateFeeUrl: string ): Ref<string> {
 
