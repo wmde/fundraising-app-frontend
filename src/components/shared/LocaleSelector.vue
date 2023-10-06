@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Cookies from 'js-cookie';
-import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/createLocalisation';
+import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/util/createLocalisation';
 
 const locale = ref<string>( Cookies.get( COOKIE_NAME ) ?? DEFAULT_LOCALE );
 

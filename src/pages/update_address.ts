@@ -2,16 +2,17 @@ import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
 import { createStore } from '@src/store/update_address_store';
 
-import PageDataInitializer from '@src/page_data_initializer';
+import PageDataInitializer from '@src/util/page_data_initializer';
 import { AddressValidation } from '@src/view_models/Validation';
-import { ApiCityAutocompleteResource } from '@src/CityAutocompleteResource';
+import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
 
 import App from '@src/components/App.vue';
 import UpdateAddress from '@src/components/pages/UpdateAddress.vue';
-import { createNullFeatureFetcher } from '@src/FeatureFetcher';
+import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface UpdateAddressModel {
 	isCompany: boolean,
@@ -25,9 +26,11 @@ const PAGE_IDENTIFIER = 'update-address';
 const FORM_NAMESPACE = 'update_address';
 const pageData = new PageDataInitializer<UpdateAddressModel>( '#appdata' );
 const store = createStore( [ createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
+const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-const app = createVueApp( App, pageData.messages, createNullFeatureFetcher(), {
+const app = createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
+	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: UpdateAddress,
 	pageProps: {

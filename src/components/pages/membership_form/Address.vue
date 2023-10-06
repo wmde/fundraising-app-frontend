@@ -61,8 +61,8 @@ import {
 	validateEmail,
 } from '@src/store/membership_address/actionTypes';
 import { action } from '@src/store/util';
-import { mergeValidationResults } from '@src/merge_validation_results';
-import { camelizeName } from '@src/camlize_name';
+import { mergeValidationResults } from '@src/util/merge_validation_results';
+import { camelizeName } from '@src/util/camlize_name';
 import { Salutation } from '@src/view_models/Salutation';
 import { useMailHostList } from '@src/components/shared/useMailHostList';
 

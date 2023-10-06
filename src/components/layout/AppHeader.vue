@@ -2,7 +2,7 @@
 	<div class="navbar is-fixed-top has-background-bright has-shadow">
 		<div class="container">
 			<div class="navbar-brand">
-				<a class="navbar-item" href="/">
+				<a class="navbar-item" :href="`/?${ campaignParams }`">
 					<Logo/>
 				</a>
 				<a role="button"
@@ -33,9 +33,10 @@
 
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import LocaleSelector from '@src/components/shared/LocaleSelector.vue';
 import Logo from '@src/components/layout/Logo.vue';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
 	assetsPath: string;
@@ -44,16 +45,17 @@ interface Props {
 
 defineProps<Props>();
 
+const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const showNavbarBurger = ref<boolean>( false );
 const headerMenu = [
-	{ ids: [ 'donation-form', 'donation-confirmation' ], localeId: 'donate', url: '/' },
+	{ ids: [ 'donation-form', 'donation-confirmation' ], localeId: 'donate', url: `/?${ campaignParams }` },
 	{
 		ids: [ 'membership-application', 'membership-application-confirmation' ],
 		localeId: 'membership_application',
-		url: '/apply-for-membership',
+		url: `/apply-for-membership?${ campaignParams }`,
 	},
-	{ ids: [ 'faq-page' ], localeId: 'faq', url: '/faq' },
-	{ ids: [ 'use-of-funds' ], localeId: 'use_of_resources', url: '/use-of-funds' },
+	{ ids: [ 'faq-page' ], localeId: 'faq', url: `/faq?${ campaignParams }` },
+	{ ids: [ 'use-of-funds' ], localeId: 'use_of_resources', url: `/use-of-funds?${ campaignParams }` },
 ];
 
 </script>

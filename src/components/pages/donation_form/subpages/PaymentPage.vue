@@ -37,9 +37,9 @@ import Payment from '@src/components/pages/donation_form/Payment.vue';
 import { action } from '@src/store/util';
 import { NS_PAYMENT } from '@src/store/namespaces';
 import { markEmptyValuesAsInvalid } from '@src/store/payment/actionTypes';
-import { waitForServerValidationToFinish } from '@src/wait_for_server_validation';
-import { trackDynamicForm, trackFormSubmission } from '@src/tracking';
-import scrollToFirstError from '@src/scroll_to_first_error';
+import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
+import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
+import scrollToFirstError from '@src/util/scroll_to_first_error';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import { useStore } from 'vuex';
 

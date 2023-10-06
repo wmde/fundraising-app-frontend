@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesResource';
-import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/CityAutocompleteResource';
+import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import { useCityAutocompleteEvents } from '@src/components/shared/form_fields/useCityAutocompleteEvents';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 

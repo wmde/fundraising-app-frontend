@@ -4,7 +4,7 @@ import { createStore, StoreKey } from '@src/store/donation_store';
 
 import CampaignParameters from '@src/util/CampaignParameters';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
-import PageDataInitializer from '@src/page_data_initializer';
+import PageDataInitializer from '@src/util/page_data_initializer';
 import persistenceItems from '@src/store/data_persistence/donation_form';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Country } from '@src/view_models/Country';
@@ -12,7 +12,7 @@ import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { Salutation } from '@src/view_models/Salutation';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { action } from '@src/store/util';
-import { bucketIdToCssClass } from '@src/bucket_id_to_css_class';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { createDataPersister } from '@src/store/create_data_persister';
 import { createInitialDonationAddressValues, createInitialDonationPaymentValues } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
@@ -21,8 +21,8 @@ import { initializePayment } from '@src/store/payment/actionTypes';
 
 import App from '@src/components/App.vue';
 import DonationForm from '@src/components/pages/DonationForm.vue';
-import { ApiCityAutocompleteResource } from '@src/CityAutocompleteResource';
-import { createFeatureFetcher } from '@src/FeatureFetcher';
+import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
+import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 
 interface DonationFormModel {
 	initialFormValues: any,

@@ -1,5 +1,5 @@
 import { MutationPayload, Store } from 'vuex';
-import { trackFormValidationErrors } from '@src/tracking';
+import { trackFormValidationErrors } from '@src/util/tracking';
 import { Validity } from '@src/view_models/Validity';
 
 export const trackFormErrorPlugin = ( store: Store<any>, formName: string ) => {

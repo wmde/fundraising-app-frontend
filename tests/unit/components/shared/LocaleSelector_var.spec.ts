@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import LocaleSelector from '@src/components/shared/LocaleSelector_var.vue';
 import Cookies from 'js-cookie';
-import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/createLocalisation';
+import { COOKIE_NAME, DEFAULT_LOCALE } from '@src/util/createLocalisation';
 
 describe( 'LocaleSelector.vue', () => {
 
