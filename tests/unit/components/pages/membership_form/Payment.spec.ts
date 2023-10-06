@@ -57,7 +57,7 @@ describe( 'Payment.vue', () => {
 
 		expect( store.dispatch ).toBeCalledWith(
 			action( NS_MEMBERSHIP_FEE, setInterval ),
-			{ 'selectedInterval': 6, 'validateFeeUrl': 'https://example.com/amount-check' }
+			{ 'selectedValue': 6, 'validateFeeUrl': 'https://example.com/amount-check' }
 		);
 	} );
 

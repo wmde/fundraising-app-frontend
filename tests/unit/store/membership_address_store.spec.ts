@@ -488,7 +488,7 @@ describe( 'MembershipAddress', () => {
 				expect( context.dispatch.mock.lastCall ).toEqual( [
 					'membership_fee/validateFee',
 					{
-						feeValue: '500',
+						selectedValue: '500',
 						validateFeeUrl: '/validate-fee',
 					},
 					{ root: true },

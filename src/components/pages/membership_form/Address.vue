@@ -2,238 +2,148 @@
 	<div class="address-section">
 		<h1 class="has-margin-top-36 title is-size-5">{{ $t( 'membership_form_section_address_title' ) }}</h1>
 		<AutofillHandler @autofill="onAutofill">
-			<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"/>
-			<postal
+
+			<NameFields
 				:show-error="fieldErrors"
 				:form-data="formData"
-				:countries="countries"
+				:salutations="salutations"
+				@field-changed="onFieldChange"
+			/>
+
+			<PostalAddressFields
+				:show-error="fieldErrors"
 				:post-code-validation="addressValidationPatterns.postcode"
-				:country-was-restored="countryWasRestored"
-				v-on:field-changed="onFieldChange"
-			/>
-			<receipt-option
-				:message="$t( 'receipt_needed_membership_page' )"
-				:initial-receipt-needed="receiptNeeded"
-				v-on:receipt-changed="setReceipt( $event )"
-			/>
-			<incentives
-				:message="$t( 'membership_form_incentive' )"
-				:incentive-choices="[ 'tote_bag' ]"
-				:default-incentives="incentives"
-				v-on:incentives-changed="setIncentives( $event )"
-			/>
-			<date-of-birth
-				v-if="isPerson"
-				v-on:field-changed="onFieldChange"
-				:show-error="fieldErrors.date"
-				:form-data="formData"/>
-			<EmailAddress
-				:show-error="fieldErrors.email"
 				:form-data="formData"
-				v-on:field-changed="onFieldChange"
-				:common-mail-providers="mailHostList" />
+				:countries="countries"
+				:country-was-restored="countryWasRestored"
+				@field-changed="onFieldChange"
+			/>
+
+			<div class="form-field form-field-membership-receipt">
+				<CheckboxSingleFormInput
+					input-id="receipt-option-person"
+					name="receipt-option"
+					v-model="receiptNeeded"
+				>
+					{{ $t( 'receipt_needed_membership_page' ) }}
+				</CheckboxSingleFormInput>
+			</div>
+
+			<Incentives
+				:message="$t( 'membership_form_incentive' )"
+				:incentive-choices="incentivesFromStore"
+				:incentive-form-field-options="incentivesAsOptions"
+				v-model="incentivesModel"
+				@field-changed="onFieldChange"
+			/>
+
+			<TextField
+				v-if="isPerson"
+				name="date"
+				input-id="date"
+				:label="$t( 'membership_form_birth_date_label' )"
+				v-model="formData.date.value"
+				:placeholder="$t( 'membership_form_birth_date_placeholder' )"
+				:show-error="fieldErrors.date"
+				:error-message="$t( 'membership_form_birth_date_error' )"
+				@field-changed="onFieldChange"
+			>
+				<template #message v-if="!fieldErrors.date">
+					{{ $t( 'membership_form_birth_date_help_text' ) }}
+				</template>
+			</TextField>
+
+			<EmailField
+				:show-error="fieldErrors.email"
+				v-model="formData.email.value"
+				@field-changed="onFieldChange"
+			>
+				<template #message>
+					<ValueEqualsPlaceholderWarning
+						:value="formData.email.value"
+						:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+						warning="donation_form_email_placeholder_warning"
+					/>
+				</template>
+			</EmailField>
 		</AutofillHandler>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapGetters } from 'vuex';
-import Name from '@src/components/shared/Name.vue';
-import Postal from '@src/components/shared/Postal.vue';
-import DateOfBirth from '@src/components/pages/membership_form/DateOfBirth.vue';
-import ReceiptOption from '@src/components/shared/ReceiptOption.vue';
-import Incentives from '@src/components/pages/membership_form/Incentives.vue';
-import EmailAddress from '@src/components/shared/EmailAddress.vue';
-import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import { AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
-import { AddressValidation } from '@src/view_models/Validation';
-import { Validity } from '@src/view_models/Validity';
-import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import {
-	setAddressField,
-	setIncentives,
-	setReceiptChoice,
-	validateAddress,
-	validateAddressField,
-	validateCountry,
-	validateDateOfBirth,
-	validateEmail,
-} from '@src/store/membership_address/actionTypes';
-import { action } from '@src/store/util';
-import { mergeValidationResults } from '@src/util/merge_validation_results';
-import { camelizeName } from '@src/util/camlize_name';
+<script setup lang="ts">
 import { Salutation } from '@src/view_models/Salutation';
-import { useMailHostList } from '@src/components/shared/useMailHostList';
+import { AddressValidation } from '@src/view_models/Validation';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
+import { Validity } from '@src/view_models/Validity';
+import { computed, onBeforeMount, ref, toRefs } from 'vue';
+import { Country } from '@src/view_models/Country';
+import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
+import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
+import EmailField from '@src/components/shared/form_fields/EmailField.vue';
+import Incentives from '@src/components/pages/membership_form/Incentives.vue';
+import { useAddressFunctions } from '@src/components/pages/membership_form/AddressFunctions';
+import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
+import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
+import { StoreKeyMembership } from '@src/store/membership_store';
+import { injectStrict } from '@src/util/injectStrict';
+import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
+import { useReceiptModel } from '@src/components/pages/membership_form/useReceiptModel';
+import { useIncentivesModel } from '@src/components/pages/membership_form/useIncentivesModel';
+import { FormOption } from '@src/components/shared/form_fields/FormOption';
+import { useI18n } from 'vue-i18n';
 
-export default defineComponent( {
-	name: 'Address',
-	components: {
-		Name,
-		Postal,
-		DateOfBirth,
-		ReceiptOption,
-		Incentives,
-		EmailAddress,
-		AutofillHandler,
-	},
-	data: function (): { countryWasRestored: boolean, formData: AddressFormData } {
-		return {
-			countryWasRestored: false,
-			formData: {
-				salutation: {
-					name: 'salutation',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.salutation,
-					optionalField: false,
-				},
-				title: {
-					name: 'title',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.title,
-					optionalField: true,
-				},
-				companyName: {
-					name: 'companyName',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.companyName,
-					optionalField: false,
-				},
-				firstName: {
-					name: 'firstName',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.firstName,
-					optionalField: false,
-				},
-				lastName: {
-					name: 'lastName',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.lastName,
-					optionalField: false,
-				},
-				street: {
-					name: 'street',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.street,
-					optionalField: false,
-				},
-				city: {
-					name: 'city',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.city,
-					optionalField: false,
-				},
-				postcode: {
-					name: 'postcode',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.postcode,
-					optionalField: false,
-				},
-				country: {
-					name: 'country',
-					value: 'DE',
-					pattern: this.$props.addressValidationPatterns.country,
-					optionalField: false,
-				},
-				email: {
-					name: 'email',
-					value: '',
-					pattern: this.$props.addressValidationPatterns.email,
-					optionalField: false,
-				},
-				date: {
-					name: 'date',
-					value: '',
-					pattern: this.$props.dateOfBirthValidationPattern,
-					optionalField: true,
-				},
-			},
-		};
-	},
-	props: {
-		validateAddressUrl: String,
-		validateEmailUrl: String,
-		countries: Array as () => Array<String>,
-		salutations: Array as () => Array<Salutation>,
-		initialFormValues: [ Object, String ],
-		addressValidationPatterns: Object as () => AddressValidation,
-		dateOfBirthValidationPattern: String,
-	},
-	setup() {
-		const mailHostList = useMailHostList();
-		return { mailHostList };
-	},
-	// TODO move computed and state into composition-api's setup() method
-	computed: {
-		fieldErrors: {
-			get: function (): AddressValidity {
-				const validityResult = Object.keys( this.formData ).reduce( ( validity: AddressValidity, fieldName: string ) => {
-					if ( !this.formData[ fieldName ].optionalField ) {
-						validity[ fieldName ] = this.$store.state.membership_address.validity[ fieldName ] === Validity.INVALID;
-					}
-					return validity;
-				}, ( {} as AddressValidity ) );
-				validityResult.date = this.$store.state.membership_address.validity.date === Validity.INVALID;
-				return validityResult;
-			},
-		},
-		...mapGetters( NS_MEMBERSHIP_ADDRESS, [
-			'email',
-			'addressType',
-			'isPerson',
-		] ),
-		receiptNeeded(): Boolean {
-			return this.$store.state[ NS_MEMBERSHIP_ADDRESS ].receipt;
-		},
-		incentives(): String[] {
-			return this.$store.state[ NS_MEMBERSHIP_ADDRESS ].incentives;
-		},
-	},
-	beforeMount() {
-		this.$data.countryWasRestored = this.$store.state[ NS_MEMBERSHIP_ADDRESS ].validity.country === Validity.RESTORED;
-		Object.entries( this.$store.state[ NS_MEMBERSHIP_ADDRESS ].values ).forEach( ( entry ) => {
-			const name: string = entry[ 0 ];
-			const value: string = entry[ 1 ] as string;
-			if ( !this.formData[ name ] ) {
-				return;
-			}
-			this.formData[ name ].value = value;
+interface Props {
+	validateAddressUrl: string,
+	validateEmailUrl: string,
+	countries: Country[],
+	salutations: Salutation[],
+	addressValidationPatterns: AddressValidation,
+	dateOfBirthValidationPattern: String,
+}
+const props = defineProps<Props>();
+const store = injectStrict( StoreKeyMembership );
+const { t } = useI18n();
 
-			if ( this.$store.state[ NS_MEMBERSHIP_ADDRESS ].validity[ name ] === Validity.RESTORED ) {
-				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddressField ), this.$data.formData[ name ] );
-			}
-		} );
-	},
-	methods: {
-		async validateForm(): Promise<ValidationResult> {
-			await this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateCountry ), {
-				country: this.$data.formData.country,
-				postcode: this.$data.formData.postcode,
-			} );
-			return Promise.all( [
-				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddress ), this.$props.validateAddressUrl ),
-				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateEmail ), this.$props.validateEmailUrl ),
-				this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateDateOfBirth ) ),
-			] ).then( mergeValidationResults );
+const { addressValidationPatterns } = toRefs( props );
+const countryWasRestored = ref<boolean>( false );
+const { receiptNeeded } = useReceiptModel( store, true );
 
-		},
-		onFieldChange( fieldName: string ): void {
-			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressField ), this.$data.formData[ fieldName ] );
-		},
-		onAutofill( autofilledFields: { [key: string]: string; } ) {
-			Object.keys( autofilledFields ).forEach( key => {
-				const fieldName = camelizeName( key );
-				if ( this.$data.formData[ fieldName ] ) {
-					this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressField ), this.$data.formData[ fieldName ] );
-				}
-			} );
-		},
-		setReceipt( choice: boolean ): void {
-			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setReceiptChoice ), choice );
-		},
-		setIncentives( incentives: string[] ): void {
-			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setIncentives ), incentives );
-		},
-	},
+const incentivesModel = useIncentivesModel( store );
+
+const {
+	formData,
+	fieldErrors,
+
+	initializeDataFromStore,
+	onFieldChange,
+	onAutofill,
+} = useAddressFunctions( {
+	addressValidationPatterns: addressValidationPatterns.value,
+	dateOfBirthValidationPattern: props.dateOfBirthValidationPattern.toString(),
+}, store );
+
+const initialIncentives = [ 'tote_bag' ];
+
+const incentivesFromStore = computed( (): string[] => {
+	return store.state[ NS_MEMBERSHIP_ADDRESS ].incentives;
 } );
+
+const isPerson = computed( (): boolean => {
+	return store.getters[ NS_MEMBERSHIP_ADDRESS + '/isPerson' ];
+} );
+
+const incentivesAsOptions = computed<FormOption[]>( () => {
+	return initialIncentives.map(
+		( incentive: string ) => (
+			// in case there will be more different incentives in the future, this needs to have different dynamic labels
+			{ value: incentive, label: t( 'membership_form_incentive' ) }
+		) );
+} );
+
+onBeforeMount( () => {
+	countryWasRestored.value = store.state[ NS_MEMBERSHIP_ADDRESS ].validity.country === Validity.RESTORED;
+	initializeDataFromStore();
+} );
+
 </script>

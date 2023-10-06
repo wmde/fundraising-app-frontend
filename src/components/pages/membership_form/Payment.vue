@@ -79,8 +79,7 @@ const paymentType = usePaymentFieldModel( store, 'paymentType', setType, props.v
 const paymentTypeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/typeIsValid' ] );
 const feeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/feeIsValid' ] );
 
-//TODO minimumamount needs to be a reactive number value
-const minimumAmount = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/minimumAmount' ] );
+const minimumAmount = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/minimumAmount' ]() );
 
 const getAmountTitle = computed( () => {
 	if ( interval.value === '' ) {

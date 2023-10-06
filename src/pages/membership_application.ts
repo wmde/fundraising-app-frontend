@@ -1,6 +1,6 @@
 import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
-import { createStore } from '@src/store/membership_store';
+import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 
 import FilteredUrlMembershipValues from '@src/util/FilteredUrlMembershipValues';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
@@ -106,6 +106,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			},
 		} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
+		app.provide( StoreKeyMembership, store );
 		app.use( store );
 		app.mount( '#app' );
 	} );

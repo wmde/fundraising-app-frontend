@@ -201,8 +201,8 @@ describe( 'MembershipFee', () => {
 						},
 					},
 				},
-				expectedPayload = {
-					feeValue: '2000',
+				expectedPayload :GenericValuePayload = {
+					selectedValue: '2000',
 					validateFeeUrl: '/validate-fee-url',
 				};
 
@@ -290,7 +290,7 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500Blah',
+					selectedValue: '2500Blah',
 					validateFeeUrl: '/validation-fee-url',
 				};
 			const action = actions.setFee as any;
@@ -325,7 +325,7 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500',
+					selectedValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
 				expectedFormData = new FormData();
@@ -353,7 +353,7 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500',
+					selectedValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
 				action = actions.validateFee as any;
@@ -387,7 +387,7 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500',
+					selectedValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
 				action = actions.validateFee as any;

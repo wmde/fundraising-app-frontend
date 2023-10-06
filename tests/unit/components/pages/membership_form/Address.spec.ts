@@ -12,7 +12,7 @@ import { initializeAddress, setAddressField, setReceiptChoice } from '@src/store
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
-import { addressValidationPatterns } from '../../../../data/validation';
+import { addressValidationPatterns, dateOfBirthValidationPattern } from '@test/data/validation';
 import { Store } from 'vuex';
 
 describe( 'Address.vue', () => {
@@ -20,6 +20,9 @@ describe( 'Address.vue', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
 		const wrapper = mount( Address, {
 			props: {
+				validateEmailUrl: 'validate-email',
+				salutations: [],
+				dateOfBirthValidationPattern: dateOfBirthValidationPattern,
 				validateAddressUrl: 'validate-address',
 				countries: countries,
 				addressValidationPatterns: addressValidationPatterns,

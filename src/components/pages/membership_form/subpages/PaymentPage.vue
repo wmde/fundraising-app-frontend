@@ -10,9 +10,9 @@
 			:payment-amounts="props.paymentAmounts"
 			:payment-intervals="props.paymentIntervals"
 			:payment-types="props.paymentTypes"
-			:validate-fee-url="props.validateFeeUrl"
-			:validate-bank-data-url="props.validateBankDataUrl"
-			:validate-legacy-bank-data-url="props.validateLegacyBankDataUrl"
+			:validate-fee-url="props.validateFeeUrl.toString()"
+			:validate-bank-data-url="props.validateBankDataUrl.toString()"
+			:validate-legacy-bank-data-url="props.validateLegacyBankDataUrl.toString()"
 		/>
 		<div class="level has-margin-top-18">
 			<div class="level-left">

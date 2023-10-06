@@ -60,7 +60,7 @@ export const actions = {
 		// Trigger server-side validation to restore server-side validation state
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( validateFee, {
-				feeValue: initialData.fee,
+				selectedValue: initialData.fee,
 				validateFeeUrl: initialData.validateFeeUrl,
 			} );
 		}
@@ -112,7 +112,7 @@ export const actions = {
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( validateFee, {
-				feeValue: context.state.values.fee,
+				selectedValue: context.state.values.fee,
 				// validateFeeUrl should not be part of the payload, see https://phabricator.wikimedia.org/T315068
 				validateFeeUrl: payload.validateFeeUrl,
 			} );
@@ -125,7 +125,7 @@ export const actions = {
 		context.commit( SET_TYPE_VALIDITY );
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( validateFee, {
-				feeValue: context.state.values.fee,
+				selectedValue: context.state.values.fee,
 				validateFeeUrl: payload.validateFeeUrl,
 			} );
 		}
