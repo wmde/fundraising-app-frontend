@@ -1,4 +1,4 @@
-import FakeDataPersister from './TestDoubles/FakeDataPersister';
+import FakeDataPersister from '../TestDoubles/FakeDataPersister';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import persistenceAddress from '@src/store/data_persistence/address';

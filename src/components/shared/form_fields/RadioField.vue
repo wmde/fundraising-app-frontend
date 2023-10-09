@@ -1,7 +1,7 @@
 <template>
 	<fieldset class="form-field form-field-radio" :class="{ 'is-invalid': showError }">
 		<legend v-if="label" class="form-field-label">{{ label }}</legend>
-    <slot name="intro-message"></slot>
+		<slot name="intro-message"></slot>
 		<div class="control form-field-radio-container" :class="alignment+ '-alignment'">
 			<RadioFormInput
 				v-for="( option, index ) in options"
@@ -60,6 +60,8 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 <style lang="scss">
 @use '@src/scss/settings/units';
 @use '@src/scss/settings/forms';
+@use '@src/scss/settings/colors';
+@use '@src/scss/settings/breakpoints';
 @use 'sass:map';
 
 .form-field-radio {
@@ -69,10 +71,15 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 			margin-left: 0;
 		}
 		&.row-alignment {
-			flex-direction: row;
+			flex-direction: column;
+
+			@include breakpoints.tablet-up {
+				flex-direction: row;
+			}
 		}
 		&.column-alignment {
 			flex-direction: column;
+
 			.radio-form-input {
 				width: 100%;
 				max-width: map.get( forms.$input, 'max-width' );
@@ -96,7 +103,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 				}
 
 				&.is-active {
-					border-bottom: 2px solid #0065a4;
+					border-bottom: 2px solid colors.$primary;
 				}
 
 				&.is-disabled {
@@ -105,7 +112,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 				}
 
 				&:hover {
-					border-bottom: 2px solid #808080;
+					border-bottom: 2px solid colors.$gray-dark;
 				}
 			}
 		}

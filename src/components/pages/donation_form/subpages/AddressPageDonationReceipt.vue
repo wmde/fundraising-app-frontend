@@ -123,7 +123,7 @@ import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { Validity } from '@src/view_models/Validity';
 import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
-import { trackDynamicForm } from '@src/tracking';
+import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/DonationReceipt/useAddressFormEventHandlers';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
@@ -157,7 +157,7 @@ const store = useStore( StoreKey );
 const { addressType, addressTypeName } = useAddressType( store );
 const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
 const mailingList = useMailingListModel( store );
-const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store, false );
+const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
 
 const {

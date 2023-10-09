@@ -9,12 +9,6 @@
 @import "~bulma";
 @import "~bulma-helpers/sass/helpers/spacing/margin-padding";
 
-.is-two-thirds.column {
-	@include from($tablet) {
-		padding: $column-gap * 2;
-	}
-}
-
 .is-form-input-width {
 	width: $fun-min-width !important;
 	@include from($tablet) {
@@ -190,23 +184,6 @@ h1.icon-title svg {
 // These styles can't be put in the components until we figure out a way to use "@include from()" inside the components
 // without including this whole file
 
-// Headline
-.intro-content {
-	.is-two-thirds.column {
-		margin: 18px 0;
-		@include from($tablet) {
-			margin: 0px -28px;
-		}
-	}
-
-	.is-full.column {
-		margin: 18px 0;
-		@include from($tablet) {
-			margin: 18px 0;
-		}
-	}
-}
-
 // AmountSelection
 .amount {
 	&-wrapper {
@@ -358,3 +335,7 @@ h1.icon-title svg {
 
 // New style guide
 @import "components/form_field";
+
+// C23_WMDE_Desktop_DE_06 overrides
+@import '@src/scss/settings/fonts';
+@import "C23_WMDE_Desktop_DE_06";

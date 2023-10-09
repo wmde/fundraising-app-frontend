@@ -147,6 +147,7 @@ describe( 'AddressForms.vue', () => {
 		await store.dispatch( action( NS_ADDRESS, initializeAddress ), initialData );
 		wrapper = mount( AddressForms, {
 			props: {
+				addressType: AddressTypeModel.PERSON,
 				validateAddressUrl: 'validate-address',
 				countries: countries,
 				addressValidationPatterns: addressValidationPatterns,

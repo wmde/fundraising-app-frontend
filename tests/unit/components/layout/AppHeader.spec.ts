@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import AppHeader from '@src/components/layout/AppHeader.vue';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 describe( 'AppHeader.vue', () => {
 	it.each( [
@@ -14,6 +15,11 @@ describe( 'AppHeader.vue', () => {
 			props: {
 				assetsPath: '',
 				pageIdentifier,
+			},
+			global: {
+				provide: {
+					[ QUERY_STRING_INJECTION_KEY ]: '',
+				},
 			},
 		} );
 

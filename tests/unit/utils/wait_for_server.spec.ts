@@ -1,4 +1,4 @@
-import { ValidationState, waitForServerValidationToFinish } from '@src/wait_for_server_validation';
+import { ValidationState, waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { createStore } from 'vuex';
 
 describe( 'waitForServerValidationToFinish', () => {

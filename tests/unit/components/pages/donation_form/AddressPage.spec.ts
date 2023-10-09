@@ -9,7 +9,7 @@ import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { initializeAddress, setAddressType } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import AddressType from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
-import { createFeatureToggle } from '@src/createFeatureToggle';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { Store } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
@@ -63,7 +63,7 @@ describe( 'AddressPage.vue', () => {
 					[ StoreKey as symbol ]: store,
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( { activeFeatures: [ 'campaigns.address_type_steps.preselect' ] } ),
+					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
 				},
 			},
 		} );

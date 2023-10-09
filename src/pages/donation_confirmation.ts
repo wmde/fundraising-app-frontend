@@ -4,7 +4,7 @@ import { createStore } from '@src/store/donor_update_store';
 
 import DonorResource from '@src/api/DonorResource';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
-import PageDataInitializer from '@src/page_data_initializer';
+import PageDataInitializer from '@src/util/page_data_initializer';
 import { Address } from '@src/view_models/Address';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Country } from '@src/view_models/Country';
@@ -15,12 +15,13 @@ import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { clearPersistentData } from '@src/store/create_data_persister';
-import { createFeatureToggle } from '@src/createFeatureToggle';
 import { initializeAddress } from '@src/store/address/actionTypes';
-import { trackGoal } from '@src/tracking';
+import { trackGoal } from '@src/util/tracking';
 
 import App from '@src/components/App.vue';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
+import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },
@@ -38,6 +39,7 @@ const LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_applica
 const pageData = new PageDataInitializer<DonationConfirmationModel>( '#appdata' );
 const store = createStore();
 const address = pageData.applicationVars.address;
+const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
@@ -61,9 +63,11 @@ store.dispatch(
 		],
 	}
 ).then( () => {
-	const app = createVueApp( App, pageData.messages, {
+	const app = createVueApp( App, pageData.messages, featureFetcher, {
 		isFullWidth: true,
+		usesContentCards: true,
 		assetsPath: pageData.assetsPath,
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: DonationConfirmation,
 		pageProps: {
@@ -81,6 +85,5 @@ store.dispatch(
 		},
 	} );
 	app.use( store );
-	app.component( 'FeatureToggle', createFeatureToggle( { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } ) );
 	app.mount( '#app' );
 } );

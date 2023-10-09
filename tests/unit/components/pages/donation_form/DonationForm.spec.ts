@@ -2,7 +2,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import DonationForm from '@src/components/pages/DonationForm.vue';
 import countries from '@src/../tests/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
-import { createFeatureToggle } from '@src/createFeatureToggle';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
 
 declare global {
 	namespace NodeJS {
@@ -45,7 +45,7 @@ describe( 'DonationForm.vue', () => {
 					AddressPage,
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( { activeFeatures: [ 'campaigns.address_pages.legacy' ] } ),
+					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
 				},
 			},
 		} );

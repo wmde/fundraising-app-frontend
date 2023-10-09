@@ -30,4 +30,8 @@
 		font-weight: bold;
 		line-height: 1;
 	}
+
+	&-intro {
+		margin: -( map.get( units.$spacing, 'xx-small' ) ) 0 map.get( units.$spacing, 'xx-small' );
+	}
 }

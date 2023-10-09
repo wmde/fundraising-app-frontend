@@ -4,18 +4,21 @@ import { createStore } from '@src/store/membership_store';
 
 import FilteredUrlMembershipValues from '@src/util/FilteredUrlMembershipValues';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
-import PageDataInitializer from '@src/page_data_initializer';
+import PageDataInitializer from '@src/util/page_data_initializer';
 import persistenceItems from '@src/store/data_persistence/membership_application';
 import { AddressValidation } from '@src/view_models/Validation';
-import { ApiCityAutocompleteResource } from '@src/CityAutocompleteResource';
+import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import { Country } from '@src/view_models/Country';
 import { InitialMembershipData } from '@src/view_models/Address';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { Salutation } from '@src/view_models/Salutation';
 import { action } from '@src/store/util';
 import { createDataPersister } from '@src/store/create_data_persister';
-import { createFeatureToggle } from '@src/createFeatureToggle';
-import { createInitialBankDataValues, createInitialMembershipAddressValues, createInitialMembershipFeeValues } from '@src/store/dataInitializers';
+import {
+	createInitialBankDataValues,
+	createInitialMembershipAddressValues,
+	createInitialMembershipFeeValues,
+} from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
 import { initializeAddress } from '@src/store/membership_address/actionTypes';
 import { initializeBankData } from '@src/store/bankdata/actionTypes';
@@ -23,6 +26,8 @@ import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 
 import MembershipForm from '@src/components/pages/MembershipForm.vue';
 import App from '@src/components/App.vue';
+import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface MembershipAmountModel {
 	presetAmounts: Array<string>,
@@ -44,6 +49,7 @@ const FORM_NAMESPACE = 'membership_application';
 const pageData = new PageDataInitializer<MembershipAmountModel>( '#appdata' );
 const dataPersister = createDataPersister( new LocalStorageRepository(), FORM_NAMESPACE, pageData.applicationVars.userDataKey );
 const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
+const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
 dataPersister.initialize( persistenceItems ).then( () => {
 
@@ -78,8 +84,9 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			createInitialBankDataValues( initialBankAccountData ),
 		),
 	] ).then( () => {
-		const app = createVueApp( App, pageData.messages, {
+		const app = createVueApp( App, pageData.messages, featureFetcher, {
 			assetsPath: pageData.assetsPath,
+			bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 			pageIdentifier: PAGE_IDENTIFIER,
 			page: MembershipForm,
 			pageProps: {
@@ -100,7 +107,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 		} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
 		app.use( store );
-		app.component( 'FeatureToggle', createFeatureToggle( { activeFeatures: [ ...pageData.selectedBuckets, ...pageData.activeFeatures ] } ) );
 		app.mount( '#app' );
 	} );
 } );

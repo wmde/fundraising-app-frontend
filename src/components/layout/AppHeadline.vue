@@ -1,7 +1,7 @@
 <template>
-	<div class="columns intro-content">
-		<div v-bind:class="[isFullWidth ? 'is-full' : 'is-two-thirds', 'column' ]">
-			<span>{{ $t('header_headline_text') }}</span>
+	<div class="app-headline" :class="{ 'full-width': isFullWidth }">
+		<div class="app-headline-text">
+			{{ $t('header_headline_text') }}
 		</div>
 	</div>
 </template>
@@ -15,3 +15,29 @@ interface Props {
 defineProps<Props>();
 
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/global';
+@use '@src/scss/settings/breakpoints';
+@use 'sass:map';
+
+.app-headline {
+
+	@include breakpoints.tablet-up {
+		padding-right: global.$sidebar-width;
+
+		&.full-width {
+			padding-right: 0;
+		}
+	}
+
+	&-text {
+		padding: map.get( units.$spacing, 'small' );
+
+		@include breakpoints.tablet-up {
+			padding: map.get( units.$spacing, 'small' ) 0;
+		}
+	}
+}
+</style>

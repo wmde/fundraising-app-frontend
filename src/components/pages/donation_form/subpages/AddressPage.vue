@@ -1,13 +1,27 @@
 <template>
 	<div class="address-page">
-		<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
-		<PaymentSummary
-			v-if="paymentWasInitialized"
-			:amount="paymentSummary.amount"
-			:payment-type="paymentSummary.paymentType"
-			:interval="paymentSummary.interval"
-			@previous-page="previousPage">
-		</PaymentSummary>
+		<FeatureToggle default-template="campaigns.new_design.legacy">
+			<template #campaigns.new_design.legacy>
+				<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
+				<PaymentSummary
+					v-if="paymentWasInitialized"
+					:amount="paymentSummary.amount"
+					:payment-type="paymentSummary.paymentType"
+					:interval="paymentSummary.interval"
+					@previous-page="previousPage">
+				</PaymentSummary>
+			</template>
+			<template #campaigns.new_design.new>
+				<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
+				<PaymentSummary
+					v-if="paymentWasInitialized"
+					:amount="paymentSummary.amount"
+					:payment-type="paymentSummary.paymentType"
+					:interval="paymentSummary.interval"
+					@previous-page="previousPage">
+				</PaymentSummary>
+			</template>
+		</FeatureToggle>
 
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<PaymentBankData
@@ -92,14 +106,14 @@
 			</template>
 
 		</FormSummary>
-		<form action="/donation/add" method="post" ref="submitValuesForm">
+		<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm">
 			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, inject } from 'vue';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
@@ -118,11 +132,12 @@ import { Salutation } from '@src/view_models/Salutation';
 import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { injectStrict } from '@src/util/injectStrict';
-import { trackDynamicForm } from '@src/tracking';
+import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/useAddressFormEventHandlers';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
 	assetsPath: string;
@@ -140,6 +155,7 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'previous-page' ] );
 
+const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const isFullSelected = ref( false );
 const store = injectStrict( StoreKey );
 const setFullSelected = ( selected: boolean ) => {

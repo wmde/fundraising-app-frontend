@@ -1,9 +1,11 @@
 <template>
-	<div class="columns content-wrapper">
-		<div v-bind:class="[ isFullWidth ? 'column is-full' : 'is-two-thirds column has-background-bright' ]">
+	<div class="app-content">
+		<div class="app-content-main" :class="{ 'uses-cards': usesContentCards }">
 			<slot name="content"/>
 		</div>
-		<slot v-if="!isFullWidth" name="sidebar"/>
+		<aside v-if="!isFullWidth" class="app-content-sidebar">
+			<slot name="sidebar"/>
+		</aside>
 	</div>
 </template>
 
@@ -11,6 +13,7 @@
 
 interface Props {
 	isFullWidth: boolean,
+	usesContentCards: boolean,
 }
 
 defineProps<Props>();
@@ -18,7 +21,45 @@ defineProps<Props>();
 </script>
 
 <style lang="scss">
-.columns.content-wrapper {
-	margin: 0 -12px;
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/global';
+@use '@src/scss/settings/colors';
+@use '@src/scss/settings/breakpoints';
+@use 'sass:map';
+
+.app-content {
+	display: flex;
+	flex-direction: column;
+
+	@include breakpoints.tablet-up {
+		flex-direction: row;
+	}
+
+	&-main,
+	&-sidebar {
+		margin-bottom: map.get( units.$spacing, 'small' );
+	}
+
+	&-main {
+		flex: 1 1 auto;
+		background: colors.$white;
+		padding: map.get( units.$spacing, 'small' );
+
+		@include breakpoints.tablet-up {
+			padding: map.get( units.$spacing, 'large' );
+		}
+
+		&.uses-cards {
+			background: transparent;
+			padding: map.get( units.$spacing, 'small' ) 0;
+		}
+	}
+
+	&-sidebar {
+		@include breakpoints.tablet-up {
+			flex: 0 0 global.$sidebar-width;
+			width: global.$sidebar-width;
+		}
+	}
 }
 </style>

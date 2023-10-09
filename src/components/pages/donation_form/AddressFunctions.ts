@@ -8,7 +8,7 @@ import {
 } from '@src/store/address/actionTypes';
 import { NS_ADDRESS } from '@src/store/namespaces';
 import { action } from '@src/store/util';
-import { camelizeName } from '@src/camlize_name';
+import { camelizeName } from '@src/util/camlize_name';
 
 interface AddressValidationPatterns {
 	salutation: string,

@@ -1,12 +1,11 @@
 <template>
-	<div class="payment-summary-banner has-outside-border has-margin-top-0 has-margin-bottom-18">
-		<p v-html="getSummary()"></p>
-		<FunButton
-			@click="$emit( 'previous-page' )"
-			class="button is-primary is-low is-outlined"
-		>
-			{{ $t('donation_form_section_back') }}
-		</FunButton>
+	<div class="payment-summary">
+		<div class="payment-summary-text">
+			<p v-html="getSummary()"/>
+		</div>
+		<div class="payment-summary-link">
+			<a href="#" @click.prevent="$emit( 'previous-page' )">{{ $t('donation_form_section_back') }}</a>
+		</div>
 	</div>
 </template>
 
@@ -28,3 +27,33 @@ export default defineComponent( {
 	},
 } );
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/colors';
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/breakpoints';
+@use 'sass:map';
+
+.payment-summary {
+	display: flex;
+	align-items: center;
+	border: 2px solid colors.$gray-light;
+	padding: map.get( units.$spacing, 'small' );
+	margin: 0 0 map.get( units.$spacing, 'large' );
+
+	@include breakpoints.tablet-up {
+		margin: 0 ( -( map.get( units.$spacing, 'xx-small' ) ) ) map.get( units.$spacing, 'large' );
+	}
+
+	&-text {
+		flex: 1 1 auto;
+		padding-right: map.get( units.$spacing, 'small' );
+	}
+
+	&-link {
+		flex: 0 0 auto;
+		text-align: right;
+		font-weight: bold;
+	}
+}
+</style>

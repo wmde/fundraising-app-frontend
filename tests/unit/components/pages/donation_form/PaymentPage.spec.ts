@@ -5,15 +5,16 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { Store } from 'vuex';
 import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
 import { createStore } from '@src/store/donation_store';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
 
-jest.mock( '@src/tracking', () => {
+jest.mock( '@src/util/tracking', () => {
 	return {
 		trackFormSubmission: jest.fn(),
 		trackDynamicForm: jest.fn(),
 	};
 } );
 
-jest.mock( '@src/scroll_to_first_error', () => {
+jest.mock( '@src/util/scroll_to_first_error', () => {
 	return jest.fn();
 } );
 
@@ -45,6 +46,9 @@ describe( 'PaymentPage.vue', () => {
 				stubs: {
 					Payment: { template: '<div class="i-am-payment" />' },
 				},
+			},
+			components: {
+				FeatureToggle: createFeatureToggle( [] ),
 			},
 		} );
 	};
