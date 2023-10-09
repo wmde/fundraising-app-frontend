@@ -5,6 +5,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { Store } from 'vuex';
 import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
 import { createStore } from '@src/store/donation_store';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
 
 jest.mock( '@src/util/tracking', () => {
 	return {
@@ -45,6 +46,9 @@ describe( 'PaymentPage.vue', () => {
 				stubs: {
 					Payment: { template: '<div class="i-am-payment" />' },
 				},
+			},
+			components: {
+				FeatureToggle: createFeatureToggle( [] ),
 			},
 		} );
 	};
