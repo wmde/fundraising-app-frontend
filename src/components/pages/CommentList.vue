@@ -13,11 +13,11 @@
 			</div>
 		</div>
 		<div v-if="!isLoading" class="page-selector has-margin-top-36 has-margin-bottom-18">
-			<a class="button mdi mdi-arrow-left" :disabled="currentPage === 1" v-on:click="previousPage"></a>
+			<button class="button mdi mdi-arrow-left" :disabled="currentPage === 1" v-on:click="previousPage"></button>
 			<FunSelect class="is-form-input" v-model="currentPage" name="page" select-id="page">
 				<option v-for="page in pageCount" :value="page"> {{ page }}</option>
 			</FunSelect>
-			<a class="button mdi mdi-arrow-right" :disabled="currentPage === pageCount" v-on:click="nextPage"></a>
+			<button class="button mdi mdi-arrow-right" :disabled="currentPage === pageCount" v-on:click="nextPage"></button>
 		</div>
 	</div>
 </template>
@@ -87,7 +87,7 @@ export default defineComponent( {
 	.page-selector {
 		position: relative;
 		height: 50px;
-		> a {
+		> button {
 			position: absolute;
 			width: 50px;
 			height: 48px;

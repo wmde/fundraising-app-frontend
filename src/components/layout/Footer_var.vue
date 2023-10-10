@@ -54,12 +54,12 @@ const footerMenu = [
 .footer-var {
 	display: flex;
 	flex-direction: column;
-	padding: map.get( units.$spacing, 'small' ) 0;
+	padding: map.get(units.$spacing, 'small') 0 88px;
 
 	@include breakpoints.tablet-up {
 		flex-direction: row;
 		flex-wrap: nowrap;
-		padding: map.get( units.$spacing, 'large' ) 0;
+		padding: map.get( units.$spacing, 'large' ) 0 88px;
 	}
 
 	&-wrapper {

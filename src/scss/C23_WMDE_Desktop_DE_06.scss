@@ -38,7 +38,7 @@ changes must be updated in the settings files before this file is deleted.
 		padding: map.get( units.$spacing, 'large' ) 0;
 	}
 
-	a:not( .navigation-item ):not( .footer-var-list a ):not( .dropdown-menu a ) {
+	a:not( .navigation-item ):not( .footer-var-list a ):not( .dropdown-menu a ):not( .mobile-call-to-action ) {
 		color: $primary;
 
 		&:hover,
