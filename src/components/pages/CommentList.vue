@@ -22,60 +22,61 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import axios from 'axios';
 import { commentModelsFromObject } from '@src/view_models/Comment';
 import FunSelect from '@src/components/shared/legacy_form_inputs/FunSelect.vue';
+import { onMounted, ref } from 'vue';
+import { Comment } from '@src/view_models/Comment';
 
 const PAGE_SIZE = 10;
 
-export default defineComponent( {
-	name: 'CommentList',
-	components: { FunSelect },
-	data() {
-		return {
-			comments: [] as any,
-			pageContent: [],
-			pageCount: 0,
-			currentPage: 1,
-			isLoading: true,
-		};
-	},
-	mounted() {
-		axios.get( '/list-comments.json?n=100&anon=1' ).then( ( response ) => {
-			this.comments = commentModelsFromObject( response.data );
-			this.pageCount = Math.ceil( this.comments.length / PAGE_SIZE );
-			this.switchPage();
-			this.isLoading = false;
-		}, () => {
-			this.isLoading = false;
-		} );
-	},
-	methods: {
-		switchPage() {
-			this.pageContent = this.comments.slice( ( ( this.currentPage - 1 ) * PAGE_SIZE ), ( this.currentPage * PAGE_SIZE ) - 1 );
-		},
-		nextPage() {
-			if ( this.currentPage < this.pageCount ) {
-				this.currentPage += 1;
-				this.switchPage();
-			}
-		},
-		previousPage() {
-			if ( this.currentPage > 1 ) {
-				this.currentPage -= 1;
-				this.switchPage();
-			}
-		},
-		headlineVars( comment: any ) {
-			return {
-				formattedAmount: this.$n( comment.amount, { key: 'currency' } ),
-				donor: comment.donor,
-			};
-		},
-	},
+const comments = ref<Comment[]>( [] );
+let pageContent = ref<Comment[]>( [] );
+let pageCount = ref( 0 );
+let currentPage = ref( 1 );
+const isLoading = ref( true );
+
+const switchPage = () => {
+	pageContent.value = comments.value.slice(
+		( currentPage.value - 1 ) * PAGE_SIZE,
+		( currentPage.value * PAGE_SIZE ) - 1
+	);
+};
+
+const nextPage = () => {
+	if ( currentPage.value < pageCount.value ) {
+		currentPage.value += 1;
+		switchPage();
+	}
+};
+
+const previousPage = () => {
+	if ( currentPage.value > 1 ) {
+		currentPage.value -= 1;
+		switchPage();
+	}
+};
+
+const headlineVars = ( comment ) => ( {
+	formattedAmount: $n( comment.amount, { key: 'currency' } ),
+	donor: comment.donor,
 } );
+
+onMounted( () => {
+	axios
+		.get( '/list-comments.json?n=100&anon=1' )
+		.then( ( response ) => {
+			comments.value = commentModelsFromObject( response.data );
+			pageCount.value = Math.ceil( comments.value.length / PAGE_SIZE );
+			switchPage();
+			isLoading.value = false;
+		} )
+		.catch( () => {
+			isLoading.value = false;
+		} );
+} );
+
 </script>
 
 <style lang="scss">

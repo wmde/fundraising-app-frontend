@@ -6,6 +6,7 @@ describe( 'Supporters.vue', () => {
 	const getWrapper = (): VueWrapper<any> => {
 		return mount( Supporters, {
 			props: {
+				pageTitle: 'Hall of fame',
 				supporters: [
 					{
 						name: 'Test',
@@ -22,20 +23,15 @@ describe( 'Supporters.vue', () => {
 		} );
 	};
 
-	it( 'reacts to emitted supporter-opened event by setting the visible supporter ID', async () => {
+	it( 'reacts to click events by showing and hiding supporter content', async () => {
 		const wrapper = getWrapper();
 
 		await wrapper.find( '.accordion-item:nth-of-type(2) > div' ).trigger( 'click' );
 
-		expect( wrapper.vm.$data.visibleSupporterId ).toBe( 1 );
-	} );
+		expect( wrapper.find( '.accordion-item:nth-of-type(2) > div > .accordion-heading' ).exists() ).toBe( false );
 
-	it( 'reacts to emitted supporter-closed event by setting the visible supporter ID to null', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.setData( { visibleSupporterId: 1 } );
 		await wrapper.find( '.accordion-item:nth-of-type(2) > div' ).trigger( 'click' );
 
-		expect( wrapper.vm.$data.visibleSupporterId ).toBeNull();
+		expect( wrapper.find( '.accordion-item:nth-of-type(2) > div > .accordion-heading' ).exists() ).toBe( true );
 	} );
 } );

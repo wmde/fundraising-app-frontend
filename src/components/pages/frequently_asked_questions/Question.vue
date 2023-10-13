@@ -24,7 +24,7 @@ import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString'
 import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
 
 interface Props {
-  content: QuestionModel
+	content: QuestionModel
 }
 
 defineProps<Props>();
