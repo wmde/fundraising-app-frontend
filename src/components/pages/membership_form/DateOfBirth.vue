@@ -17,6 +17,9 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @deprecated not used, TextField is used instead
+ */
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { AddressFormData } from '@src/view_models/Address';
 
