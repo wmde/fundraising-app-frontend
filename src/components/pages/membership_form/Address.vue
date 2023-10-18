@@ -29,7 +29,7 @@
 				</CheckboxSingleFormInput>
 			</div>
 
-			<Incentives
+			<IncentivesField
 				:message="$t( 'membership_form_incentive' )"
 				:incentive-choices="incentivesFromStore"
 				:incentive-form-field-options="incentivesAsOptions"
@@ -80,7 +80,7 @@ import { Country } from '@src/view_models/Country';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import Incentives from '@src/components/pages/membership_form/Incentives.vue';
+import IncentivesField from '@src/components/shared/form_fields/IncentivesField.vue';
 import { useAddressFunctions } from '@src/components/pages/membership_form/AddressFunctions';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
