@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import Incentives from '@src/components/pages/membership_form/Incentives.vue';
+import Incentives from '@src/components/shared/form_fields/Incentives.vue';
 
 describe( 'Incentives', () => {
 
