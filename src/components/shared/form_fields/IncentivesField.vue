@@ -21,7 +21,6 @@ import CheckboxMultipleFormInput from '@src/components/shared/form_elements/Chec
 import { FormOption } from '@src/components/shared/form_fields/FormOption';
 
 interface Props {
-	message: String,
 	incentiveChoices: string[],
 	incentiveFormFieldOptions: FormOption[];
 	modelValue: string[];

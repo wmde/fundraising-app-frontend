@@ -30,7 +30,6 @@
 			</div>
 
 			<IncentivesField
-				:message="$t( 'membership_form_incentive' )"
 				:incentive-choices="incentivesFromStore"
 				:incentive-form-field-options="incentivesAsOptions"
 				v-model="incentivesModel"

@@ -14,7 +14,7 @@ import each from 'jest-each';
 
 const store = createStore();
 
-const EXAMPLE_SALUTATIONS = [
+export const EXAMPLE_SALUTATIONS = [
 	{
 		label: 'Mr',
 		value: 'Herr',
