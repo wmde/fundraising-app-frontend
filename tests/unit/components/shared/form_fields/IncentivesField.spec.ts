@@ -6,7 +6,6 @@ describe( 'IncentivesField', () => {
 	it( 'incentive checkbox is checked when set on initial render', async () => {
 		const wrapper = mount( IncentivesField, {
 			props: {
-				incentiveChoices: [ 'tote_bag' ],
 				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label' } ],
 				modelValue: [ 'tote_bag' ],
 			},
@@ -32,17 +31,17 @@ describe( 'IncentivesField', () => {
 	it( 'emits toggle event on change', async () => {
 		const wrapper = mount( IncentivesField, {
 			props: {
-				incentiveChoices: [ 'tote_bag' ],
 				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label' } ],
-				modelValue: [ 'tote_bag' ],
+				modelValue: [],
 			},
 		} );
 		const event = 'update:modelValue';
 		const checkBox = wrapper.find( '.form-field-incentives input' );
 
-		await checkBox.setValue( false );
-		//expect( wrapper.emitted( event )![ 0 ] ).not.toBeUndefined();
+		await checkBox.setValue( true );
+
+		expect( wrapper.emitted( event )![ 0 ] ).not.toBeUndefined();
 		expect( wrapper.emitted( event ).length ).toStrictEqual( 1 );
-		expect( wrapper.emitted( event )![ 0 ] ).toStrictEqual( false );
+		expect( wrapper.emitted( event )![ 0 ][ 0 ] ).toStrictEqual( [ 'tote_bag' ] );
 	} );
 } );

@@ -3,7 +3,7 @@ import Address from '@src/components/pages/membership_form/Address.vue';
 import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { initializeAddress, setAddressField, setReceiptChoice } from '@src/store/membership_address/actionTypes';
+import { initializeAddress, setAddressField, setReceiptChoice, setAddressType, setIncentives } from '@src/store/membership_address/actionTypes';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -16,8 +16,6 @@ import CheckboxSingleFormInput from '@src/components/shared/form_elements/Checkb
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import { EXAMPLE_SALUTATIONS } from '@test/unit/components/pages/donation_form/AddressForms.spec';
 import { InitialMembershipAddressValues } from '@src/view_models/Address';
-import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
-import { FieldInitialization } from '@src/view_models/FieldInitialization';
 
 describe( 'Address.vue', () => {
 
@@ -53,6 +51,16 @@ describe( 'Address.vue', () => {
 		expect( wrapper.findComponent( EmailField ).exists() ).toBe( true );
 	} );
 
+	it( 'shows company related input fields when address type COMPANY is set in the store', async () => {
+		const { wrapper, store } = getWrapper();
+
+		expect( wrapper.find( '#company-name' ).exists() ).toBe( false );
+
+		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), AddressTypeModel.COMPANY );
+
+		expect( wrapper.find( '#company-name' ).exists() ).toBe( true );
+	} );
+
 	it( 'sets address field in store when it receives field-changed event', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
@@ -69,16 +77,30 @@ describe( 'Address.vue', () => {
 		} );
 	} );
 
-	it( 'sets receipt preference in store when it receives receipt-changed event', () => {
+	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
 		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setReceiptChoice );
 		const expectedPayload = false;
 
+		// assumes the receipt checkbox is the first checkbox on the address component
 		expect( wrapper.findComponent( CheckboxSingleFormInput ).exists() ).toBe( true );
-		wrapper.findComponent( CheckboxSingleFormInput ).setValue( false );
+		await wrapper.findComponent( CheckboxSingleFormInput ).setValue( false );
 
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+	} );
+
+	it( 'sets incentive preference in store when it receives field-change event', async () => {
+		const { wrapper, store } = getWrapper();
+		store.dispatch = jest.fn();
+		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setIncentives );
+		const expectedPayload = [ 'tote_bag' ];
+
+		const inputElement = wrapper.findComponent( IncentivesField ).find<HTMLInputElement>( 'input' );
+		await inputElement.setValue( true );
+
+		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+
 	} );
 
 	it( 'sets email in store when it receives email event', async () => {
@@ -97,9 +119,8 @@ describe( 'Address.vue', () => {
 		} );
 	} );
 
-	//TODO
 	it( 'populates form data and validates if initial data is available', async () => {
-		const { wrapper, store } = getWrapper();
+		const store = createStore();
 
 		const firstName = { name: 'firstName', value: 'Spooky', validity: Validity.RESTORED };
 		const lastName = { name: 'lastName', value: 'Magoo', validity: Validity.RESTORED };
@@ -112,8 +133,25 @@ describe( 'Address.vue', () => {
 		};
 		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), initialMembershipAddressValues );
 
-		//expect( wrapper.find( '#first-name' ).element.value ).toBe( firstName.value );
-		//expect( wrapper.find( '#last-name' ).element.value ).toBe( lastName.value );
+		const localWrapper = mount( Address, {
+			props: {
+				validateEmailUrl: 'validate-email',
+				salutations: EXAMPLE_SALUTATIONS,
+				dateOfBirthValidationPattern: dateOfBirthValidationPattern,
+				validateAddressUrl: 'validate-address',
+				countries: countries,
+				addressValidationPatterns: addressValidationPatterns,
+			},
+			global: {
+				plugins: [ store ],
+				provide: {
+					[ StoreKeyMembership as symbol ]: store,
+				},
+			},
+		} );
+
+		expect( localWrapper.find<HTMLInputElement>( '#first-name' ).element.value ).toBe( firstName.value );
+		expect( localWrapper.find<HTMLInputElement>( '#last-name' ).element.value ).toBe( lastName.value );
 		expect( store.state.membership_address.validity.firstName ).not.toBe( Validity.RESTORED );
 		expect( store.state.membership_address.validity.lastName ).not.toBe( Validity.RESTORED );
 	} );

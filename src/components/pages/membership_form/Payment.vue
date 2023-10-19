@@ -37,7 +37,7 @@
 			/>
 		</FormSection>
 
-		<payment-bank-data
+		<PaymentBankData
 			v-if="paymentType === 'BEZ'"
 			class="has-margin-top-36"
 			:validateBankDataUrl="validateBankDataUrl.toString()"
@@ -47,17 +47,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import { setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
+import { markEmptyFeeAsInvalid, setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
 import { useI18n } from 'vue-i18n';
 import { usePaymentFieldModel } from '@src/components/pages/membership_form/usePaymentFieldModel';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import { FormOption } from '@src/components/shared/form_fields/FormOption';
-import { NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
+import { action } from '@src/store/util';
 
 interface Props {
 	validateFeeUrl: string,
@@ -74,13 +75,14 @@ const { t } = useI18n();
 
 const fee = usePaymentFieldModel( store, 'fee', setFee, props.validateFeeUrl );
 const interval = usePaymentFieldModel( store, 'interval', setInterval, props.validateFeeUrl );
-const paymentType = usePaymentFieldModel( store, 'paymentType', setType, props.validateFeeUrl );
+const paymentType = usePaymentFieldModel( store, 'type', setType, props.validateFeeUrl );
 
 const paymentTypeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/typeIsValid' ] );
 const feeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/feeIsValid' ] );
 
-const minimumAmount = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/minimumAmount' ]() );
-
+const minimumAmount = computed(
+	() => store.getters[ NS_MEMBERSHIP_FEE + '/minimumAmount' ]( store.state[ NS_MEMBERSHIP_ADDRESS ].addressType )
+);
 const getAmountTitle = computed( () => {
 	if ( interval.value === '' ) {
 		return t( 'membership_form_payment_amount_title' );
@@ -100,6 +102,13 @@ const paymentTypesAsOptions = computed<FormOption[]>( () => {
 		( paymentTypeValue: string ) => (
 			{ value: paymentTypeValue, label: t( paymentTypeValue ) }
 		) );
+} );
+
+watch( minimumAmount, async ( newMinimumAmount ) => {
+	if ( fee.value < newMinimumAmount ) {
+		await store.dispatch( action( NS_MEMBERSHIP_FEE, setFee ), { selectedValue: '', validateFeeUrl: props.validateFeeUrl } );
+		await store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeAsInvalid ) );
+	}
 } );
 
 </script>

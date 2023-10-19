@@ -59,6 +59,6 @@ export const mutations: MutationTree<MembershipFee> = {
 		state.values.type = type;
 	},
 	[ SET_IS_VALIDATING ]( state: MembershipFee, isValidating ) {
-		state.values.isValidating = isValidating;
+		state.isValidating = isValidating;
 	},
 };

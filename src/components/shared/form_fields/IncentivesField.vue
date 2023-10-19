@@ -21,7 +21,6 @@ import CheckboxMultipleFormInput from '@src/components/shared/form_elements/Chec
 import { FormOption } from '@src/components/shared/form_fields/FormOption';
 
 interface Props {
-	incentiveChoices: string[],
 	incentiveFormFieldOptions: FormOption[];
 	modelValue: string[];
 }
@@ -30,7 +29,7 @@ const props = defineProps<Props>();
 
 const emit = defineEmits( [ 'update:modelValue' ] );
 
-const fieldModel = useFieldModel<string[]>( () => props.modelValue, props.incentiveChoices );
+const fieldModel = useFieldModel<string[]>( () => props.modelValue, props.modelValue );
 
 const onUpdateModel = ( newValue: string[] ): void => {
 	emit( 'update:modelValue', newValue );

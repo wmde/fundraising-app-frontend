@@ -3,7 +3,13 @@
 		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
 		<membership-type v-if="showMembershipTypeOption"/>
 		<div class="has-margin-top-36">
-			<AddressType :initial-value="addressTypeFromStore" v-on:address-type="sendAddressTypeToStore( $event )" />
+			<AddressType
+				@field-changed="setAddressType( $event )"
+				:disabledAddressTypes="disabledAddressTypes"
+				:is-direct-debit="isDirectDebitPayment"
+				:initial-address-type="addressType"
+				:address-type-is-invalid="false"
+			/>
 		</div>
 		<Payment
 			class="has-margin-top-36"
@@ -39,9 +45,9 @@ import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@s
 import { useStore } from 'vuex';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { setAddressType } from '@src/store/membership_address/actionTypes';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
+import { trackDynamicForm } from '@src/util/tracking';
+import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
 
 interface Props {
 	validateFeeUrl: String,
@@ -57,14 +63,20 @@ const props = defineProps<Props>();
 const emit = defineEmits( [ 'next-page' ] );
 const store = useStore();
 
-const addressTypeFromStore = computed( () => {
-	return store.getters[ NS_MEMBERSHIP_ADDRESS + '/addressType' ];
-} );
+onMounted( trackDynamicForm );
+
+const {
+	disabledAddressTypes,
+	addressType,
+	setAddressType,
+} = useAddressTypeFunctions( store );
+
+const isDirectDebitPayment = computed( (): boolean => store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' );
 
 const next = async (): Promise<any> => {
 	waitForServerValidationToFinish( store ).then( () => {
 		const storeCleanupActions = [ store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeValuesAsInvalid ) ) ];
-		if ( store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' ) {
+		if ( isDirectDebitPayment ) {
 			storeCleanupActions.push( store.dispatch( action( NS_BANKDATA, markemptyBankDataValuesAsInvalid ) ) );
 		}
 		return Promise.all( storeCleanupActions ).then( () => {
@@ -76,9 +88,5 @@ const next = async (): Promise<any> => {
 		} );
 	} );
 };
-
-function sendAddressTypeToStore( newAddressType: AddressTypeModel ): void {
-	store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), newAddressType );
-}
 
 </script>

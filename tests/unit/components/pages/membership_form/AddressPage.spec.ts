@@ -18,6 +18,7 @@ import { Salutation } from '@src/view_models/Salutation';
 import { dateOfBirthValidationPattern } from '@test/data/validation';
 import { initializeMembershipFee, setType } from '@src/store/membership_fee/actionTypes';
 import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
+import mockAxios from 'jest-mock-axios';
 
 const testCountry = {
 	countryCode: 'de',
@@ -68,54 +69,6 @@ describe( 'AddressPage.vue', () => {
 
 		return { wrapper, store };
 	};
-
-	const setPaymentType = ( store: Store<any>, paymentType: string ): Promise<any> => {
-		return store.dispatch( action( NS_MEMBERSHIP_FEE, setType ), { selectedValue: paymentType, validateFeeUrl: 'https://localhost:8082' } );
-	};
-
-	const setInitialValues = ( store: Store<any>, paymentType: string ): Promise<any> => {
-		const initialValues: InitialMembershipFeeValues = {
-			fee: '100',
-			interval: '1',
-			type: paymentType,
-			validateFeeUrl: 'https://localhost:8082',
-		};
-		return store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialValues );
-	};
-
-	it( 'shows bank data fields if payment type is direct debit', async () => {
-		const { wrapper, store } = getWrapper();
-
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
-
-		await setPaymentType( store, 'BEZ' );
-
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
-	} );
-
-	it( 'hides bank data fields if payment type is not direct debit', async () => {
-		const { wrapper, store } = getWrapper();
-
-		await setPaymentType( store, 'BEZ' );
-
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
-
-		await setPaymentType( store, 'UEB' );
-
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
-	} );
-
-	it( 'sets address type in store when it receives address-type event', () => {
-		const { wrapper, store } = getWrapper();
-
-		store.dispatch = jest.fn();
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setAddressType );
-		const expectedPayload = AddressTypeModel.COMPANY;
-
-		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.COMPANY );
-
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
-	} );
 
 	it( 'emits previous event', async () => {
 		const { wrapper } = getWrapper();

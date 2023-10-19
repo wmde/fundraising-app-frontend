@@ -6,7 +6,6 @@
 				:is="currentFormComponent"
 				v-on:next-page="changePageIndex( 1 )"
 				v-on:previous-page="changePageIndex( -1 )"
-				v-on:submit-membership="submitMembershipForm"
 				v-bind="currentProperties">
 			</component>
 		</keep-alive>
@@ -15,7 +14,6 @@
 
 <script setup lang="ts">
 import { Component, computed, ref, watch } from 'vue';
-import { trackFormSubmission } from '@src/util/tracking';
 import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
@@ -98,12 +96,6 @@ function changePageIndex( indexChange: number ): void {
 		currentPageIndex.value = newIndex;
 		scrollToTop();
 	}
-}
-
-function submitMembershipForm(): void {
-	const form = this.$refs.form as HTMLFormElement;
-	trackFormSubmission( form );
-	form.submit();
 }
 
 </script>

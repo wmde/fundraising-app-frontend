@@ -1,8 +1,7 @@
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { validateAddress, validateAddressType, validateEmail } from '@src/store/address/actionTypes';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { validateAddress, validateEmail } from '@src/store/address/actionTypes';
 import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { ComputedRef, ref, Ref } from 'vue';
@@ -24,14 +23,11 @@ export function useAddressFormEventHandlers(
 	isDirectDebit: ComputedRef<boolean>,
 	validateAddressUrl: string,
 	validateEmailUrl: string,
+	trackAddressForm: () => void,
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
-			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddressType ), {
-				type: store.state.membership_address.addressType,
-				disallowed: [ AddressTypeModel.UNSET ],
-			} ),
 			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddress ), validateAddressUrl ),
 			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateEmail ), validateEmailUrl ),
 		];
@@ -53,6 +49,7 @@ export function useAddressFormEventHandlers(
 			return;
 		}
 
+		trackAddressForm();
 		submitValuesForm.value.submit();
 	};
 
