@@ -129,7 +129,7 @@ import { useAddressFunctions } from '@src/components/pages/donation_form/Address
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressType } from '@src/components/pages/donation_form/DonationReceipt/useAddressType';
 import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
-import { useMailingListModel } from '@src/components/pages/donation_form/DonationReceipt/useMailingListModel';
+import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
