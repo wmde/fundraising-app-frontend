@@ -1,7 +1,7 @@
 <template>
 	<label
 		ref="labelRef"
-		class="radio"
+		class="checkbox"
 		:class="{ 'is-disabled': disabled }"
 		@click="focus"
 		@keydown.prevent.enter="click"

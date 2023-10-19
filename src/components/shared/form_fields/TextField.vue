@@ -1,5 +1,5 @@
 <template>
-	<div class="form-field form-field-text" :class="{ 'is-invalid': showError }">
+	<div class="form-field" :class="[ `form-field-${inputType}`, { 'is-invalid': showError } ]">
 		<label :for="inputId" class="form-field-label">
 			{{ label }} <em v-if="labelHelpText">{{ labelHelpText }}</em>
 		</label>

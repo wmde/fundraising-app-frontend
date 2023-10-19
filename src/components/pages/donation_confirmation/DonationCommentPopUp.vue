@@ -1,114 +1,126 @@
 <template>
-	<form id="laika-comment" name="laika-comment" v-on:submit.prevent="postComment" method="post" ref="form">
+	<form class="donation-comment" name="donation-comment" v-on:submit.prevent="postComment" method="post" ref="commentForm">
 		<input type="hidden" name="donationId" :value="donation.id"/>
 		<input type="hidden" name="updateToken" :value="donation.updateToken">
-		<input type="hidden" name="isAnonymous" value="1" />
 		<div v-if="commentHasBeenSubmitted">
 			<p v-html="$t( serverResponse )"></p>
-			<FunButton class="is-primary is-main is-outlined has-margin-top-18" @click="$emit( 'close' )">
+			<FormButton
+				button-type="button"
+				:is-outlined="true"
+				@click="$emit( 'close' )"
+			>
 				{{ $t( 'back_to_donation_summary' ) }}
-			</FunButton>
+			</FormButton>
 		</div>
 		<div v-else>
-			<p class="modal-card-title has-margin-bottom-18">{{ $t( 'donation_comment_popup_title' ) }}</p><br>
-			<p class="has-margin-bottom-18">{{ $t( 'donation_comment_popup_explanation' ) }}</p>
-			<div class="has-margin-bottom-18">
-				<label for="comment">{{ $t( 'donation_comment_popup_label' ) }}</label>
-				<TextInput input-id="comment" name="comment" input-type="textarea"/>
-				<p v-if="commentErrored" class="help is-danger"> {{ $t( 'donation_comment_popup_error' ) }}</p>
-			</div>
-			<div class="field has-margin-bottom-18" v-if="showPublishAuthor">
-				<FunCheckbox
-					id="isAnonymous"
-					name="isAnonymous"
-					native-value="0"
-					v-model="commentHasPublicAuthorName"
-				>
-					<span v-html="$t( 'donation_comment_popup_is_anon' )"></span>
-				</FunCheckbox>
-			</div>
-			<div class="field has-margin-bottom-18">
-				<FunCheckbox
-					id="public"
-					name="public"
-					native-value="1"
-					v-model="commentIsPublic"
-				>
-					{{ $t( 'donation_comment_popup_is_public' ) }}
-				</FunCheckbox>
-			</div>
-			<div class="columns">
-				<div class="column">
-					<FunButton class="is-primary is-main is-outlined level-item" @click="$emit( 'close' )">
+			<p>{{ $t( 'donation_comment_popup_title' ) }}</p><br>
+			<p>{{ $t( 'donation_comment_popup_explanation' ) }}</p>
+
+			<TextField
+				input-type="textarea"
+				v-model="comment"
+				name="comment"
+				input-id="comment"
+				placeholder=""
+				:label="$t( 'donation_comment_popup_label' )"
+				:error-message="$t( 'donation_comment_popup_error' )"
+				:show-error="commentErrored"
+			/>
+
+			<CheckboxField
+				v-if="showPublishAuthor"
+				input-id="withName"
+				name="withName"
+				v-model="commentHasPublicAuthorName"
+			>
+				<span v-html="$t( 'donation_comment_popup_is_anon' )"></span>
+			</CheckboxField>
+
+			<CheckboxField
+				input-id="isPublic"
+				name="isPublic"
+				v-model="commentIsPublic"
+			>
+				{{ $t( 'donation_comment_popup_is_public' ) }}
+			</CheckboxField>
+
+			<FormSummary :show-border="false">
+				<template #summary-buttons>
+					<FormButton
+						id="previous-btn"
+						:is-outlined="true"
+						@click="$emit( 'close' )"
+					>
 						{{ $t( 'donation_comment_popup_cancel' ) }}
-					</FunButton>
-				</div>
-				<div class="column">
-					<FunButton class="is-primary is-main level-item" button-type="submit">
+					</FormButton>
+					<FormButton
+						id="submit-btn"
+						button-type="submit"
+					>
 						{{ $t( 'donation_comment_popup_submit' ) }}
-					</FunButton>
-				</div>
-			</div>
+					</FormButton>
+				</template>
+			</FormSummary>
 		</div>
 	</form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
 import axios, { AxiosResponse } from 'axios';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Donation } from '@src/view_models/Donation';
-import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
-import FunCheckbox from '@src/components/shared/legacy_form_inputs/FunCheckbox.vue';
-import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import FormSummary from '@src/components/shared/FormSummary.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
+import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 
-export default defineComponent( {
-	name: 'DonationCommentPopUp',
-	components: { FunCheckbox, FunButton, TextInput },
-	data: function () {
-		return {
-			commentIsPublic: false,
-			commentHasPublicAuthorName: false,
-			commentErrored: false,
-			commentHasBeenSubmitted: false,
-			serverResponse: '',
-		};
-	},
-	props: {
-		donation: Object as () => Donation,
-		addressType: String,
-		postCommentUrl: String,
-	},
-	computed: {
-		showPublishAuthor: {
-			get(): boolean {
-				return addressTypeFromName( this.$props.addressType ) !== AddressTypeModel.ANON;
-			},
-		},
-	},
-	mounted: function () {
-		trackDynamicForm();
-	},
-	methods: {
-		appendCampaignQueryParams,
-		postComment() {
-			let form = this.$refs.form as HTMLFormElement;
-			trackFormSubmission( form );
-			const jsonForm = new FormData( form );
-			axios.post( this.$props.postCommentUrl, jsonForm )
-				.then( ( validationResult: AxiosResponse<any> ) => {
-					if ( validationResult.data.status === 'OK' ) {
-						this.$data.commentErrored = false;
-						this.$data.commentHasBeenSubmitted = true;
-						this.$data.serverResponse = validationResult.data.message;
-						this.$emit( 'disable-comment-link' );
-					} else {
-						this.$data.commentErrored = true;
-					}
-				} );
-		},
-	},
-} );
+interface Props {
+	donation: Donation;
+	addressType: string;
+	postCommentUrl: string;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits( [ 'disable-comment-link' ] );
+
+const commentForm = ref<HTMLFormElement>( null );
+const comment = ref<string>( '' );
+const commentIsPublic = ref<boolean>( false );
+const commentHasPublicAuthorName = ref<boolean>( false );
+const commentErrored = ref<boolean>( false );
+const commentHasBeenSubmitted = ref<boolean>( false );
+const serverResponse = ref<string>( '' );
+
+const showPublishAuthor = computed<boolean>( () => addressTypeFromName( props.addressType ) !== AddressTypeModel.ANON );
+
+const postComment = (): void => {
+	trackFormSubmission( commentForm.value );
+	const jsonForm = new FormData( commentForm.value );
+	axios.post( props.postCommentUrl, jsonForm ).then( ( validationResult: AxiosResponse<any> ) => {
+		if ( validationResult.data.status === 'OK' ) {
+			commentErrored.value = false;
+			commentHasBeenSubmitted.value = true;
+			serverResponse.value = validationResult.data.message;
+			emit( 'disable-comment-link' );
+		} else {
+			commentErrored.value = true;
+		}
+	} );
+};
+
+onMounted( trackDynamicForm );
+
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use 'sass:map';
+
+.donation-comment {
+	p {
+		margin-bottom: map.get( units.$spacing, 'small' );
+	}
+}
+</style>

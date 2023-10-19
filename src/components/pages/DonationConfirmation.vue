@@ -55,8 +55,8 @@
 			/>
 		</ModalDialogue>
 
-		<ModalDialogue :visible="openCommentPopUp" @hide="openCommentPopUp = false">
-			<donation-comment-pop-up
+		<ModalDialogue :visible="openCommentPopUp" :title="$t( 'donation_comment_popup_title' )" @hide="openCommentPopUp = false">
+			<DonationCommentPopUp
 				:donation="donation"
 				:address-type="addressType"
 				:post-comment-url="postCommentUrl"

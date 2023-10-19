@@ -10,8 +10,9 @@ import {
 	emailBankTransferConfirmationData,
 	emailExportedPayPalConfirmationData,
 	payPalConfirmationData,
-} from '../../../../data/confirmationData';
-import { addressValidationPatterns } from '../../../../data/validation';
+} from '@test/data/confirmationData';
+import { addressValidationPatterns } from '@test/data/validation';
+import DonorResource from '@src/api/DonorResource';
 
 describe( 'DonationConfirmation.vue', () => {
 
@@ -20,10 +21,11 @@ describe( 'DonationConfirmation.vue', () => {
 			props: {
 				validateEmailUrl: '',
 				validateAddressUrl: '',
+				postCommentUrl: '',
 				hasErrored: false,
 				hasSucceeded: false,
 				addressValidationPatterns,
-				donorResource: {},
+				donorResource: {} as DonorResource,
 				...bankData,
 			},
 			global: {

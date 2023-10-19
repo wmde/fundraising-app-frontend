@@ -1,5 +1,5 @@
 <template>
-	<div class="form-summary">
+	<div class="form-summary" :class="{ 'form-summary-border': showBorder }">
 		<slot name="summary-content"/>
 		<div class="form-summary-buttons">
 			<slot name="summary-buttons"/>
@@ -7,6 +7,18 @@
 		<slot name="summary-notice"/>
 	</div>
 </template>
+
+<script setup lang="ts">
+
+interface Props {
+	showBorder?: boolean;
+}
+
+withDefaults( defineProps<Props>(), {
+	showBorder: true,
+} );
+
+</script>
 
 <style lang="scss">
 @use '@src/scss/settings/forms';
@@ -16,9 +28,12 @@
 @use 'sass:map';
 
 .form-summary {
-	border: 2px solid colors.$gray-light;
 	padding: map.get( units.$spacing, 'xx-small' );
 	margin: 0;
+
+	&-border {
+		border: 2px solid colors.$gray-light;
+	}
 
 	@include breakpoints.tablet-up {
 		padding: map.get( units.$spacing, 'small' );

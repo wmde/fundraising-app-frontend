@@ -82,7 +82,6 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 		border: map.get( forms.$input, 'border' );
 		font-size: map.get( forms.$input, 'font-size' );
 		border-radius: map.get( forms.$input, 'border-radius' );
-		padding: 0 map.get( units.$spacing, 'small' );
 
 		&:active {
 			background-color: colors.$white;
@@ -91,6 +90,14 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 		&:focus {
 			border-color: colors.$primary;
 		}
+	}
+
+	input {
+		padding: 0 map.get( units.$spacing, 'small' );
+	}
+
+	textarea {
+		padding: map.get( units.$spacing, 'small' );
 	}
 
 	&.has-icons-right .icon {
