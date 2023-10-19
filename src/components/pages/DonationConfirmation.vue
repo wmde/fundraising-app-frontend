@@ -43,13 +43,13 @@
 
 		<ModalDialogue :visible="isAddressModalOpen" @hide="isAddressModalOpen = false">
 			<AddressUpdateForm
+				:address-validation-patterns="addressValidationPatterns"
 				:countries="countries"
-				:salutations="salutations"
 				:donation="donation"
 				:donorResource="donorResource"
+				:salutations="salutations"
 				:validate-address-url="validateAddressUrl"
 				:validate-email-url="validateEmailUrl"
-				:address-validation-patterns="addressValidationPatterns"
 				@address-updated="updateAddress( $event )"
 				@close="isAddressModalOpen = false"
 			/>

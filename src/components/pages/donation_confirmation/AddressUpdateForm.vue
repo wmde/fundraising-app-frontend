@@ -1,81 +1,98 @@
 <template>
 	<form id="address-update-form" name="address-update-form" v-on:submit.prevent="submit" method="post" ref="addressForm">
-		<div v-if="hasErrored" class="help is-danger has-margin-top-18">
-			{{ $t( 'donation_confirmation_address_update_error' ) }}
-		</div>
-		<div v-if="hasSucceeded" class="has-margin-top-18">
-			{{ $t( 'donation_confirmation_address_update_success' ) }}
-		</div>
-		<div v-if="!hasErrored && !hasSucceeded">
-			<AutofillHandler v-on:autofill="onAutofill">
-				<address-type-full v-on:address-type="updateAddressType( $event )" :initial-address-type="addressTypeString"/>
-				<span v-if="addressTypeIsInvalid" class="help is-danger error-address-type">{{ $t( 'donation_form_section_address_error' ) }}</span>
-				<name :show-error="fieldErrors" :form-data="formData" :address-type="addressType" :salutations="salutations" v-on:field-changed="onFieldChange"/>
-				<postal :show-error="fieldErrors" :form-data="formData" :countries="countries" v-on:field-changed="onFieldChange"/>
-				<EmailAddress :show-error="fieldErrors.email" :form-data="formData" v-on:field-changed="onFieldChange" :common-mail-providers="mailHostList" />
-			</AutofillHandler>
-			<NewsletterOption
-				:checked-by-default="store.state.address.newsletter"
-				@value-changed="updateNewsletterOption"
+		<AutofillHandler v-on:autofill="onAutofill">
+
+			<RadioField
+				name="addressType"
+				class="address-type-field"
+				:options="[
+					{
+						value: AddressTypeModel.PERSON,
+						label: $t( 'donation_form_addresstype_option_private_addresstype_basic' ),
+					},
+					{
+						value: AddressTypeModel.COMPANY,
+						label: $t( 'donation_form_addresstype_option_company_addresstype_basic' ),
+					}
+				]"
+				:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
+				:show-error="addressTypeIsInvalid"
+				:error-message="$t( 'donation_form_section_address_error' )"
+				v-model="addressTypeModel"
+				alignment="column"
 			/>
-			<div class="columns has-margin-top-18 has-padding-bottom-18">
-				<div class="column">
-					<FunButton
-						class="is-primary is-main is-outlined has-margin-top-18 level-item"
-						@click="$emit( 'close' )"
-					>
-						{{ $t( 'donation_confirmation_address_update_cancel' ) }}
-					</FunButton>
-				</div>
-				<div class="column">
-					<FunButton
-						:class="[ 'is-primary is-main has-margin-top-18 level-item modal-submit', { 'is-loading': isValidating } ]"
-						button-type="submit"
-					>
-						{{ $t( 'donation_confirmation_address_update_confirm' ) }}
-					</FunButton>
-				</div>
-			</div>
-			<div v-if="serverMessage !== ''" class="columns error-server">
-				<div class="column has-text-danger has-text-centered has-text-weight-bold">
-					{{ $t( serverMessage ) }}
-				</div>
-			</div>
-		</div>
-		<div v-else class="columns has-margin-top-18 has-padding-bottom-18">
-			<div class="column">
-				<FunButton
-					class="is-primary is-main is-outlined has-margin-top-18"
+
+			<NameFields
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:salutations="salutations"
+				:address-type="addressType"
+				@field-changed="onFieldChange"
+			/>
+
+			<PostalAddressFields
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:countries="countries"
+				:post-code-validation="addressValidationPatterns.postcode"
+				:country-was-restored="false"
+				v-on:field-changed="onFieldChange"
+			/>
+
+			<EmailField
+				:show-error="fieldErrors.email"
+				v-model="formData.email.value"
+				@field-changed="onFieldChange"
+			>
+				<template #message>
+					<ValueEqualsPlaceholderWarning
+						:value="formData.email.value"
+						:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+						warning="donation_form_email_placeholder_warning"
+					/>
+				</template>
+			</EmailField>
+
+		</AutofillHandler>
+
+		<MailingListField v-model="mailingList"/>
+
+		<FormSummary :show-border="false">
+			<template #summary-buttons>
+				<FormButton
+					id="previous-btn"
+					:is-outlined="true"
 					@click="$emit( 'close' )"
 				>
-					{{ $t( 'back_to_donation_summary' ) }}
-				</FunButton>
+					{{ $t( 'donation_confirmation_address_update_cancel' ) }}
+				</FormButton>
+				<FormButton
+					id="submit-btn"
+					:is-loading="isValidating"
+					button-type="submit"
+				>
+					{{ $t( 'donation_confirmation_address_update_confirm' ) }}
+				</FormButton>
+			</template>
+		</FormSummary>
+
+		<div v-if="serverMessage !== ''" class="columns error-server">
+			<div class="column has-text-danger has-text-centered has-text-weight-bold">
+				{{ $t( serverMessage ) }}
 			</div>
 		</div>
+
 	</form>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import AddressTypeFull from '@src/components/pages/donation_confirmation/AddressTypeFull.vue';
-import Name from '@src/components/shared/Name.vue';
-import Postal from '@src/components/shared/Postal.vue';
-import EmailAddress from '@src/components/shared/EmailAddress.vue';
-import NewsletterOption from '@src/components/pages/donation_form/NewsletterOption.vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import {
-	setAddressField,
-	setAddressType,
-	setNewsletterChoice,
-	validateAddress,
-	validateAddressField,
-	validateAddressType,
-	validateEmail,
-} from '@src/store/address/actionTypes';
+import { setAddressField, validateAddress, validateAddressField, validateAddressType, validateEmail } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { mergeValidationResults } from '@src/util/merge_validation_results';
@@ -83,28 +100,33 @@ import { camelizeName } from '@src/util/camlize_name';
 import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
-import { useMailHostList } from '@src/components/shared/useMailHostList';
 import DonorResource from '@src/api/DonorResource';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import { useStore } from 'vuex';
 import { Donation } from '@src/view_models/Donation';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import FormSummary from '@src/components/shared/FormSummary.vue';
+import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
+import EmailField from '@src/components/shared/form_fields/EmailField.vue';
+import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
+import NameFields from '@src/components/shared/NameFields.vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
+import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
+import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 
 interface Props {
-	donation: Donation;
-	validateEmailUrl: String;
-	validateAddressUrl: String;
-	countries: Country[];
-	salutations: Salutation[];
-	hasErrored: Boolean;
-	hasSucceeded: Boolean;
 	addressValidationPatterns: AddressValidation;
+	countries: Country[];
+	donation: Donation;
 	donorResource: DonorResource;
+	salutations: Salutation[];
+	validateAddressUrl: String;
+	validateEmailUrl: String;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'address-updated', 'address-update-failed' ] );
+const emit = defineEmits( [ 'address-updated' ] );
 const store = useStore();
-const mailHostList = useMailHostList();
 
 const addressForm = ref<HTMLFormElement>( null );
 const isValidating = ref<boolean>( false );
@@ -181,19 +203,13 @@ const fieldErrors = computed<AddressValidity>( () => {
 	}, ( {} as AddressValidity ) );
 } );
 
-const addressType = computed( () => store.state.address.addressType );
-// TODO: use the model value directly rather than convert it to a string
-const addressTypeString = computed<string>( () => {
-	switch ( store.state.address.addressType ) {
-		case AddressTypeModel.COMPANY:
-			return 'company';
-		case AddressTypeModel.PERSON:
-			return 'person';
-		default:
-			return 'unset';
-	}
-} );
-const addressTypeIsInvalid = computed<boolean>( () => store.getters[ NS_ADDRESS + '/addressTypeIsInvalid' ] );
+// TODO: Refactor useAddressTypeFunctions so it returns a model that it watches internally.
+//       Currently it is not very reusable and doesn't integrate well with the new fields
+const { addressType, addressTypeIsInvalid, setAddressType } = useAddressTypeFunctions( store );
+const addressTypeModel = ref<AddressTypeModel>( addressType.value );
+watch( addressTypeModel, ( newAddressType: AddressTypeModel ) => setAddressType( newAddressType ) );
+
+const mailingList = useMailingListModel( store );
 
 const validateForm = async (): Promise<ValidationResult> => {
 	let response = await store.dispatch( action( NS_ADDRESS, validateAddressType ), {
@@ -221,10 +237,6 @@ const onAutofill = ( autofilledFields: { [key: string]: string; } ) => {
 			store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
 		}
 	} );
-};
-
-const updateAddressType = ( newAddressType: AddressTypeModel ): void => {
-	store.dispatch( action( NS_ADDRESS, setAddressType ), newAddressType );
 };
 
 const getAddressData = (): Address => {
@@ -256,14 +268,9 @@ const submit = async (): Promise<void> => {
 		isValidating.value = false;
 		emit( 'address-updated', { addressData, addressType: addressData.addressType } );
 	} ).catch( ( error: string ) => {
-		emit( 'address-update-failed' );
 		isValidating.value = false;
 		serverMessage.value = error;
 	} );
-};
-
-const updateNewsletterOption = ( wantsNewsletter: boolean ): void => {
-	store.dispatch( action( NS_ADDRESS, setNewsletterChoice ), wantsNewsletter );
 };
 
 onMounted( () => {

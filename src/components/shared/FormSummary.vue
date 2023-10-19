@@ -29,6 +29,10 @@
 		margin: 0 0 map.get( units.$spacing, 'small' );
 	}
 
+	>*:last-child {
+		margin-bottom: 0;
+	}
+
 	&-buttons {
 		margin: 0;
 
@@ -40,6 +44,10 @@
 		.form-button {
 			margin: 0 0 map.get( units.$spacing, 'small' );
 			width: 100%;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
 
 			@include breakpoints.tablet-up {
 				margin: 0 map.get( units.$spacing, 'small' );
