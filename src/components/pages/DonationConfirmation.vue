@@ -41,7 +41,7 @@
 			</div>
 		</div>
 
-		<ModalDialogue :visible="isAddressModalOpen" @hide="isAddressModalOpen = false">
+		<ModalDialogue :visible="isAddressModalOpen" :title="$t( 'donation_confirmation_address_update_button_alt' )" @hide="isAddressModalOpen = false">
 			<AddressUpdateForm
 				:address-validation-patterns="addressValidationPatterns"
 				:countries="countries"

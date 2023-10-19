@@ -13,7 +13,6 @@
 			</FormButton>
 		</div>
 		<div v-else>
-			<p>{{ $t( 'donation_comment_popup_title' ) }}</p><br>
 			<p>{{ $t( 'donation_comment_popup_explanation' ) }}</p>
 
 			<TextField

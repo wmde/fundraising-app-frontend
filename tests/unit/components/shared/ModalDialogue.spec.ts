@@ -5,6 +5,7 @@ describe( 'ModalDialogue.vue', () => {
 	it( 'shows the modal', async () => {
 		const wrapper = shallowMount( ModalDialogue, {
 			props: {
+				title: '',
 				visible: false,
 			},
 		} );

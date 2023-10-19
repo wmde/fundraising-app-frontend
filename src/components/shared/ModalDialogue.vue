@@ -2,7 +2,10 @@
 	<div class="modal-dialogue" :class="{ 'active': visible }">
 		<div class="modal-dialogue-background" @click.prevent="emit( 'hide' )"/>
 		<div class="modal-dialogue-content-container">
-			<a class="modal-dialogue-close" href="#" @click.prevent="emit( 'hide' )"><CloseIcon/></a>
+			<div class="modal-dialogue-title">
+				{{ title }}
+				<a class="modal-dialogue-close" href="#" @click.prevent="emit( 'hide' )"><CloseIcon/></a>
+			</div>
 			<div class="modal-dialogue-scroll">
 				<div class="modal-dialogue-content">
 					<slot/>
@@ -18,6 +21,7 @@ import CloseIcon from '@src/components/shared/icons/CloseIcon.vue';
 
 interface Props {
 	visible?: boolean;
+	title: String;
 }
 
 withDefaults( defineProps<Props>(), {
@@ -37,6 +41,7 @@ const emit = defineEmits( [ 'hide' ] );
 @use 'sass:color';
 
 $spacing: map.get( units.$spacing, 'x-large' );
+$title-height: map.get( units.$spacing, 'xxx-large' );
 
 .modal-dialogue {
 	position: fixed;
@@ -71,6 +76,7 @@ $spacing: map.get( units.$spacing, 'x-large' );
 
 	&-content-container {
 		position: relative;
+		padding-top: $title-height;
 		display: flex;
 		flex-direction: column;
 		background: colors.$white;
@@ -95,12 +101,23 @@ $spacing: map.get( units.$spacing, 'x-large' );
 		padding: map.get( units.$spacing, 'large' );
 	}
 
-	&-close {
+	&-title {
 		position: absolute;
-		top: 10px;
-		right: 10px;
+		top: 0;
+		height: $title-height;
+		width: 100%;
+		line-height: $title-height;
+		display: flex;
+		align-content: space-between;
+		justify-content: space-between;
+		padding: 0 map.get( units.$spacing, 'large' );
+		border-bottom: 1px solid colors.$gray-light;
 		z-index: 42;
+		font-size: 25px;
+	}
 
+	&-close {
+		padding-top: 4px;
 		svg path {
 			fill: colors.$gray-dark;
 			transition: fill 500ms;
