@@ -57,4 +57,5 @@ describe( 'Payment.vue', () => {
 
 		expect( store.dispatch ).toBeCalledWith( action( NS_PAYMENT, setType ), 'PPL' );
 	} );
+
 } );

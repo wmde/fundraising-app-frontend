@@ -1,6 +1,7 @@
 import { Validity } from '@src/view_models/Validity';
 
 export interface MembershipFee {
+	isValidating: boolean,
 	validity: {
 		[key: string]: Validity
 	},

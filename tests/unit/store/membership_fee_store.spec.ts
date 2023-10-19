@@ -499,9 +499,9 @@ describe( 'MembershipFee', () => {
 		it( 'mutates validation state', () => {
 			const store = newMinimalStore( {} );
 			mutations.SET_IS_VALIDATING( store, true );
-			expect( store.values.isValidating ).toStrictEqual( true );
+			expect( store.isValidating ).toStrictEqual( true );
 			mutations.SET_IS_VALIDATING( store, false );
-			expect( store.values.isValidating ).toStrictEqual( false );
+			expect( store.isValidating ).toStrictEqual( false );
 		} );
 	} );
 } );

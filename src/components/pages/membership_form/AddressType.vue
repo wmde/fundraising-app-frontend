@@ -1,53 +1,56 @@
 <template>
-	<fieldset>
-		<legend class="title is-size-5">{{ $t( 'membership_form_section_address_header_type' ) }}</legend>
-		<div>
-			<RadioInput id="personal"
-					name="addressTypeInternal"
-					v-model="type"
-					:native-value="AddressTypeModel.PERSON"
-					@change.native="setAddressType()">{{ $t( 'donation_form_addresstype_option_private' ) }}
-			</RadioInput>
-		</div>
-		<div>
-			<RadioInput id="company"
-					name="addressTypeInternal"
-					v-model="type"
-					:native-value="AddressTypeModel.COMPANY"
-					@change.native="setAddressType()">
-				{{ $t( 'donation_form_addresstype_option_company' ) }}
-			</RadioInput>
-		</div>
-	</fieldset>
+	<RadioField
+		name="addressType"
+		:options="[
+			{
+				value: AddressTypeModel.PERSON,
+				label: $t( 'donation_form_addresstype_option_private' ),
+			},
+			{
+				value: AddressTypeModel.COMPANY,
+				label: $t( 'donation_form_addresstype_option_company' ),
+			},
+		]"
+		:label="$t( 'membership_form_section_address_header_type' )"
+		:disabled="disabledAddressTypes"
+		:show-error="addressTypeIsInvalid"
+		:error-message="$t( 'donation_form_section_address_error' )"
+		v-model="addressType"
+		alignment="column"
+	>
+	</RadioField>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
+<script setup lang="ts">
 
-export default defineComponent( {
-	name: 'AddressType',
-	components: { RadioInput },
-	data: function () {
-		return {
-			type: this.$props.initialValue,
-		};
-	},
-	props: {
-		initialValue: [ Number as () => AddressTypeModel, String ],
-	},
-	computed: {
-		AddressTypeModel: {
-			get: function () {
-				return AddressTypeModel;
-			},
-		},
-	},
-	methods: {
-		setAddressType: function () {
-			this.$emit( 'address-type', this.$data.type );
-		},
-	},
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { ref, watch } from 'vue';
+
+interface Props {
+	disabledAddressTypes: AddressTypeModel[]
+	isDirectDebit: boolean;
+	addressTypeIsInvalid: boolean;
+	initialAddressType?: AddressTypeModel;
+}
+const props = defineProps<Props>();
+
+const emit = defineEmits( [ 'field-changed' ] );
+
+const addressType = ref<AddressTypeModel>( props.initialAddressType ?? AddressTypeModel.UNSET );
+
+watch( addressType, newAddressType => {
+	emit( 'field-changed', newAddressType );
 } );
+
+// When disabled address type is selected, revert to person type
+watch( () => props.disabledAddressTypes, disabledAddressTypes => {
+	// TODO This assumes that person will never be disabled.
+	//      If this assumption is wrong, we need to have a fallback.
+	if ( disabledAddressTypes !== undefined &&
+		disabledAddressTypes.includes( addressType.value ) ) {
+		addressType.value = AddressTypeModel.PERSON;
+	}
+} );
+
 </script>

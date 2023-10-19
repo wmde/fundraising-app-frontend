@@ -1,6 +1,6 @@
 <template>
 	<div class="address-page">
-		<address-fields
+		<AddressFields
 			:validate-address-url="validateAddressUrl.toString()"
 			:validate-email-url="validateEmailUrl.toString()"
 			:countries="countries"
@@ -8,7 +8,7 @@
 			:address-validation-patterns="addressValidationPatterns"
 			:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
 			ref="addressFieldsRef">
-		</address-fields>
+		</AddressFields>
 		<div class="summary-wrapper has-margin-top-18 has-outside-border">
 			<membership-summary
 				:membership-application="membershipApplication"
@@ -40,7 +40,7 @@
 		</div>
 
 		<form action="/apply-for-membership" method="post" ref="submitValuesForm">
-			<submit-values/>
+			<SubmitValues/>
 		</form>
 	</div>
 </template>
@@ -59,6 +59,7 @@ import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import { Country } from '@src/view_models/Country';
 import { useStore } from 'vuex';
 import { useAddressFormEventHandlers } from '@src/components/pages/membership_form/useAddressFormEventHandlers';
+import { trackFormSubmission } from '@src/util/tracking';
 
 interface Props {
 	validateAddressUrl: String;
@@ -73,7 +74,7 @@ const props = defineProps<Props>();
 const emit = defineEmits( [ 'previous-page', 'submit-membership' ] );
 const store = useStore();
 
-const addressFieldsRef = ref();
+const addressFieldsRef = ref<HTMLFormElement>();
 const addressIsInvalid = computed( (): boolean => !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] );
 
 const membershipApplication = computed( (): object => {
@@ -99,12 +100,17 @@ const addressSummary = computed( (): object => {
 	};
 } );
 
+const trackAddressForm = () => {
+	trackFormSubmission( addressFieldsRef.value );
+};
+
 const { submit, previousPage, submitValuesForm } = useAddressFormEventHandlers(
 	store,
 	emit,
 	isDirectDebitPayment,
 	props.validateAddressUrl.toString(),
-	props.validateEmailUrl.toString()
+	props.validateEmailUrl.toString(),
+	trackAddressForm,
 );
 
 </script>
