@@ -1,11 +1,11 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
-import AddressModal from '@src/components/pages/donation_confirmation/AddressModal.vue';
+import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 import { action } from '@src/store/util';
 import { NS_ADDRESS } from '@src/store/namespaces';
 import { initializeAddress } from '@src/store/address/actionTypes';
-import { addressValidationPatterns } from '../../../../data/validation';
-import { anonymousBankTransferConfirmationData, bankTransferConfirmationData } from '../../../../data/confirmationData';
+import { addressValidationPatterns } from '@test/data/validation';
+import { anonymousBankTransferConfirmationData, bankTransferConfirmationData } from '@test/data/confirmationData';
 import { Address } from '@src/view_models/Address';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
@@ -63,7 +63,7 @@ const addressData = ( address: Address, addressType: AddressTypeModel ) => {
 
 describe( 'AddressModal.vue', () => {
 	const getWrapper = ( store: Store<any>, confirmationData: Object, donorResource: Object = {} ): VueWrapper<any> => {
-		return mount( AddressModal, {
+		return mount( AddressUpdateForm, {
 			props: {
 				validateEmailUrl: '',
 				validateAddressUrl: '',

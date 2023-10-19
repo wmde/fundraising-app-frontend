@@ -1,5 +1,5 @@
 <template>
-	<form id="laika-comment" name="laika-comment" v-on:submit.prevent="postComment" method="post" ref="form" class="modal-card">
+	<form id="laika-comment" name="laika-comment" v-on:submit.prevent="postComment" method="post" ref="form">
 		<input type="hidden" name="donationId" :value="donation.id"/>
 		<input type="hidden" name="updateToken" :value="donation.updateToken">
 		<input type="hidden" name="isAnonymous" value="1" />

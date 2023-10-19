@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import DonationCommentPopUp from '@src/components/DonationCommentPopUp.vue';
+import DonationCommentPopUp from '@src/components/pages/donation_confirmation/DonationCommentPopUp.vue';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 describe( 'DonationCommentPopUp.vue', () => {

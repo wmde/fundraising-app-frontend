@@ -1,5 +1,5 @@
 <template>
-	<form id="address-update-form" name="address-update-form" v-on:submit.prevent="submit" method="post" ref="addressForm" class="modal-card">
+	<form id="address-update-form" name="address-update-form" v-on:submit.prevent="submit" method="post" ref="addressForm">
 		<div v-if="hasErrored" class="help is-danger has-margin-top-18">
 			{{ $t( 'donation_confirmation_address_update_error' ) }}
 		</div>
@@ -90,7 +90,7 @@ import DonorResource from '@src/api/DonorResource';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
 export default defineComponent( {
-	name: 'AddressModal',
+	name: 'AddressUpdateForm',
 	components: {
 		FunButton,
 		Name,
