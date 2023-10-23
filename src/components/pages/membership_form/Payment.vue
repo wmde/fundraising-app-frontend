@@ -13,15 +13,20 @@
 		</FormSection>
 
 		<FormSection :title="getAmountTitle" title-margin="small">
-			<span>{{ $t('membership_form_payment_amount_description') }}</span>
 			<AmountField
 				v-model="fee"
 				:payment-amounts="paymentAmounts"
 				:error-message="$t('membership_form_payment_amount_error')"
 				:show-error="!feeIsValid"
 				:minimum-amount="minimumAmount"
-			/>
-			<div>{{ $t('membership_form_payment_amount_cap_notice') }}</div>
+			>
+				<template #minimum-message>
+					<span>{{ $t('membership_form_payment_amount_description') }}</span>
+				</template>
+				<template #info-message>
+					<span>{{ $t('membership_form_payment_amount_cap_notice') }}</span>
+				</template>
+			</AmountField>
 		</FormSection>
 
 		<FormSection v-if="paymentTypes.length > 1"  :title="$t('donation_form_payment_type_title')" title-margin="x-small">
@@ -39,7 +44,6 @@
 
 		<PaymentBankData
 			v-if="paymentType === 'BEZ'"
-			class="has-margin-top-36"
 			:validateBankDataUrl="validateBankDataUrl.toString()"
 			:validateLegacyBankDataUrl="validateLegacyBankDataUrl.toString()"
 		/>
