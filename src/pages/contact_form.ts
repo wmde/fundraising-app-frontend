@@ -10,6 +10,7 @@ import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 interface ContactFormModel {
 	message: string,
 	contactFormValidationPatterns: ContactFormValidation,
+	contact_categories: Record<string, string>,
 }
 
 const PAGE_IDENTIFIER = 'contact-form';

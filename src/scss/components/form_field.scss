@@ -1,5 +1,6 @@
 @use '../settings/units';
 @use '../settings/forms';
+@use '../settings/colors';
 @use 'sass:map';
 
 .form-field {
@@ -29,6 +30,11 @@
 		margin: 0 0 map.get( units.$spacing, 'xx-small' );
 		font-weight: bold;
 		line-height: 1;
+
+		>em {
+			color: colors.$gray-dark;
+			font-weight: normal;
+		}
 	}
 
 	&-intro {
