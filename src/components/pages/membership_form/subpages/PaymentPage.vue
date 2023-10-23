@@ -2,7 +2,8 @@
 	<div class="payment-page">
 		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
 		<membership-type v-if="showMembershipTypeOption"/>
-		<div class="has-margin-top-36">
+
+		<FormSection :title="$t('membership_form_section_address_header_type')" title-margin="small">
 			<AddressType
 				@field-changed="setAddressType( $event )"
 				:disabledAddressTypes="disabledAddressTypes"
@@ -10,9 +11,9 @@
 				:initial-address-type="addressType"
 				:address-type-is-invalid="false"
 			/>
-		</div>
+		</FormSection>
+
 		<Payment
-			class="has-margin-top-36"
 			:payment-amounts="props.paymentAmounts"
 			:payment-intervals="props.paymentIntervals"
 			:payment-types="props.paymentTypes"
@@ -20,7 +21,7 @@
 			:validate-bank-data-url="props.validateBankDataUrl.toString()"
 			:validate-legacy-bank-data-url="props.validateLegacyBankDataUrl.toString()"
 		/>
-		<div class="level has-margin-top-18">
+		<FormSection title="" title-margin="small">
 			<div class="level-left">
 				<FunButton
 					id="next"
@@ -30,7 +31,7 @@
 					{{ $t('donation_form_section_continue') }}
 				</FunButton>
 			</div>
-		</div>
+		</FormSection>
 	</div>
 </template>
 
@@ -48,6 +49,7 @@ import { waitForServerValidationToFinish } from '@src/util/wait_for_server_valid
 import { computed, onMounted } from 'vue';
 import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
+import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 
 interface Props {
 	validateFeeUrl: String,

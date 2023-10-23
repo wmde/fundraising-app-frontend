@@ -11,7 +11,6 @@
 				label: $t( 'donation_form_addresstype_option_company' ),
 			},
 		]"
-		:label="$t( 'membership_form_section_address_header_type' )"
 		:disabled="disabledAddressTypes"
 		:show-error="addressTypeIsInvalid"
 		:error-message="$t( 'donation_form_section_address_error' )"

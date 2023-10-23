@@ -1,5 +1,5 @@
 <template>
-	<fieldset class="has-margin-top-18">
+	<fieldset class="form-field form-field-radio">
 		<legend class="title is-size-5">{{ $t('membership_form_membershiptype_legend') }}</legend>
 		<div class="membership-type">
 			<RadioInput :class="{ 'is-active': selectedType === MembershipTypeModel.SUSTAINING }"

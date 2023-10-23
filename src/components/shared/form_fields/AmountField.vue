@@ -1,5 +1,8 @@
 <template>
 	<fieldset class="form-field form-field-amount" :class="`locale-${ $i18n.locale }`">
+		<div class="minimum-message">
+			<slot name="minimum-message"/>
+		</div>
 		<div class="control form-field-amount-radio-container">
 			<div class="form-field-amount-radio" v-for="( paymentAmount, index ) in paymentAmounts" :key="index">
 				<RadioFormInput
@@ -30,6 +33,8 @@
 			<label for="form-field-amount-custom" class="is-sr-only">{{ $t('donation_form_payment_amount_legend') }}</label>
 		</div>
 		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+
+		<slot name="info-message"/>
 	</fieldset>
 </template>
 
@@ -120,6 +125,10 @@ $max-width: 384px;
 
 .form-field-amount {
 	max-width: $max-width;
+
+	.minimum-message {
+		margin-bottom: map.get( units.$spacing, 'small' );
+	}
 
 	.input {
 		max-width: $max-width;
