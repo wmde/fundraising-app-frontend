@@ -56,6 +56,8 @@
 						{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
 						...Object.values( contactData.contact_categories ).map( ( value: string ) => ( { label: value, value: value } ) )
 					]"
+					:show-error="formData.topic.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_topic_error' )"
 				/>
 
 				<TextField
@@ -92,110 +94,125 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { FormData } from '@src/view_models/Contact';
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
 import { Helper } from '@src/store/util';
 import { Validity } from '@src/view_models/Validity';
 import { ContactFormValidation } from '@src/view_models/Validation';
 import { trackFormSubmission } from '@src/util/tracking';
-import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
-import FunSelect from '@src/components/shared/legacy_form_inputs/FunSelect.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import FormSummary from '@src/components/shared/FormSummary.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
+import { useI18n } from 'vue-i18n';
 
-export default defineComponent( {
-	name: 'Contact',
-	components: { FormSection, FormSummary, FormButton, SelectField, EmailField, TextField, FunSelect, FunButton, TextInput },
-	data: function (): { formData: FormData } {
-		return {
-			formData: {
-				firstname: {
-					name: 'name',
-					value: this.$props.contactData.firstname ? this.$props.contactData.firstname : '',
-					pattern: this.$props.validationPatterns.firstName,
-					optionalField: true,
-					validity: Validity.VALID,
-				},
-				lastname: {
-					name: 'lastname',
-					value: this.$props.contactData.lastname ? this.$props.contactData.lastname : '',
-					pattern: this.$props.validationPatterns.lastName,
-					optionalField: true,
-					validity: Validity.VALID,
-				},
-				donationNumber: {
-					name: 'donationNumber',
-					value: this.$props.contactData.donationNumber ? this.$props.contactData.donationNumber : '',
-					pattern: this.$props.validationPatterns.donationNumber,
-					optionalField: true,
-					validity: Validity.VALID,
-				},
-				email: {
-					name: 'email',
-					value: this.$props.contactData.email ? this.$props.contactData.email : '',
-					pattern: this.$props.validationPatterns.email,
-					optionalField: false,
-					validity: Validity.INCOMPLETE,
-				},
-				topic: {
-					name: 'topic',
-					value: this.$props.contactData.category ? this.$i18n.t( this.$props.contactData.category ) as string : '',
-					pattern: this.$props.validationPatterns.topic,
-					optionalField: false,
-					validity: Validity.INCOMPLETE,
-				},
-				subject: {
-					name: 'subject',
-					value: this.$props.contactData.subject ? this.$props.contactData.subject : '',
-					pattern: this.$props.validationPatterns.subject,
-					optionalField: false,
-					validity: Validity.INCOMPLETE,
-				},
-				comment: {
-					name: 'comment',
-					value: this.$props.contactData.messageBody ? this.$props.contactData.messageBody : '',
-					pattern: this.$props.validationPatterns.comment,
-					optionalField: false,
-					validity: Validity.INCOMPLETE,
-				},
-			},
-		};
+interface ContactData {
+	contact_categories: Record<string, string>;
+	firstname?: string;
+	lastname?: string;
+	donationNumber?: string;
+	email?: string;
+	category?: string;
+	subject?: string;
+	messageBody?: string;
+	errors?: string[];
+}
+
+interface FormItem {
+	name: string;
+	value: string;
+	pattern: string;
+	optionalField: boolean;
+	validity: Validity;
+}
+
+interface FormData {
+	firstname: FormItem;
+	lastname: FormItem;
+	donationNumber: FormItem;
+	email: FormItem;
+	topic: FormItem;
+	subject: FormItem;
+	comment: FormItem;
+}
+
+interface Props {
+	contactData: ContactData;
+	validationPatterns: ContactFormValidation;
+}
+
+const props = defineProps<Props>();
+const { t } = useI18n();
+
+const form = ref<HTMLFormElement>( null );
+const formData = reactive<FormData>( {
+	firstname: {
+		name: 'name',
+		value: props.contactData.firstname ? props.contactData.firstname : '',
+		pattern: props.validationPatterns.firstname,
+		optionalField: true,
+		validity: Validity.VALID,
 	},
-	props: {
-		contactData: Object,
-		validationPatterns: Object as () => ContactFormValidation,
+	lastname: {
+		name: 'lastname',
+		value: props.contactData.lastname ? props.contactData.lastname : '',
+		pattern: props.validationPatterns.lastname,
+		optionalField: true,
+		validity: Validity.VALID,
 	},
-	computed: {
-		Validity: {
-			get() {
-				return Validity;
-			},
-		},
+	donationNumber: {
+		name: 'donationNumber',
+		value: props.contactData.donationNumber ? props.contactData.donationNumber : '',
+		pattern: props.validationPatterns.donationNumber,
+		optionalField: true,
+		validity: Validity.VALID,
 	},
-	methods: {
-		submit() {
-			let isValid = true;
-			Object.keys( this.$data.formData ).forEach( ( fieldName: string ) => {
-				let field = this.$data.formData[ fieldName ];
-				field.validity = Helper.inputIsValid( field.value, field.pattern, field.optionalField );
-				if ( field.validity !== Validity.VALID ) {
-					isValid = false;
-				}
-			} );
-			if ( isValid ) {
-				const form = this.$refs.form as HTMLFormElement;
-				trackFormSubmission( form );
-				form.submit();
-			}
-		},
+	email: {
+		name: 'email',
+		value: props.contactData.email ? props.contactData.email : '',
+		pattern: props.validationPatterns.email,
+		optionalField: false,
+		validity: Validity.INCOMPLETE,
+	},
+	topic: {
+		name: 'topic',
+		value: props.contactData.category ? t( props.contactData.category ) as string : '',
+		pattern: props.validationPatterns.topic,
+		optionalField: false,
+		validity: Validity.INCOMPLETE,
+	},
+	subject: {
+		name: 'subject',
+		value: props.contactData.subject ? props.contactData.subject : '',
+		pattern: props.validationPatterns.subject,
+		optionalField: false,
+		validity: Validity.INCOMPLETE,
+	},
+	comment: {
+		name: 'comment',
+		value: props.contactData.messageBody ? props.contactData.messageBody : '',
+		pattern: props.validationPatterns.comment,
+		optionalField: false,
+		validity: Validity.INCOMPLETE,
 	},
 } );
+
+const submit = (): void => {
+	let isValid = true;
+	Object.keys( formData ).forEach( ( fieldName: string ) => {
+		let field = formData[ fieldName ];
+		field.validity = Helper.inputIsValid( field.value, field.pattern, field.optionalField );
+		if ( field.validity !== Validity.VALID ) {
+			isValid = false;
+		}
+	} );
+	if ( isValid ) {
+		trackFormSubmission( form.value );
+		form.value.submit();
+	}
+};
+
 </script>
 
 <style lang="scss">

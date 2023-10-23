@@ -1,16 +1,18 @@
 <template>
-	<div class="form-field form-field-select">
+	<div class="form-field form-field-select" :class="{ 'is-invalid': showError }">
 		<label :for="name" class="form-field-label">{{ label }}</label>
 		<SelectFormInput
 			v-model="fieldModel"
 			:select-id="name"
 			:name="name"
+			:has-error="showError"
 			@update:modelValue="onFieldChange"
 		>
 			<option v-for="( option, index ) in options" :key="index" :value="option.value">
 				{{ option.label }}
 			</option>
 		</SelectFormInput>
+		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
 	</div>
 </template>
 
@@ -25,6 +27,8 @@ interface Props {
 	name: string;
 	modelValue: string|number;
 	options: FormOption[];
+	errorMessage?: String;
+	showError?: boolean;
 }
 
 const props = defineProps<Props>();
