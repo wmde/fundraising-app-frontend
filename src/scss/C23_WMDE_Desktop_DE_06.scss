@@ -127,8 +127,14 @@ changes must be updated in the settings files before this file is deleted.
 		height: 50px;
 	}
 
-	.checkbox-single-form-input .check {
+	.checkbox-single-form-input .check,
+	.checkbox-multiple-form-input .check {
 		margin-top: 2px;
+	}
+
+	.checkbox-single-form-input input[type="checkbox"]:checked + .check,
+	.checkbox-multiple-form-input input[type="checkbox"]:checked + .check {
+		background-color: $primary;
 	}
 
 	.form-field-amount-radio .radio-form-input {
@@ -136,6 +142,7 @@ changes must be updated in the settings files before this file is deleted.
 
 		&.active {
 			background: $primary;
+			color: $white;
 		}
 	}
 
@@ -159,36 +166,33 @@ changes must be updated in the settings files before this file is deleted.
 		}
 	}
 
-	.checkbox-single-form-input input[type="checkbox"]:checked + .check {
-		background-color: $primary;
-	}
-
 	.form-field-radio {
 		max-width: map.get( $input, 'max-width' );
 		flex-wrap: nowrap;
+
+		.radio-form-input {
+			min-width: 106px;
+			width: auto;
+			border: 1px solid $gray-mid;
+			border-radius: map.get( $input, 'border-radius' );
+			padding: map.get( units.$spacing, 'x-small' ) map.get( units.$spacing, 'small' );
+
+			&:hover,
+			&:focus {
+				border: 1px solid $gray-dark;
+			}
+
+			&.is-active {
+				border-color: $primary;
+				border-bottom: 1px solid $primary;
+			}
+
+			&:last-child {
+				flex: 0 0 auto;
+			}
+		}
 	}
 
-	.radio-form-input {
-		min-width: 106px;
-		width: auto;
-		border: 1px solid $gray-mid;
-		border-radius: map.get( $input, 'border-radius' );
-		padding: map.get( units.$spacing, 'x-small' ) map.get( units.$spacing, 'small' );
-
-		&:hover,
-		&:focus {
-			border: 1px solid $gray-dark;
-		}
-
-		&.is-active {
-			border-color: $primary;
-			border-bottom: 1px solid $primary;
-		}
-
-		&:last-child {
-			flex: 0 0 auto;
-		}
-	}
 
 	.form-field-radio-container.column-alignment .radio-form-input {
 		border-bottom: 1px solid $gray-mid;
