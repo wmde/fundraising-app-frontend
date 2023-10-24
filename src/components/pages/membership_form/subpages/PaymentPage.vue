@@ -22,15 +22,12 @@
 			:validate-legacy-bank-data-url="props.validateLegacyBankDataUrl.toString()"
 		/>
 		<FormSection title="" title-margin="small">
-			<div class="level-left">
-				<FunButton
-					id="next"
-					:class="[ 'is-form-input-width is-primary is-main level-item', { 'is-loading' : store.getters.isValidating } ]"
-					@click="next()"
-				>
-					{{ $t('donation_form_section_continue') }}
-				</FunButton>
-			</div>
+			<FormButton
+				@click="next()"
+				:is-loading="store.getters.isValidating"
+			>
+				{{ $t('donation_form_section_continue') }}
+			</FormButton>
 		</FormSection>
 	</div>
 </template>
@@ -44,12 +41,12 @@ import { action } from '@src/store/util';
 import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@src/store/membership_fee/actionTypes';
 import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { useStore } from 'vuex';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { computed, onMounted } from 'vue';
 import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 
 interface Props {
 	validateFeeUrl: String,
