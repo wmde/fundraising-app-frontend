@@ -9,35 +9,34 @@
 			:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
 			ref="addressFieldsRef">
 		</AddressFields>
-		<div class="summary-wrapper has-margin-top-18 has-outside-border">
-			<membership-summary
-				:membership-application="membershipApplication"
-				:address="addressSummary"
-				:salutations="salutations"
-				:address-is-invalid="addressIsInvalid">
-			</membership-summary>
-			<submit-values :tracking-data="{}"></submit-values>
-			<div class="columns has-margin-top-18">
-				<div class="column">
-					<FunButton
-						id="previous-btn"
-						class="level-item is-primary is-main is-outlined"
-						@click="previousPage"
-					>
-						{{ $t('membership_form_section_back') }}
-					</FunButton>
-				</div>
-				<div class="column">
-					<FunButton
-						id="submit-btn"
-						:class="[ 'level-item is-primary is-main', { 'is-loading' : store.getters.isValidating } ]"
-						@click="submit"
-					>
-						{{ $t('membership_form_finalize') }}
-					</FunButton>
-				</div>
-			</div>
-		</div>
+
+		<FormSummary>
+			<template #summary-content>
+				<MembershipSummary
+					:membership-application="membershipApplication"
+					:address="addressSummary"
+					:salutations="salutations"
+					:address-is-invalid="addressIsInvalid">
+				</MembershipSummary>
+			</template>
+
+			<template #summary-buttons>
+				<FormButton
+					id="previous-btn"
+					:is-outlined="true"
+					@click="previousPage"
+				>
+					{{ $t('membership_form_section_back') }}
+				</FormButton>
+				<FormButton
+					id="submit-btn"
+					:is-loading="store.getters.isValidating"
+					@click="submit"
+				>
+					{{ $t('membership_form_finalize') }}
+				</FormButton>
+			</template>
+		</FormSummary>
 
 		<form action="/apply-for-membership" method="post" ref="submitValuesForm">
 			<SubmitValues/>
@@ -55,11 +54,12 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 import { Country } from '@src/view_models/Country';
 import { useStore } from 'vuex';
 import { useAddressFormEventHandlers } from '@src/components/pages/membership_form/useAddressFormEventHandlers';
 import { trackFormSubmission } from '@src/util/tracking';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import FormSummary from '@src/components/shared/FormSummary.vue';
 
 interface Props {
 	validateAddressUrl: String;
