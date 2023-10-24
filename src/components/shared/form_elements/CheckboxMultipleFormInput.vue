@@ -1,5 +1,5 @@
 <template>
-	<div class="checkbox-multiple-form-input">
+	<div class="control checkbox-multiple-form-input">
 		<label
 			ref="labelRef"
 			class="radio"
