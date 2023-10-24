@@ -1,7 +1,7 @@
 <template>
 	<fieldset class="form-field form-field-amount" :class="`locale-${ $i18n.locale }`">
-		<div class="minimum-message">
-			<slot name="minimum-message"/>
+		<div v-if="minimumAmountMessage!=''" class="minimum-message">
+			{{ props.minimumAmountMessage }}
 		</div>
 		<div class="control form-field-amount-radio-container">
 			<div class="form-field-amount-radio" v-for="( paymentAmount, index ) in paymentAmounts" :key="index">
@@ -51,10 +51,12 @@ interface Props {
 	minimumAmount?: number;
 	showError?: boolean;
 	errorMessage?: String;
+	minimumAmountMessage?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	minimumAmount: 0,
+	minimumAmountMessage: '',
 	showError: false,
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
@@ -128,6 +130,7 @@ $max-width: 384px;
 
 	.minimum-message {
 		margin-bottom: map.get( units.$spacing, 'small' );
+		line-height: 130%;
 	}
 
 	.input {

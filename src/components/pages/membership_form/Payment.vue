@@ -19,10 +19,8 @@
 				:error-message="$t('membership_form_payment_amount_error')"
 				:show-error="!feeIsValid"
 				:minimum-amount="minimumAmount"
+				:minimum-amount-message="$t('membership_form_payment_amount_description')"
 			>
-				<template #minimum-message>
-					<span>{{ $t('membership_form_payment_amount_description') }}</span>
-				</template>
 				<template #info-message>
 					<span>{{ $t('membership_form_payment_amount_cap_notice') }}</span>
 				</template>
