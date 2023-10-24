@@ -1,7 +1,14 @@
 <template>
 	<div class="payment-page">
 		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
-		<membership-type v-if="showMembershipTypeOption"/>
+
+		<FormSection :title="$t('membership_form_membershiptype_legend')" title-margin="x-small">
+			<MembershipTypeField
+				v-if="showMembershipTypeOption"
+				v-model="membershipTypeModel"
+				:disabledMembershipTypes="disabledMembershipTypes"
+			/>
+		</FormSection>
 
 		<FormSection :title="$t('membership_form_section_address_header_type')" title-margin="small">
 			<AddressType
@@ -33,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import MembershipType from '@src/components/pages/membership_form//MembershipType.vue';
 import Payment from '@src/components/pages/membership_form/Payment.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
@@ -47,6 +53,10 @@ import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
+import { useMembershipTypeModel } from '@src/components/pages/membership_form/useMembershipTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 
 interface Props {
 	validateFeeUrl: String,
@@ -69,6 +79,13 @@ const {
 	addressType,
 	setAddressType,
 } = useAddressTypeFunctions( store );
+
+const membershipTypeModel = useMembershipTypeModel( store );
+const disabledMembershipTypes = computed(
+	(): MembershipTypeModel[] => {
+		return store.state[ NS_MEMBERSHIP_ADDRESS ].addressType === AddressTypeModel.COMPANY ? [ MembershipTypeModel.ACTIVE ] : [];
+	}
+);
 
 const isDirectDebitPayment = computed( (): boolean => store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' );
 

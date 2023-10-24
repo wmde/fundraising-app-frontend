@@ -11,6 +11,9 @@ export const getters: GetterTree<MembershipFee, any> = {
 	typeIsValid: function ( state: MembershipFee ): boolean {
 		return state.validity.type !== Validity.INVALID;
 	},
+	intervalIsValid: function ( state: MembershipFee ): boolean {
+		return state.validity.interval !== Validity.INVALID;
+	},
 	paymentDataIsValid: function ( state: MembershipFee ): boolean {
 		for ( const prop in state.validity ) {
 			if ( state.validity[ prop ] !== Validity.VALID ) {

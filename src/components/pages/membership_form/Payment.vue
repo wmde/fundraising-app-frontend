@@ -8,6 +8,8 @@
 				:options="paymentIntervalsAsOptions"
 				:required="true"
 				:disabled="[]"
+				:show-error="!intervalIsValid"
+				:error-message="$t('membership_form_interval_error')"
 				alignment="column"
 			/>
 		</FormSection>
@@ -81,6 +83,7 @@ const paymentType = usePaymentFieldModel( store, 'type', setType, props.validate
 
 const paymentTypeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/typeIsValid' ] );
 const feeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/feeIsValid' ] );
+const intervalIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/intervalIsValid' ] );
 
 const minimumAmount = computed(
 	() => store.getters[ NS_MEMBERSHIP_FEE + '/minimumAmount' ]( store.state[ NS_MEMBERSHIP_ADDRESS ].addressType )

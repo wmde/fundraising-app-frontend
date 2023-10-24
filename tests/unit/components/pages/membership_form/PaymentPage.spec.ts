@@ -1,16 +1,14 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import PaymentPage from '@src/components/pages/membership_form/subpages/PaymentPage.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
-import MembershipType from '@src/components/pages/membership_form/MembershipType.vue';
+import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { setAddressType } from '@src/store/membership_address/actionTypes';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
+import { setAddressType, setMembershipType } from '@src/store/membership_address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Store } from 'vuex';
-import { initializeMembershipFee, setType } from '@src/store/membership_fee/actionTypes';
-import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 
 describe( 'PaymentPage.vue', () => {
 	let wrapper: VueWrapper<any>;
@@ -45,12 +43,12 @@ describe( 'PaymentPage.vue', () => {
 	} );
 
 	it( 'toggle membership type visibility', async () => {
-		wrapper.findComponent( MembershipType );
-		expect( wrapper.findComponent( MembershipType ).exists() ).toBe( true );
+		wrapper.findComponent( MembershipTypeField );
+		expect( wrapper.findComponent( MembershipTypeField ).exists() ).toBe( true );
 
 		await wrapper.setProps( { showMembershipTypeOption: false } );
 
-		expect( wrapper.findComponent( MembershipType ).exists() ).toBe( false );
+		expect( wrapper.findComponent( MembershipTypeField ).exists() ).toBe( false );
 	} );
 
 } );

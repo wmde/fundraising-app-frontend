@@ -1,5 +1,6 @@
 <template>
 	<div class="address-page">
+		<h1 class="title is-size-5">{{ $t( 'membership_form_section_address_title' ) }}</h1>
 		<AddressFields
 			:validate-address-url="validateAddressUrl.toString()"
 			:validate-email-url="validateEmailUrl.toString()"

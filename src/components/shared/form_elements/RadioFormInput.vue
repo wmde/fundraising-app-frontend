@@ -55,7 +55,6 @@ $check-size: map.get( units.$spacing, 'small' );
 
 .radio-form-input {
 	flex: 0 0 auto;
-	margin: 0 0 map.get( units.$spacing, 'small' );
 	width: 100%;
 	padding: map.get( units.$spacing, 'small' ) 0;
 	line-height: map.get( units.$spacing, 'small' );

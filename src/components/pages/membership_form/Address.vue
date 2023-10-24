@@ -1,6 +1,5 @@
 <template>
 	<div class="address-section">
-		<h1 class="has-margin-top-36 title is-size-5">{{ $t( 'membership_form_section_address_title' ) }}</h1>
 		<AutofillHandler @autofill="onAutofill">
 
 			<NameFields

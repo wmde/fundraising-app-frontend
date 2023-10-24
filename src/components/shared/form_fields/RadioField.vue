@@ -103,7 +103,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 
 				.option-info-message {
 					color: rgba(0,0,0,.6);
-					margin-top: map.get( units.$spacing, 'small' );
+					margin-top: map.get( units.$spacing, 'xx-small' );
 				}
 
 				&.is-active {
