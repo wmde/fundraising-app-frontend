@@ -60,10 +60,11 @@ const onUpdateModel = ( newValue: string|number ): void => {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+@use '@src/scss/settings/colors';
 
 .field-info-message {
-	color: rgba(0,0,0,.6);
+	color: colors.$gray-dark;
 }
 
 </style>

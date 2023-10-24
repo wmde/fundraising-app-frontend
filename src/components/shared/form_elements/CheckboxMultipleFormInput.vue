@@ -45,7 +45,7 @@ const inputModel = useInputModel<Array<string | number>>( () => props.modelValue
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use '@src/scss/settings/units';
 @use '@src/scss/settings/colors';
 @use '@src/scss/settings/forms';

@@ -74,6 +74,6 @@ watch( city, ( newCity: string ) => {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 
 </style>
