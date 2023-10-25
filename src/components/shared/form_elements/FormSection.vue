@@ -18,7 +18,7 @@ withDefaults( defineProps<Props>(), {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use '@src/scss/settings/units';
 @use 'sass:map';
 

@@ -1,84 +1,112 @@
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import Payment from '@src/components/pages/membership_form/Payment.vue';
-import PaymentType from '@src/components/pages/membership_form/PaymentType.vue';
-import AmountSelection from '@src/components/shared/AmountSelection.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
-import PaymentInterval from '@src/components/shared/PaymentInterval.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
-import { NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
+import AmountField from '@src/components/shared/form_fields/AmountField.vue';
+import { nextTick } from 'vue';
+import { Store } from 'vuex';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import { GenericValuePayload } from '@src/view_models/MembershipFee';
+import { setAddressType } from '@src/store/address/actionTypes';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 describe( 'Payment.vue', () => {
-	let wrapper: any;
-	beforeEach( () => {
-		wrapper = mount( Payment, {
+	let store: Store<any>;
+
+	const getWrapper = (): VueWrapper<any> => {
+		store = createStore();
+		return mount( Payment, {
 			props: {
 				validateFeeUrl: 'https://example.com/amount-check',
-				paymentAmounts: [ 5 ],
-				paymentIntervals: [ 0, 1, 3, 6, 12 ],
+				paymentAmounts: [ 500, 1000, 10000 ],
+				paymentIntervals: [ 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'UEB' ],
 				validateBankDataUrl: 'https://example.com/amount-check',
 				validateLegacyBankDataUrl: 'https://example.com/amount-check',
 			},
 			global: {
-				plugins: [ createStore() ],
+				plugins: [ store ],
 			},
 		} );
+	};
+
+	it( 'sends amount to store when amount model updates', async () => {
+		const wrapper = getWrapper();
+		store.dispatch = jest.fn();
+		const expectedPayload: GenericValuePayload = {
+			selectedValue: '1500',
+			validateFeeUrl: 'https://example.com/amount-check',
+		};
+
+		wrapper.findComponent( AmountField ).vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
+		await nextTick();
+
+		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setFee ), expectedPayload );
 	} );
 
-	it( 'sets correct amount title when interval is selected', async () => {
-		const interval1 = wrapper.find( '#interval-1 input' );
-		const interval12 = wrapper.find( '#interval-12 input' );
-		const amountSelection = wrapper.findComponent( AmountSelection );
-
-		expect( amountSelection.vm.$props.title ).toEqual( 'membership_form_payment_amount_title' );
-
-		await interval1.trigger( 'change' );
-		expect( amountSelection.vm.$props.title ).toEqual( 'membership_form_payment_amount_title_interval_1' );
-
-		await interval12.trigger( 'change' );
-		expect( amountSelection.vm.$props.title ).toEqual( 'membership_form_payment_amount_title_interval_12' );
-	} );
-
-	it( 'shows bank data when payment type is selected', async () => {
+	it( 'shows bank data when payment type is selected and removes it when unselected', async () => {
+		const wrapper = getWrapper();
 		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
 
-		await wrapper.find( '#payment-bez input' ).trigger( 'change' );
+		await wrapper.find( '#paymentType-BEZ input' ).trigger( 'change' );
 
 		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#paymentType-UEB input' ).trigger( 'change' );
+
+		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
 	} );
 
-	it( 'sends interval to store when interval selection emits event ', () => {
-		const store = wrapper.vm.$store;
+	it( 'sends interval to store when interval model updates', async () => {
+		const wrapper = getWrapper();
 		store.dispatch = jest.fn();
+		const expectedPayload: GenericValuePayload = {
+			selectedValue: '6',
+			validateFeeUrl: 'https://example.com/amount-check',
+		};
 
-		wrapper.findComponent( PaymentInterval ).vm.$emit( 'interval-selected', 6 );
+		wrapper.findAllComponents( RadioField )[ 0 ].vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
+		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith(
-			action( NS_MEMBERSHIP_FEE, setInterval ),
-			{ 'selectedInterval': 6, 'validateFeeUrl': 'https://example.com/amount-check' }
-		);
+		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setInterval ), expectedPayload );
 	} );
 
-	it( 'sends payment type to store when payment selection emits event ', () => {
-		const store = wrapper.vm.$store;
+	it( 'sends payment type to store when payment model updates', async () => {
+		const wrapper = getWrapper();
 		store.dispatch = jest.fn();
+		const expectedPayload: GenericValuePayload = {
+			selectedValue: 'PPL',
+			validateFeeUrl: 'https://example.com/amount-check',
+		};
 
-		wrapper.findComponent( PaymentType ).vm.$emit( 'payment-type-selected', 'BEZ' );
+		wrapper.findAllComponents( RadioField )[ 1 ].vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
+		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setType ), { 'selectedType': 'BEZ', 'validateFeeUrl': 'https://example.com/amount-check' } );
+		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setType ), expectedPayload );
 	} );
 
-	it( 'sends amount to store when amount selection emits event ', () => {
-		const store = wrapper.vm.$store;
-		store.dispatch = jest.fn();
+	it( 'unsets selected fee when it is below the allowed minimum amount', async () => {
+		const wrapper = getWrapper();
+		const lowSelectableFeeValue = '500';
 
-		wrapper.findComponent( AmountSelection ).vm.$emit( 'amount-selected', '1500' );
+		await wrapper.findComponent( AmountField ).setValue( lowSelectableFeeValue );
 
-		expect( store.dispatch ).toBeCalledWith(
-			action( NS_MEMBERSHIP_FEE, setFee ),
-			{ 'feeValue': '1500', 'validateFeeUrl': 'https://example.com/amount-check' }
-		);
+		// selects first input element of the AmountField
+		const lowFeeInputElement = wrapper.findComponent( AmountField ).find<HTMLInputElement>( 'input' );
+		expect( lowFeeInputElement.element ).toBeChecked();
+
+		// address type changes / interval changes
+		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), AddressTypeModel.COMPANY );
+		await store.dispatch( action( NS_MEMBERSHIP_FEE, setInterval ), {
+			selectedValue: '12',
+			validateFeeUrl: 'https://example.com/amount-check',
+		} );
+		await nextTick();
+
+		expect( lowFeeInputElement.element ).not.toBeChecked();
+		expect( lowFeeInputElement.element ).toBeDisabled();
 	} );
 } );

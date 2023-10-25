@@ -75,6 +75,10 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 
 			@include breakpoints.tablet-up {
 				flex-direction: row;
+
+				.radio-form-input {
+					margin: 0 map.get( units.$spacing, 'large' ) 0 0;
+				}
 			}
 		}
 		&.column-alignment {
@@ -99,7 +103,7 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 
 				.option-info-message {
 					color: rgba(0,0,0,.6);
-					margin-top: map.get( units.$spacing, 'small' );;
+					margin-top: map.get( units.$spacing, 'xx-small' );
 				}
 
 				&.is-active {

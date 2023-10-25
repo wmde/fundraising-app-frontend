@@ -1,81 +1,108 @@
 <template>
 	<div class="payment-page">
 		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
-		<membership-type v-if="showMembershipTypeOption"/>
-		<div class="has-margin-top-36">
-			<address-type :initial-value="addressType" v-on:address-type="setAddressType( $event )" />
-		</div>
-		<payment class="has-margin-top-36" v-bind="$props"/>
-		<div class="level has-margin-top-18">
-			<div class="level-left">
-				<FunButton
-					id="next"
-					:class="[ 'is-form-input-width is-primary is-main level-item', { 'is-loading' : $store.getters.isValidating } ]"
-					@click="next()"
-				>
-					{{ $t('donation_form_section_continue') }}
-				</FunButton>
-			</div>
-		</div>
+
+		<FormSection :title="$t('membership_form_membershiptype_legend')" title-margin="x-small">
+			<MembershipTypeField
+				v-if="showMembershipTypeOption"
+				v-model="membershipTypeModel"
+				:disabledMembershipTypes="disabledMembershipTypes"
+			/>
+		</FormSection>
+
+		<FormSection :title="$t('membership_form_section_address_header_type')" title-margin="small">
+			<AddressType
+				@field-changed="setAddressType( $event )"
+				:disabledAddressTypes="disabledAddressTypes"
+				:is-direct-debit="isDirectDebitPayment"
+				:initial-address-type="addressType"
+				:address-type-is-invalid="false"
+			/>
+		</FormSection>
+
+		<Payment
+			:payment-amounts="props.paymentAmounts"
+			:payment-intervals="props.paymentIntervals"
+			:payment-types="props.paymentTypes"
+			:validate-fee-url="props.validateFeeUrl.toString()"
+			:validate-bank-data-url="props.validateBankDataUrl.toString()"
+			:validate-legacy-bank-data-url="props.validateLegacyBankDataUrl.toString()"
+		/>
+		<FormSection title="" title-margin="small">
+			<FormButton
+				@click="next()"
+				:is-loading="store.getters.isValidating"
+			>
+				{{ $t('donation_form_section_continue') }}
+			</FormButton>
+		</FormSection>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import MembershipType from '@src/components/pages/membership_form//MembershipType.vue';
+<script setup lang="ts">
 import Payment from '@src/components/pages/membership_form/Payment.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@src/store/membership_fee/actionTypes';
 import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@src/store/bankdata/actionTypes';
+import { useStore } from 'vuex';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
+import { computed, onMounted } from 'vue';
+import { trackDynamicForm } from '@src/util/tracking';
+import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
+import FormSection from '@src/components/shared/form_elements/FormSection.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
+import { useMembershipTypeModel } from '@src/components/pages/membership_form/useMembershipTypeModel';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { setAddressType } from '@src/store/membership_address/actionTypes';
-import { mapGetters } from 'vuex';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 
-export default defineComponent( {
-	name: 'PaymentPage',
-	components: {
-		FunButton,
-		AddressType,
-		Payment,
-		MembershipType,
-	},
-	props: {
-		validateFeeUrl: String,
-		paymentAmounts: Array as () => Array<String>,
-		paymentIntervals: Array as () => Array<Number>,
-		paymentTypes: Array as () => Array<String>,
-		validateBankDataUrl: String,
-		validateLegacyBankDataUrl: String,
-		showMembershipTypeOption: Boolean,
-	},
-	methods: {
-		next() {
-			waitForServerValidationToFinish( this.$store ).then( () => {
-				const storeCleanupActions = [ this.$store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeValuesAsInvalid ) ) ];
-				if ( this.$store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' ) {
-					storeCleanupActions.push( this.$store.dispatch( action( NS_BANKDATA, markemptyBankDataValuesAsInvalid ) ) );
-				}
-				return Promise.all( storeCleanupActions ).then( () => {
-					if ( this.$store.getters.paymentDataIsValid && this.$store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {
-						this.$emit( 'next-page' );
-					} else {
-						document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-					}
-				} );
-			} );
-		},
-		setAddressType( addressType: AddressTypeModel ): void {
-			this.$store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), addressType );
-		},
-	},
-	computed: {
-		...mapGetters( NS_MEMBERSHIP_ADDRESS, [
-			'addressType',
-		] ),
-	},
-} );
+interface Props {
+	validateFeeUrl: String,
+	paymentAmounts: number[],
+	paymentIntervals: number[],
+	paymentTypes: string[];
+	validateBankDataUrl: String,
+	validateLegacyBankDataUrl: String,
+	showMembershipTypeOption: Boolean,
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits( [ 'next-page' ] );
+const store = useStore();
+
+onMounted( trackDynamicForm );
+
+const {
+	disabledAddressTypes,
+	addressType,
+	setAddressType,
+} = useAddressTypeFunctions( store );
+
+const membershipTypeModel = useMembershipTypeModel( store );
+const disabledMembershipTypes = computed(
+	(): MembershipTypeModel[] => {
+		return store.state[ NS_MEMBERSHIP_ADDRESS ].addressType === AddressTypeModel.COMPANY ? [ MembershipTypeModel.ACTIVE ] : [];
+	}
+);
+
+const isDirectDebitPayment = computed( (): boolean => store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' );
+
+const next = async (): Promise<any> => {
+	waitForServerValidationToFinish( store ).then( () => {
+		const storeCleanupActions = [ store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeValuesAsInvalid ) ) ];
+		if ( isDirectDebitPayment ) {
+			storeCleanupActions.push( store.dispatch( action( NS_BANKDATA, markemptyBankDataValuesAsInvalid ) ) );
+		}
+		return Promise.all( storeCleanupActions ).then( () => {
+			if ( store.getters.paymentDataIsValid && store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {
+				emit( 'next-page' );
+			} else {
+				document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+			}
+		} );
+	} );
+};
+
 </script>

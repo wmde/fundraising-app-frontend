@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
 
-import { InitialMembershipFeeValues, IntervalData, MembershipFee, SetFeePayload, TypeData } from '@src/view_models/MembershipFee';
+import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
 
 import {
 	initializeMembershipFee,
@@ -60,7 +60,7 @@ export const actions = {
 		// Trigger server-side validation to restore server-side validation state
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( validateFee, {
-				feeValue: initialData.fee,
+				selectedValue: initialData.fee,
 				validateFeeUrl: initialData.validateFeeUrl,
 			} );
 		}
@@ -71,12 +71,12 @@ export const actions = {
 	[ markEmptyFeeAsInvalid ]( context: ActionContext<MembershipFee, any> ): void {
 		context.commit( MARK_EMPTY_FEE_INVALID );
 	},
-	[ validateFee ]( context: ActionContext<MembershipFee, any>, payload: SetFeePayload ): Promise<void> {
+	[ validateFee ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
 		context.commit( SET_IS_VALIDATING, true );
 		return validateFeeDataRemotely(
 			context,
 			payload.validateFeeUrl,
-			payload.feeValue,
+			payload.selectedValue,
 			context.state.values.interval,
 			context.state.values.type,
 		).then( ( validationResult: ValidationResponse ) => {
@@ -86,9 +86,9 @@ export const actions = {
 			context.commit( SET_IS_VALIDATING, false );
 		} );
 	},
-	[ setFee ]( context: ActionContext<MembershipFee, any>, payload: SetFeePayload ): Promise<void> {
-		context.commit( SET_FEE, payload.feeValue );
-		context.commit( SET_FEE_VALIDITY, validateFeeOnClientSide( payload.feeValue ) );
+	[ setFee ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
+		context.commit( SET_FEE, payload.selectedValue );
+		context.commit( SET_FEE_VALIDITY, validateFeeOnClientSide( payload.selectedValue ) );
 
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {
@@ -103,8 +103,8 @@ export const actions = {
 		}
 		return Promise.resolve();
 	},
-	[ setInterval ]( context: ActionContext<MembershipFee, any>, payload: IntervalData ): Promise<void> {
-		context.commit( SET_INTERVAL, payload.selectedInterval );
+	[ setInterval ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
+		context.commit( SET_INTERVAL, payload.selectedValue );
 
 		// Trigger client-side validation - store will inspect set value
 		context.commit( SET_INTERVAL_VALIDITY );
@@ -112,20 +112,20 @@ export const actions = {
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( validateFee, {
-				feeValue: context.state.values.fee,
+				selectedValue: context.state.values.fee,
 				// validateFeeUrl should not be part of the payload, see https://phabricator.wikimedia.org/T315068
 				validateFeeUrl: payload.validateFeeUrl,
 			} );
 		}
 		return Promise.resolve();
 	},
-	[ setType ]( context: ActionContext<MembershipFee, any>, payload: TypeData ): Promise<void> {
-		context.commit( SET_TYPE, payload.selectedType );
+	[ setType ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
+		context.commit( SET_TYPE, payload.selectedValue );
 		// Trigger client-side validation - store will inspect set value
 		context.commit( SET_TYPE_VALIDITY );
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( validateFee, {
-				feeValue: context.state.values.fee,
+				selectedValue: context.state.values.fee,
 				validateFeeUrl: payload.validateFeeUrl,
 			} );
 		}

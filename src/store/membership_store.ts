@@ -7,6 +7,7 @@ import {
 	NS_MEMBERSHIP_ADDRESS,
 	NS_MEMBERSHIP_FEE,
 } from './namespaces';
+import { InjectionKey } from 'vue';
 
 export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) {
 	const storeBundle: StoreOptions<any> = {
@@ -19,8 +20,7 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 		getters: {
 			isValidating: function ( state ): boolean {
 				return state[ NS_MEMBERSHIP_FEE ].isValidating ||
-					// TODO use getters instead
-					state[ NS_MEMBERSHIP_ADDRESS ].serverSideValidationCount > 0 ||
+					state[ NS_MEMBERSHIP_ADDRESS ].isValidating ||
 					state[ NS_BANKDATA ].isValidating;
 			},
 			paymentDataIsValid: function ( state, getters ): boolean {
@@ -40,3 +40,5 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 
 	return new Vuex.Store<any>( storeBundle );
 }
+
+export const StoreKeyMembership: InjectionKey<Store<any>> = Symbol( 'Store' );

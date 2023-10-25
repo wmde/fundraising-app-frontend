@@ -11,7 +11,7 @@ export default function (): Module<Payment, any> {
 		validity: {
 			fee: Validity.INCOMPLETE,
 			interval: Validity.INCOMPLETE,
-			type: Validity.VALID,
+			type: Validity.INCOMPLETE,
 		},
 		values: {
 			fee: '', // membership fee in cents

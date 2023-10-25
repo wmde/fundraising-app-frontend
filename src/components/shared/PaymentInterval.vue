@@ -29,6 +29,10 @@ import { defineComponent } from 'vue';
 import { IntervalData } from '@src/view_models/Payment';
 import RadioInput from '@src/components/shared/legacy_form_inputs/RadioInput.vue';
 
+/**
+ * old PaymentInterval component
+ * @deprecated Use a generic shared field instead
+ */
 export default defineComponent( {
 	name: 'PaymentInterval',
 	components: { RadioInput },

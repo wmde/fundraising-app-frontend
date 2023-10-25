@@ -1,7 +1,7 @@
 import { getters } from '@src/store/membership_fee/getters';
 import { actions } from '@src/store/membership_fee/actions';
 import { mutations } from '@src/store/membership_fee/mutations';
-import { IntervalData, MembershipFee } from '@src/view_models/MembershipFee';
+import { GenericValuePayload,  MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
 import { markEmptyFeeAsInvalid, validateFee } from '@src/store/membership_fee/actionTypes';
 import { MARK_EMPTY_FEE_INVALID, SET_FEE, SET_FEE_VALIDITY, SET_INTERVAL, SET_INTERVAL_VALIDITY } from '@src/store/membership_fee/mutationTypes';
@@ -169,7 +169,7 @@ describe( 'MembershipFee', () => {
 				},
 			};
 			const action = actions.setInterval as any;
-			action( context, { selectedInterval: '3', validateFeeUrl: '' } as IntervalData );
+			action( context, { selectedValue: '3', validateFeeUrl: '' } as GenericValuePayload );
 			expect( context.commit ).toHaveBeenNthCalledWith(
 				1,
 				SET_INTERVAL,
@@ -201,13 +201,13 @@ describe( 'MembershipFee', () => {
 						},
 					},
 				},
-				expectedPayload = {
-					feeValue: '2000',
+				expectedPayload :GenericValuePayload = {
+					selectedValue: '2000',
 					validateFeeUrl: '/validate-fee-url',
 				};
 
 			const action = actions.setInterval as any;
-			return action( context, { selectedInterval: '3', validateFeeUrl: '/validate-fee-url' } as IntervalData ).then( () => {
+			return action( context, { selectedValue: '3', validateFeeUrl: '/validate-fee-url' } as GenericValuePayload ).then( () => {
 				expect( context.dispatch ).toHaveBeenCalledWith( validateFee, expectedPayload );
 			} );
 		} );
@@ -234,12 +234,12 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500',
+					selectedValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
-				};
+				} as GenericValuePayload;
 			const action = actions.setFee as any;
 			return action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith( SET_FEE, payload.feeValue );
+				expect( context.commit ).toHaveBeenCalledWith( SET_FEE, payload.selectedValue );
 			} );
 		} );
 
@@ -290,7 +290,7 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500Blah',
+					selectedValue: '2500Blah',
 					validateFeeUrl: '/validation-fee-url',
 				};
 			const action = actions.setFee as any;
@@ -325,7 +325,7 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500',
+					selectedValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
 				expectedFormData = new FormData();
@@ -353,7 +353,7 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500',
+					selectedValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
 				action = actions.validateFee as any;
@@ -387,7 +387,7 @@ describe( 'MembershipFee', () => {
 					},
 				},
 				payload = {
-					feeValue: '2500',
+					selectedValue: '2500',
 					validateFeeUrl: '/validation-fee-url',
 				},
 				action = actions.validateFee as any;
@@ -499,9 +499,9 @@ describe( 'MembershipFee', () => {
 		it( 'mutates validation state', () => {
 			const store = newMinimalStore( {} );
 			mutations.SET_IS_VALIDATING( store, true );
-			expect( store.values.isValidating ).toStrictEqual( true );
+			expect( store.isValidating ).toStrictEqual( true );
 			mutations.SET_IS_VALIDATING( store, false );
-			expect( store.values.isValidating ).toStrictEqual( false );
+			expect( store.isValidating ).toStrictEqual( false );
 		} );
 	} );
 } );

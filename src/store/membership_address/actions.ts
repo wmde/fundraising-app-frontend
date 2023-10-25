@@ -135,7 +135,7 @@ export const actions = {
 			result.then( () => context.dispatch(
 				action( NS_MEMBERSHIP_FEE, validateFee ),
 				{
-					feeValue: context.rootState[ NS_MEMBERSHIP_FEE ].values.fee,
+					selectedValue: context.rootState[ NS_MEMBERSHIP_FEE ].values.fee,
 					// Hard-coded URL without host name for now
 					// validateFeeUrl should not be part of the payload, see https://phabricator.wikimedia.org/T315068
 					validateFeeUrl: '/validate-fee',

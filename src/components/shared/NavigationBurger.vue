@@ -21,7 +21,7 @@ defineProps<Props>();
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use "../../scss/settings/global";
 @use "../../scss/settings/colors";
 @use "../../scss/settings/breakpoints";

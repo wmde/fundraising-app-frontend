@@ -55,13 +55,11 @@ $check-size: map.get( units.$spacing, 'small' );
 
 .radio-form-input {
 	flex: 0 0 auto;
-	margin: 0 0 map.get( units.$spacing, 'small' );
 	width: 100%;
 	padding: map.get( units.$spacing, 'small' ) 0;
 	line-height: map.get( units.$spacing, 'small' );
 
 	@include breakpoints.tablet-up {
-		margin: 0 map.get( units.$spacing, 'large' ) 0 0;
 		width: map.get( units.$spacing, 'xxx-large' );
 	}
 
