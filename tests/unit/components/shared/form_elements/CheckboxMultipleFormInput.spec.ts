@@ -20,7 +20,7 @@ describe( 'CheckboxMultipleFormInput.vue', () => {
 
 		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'disabled' ) ).toBeUndefined();
 
-		const labelElement = wrapper.find<HTMLElement>( 'label.radio' );
+		const labelElement = wrapper.find<HTMLElement>( 'label.checkbox' );
 		await wrapper.setProps( { disabled: true } );
 
 		expect( labelElement.classes() ).toContain( 'is-disabled' );
