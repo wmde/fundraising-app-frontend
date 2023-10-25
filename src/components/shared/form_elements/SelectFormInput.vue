@@ -7,6 +7,7 @@
 				:id="selectId"
 				:disabled="disabled"
 				:required="required"
+				:class="{ 'is-danger': hasError }"
 			>
                 <slot/>
 			</select>
@@ -22,12 +23,13 @@ interface Props {
 	modelValue: string | number;
 	name: string;
 	selectId: string;
+	hasError?: boolean;
 	disabled?: boolean;
 	required?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
-	multiple: false,
+	hasError: false,
 	disabled: false,
 	required: false,
 } );

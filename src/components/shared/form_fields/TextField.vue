@@ -1,6 +1,8 @@
 <template>
 	<div class="form-field form-field-text" :class="{ 'is-invalid': showError }">
-		<label :for="inputId" class="form-field-label">{{ label }}</label>
+		<label :for="inputId" class="form-field-label">
+			{{ label }} <em v-if="labelHelpText">{{ labelHelpText }}</em>
+		</label>
 		<TextFormInput
 			:name="name"
 			:input-type="inputType"
@@ -11,6 +13,7 @@
 			:placeholder="placeholder"
 			:autocomplete="autocomplete"
 			:disabled="disabled"
+			:required="required"
 			@blur="$emit('field-changed', name )"
 			@update:modelValue="onUpdateModel"
 		/>
@@ -27,6 +30,7 @@ import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vu
 interface Props {
 	inputType?: 'text'|'textarea';
 	label: String;
+	labelHelpText?: String;
 	name: string;
 	inputId: string;
 	placeholder: string;

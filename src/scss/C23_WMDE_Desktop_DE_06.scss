@@ -233,7 +233,8 @@ changes must be updated in the settings files before this file is deleted.
 	}
 
 	.is-danger.textarea,
-	.is-danger.input {
+	.is-danger.input,
+	select.is-danger {
 		border-color: $error;
 	}
 }

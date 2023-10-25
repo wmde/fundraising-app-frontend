@@ -1,223 +1,232 @@
 <template>
 	<div class="contact-form">
 		<h1 class="title">{{ $t( 'contact_form_title' ) }}</h1>
-		<span class="help is-danger has-padding-bottom-18" v-if="contactData.errors">{{ $t('contact_form_error') }}</span>
-		<span class="help is-danger has-padding-bottom-18" v-for="error in contactData.errors">{{ $t( error ) }}</span>
+		<div class="contact-form-errors" v-if="contactData.errors">
+			<p class="help is-danger">{{ $t('contact_form_error') }}</p>
+			<span class="help is-danger" v-for="error in contactData.errors">{{ $t( error ) }}</span>
+		</div>
 		<form method="post" action="/contact/get-in-touch" v-on:submit.prevent="submit" id="laika-contact" ref="form">
-			<fieldset>
-				<div>
-					<label for="firstname" class="subtitle">
-						{{ $t( 'contact_form_firstname_label' ) }}
-						<span class="has-text-gray-dark">{{ $t('contact_form_optional') }}</span>
-					</label>
-					<div class="field">
-						<TextInput
-							type="text"
-							input-id="firstname"
-							name="firstname"
-							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
-							v-model="formData.firstname.value"
-							:has-error="formData.firstname.validity === Validity.INVALID"
-						/>
-					</div>
-					<span v-if="formData.firstname.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_firstname_error' ) }}</span>
-				</div>
-				<div class="has-margin-top-18">
-					<label for="lastname" class="subtitle">
-						{{ $t( 'contact_form_lastname_label' ) }}
-						<span class="has-text-gray-dark">{{ $t('contact_form_optional') }}</span>
-					</label>
-					<div class="field">
-						<TextInput
-							type="text"
-							input-id="lastname"
-							name="lastname"
-							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
-							v-model="formData.lastname.value"
-							:has-error="formData.lastname.validity === Validity.INVALID"
-						/>
-					</div>
-					<span v-if="formData.lastname.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_lastname_error' ) }}</span>
-				</div>
-				<div class="has-margin-top-18">
-					<label for="donationNumber" class="subtitle">
-						{{ $t( 'contact_form_donation_number_label' ) }}
-						<span class="has-text-gray-dark">{{ $t('contact_form_optional') }}</span>
-					</label>
-					<div class="field">
-						<TextInput
-							type="text"
-							input-id="donationNumber"
-							name="donationNumber"
-							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
-							v-model="formData.donationNumber.value"
-							:has-error="formData.donationNumber.validity === Validity.INVALID"
-						/>
-					</div>
-					<span v-if="formData.donationNumber.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_donation_number_error' ) }}</span>
-				</div>
-			</fieldset>
-			<fieldset class="has-margin-top-36">
-				<div class="has-margin-top-18">
-				<label for="email" class="subtitle">{{ $t( 'contact_form_email_label' ) }}</label>
-				<div class="field">
-					<TextInput
-						type="text"
-						input-id="email"
-						name="email"
-						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_email_placeholder_vuei18n_v3' ) } )"
-						v-model="formData.email.value"
-						:has-error="formData.email.validity === Validity.INVALID"
-					/>
-				</div>
-				<span v-if="formData.email.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_email_error' ) }}</span>
-				</div>
-				<div class="has-margin-top-18">
-					<label for="category" class="subtitle">{{ $t( 'contact_form_topic_placeholder' ) }}</label>
-					<FunSelect
-						class="is-form-input"
-						v-model="formData.topic.value"
-						select-id="category"
-						name="category"
+			<FormSection>
+				<TextField
+					name="firstname"
+					input-id="firstname"
+					v-model="formData.firstname.value"
+					:label="$t( 'contact_form_firstname_label' )"
+					:label-help-text="$t('contact_form_optional')"
+					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
+					:show-error="formData.firstname.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_firstname_error' )"
+				/>
+
+				<TextField
+					name="lastname"
+					input-id="lastname"
+					v-model="formData.lastname.value"
+					:label="$t( 'contact_form_lastname_label' )"
+					:label-help-text="$t('contact_form_optional')"
+					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
+					:show-error="formData.lastname.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_lastname_error' )"
+				/>
+
+				<TextField
+					name="donationNumber"
+					input-id="donationNumber"
+					v-model="formData.donationNumber.value"
+					:label="$t( 'contact_form_donation_number_label' )"
+					:label-help-text="$t('contact_form_optional')"
+					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
+					:show-error="formData.donationNumber.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_donation_number_error' )"
+				/>
+			</FormSection>
+
+			<FormSection>
+
+				<EmailField
+					v-model="formData.email.value"
+					:show-error="formData.email.validity === Validity.INVALID"
+				/>
+
+				<SelectField
+					v-model="formData.topic.value"
+					name="category"
+					:label="$t( 'contact_form_topic_placeholder' )"
+					:options="[
+						{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
+						...Object.values( contactData.contact_categories ).map( ( value: string ) => ( { label: value, value: value } ) )
+					]"
+					:show-error="formData.topic.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_topic_error' )"
+				/>
+
+				<TextField
+					name="subject"
+					input-id="subject"
+					v-model="formData.subject.value"
+					:label="$t( 'contact_form_subject_label' )"
+					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
+					:show-error="formData.subject.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_subject_error' )"
+				/>
+
+				<TextField
+					name="messageBody"
+					input-type="textarea"
+					input-id="messageBody"
+					v-model="formData.comment.value"
+					:label="$t( 'contact_form_body_label' )"
+					placeholder=""
+					:show-error="formData.comment.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_body_error' )"
+				/>
+
+				<div class="contact-form-button">
+					<FormButton
+						id="submit-btn"
+						button-type="submit"
 					>
-						<option hidden="hidden" disabled="disabled" value="">{{ $t( 'contact_form_topic_placeholder' ) }}</option>
-						<option v-for="option in contactData.contact_categories">{{ option }}</option>
-					</FunSelect>
-					<span v-if="formData.topic.validity === Validity.INVALID" class="help is-danger has-padding-top-18">{{ $t( 'contact_form_topic_error' ) }}</span>
+						{{ $t('contact_form_submit_button') }}
+					</FormButton>
 				</div>
-				<div class="has-margin-top-18">
-					<label for="subject" class="subtitle">{{ $t( 'contact_form_subject_label' ) }}</label>
-					<div class="field">
-						<TextInput
-							type="text"
-							input-id="subject"
-							name="subject"
-							:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
-							v-model="formData.subject.value"
-							:has-error="formData.subject.validity === Validity.INVALID"
-						/>
-					</div>
-					<span v-if="formData.subject.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_subject_error' ) }}</span>
-				</div>
-				<div class="has-margin-top-18">
-					<label for="messageBody" class="subtitle">{{ $t( 'contact_form_body_label' ) }}</label>
-					<div class="field">
-						<TextInput
-							input-type="textarea"
-							input-id="messageBody"
-							name="messageBody"
-							v-model="formData.comment.value"
-							:has-error="formData.comment.validity === Validity.INVALID"
-						/>
-					</div>
-					<span v-if="formData.comment.validity === Validity.INVALID" class="help is-danger">{{ $t( 'contact_form_body_error' ) }}</span>
-				</div>
-			</fieldset>
-			<div class="has-margin-top-18">
-				<FunButton id="submit-btn" class="is-primary is-main" button-type="submit">
-					{{ $t('contact_form_submit_button') }}
-				</FunButton>
-			</div>
+			</FormSection>
 		</form>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { FormData } from '@src/view_models/Contact';
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
 import { Helper } from '@src/store/util';
 import { Validity } from '@src/view_models/Validity';
 import { ContactFormValidation } from '@src/view_models/Validation';
 import { trackFormSubmission } from '@src/util/tracking';
-import TextInput from '@src/components/shared/legacy_form_inputs/TextInput.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
-import FunSelect from '@src/components/shared/legacy_form_inputs/FunSelect.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
+import EmailField from '@src/components/shared/form_fields/EmailField.vue';
+import SelectField from '@src/components/shared/form_fields/SelectField.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import FormSection from '@src/components/shared/form_elements/FormSection.vue';
+import { useI18n } from 'vue-i18n';
 
-export default defineComponent( {
-	name: 'Contact',
-	components: { FunSelect, FunButton, TextInput },
-	data: function (): { formData: FormData } {
-		return {
-			formData: {
-				firstname: {
-					name: 'name',
-					value: this.$props.contactData.firstname ? this.$props.contactData.firstname : '',
-					pattern: this.$props.validationPatterns.firstName,
-					optionalField: true,
-					validity: Validity.VALID,
-				},
-				lastname: {
-					name: 'lastname',
-					value: this.$props.contactData.lastname ? this.$props.contactData.lastname : '',
-					pattern: this.$props.validationPatterns.lastName,
-					optionalField: true,
-					validity: Validity.VALID,
-				},
-				donationNumber: {
-					name: 'donationNumber',
-					value: this.$props.contactData.donationNumber ? this.$props.contactData.donationNumber : '',
-					pattern: this.$props.validationPatterns.donationNumber,
-					optionalField: true,
-					validity: Validity.VALID,
-				},
-				email: {
-					name: 'email',
-					value: this.$props.contactData.email ? this.$props.contactData.email : '',
-					pattern: this.$props.validationPatterns.email,
-					optionalField: false,
-					validity: Validity.INCOMPLETE,
-				},
-				topic: {
-					name: 'topic',
-					value: this.$props.contactData.category ? this.$i18n.t( this.$props.contactData.category ) as string : '',
-					pattern: this.$props.validationPatterns.topic,
-					optionalField: false,
-					validity: Validity.INCOMPLETE,
-				},
-				subject: {
-					name: 'subject',
-					value: this.$props.contactData.subject ? this.$props.contactData.subject : '',
-					pattern: this.$props.validationPatterns.subject,
-					optionalField: false,
-					validity: Validity.INCOMPLETE,
-				},
-				comment: {
-					name: 'comment',
-					value: this.$props.contactData.messageBody ? this.$props.contactData.messageBody : '',
-					pattern: this.$props.validationPatterns.comment,
-					optionalField: false,
-					validity: Validity.INCOMPLETE,
-				},
-			},
-		};
+interface ContactData {
+	contact_categories: Record<string, string>;
+	firstname?: string;
+	lastname?: string;
+	donationNumber?: string;
+	email?: string;
+	category?: string;
+	subject?: string;
+	messageBody?: string;
+	errors?: string[];
+}
+
+interface FormItem {
+	name: string;
+	value: string;
+	pattern: string;
+	optionalField: boolean;
+	validity: Validity;
+}
+
+interface FormData {
+	firstname: FormItem;
+	lastname: FormItem;
+	donationNumber: FormItem;
+	email: FormItem;
+	topic: FormItem;
+	subject: FormItem;
+	comment: FormItem;
+}
+
+interface Props {
+	contactData: ContactData;
+	validationPatterns: ContactFormValidation;
+}
+
+const props = defineProps<Props>();
+const { t } = useI18n();
+
+const form = ref<HTMLFormElement>( null );
+const formData = reactive<FormData>( {
+	firstname: {
+		name: 'name',
+		value: props.contactData.firstname ? props.contactData.firstname : '',
+		pattern: props.validationPatterns.firstname,
+		optionalField: true,
+		validity: Validity.VALID,
 	},
-	props: {
-		contactData: Object,
-		validationPatterns: Object as () => ContactFormValidation,
+	lastname: {
+		name: 'lastname',
+		value: props.contactData.lastname ? props.contactData.lastname : '',
+		pattern: props.validationPatterns.lastname,
+		optionalField: true,
+		validity: Validity.VALID,
 	},
-	computed: {
-		Validity: {
-			get() {
-				return Validity;
-			},
-		},
+	donationNumber: {
+		name: 'donationNumber',
+		value: props.contactData.donationNumber ? props.contactData.donationNumber : '',
+		pattern: props.validationPatterns.donationNumber,
+		optionalField: true,
+		validity: Validity.VALID,
 	},
-	methods: {
-		submit() {
-			let isValid = true;
-			Object.keys( this.$data.formData ).forEach( ( fieldName: string ) => {
-				let field = this.$data.formData[ fieldName ];
-				field.validity = Helper.inputIsValid( field.value, field.pattern, field.optionalField );
-				if ( field.validity !== Validity.VALID ) {
-					isValid = false;
-				}
-			} );
-			if ( isValid ) {
-				const form = this.$refs.form as HTMLFormElement;
-				trackFormSubmission( form );
-				form.submit();
-			}
-		},
+	email: {
+		name: 'email',
+		value: props.contactData.email ? props.contactData.email : '',
+		pattern: props.validationPatterns.email,
+		optionalField: false,
+		validity: Validity.INCOMPLETE,
+	},
+	topic: {
+		name: 'topic',
+		value: props.contactData.category ? t( props.contactData.category ) as string : '',
+		pattern: props.validationPatterns.topic,
+		optionalField: false,
+		validity: Validity.INCOMPLETE,
+	},
+	subject: {
+		name: 'subject',
+		value: props.contactData.subject ? props.contactData.subject : '',
+		pattern: props.validationPatterns.subject,
+		optionalField: false,
+		validity: Validity.INCOMPLETE,
+	},
+	comment: {
+		name: 'comment',
+		value: props.contactData.messageBody ? props.contactData.messageBody : '',
+		pattern: props.validationPatterns.comment,
+		optionalField: false,
+		validity: Validity.INCOMPLETE,
 	},
 } );
+
+const submit = (): void => {
+	let isValid = true;
+	Object.keys( formData ).forEach( ( fieldName: string ) => {
+		let field = formData[ fieldName ];
+		field.validity = Helper.inputIsValid( field.value, field.pattern, field.optionalField );
+		if ( field.validity !== Validity.VALID ) {
+			isValid = false;
+		}
+	} );
+	if ( isValid ) {
+		trackFormSubmission( form.value );
+		form.value.submit();
+	}
+};
+
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use 'sass:map';
+
+.contact-form {
+
+	&-errors {
+		margin-bottom: map.get( units.$spacing, 'large' );
+	}
+
+	.form-section:not( :last-child ) {
+		margin-bottom: map.get( units.$spacing, 'xx-large' );
+	}
+}
+</style>
