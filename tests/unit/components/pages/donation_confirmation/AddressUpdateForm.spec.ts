@@ -1,16 +1,17 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
-import AddressModal from '@src/components/pages/donation_confirmation/AddressModal.vue';
+import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 import { action } from '@src/store/util';
 import { NS_ADDRESS } from '@src/store/namespaces';
 import { initializeAddress } from '@src/store/address/actionTypes';
-import { addressValidationPatterns } from '../../../../data/validation';
-import { anonymousBankTransferConfirmationData, bankTransferConfirmationData } from '../../../../data/confirmationData';
+import { addressValidationPatterns } from '@test/data/validation';
+import { anonymousBankTransferConfirmationData, bankTransferConfirmationData } from '@test/data/confirmationData';
 import { Address } from '@src/view_models/Address';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { Store } from 'vuex';
 import { nextTick } from 'vue';
+import DonorResource from '@src/api/DonorResource';
 
 const anonAddress = {
 	addressType: 'anonym',
@@ -61,16 +62,22 @@ const addressData = ( address: Address, addressType: AddressTypeModel ) => {
 	};
 };
 
-describe( 'AddressModal.vue', () => {
-	const getWrapper = ( store: Store<any>, confirmationData: Object, donorResource: Object = {} ): VueWrapper<any> => {
-		return mount( AddressModal, {
+const defaultDonorResource: DonorResource = {
+	putEndpoint: '',
+	put(): Promise<Address> {
+		return Promise.resolve( undefined );
+	},
+};
+
+describe( 'AddressUpdateForm.vue', () => {
+	const getWrapper = ( store: Store<any>, confirmationData: any, donorResource: DonorResource = defaultDonorResource ): VueWrapper<any> => {
+		return mount( AddressUpdateForm, {
 			props: {
+				addressValidationPatterns,
+				donation: {},
+				donorResource,
 				validateEmailUrl: '',
 				validateAddressUrl: '',
-				hasErrored: false,
-				hasSucceeded: false,
-				addressValidationPatterns,
-				donorResource,
 				...confirmationData,
 			},
 			global: {
@@ -88,7 +95,7 @@ describe( 'AddressModal.vue', () => {
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
 
-		expect( wrapper.find<HTMLInputElement>( '[name="salutationInternal"]' ).element.value ).toBe( validAddress.salutation );
+		expect( wrapper.find<HTMLInputElement>( '[name="salutation"]' ).element.value ).toBe( validAddress.salutation );
 		expect( wrapper.find<HTMLInputElement>( '#title' ).element.value ).toBe( validAddress.title );
 		expect( wrapper.find<HTMLInputElement>( '#first-name' ).element.value ).toBe( validAddress.firstName );
 		expect( wrapper.find<HTMLInputElement>( '#last-name' ).element.value ).toBe( validAddress.lastName );
@@ -97,7 +104,7 @@ describe( 'AddressModal.vue', () => {
 		expect( wrapper.find<HTMLInputElement>( '#city' ).element.value ).toBe( validAddress.city );
 		expect( wrapper.find<HTMLInputElement>( '#country' ).element.value ).toBe( 'Deutschland' );
 		expect( wrapper.find<HTMLInputElement>( '#email' ).element.value ).toBe( validAddress.email );
-		expect( wrapper.find<HTMLInputElement>( '[name="newsletter"]' ).element.checked ).toBe( true );
+		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBe( true );
 	} );
 
 	it( 'marks address type invalid if submitted without selecting', async () => {
@@ -110,7 +117,7 @@ describe( 'AddressModal.vue', () => {
 		const wrapper = getWrapper( store, anonymousBankTransferConfirmationData );
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
-		expect( wrapper.find( '.error-address-type' ).exists() ).toBe( true );
+		expect( wrapper.find( '.address-type-field .is-danger' ).exists() ).toBe( true );
 	} );
 
 	it( 'marks empty address fields invalid if submitted after selecting address type', async () => {
@@ -122,18 +129,23 @@ describe( 'AddressModal.vue', () => {
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
 
-		await wrapper.find( '#address-type-person input' ).trigger( 'change' );
+		await wrapper.find( '#addressType-0 input' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 
 		await wrapper.vm.$nextTick();
 
-		expect( wrapper.find( '.error-salutation' ).exists() ).toBe( true );
-		expect( wrapper.find( '.error-first-name' ).exists() ).toBe( true );
-		expect( wrapper.find( '.error-last-name' ).exists() ).toBe( true );
-		expect( wrapper.find( '.error-street' ).exists() ).toBe( true );
-		expect( wrapper.find( '.error-postcode' ).exists() ).toBe( true );
-		expect( wrapper.find( '.error-city' ).exists() ).toBe( true );
-		expect( wrapper.find( '.error-email' ).exists() ).toBe( true );
+		const nameSectionText = wrapper.find( '.name-section' ).text();
+		expect( nameSectionText ).toContain( 'donation_form_salutation_error' );
+		expect( nameSectionText ).toContain( 'donation_form_firstname_error' );
+		expect( nameSectionText ).toContain( 'donation_form_lastname_error' );
+		expect( nameSectionText ).toContain( 'donation_form_lastname_error' );
+
+		const addressSectionText = wrapper.find( '.address-section' ).text();
+		expect( addressSectionText ).toContain( 'donation_form_street_error' );
+		expect( addressSectionText ).toContain( 'donation_form_zip_error' );
+		expect( addressSectionText ).toContain( 'donation_form_city_error' );
+
+		expect( wrapper.find( '.form-field-email .is-danger' ).exists() ).toBe( true );
 	} );
 
 	it( 'displays an error if one is returned from the server', async () => {
@@ -142,6 +154,7 @@ describe( 'AddressModal.vue', () => {
 
 		const error = 'Get outta that garden!';
 		const donorResource = {
+			putEndpoint: '',
 			put: jest.fn().mockRejectedValue( error ),
 		};
 
@@ -156,7 +169,7 @@ describe( 'AddressModal.vue', () => {
 		await nextTick();
 		await nextTick();
 
-		expect( wrapper.vm.$data.serverMessage ).toBe( error );
 		expect( wrapper.find( '.error-server' ).exists() ).toBe( true );
+		expect( wrapper.find( '.error-server' ).text() ).toStrictEqual( error );
 	} );
 } );

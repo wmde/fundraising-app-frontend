@@ -148,7 +148,7 @@ import { StoreKey } from '@src/store/donation_store';
 import { injectStrict } from '@src/util/injectStrict';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { Validity } from '@src/view_models/Validity';
-import { useMailingListModel } from '@src/components/pages/donation_form/DonationReceipt/useMailingListModel';
+import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 

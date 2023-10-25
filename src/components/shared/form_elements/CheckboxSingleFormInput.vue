@@ -2,7 +2,7 @@
 	<div class="control checkbox-single-form-input" :class="{ 'is-disabled': disabled }">
 		<label
 			ref="labelRef"
-			class="radio"
+			class="checkbox"
 			:class="{ 'is-disabled': disabled }"
 			@click="focus"
 			@keydown.prevent.enter="click"

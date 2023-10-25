@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import DonationCommentPopUp from '@src/components/DonationCommentPopUp.vue';
+import DonationCommentPopUp from '@src/components/pages/donation_confirmation/DonationCommentPopUp.vue';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 describe( 'DonationCommentPopUp.vue', () => {
@@ -15,27 +15,19 @@ describe( 'DonationCommentPopUp.vue', () => {
 			paymentType: 'UEB',
 			updateToken: 'd387cebd6cc05efbd117545492cb0e99',
 		};
+
 		if ( !isAnonymous ) {
 			return {
 				donation: sampleDonationData,
 				addressType: addressTypeName( AddressTypeModel.PERSON ),
-				address: {
-					city: 'Berlin',
-					countryCode: 'DE',
-					email: 'test@wikimedia.de',
-					firstName: 'Tester',
-					fullName: 'Prof. Dr. Tester McTest',
-					lastName: 'McTest',
-					postalCode: '10963',
-					salutation: 'Herr',
-					streetAddress: 'Tempelhofer Ufer 23-24',
-				},
+				postCommentUrl: '',
 			};
 		}
+
 		return {
 			donation: sampleDonationData,
 			addressType: addressTypeName( AddressTypeModel.ANON ),
-			address: {},
+			postCommentUrl: '',
 		};
 	}
 
@@ -44,7 +36,7 @@ describe( 'DonationCommentPopUp.vue', () => {
 			props: getDefaultConfirmationData( false ),
 		} );
 
-		expect( wrapper.find( '#isAnonymous' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#withName' ).exists() ).toBeTruthy();
 	} );
 
 	it( 'hides anyonmous comment toggle for anonymous donations', () => {
@@ -52,6 +44,6 @@ describe( 'DonationCommentPopUp.vue', () => {
 			props: getDefaultConfirmationData( true ),
 		} );
 
-		expect( wrapper.find( '#isAnonymous' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#withName' ).exists() ).toBeFalsy();
 	} );
 } );
