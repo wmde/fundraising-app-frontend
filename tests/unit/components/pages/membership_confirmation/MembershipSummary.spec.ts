@@ -86,7 +86,7 @@ describe( 'MembershipSummary.vue', () => {
 	it( 'renders personal membership confirmation data', () => {
 		const wrapper = getWrapper( privateAddress, monthlyPayment );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain(
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() ).toContain(
 			'Herr Prof. Dr. Testy MacTest, Tempelhofer Ufer 26, 10963 Berlin, donation_form_country_option_DE E-Mail: testperson@wikimedia.de'
 		);
 	} );
@@ -94,7 +94,7 @@ describe( 'MembershipSummary.vue', () => {
 	it( 'renders company membership confirmation data', () => {
 		const wrapper = getWrapper( companyAddress, monthlyPayment );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain(
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() ).toContain(
 			'Test Company, Teststreet 123, 12345 Company City, donation_form_country_option_DE E-Mail: testcompany@wikimedia.de'
 		);
 	} );
@@ -105,29 +105,31 @@ describe( 'MembershipSummary.vue', () => {
 	it( 'renders monthly payments', () => {
 		const wrapper = getWrapper( companyAddress, monthlyPayment );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 15' );
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 donation_form_payment_interval_12)\"' );
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() ).toContain( '\"membershipFeeFormatted\": 15' );
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() )
+			.toContain( '\"membershipFeeYearlyFormatted\": \"(180 donation_form_payment_interval_12)\"' );
 	} );
 
 	it( 'renders quarterly payments', () => {
 		const wrapper = getWrapper( companyAddress, quarterlyPayment );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 45' );
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"(180 donation_form_payment_interval_12)\"' );
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() ).toContain( '\"membershipFeeFormatted\": 45' );
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() )
+			.toContain( '\"membershipFeeYearlyFormatted\": \"(180 donation_form_payment_interval_12)\"' );
 	} );
 
 	it( 'renders yearly payments', () => {
 		const wrapper = getWrapper( companyAddress, yearlyPayment );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeFormatted\": 180' );
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"\"' );
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() ).toContain( '\"membershipFeeFormatted\": 180' );
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() ).toContain( '\"membershipFeeYearlyFormatted\": \"\"' );
 	} );
 
 	test( 'Does not render summary when address is invalid', () => {
 		const wrapper = getWrapper( companyAddress, monthlyPayment, true );
 
-		expect( wrapper.find( '.payment-summary' ).text() ).toContain( 'membership_form_review_address_is_invalid' );
-		expect( wrapper.find( '.payment-summary' ).text() ).not.toContain( 'membershipFeeYearlyFormatted' );
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() ).toContain( 'membership_form_review_address_is_invalid' );
+		expect( wrapper.find( '.form-summary-content div:last-child' ).text() ).not.toContain( 'membershipFeeYearlyFormatted' );
 	} );
 
 	/* eslint-enable no-useless-escape */
