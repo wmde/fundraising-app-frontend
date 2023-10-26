@@ -32,7 +32,9 @@ defineProps<Props>();
 	flex-direction: column;
 
 	h1,
-	h2 {
+	h2,
+	h3,
+	h4 {
 		color: #000000;
 		font-weight: 400;
 		line-height: 1.125;
@@ -47,6 +49,14 @@ defineProps<Props>();
 		font-size: 1.6rem;
 	}
 
+	h3 {
+		font-size: 1.4em;
+	}
+
+	h4 {
+		font-size: 1.2em;
+	}
+
 	p {
 		margin-bottom: map.get( units.$spacing, 'small' );
 
@@ -55,12 +65,17 @@ defineProps<Props>();
 		}
 	}
 
+	ul,
 	ol {
-		margin-left: map.get( units.$spacing, 'small' );
+		padding-left: map.get( units.$spacing, 'medium' );
+		margin-bottom: map.get( units.$spacing, 'small' );
 	}
 
-	& > ol {
-		padding-left: map.get( units.$spacing, 'small' );
+	ul {
+		list-style-type: disc;
+	}
+
+	ol {
 		list-style-type: upper-roman;
 
 		li {
