@@ -1,34 +1,48 @@
 <template>
 	<div class="comment-list">
-		<h1 class="title">{{ $t( 'donation_comments_title' ) }}</h1>
-		<span>{{ $t( 'donation_comments_text' )}}</span>
-		<span v-if="isLoading" class="has-margin-top-36 columns is-centered">
-			<span class="pseudo button is-loading"></span>
+		<h1>{{ $t( 'donation_comments_title' ) }}</h1>
+		<p>{{ $t( 'donation_comments_text' ) }}</p>
+
+		<span v-if="isLoading" class="comment-list-loading">
+			<LoadingSpinner/>
 		</span>
-		<div class="has-margin-top-18">
-			<div class="has-margin-top-18" v-for="comment in pageContent">
-				<div class="has-text-weight-bold">{{ commentHeadline( comment ) }}</div>
-				<div class="has-text-gray-dark">{{ comment.date }}</div>
+
+		<div class="comment-list-comments">
+			<div class="comment-list-comment" v-for="comment in pageContent">
+				<div><strong>{{ commentHeadline( comment ) }}</strong></div>
+				<div class="comment-list-comment-meta">{{ comment.date }}</div>
 				<div>{{ comment.comment }}</div>
 			</div>
 		</div>
-		<div v-if="!isLoading" class="page-selector has-margin-top-36 has-margin-bottom-18">
-			<button class="button mdi mdi-arrow-left" :disabled="currentPage === 1" v-on:click="previousPage"></button>
-			<FunSelect class="is-form-input" v-model="currentPage" name="page" select-id="page">
-				<option v-for="page in pageCount" :value="page"> {{ page }}</option>
-			</FunSelect>
-			<button class="button mdi mdi-arrow-right" :disabled="currentPage === pageCount" v-on:click="nextPage"></button>
+
+		<div v-if="!isLoading" class="comment-list-pagination">
+			<button class="comment-list-previous" :class="{ 'inactive': isFirstPage }" @click="previousPage">
+				<ChevronLeftIcon/>
+			</button>
+			<button
+				class="comment-list-number"
+				:class="{ 'current': currentPage === page }"
+				v-for="page in pageCount"
+				:key="page"
+				@click="() => goToPage( page )"
+			>
+				{{ page }}
+			</button>
+			<button class="comment-list-next" :class="{ 'inactive': isLastPage }" @click="nextPage">
+				<ChevronRightIcon/>
+			</button>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import axios from 'axios';
-import { commentModelsFromObject } from '@src/view_models/Comment';
-import FunSelect from '@src/components/shared/legacy_form_inputs/FunSelect.vue';
-import { onMounted, ref } from 'vue';
-import { Comment } from '@src/view_models/Comment';
+import { Comment, commentModelsFromObject } from '@src/view_models/Comment';
+import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import ChevronLeftIcon from '@src/components/shared/icons/ChevronLeftIcon.vue';
+import ChevronRightIcon from '@src/components/shared/icons/ChevronRightIcon.vue';
+import LoadingSpinner from '@src/components/shared/LoadingSpinner.vue';
 
 const { t, n } = useI18n();
 
@@ -40,25 +54,33 @@ let pageCount = ref( 0 );
 let currentPage = ref( 1 );
 const isLoading = ref( true );
 
-const switchPage = () => {
+const isFirstPage = computed<boolean>( () => currentPage.value === 1 );
+const isLastPage = computed<boolean>( () => currentPage.value === pageCount.value );
+
+const switchPage = (): void => {
 	pageContent.value = comments.value.slice(
 		( currentPage.value - 1 ) * PAGE_SIZE,
 		( currentPage.value * PAGE_SIZE ) - 1
 	);
 };
 
-const nextPage = () => {
+const nextPage = (): void => {
 	if ( currentPage.value < pageCount.value ) {
 		currentPage.value += 1;
 		switchPage();
 	}
 };
 
-const previousPage = () => {
+const previousPage = (): void => {
 	if ( currentPage.value > 1 ) {
 		currentPage.value -= 1;
 		switchPage();
 	}
+};
+
+const goToPage = ( page: number ): void => {
+	currentPage.value = page;
+	switchPage();
 };
 
 const commentHeadline = ( comment: Comment ) => t(
@@ -70,45 +92,97 @@ const commentHeadline = ( comment: Comment ) => t(
 );
 
 onMounted( () => {
-	axios
-		.get( '/list-comments.json?n=100&anon=1' )
-		.then( ( response ) => {
-			comments.value = commentModelsFromObject( response.data );
-			pageCount.value = Math.ceil( comments.value.length / PAGE_SIZE );
-			switchPage();
-			isLoading.value = false;
-		} )
-		.catch( () => {
-			isLoading.value = false;
-		} );
+	axios.get( '/list-comments.json?n=100&anon=1' ).then( ( response ) => {
+		comments.value = commentModelsFromObject( response.data );
+		pageCount.value = Math.ceil( comments.value.length / PAGE_SIZE );
+		switchPage();
+		isLoading.value = false;
+	} ).catch( () => {
+		isLoading.value = false;
+	} );
 } );
 
 </script>
 
 <style lang="scss">
-	@import "../../scss/variables";
-	.pseudo.button {
-		display: block;
-		width: 100px;
+@use 'src/scss/settings/units';
+@use 'src/scss/settings/forms';
+@use 'src/scss/settings/colors';
+@use 'src/scss/settings/breakpoints';
+@use 'sass:map';
+
+.comment-list {
+	&-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 200px;
+		width: 100%;
 	}
-	.page-selector {
-		position: relative;
-		height: 50px;
-		> button {
-			position: absolute;
-			width: 50px;
-			height: 48px;
-			&.mdi-arrow-left {
-				left: 0;
-			}
-			&.mdi-arrow-right {
-				left: 160px;
-			}
+
+	&-comments {
+		margin-bottom: map.get(units.$spacing, 'x-large');
+	}
+
+	&-comment {
+		&:not( :last-child ) {
+			margin-bottom: map.get(units.$spacing, 'medium');
 		}
-		> .control {
-			position: absolute;
-			width: 70px;
-			left: 70px;
+
+		&-meta {
+			color: colors.$gray-dark;
 		}
 	}
+
+	&-pagination {
+		display: flex;
+		justify-content: center;
+	}
+
+	&-previous,
+	&-number,
+	&-next {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0 2px;
+		cursor: pointer;
+		border: 1px solid colors.$gray-mid;
+		border-radius: map.get(forms.$input, 'border-radius');
+		background: colors.$white;
+
+		@include breakpoints.tablet-up {
+			margin: 0 5px;
+		}
+
+		&:hover,
+		&:focus {
+			border: 1px solid colors.$primary;
+		}
+
+		&.current {
+			border: 1px solid colors.$primary;
+			color: colors.$primary;
+			font-weight: bold;
+		}
+
+		&.inactive {
+			opacity: 0.3;
+		}
+	}
+
+	&-previous,
+	&-next {
+		padding: 10px;
+		width: 30px;
+	}
+
+	&-number {
+		padding: 10px 0;
+		width: 20px;
+		@include breakpoints.tablet-up {
+			width: 30px;
+		}
+	}
+}
 </style>

@@ -7,7 +7,6 @@
 // TODO: Look through what Bulma elements are being used and only import styles for them
 //    This will reduce the css file size
 @import "~bulma";
-@import "~bulma-helpers/sass/helpers/spacing/margin-padding";
 
 .is-form-input-width {
 	width: $fun-min-width !important;

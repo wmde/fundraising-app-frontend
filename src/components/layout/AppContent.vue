@@ -31,6 +31,18 @@ defineProps<Props>();
 	display: flex;
 	flex-direction: column;
 
+	h1 {
+		color: #000000;
+		font-size: 1.7rem;
+		font-weight: 400;
+		line-height: 1.125;
+		margin-bottom: map.get( units.$spacing, 'small' );
+	}
+
+	p {
+		margin-bottom: map.get( units.$spacing, 'small' );
+	}
+
 	@include breakpoints.tablet-up {
 		flex-direction: row;
 	}

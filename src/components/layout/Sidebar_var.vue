@@ -43,6 +43,10 @@ const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 	margin-bottom: map.get( units.$spacing, 'small' );
 	line-height: 1.5;
 
+	p {
+		margin-bottom: 0;
+	}
+
 	&:last-child {
 		margin-bottom: 0;
 	}
