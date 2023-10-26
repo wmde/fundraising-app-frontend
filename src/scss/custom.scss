@@ -100,25 +100,6 @@
 	border: solid 2px $fun-color-gray-light-solid;
 }
 
-.accordion {
-	&-item {
-		border: 1px solid $fun-color-bright;
-		padding-top: 1rem;
-		box-sizing: content-box;
-	}
-	&-title {
-		border-bottom: 2px solid $fun-color-gray-light-transparency;
-		cursor: pointer;
-		margin-bottom: 6px;
-	}
-	&-title {
-		cursor: pointer;
-	}
-	&-content {
-		margin-bottom: 36px;
-	}
-}
-
 .content .faq-item {
 	list-style-type: none;
 	margin: 0;

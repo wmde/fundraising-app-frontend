@@ -31,12 +31,20 @@ defineProps<Props>();
 	display: flex;
 	flex-direction: column;
 
-	h1 {
+	h1,
+	h2 {
 		color: #000000;
-		font-size: 1.7rem;
 		font-weight: 400;
 		line-height: 1.125;
 		margin-bottom: map.get( units.$spacing, 'small' );
+	}
+
+	h1 {
+		font-size: 1.7rem;
+	}
+
+	h2 {
+		font-size: 1.6rem;
 	}
 
 	p {
