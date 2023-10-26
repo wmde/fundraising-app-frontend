@@ -78,7 +78,11 @@ export default defineComponent( {
 				return '';
 			}
 
-			return this.$props.salutations.find( salutation => salutation.label === this.address.salutation )?.display + ' ';
+			const salutationObject = this.$props.salutations.find( salutation => salutation.label === this.address.salutation );
+			if ( salutationObject === undefined ) {
+				return '';
+			}
+			return salutationObject?.display + ' ';
 		},
 		renderAmount( amount, interval, intervalTranslation ) {
 			if ( interval === 12 ) {
