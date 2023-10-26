@@ -1,6 +1,6 @@
 <template>
 	<div class="contact-form">
-		<h1 class="title">{{ $t( 'contact_form_title' ) }}</h1>
+		<h1>{{ $t( 'contact_form_title' ) }}</h1>
 		<div class="contact-form-errors" v-if="contactData.errors">
 			<p class="help is-danger">{{ $t('contact_form_error') }}</p>
 			<span class="help is-danger" v-for="error in contactData.errors">{{ $t( error ) }}</span>
