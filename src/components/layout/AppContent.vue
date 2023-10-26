@@ -49,6 +49,23 @@ defineProps<Props>();
 
 	p {
 		margin-bottom: map.get( units.$spacing, 'small' );
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	ol {
+		margin-left: map.get( units.$spacing, 'small' );
+	}
+
+	& > ol {
+		padding-left: map.get( units.$spacing, 'small' );
+		list-style-type: upper-roman;
+
+		li {
+			padding-left: 2px;
+		}
 	}
 
 	@include breakpoints.tablet-up {

@@ -1,7 +1,7 @@
 <template>
 	<div class="static-page">
-		<h2 class="title is-size-2">{{ pageTitle }}</h2>
-		<div v-html="pageContent" class="has-margin-top-18 static-content"></div>
+		<h1>{{ pageTitle }}</h1>
+		<div v-html="pageContent" class="static-content"></div>
 	</div>
 </template>
 
@@ -16,20 +16,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss">
-.static-content {
-	ol {
-		margin-left: 1.5em;
-	}
-
-	& > ol {
-		padding-left: 10px;
-		list-style-type: upper-roman;
-	}
-
-	p {
-		margin: 0 0 11px;
-	}
-}
-</style>
