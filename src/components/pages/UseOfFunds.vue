@@ -2,7 +2,7 @@
 	<div class="use_of_funds">
 		<div class="use_of_funds__section">
 			<div class="use_of_funds__section_intro">
-				<h1 class="title is-1 has-margin-bottom-18">{{ content.intro.headline }}</h1>
+				<h1>{{ content.intro.headline }}</h1>
 				<div>{{ content.intro.text }}</div>
 			</div>
 		</div>
