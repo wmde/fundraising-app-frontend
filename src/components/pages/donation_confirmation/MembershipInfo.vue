@@ -3,7 +3,7 @@
 		<h2 class="icon-title is-size-5 has-margin-bottom-18"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
 		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
 		<p class="has-margin-bottom-18">
-			<a ref="membership-cta-button" id="membership-application-url" :href="membershipApplicationUrl">
+			<a ref="buttonRef" id="membership-application-url" :href="membershipApplicationUrl">
 				<FunButton class="is-primary is-main">{{ $t('donation_confirmation_membership_button') }}</FunButton>
 			</a>
 		</p>
@@ -17,51 +17,50 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
 import { Donation } from '@src/view_models/Donation';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
-export default defineComponent( {
-	name: 'MembershipInfo',
-	components: { FunButton, WarningIcon },
-	props: {
-		donation: Object as () => Donation,
-	},
-	data: function () {
-		return {
-			buttonVisibilityObserver: null,
-			buttonIsVisible: false,
-		};
-	},
-	mounted() {
-		if ( !window.IntersectionObserver ) {
-			return;
-		}
+interface Props {
+	donation: Donation
+}
 
-		this.$data.buttonVisibilityObserver = new IntersectionObserver( ( entries ) => {
-			if ( entries[ 0 ].isIntersecting && !this.$data.buttonIsVisible ) {
-				this.$data.buttonIsVisible = true;
-				this.$emit( 'membership-cta-button-shown' );
-			} else if ( !entries[ 0 ].isIntersecting && this.$data.buttonIsVisible ) {
-				this.$data.buttonIsVisible = false;
-				this.$emit( 'membership-cta-button-hidden' );
-			}
-		} );
+const props = defineProps<Props>();
+const emit = defineEmits( [ 'membership-cta-button-shown', 'membership-cta-button-hidden' ] );
 
-		this.$data.buttonVisibilityObserver.observe( ( this.$refs[ 'membership-cta-button' ] as HTMLElement ) );
-	},
-	destroyed() {
-		this.$data.buttonVisibilityObserver.disconnect();
-	},
-	computed: {
-		membershipApplicationUrl(): string {
-			const donation = this.$props.donation;
-			return `apply-for-membership?donationId=${donation.id}&donationAccessToken=${donation.accessToken}&type=sustaining`;
-		},
-	},
+let buttonVisibilityObserver;
+const buttonIsVisible = ref( false );
+const buttonRef = ref<HTMLElement>( null );
+const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
+
+const membershipApplicationUrl = computed( (): string => {
+	return `apply-for-membership?donationId=${props.donation.id}&donationAccessToken=${props.donation.accessToken}&type=sustaining&${ campaignParams }`;
 } );
+
+onMounted( () => {
+	if ( !window.IntersectionObserver ) {
+		return;
+	}
+	buttonVisibilityObserver = new IntersectionObserver( ( entries ) => {
+		if ( entries[ 0 ].isIntersecting && !buttonIsVisible.value ) {
+			buttonIsVisible.value = true;
+			emit( 'membership-cta-button-shown' );
+		} else if ( !entries[ 0 ].isIntersecting && buttonIsVisible ) {
+			buttonIsVisible.value = false;
+			emit( 'membership-cta-button-hidden' );
+		}
+	} );
+
+	buttonVisibilityObserver.observe( buttonRef.value );
+} );
+
+onUnmounted( () => {
+	buttonVisibilityObserver.disconnect();
+} );
+
 </script>
 
 <style lang="scss">
