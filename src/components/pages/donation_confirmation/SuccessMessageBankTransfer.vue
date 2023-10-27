@@ -1,20 +1,18 @@
 <template>
-	<div class="donation-confirmation-card success-message-bank-transfer has-background-bright mb-4">
+	<div class="donation-confirmation-card success-message-bank-transfer">
 		<div class="columns is-multiline">
 			<div class="column is-full">
-				<h1 class="title icon-title"><warning-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' ) }}</h1>
+				<h1 class="icon-title"><warning-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' ) }}</h1>
 			</div>
 			<div class="column is-half">
 				<p>{{ donationSummaryMessage }}</p>
-				<div class="has-margin-top-18"
-					v-html="$t( 'donation_confirmation_reminder_bank_transfer', { bankTransferCode: donation.bankTransferCode } )">
-				</div>
-				<div id="newsletter-box" class="has-margin-top-18" v-if="donation.newsletter">
+				<p v-html="$t( 'donation_confirmation_reminder_bank_transfer', { bankTransferCode: donation.bankTransferCode } )"/>
+				<p id="newsletter-box" v-if="donation.newsletter">
 					{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
-				</div>
+				</p>
 			</div>
 			<div class="column is-half">
-				<bank-data :bank-transfer-code="donation.bankTransferCode"></bank-data>
+				<BankData :bank-transfer-code="donation.bankTransferCode"/>
 			</div>
 		</div>
 	</div>
@@ -51,6 +49,7 @@ export default defineComponent( {
 		background: #DDEDF6;
 		padding: 1rem;
 		display: inline-block;
+		list-style-type: none;
 	}
 }
 </style>

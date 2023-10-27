@@ -112,18 +112,6 @@
 	align-items: center;
 }
 
-.icon-title {
-	padding-left: 2.5rem;
-	svg {
-		float: left;
-		margin-left: -2.5rem;
-	}
-}
-
-h1.icon-title svg {
-	margin-top: 2px;
-}
-
 // No such feature in Bulma as of August 2019, if you see this comment, check if Bulma has adedd this natively
 .is-hidden-print {
 	@media print {
@@ -296,14 +284,6 @@ h1.icon-title svg {
 #address-type-selection{
 	.info-message {
 		line-height: 1.25;
-	}
-}
-
-.donation-confirmation-card,
-.membership-benefits-wrapper {
-	padding: 36px 18px;
-	@media ( min-width: 400px ) {
-		padding: 36px;
 	}
 }
 

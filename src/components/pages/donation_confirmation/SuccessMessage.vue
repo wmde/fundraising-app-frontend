@@ -1,20 +1,20 @@
 <template>
-	<div class="donation-confirmation-card success-message has-background-bright mb-4">
-		<h1 class="title icon-title"><success-icon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1>
-		<div class="has-margin-top-18">
-			<span v-html="donationSummaryMessage"></span> <span v-html="paymentNotice"></span>
-		</div>
-		<div id="newsletter-box" class="has-margin-top-18" v-if="donation.newsletter">
+	<div class="donation-confirmation-card success-message">
+		<h1 class="icon-title"><SuccessIcon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1>
+		<p>
+			<span v-html="donationSummaryMessage"/> <span v-html="paymentNotice"/>
+		</p>
+		<p id="newsletter-box" v-if="donation.newsletter">
 			{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
-		</div>
-		<div class="has-margin-top-18">
+		</p>
+		<p>
 			<span class="comment-thanks" v-if="commentLinkIsDisabled">
 				{{ $t( 'donation_comment_popup_thanks' ) }}
 			</span>
 			<a v-else id="comment-link" @click="$emit( 'show-comment-modal' )">
 				{{ $t( 'donation_confirmation_comment_button' ) }}
 			</a>
-		</div>
+		</p>
 	</div>
 </template>
 
@@ -22,7 +22,6 @@
 import { defineComponent } from 'vue';
 import { Donation } from '@src/view_models/Donation';
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
-import { TranslateResult } from 'vue-i18n';
 
 export default defineComponent( {
 	name: 'SuccessMessage',
@@ -34,7 +33,7 @@ export default defineComponent( {
 		commentLinkIsDisabled: Boolean,
 	},
 	computed: {
-		paymentNotice(): string|TranslateResult {
+		paymentNotice(): String {
 			if ( this.$props.donation.paymentType !== 'BEZ' ) {
 				return '';
 			}
@@ -43,7 +42,7 @@ export default defineComponent( {
 				formattedAmount: this.$n( this.$props.donation.amount, { key: 'currency', currencyDisplay: 'name' } ),
 			} );
 		},
-		donationSummaryMessage(): string|TranslateResult {
+		donationSummaryMessage(): String {
 			return this.$t( 'donation_confirmation_inline_summary', {
 				interval: this.$t( 'donation_form_payment_interval_' + this.$props.donation.interval ),
 				paymentType: this.$t( this.$props.donation.paymentType ),

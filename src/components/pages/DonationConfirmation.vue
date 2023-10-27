@@ -189,12 +189,21 @@ export default defineComponent( {
 </script>
 
 <style lang="scss">
-@import "../../scss/variables";
+@use 'src/scss/settings/units';
+@use 'src/scss/settings/colors';
+@use 'sass:map';
 
 .donation-confirmation {
 	&-card {
-		border: 1px solid $fun-color-gray-mid;
+		background: colors.$white;
+		border: 1px solid colors.$gray-mid;
 		border-radius: 2px;
+		padding: map.get( units.$spacing, 'large' ) map.get( units.$spacing, 'small' );
+		margin-bottom: map.get( units.$spacing, 'x-small' );
+
+		@media ( min-width: 400px ) {
+			padding: map.get( units.$spacing, 'large' );
+		}
 	}
 
 	h2 {
@@ -202,10 +211,26 @@ export default defineComponent( {
 	}
 }
 
+.icon-title {
+	padding-left: 2.5rem;
+	svg {
+		float: left;
+		margin-left: -2.5rem;
+	}
+}
+
+h1.icon-title svg {
+	margin-top: 2px;
+}
+
+h2.icon-title {
+	font-size: 1.3rem;
+}
+
 .donation {
 	&-summary {
 		&-wrapper {
-			border: 1px solid $fun-color-gray-mid;
+			border: 1px solid colors.$gray-mid;
 			border-radius: 2px;
 
 			.address-change-button {

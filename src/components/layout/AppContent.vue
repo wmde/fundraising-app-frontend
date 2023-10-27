@@ -69,6 +69,10 @@ defineProps<Props>();
 	ol {
 		padding-left: map.get( units.$spacing, 'medium' );
 		margin-bottom: map.get( units.$spacing, 'small' );
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 
 	ul {
