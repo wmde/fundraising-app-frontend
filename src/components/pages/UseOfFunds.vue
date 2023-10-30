@@ -8,7 +8,6 @@
 		</div>
 
 		<FundsDistributionAccordion :application-of-funds-data="content.applicationOfFundsData" />
-		<FundsDistributionInfo :application-of-funds-data="content.applicationOfFundsData" />
 
 		<div class="use_of_funds__section">
 			<p class="use_of_funds__info_text" v-html="content.detailedReports.mixed.text"></p>
@@ -93,6 +92,5 @@ export default defineComponent( {
 <style lang="scss">
 @import '../../scss/use_of_funds/FundsContent';
 @import '../../scss/use_of_funds/CompanyBudgets';
-@import'../../scss/use_of_funds/FundsDistributionInfo';
 @import'../../scss/use_of_funds/FundsDistributionAccordion';
 </style>
