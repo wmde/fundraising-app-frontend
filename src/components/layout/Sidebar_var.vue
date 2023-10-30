@@ -47,6 +47,11 @@ const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 		margin-bottom: 0;
 	}
 
+	ul {
+		padding-left: 0;
+		list-style-type: none;
+	}
+
 	&:last-child {
 		margin-bottom: 0;
 	}

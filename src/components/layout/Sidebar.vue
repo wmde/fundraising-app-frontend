@@ -2,7 +2,7 @@
 	<div class="sidebar-content">
 		<p><strong>{{ $t('sidebar_getintouch_headline') }}</strong></p>
 		<p v-html="appendCampaignQueryParams( $t('sidebar_getintouch_text' ), campaignParams )"></p>
-		<p class="has-margin-top-18">{{ $t('sidebar_getintouch_text_phone') }}</p>
+		<p>{{ $t('sidebar_getintouch_text_phone') }}</p>
 		<slot name="default"/>
 	</div>
 </template>
