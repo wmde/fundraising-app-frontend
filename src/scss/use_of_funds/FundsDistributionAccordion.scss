@@ -4,10 +4,6 @@
 	padding-bottom: 16px;
 	display: block;
 
-	@media (min-width: $use_of_funds_breakpoint_m) {
-		display: none;
-	}
-
 	.funds_distribution_info_item {
 		&__title {
 			font-weight: bold;
@@ -55,7 +51,8 @@
 			display: block;
 		}
 
-		&--software {
+		&--software,
+		&--infrastructure {
 			.funds_distribution_info_item__title {
 				color: #808080;
 			}
@@ -63,6 +60,16 @@
 		&--international {
 			.funds_distribution_info_item__title {
 				color: #0ea789;
+			}
+		}
+		&--diversity {
+			.funds_distribution_info_item__title {
+				color: #e61eb8;
+			}
+		}
+		&--access {
+			.funds_distribution_info_item__title {
+				color: #de8500;
 			}
 		}
 		&--communities {
