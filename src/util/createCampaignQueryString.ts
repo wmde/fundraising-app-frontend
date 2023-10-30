@@ -1,4 +1,4 @@
-const disallowList = [ 'token', 'accessToken', 'utoken', 'id', 'addressToken' ];
+const disallowList = [ 'token', 'accessToken', 'utoken', 'id', 'addressToken', 'donationId', 'donationAccessToken' ];
 
 export const QUERY_STRING_INJECTION_KEY = 'campaignQueryString';
 
