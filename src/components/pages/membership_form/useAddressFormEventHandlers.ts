@@ -48,6 +48,10 @@ export function useAddressFormEventHandlers(
 			scrollToFirstError();
 			return;
 		}
+		if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ] ) {
+			scrollToFirstError();
+			return;
+		}
 
 		trackAddressForm();
 		submitValuesForm.value.submit();
