@@ -1,6 +1,7 @@
 <template>
-	<div class="accordion-item" v-bind:class="[ isOpen ? 'accordion-open' : '' ]">
-		<div @click="isOpen = !isOpen"
+	<div class="accordion-item" :class="[ isOpen ? 'accordion-open' : '' ]">
+		<div
+			@click="isOpen = !isOpen"
 			:data-content-target="isOpen ? '/page/Häufige Fragen' : ''"
 			:data-track-content="isOpen"
 			:data-content-name="isOpen ? 'Expand' : ''"

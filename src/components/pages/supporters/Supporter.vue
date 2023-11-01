@@ -1,17 +1,13 @@
 <template>
-	<div class="accordion-item" :class="[isOpen ? 'accordion' : '']">
+	<div class="accordion-item" :class="{ 'accordion': isOpen }">
 		<div @click="toggle">
-			<div :class="[isOpen ? 'has-text-primary has-text-weight-bold' : 'accordion-heading', 'icon-inline', 'accordion-title']">
-        <span class="container columns is-mobile">
-          <span class="column">{{ content.name }}</span>
-          <span class="column is-narrow">
-            <span class="is-nowrap-whitespace is-narrow has-padding-right-18">{{ content.amount }}</span>
-            <span class="icon-aligned">
-              <ArrowUp v-if="isExpandable && isOpen"/>
-              <ArrowDown v-else-if="isExpandable && !isOpen"/>
-            </span>
-          </span>
-        </span>
+			<div :class="[ isOpen ? 'has-text-primary' : 'accordion-heading', 'icon-inline', 'accordion-title' ]">
+				<span class="accordion-title-text">{{ content.name }}</span>
+				<span class="accordion-title-amount">{{ content.amount }}</span>
+				<span class="accordion-title-icon">
+					<ArrowUp v-if="isExpandable && isOpen"/>
+					<ArrowDown v-else-if="isExpandable && !isOpen"/>
+				</span>
 			</div>
 		</div>
 		<div v-show="isOpen" v-html="content.comment" class="accordion-content"></div>
@@ -31,12 +27,10 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
 const emit = defineEmits( [ 'supporter-opened', 'supporter-closed' ] );
 
-const isOpen: boolean = computed( () => props.supporterId === props.visibleSupporterId );
-
-const isExpandable: boolean = computed( () => props.content.comment !== '' );
+const isOpen = computed<boolean>( () => props.supporterId === props.visibleSupporterId );
+const isExpandable = computed<boolean>( () => props.content.comment !== '' );
 
 const toggle = () => {
 	if ( !isExpandable.value ) {
@@ -51,8 +45,33 @@ const toggle = () => {
 </script>
 
 <style lang="scss">
-.icon-aligned {
-	width: 20px;
-	display: inline-block;
+@use '@src/scss/settings/colors';
+@use 'src/scss/settings/units';
+@use 'sass:map';
+
+.accordion {
+	&-item {
+		margin-bottom: map.get( units.$spacing, 'medium' );
+	}
+	&-title {
+		border-bottom: 2px solid colors.$gray-mid;
+		cursor: pointer;
+
+		&-text {
+			flex: 1 1 auto;
+			padding-right: 10px;
+		}
+		&-amount {
+			white-space: nowrap;
+			flex: 0 0;
+		}
+		&-icon {
+			text-align: right;
+			flex: 0 0 30px;
+		}
+	}
+	&-content {
+		padding: map.get( units.$spacing, 'small' ) 0;
+	}
 }
 </style>
