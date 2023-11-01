@@ -1,7 +1,8 @@
 <template>
 	<div class="form-summary-content">
-		<div class="title is-size-5">{{ $t( 'membership_confirmation_thanks_text' ) }}</div>
-		<div v-html="getSummary()"></div>
+		<slot name="title"/>
+		<p class="payment-summary" v-html="getSummary()"/>
+		<slot name="content"/>
 	</div>
 </template>
 
