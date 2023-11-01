@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import BankData from '@src/components/BankData.vue';
+import BankData from '@src/components/shared/BankData.vue';
 import BankIcon from '@src/components/shared/icons/BankIcon.vue';
 import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
 import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';

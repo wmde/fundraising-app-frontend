@@ -41,6 +41,8 @@ module.exports = {
 
 		// Allow template literals
 		'quotes': [ 'error', 'single', { allowTemplateLiterals: true } ],
+
+		'vue/no-unused-components': [ 'error', { 'ignoreWhenBindingPresent': false } ],
 	},
 
 	parser: 'vue-eslint-parser',

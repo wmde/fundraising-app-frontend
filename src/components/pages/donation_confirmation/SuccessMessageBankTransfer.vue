@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Donation } from '@src/view_models/Donation';
-import BankData from '@src/components/BankData.vue';
+import BankData from '@src/components/shared/BankData.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 
 export default defineComponent( {

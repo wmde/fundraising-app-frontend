@@ -91,9 +91,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import BankData from '@src/components/BankData.vue';
 import MembershipInfo from '@src/components/pages/donation_confirmation/MembershipInfo.vue';
-import AddressUsageToggle from '@src/components/pages/donation_confirmation/AddressUsageToggle.vue';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Country } from '@src/view_models/Country';
 import { SubmittedAddress } from '@src/view_models/Address';
@@ -118,16 +116,14 @@ export default defineComponent( {
 		AddressAnonymous,
 		AddressKnown,
 		AddressUpdateForm,
-		AddressUsageToggle,
-		BankData,
 		ChevronDownIcon,
+		SuccessMessageBankTransfer,
+		SuccessMessage,
 		DonationCommentPopUp,
 		DonationExported,
 		DonationSurvey,
 		MembershipInfo,
 		ModalDialogue,
-		SuccessMessage,
-		SuccessMessageBankTransfer,
 	},
 	data: function () {
 		return {

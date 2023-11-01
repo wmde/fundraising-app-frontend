@@ -11,11 +11,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
 
 export default defineComponent( {
 	name: 'PaymentSummary',
-	components: { FunButton },
 	props: [ 'amount', 'interval', 'paymentType' ],
 	methods: {
 		getSummary: function () {

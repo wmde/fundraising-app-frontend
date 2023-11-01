@@ -45,7 +45,6 @@ import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import { BankAccount } from '@src/view_models/BankAccount';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
-import addressType from '@src/components/pages/membership_form/AddressType.vue';
 
 export default defineComponent( {
 	name: 'SubmitValues',
@@ -54,9 +53,6 @@ export default defineComponent( {
 		campaignValues: Object as () => CampaignValues,
 	},
 	computed: {
-		addressType(): string {
-			return addressType.name;
-		},
 		...mapState<Payment>( NS_PAYMENT, {
 			payment: ( state: Payment ) => state.values,
 		} ),

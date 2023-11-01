@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import BankData from '@src/components/BankData.vue';
+import BankData from '@src/components/shared/BankData.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
