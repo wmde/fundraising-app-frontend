@@ -109,4 +109,30 @@ describe( 'Payment.vue', () => {
 		expect( lowFeeInputElement.element ).not.toBeChecked();
 		expect( lowFeeInputElement.element ).toBeDisabled();
 	} );
+
+	it( 'Does not show fee error when field is empty and interval changes', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( '#interval-12' ).trigger( 'click' );
+
+		expect( wrapper.find( '.form-field-amount .is-danger' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'Does not show fee error when field is filled and amount is above minimum value', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( 'input[name="amount"][value="10000"]' ).trigger( 'click' );
+		await wrapper.find( '#interval-12' ).trigger( 'click' );
+
+		expect( wrapper.find( '.form-field-amount .is-danger' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'Shows fee error when field is filled and amount is below minimum value', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'click' );
+		await wrapper.find( '#interval-12' ).trigger( 'click' );
+
+		expect( wrapper.find( '.form-field-amount .is-danger' ).exists() ).toBeFalsy();
+	} );
 } );

@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import { markEmptyFeeAsInvalid, setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
+import { setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
 import { useI18n } from 'vue-i18n';
 import { usePaymentFieldModel } from '@src/components/pages/membership_form/usePaymentFieldModel';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
@@ -62,7 +62,6 @@ import { FormOption } from '@src/components/shared/form_fields/FormOption';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
-import { action } from '@src/store/util';
 
 interface Props {
 	validateFeeUrl: string,
@@ -111,9 +110,7 @@ const paymentTypesAsOptions = computed<FormOption[]>( () => {
 
 watch( minimumAmount, async ( newMinimumAmount ) => {
 	if ( fee.value < newMinimumAmount ) {
-		await store.dispatch( action( NS_MEMBERSHIP_FEE, setFee ), { selectedValue: '', validateFeeUrl: props.validateFeeUrl } );
-		await store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeAsInvalid ) );
+		fee.value = '';
 	}
 } );
-
 </script>
