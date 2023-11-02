@@ -1,7 +1,7 @@
 <template>
 	<fieldset class="form-field form-field-amount" :class="`locale-${ $i18n.locale }`">
 		<div v-if="minimumAmountMessage!=''" class="minimum-message">
-			{{ props.minimumAmountMessage }}
+			{{ minimumAmountMessage }}
 		</div>
 		<div class="control form-field-amount-radio-container">
 			<div class="form-field-amount-radio" v-for="( paymentAmount, index ) in paymentAmounts" :key="index">
@@ -28,6 +28,7 @@
 				:placeholder="$t('donation_form_custom_placeholder')"
 				@keydown.enter="setCustomAmount"
 				@blur="setCustomAmount"
+				@focus.prevent="resetErrorInput"
 				@update:model-value="updateAmountFromCustom"
 			/>
 			<label for="form-field-amount-custom" class="is-sr-only">{{ $t('donation_form_payment_amount_legend') }}</label>
@@ -105,6 +106,12 @@ const setCustomAmount = ( e: Event ): void => {
 	} else {
 		emit( 'update:modelValue', '' );
 		emit( 'field-changed' );
+	}
+};
+
+const resetErrorInput = (): void => {
+	if ( props.showError ) {
+		customAmount.value = '';
 	}
 };
 
