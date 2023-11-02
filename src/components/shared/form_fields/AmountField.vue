@@ -171,6 +171,11 @@ $max-width: 384px;
 				color: #b7b7b7;
 			}
 
+			&.is-disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
+			}
+
 			input {
 				@include visibility.screen-reader-only;
 			}
