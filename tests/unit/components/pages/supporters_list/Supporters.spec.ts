@@ -26,12 +26,22 @@ describe( 'Supporters.vue', () => {
 	it( 'reacts to click events by showing and hiding supporter content', async () => {
 		const wrapper = getWrapper();
 
-		await wrapper.find( '.accordion-item:nth-of-type(2) > div' ).trigger( 'click' );
+		expect( wrapper.find( '.accordion-item:nth-of-type(1)' ).classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.find( '.accordion-item:nth-of-type(2)' ).classes() ).not.toContain( 'accordion-item-open' );
 
-		expect( wrapper.find( '.accordion-item:nth-of-type(2) > div > .accordion-heading' ).exists() ).toBe( false );
+		await wrapper.find( '.accordion-item:nth-of-type(1) button' ).trigger( 'click' );
 
-		await wrapper.find( '.accordion-item:nth-of-type(2) > div' ).trigger( 'click' );
+		expect( wrapper.find( '.accordion-item:nth-of-type(1)' ).classes() ).toContain( 'accordion-item-open' );
+		expect( wrapper.find( '.accordion-item:nth-of-type(2)' ).classes() ).not.toContain( 'accordion-item-open' );
 
-		expect( wrapper.find( '.accordion-item:nth-of-type(2) > div > .accordion-heading' ).exists() ).toBe( true );
+		await wrapper.find( '.accordion-item:nth-of-type(2) button' ).trigger( 'click' );
+
+		expect( wrapper.find( '.accordion-item:nth-of-type(1)' ).classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.find( '.accordion-item:nth-of-type(2)' ).classes() ).toContain( 'accordion-item-open' );
+
+		await wrapper.find( '.accordion-item:nth-of-type(2) button' ).trigger( 'click' );
+
+		expect( wrapper.find( '.accordion-item:nth-of-type(1)' ).classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.find( '.accordion-item:nth-of-type(2)' ).classes() ).not.toContain( 'accordion-item-open' );
 	} );
 } );

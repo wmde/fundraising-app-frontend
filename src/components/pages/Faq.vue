@@ -5,10 +5,11 @@
 		<ul class="faq-item">
 			<li v-for="(topic, index) in content.topics" :key="index">
 				<h2>{{ topic.name }}</h2>
-				<Question
-					v-for="(content, index) in getQuestionsByTopic(topic)"
-					:content="content"
-					:key="topic.id + index"
+				<AccordionItem
+					v-for="( content, itemIndex ) in getQuestionsByTopic( topic )"
+					:key="topic.id + itemIndex"
+					:title="content.question"
+					:content="appendCampaignQueryParams( content.visibleText, campaignParams )"
 				/>
 			</li>
 		</ul>
@@ -17,14 +18,18 @@
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue';
 import { FaqContent, QuestionModel, Topic } from '@src/view_models/faq';
-import Question from '@src/components/pages/frequently_asked_questions/Question.vue';
+import AccordionItem from '@src/components/shared/AccordionItem.vue';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
 
 interface Props {
 	content: FaqContent;
 }
 
 const props = defineProps<Props>();
+const campaignParams = inject( QUERY_STRING_INJECTION_KEY, '' );
 
 const getQuestionsByTopic = ( topic: Topic ): QuestionModel[] => {
 	return props.content.questions.filter( ( question ) =>
