@@ -1,20 +1,24 @@
 <template>
 	<div class="supporters">
-		<h1>{{ $t( 'hall_of_fame_title' ) }}</h1>
-		<p v-html="$t( 'hall_of_fame_header_paragraph1' )"/>
-		<p v-html="$t( 'hall_of_fame_header_paragraph2' )"/>
-		<AccordionItem
-			v-for="( supporter, index ) in supporters"
-			:key="index"
-			:title="supporter.name"
-			:content="supporter.comment"
-			:is-open="index === visibleSupporterIndex"
-			@opened="() => visibleSupporterIndex = index"
-		>
-			<template #title-postfix>
-				<span class="accordion-title-amount">{{ supporter.amount }}</span>
-			</template>
-		</AccordionItem>
+		<div class="supporters-blurb">
+			<h1>{{ $t( 'hall_of_fame_title' ) }}</h1>
+			<p v-html="$t( 'hall_of_fame_header_paragraph1' )"/>
+			<p v-html="$t( 'hall_of_fame_header_paragraph2' )"/>
+		</div>
+		<div class="supporters-list">
+			<AccordionItem
+				v-for="( supporter, index ) in supporters"
+				:key="index"
+				:title="supporter.name"
+				:content="supporter.comment"
+				:is-open="index === visibleSupporterIndex"
+				@opened="() => visibleSupporterIndex = index"
+			>
+				<template #title-postfix>
+					<span class="accordion-title-amount">{{ supporter.amount }}</span>
+				</template>
+			</AccordionItem>
+		</div>
 	</div>
 </template>
 
@@ -35,6 +39,12 @@ const visibleSupporterIndex = ref<number | null>( null );
 </script>
 
 <style lang="scss">
+@use 'src/scss/settings/units';
+@use 'sass:map';
+
+.supporters-blurb {
+	margin-bottom: map.get( units.$spacing, 'x-large' );
+}
 .accordion-title-amount {
 	white-space: nowrap;
 	flex: 0 0;
