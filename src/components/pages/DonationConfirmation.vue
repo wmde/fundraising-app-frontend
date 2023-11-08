@@ -1,47 +1,54 @@
 <template>
 	<div class="donation-confirmation">
 		<a class="mobile-call-to-action is-primary button" href="#membership-application-url"
-			v-on:click="scrollToCallToAction"
-			v-if="isMobileCallToActionButtonVisible && !isAddressModalOpen">
+			v-if="isMobileCallToActionButtonVisible && !isAddressModalOpen"
+			v-on:click="scrollToCallToAction">
 			Jetzt Fördermitglied werden
-			<chevron-down-icon/>
+			<ChevronDownIcon/>
 		</a>
 
 		<div class="columns is-multiline is-variable is-2">
 			<div class="column is-full pt-0 pb-0">
-				<success-message-bank-transfer v-if="showBankTransferContent" :donation="donation"/>
-				<success-message
+				<SuccessMessageBankTransfer v-if="showBankTransferContent" :donation="donation"/>
+				<SuccessMessage
 					v-else
 					:donation="donation"
 					:comment-link-is-disabled="commentLinkIsDisabled"
 					v-on:show-comment-modal="showCommentModal()"
 				/>
 			</div>
-			<div class="column is-half pt-0 pb-0" v-if="!donation.isExported">
-				<address-known
-					v-if="showAddress"
-					v-on:show-address-modal="showAddressModal()"
-					:donation="donation"
-					:address="currentAddress"
+			<div class="column is-half pt-0 pb-0">
+				<div v-if="!donation.isExported">
+					<AddressKnown
+						v-if="showAddress"
+						:donation="donation"
+						:address="currentAddress"
+						:address-type="currentAddressType"
+						:countries="countries"
+						:salutations="salutations"
+						v-on:show-address-modal="showAddressModal()"
+					/>
+					<AddressAnonymous v-else v-on:show-address-modal="showAddressModal()"/>
+				</div>
+				<DonationExported
+					v-else-if="addressType === 'person' || addressType === 'firma'"
 					:address-type="currentAddressType"
-					:countries="countries"
-					:salutations="salutations"
 				/>
-				<address-anonymous v-else v-on:show-address-modal="showAddressModal()"/>
-			</div>
-			<div class="column is-half pt-0 pb-0" v-else-if="addressType === 'person' || addressType === 'firma'">
-				<donation-exported :address-type="currentAddressType"/>
+				<DonationSurvey/>
 			</div>
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
-				<membership-info
+				<MembershipInfo
+					:donation="donation"
 					v-on:membership-cta-button-shown="isMobileCallToActionButtonVisible = false"
 					v-on:membership-cta-button-hidden="isMobileCallToActionButtonVisible = true"
-					:donation="donation"
 				/>
 			</div>
 		</div>
 
-		<ModalDialogue :visible="isAddressModalOpen" :title="$t( 'donation_confirmation_address_update_button_alt' )" @hide="isAddressModalOpen = false">
+		<ModalDialogue
+			:visible="isAddressModalOpen"
+			:title="$t( 'donation_confirmation_address_update_button_alt' )"
+			@hide="isAddressModalOpen = false">
 			<AddressUpdateForm
 				:address-validation-patterns="addressValidationPatterns"
 				:countries="countries"
@@ -55,7 +62,10 @@
 			/>
 		</ModalDialogue>
 
-		<ModalDialogue :visible="openCommentPopUp" :title="$t( 'donation_comment_popup_title' )" @hide="openCommentPopUp = false">
+		<ModalDialogue
+			:visible="openCommentPopUp"
+			:title="$t( 'donation_comment_popup_title' )"
+			@hide="openCommentPopUp = false">
 			<DonationCommentPopUp
 				:donation="donation"
 				:address-type="addressType"
@@ -94,7 +104,7 @@ import SuccessMessage from '@src/components/pages/donation_confirmation/SuccessM
 import SuccessMessageBankTransfer from '@src/components/pages/donation_confirmation/SuccessMessageBankTransfer.vue';
 import AddressKnown from '@src/components/pages/donation_confirmation/AddressKnown.vue';
 import AddressAnonymous from '@src/components/pages/donation_confirmation/AddressAnonymous.vue';
-import Survey from '@src/components/pages/donation_confirmation/Survey.vue';
+import DonationSurvey from '@src/components/pages/donation_confirmation/DonationSurvey.vue';
 import DonationCommentPopUp from '@src/components/pages/donation_confirmation/DonationCommentPopUp.vue';
 import ChevronDownIcon from '@src/components/shared/icons/ChevronDown.vue';
 import DonationExported from '@src/components/pages/donation_confirmation/DonationExported.vue';
@@ -105,19 +115,19 @@ import AddressUpdateForm from '@src/components/pages/donation_confirmation/Addre
 export default defineComponent( {
 	name: 'DonationConfirmation',
 	components: {
-		AddressUpdateForm,
-		ModalDialogue,
-		DonationExported,
-		ChevronDownIcon,
-		Survey,
-		SuccessMessageBankTransfer,
-		SuccessMessage,
-		BankData,
-		DonationCommentPopUp,
-		MembershipInfo,
-		AddressUsageToggle,
-		AddressKnown,
 		AddressAnonymous,
+		AddressKnown,
+		AddressUpdateForm,
+		AddressUsageToggle,
+		BankData,
+		ChevronDownIcon,
+		DonationCommentPopUp,
+		DonationExported,
+		DonationSurvey,
+		MembershipInfo,
+		ModalDialogue,
+		SuccessMessage,
+		SuccessMessageBankTransfer,
 	},
 	data: function () {
 		return {
