@@ -196,6 +196,7 @@ export default defineComponent( {
 		border-radius: 2px;
 		padding: map.get( units.$spacing, 'large' ) map.get( units.$spacing, 'small' );
 		margin-bottom: map.get( units.$spacing, 'x-small' );
+		line-height: 1.5;
 
 		@media ( min-width: 400px ) {
 			padding: map.get( units.$spacing, 'large' );
