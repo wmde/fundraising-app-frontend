@@ -1,18 +1,18 @@
 <template>
-	<div class="membership-benefits-wrapper has-background-bright mb-4">
-		<h2 class="icon-title is-size-5 has-margin-bottom-18"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
-		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
-		<p class="has-margin-bottom-18">
+	<div class="donation-confirmation-card membership-benefits-wrapper">
+		<h2 class="icon-title"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
+		<p>{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
+		<p>
 			<a ref="buttonRef" id="membership-application-url" :href="membershipApplicationUrl">
-				<FunButton class="is-primary is-main">{{ $t('donation_confirmation_membership_button') }}</FunButton>
+				<FormButton>{{ $t('donation_confirmation_membership_button') }}</FormButton>
 			</a>
 		</p>
 		<ul class="membership-benefits">
 			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_1' ) }}</li>
-			<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_2' ) }}</li>
-			<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_3' ) }}</li>
-			<li class="has-margin-top-18">{{ $t( 'donation_confirmation_bottombox_membership_benefit_4' ) }}</li>
-			<li class="has-margin-top-18"><a href="https://wikimedia.de/de/mitglied-werden">{{ $t( 'donation_confirmation_bottombox_membership_link' ) }}</a></li>
+			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_2' ) }}</li>
+			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_3' ) }}</li>
+			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_4' ) }}</li>
+			<li><a href="https://wikimedia.de/de/mitglied-werden">{{ $t( 'donation_confirmation_bottombox_membership_link' ) }}</a></li>
 		</ul>
 	</div>
 </template>
@@ -21,7 +21,7 @@
 import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
 import { Donation } from '@src/view_models/Donation';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
@@ -64,14 +64,14 @@ onUnmounted( () => {
 </script>
 
 <style lang="scss">
-	@import "../../../scss/variables";
+@use 'src/scss/settings/colors';
 
-	.membership-benefits-wrapper {
-		border-radius: 2px;
-		border: 3px solid $fun-color-primary-light;
-	}
-	.membership-benefits {
-		list-style: disc;
-		padding-left: 1rem;
-	}
+.donation-confirmation-card.membership-benefits-wrapper {
+	border: 3px solid colors.$primary;
+}
+
+.membership-benefits {
+	list-style: disc;
+	padding-left: 1rem;
+}
 </style>

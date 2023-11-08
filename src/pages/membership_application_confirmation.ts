@@ -44,7 +44,7 @@ createVueApp( App, pageData.messages, featureFetcher, {
 	assetsPath: pageData.assetsPath,
 	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 	isFullWidth: true,
-	usesContentCards: true,
+	usesContentCards: false,
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: MembershipConfirmation,
 	pageProps: {

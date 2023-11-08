@@ -1,7 +1,7 @@
 <template>
-	<div class="donation-confirmation-card known-address has-background-bright mb-4">
-		<h2 class="icon-title is-size-5 has-margin-bottom-18">
-			<success-icon/>
+	<div class="donation-confirmation-card known-address">
+		<h2 class="icon-title">
+			<SuccessIcon/>
 			{{ donation.optsIntoDonationReceipt === true ?
 				$t( 'donation_confirmation_summary_title' ) :
 				$t( 'donation_confirmation_summary_title_no_receipt_wanted' )
@@ -25,7 +25,7 @@
 				country: country
 			} )"></p>
 		</div>
-		<div class="payment-email has-margin-bottom-18" v-html="$t( 'donation_confirmation_email', { email: this.$props.address.email } )"></div>
+		<div class="payment-email" v-html="$t( 'donation_confirmation_email', { email: this.$props.address.email } )"></div>
 		<div>{{ $t( 'donation_confirmation_address_update' ) }}
 			<a href="#" id="update-address-link" @click="$emit( 'show-address-modal' )">{{ $t( 'donation_confirmation_address_update_link' ) }}</a>
 		</div>

@@ -38,6 +38,10 @@ changes must be updated in the settings files before this file is deleted.
 		padding: map.get( units.$spacing, 'large' ) 0;
 	}
 
+	.accordion-item-open .accordion-item-title {
+		color: $primary;
+	}
+
 	a:not( .navigation-item ):not( .footer-var-list a ):not( .dropdown-menu a ):not( .mobile-call-to-action ) {
 		color: $primary;
 

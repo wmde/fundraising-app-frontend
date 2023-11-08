@@ -34,8 +34,8 @@
 
 <script setup lang="ts">
 
-import { useCountryInput } from '@src/components/shared/legacy_form_inputs/useCountryInput';
-import { useFilteredCountries } from '@src/components/shared/legacy_form_inputs/useFilteredCountries';
+import { useCountryInput } from '@src/components/shared/form_fields/useCountryInput';
+import { useFilteredCountries } from '@src/components/shared/form_fields/useFilteredCountries';
 import { Country } from '@src/view_models/Country';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { useCountryAutocompleteEvents } from '@src/components/shared/form_fields/useCountryAutocompleteEvents';

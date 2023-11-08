@@ -1,7 +1,7 @@
 <template>
-	<div class="donation-confirmation-card exported-donation has-background-bright mb-4">
-		<h2 class="icon-title is-size-5 has-margin-bottom-18">
-			<warning-icon/> {{ $t( 'donation_confirmation_exported_title' ) }}
+	<div class="donation-confirmation-card exported-donation">
+		<h2 class="icon-title">
+			<WarningIcon/> {{ $t( 'donation_confirmation_exported_title' ) }}
 		</h2>
 		<p>
 			{{ $t( 'donation_confirmation_exported_content' ) }}
@@ -22,7 +22,3 @@ export default defineComponent( {
 } );
 
 </script>
-
-<style lang="scss">
-
-</style>

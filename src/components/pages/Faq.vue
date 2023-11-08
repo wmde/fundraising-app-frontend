@@ -1,28 +1,35 @@
 <template>
-	<div id="faq" class="content">
-		<h1 class="title is-size-1">{{ $t('faq_headline') }}</h1>
+	<div id="faq" class="faq">
+		<h1>{{ $t('faq_headline') }}</h1>
+
 		<ul class="faq-item">
 			<li v-for="(topic, index) in content.topics" :key="index">
-				<h2 class="title is-size-2 has-margin-top-36 has-margin-bottom-18">{{ topic.name }}</h2>
-				<question
-					v-for="(content, index) in getQuestionsByTopic(topic)"
-					:content="content"
-					:key="topic.id + index"
-				></question>
+				<h2>{{ topic.name }}</h2>
+				<AccordionItem
+					v-for="( content, itemIndex ) in getQuestionsByTopic( topic )"
+					:key="topic.id + itemIndex"
+					:title="content.question"
+					:content="appendCampaignQueryParams( content.visibleText, campaignParams )"
+				/>
 			</li>
 		</ul>
+
 	</div>
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue';
 import { FaqContent, QuestionModel, Topic } from '@src/view_models/faq';
-import Question from '@src/components/pages/frequently_asked_questions/Question.vue';
+import AccordionItem from '@src/components/shared/AccordionItem.vue';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
 
 interface Props {
 	content: FaqContent;
 }
 
 const props = defineProps<Props>();
+const campaignParams = inject( QUERY_STRING_INJECTION_KEY, '' );
 
 const getQuestionsByTopic = ( topic: Topic ): QuestionModel[] => {
 	return props.content.questions.filter( ( question ) =>
@@ -30,3 +37,17 @@ const getQuestionsByTopic = ( topic: Topic ): QuestionModel[] => {
 	);
 };
 </script>
+
+<style lang="scss">
+@use 'src/scss/settings/units';
+@use 'sass:map';
+
+ul.faq-item {
+	list-style-type: none;
+	padding-left: 0;
+
+	>li:not( :last-child ) {
+		margin-bottom: map.get( units.$spacing, 'xx-large' );
+	}
+}
+</style>

@@ -1,22 +1,28 @@
 <template>
 	<div class="membership-confirmation">
 		<div class="donation-summary-wrapper has-background-bright columns has-padding-18">
-			<div class="column is-half">
-				<membership-summary
+			<div class="column is-two-thirds">
+				<MembershipSummary
 					:address="confirmationData.address"
 					:membershipApplication="confirmationData.membershipApplication"
 					:salutations="salutations"
 				>
-					<div class="has-margin-top-18" v-if="hasIncentives">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</div>
-					<div class="has-margin-top-18" v-if="!hasIncentives">{{ $t( 'membership_confirmation_success_text' ) }}</div>
-					<div class="has-margin-top-18" v-if="showBankTransferContent">{{ $t( 'membership_confirmation_success_text_bank_transfer' ) }}</div>
-				</membership-summary>
+					<template #title>
+						<h1>{{ $t( 'membership_confirmation_thanks_text' ) }}</h1>
+					</template>
+
+					<template #content>
+						<p v-if="hasIncentives">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</p>
+						<p v-if="!hasIncentives">{{ $t( 'membership_confirmation_success_text' ) }}</p>
+						<p v-if="showBankTransferContent">{{ $t( 'membership_confirmation_success_text_bank_transfer' ) }}</p>
+					</template>
+				</MembershipSummary>
 			</div>
 
-			<div class="column is-half">
-				<summary-links :confirmation-data="confirmationData"/>
+			<div class="column is-one-third">
+				<SummaryLinks :confirmation-data="confirmationData"/>
 			</div>
-			<membership-confirmation-banner-notifier/>
+			<MembershipConfirmationBannerNotifier/>
 		</div>
 	</div>
 </template>

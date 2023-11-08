@@ -2,8 +2,7 @@
 	<div class="donation-confirmation-card">
 		<h2 class="icon-title"><donor-icon/> {{ $t( 'donation_confirmation_survey_title' ) }}</h2>
 		<p>{{ $t( 'donation_confirmation_survey_content' ) }}</p>
-		<p>{{ $t( 'donation_confirmation_survey_link_text' ) }}</p>
-		<p><a :href="$t( 'donation_confirmation_survey_link' )">{{ $t( 'donation_confirmation_survey_link' ) }}</a></p>
+		<p><a target="_blank" :href="$t( 'donation_confirmation_survey_link' )">{{ $t( 'donation_confirmation_survey_link_text' ) }}</a></p>
 	</div>
 </template>
 

@@ -8,14 +8,13 @@ import { initializePayment } from '@src/store/payment/actionTypes';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { initializeAddress, setAddressType } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import AddressType from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { Store } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
 import { nextTick } from 'vue';
-import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
+import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
 
@@ -109,7 +108,7 @@ describe( 'AddressPage.vue', () => {
 		const expectedAction = action( NS_ADDRESS, setAddressType );
 		const expectedPayload = AddressTypeModel.ANON;
 
-		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.ANON );
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.ANON );
 
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
@@ -139,8 +138,8 @@ describe( 'AddressPage.vue', () => {
 	it( 'updates full selected', async () => {
 		const { wrapper } = getWrapper();
 
-		wrapper.findComponent( AddressType ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
-		wrapper.findComponent( AddressTypeAllOptions ).vm.$emit( 'set-full-selected' );
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'set-full-selected' );
 		await nextTick();
 
 		expect( wrapper.find( '.address-type-person' ).exists() ).toBeTruthy();

@@ -3,11 +3,7 @@
 @import "variables";
 @import "fonts";
 
-// Import Bulma styles
-// TODO: Look through what Bulma elements are being used and only import styles for them
-//    This will reduce the css file size
-@import "~bulma";
-@import "~bulma-helpers/sass/helpers/spacing/margin-padding";
+@import "bulma";
 
 .is-form-input-width {
 	width: $fun-min-width !important;
@@ -101,25 +97,6 @@
 	border: solid 2px $fun-color-gray-light-solid;
 }
 
-.accordion {
-	&-item {
-		border: 1px solid $fun-color-bright;
-		padding-top: 1rem;
-		box-sizing: content-box;
-	}
-	&-title {
-		border-bottom: 2px solid $fun-color-gray-light-transparency;
-		cursor: pointer;
-		margin-bottom: 6px;
-	}
-	&-title {
-		cursor: pointer;
-	}
-	&-content {
-		margin-bottom: 36px;
-	}
-}
-
 .content .faq-item {
 	list-style-type: none;
 	margin: 0;
@@ -130,18 +107,6 @@
 	justify-content: space-between;
 	flex-wrap: nowrap;
 	align-items: center;
-}
-
-.icon-title {
-	padding-left: 2.5rem;
-	svg {
-		float: left;
-		margin-left: -2.5rem;
-	}
-}
-
-h1.icon-title svg {
-	margin-top: 2px;
 }
 
 // No such feature in Bulma as of August 2019, if you see this comment, check if Bulma has adedd this natively
@@ -183,64 +148,6 @@ h1.icon-title svg {
 // Special styles for pages and shared components
 // These styles can't be put in the components until we figure out a way to use "@include from()" inside the components
 // without including this whole file
-
-// AmountSelection
-.amount {
-	&-wrapper {
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		width: $fun-min-width;
-		@include from($tablet) {
-			width: $fun-max-width;
-		}
-	}
-	&-selector {
-		position: relative;
-		display: flex;
-		margin-bottom: 12px;
-		label {
-			align-items: center;
-			color: $fun-color-primary;
-			cursor: pointer;
-			display: flex;
-			justify-content: center;
-			height: 55px;
-			width: 60px;
-			@include from($tablet) {
-				width: 75px;
-			}
-			&:active {
-				background-color: $fun-color-primary-lightest;
-			}
-		}
-		input[type="radio"]:checked + label {
-			color: $fun-color-bright;
-			font-weight: bold;
-			background-color: $fun-color-primary;
-		}
-		&.inactive label {
-			color: $fun-color-gray-mid;
-			cursor: default;
-		}
-	}
-	&-custom {
-		width: 100%;
-		&-wrapper {
-			position: relative;
-			width: 100%;
-		}
-		&:after {
-			color: $fun-color-dark-lighter;
-			content: "€";
-			font-size: 1.1em;
-			position: absolute;
-			right: 10px;
-			top: 50%;
-			transform: translateY(-50%);
-		}
-	}
-}
 
 // Supporters
 .icon-aligned {
@@ -319,18 +226,9 @@ h1.icon-title svg {
 	}
 }
 
-.donation-confirmation-card,
-.membership-benefits-wrapper {
-	padding: 36px 18px;
-	@media ( min-width: 400px ) {
-		padding: 36px;
-	}
-}
-
 @import "overrides";
 @import "compact_form"; // AB Test Import
 @import "components/address_usage_toggle";
-@import "components/feedback_box";
 
 // New style guide
 @import "components/form_field";

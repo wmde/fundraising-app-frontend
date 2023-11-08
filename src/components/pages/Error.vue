@@ -19,7 +19,7 @@
 			</div>
 		</div>
 
-		<p :class="{ 'has-margin-top-18' : !errorMessage }">
+		<p>
 			<a href="/"><span v-html="$t( 'error_pages_return_to_donation' )"></span></a>
 		</p>
 	</div>

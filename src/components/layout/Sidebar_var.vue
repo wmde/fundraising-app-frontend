@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import BankData from '@src/components/BankData.vue';
+import BankData from '@src/components/shared/BankData.vue';
 import BankIcon from '@src/components/shared/icons/BankIcon.vue';
 import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
 import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
@@ -42,6 +42,15 @@ const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 	border-bottom: 1px solid colors.$primary;
 	margin-bottom: map.get( units.$spacing, 'small' );
 	line-height: 1.5;
+
+	p {
+		margin-bottom: 0;
+	}
+
+	ul {
+		padding-left: 0;
+		list-style-type: none;
+	}
 
 	&:last-child {
 		margin-bottom: 0;

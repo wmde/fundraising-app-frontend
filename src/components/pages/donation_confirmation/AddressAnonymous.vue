@@ -1,30 +1,28 @@
 <template>
-	<div class="donation-confirmation-card anonymous-address has-background-bright mb-4">
-		<h2 class="title icon-title is-size-5 has-margin-bottom-18"><warning-icon/>{{ $t( 'donation_confirmation_cta_title_alt' ) }}</h2>
-		<p class="has-margin-bottom-18">{{ $t( 'donation_confirmation_cta_summary_alt' ) }}</p>
-		<FunButton
+	<div class="donation-confirmation-card anonymous-address">
+		<h2 class="icon-title"><warning-icon/>{{ $t( 'donation_confirmation_cta_title_alt' ) }}</h2>
+		<p>{{ $t( 'donation_confirmation_cta_summary_alt' ) }}</p>
+		<FormButton
 			id="address-change-button"
-			class="address-change-button is-primary is-full-width is-outlined"
+			:is-outlined="true"
 			@click="$emit( 'show-address-modal' )"
 		>
 			{{ $t( 'donation_confirmation_address_update_button_alt' ) }}
-		</FunButton>
-		<address-usage-toggle/>
+		</FormButton>
+		<AddressUsageToggle/>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import AddressUsageToggle from '@src/components/pages/donation_confirmation/AddressUsageToggle.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
-import FunButton from '@src/components/shared/legacy_form_inputs/FunButton.vue';
-
-export default defineComponent( {
-	name: 'AddressAnonymous',
-	components: {
-		FunButton,
-		WarningIcon,
-		AddressUsageToggle,
-	},
-} );
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 </script>
+
+<style lang="scss">
+.anonymous-address {
+	button {
+		width: 100%;
+	}
+}
+</style>

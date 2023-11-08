@@ -2,7 +2,7 @@
 	<div class="use_of_funds">
 		<div class="use_of_funds__section">
 			<div class="use_of_funds__section_intro">
-				<h1 class="title is-1 has-margin-bottom-18">{{ content.intro.headline }}</h1>
+				<h1>{{ content.intro.headline }}</h1>
 				<div>{{ content.intro.text }}</div>
 			</div>
 		</div>
@@ -59,14 +59,12 @@
 
 import CompanyBudgets from '@src/components/pages/use_of_funds/CompanyBudgets.vue';
 import FundsDistributionAccordion from '@src/components/pages/use_of_funds/FundsDistributionAccordion.vue';
-import FundsDistributionInfo from '@src/components/pages/use_of_funds/FundsDistributionInfo.vue';
 import { defineComponent } from 'vue';
 export default defineComponent( {
 	name: 'use-of-funds',
 	components: {
 		CompanyBudgets,
 		FundsDistributionAccordion,
-		FundsDistributionInfo,
 	},
 	props: {
 		content: {

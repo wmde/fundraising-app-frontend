@@ -31,36 +31,14 @@
 		</form>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
-			<FeatureToggle default-template="campaigns.address_type_steps.direct">
-				<template #campaigns.address_type_steps.direct>
-					<AddressTypeBasic
-						@address-type="setAddressType( $event )"
-						@set-full-selected="setFullSelected"
-						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressType"
-						:address-type-is-invalid="addressTypeIsInvalid"
-					/>
-				</template>
-				<template #campaigns.address_type_steps.preselect>
-					<AddressTypeAllOptions
-						@address-type="setAddressType( $event )"
-						@set-full-selected="setFullSelected"
-						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressTypeName"
-					/>
-				</template>
-				<template #campaigns.address_type_steps.full_or_email>
-					<AddressTypeFullOrEmail
-						@address-type="setAddressType( $event )"
-						@set-full-selected="setFullSelected"
-						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressTypeName"
-					/>
-				</template>
-			</FeatureToggle>
+			<AddressTypeBasic
+				@address-type="setAddressType( $event )"
+				@set-full-selected="setFullSelected"
+				:disabledAddressTypes="disabledAddressTypes"
+				:is-direct-debit="isDirectDebitPayment"
+				:initial-address-type="addressType"
+				:address-type-is-invalid="addressTypeIsInvalid"
+			/>
 			<div
 				class="address-type-anonymous-disclaimer"
 				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
@@ -113,11 +91,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, inject } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
-import AddressTypeAllOptions from '@src/components/pages/donation_form/AddressTypeAllOptions.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
-import AddressTypeFullOrEmail from '@src/components/pages/donation_form/AddressTypeFullOrEmail.vue';
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
@@ -129,15 +105,14 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
-import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
-import { injectStrict } from '@src/util/injectStrict';
 import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/useAddressFormEventHandlers';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+import { useStore } from 'vuex';
 
 interface Props {
 	assetsPath: string;
@@ -157,7 +132,8 @@ const emit = defineEmits( [ 'previous-page' ] );
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const isFullSelected = ref( false );
-const store = injectStrict( StoreKey );
+const store = useStore();
+
 const setFullSelected = ( selected: boolean ) => {
 	isFullSelected.value = selected;
 };

@@ -17,7 +17,11 @@
 					:membership-application="membershipApplication"
 					:address="addressSummary"
 					:salutations="salutations"
-					:address-is-invalid="addressIsInvalid">
+					:address-is-invalid="addressIsInvalid"
+				>
+					<template #title>
+						<h3>{{ $t( 'membership_confirmation_thanks_text' ) }}</h3>
+					</template>
 				</MembershipSummary>
 			</template>
 

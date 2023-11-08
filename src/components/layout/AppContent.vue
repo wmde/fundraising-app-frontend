@@ -31,6 +31,62 @@ defineProps<Props>();
 	display: flex;
 	flex-direction: column;
 
+	h1,
+	h2,
+	h3,
+	h4 {
+		color: #000000;
+		font-weight: 400;
+		line-height: 1.125;
+		margin-bottom: map.get( units.$spacing, 'small' );
+	}
+
+	h1 {
+		font-size: 1.7rem;
+	}
+
+	h2 {
+		font-size: 1.6rem;
+	}
+
+	h3 {
+		font-size: 1.4em;
+	}
+
+	h4 {
+		font-size: 1.2em;
+	}
+
+	p {
+		margin-bottom: map.get( units.$spacing, 'small' );
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	ul,
+	ol {
+		padding-left: map.get( units.$spacing, 'medium' );
+		margin-bottom: map.get( units.$spacing, 'small' );
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	ul {
+		list-style-type: disc;
+	}
+
+	ol {
+		list-style-type: upper-roman;
+
+		li {
+			padding-left: 2px;
+		}
+	}
+
 	@include breakpoints.tablet-up {
 		flex-direction: row;
 	}

@@ -91,9 +91,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import BankData from '@src/components/BankData.vue';
 import MembershipInfo from '@src/components/pages/donation_confirmation/MembershipInfo.vue';
-import AddressUsageToggle from '@src/components/pages/donation_confirmation/AddressUsageToggle.vue';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Country } from '@src/view_models/Country';
 import { SubmittedAddress } from '@src/view_models/Address';
@@ -118,16 +116,14 @@ export default defineComponent( {
 		AddressAnonymous,
 		AddressKnown,
 		AddressUpdateForm,
-		AddressUsageToggle,
-		BankData,
 		ChevronDownIcon,
+		SuccessMessageBankTransfer,
+		SuccessMessage,
 		DonationCommentPopUp,
 		DonationExported,
 		DonationSurvey,
 		MembershipInfo,
 		ModalDialogue,
-		SuccessMessage,
-		SuccessMessageBankTransfer,
 	},
 	data: function () {
 		return {
@@ -189,12 +185,22 @@ export default defineComponent( {
 </script>
 
 <style lang="scss">
-@import "../../scss/variables";
+@use 'src/scss/settings/units';
+@use 'src/scss/settings/colors';
+@use 'sass:map';
 
 .donation-confirmation {
 	&-card {
-		border: 1px solid $fun-color-gray-mid;
+		background: colors.$white;
+		border: 1px solid colors.$gray-mid;
 		border-radius: 2px;
+		padding: map.get( units.$spacing, 'large' ) map.get( units.$spacing, 'small' );
+		margin-bottom: map.get( units.$spacing, 'x-small' );
+		line-height: 1.5;
+
+		@media ( min-width: 400px ) {
+			padding: map.get( units.$spacing, 'large' );
+		}
 	}
 
 	h2 {
@@ -202,10 +208,26 @@ export default defineComponent( {
 	}
 }
 
+.icon-title {
+	padding-left: 2.5rem;
+	svg {
+		float: left;
+		margin-left: -2.5rem;
+	}
+}
+
+h1.icon-title svg {
+	margin-top: 2px;
+}
+
+h2.icon-title {
+	font-size: 1.3rem;
+}
+
 .donation {
 	&-summary {
 		&-wrapper {
-			border: 1px solid $fun-color-gray-mid;
+			border: 1px solid colors.$gray-mid;
 			border-radius: 2px;
 
 			.address-change-button {
