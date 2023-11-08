@@ -1,6 +1,7 @@
 <template>
 	<div class="supporters">
-		<h2 class="title is-size-2">{{ pageTitle }}</h2>
+		<p v-html="$t( 'hall_of_fame_header_paragraph1' )"/>
+		<p v-html="$t( 'hall_of_fame_header_paragraph2' )"/>
 		<supporter
 			lang="de"
 			v-for="(supporter, index) in supporters"
