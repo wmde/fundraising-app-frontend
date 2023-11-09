@@ -34,7 +34,7 @@
 					v-else-if="addressType === 'person' || addressType === 'firma'"
 					:address-type="currentAddressType"
 				/>
-				<DonationSurvey/>
+				<DonationSurvey v-if="false"/>
 			</div>
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
 				<MembershipInfo
