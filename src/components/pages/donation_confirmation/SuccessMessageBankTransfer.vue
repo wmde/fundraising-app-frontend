@@ -18,29 +18,27 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { Donation } from '@src/view_models/Donation';
 import BankData from '@src/components/shared/BankData.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
+import { useI18n } from 'vue-i18n';
 
-export default defineComponent( {
-	name: 'SuccessMessageBankTransfer',
-	components: {
-		WarningIcon,
-		BankData,
-	},
-	props: {
-		donation: Object as () => Donation,
-	},
-	computed: {
-		donationSummaryMessage: function () {
-			return this.$t( 'donation_confirmation_payment_bank_transfer_alt', {
-				formattedAmount: this.$n( this.$props.donation.amount, { key: 'currency', currencyDisplay: 'name' } ),
-			} );
-		},
-	},
+interface Props {
+	donation: Donation;
+}
+
+const props = defineProps<Props>();
+const { t, n } = useI18n();
+
+const donationSummaryMessage = computed<String>( () => {
+	return t( 'donation_confirmation_payment_bank_transfer', {
+		formattedAmount: n( props.donation.amount, { key: 'currency', currencyDisplay: 'name' } ),
+		interval: t( 'donation_confirmation_bank_transfer_interval_' + props.donation.interval ),
+	} );
 } );
+
 </script>
 
 <style lang="scss">
