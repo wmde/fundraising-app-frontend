@@ -43,6 +43,15 @@ export default defineComponent( {
 			} );
 		},
 		donationSummaryMessage(): String {
+			if ( this.$props.donation.interval === 0 &&
+				[ 'MCP', 'PPL', 'SUB' ].includes( this.$props.donation.paymentType )
+			) {
+				return this.$t( 'donation_confirmation_topbox_summary', {
+					interval: this.$t( 'donation_form_payment_interval_' + this.$props.donation.interval ),
+					formattedAmount: this.$n( this.$props.donation.amount, { key: 'currency', currencyDisplay: 'name' } ),
+					paymentType: this.$t( this.$props.donation.paymentType ),
+				} );
+			}
 			return this.$t( 'donation_confirmation_inline_summary', {
 				interval: this.$t( 'donation_form_payment_interval_' + this.$props.donation.interval ),
 				paymentType: this.$t( this.$props.donation.paymentType ),
