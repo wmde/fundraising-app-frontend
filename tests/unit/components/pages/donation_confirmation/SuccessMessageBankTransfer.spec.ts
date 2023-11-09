@@ -1,13 +1,19 @@
-import {
-	bankTransferConfirmationData,
-	payPalConfirmationData,
-	testBankTransferCode,
-} from '../../../../data/confirmationData';
+import { testBankTransferCode } from '../../../../data/confirmationData';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SuccessMessageBankTransfer from '@src/components/pages/donation_confirmation/SuccessMessageBankTransfer.vue';
 import { Donation } from '@src/view_models/Donation';
 
 describe( 'SuccessMessageBankTransfer.vue', () => {
+	let testDonation: Donation;
+
+	beforeEach( () => {
+		testDonation = {
+			paymentType: 'UEB',
+			bankTransferCode: testBankTransferCode,
+			amount: 12.35,
+			newsletter: true,
+		} as {} as Donation;
+	} );
 
 	const getWrapper = ( donation: Donation ): VueWrapper<any> => {
 		return mount( SuccessMessageBankTransfer, {
@@ -17,37 +23,35 @@ describe( 'SuccessMessageBankTransfer.vue', () => {
 			global: {
 				mocks: {
 					$t: ( key: string ) => key,
-					$n: () => {},
 				},
 			},
 		} );
 	};
 
 	it( 'renders messages', () => {
-		const wrapper = getWrapper( bankTransferConfirmationData.donation );
+		const wrapper = getWrapper( testDonation );
 
 		expect( wrapper.text() ).toContain( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' );
-		expect( wrapper.text() ).toContain( 'donation_confirmation_payment_bank_transfer_alt' );
+		expect( wrapper.text() ).toContain( 'donation_confirmation_payment_bank_transfer' );
 		expect( wrapper.text() ).toContain( 'donation_confirmation_reminder_bank_transfer' );
 	} );
 
 	it( 'displays bank data', () => {
-		const wrapper = getWrapper( bankTransferConfirmationData.donation );
+		const wrapper = getWrapper( testDonation );
 
 		expect( wrapper.find( '.success-message-bank-transfer .bank-data-content' ).html() ).toContain( testBankTransferCode );
 	} );
 
 	it( 'does not render newsletter confirmation message when opted out', () => {
-		const wrapper = getWrapper( payPalConfirmationData.donation );
+		testDonation.newsletter = false;
+		const wrapper = getWrapper( testDonation );
 
 		expect( wrapper.text() ).not.toContain( 'donation_confirmation_newsletter_confirmation' );
 	} );
 
 	it( 'renders newsletter confirmation message when user activated newsletter option', () => {
-		let donation = payPalConfirmationData.donation;
-		donation.newsletter = true;
-
-		const wrapper = getWrapper( donation );
+		testDonation.newsletter = true;
+		const wrapper = getWrapper( testDonation );
 
 		expect( wrapper.text() ).toContain( 'donation_confirmation_newsletter_confirmation' );
 	} );

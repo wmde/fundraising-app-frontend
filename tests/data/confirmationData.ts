@@ -59,6 +59,7 @@ export const bankTransferConfirmationData = createConfirmationData( {
 	donation: {
 		paymentType: 'UEB',
 		bankTransferCode: testBankTransferCode,
+		amount: 12.35,
 	},
 } );
 
@@ -68,6 +69,7 @@ export const anonymousBankTransferConfirmationData = createConfirmationData( {
 	donation: {
 		paymentType: 'UEB',
 		bankTransferCode: testBankTransferCode,
+		amount: 12.35,
 	},
 } );
 
@@ -77,6 +79,7 @@ export const emailBankTransferConfirmationData = createConfirmationData( {
 	donation: {
 		paymentType: 'UEB',
 		bankTransferCode: testBankTransferCode,
+		amount: 12.35,
 	},
 } );
 
