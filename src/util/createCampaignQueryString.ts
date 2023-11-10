@@ -10,6 +10,7 @@ const disallowList = [
 	'addressToken',
 	'donationId',
 	'donationAccessToken',
+	'banner_submission',
 ];
 
 export const QUERY_STRING_INJECTION_KEY = 'campaignQueryString';
