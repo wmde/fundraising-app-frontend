@@ -34,7 +34,7 @@
 					v-else-if="addressType === 'person' || addressType === 'firma'"
 					:address-type="currentAddressType"
 				/>
-				<DonationSurvey v-if="false"/>
+				<DonationSurvey :tracking="tracking"/>
 			</div>
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
 				<MembershipInfo
@@ -139,6 +139,7 @@ export default defineComponent( {
 		donation: Object as () => Donation,
 		address: Object,
 		addressType: String,
+		tracking: String,
 		cancelMembershipUrl: String,
 		validateAddressUrl: String,
 		validateEmailUrl: String,
