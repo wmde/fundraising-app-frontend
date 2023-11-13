@@ -12,6 +12,7 @@ const webpackConfig = {
 		'access_denied': './src/pages/access_denied.ts',
 		'address_update_success': './src/pages/address_update_success.ts',
 		'comment_list': './src/pages/comment_list.ts',
+		'comment_ticker': './src/pages/comment_ticker.ts',
 		'contact_form': './src/pages/contact_form.ts',
 		'donation_cancellation_confirmation': './src/pages/donation_cancellation_confirmation.ts',
 		'donation_confirmation': './src/pages/donation_confirmation.ts',
