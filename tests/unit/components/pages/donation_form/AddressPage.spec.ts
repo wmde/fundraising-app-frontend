@@ -17,6 +17,7 @@ import { nextTick } from 'vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
+import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
 
 const testCountry = {
 	countryCode: 'de',
@@ -72,10 +73,14 @@ describe( 'AddressPage.vue', () => {
 
 	const setPaymentType = ( store: Store<any>, paymentType: string ): Promise<any> => {
 		return store.dispatch( action( NS_PAYMENT, initializePayment ), {
-			amount: '100',
-			type: paymentType,
-			paymentIntervalInMonths: '0',
-			isCustomAmount: false,
+			allowedIntervals: [ 0 ],
+			allowedPaymentTypes: [ paymentType ],
+			initialValues: {
+				amount: '100',
+				type: paymentType,
+				paymentIntervalInMonths: '0',
+				isCustomAmount: false,
+			},
 		} );
 	};
 

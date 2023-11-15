@@ -50,7 +50,11 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
 		store.dispatch(
 			action( NS_PAYMENT, initializePayment ),
-			createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues )
+			{
+				initialValues: createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues ),
+				allowedIntervals: pageData.applicationVars.paymentIntervals,
+				allowedPaymentTypes: pageData.applicationVars.paymentTypes,
+			}
 		),
 		store.dispatch(
 			action( NS_ADDRESS, initializeAddress ),

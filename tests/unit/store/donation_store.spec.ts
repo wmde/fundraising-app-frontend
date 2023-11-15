@@ -5,6 +5,8 @@ import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { initializeAddress } from '@src/store/address/actionTypes';
 import { initializePayment } from '@src/store/payment/actionTypes';
+import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
+import { PaymentType } from '@src/view_models/PaymentType';
 
 describe( 'Donation Store', () => {
 
@@ -29,15 +31,19 @@ describe( 'Donation Store', () => {
 			const type = 'person';
 			const paymentIntervalInMonths = '1';
 			const isCustomAmount = false;
-
-			const initialData = {
-				amount,
-				type,
-				paymentIntervalInMonths,
-				isCustomAmount,
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 1 ],
+				allowedPaymentTypes: [ 'person' ],
+				initialValues: {
+					amount,
+					type,
+					paymentIntervalInMonths,
+					isCustomAmount,
+				},
 			};
+
 			const store = createStore();
-			await store.dispatch( action( NS_PAYMENT, initializePayment ), initialData );
+			await store.dispatch( action( NS_PAYMENT, initializePayment ), payload );
 
 			expect( store.state.payment.values.amount ).toBe( amount );
 			expect( store.state.payment.values.type ).toBe( type );

@@ -17,6 +17,8 @@ import {
 import each from 'jest-each';
 import { DonationPayment } from '@src/store/payment/types';
 import { ActionContext } from 'vuex';
+import { PaymentType } from '@src/view_models/PaymentType';
+import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
 
 function newMinimalStore( overrides: Object ): DonationPayment {
 	return Object.assign(
@@ -171,24 +173,36 @@ describe( 'Payment', () => {
 		it( 'does not commit empty amount', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '0',
-				type: 'BEZ',
-				paymentIntervalInMonths: 12,
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 12 ],
+				allowedPaymentTypes: [ 'BEZ' ],
+				initialValues: {
+					amount: '0',
+					type: 'BEZ',
+					paymentIntervalInMonths: '12',
+					isCustomAmount: false,
+				},
 			};
-			action( { commit }, initialPayment );
+
+			action( { commit }, payload );
 			expect( commit ).not.toBeCalledWith( SET_AMOUNT, '0' );
 		} );
 
 		it( 'commits amount and sets it to valid when amount is set', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '2399',
-				type: 'BEZ',
-				paymentIntervalInMonths: 12,
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 12 ],
+				allowedPaymentTypes: [ 'BEZ' ],
+				initialValues: {
+					amount: '2399',
+					type: 'BEZ',
+					paymentIntervalInMonths: '12',
+					isCustomAmount: true,
+				},
 			};
-			action( { commit }, initialPayment );
+
+			action( { commit }, payload );
 			expect( commit ).toBeCalledWith( SET_AMOUNT, '2399' );
 			expect( commit ).toBeCalledWith( SET_AMOUNT_VALIDITY, Validity.VALID );
 		} );
@@ -196,24 +210,36 @@ describe( 'Payment', () => {
 		it( 'does not commit empty payment type', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '123',
-				type: '',
-				paymentIntervalInMonths: 12,
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 12 ],
+				allowedPaymentTypes: [ 'BEZ' ],
+				initialValues: {
+					amount: '123',
+					type: '',
+					paymentIntervalInMonths: '12',
+					isCustomAmount: true,
+				},
 			};
-			action( { commit }, initialPayment );
-			expect( commit ).not.toBeCalledWith( SET_TYPE, '' );
+
+			action( { commit }, payload );
+			expect( commit ).not.toBeCalledWith( SET_TYPE );
 		} );
 
 		it( 'commits payment type and set it to valid when payment type is set', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '2399',
-				type: 'BEZ',
-				paymentIntervalInMonths: 12,
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 12 ],
+				allowedPaymentTypes: [ 'BEZ' ],
+				initialValues: {
+					amount: '2399',
+					type: 'BEZ',
+					paymentIntervalInMonths: '12',
+					isCustomAmount: true,
+				},
 			};
-			action( { commit }, initialPayment );
+
+			action( { commit }, payload );
 			expect( commit ).toBeCalledWith( SET_TYPE, 'BEZ' );
 			expect( commit ).toBeCalledWith( SET_TYPE_VALIDITY, Validity.VALID );
 		} );
@@ -221,12 +247,18 @@ describe( 'Payment', () => {
 		it( 'commits interval', () => {
 			const commit = jest.fn();
 			const action = actions[ initializePayment ] as any;
-			const initialPayment = {
-				amount: '2399',
-				type: 'BEZ',
-				paymentIntervalInMonths: '12',
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 12 ],
+				allowedPaymentTypes: [ 'BEZ' ],
+				initialValues: {
+					amount: '2399',
+					type: 'BEZ',
+					paymentIntervalInMonths: '12',
+					isCustomAmount: true,
+				},
 			};
-			action( { commit }, initialPayment );
+
+			action( { commit }, payload );
 			expect( commit ).toBeCalledWith( SET_INTERVAL, '12' );
 		} );
 
@@ -242,14 +274,110 @@ describe( 'Payment', () => {
 			it( `whose amount is ${ data.amount } and type is ${ data.type } should be ${ data.expectedResolution }`, () => {
 				const commit = jest.fn();
 				const action = actions[ initializePayment ] as any;
-				const initialValues = {
-					amount: data.amount,
-					type: data.type,
-					paymentIntervalInMonths: '0',
+				const payload: PaymentInitialisationPayload = {
+					allowedIntervals: [ 0, 12 ],
+					allowedPaymentTypes: [ 'BEZ', 'PPL' ],
+					initialValues: {
+						amount: data.amount,
+						type: data.type,
+						paymentIntervalInMonths: '0',
+						isCustomAmount: false,
+					},
 				};
+
 				expect.assertions( 1 );
-				return expect( action( { commit }, initialValues ) ).resolves.toBe( data.expectedResolution );
+				return expect( action( { commit }, payload ) ).resolves.toBe( data.expectedResolution );
 			} );
+		} );
+
+		it( 'does not initialise Sofort payment type if initialised with an interval', () => {
+			const commit = jest.fn();
+			const action = actions[ initializePayment ] as any;
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 0, 12 ],
+				allowedPaymentTypes: [ PaymentType.SOFORT ],
+				initialValues: {
+					amount: '2399',
+					type: PaymentType.SOFORT,
+					paymentIntervalInMonths: '12',
+					isCustomAmount: false,
+				},
+			};
+
+			action( { commit }, payload );
+			expect( commit ).not.toBeCalledWith( SET_TYPE );
+		} );
+
+		it( 'initialises Sofort payment type if interval is 0', () => {
+			const commit = jest.fn();
+			const action = actions[ initializePayment ] as any;
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 0, 12 ],
+				allowedPaymentTypes: [ PaymentType.SOFORT ],
+				initialValues: {
+					amount: '2399',
+					type: PaymentType.SOFORT,
+					paymentIntervalInMonths: '0',
+					isCustomAmount: false,
+				},
+			};
+
+			action( { commit }, payload );
+			expect( commit ).toBeCalledWith( SET_TYPE, PaymentType.SOFORT );
+		} );
+
+		it( 'initialises Sofort payment type if interval is emtpy', () => {
+			const commit = jest.fn();
+			const action = actions[ initializePayment ] as any;
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 0, 12 ],
+				allowedPaymentTypes: [ PaymentType.SOFORT ],
+				initialValues: {
+					amount: '2399',
+					type: PaymentType.SOFORT,
+					paymentIntervalInMonths: '',
+					isCustomAmount: false,
+				},
+			};
+
+			action( { commit }, payload );
+			expect( commit ).toBeCalledWith( SET_TYPE, PaymentType.SOFORT );
+		} );
+
+		it( 'does not initialise payment type if it is not in allowed list', () => {
+			const commit = jest.fn();
+			const action = actions[ initializePayment ] as any;
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 0, 12 ],
+				allowedPaymentTypes: [ PaymentType.PAYPAL ],
+				initialValues: {
+					amount: '2399',
+					type: PaymentType.DIRECT_DEBIT,
+					paymentIntervalInMonths: '0',
+					isCustomAmount: false,
+				},
+			};
+
+			action( { commit }, payload );
+			expect( commit ).not.toBeCalledWith( SET_TYPE, PaymentType.DIRECT_DEBIT );
+		} );
+
+		it( 'does not initialise interval if it is not in allowed list', () => {
+			const commit = jest.fn();
+			const action = actions[ initializePayment ] as any;
+			const payload: PaymentInitialisationPayload = {
+				allowedIntervals: [ 0, 12 ],
+				allowedPaymentTypes: [ PaymentType.PAYPAL ],
+				initialValues: {
+					amount: '2399',
+					type: PaymentType.DIRECT_DEBIT,
+					paymentIntervalInMonths: '42',
+					isCustomAmount: false,
+				},
+			};
+
+			action( { commit }, payload );
+			expect( commit ).not.toBeCalledWith( SET_INTERVAL, PaymentType.DIRECT_DEBIT );
 		} );
 	} );
 
