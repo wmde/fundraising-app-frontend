@@ -1,10 +1,17 @@
 <template>
 	<div
 		class="comment-ticker"
-		:class="[ currentState ]"
+		:class="[ currentState, { 'comment-ticker--is-even-index': isEvenIndex } ]"
 		:style="{
-			'--background': background,
-			'--display-time': `${ DISPLAY_TIME }ms`,
+			'--topLeftColor1': palette1.topLeftColor,
+			'--bottomRightColor1': palette1.bottomRightColor,
+			'--metaColor1': palette1.metaColor,
+			'--commentColor1': palette1.commentColor,
+			'--topLeftColor2': palette2.topLeftColor,
+			'--bottomRightColor2': palette2.bottomRightColor,
+			'--metaColor2': palette2.metaColor,
+			'--commentColor2': palette2.commentColor,
+			'--display-time': `${ displayTime }ms`,
 			'--hide-time': `${ HIDE_TIME / 2 }ms`,
 		}">
 		<div class="comment-ticker-timer">
@@ -46,29 +53,31 @@ enum TickerStates {
 	SlideFinished = 'comment-ticker--slide-finished',
 }
 
-const BACKGROUNDS: string[] = [
-	'#41688d',
-	'#006cd3',
-	'#b37125',
-	'#b25f00',
-	'#cc54c3',
-	'#ff4af1',
-	'#874e82',
-	'#8e2424',
-	'#a44545',
-	'#3bc81a',
-	'#3d8627',
-	'#4b843e',
-	'#b9b113',
-	'#b3af51',
-	'#727053',
-	'#9401f6',
-	'#7412b5',
-	'#6b318b',
-	'#348686',
-	'#246262',
-	'#787878',
-	'#9e9e9e',
+interface Palette {
+	topLeftColor: string;
+	bottomRightColor: string;
+	metaColor: string;
+	commentColor: string;
+}
+
+const PALETTES: Palette[] = [
+	{ topLeftColor: '#000066', bottomRightColor: '#660066', metaColor: '#FF6666', commentColor: '#ffffff' },
+	{ topLeftColor: '#660066', bottomRightColor: '#660066', metaColor: '#16022c', commentColor: '#ffffff' },
+	{ topLeftColor: '#003366', bottomRightColor: '#669900', metaColor: '#000000', commentColor: '#ffffff' },
+	{ topLeftColor: '#003366', bottomRightColor: '#003366', metaColor: '#000000', commentColor: '#ffffff' },
+	{ topLeftColor: '#990033', bottomRightColor: '#990066', metaColor: '#ffb0cb', commentColor: '#ffffff' },
+	{ topLeftColor: '#000033', bottomRightColor: '#660000', metaColor: '#FF6699', commentColor: '#ffffff' },
+	{ topLeftColor: '#41688d', bottomRightColor: '#006cd3', metaColor: '#000000', commentColor: '#ffffff' },
+	{ topLeftColor: '#348686', bottomRightColor: '#246262', metaColor: '#04120f', commentColor: '#ffffff' },
+	{ topLeftColor: '#7412b5', bottomRightColor: '#6b318b', metaColor: '#1a0c21', commentColor: '#ffffff' },
+	{ topLeftColor: '#b9b113', bottomRightColor: '#b25f00', metaColor: '#382309', commentColor: '#ffffff' },
+	{ topLeftColor: '#a44545', bottomRightColor: '#8e2424', metaColor: '#2a0b0b', commentColor: '#ffffff' },
+	{ topLeftColor: '#3bc81a', bottomRightColor: '#3d8627', metaColor: '#12270c', commentColor: '#ffffff' },
+	{ topLeftColor: '#000033', bottomRightColor: '#660033', metaColor: '#f68eff', commentColor: '#ffffff' },
+	{ topLeftColor: '#006699', bottomRightColor: '#33CC66', metaColor: '#0b2c23', commentColor: '#ffffff' },
+	{ topLeftColor: '#be8419', bottomRightColor: '#954927', metaColor: '#3a2519', commentColor: '#ffffff' },
+	{ topLeftColor: '#195bbe', bottomRightColor: '#1e0c4c', metaColor: '#71c8f3', commentColor: '#ffffff' },
+	{ topLeftColor: '#b3b3b3', bottomRightColor: '#616161', metaColor: '#191919', commentColor: '#ffffff' },
 ];
 
 const DISPLAY_TIME = 10000;
@@ -77,22 +86,29 @@ const HIDE_TIME = 1000;
 const { comments, fetchComments } = useCommentResource();
 
 const currentIndex = ref<number>( 0 );
+const isEvenIndex = ref<boolean>( true );
 const currentState = ref<TickerStates>( TickerStates.Initialising );
-const background = ref<string>( '#000000' );
+const palette1 = ref<Palette>( PALETTES[ Math.floor( Math.random() * PALETTES.length ) ] );
+const palette2 = ref<Palette>( { topLeftColor: '#000000', bottomRightColor: '#000000', metaColor: '#ffffff', commentColor: '#ffffff' } );
 const comment = computed<Comment>( () => comments.value[ currentIndex.value ] || { amount: '', comment: '', date: '', donor: '' } );
 const words = computed<string[]>( () => comment.value.comment.split( ' ' ) );
+// 300 milliseconds per word
+const displayTime = computed<number>( () => Math.max( words.value.length * 300, DISPLAY_TIME ) );
 const timer = ref<number>( 0 );
 
-const randomiseBackground = (): void => {
-	background.value = BACKGROUNDS[ Math.floor( Math.random() * BACKGROUNDS.length ) ];
+const randomisePalette = (): void => {
+	if ( isEvenIndex.value ) {
+		palette1.value = PALETTES[ Math.floor( Math.random() * PALETTES.length ) ];
+	} else {
+		palette2.value = PALETTES[ Math.floor( Math.random() * PALETTES.length ) ];
+	}
 };
 
 const showComment = (): Promise<any> => {
 	currentState.value = TickerStates.Displaying;
-	randomiseBackground();
 
 	return new Promise( ( resolve ) => {
-		timer.value = window.setTimeout( () => resolve( true ), DISPLAY_TIME );
+		timer.value = window.setTimeout( () => resolve( true ), displayTime.value );
 	} );
 };
 
@@ -111,6 +127,8 @@ const moveToNextComment = async (): Promise<any> => {
 		await fetchComments();
 		currentIndex.value = 0;
 	}
+	isEvenIndex.value = !isEvenIndex.value;
+	randomisePalette();
 	return Promise.resolve();
 };
 
@@ -160,6 +178,15 @@ $font-family-sans: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', so
 	}
 }
 
+@keyframes show-first-background {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
 header,
 footer,
 p {
@@ -175,9 +202,35 @@ p {
 	width: 100%;
 	z-index: 999;
 	overflow-y: auto;
-	color: colors.$white;
-	background: var( --background );
-	transition: background-color 500ms ease-in-out;
+	color: var( --commentColor2 );
+	background: var( --topLeftColor1 );
+	transition: background 3s ease-in-out, color 3s ease-in-out;
+
+	&::before,
+	&::after {
+		content: ' ';
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+
+	&::before {
+		background: var( --topLeftColor1 );
+		background: linear-gradient( 315deg, var( --bottomRightColor1 ) 0%, var( --topLeftColor1 ) 100%);
+		z-index: 1;
+		opacity: 0;
+		animation: show-first-background 3s ease-in-out;
+		animation-fill-mode: forwards;
+	}
+
+	&::after {
+		background: var( --topLeftColor2 );
+		background: linear-gradient( 315deg, var( --bottomRightColor2 ) 0%, var( --topLeftColor2 ) 100%);
+		z-index: 2;
+		transition: opacity 3s ease-in-out;
+	}
 
 	* {
 		box-sizing: border-box;
@@ -190,6 +243,7 @@ p {
 		left: 10px;
 		opacity: 0;
 		transition: opacity 500ms ease-in-out;
+		z-index: 3;
 
 		@include breakpoints.tablet-up {
 			width: 60px;
@@ -202,6 +256,11 @@ p {
 			width: 100%;
 			height: auto;
 		}
+
+		path {
+			fill: var( --metaColor2 );
+			transition: fill 3s ease-in-out;
+		}
 	}
 
 	&-timer {
@@ -211,6 +270,7 @@ p {
 		width: 100%;
 		background: rgba( 0 0 0 / 10% );
 		height: 5px;
+		z-index: 3;
 
 		&-inner {
 			position: absolute;
@@ -228,6 +288,7 @@ p {
 	}
 
 	&-content {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		min-height: 100%;
@@ -238,6 +299,7 @@ p {
 		transition: opacity var( --hide-time ) ease-in-out;
 		margin: 0;
 		padding: 30px 30px 30px 50px;
+		z-index: 3;
 
 		@include breakpoints.tablet-up {
 			padding: 50px 50px 50px 130px;
@@ -268,7 +330,7 @@ p {
 		&::before {
 			content: '“';
 			font-family: $font-family-serif;
-			color: colors.$black;
+			color: var( --metaColor2 );
 			top: 10px;
 			left: -40px;
 			position: absolute;
@@ -278,6 +340,7 @@ p {
 			height: 25px;
 			line-height: 25px;
 			opacity: 0.1;
+			transition: color 3s ease-in-out;
 
 			@include breakpoints.tablet-up {
 				top: 20px;
@@ -305,8 +368,9 @@ p {
 	&-meta {
 		width: 100%;
 		font-family: $font-family-sans;
-		color: colors.$black;
-		opacity: 0.5;
+		color: var( --metaColor2 );
+		opacity: 0.6;
+		transition: color 3s ease-in-out;
 	}
 
 	&-donor {
@@ -359,6 +423,25 @@ p {
 			opacity: 1;
 			transform: translateY( 0 );
 		}
+	}
+
+	&--is-even-index {
+		color: var( --commentColor1 );
+
+		&::after {
+			opacity: 0;
+		}
+
+		.comment-ticker-donor,
+		.comment-ticker-meta,
+		.comment-ticker-comment::before {
+			color: var( --metaColor1 );
+		}
+
+		.comment-ticker-logo path {
+			fill: var( --metaColor1 );
+		}
+
 	}
 }
 </style>
