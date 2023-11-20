@@ -15,7 +15,5 @@ createVueApp( App, pageData.messages, featureFetcher, {
 	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 	pageIdentifier: PAGE_IDENTIFIER,
 	page: CommentList,
-	pageProps: {
-		errorData: pageData.applicationVars,
-	},
+	pageProps: {},
 } ).mount( '#app' );

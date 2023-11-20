@@ -36,19 +36,19 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
-import { Comment, commentModelsFromObject } from '@src/view_models/Comment';
+import { Comment } from '@src/view_models/Comment';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ChevronLeftIcon from '@src/components/shared/icons/ChevronLeftIcon.vue';
 import ChevronRightIcon from '@src/components/shared/icons/ChevronRightIcon.vue';
 import LoadingSpinner from '@src/components/shared/LoadingSpinner.vue';
+import { useCommentResource } from '@src/components/pages/useCommentResource';
 
 const { t, n } = useI18n();
 
 const PAGE_SIZE = 10;
 
-const comments = ref<Comment[]>( [] );
+const { comments, fetchComments } = useCommentResource();
 let pageContent = ref<Comment[]>( [] );
 let pageCount = ref( 0 );
 let currentPage = ref( 1 );
@@ -92,8 +92,7 @@ const commentHeadline = ( comment: Comment ) => t(
 );
 
 onMounted( () => {
-	axios.get( '/list-comments.json?n=100&anon=1' ).then( ( response ) => {
-		comments.value = commentModelsFromObject( response.data );
+	fetchComments().then( () => {
 		pageCount.value = Math.ceil( comments.value.length / PAGE_SIZE );
 		switchPage();
 		isLoading.value = false;
