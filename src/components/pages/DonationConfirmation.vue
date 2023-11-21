@@ -34,7 +34,7 @@
 					v-else-if="addressType === 'person' || addressType === 'firma'"
 					:address-type="currentAddressType"
 				/>
-				<DonationSurvey :tracking="tracking"/>
+				<DonationSurvey v-if="$t( 'donation_confirmation_survey_link' ) !== ''" :tracking="tracking"/>
 			</div>
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
 				<MembershipInfo
