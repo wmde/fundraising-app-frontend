@@ -16,12 +16,13 @@ import DonorResource from '@src/api/DonorResource';
 
 describe( 'DonationConfirmation.vue', () => {
 
-	const getWrapper = ( bankData: Object ) => {
+	const getWrapper = ( bankData: Object, translateMock: ( key: string ) => string = ( key: string ) => key ) => {
 		return mount( DonationConfirmation, {
 			props: {
 				validateEmailUrl: '',
 				validateAddressUrl: '',
 				postCommentUrl: '',
+				tracking: '',
 				hasErrored: false,
 				hasSucceeded: false,
 				addressValidationPatterns,
@@ -31,7 +32,7 @@ describe( 'DonationConfirmation.vue', () => {
 			global: {
 				plugins: [ createStore() ],
 				mocks: {
-					$t: ( key: string ) => key,
+					$t: translateMock,
 					$n: () => {},
 				},
 			},
@@ -103,6 +104,26 @@ describe( 'DonationConfirmation.vue', () => {
 		expect( wrapper.find( '.exported-donation' ).exists() ).toBeFalsy();
 		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
 		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'shows the survey tile if survey link language item is not blank', () => {
+		const translateMock = ( key: string ): string => key;
+		const wrapper = getWrapper( bankTransferConfirmationData, translateMock );
+
+		expect( wrapper.find( '.donation-survey' ).exists() ).toBeTruthy();
+	} );
+
+	it( 'hides the survey tile if survey link language item is blank', () => {
+		const translateMock = ( key: string ): string => {
+			if ( key === 'donation_confirmation_survey_link' ) {
+				return '';
+			}
+
+			return key;
+		};
+		const wrapper = getWrapper( bankTransferConfirmationData, translateMock );
+
+		expect( wrapper.find( '.donation-survey' ).exists() ).toBeFalsy();
 	} );
 
 } );
