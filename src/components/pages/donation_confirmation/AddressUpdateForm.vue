@@ -239,6 +239,14 @@ const onAutofill = ( autofilledFields: { [key: string]: string; } ) => {
 	} );
 };
 
+const scrollToFirstError = () => {
+	const errorElement = document.querySelector( '.help.is-danger' );
+
+	if ( errorElement ) {
+		errorElement.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+	}
+};
+
 const getAddressData = (): Address => {
 	const data = {
 		updateToken: props.donation.updateToken,
@@ -259,6 +267,7 @@ const submit = async (): Promise<void> => {
 
 	if ( validationResult.status !== 'OK' ) {
 		isValidating.value = false;
+		scrollToFirstError();
 		return;
 	}
 
