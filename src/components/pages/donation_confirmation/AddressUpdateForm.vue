@@ -113,6 +113,7 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
+import scrollToFirstError from '@src/util/scroll_to_first_error';
 
 interface Props {
 	addressValidationPatterns: AddressValidation;
@@ -237,14 +238,6 @@ const onAutofill = ( autofilledFields: { [key: string]: string; } ) => {
 			store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
 		}
 	} );
-};
-
-const scrollToFirstError = () => {
-	const errorElement = document.querySelector( '.help.is-danger' );
-
-	if ( errorElement ) {
-		errorElement.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-	}
 };
 
 const getAddressData = (): Address => {
