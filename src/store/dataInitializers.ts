@@ -56,18 +56,33 @@ export const createInitialDonationAddressValues = ( dataPersister: DataPersister
  * Look for fields in initial form values and set them
  * If they don't exist check in local storage
  */
-export const createInitialDonationPaymentValues = ( dataPersister: DataPersister, initialFormValues: any ): InitialPaymentValues => {
+export const createInitialDonationPaymentValues = ( dataPersister: DataPersister, initialFormValues: any, fieldsWithErrors: string[] ): InitialPaymentValues => {
+	const errorMap = new Map( fieldsWithErrors.map( ( field: string ) => [ field, true ] ) );
+
 	let paymentIntervalInMonths = replaceInitialValue( '0', dataPersister.getValue( 'interval' ) );
-	if ( initialFormValues.paymentIntervalInMonths !== undefined && initialFormValues.paymentIntervalInMonths !== null ) {
+	if ( errorMap.has( 'interval' ) ) {
+		paymentIntervalInMonths = '';
+	} else if ( initialFormValues.paymentIntervalInMonths !== undefined && initialFormValues.paymentIntervalInMonths !== null ) {
 		paymentIntervalInMonths = replaceInitialValue(
 			paymentIntervalInMonths,
 			String( initialFormValues.paymentIntervalInMonths )
 		);
 	}
+
+	let amount = replaceInitialValue( dataPersister.getValue( 'amount' ), nullifyZeroString( initialFormValues.amount?.toString() ) );
+	if ( errorMap.has( 'amount' ) ) {
+		amount = '';
+	}
+
+	let paymentType = replaceInitialValue( dataPersister.getValue( 'type' ), initialFormValues.paymentType );
+	if ( errorMap.has( 'type' ) ) {
+		paymentType = '';
+	}
+
 	return {
-		amount: replaceInitialValue( dataPersister.getValue( 'amount' ), nullifyZeroString( initialFormValues.amount?.toString() ) ),
-		type: replaceInitialValue( dataPersister.getValue( 'type' ), initialFormValues.paymentType ),
-		paymentIntervalInMonths: paymentIntervalInMonths,
+		amount,
+		paymentIntervalInMonths,
+		type: paymentType,
 		isCustomAmount: initialFormValues.isCustomAmount,
 	};
 };

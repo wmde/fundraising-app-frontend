@@ -36,6 +36,9 @@ interface DonationFormModel {
 	addressValidationPatterns: AddressValidation,
 	donationMaximumAmount: number,
 	salutations: Array<Salutation>,
+	validationResult: {
+		paymentErrorFields: string[],
+	},
 }
 
 const PAGE_IDENTIFIER = 'donation-form';
@@ -48,9 +51,14 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 
 dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
+		// TODO extend initializePayment to accept validationResult.paymentErrorFields to set error state
 		store.dispatch(
 			action( NS_PAYMENT, initializePayment ),
-			createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues )
+			createInitialDonationPaymentValues(
+				dataPersister,
+				pageData.applicationVars.initialFormValues,
+				pageData.applicationVars.validationResult.paymentErrorFields ?? []
+			)
 		),
 		store.dispatch(
 			action( NS_ADDRESS, initializeAddress ),

@@ -71,7 +71,7 @@ describe( 'createInitialDonationPaymentValues', () => {
 		];
 
 		const dataPersister = new FakeDataPersister( storageValues );
-		const values = createInitialDonationPaymentValues( dataPersister, {} );
+		const values = createInitialDonationPaymentValues( dataPersister, {}, [] );
 
 		expect( values.amount ).toEqual( amount );
 		expect( values.type ).toEqual( type );
@@ -87,7 +87,7 @@ describe( 'createInitialDonationPaymentValues', () => {
 		};
 
 		const dataPersister = new FakeDataPersister( [] );
-		const values = createInitialDonationPaymentValues( dataPersister, initialValues );
+		const values = createInitialDonationPaymentValues( dataPersister, initialValues, [] );
 
 		expect( values.amount ).toEqual( initialValues.amount );
 		expect( values.type ).toEqual( initialValues.paymentType );
@@ -111,7 +111,7 @@ describe( 'createInitialDonationPaymentValues', () => {
 		};
 
 		const dataPersister = new FakeDataPersister( storageValues );
-		const values = createInitialDonationPaymentValues( dataPersister, initialValues );
+		const values = createInitialDonationPaymentValues( dataPersister, initialValues, [] );
 
 		expect( values.amount ).toEqual( initialValues.amount );
 		expect( values.type ).toEqual( initialValues.paymentType );
