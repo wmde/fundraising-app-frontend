@@ -113,6 +113,7 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
+import scrollToFirstError from '@src/util/scroll_to_first_error';
 
 interface Props {
 	addressValidationPatterns: AddressValidation;
@@ -259,6 +260,7 @@ const submit = async (): Promise<void> => {
 
 	if ( validationResult.status !== 'OK' ) {
 		isValidating.value = false;
+		scrollToFirstError();
 		return;
 	}
 

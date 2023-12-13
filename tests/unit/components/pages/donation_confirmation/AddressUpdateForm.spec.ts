@@ -1,4 +1,4 @@
-import { mount, VueWrapper } from '@vue/test-utils';
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 import { action } from '@src/store/util';
@@ -40,6 +40,21 @@ const validAddress = {
 	postcode: '12345',
 	city: 'Berlin',
 	country: 'DE',
+	email: 'not.a.real.email@domainlalalaxoxoxo.de',
+};
+
+const inValidAddress = {
+	addressType: 'person',
+	salutation: '',
+	title: '',
+	firstName: '',
+	lastName: '',
+	fullName: '',
+	companyName: '',
+	street: '',
+	postcode: '',
+	city: '',
+	country: '',
 	email: 'not.a.real.email@domainlalalaxoxoxo.de',
 };
 
@@ -85,6 +100,25 @@ describe( 'AddressUpdateForm.vue', () => {
 			},
 		} );
 	};
+
+	it( 'scrolls to first error on submit bad data', async () => {
+		const scrollIntoView = jest.fn();
+		jest.spyOn( document, 'querySelector' ).mockImplementation( () => {
+			return { scrollIntoView } as unknown as HTMLElement;
+		} );
+
+		const store = createStore();
+		await store.dispatch(
+			action(NS_ADDRESS, initializeAddress),
+			addressData(inValidAddress, AddressTypeModel.PERSON)
+		);
+		const wrapper = getWrapper(store, bankTransferConfirmationData);
+		await wrapper.find('#address-update-form').trigger('submit');
+
+		await flushPromises();
+
+		expect( scrollIntoView ).toHaveBeenCalled();
+	} );
 
 	it( 'prefills address data if it exists', async () => {
 		const store = createStore();

@@ -1,3 +1,7 @@
 export default function scrollToFirstError() {
-	document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+	const errorElement = document.querySelector( '.help.is-danger' );
+
+	if ( errorElement ) {
+		errorElement.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+	}
 }
