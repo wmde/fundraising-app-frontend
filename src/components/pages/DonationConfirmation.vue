@@ -256,6 +256,12 @@ h2.icon-title {
 	font-weight: bold;
 	left: 0;
 
+	background-color: colors.$primary;
+	color: colors.$white;
+	text-align: center;
+	&:hover {
+		color: colors.$white;
+	}
 	svg {
 		margin-left: 10px;
 	}
