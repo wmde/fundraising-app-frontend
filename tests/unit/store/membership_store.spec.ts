@@ -7,10 +7,33 @@ import { initializeAddress } from '@src/store/membership_address/actionTypes';
 import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 import { initializeBankData } from '@src/store/bankdata/actionTypes';
 import { validateFeeDataRemotely } from '@src/store/axios';
+import { FeeValidity } from '@src/view_models/MembershipFee';
 
 jest.mock( '@src/store/axios' );
 
 describe( 'Membership Store', () => {
+
+	describe( 'FeeValidator', () => {
+		it( 'sets fees within the allowed range as valid', async () => {
+
+			const validity = { fee: Validity.VALID };
+			const values = { fee: '25' };
+			const initialFeeData = {
+				addressType: AddressTypeModel.PERSON,
+				fields: [ validity, values ],
+			};
+			const initialAddressData = {
+				addressType: AddressTypeModel.PERSON,
+				fields: [],
+			};
+			const store = createStore();
+			await store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialFeeData );
+			await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), initialAddressData );
+
+			expect( store.getters.feeValidity ).toEqual( FeeValidity.FEE_VALID );
+
+		} );
+	} );
 
 	describe( 'Initialization', () => {
 

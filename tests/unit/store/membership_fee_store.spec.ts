@@ -1,7 +1,7 @@
 import { getters } from '@src/store/membership_fee/getters';
 import { actions } from '@src/store/membership_fee/actions';
 import { mutations } from '@src/store/membership_fee/mutations';
-import { GenericValuePayload,  MembershipFee } from '@src/view_models/MembershipFee';
+import { GenericValuePayload, MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
 import { markEmptyFeeAsInvalid, validateFee } from '@src/store/membership_fee/actionTypes';
 import { MARK_EMPTY_FEE_INVALID, SET_FEE, SET_FEE_VALIDITY, SET_INTERVAL, SET_INTERVAL_VALIDITY } from '@src/store/membership_fee/mutationTypes';
@@ -302,6 +302,39 @@ describe( 'MembershipFee', () => {
 				expect( context.dispatch ).not.toBeCalled();
 			} );
 		} );
+
+		it( 'unsets fee when invalid fee was supplied', () => {
+			const context = {
+					commit: jest.fn(),
+					dispatch: jest.fn().mockResolvedValue( null ),
+					state: {
+						values: {
+							interval: 12,
+						},
+					},
+					getters: {
+						allPaymentValuesAreSet: false,
+					},
+					rootState: {
+						membership_address: { // eslint-disable-line camelcase
+							addressType: AddressTypeModel.PERSON,
+						},
+					},
+				},
+				payload = {
+					selectedValue: 'I4M4N1NV4L1DValue',
+					validateFeeUrl: '/validation-fee-url',
+				};
+			const action = actions.setFee as any;
+			return action( context, payload ).then( () => {
+				expect( context.commit ).toHaveBeenCalledWith(
+					SET_FEE,
+					''
+				);
+				expect( context.dispatch ).not.toBeCalled();
+			} );
+		} );
+
 	} );
 
 	describe( 'Actions/validateFee', () => {
@@ -432,12 +465,6 @@ describe( 'MembershipFee', () => {
 			expect( store.validity.fee ).toStrictEqual( Validity.VALID );
 			mutations.SET_FEE_VALIDITY( store, Validity.INVALID );
 			expect( store.validity.fee ).toStrictEqual( Validity.INVALID );
-		} );
-
-		it( 'sets fee to empty when it is invalid', () => {
-			const store = newMinimalStore( { values: { fee: '500' } } );
-			mutations.SET_FEE_VALIDITY( store, Validity.INVALID );
-			expect( store.values.fee ).toStrictEqual( '' );
 		} );
 
 		it( 'leaves fee as-is for other validity values', () => {

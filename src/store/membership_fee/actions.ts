@@ -38,13 +38,20 @@ const fieldToValidationMutation = new Map( [
 	[ 'type', SET_TYPE_VALIDITY ],
 ] );
 
-const validateFeeOnClientSide = ( fee: string ): Validity => Helper.isNonNumeric( fee ) ? Validity.INVALID : Validity.VALID;
+const validateFeeOnClientSide = ( fee: string ): Validity => {
+	if ( Helper.isNonNumeric( fee ) ) {
+		return Validity.INVALID;
+	}
+	return Validity.VALID;
+};
 
 export const actions = {
 	[ initializeMembershipFee ]( context: ActionContext<MembershipFee, any>, initialData: InitialMembershipFeeValues ) {
 		if ( initialData.fee ) {
 			context.commit( SET_FEE, initialData.fee );
-			context.commit( SET_FEE_VALIDITY, validateFeeOnClientSide( initialData.fee ) );
+			const feeValidity: Validity = validateFeeOnClientSide( initialData.fee );
+			context.commit( SET_FEE_VALIDITY, feeValidity );
+			context.commit( SET_FEE, feeValidity === Validity.VALID ? initialData.fee : '' );
 		}
 
 		if ( initialData.interval ) {
@@ -88,7 +95,9 @@ export const actions = {
 	},
 	[ setFee ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
 		context.commit( SET_FEE, payload.selectedValue );
-		context.commit( SET_FEE_VALIDITY, validateFeeOnClientSide( payload.selectedValue ) );
+		const feeValidity: Validity = validateFeeOnClientSide( payload.selectedValue );
+		context.commit( SET_FEE_VALIDITY, feeValidity );
+		context.commit( SET_FEE, feeValidity === Validity.VALID ? payload.selectedValue : '' );
 
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {

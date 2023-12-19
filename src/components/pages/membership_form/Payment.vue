@@ -18,7 +18,7 @@
 			<AmountField
 				v-model="fee"
 				:payment-amounts="paymentAmounts"
-				:error-message="$t('membership_form_payment_amount_error')"
+				:error-message="feeErrorMessage"
 				:show-error="!feeIsValid"
 				:minimum-amount="minimumAmount"
 				:minimum-amount-message="$t('membership_form_payment_amount_description')"
@@ -62,6 +62,7 @@ import { FormOption } from '@src/components/shared/form_fields/FormOption';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
+import { FeeValidity } from '@src/view_models/MembershipFee';
 
 interface Props {
 	validateFeeUrl: string,
@@ -113,4 +114,14 @@ watch( minimumAmount, async ( newMinimumAmount ) => {
 		fee.value = '';
 	}
 } );
+
+const feeErrorMessage = computed<string>( () => {
+	const messages: { [ key: number ]: string; } = {
+		[ FeeValidity.FEE_VALID ]: '',
+		[ FeeValidity.FEE_TOO_LOW ]: t( 'membership_form_payment_amount_error' ),
+		[ FeeValidity.FEE_TOO_HIGH ]: t( 'membership_form_payment_amount_too_high' ),
+	};
+	return messages[ store.getters.feeValidity ].toString();
+} );
+
 </script>

@@ -35,3 +35,9 @@ export class YearlyMembershipFee {
 		return ( 12 / this.paymentIntervalInMonths ) * this.membershipFeePerInterval;
 	}
 }
+
+export enum FeeValidity {
+	FEE_VALID,
+	FEE_TOO_LOW,
+	FEE_TOO_HIGH,
+}

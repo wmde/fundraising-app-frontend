@@ -8,6 +8,9 @@ import {
 	NS_MEMBERSHIP_FEE,
 } from './namespaces';
 import { InjectionKey } from 'vue';
+import { FeeValidity } from '@src/view_models/MembershipFee';
+import { Validity } from '@src/view_models/Validity';
+import { validateFee } from '@src/store/feeValidator';
 
 export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) {
 	const storeBundle: StoreOptions<any> = {
@@ -33,6 +36,15 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 			// Expose context-specific getter for checks in other contexts
 			allPaymentValuesAreSet: function ( _, getters ): boolean {
 				return getters[ NS_MEMBERSHIP_FEE + '/allPaymentValuesAreSet' ];
+			},
+			feeValidity: function ( state, getters ): FeeValidity {
+				if ( state[ NS_MEMBERSHIP_FEE ].validity.fee !== Validity.INVALID ) {
+					return FeeValidity.FEE_VALID;
+				}
+				return validateFee(
+					Number( state[ NS_MEMBERSHIP_FEE ].values.fee ),
+					getters[ NS_MEMBERSHIP_FEE + '/minimumAmount' ]( state[ NS_MEMBERSHIP_ADDRESS ].addressType )
+				);
 			},
 		},
 		plugins,
