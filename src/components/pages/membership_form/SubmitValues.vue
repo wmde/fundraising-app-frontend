@@ -24,6 +24,10 @@
 		<input type="hidden" name="donationReceipt" :value="receipt">
 		<input type="hidden" name="dob" :value="formattedDateOfBirth">
 		<input type="hidden" name="incentives[]" :value="incentives">
+		<input type="hidden" name="impCount" :value="trackingData.impressionCount">
+		<input type="hidden" name="bImpCount" :value="trackingData.bannerImpressionCount">
+		<input type="hidden" name="piwik_campaign" :value="campaignValues.campaign">
+		<input type="hidden" name="piwik_kwd" :value="campaignValues.keyword">
 
 	</span>
 </template>
@@ -37,9 +41,15 @@ import { MembershipAddressState } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import { BankAccount } from '@src/view_models/BankAccount';
 import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
+import { TrackingData } from '@src/view_models/TrackingData';
+import { CampaignValues } from '@src/view_models/CampaignValues';
 
 export default defineComponent( {
 	name: 'SubmitValues',
+	props: {
+		trackingData: Object as () => TrackingData,
+		campaignValues: Object as () => CampaignValues,
+	},
 	computed: {
 		...mapState<Payment>( NS_MEMBERSHIP_FEE, {
 			fee: ( state: Payment ) => state.values,

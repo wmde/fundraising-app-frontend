@@ -44,7 +44,7 @@
 		</FormSummary>
 
 		<form action="/apply-for-membership" method="post" ref="submitValuesForm">
-			<SubmitValues/>
+			<SubmitValues :campaign-values="campaignValues" :tracking-data="trackingData"/>
 		</form>
 	</div>
 </template>
@@ -60,6 +60,8 @@ import { Salutation } from '@src/view_models/Salutation';
 import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Country } from '@src/view_models/Country';
+import { CampaignValues } from '@src/view_models/CampaignValues';
+import { TrackingData } from '@src/view_models/TrackingData';
 import { useStore } from 'vuex';
 import { useAddressFormEventHandlers } from '@src/components/pages/membership_form/useAddressFormEventHandlers';
 import { trackFormSubmission } from '@src/util/tracking';
@@ -73,6 +75,8 @@ interface Props {
 	salutations: Salutation[];
 	addressValidationPatterns: AddressValidation;
 	dateOfBirthValidationPattern: String;
+	campaignValues: CampaignValues;
+	trackingData: TrackingData
 }
 
 const props = defineProps<Props>();
