@@ -1,7 +1,7 @@
 <template>
 	<div class="form-summary-content">
 		<slot name="title"/>
-		<p class="payment-summary" v-html="getSummary()"/>
+		<p v-html="getSummary()"/>
 		<slot name="content"/>
 	</div>
 </template>
