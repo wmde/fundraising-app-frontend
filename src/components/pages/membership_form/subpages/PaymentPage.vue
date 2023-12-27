@@ -2,9 +2,8 @@
 	<div class="payment-page">
 		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
 
-		<FormSection :title="$t('membership_form_membershiptype_legend')" title-margin="x-small">
+		<FormSection v-if="showMembershipTypeOption" :title="$t('membership_form_membershiptype_legend')" title-margin="x-small">
 			<MembershipTypeField
-				v-if="showMembershipTypeOption"
 				v-model="membershipTypeModel"
 				:disabledMembershipTypes="disabledMembershipTypes"
 			/>
