@@ -58,6 +58,16 @@ describe( 'SubmitValues.vue', () => {
 			global: {
 				plugins: [ store ],
 			},
+			props: {
+				trackingData: {
+					bannerImpressionCount: 1,
+					impressionCount: 5,
+				},
+				campaignValues: {
+					campaign: 'nicholas',
+					keyword: 'cage',
+				},
+			},
 		} );
 	} );
 

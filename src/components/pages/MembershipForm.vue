@@ -15,7 +15,9 @@
 <script setup lang="ts">
 import { Component, computed, ref, watch } from 'vue';
 import { Country } from '@src/view_models/Country';
+import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
+import { TrackingData } from '@src/view_models/TrackingData';
 import { Salutation } from '@src/view_models/Salutation';
 import PaymentPage from '@src/components/pages/membership_form/subpages/PaymentPage.vue';
 import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
@@ -34,6 +36,8 @@ interface Props {
 	showMembershipTypeOption: Boolean,
 	addressValidationPatterns: AddressValidation;
 	dateOfBirthValidationPattern: String,
+	campaignValues: CampaignValues;
+	trackingData: TrackingData
 	startPageIndex?: number;
 }
 
@@ -68,6 +72,8 @@ const currentProperties = computed( (): object => {
 			salutations: props.salutations,
 			addressValidationPatterns: props.addressValidationPatterns,
 			dateOfBirthValidationPattern: props.dateOfBirthValidationPattern,
+			trackingData: props.trackingData,
+			campaignValues: props.campaignValues,
 		};
 	}
 	return {
