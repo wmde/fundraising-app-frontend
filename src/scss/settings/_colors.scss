@@ -1,8 +1,13 @@
 @use 'sass:color';
 
-$primary: #0065a4;
-$primary-light: #EAF3FF;
+$primary: #3366CC;
+$primary-light: #1E88CA;
+$primary-lighter: #A5CEE2;
+$primary-lightest: #DCE4E8;
 $primary-hover: color.adjust( $primary, $lightness: -5% );
+$primary-locale-active: #EAF3FF;
+$error: #DD3333;
+$error-light: #FDE1E1;
 
 $footer: #C7D1D8;
 
@@ -15,3 +20,4 @@ $gray-dark: #808080;
 $dark: color.adjust( $black, $lightness: 40% );
 
 $transparent-black: rgba(0, 0, 0, 0.14);
+$very-transparent-black: rgba(0, 0, 0, 0.07);

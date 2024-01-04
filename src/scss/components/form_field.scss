@@ -8,7 +8,7 @@
 	font-size: map.get( forms.$input, 'font-size' );
 
 	.control {
-		font-size: 1rem;
+		font-size: 16px;
 	}
 
 	&-text,
@@ -25,11 +25,16 @@
 		position: relative;
 	}
 
+	&-autocomplete .dropdown-item {
+		font-size: map.get( forms.$input, 'font-size' );
+	}
+
 	&-label {
 		display: block;
-		margin: 0 0 map.get( units.$spacing, 'xx-small' );
 		font-weight: bold;
 		line-height: 1;
+		margin: 0 0 map.get( units.$spacing, 'small' );
+		font-size: 16px;
 
 		>em {
 			color: colors.$gray-dark;

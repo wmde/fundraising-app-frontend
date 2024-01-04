@@ -23,7 +23,7 @@ withDefaults( defineProps<Props>(), {
 @use 'sass:map';
 
 .form-section {
-	&-title {
+	.form-section-title {
 		font-size: 18px;
 		font-weight: 400;
 

@@ -1,41 +1,26 @@
+@use "settings/colors";
+
 // Limit the design to 960 px
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 
-$fun-color-bright: #ffffff;
-$fun-color-dark: #000000;
-$fun-color-dark-lighter: rgba(0, 0, 0, 0.6);
-$fun-color-primary: #0065a4;
-$fun-color-primary-light: #1e88ca;
-$fun-color-primary-lighter: #a5cee2;
-$fun-color-primary-lightest: #dce4e8;
-$fun-color-footer: #c7d1d8;
-$fun-color-error: #812923;
-$fun-color-error-light: #e6d4d3;
-$fun-color-gray-dark: #808080;
-$fun-color-gray-mid: #B7B7B7;
-$fun-color-gray-light-solid: #E5E5E5;
-$fun-color-gray-light-transparency: rgba(0, 0, 0, 0.14);
-$fun-color-gray-very-light: rgba(0, 0, 0, 0.07);
-
-
 // Used for selectors like ".has-background-primary"
 $custom-colors: (
-		"bright": ($fun-color-bright, $fun-color-dark),
-		"dark": ($fun-color-dark, $fun-color-bright),
-		"dark-lighter": ($fun-color-dark-lighter),
-		"primary": ($fun-color-primary),
-		"primary-light": ($fun-color-primary-light),
-		"primary-lighter": ($fun-color-primary-lighter),
-		"primary-lightest": ($fun-color-primary-lightest),
-		"footer": ($fun-color-footer),
-		"error": ($fun-color-error),
-		"error-light": ($fun-color-error-light),
-		"gray-dark": ($fun-color-gray-dark),
-		"gray-mid": ($fun-color-gray-mid),
-		"gray-light-solid": ($fun-color-gray-light-solid),
-		"gray-light-transparency": ($fun-color-gray-light-transparency),
-		"gray-very-light": ($fun-color-gray-very-light),
+		"bright": (colors.$white, colors.$black),
+		"dark": (colors.$black, colors.$white),
+		"dark-lighter": (colors.$dark),
+		"primary": (colors.$primary),
+		"primary-light": (colors.$primary-light),
+		"primary-lighter": (colors.$primary-lighter),
+		"primary-lightest": (colors.$primary-lightest),
+		"footer": (colors.$footer),
+		"error": (colors.$error),
+		"error-light": (colors.$error-light),
+		"gray-dark": (colors.$gray-dark),
+		"gray-mid": (colors.$gray-mid),
+		"gray-light-solid": (colors.$gray-light),
+		"gray-light-transparency": (colors.$transparent-black),
+		"gray-very-light": (colors.$very-transparent-black),
 );
 
 // Max and min form item widths
@@ -47,8 +32,8 @@ $fun-max-width: 350px;
 //
 
 // General page / body
-$primary: $fun-color-primary;
-$body-background-color: $fun-color-primary-lightest;
+$primary: colors.$primary;
+$body-background-color: colors.$primary-lightest;
 $column-gap: 18px;
 $radius: 2px;
 
@@ -62,28 +47,28 @@ $size-6: 1.2rem;
 $size-7: 1.1rem;
 $size-8: 1.0rem;
 
-$input-color: $fun-color-dark;
-$input-placeholder-color: rgba($fun-color-dark, 0.6);
+$input-color: colors.$black;
+$input-placeholder-color: rgba(colors.$black, 0.6);
 $input-shadow: none;
-$input-focus-border-color: $fun-color-primary;
+$input-focus-border-color: colors.$primary;
 
-$input-disabled-color: $fun-color-dark-lighter;
-$input-disabled-background-color: $fun-color-gray-light-solid;
-$input-disabled-border-color: $fun-color-gray-mid;
-$input-disabled-placeholder-color: $fun-color-dark-lighter;
+$input-disabled-color: colors.$dark;
+$input-disabled-background-color: colors.$gray-light;
+$input-disabled-border-color: colors.$gray-mid;
+$input-disabled-placeholder-color: colors.$dark;
 
-$text: $fun-color-dark;
-$family-primary: "Open Sans",Helvetica,Arial,sans-serif;
-$body-size: 14px;
+$text: colors.$black;
+$family-primary: "Source Sans Pro", "Open Sans", Helvetica,Arial, sans-serif;
+$body-size: 16px;
 $body-line-height: 1.8;
-$danger: $fun-color-error;
-$warning: $fun-color-dark;
+$danger: colors.$error;
+$warning: colors.$black;
 
-$title-color: $fun-color-dark;
+$title-color: colors.$black;
 $title-size: $size-1;
 $title-weight: 400;
 $subtitle-size: $size-8;
-$subtitle-color: $fun-color-dark;
+$subtitle-color: colors.$black;
 $subtitle-weight: bold;
 
 // Footer
@@ -95,10 +80,10 @@ $navbar-height: 5.2rem;
 $navbar-box-shadow-size: 1px 2px 3px;
 $navbar-box-shadow-color: rgba(0, 0, 0, 0.1);
 $navbar-item-color: $text;
-$navbar-item-hover-color: $fun-color-primary;
-$navbar-item-hover-background-color: $fun-color-bright;
-$navbar-item-active-color: $fun-color-primary;
-$navbar-item-active-background-color: $fun-color-bright;
+$navbar-item-hover-color: colors.$primary;
+$navbar-item-hover-background-color: colors.$white;
+$navbar-item-active-color: colors.$primary;
+$navbar-item-active-background-color: colors.$white;
 
 $spacing-range-start: 0;
 $spacing-range-end: 54;

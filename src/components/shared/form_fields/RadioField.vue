@@ -65,6 +65,9 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 @use 'sass:map';
 
 .form-field-radio {
+	max-width: map.get( forms.$input, 'max-width' );
+	flex-wrap: nowrap;
+
 	&-container {
 		display: flex;
 		.radio + .radio {
@@ -87,12 +90,11 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 			.radio-form-input {
 				width: 100%;
 				max-width: map.get( forms.$input, 'max-width' );
-				border-bottom: 2px solid rgba(0, 0, 0, 0.14);
 				display: inline-flex;
 				align-items: flex-start;
 
-				&:not( :first-child ) {
-					padding-top: map.get( units.$spacing, 'medium' );
+				&:not( :last-child ) {
+					margin-bottom: map.get( units.$spacing, 'small' );
 				}
 
 				.check {
@@ -106,17 +108,9 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 					margin-top: map.get( units.$spacing, 'xx-small' );
 				}
 
-				&.is-active {
-					border-bottom: 2px solid colors.$primary;
-				}
-
 				&.is-disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
-				}
-
-				&:hover {
-					border-bottom: 2px solid colors.$gray-dark;
 				}
 			}
 		}

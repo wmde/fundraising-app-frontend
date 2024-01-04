@@ -131,6 +131,7 @@ watch( () => props.modelValue, ( newValue: string ) => {
 @use 'sass:map';
 
 $max-width: 384px;
+$input-height: 50px;
 
 .form-field-amount {
 	max-width: $max-width;
@@ -153,13 +154,16 @@ $max-width: 384px;
 	&-radio {
 		width: 25%;
 		padding: 0 map.get( units.$spacing, 'small' ) map.get( units.$spacing, 'small' );
+		border-radius: map.get( forms.$input, 'border-radius' );
+		font-size: 16px;
 
 		.radio-form-input {
 			padding: 0;
 			margin: 0;
 			width: 100%;
-			height: map.get( forms.$input, 'height' );
-			line-height: map.get( forms.$input, 'height' );
+			min-width: auto;
+			height: $input-height;
+			line-height: $input-height;
 			text-align: center;
 			border: 1px solid colors.$gray-mid;
 			border-radius: map.get( forms.$input, 'border-radius' );
@@ -216,6 +220,10 @@ $max-width: 384px;
 				border-color: colors.$primary;
 				box-shadow: 0 1px 0 0 colors.$primary;
 			}
+		}
+
+		.text-form-input .input {
+			height: $input-height;
 		}
 	}
 
