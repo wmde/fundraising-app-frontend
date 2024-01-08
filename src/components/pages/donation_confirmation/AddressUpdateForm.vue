@@ -112,7 +112,6 @@ import NameFields from '@src/components/shared/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
-import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import scrollToFirstError from '@src/util/scroll_to_first_error';
 
 interface Props {
@@ -210,7 +209,10 @@ const { addressType, addressTypeIsInvalid, setAddressType } = useAddressTypeFunc
 const addressTypeModel = ref<AddressTypeModel>( addressType.value );
 watch( addressTypeModel, ( newAddressType: AddressTypeModel ) => setAddressType( newAddressType ) );
 
-const mailingList = useMailingListModel( store );
+// const mailingList = useMailingListModel( store );
+
+// TODO: get default value from somewhere (backend or frontend)
+const mailingList = ref<boolean>( true );
 
 const validateForm = async (): Promise<ValidationResult> => {
 	let response = await store.dispatch( action( NS_ADDRESS, validateAddressType ), {
@@ -245,6 +247,7 @@ const getAddressData = (): Address => {
 		updateToken: props.donation.updateToken,
 		donationId: props.donation.id,
 		addressType: addressTypeName( store.getters[ NS_ADDRESS + '/addressType' ] ),
+		mailingList: mailingList.value,
 	} as any;
 	Object.keys( formData ).forEach( fieldName => {
 		data[ fieldName ] = formData[ fieldName ].value;
