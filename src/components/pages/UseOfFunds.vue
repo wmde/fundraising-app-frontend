@@ -2,10 +2,8 @@
 	<div class="use_of_funds">
 		<div class="use_of_funds__section">
 			<div class="use_of_funds__section_intro">
-				<h1>{{ content.intro.headline }}
-					<nobr v-if="content.provisional !== ''">?*</nobr>
-					<nobr v-else>?</nobr>
-				</h1>
+				<h1 v-if="content.provisional !== ''" v-html="content.intro.dynamicHeadline.provisional"></h1>
+				<h1 v-else v-html="content.intro.dynamicHeadline.published"></h1>
 				<div>{{ content.intro.text }}</div>
 			</div>
 		</div>
