@@ -61,28 +61,33 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			createInitialDonationAddressValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
 	] ).then( ( [ paymentDataComplete ] ) => { // ignoring result of initializeAddress
-		const app = createVueApp( App, pageData.messages, featureFetcher, {
-			assetsPath: pageData.assetsPath,
-			bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-			pageIdentifier: PAGE_IDENTIFIER,
-			page: DonationForm,
-			pageProps: {
+		const app = createVueApp(
+			App,
+			pageData.messages,
+			pageData.allowedCampaignParameters,
+			featureFetcher,
+			{
 				assetsPath: pageData.assetsPath,
-				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-				validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-				validateBankDataUrl: pageData.applicationVars.urls.validateIban,
-				validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
-				paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),
-				paymentIntervals: pageData.applicationVars.paymentIntervals,
-				paymentTypes: pageData.applicationVars.paymentTypes,
-				countries: pageData.applicationVars.countries,
-				salutations: pageData.applicationVars.salutations,
-				trackingData: pageData.applicationVars.tracking,
-				campaignValues: campaignParameters.getCampaignValues(),
-				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-				startPageIndex: paymentDataComplete ? 1 : 0,
-			},
-		} );
+				bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+				pageIdentifier: PAGE_IDENTIFIER,
+				page: DonationForm,
+				pageProps: {
+					assetsPath: pageData.assetsPath,
+					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+					validateEmailUrl: pageData.applicationVars.urls.validateEmail,
+					validateBankDataUrl: pageData.applicationVars.urls.validateIban,
+					validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
+					paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),
+					paymentIntervals: pageData.applicationVars.paymentIntervals,
+					paymentTypes: pageData.applicationVars.paymentTypes,
+					countries: pageData.applicationVars.countries,
+					salutations: pageData.applicationVars.salutations,
+					trackingData: pageData.applicationVars.tracking,
+					campaignValues: campaignParameters.getCampaignValues(),
+					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+					startPageIndex: paymentDataComplete ? 1 : 0,
+				},
+			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
 		app.provide( StoreKey, store );
 		app.use( store );

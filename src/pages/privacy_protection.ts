@@ -11,15 +11,19 @@ const PAGE_IDENTIFIER = staticPage.getAttribute( 'data-page-id' );
 const pageData = new PageDataInitializer<any>( '#appdata' );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-createVueApp( App, pageData.messages, featureFetcher, {
-	assetsPath: pageData.assetsPath,
-	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-	pageIdentifier: PAGE_IDENTIFIER,
-	page: PrivacyProtection,
-	pageProps: {
-		pageId: staticPage.getAttribute( 'data-page-id' ),
-		pageTitle: staticPage.getAttribute( 'data-page-title' ),
-		pageContent: staticPage.getAttribute( 'data-page-content' ),
-		trackingUrl: staticPage.getAttribute( 'data-tracking-url' ),
-	},
-} ).mount( '#app' );
+createVueApp( App,
+	pageData.messages,
+	pageData.allowedCampaignParameters,
+	featureFetcher,
+	{
+		assetsPath: pageData.assetsPath,
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+		pageIdentifier: PAGE_IDENTIFIER,
+		page: PrivacyProtection,
+		pageProps: {
+			pageId: staticPage.getAttribute( 'data-page-id' ),
+			pageTitle: staticPage.getAttribute( 'data-page-title' ),
+			pageContent: staticPage.getAttribute( 'data-page-content' ),
+			trackingUrl: staticPage.getAttribute( 'data-tracking-url' ),
+		},
+	} ).mount( '#app' );

@@ -87,29 +87,33 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			createInitialBankDataValues( initialBankAccountData ),
 		),
 	] ).then( () => {
-		const app = createVueApp( App, pageData.messages, featureFetcher, {
-			assetsPath: pageData.assetsPath,
-			bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-			pageIdentifier: PAGE_IDENTIFIER,
-			page: MembershipForm,
-			pageProps: {
-				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-				validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-				validateFeeUrl: pageData.applicationVars.urls.validateMembershipFee,
-				validateBankDataUrl: pageData.applicationVars.urls.validateIban,
-				validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
-				paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),
-				countries: pageData.applicationVars.countries,
-				salutations: pageData.applicationVars.salutations,
-				showMembershipTypeOption: pageData.applicationVars.showMembershipTypeOption,
-				paymentIntervals: pageData.applicationVars.paymentIntervals,
-				paymentTypes: pageData.applicationVars.paymentTypes,
-				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-				dateOfBirthValidationPattern: pageData.applicationVars.dateOfBirthValidationPattern,
-				trackingData: pageData.applicationVars.tracking,
-				campaignValues: campaignParameters.getCampaignValues(),
-			},
-		} );
+		const app = createVueApp( App,
+			pageData.messages,
+			pageData.allowedCampaignParameters,
+			featureFetcher,
+			{
+				assetsPath: pageData.assetsPath,
+				bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+				pageIdentifier: PAGE_IDENTIFIER,
+				page: MembershipForm,
+				pageProps: {
+					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+					validateEmailUrl: pageData.applicationVars.urls.validateEmail,
+					validateFeeUrl: pageData.applicationVars.urls.validateMembershipFee,
+					validateBankDataUrl: pageData.applicationVars.urls.validateIban,
+					validateLegacyBankDataUrl: pageData.applicationVars.urls.convertBankData,
+					paymentAmounts: pageData.applicationVars.presetAmounts.map( a => Number( a ) * 100 ),
+					countries: pageData.applicationVars.countries,
+					salutations: pageData.applicationVars.salutations,
+					showMembershipTypeOption: pageData.applicationVars.showMembershipTypeOption,
+					paymentIntervals: pageData.applicationVars.paymentIntervals,
+					paymentTypes: pageData.applicationVars.paymentTypes,
+					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+					dateOfBirthValidationPattern: pageData.applicationVars.dateOfBirthValidationPattern,
+					trackingData: pageData.applicationVars.tracking,
+					campaignValues: campaignParameters.getCampaignValues(),
+				},
+			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
 		app.provide( StoreKeyMembership, store );
 		app.use( store );

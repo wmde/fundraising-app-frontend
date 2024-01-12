@@ -28,20 +28,26 @@ const pageData = new PageDataInitializer<UpdateAddressModel>( '#appdata' );
 const store = createStore( [ createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-const app = createVueApp( App, pageData.messages, featureFetcher, {
-	assetsPath: pageData.assetsPath,
-	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-	pageIdentifier: PAGE_IDENTIFIER,
-	page: UpdateAddress,
-	pageProps: {
-		validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-		updateAddressURL: pageData.applicationVars.urls.updateAddress,
-		isCompany: pageData.applicationVars.isCompany,
-		countries: pageData.applicationVars.countries,
-		salutations: pageData.applicationVars.salutations,
-		addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-	},
-} );
+const app = createVueApp(
+	App,
+	pageData.messages,
+	pageData.allowedCampaignParameters,
+	featureFetcher,
+	{
+		assetsPath: pageData.assetsPath,
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+		pageIdentifier: PAGE_IDENTIFIER,
+		page: UpdateAddress,
+		pageProps: {
+			validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+			updateAddressURL: pageData.applicationVars.urls.updateAddress,
+			isCompany: pageData.applicationVars.isCompany,
+			countries: pageData.applicationVars.countries,
+			salutations: pageData.applicationVars.salutations,
+			addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+		},
+	}
+);
 
 app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
 app.use( store );

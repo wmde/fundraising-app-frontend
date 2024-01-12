@@ -14,12 +14,16 @@ const PAGE_IDENTIFIER = 'subscription-confirmation';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-createVueApp( App, pageData.messages, featureFetcher, {
-	assetsPath: pageData.assetsPath,
-	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-	pageIdentifier: PAGE_IDENTIFIER,
-	page: SubscriptionConfirmation,
-	pageProps: {
-		errorMessage: pageData.applicationVars.error_message,
-	},
-} ).mount( '#app' );
+createVueApp( App,
+	pageData.messages,
+	pageData.allowedCampaignParameters,
+	featureFetcher,
+	{
+		assetsPath: pageData.assetsPath,
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+		pageIdentifier: PAGE_IDENTIFIER,
+		page: SubscriptionConfirmation,
+		pageProps: {
+			errorMessage: pageData.applicationVars.error_message,
+		},
+	} ).mount( '#app' );

@@ -15,12 +15,16 @@ const PAGE_IDENTIFIER = 'page-not-found';
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-createVueApp( App, pageData.messages, featureFetcher, {
-	assetsPath: pageData.assetsPath,
-	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-	pageIdentifier: PAGE_IDENTIFIER,
-	page: PageNotFound,
-	pageProps: {
-		errorData: pageData.applicationVars,
-	},
-} ).mount( '#app' );
+createVueApp( App,
+	pageData.messages,
+	pageData.allowedCampaignParameters,
+	featureFetcher,
+	{
+		assetsPath: pageData.assetsPath,
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+		pageIdentifier: PAGE_IDENTIFIER,
+		page: PageNotFound,
+		pageProps: {
+			errorData: pageData.applicationVars,
+		},
+	} ).mount( '#app' );

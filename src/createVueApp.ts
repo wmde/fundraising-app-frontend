@@ -11,6 +11,7 @@ type Messages = Record<string, string>;
 export function createVueApp(
 	rootComponent: Component,
 	messages: Messages,
+	allowedCampaignParameters: string[],
 	featureFetcher: FeatureFetcher,
 	rootProps?: Data
 ): App {
@@ -30,7 +31,7 @@ export function createVueApp(
 	}
 
 	app.component( 'FeatureToggle', createFeatureToggle( featureFetcher.getFeatures() ) );
-	app.provide( QUERY_STRING_INJECTION_KEY, createCampaignQueryString( window.location.search ) );
+	app.provide( QUERY_STRING_INJECTION_KEY, createCampaignQueryString( window.location.search, allowedCampaignParameters ) );
 
 	return app;
 }

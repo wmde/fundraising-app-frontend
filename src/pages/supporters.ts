@@ -17,13 +17,17 @@ const staticPage: any = document.getElementById( 'appdata' );
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-createVueApp( App, pageData.messages, featureFetcher, {
-	assetsPath: pageData.assetsPath,
-	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-	pageIdentifier: PAGE_IDENTIFIER,
-	page: Supporters,
-	pageProps: {
-		pageTitle: staticPage.getAttribute( 'data-page-title' ),
-		supporters: supportersFromObject( JSON.parse( pageData.applicationVars.supporters ) ),
-	},
-} ).mount( '#app' );
+createVueApp( App,
+	pageData.messages,
+	pageData.allowedCampaignParameters,
+	featureFetcher,
+	{
+		assetsPath: pageData.assetsPath,
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+		pageIdentifier: PAGE_IDENTIFIER,
+		page: Supporters,
+		pageProps: {
+			pageTitle: staticPage.getAttribute( 'data-page-title' ),
+			supporters: supportersFromObject( JSON.parse( pageData.applicationVars.supporters ) ),
+		},
+	} ).mount( '#app' );

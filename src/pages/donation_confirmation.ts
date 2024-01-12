@@ -65,28 +65,33 @@ store.dispatch(
 		],
 	}
 ).then( () => {
-	const app = createVueApp( App, pageData.messages, featureFetcher, {
-		isFullWidth: true,
-		usesContentCards: true,
-		assetsPath: pageData.assetsPath,
-		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-		pageIdentifier: PAGE_IDENTIFIER,
-		page: DonationConfirmation,
-		pageProps: {
-			donation: pageData.applicationVars.donation,
-			address: address,
-			addressType: pageData.applicationVars.addressType,
-			tracking: pageData.applicationVars.tracking,
-			countries: pageData.applicationVars.countries,
-			salutations: pageData.applicationVars.salutations,
-			validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-			validateEmailUrl: pageData.applicationVars.urls.validateEmail,
-			cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
-			postCommentUrl: pageData.applicationVars.urls.postComment,
-			addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-			donorResource: new DonorResource( pageData.applicationVars.urls.updateDonor ),
-		},
-	} );
+	const app = createVueApp(
+		App,
+		pageData.messages,
+		pageData.allowedCampaignParameters,
+		featureFetcher,
+		{
+			isFullWidth: true,
+			usesContentCards: true,
+			assetsPath: pageData.assetsPath,
+			bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+			pageIdentifier: PAGE_IDENTIFIER,
+			page: DonationConfirmation,
+			pageProps: {
+				donation: pageData.applicationVars.donation,
+				address: address,
+				addressType: pageData.applicationVars.addressType,
+				tracking: pageData.applicationVars.tracking,
+				countries: pageData.applicationVars.countries,
+				salutations: pageData.applicationVars.salutations,
+				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+				validateEmailUrl: pageData.applicationVars.urls.validateEmail,
+				cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
+				postCommentUrl: pageData.applicationVars.urls.postComment,
+				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+				donorResource: new DonorResource( pageData.applicationVars.urls.updateDonor ),
+			},
+		} );
 	app.use( store );
 	app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
 	app.mount( '#app' );

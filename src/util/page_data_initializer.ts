@@ -5,6 +5,7 @@ export default class PageDataInitializer<T> {
 	assetsPath: string;
 	selectedBuckets: string[];
 	activeFeatures: string[];
+	allowedCampaignParameters: string[];
 
 	constructor( dataElementSelector: string = '#appdata' ) {
 		const dataElement: HTMLElement | null = document.querySelector( dataElementSelector );
@@ -21,6 +22,11 @@ export default class PageDataInitializer<T> {
 		if ( applicationVars.activeFeatures ) {
 			this.activeFeatures = applicationVars.activeFeatures;
 			delete applicationVars.activeFeatures;
+		}
+		this.allowedCampaignParameters = [];
+		if ( applicationVars.allowedCampaignParameters ) {
+			this.allowedCampaignParameters = applicationVars.allowedCampaignParameters;
+			delete applicationVars.allowedCampaignParameters;
 		}
 		this.environment = dataElement.dataset.environment || '';
 		this.applicationVars = applicationVars;
