@@ -50,43 +50,6 @@
 		&.active .funds_distribution_info_item__text {
 			display: block;
 		}
-
-		&--software,
-		&--infrastructure {
-			.funds_distribution_info_item__title {
-				color: #808080;
-			}
-		}
-		&--international {
-			.funds_distribution_info_item__title {
-				color: #0ea789;
-			}
-		}
-		&--diversity {
-			.funds_distribution_info_item__title {
-				color: #e61eb8;
-			}
-		}
-		&--access {
-			.funds_distribution_info_item__title {
-				color: #de8500;
-			}
-		}
-		&--communities {
-			.funds_distribution_info_item__title {
-				color: #f24825;
-			}
-		}
-		&--society {
-			.funds_distribution_info_item__title {
-				color: #9410ac;
-			}
-		}
-		&--operative {
-			.funds_distribution_info_item__title {
-				color: #8ed14f;
-			}
-		}
 	}
 }
 
