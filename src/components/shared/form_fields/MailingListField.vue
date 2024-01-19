@@ -8,7 +8,7 @@
 		>
 			<span class="form-field-mailing-list-label-content">
 				<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
-				<span v-html="appendCampaignQueryParams( $t( 'donation_form_newsletter_label_paragraph_2_vuei18n_v3'), campaignParams )"/>
+				<span v-html="appendCampaignQueryParams( $t( 'donation_form_newsletter_label_paragraph_2'), campaignParams )"/>
 			</span>
 		</CheckboxSingleFormInput>
 	</div>
