@@ -108,22 +108,20 @@ describe( 'Postal.vue', () => {
 
 	it( 'sets the correct postcode regex on country change', async () => {
 		jest.useFakeTimers();
-
-		const wrapper = mount( PostalAddressFields, {
-			props: newTestProperties( {} ),
-		} );
+		const props = newTestProperties( {} );
+		const wrapper = mount( PostalAddressFields, { props } );
 
 		await wrapper.find( '#country' ).setValue( countries[ 1 ].countryFullName );
 		await wrapper.find( '#country' ).trigger( 'blur' );
 		await jest.runAllTimersAsync();
 
-		expect( wrapper.vm.$props.formData.postcode.pattern ).toEqual( countries[ 1 ].postCodeValidation );
+		expect( props.formData.postcode.pattern ).toEqual( countries[ 1 ].postCodeValidation );
 
 		await wrapper.find( '#country' ).setValue( '' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
 		await jest.runAllTimersAsync();
 
-		expect( wrapper.vm.$props.formData.postcode.pattern ).toEqual( addressValidationPatterns.postcode );
+		expect( props.formData.postcode.pattern ).toEqual( addressValidationPatterns.postcode );
 
 		jest.resetAllMocks();
 	} );
