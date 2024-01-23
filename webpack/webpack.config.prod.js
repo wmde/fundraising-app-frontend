@@ -34,6 +34,11 @@ const webpackConfig = merge( commonConfig, {
 		filename: 'js/[name].[chunkhash].js',
 		clean: true,
 	},
+	resolve: {
+		alias: {
+			'vue-i18n': 'vue-i18n/dist/vue-i18n.esm-browser.prod.js',
+		},
+	},
 	plugins: [
 		new webpack.EnvironmentPlugin( environment ),
 		new webpack.DefinePlugin( {
