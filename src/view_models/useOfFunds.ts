@@ -1,6 +1,6 @@
 export interface FundsItem {
-	id: string,
 	percentage: number,
+	colour: string,
 	title: string,
 	text: string,
 }

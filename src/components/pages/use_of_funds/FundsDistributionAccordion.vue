@@ -3,12 +3,15 @@
 		<div v-for="fundsItem in applicationOfFundsData"
 			:key="fundsItem.id"
 			:class="[
-					'funds_distribution_info_item',
-					'funds_distribution_info_item--' + fundsItem.id,
-					activeInfo[fundsItem.id] ? 'active' : ''
-					]"
+				'funds_distribution_info_item',
+				activeInfo[fundsItem.id] ? 'active' : ''
+			]"
 		>
-			<div class="funds_distribution_info_item__title" @click="setActive( fundsItem.id )">
+			<div
+				class="funds_distribution_info_item__title"
+				@click="setActive( fundsItem.id )"
+				:style="{color: fundsItem.colour}"
+			>
 				{{ fundsItem.title }} {{ fundsItem.percentage }}%
 			</div>
 			<div class="funds_distribution_info_item__text">
