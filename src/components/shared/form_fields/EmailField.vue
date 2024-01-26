@@ -5,7 +5,7 @@
 			input-type="text"
 			input-id="email"
 			name="email"
-			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_email_placeholder_vuei18n_v3' ) } )"
+			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_email_placeholder' ) } )"
 			autocomplete="email"
 			v-model="fieldModel"
 			:has-error="showError"

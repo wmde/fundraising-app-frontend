@@ -39,7 +39,7 @@
 					<template #message>
 						<ValueEqualsPlaceholderWarning
 							:value="formData.email.value"
-							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							:placeholder="$t( 'donation_form_email_placeholder' )"
 							warning="donation_form_email_placeholder_warning"
 						/>
 					</template>
@@ -86,7 +86,7 @@
 					<template #message>
 						<ValueEqualsPlaceholderWarning
 							:value="formData.email.value"
-							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							:placeholder="$t( 'donation_form_email_placeholder' )"
 							warning="donation_form_email_placeholder_warning"
 						/>
 					</template>
@@ -117,7 +117,7 @@
 					<template #message>
 						<ValueEqualsPlaceholderWarning
 							:value="formData.email.value"
-							:placeholder="$t( 'donation_form_email_placeholder_vuei18n_v3' )"
+							:placeholder="$t( 'donation_form_email_placeholder' )"
 							warning="donation_form_email_placeholder_warning"
 						/>
 					</template>
