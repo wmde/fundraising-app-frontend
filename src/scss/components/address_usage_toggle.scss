@@ -1,3 +1,5 @@
+@use "../settings/colors";
+
 $address-usage-text-color: #727373;
 
 .address-usage-toggle {
@@ -10,11 +12,11 @@ $address-usage-text-color: #727373;
 		padding-top: 5px;
 
 		&:hover {
-			color: $fun-color-primary;
+			color: colors.$primary;
 		}
 
 		&::after {
-			border: 2px solid $fun-color-primary;
+			border: 2px solid colors.$primary;
 			border-radius: 2px;
 			border-right: 0;
 			border-top: 0;

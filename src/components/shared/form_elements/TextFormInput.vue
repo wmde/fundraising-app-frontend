@@ -82,6 +82,7 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 		border: map.get( forms.$input, 'border' );
 		font-size: map.get( forms.$input, 'font-size' );
 		border-radius: map.get( forms.$input, 'border-radius' );
+		height: map.get( forms.$input, 'height' );
 
 		&:active {
 			background-color: colors.$white;
@@ -101,7 +102,7 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 	}
 
 	&.has-icons-right .icon {
-		height: 44px;
+		height: 40px;
 	}
 }
 </style>

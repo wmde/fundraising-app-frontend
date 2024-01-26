@@ -8,8 +8,8 @@ describe( 'AppHeader.vue', () => {
 		[ 'donation-confirmation', 1 ],
 		[ 'membership-application', 2 ],
 		[ 'membership-application-confirmation', 2 ],
-		[ 'faq-page', 3 ],
-		[ 'use-of-funds', 4 ],
+		[ 'use-of-funds', 3 ],
+		[ 'faq-page', 4 ],
 	] )( 'highlights the correct navigation items', ( pageIdentifier: string, navItemIndex: number ) => {
 		const wrapper = shallowMount( AppHeader, {
 			props: {
@@ -23,6 +23,6 @@ describe( 'AppHeader.vue', () => {
 			},
 		} );
 
-		expect( wrapper.find( '#navMenu .navbar-item:nth-child(' + navItemIndex + ')' ).classes() ).toContain( 'active' );
+		expect( wrapper.find( '.navigation-items .navigation-item:nth-child(' + navItemIndex + ')' ).classes() ).toContain( 'active' );
 	} );
 } );

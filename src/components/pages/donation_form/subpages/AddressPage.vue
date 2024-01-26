@@ -1,27 +1,13 @@
 <template>
 	<div class="address-page">
-		<FeatureToggle default-template="campaigns.new_design.legacy">
-			<template #campaigns.new_design.legacy>
-				<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
-				<PaymentSummary
-					v-if="paymentWasInitialized"
-					:amount="paymentSummary.amount"
-					:payment-type="paymentSummary.paymentType"
-					:interval="paymentSummary.interval"
-					@previous-page="previousPage">
-				</PaymentSummary>
-			</template>
-			<template #campaigns.new_design.new>
-				<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
-				<PaymentSummary
-					v-if="paymentWasInitialized"
-					:amount="paymentSummary.amount"
-					:payment-type="paymentSummary.paymentType"
-					:interval="paymentSummary.interval"
-					@previous-page="previousPage">
-				</PaymentSummary>
-			</template>
-		</FeatureToggle>
+		<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
+		<PaymentSummary
+			v-if="paymentWasInitialized"
+			:amount="paymentSummary.amount"
+			:payment-type="paymentSummary.paymentType"
+			:interval="paymentSummary.interval"
+			@previous-page="previousPage">
+		</PaymentSummary>
 
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<PaymentBankData

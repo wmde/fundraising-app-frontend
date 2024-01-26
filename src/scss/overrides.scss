@@ -1,3 +1,4 @@
+@use "settings/colors";
 @import "variables";
 
 // Miscellaneous overrides
@@ -35,17 +36,17 @@
 	@include from($tablet) {
 		width: $fun-max-width;
 	}
-    border-bottom: 2px solid $fun-color-gray-light-transparency;
+    border-bottom: 2px solid colors.$very-transparent-black;
 	align-items: flex-start;
 	padding-bottom: 1.5em;
 	padding-top: 1.5em;
 	&:hover {
-		border-bottom: 2px solid $fun-color-gray-dark;
+		border-bottom: 2px solid colors.$gray-dark;
 	}
 	&.is-active {
-		border-bottom: 2px solid $fun-color-primary;
+		border-bottom: 2px solid colors.$primary;
 		&:hover {
-			border-bottom: 2px solid $fun-color-primary;
+			border-bottom: 2px solid colors.$primary;
 		}
 	}
 	+ .radio {
@@ -67,18 +68,14 @@
 		padding-left: 18px;
 	}
 	input[type="checkbox"] + .check {
-		border: 1px solid $fun-color-dark;
+		border: 1px solid colors.$dark;
 		margin-top: 2px; // visually align the checkbox with the label text
 	}
 }
 
 /* Change dropdown caret */
 .select:not(.is-multiple):not(.is-loading)::after {
-	border-color: $fun-color-dark;
-}
-
-.input, .field {
-	max-width: $fun-max-width;
+	border-color: colors.$dark;
 }
 
 .radio, .checkbox {
@@ -97,7 +94,7 @@
 		display: none;
 	}
 	&:active {
-		background-color: $fun-color-primary-lightest;
+		background-color: colors.$primary-lightest;
 	}
 	&.is-large {
 		font-size: 1rem;
@@ -110,12 +107,12 @@
 		text-align: right;
 	}
 	&.is-valid {
-		background-color: $fun-color-bright;
-		border-color: $fun-color-primary;
+		background-color: colors.$white;
+		border-color: colors.$primary;
 	}
 	&.is-invalid {
-		background-color: $fun-color-bright;
-		border-color: $fun-color-error;
+		background-color: colors.$white;
+		border-color: colors.$error;
 		border-bottom-width: 2px;
 	}
 }
@@ -172,8 +169,8 @@ button.is-low {
 
 .modal {
 	&-card {
-		background-color: $fun-color-bright;
-		border: 2px solid $fun-color-gray-light-solid;
+		background-color: colors.$white;
+		border: 2px solid colors.$gray-light;
 		border-radius: $radius;
 		padding: 36px;
 		overflow-y: auto;
@@ -188,7 +185,7 @@ button.is-low {
 		&-close {
 			&:after, &:before {
 				@include until($tablet) {
-					background-color: $fun-color-dark;
+					background-color: colors.$dark;
 				}
 			}
 		}

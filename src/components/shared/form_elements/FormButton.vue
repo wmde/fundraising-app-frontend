@@ -27,12 +27,13 @@ withDefaults( defineProps<Props>(), {
 @use '@src/scss/settings/colors';
 @use '@src/scss/settings/global';
 @use 'sass:color';
+@use 'sass:map';
 
 .form-button {
 	background: colors.$primary;
 	color: colors.$white;
 	border: 0;
-	border-radius: 0;
+	border-radius: map.get( forms.$input, 'border-radius' );
 	padding: 0;
 	margin: 0;
 	font-size: 1em;

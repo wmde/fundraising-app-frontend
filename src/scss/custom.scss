@@ -1,3 +1,7 @@
+@use "settings/colors";
+@use "settings/units";
+@use "settings/fonts";
+@use "sass:map";
 // This class imports all fonts, variables and overrides
 // and adds custom classes on top of that
 @import "variables";
@@ -18,8 +22,8 @@
 
 .is-form-input {
 	.has-border-rounded {
-		background-color: $fun-color-bright;
-		border: 1px solid $fun-color-gray-mid;
+		background-color: colors.$white;
+		border: 1px solid colors.$gray-mid;
 		border-radius: 2px;
 	}
 
@@ -57,20 +61,27 @@
 			left: 0;
 			bottom: 0;
 			width: 100%;
-			border-bottom: 1px solid $fun-color-dark-lighter;
+			border-bottom: 1px solid colors.$transparent-black;
 		}
 		a {
-			color: $fun-color-dark-lighter;
+			color: colors.$transparent-black;
 			display: block;
 			position: relative;
 			top:50%;
 			transform: translateY(-50%);
 
 			&:hover, &:focus {
-				color: $fun-color-dark;
+				color: colors.$black;
 			}
 		}
 	}
+}
+
+.form-title,
+h1.form-title {
+	margin: 0 0 map.get( units.$spacing, 'large' );
+	font-size: 24px;
+	line-height: 26px;
 }
 
 .form-caption {
@@ -94,7 +105,7 @@
 		margin:  1 - $column-gap;
 		padding: $column-gap - 1;
 	}
-	border: solid 2px $fun-color-gray-light-solid;
+	border: solid 2px colors.$gray-light;
 }
 
 .content .faq-item {
@@ -125,7 +136,7 @@
 		border: none;
 		max-width: 200px;
 		&.is-outlined:hover {
-			background-color: $fun-color-bright;
+			background-color: colors.$white;
 			border: none;
 			color: inherit;
 		}
@@ -230,9 +241,5 @@
 @import "compact_form"; // AB Test Import
 @import "components/address_usage_toggle";
 
-// New style guide
+// Global form field styles
 @import "components/form_field";
-
-// C23_WMDE_Desktop_DE_06 overrides
-@import '@src/scss/settings/fonts';
-@import "C23_WMDE_Desktop_DE_06";

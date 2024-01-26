@@ -1,3 +1,4 @@
+@use "settings/colors";
 // Fonts are expected in the build directory
 // If the fonts do not show up, make sure to run 'make ui'
 
@@ -91,40 +92,40 @@ $icon-close: '\e805'; /* Close */
 
 .mdi-alert:before {
 	content: $icon-warning;
-	color: $fun-color-gray-dark;
+	color: colors.$gray-dark;
 }
 
 .mdi-arrow-down:before {
 	content: $icon-down-open;
 	font-size: 14px;
-	color: $fun-color-dark;
+	color: colors.$black;
 	top: 0;
 }
 
 .mdi-arrow-up:before {
 	content: $icon-up-open;
 	font-size: 14px;
-	color: $fun-color-dark;
+	color: colors.$black;
 	top: 0;
 }
 
 .mdi-arrow-left:before {
 	content: $icon-left-open;
 	font-size: 14px;
-	color: $fun-color-dark;
+	color: colors.$black;
 	top: 0;
 }
 
 .mdi-arrow-right:before {
 	content: $icon-right-open;
 	font-size: 14px;
-	color: $fun-color-dark;
+	color: colors.$black;
 	top: 0;
 }
 
 .mdi-close:before {
 	content: $icon-close;
 	font-size: 14px;
-	color: $fun-color-dark;
+	color: colors.$black;
 	top: 0;
 }

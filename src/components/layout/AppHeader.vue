@@ -1,32 +1,26 @@
 <template>
-	<div class="navbar is-fixed-top has-background-bright has-shadow">
-		<div class="container">
-			<div class="navbar-brand">
-				<a class="navbar-item" :href="`/?${ campaignParams }`">
-					<Logo/>
-				</a>
-				<a role="button"
-					aria-label="menu"
-					aria-expanded="false"
-					@click="showNavbarBurger = !showNavbarBurger"
-					v-bind:class="[{ 'is-active': showNavbarBurger }, 'navbar-burger']">
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-				</a>
-			</div>
-			<div id="navMenu" v-bind:class="[ { 'is-active': showNavbarBurger }, 'navbar-menu']"
-				@click="showNavbarBurger = !showNavbarBurger">
-				<div class="navbar-start">
-					<a v-for="( link, index ) in headerMenu"
-						:key="index"
-						:href="link.url"
-						v-bind:class="[{ 'active': link.ids.includes( pageIdentifier ) }, 'navbar-item']">
-						{{ $t( 'header_menu_item_' + link.localeId ) }}
-					</a>
-				</div>
-			</div>
+	<div class="navigation">
+		<a class="navigation-left" :href="`/?${ campaignParams }`">
+			<Logo/>
+		</a>
+		<div
+			class="navigation-items"
+			:class="{ 'active': showMobileNavbar }"
+			@click="showMobileNavbar = !showMobileNavbar"
+		>
+			<a
+				v-for="( link, index ) in headerMenu"
+				:key="index"
+				:href="link.url"
+				class="navigation-item"
+				:class="{ 'active': link.ids.includes( pageIdentifier ) }"
+			>
+				{{ $t( 'header_menu_item_' + link.localeId ) }}
+			</a>
+		</div>
+		<div class="navigation-right">
 			<LocaleSelector :assets-path="assetsPath"/>
+			<NavigationBurger :active="showMobileNavbar" @click="showMobileNavbar = !showMobileNavbar"/>
 		</div>
 	</div>
 </template>
@@ -36,6 +30,7 @@
 import { inject, ref } from 'vue';
 import LocaleSelector from '@src/components/shared/LocaleSelector.vue';
 import Logo from '@src/components/layout/Logo.vue';
+import NavigationBurger from '@src/components/shared/NavigationBurger.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
@@ -46,7 +41,7 @@ interface Props {
 defineProps<Props>();
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
-const showNavbarBurger = ref<boolean>( false );
+const showMobileNavbar = ref<boolean>( false );
 const headerMenu = [
 	{ ids: [ 'donation-form', 'donation-confirmation' ], localeId: 'donate', url: `/?${ campaignParams }` },
 	{
@@ -54,81 +49,107 @@ const headerMenu = [
 		localeId: 'membership_application',
 		url: `/apply-for-membership?${ campaignParams }`,
 	},
-	{ ids: [ 'faq-page' ], localeId: 'faq', url: `/faq?${ campaignParams }` },
 	{ ids: [ 'use-of-funds' ], localeId: 'use_of_resources', url: `/use-of-funds?${ campaignParams }` },
+	{ ids: [ 'faq-page' ], localeId: 'faq', url: `/faq?${ campaignParams }` },
 ];
 
 </script>
 
 <style lang="scss">
-@import "../../scss/variables";
-@import "~bulma/sass/utilities/mixins";
+@use "../../scss/settings/global";
+@use "../../scss/settings/colors";
+@use "../../scss/settings/units";
+@use "../../scss/settings/breakpoints";
+@use 'sass:map';
+@use 'sass:color';
 
-.navbar {
-	&-item {
-		border-bottom: 2px solid $fun-color-bright;
-	}
+$navbar-breakpoint: 600px;
+// Keep the logo and language links equal width so the navigation will be centered
+$side-width: 80px;
 
-	&-brand {
-		margin-left: 0;
-		@include from($tablet) {
-			margin-right: 54px;
-		}
-	}
-
-	&-menu {
-		padding: 0;
-
-		.navbar-item {
-			padding: 18px;
-
-			@include until(820px) {
-				padding: 18px 9px;
-			}
-
-			@include until($navbar-breakpoint) {
-				padding: 18px;
-				border-bottom: 2px solid $fun-color-gray-light-transparency;
-			}
-		}
-	}
-
-	&-menu,
-	&-language {
-		.navbar-item {
-			&:hover {
-				border-bottom: 2px solid $fun-color-primary;
-			}
-
-			&:active {
-				background-color: $fun-color-primary-lightest;
-			}
-
-			&.active {
-				border-bottom: 2px solid $fun-color-primary;
-				color: $fun-color-primary;
-				font-weight: bold;
-			}
-		}
-	}
-}
-
-.navbar-language {
-	align-items: stretch;
+.navigation {
+	position: fixed;
+	background: colors.$white;
+	width: 100%;
 	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: stretch;
+	box-shadow: 1px 2px 3px rgba( 0, 0, 0, 0.1);
+	min-height: global.$navbar-height;
+	z-index: 30;
 
-	position: absolute;
-	top: 0;
-	right: 72px;
+	&-items {
+		position: absolute;
+		top: 100%;
+		width: 100%;
+		display: none;
+		flex-direction: column;
+		max-width: global.$content-width;
+		background: colors.$white;
+		box-shadow: 0 8px 8px rgba( 0, 0, 0, 0.1);
 
-	@include from($navbar-breakpoint) {
-		right: 0;
-		position: static;
-		float: right;
+		&.active {
+			display: flex;
+		}
+
+		@include breakpoints.tablet-up {
+			position: static;
+			top: auto;
+			display: flex;
+			flex-direction: row;
+			align-items: stretch;
+			flex-wrap: nowrap;
+			box-shadow: none;
+		}
 	}
 
-	.navbar-item {
-		line-height: 4rem;
+	&-item {
+		display: flex;
+		align-items: center;
+		border-bottom: 2px solid colors.$white;
+		padding: map.get( units.$spacing, 'small' );
+		color: colors.$black;
+		border-bottom: 2px solid colors.$gray-light;
+		transition: border-bottom-color 200ms global.$easing, color 200ms global.$easing;
+
+		&:hover,
+		&:focus,
+		&.active {
+			color: colors.$primary;
+			border-bottom: 2px solid colors.$primary;
+		}
+
+		&.active {
+			font-weight: bold;
+		}
+
+		@include breakpoints.tablet-up {
+			border-bottom: 2px solid colors.$white;
+		}
+	}
+
+	&-left {
+		width: $side-width;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&-right {
+		display: flex;
+		align-items: stretch;
+
+		@include breakpoints.tablet-up {
+			width: $side-width;
+		}
+	}
+
+	&-locale {
+		@include breakpoints.tablet-up {
+			width: $side-width;
+		}
 	}
 }
+
 </style>

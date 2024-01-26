@@ -28,6 +28,7 @@ defineProps<Props>();
 @use 'sass:map';
 
 .app-content {
+	padding: map.get( units.$spacing, 'large' ) 0;
 	display: flex;
 	flex-direction: column;
 
