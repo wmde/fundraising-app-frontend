@@ -5,7 +5,7 @@
 				<keep-alive>
 					<PaymentPage
 						v-if="currentPageIndex === 0"
-						@next-page="currentPageIndex = 1"
+						@next-page="goToAddressPage"
 						:assets-path="assetsPath"
 						:payment-amounts="paymentAmounts"
 						:payment-intervals="paymentIntervals"
@@ -13,7 +13,7 @@
 					/>
 					<AddressPage
 						v-else
-						@previous-page="currentPageIndex = 0"
+						@previous-page="goToPaymentPage"
 						:assets-path="assetsPath"
 						:validate-address-url="validateAddressUrl"
 						:validate-email-url="validateEmailUrl"
@@ -31,7 +31,7 @@
 				<keep-alive>
 					<PaymentPage
 						v-if="currentPageIndex === 0"
-						@next-page="currentPageIndex = 1"
+						@next-page="goToAddressPage"
 						:assets-path="assetsPath"
 						:payment-amounts="paymentAmounts"
 						:payment-intervals="paymentIntervals"
@@ -39,7 +39,7 @@
 					/>
 					<AddressPageDonationReceipt
 						v-else
-						@previous-page="currentPageIndex = 0"
+						@previous-page="goToPaymentPage"
 						:assets-path="assetsPath"
 						:validate-address-url="validateAddressUrl"
 						:validate-email-url="validateEmailUrl"
@@ -67,6 +67,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import AddressPageDonationReceipt from '@src/components/pages/donation_form/subpages/AddressPageDonationReceipt.vue';
+import { HistoryHijacker, PopStateEvent } from '@src/util/HistoryHijacker';
 
 interface Props {
 	assetsPath: string;
@@ -83,14 +84,30 @@ interface Props {
 	campaignValues: CampaignValues;
 	addressValidationPatterns: AddressValidation;
 	startPageIndex: number;
+	historyHijacker: HistoryHijacker;
 }
 
+const AddressPageName = 'AddressPage';
 const props = defineProps<Props>();
-
 const currentPageIndex = ref<number>( props.startPageIndex );
 
 watch( currentPageIndex, () => {
 	window.scrollTo( 0, 0 );
 } );
+
+props.historyHijacker.addHistoryCallback( ( e: PopStateEvent ) => {
+	// If the state is the address page then the user has hit the forward button after hitting back
+	currentPageIndex.value = e.state === AddressPageName ? 1 : 0;
+} );
+
+const goToAddressPage = () => {
+	currentPageIndex.value = 1;
+	props.historyHijacker.addPushState( AddressPageName );
+};
+
+const goToPaymentPage = () => {
+	currentPageIndex.value = 0;
+	props.historyHijacker.back();
+};
 
 </script>

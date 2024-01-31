@@ -30,6 +30,7 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import CampaignParameters from '@src/util/CampaignParameters';
 import { TrackingData } from '@src/view_models/TrackingData';
+import { WindowHistoryHijacker } from '@src/util/HistoryHijacker';
 
 interface MembershipAmountModel {
 	presetAmounts: Array<string>,
@@ -108,6 +109,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				dateOfBirthValidationPattern: pageData.applicationVars.dateOfBirthValidationPattern,
 				trackingData: pageData.applicationVars.tracking,
 				campaignValues: campaignParameters.getCampaignValues(),
+				historyHijacker: new WindowHistoryHijacker(),
 			},
 		} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );

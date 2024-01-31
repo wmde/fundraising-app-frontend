@@ -1,14 +1,13 @@
-import { mount, VueWrapper } from '@vue/test-utils';
-import DonationForm from '@src/components/pages/DonationForm.vue';
-import countries from '@src/../tests/data/countries';
-import { AddressValidation } from '@src/view_models/Validation';
-import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { HistoryHijacker } from '@src/util/HistoryHijacker';
+import { mount, VueWrapper } from '@vue/test-utils';
+import MembershipForm from '@src/components/pages/MembershipForm.vue';
+import countries from '@test/data/countries';
+import { AddressValidation } from '@src/view_models/Validation';
 
 const PaymentPage = { template: '<div class="i-am-payment" />' };
 const AddressPage = { template: '<div class="i-am-address-form" />' };
 
-describe( 'DonationForm.vue', () => {
+describe( 'MembershipForm.vue', () => {
 	let historyHijacker: HistoryHijacker;
 
 	beforeEach( () => {
@@ -16,23 +15,24 @@ describe( 'DonationForm.vue', () => {
 		historyHijacker = { addHistoryCallback: jest.fn(), addPushState: jest.fn(), back: jest.fn() };
 	} );
 
-	const getWrapper = ( startPageIndex: number = 0 ): VueWrapper<any> => {
-		return mount( DonationForm, {
+	const getWrapper = (): VueWrapper<any> => {
+		return mount( MembershipForm, {
 			props: {
-				assetsPath: '',
-				paymentAmounts: [ '5' ],
-				paymentIntervals: [ 0, 1, 3, 6, 12 ],
-				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
-				validateAddressUrl: 'https://example.com/address-check',
-				countries: countries,
-				trackingData: { bannerImpressionCount: 0, impressionCount: 0 },
-				campaignValues: { campaign: 'nicholas', keyword: 'cage' },
+				validateAddressUrl: '',
 				validateEmailUrl: '',
 				validateBankDataUrl: '',
 				validateLegacyBankDataUrl: '',
+				validateFeeUrl: '',
+				paymentAmounts: [ 5 ],
+				paymentIntervals: [ 0, 1, 3, 6, 12 ],
+				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
+				countries,
 				salutations: [],
+				showMembershipTypeOption: false,
 				addressValidationPatterns: {} as AddressValidation,
-				startPageIndex,
+				dateOfBirthValidationPattern: '',
+				trackingData: { bannerImpressionCount: 0, impressionCount: 0 },
+				campaignValues: { campaign: 'nicholas', keyword: 'cage' },
 				historyHijacker,
 			},
 			global: {
@@ -40,35 +40,34 @@ describe( 'DonationForm.vue', () => {
 					PaymentPage,
 					AddressPage,
 				},
-				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
-				},
 			},
 		} );
 	};
 
-	it( 'displays Payment page by default ', () => {
-		const wrapper = getWrapper( 0 );
+	it( 'displays Payment page on load ', () => {
+		const wrapper = getWrapper();
+
 		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
 	} );
 
 	it( 'loads Address page when next-page is triggered', async () => {
-		const wrapper = getWrapper( 0 );
+		const wrapper = getWrapper();
 		await wrapper.findComponent( PaymentPage ).vm.$emit( 'next-page' );
 
 		expect( wrapper.find( '.i-am-address-form' ).exists() ).toBe( true );
 	} );
 
 	it( 'loads Payment component on the previous page', async () => {
-		const wrapper = getWrapper( 1 );
+		const wrapper = getWrapper();
 
+		await wrapper.findComponent( PaymentPage ).vm.$emit( 'next-page' );
 		await wrapper.findComponent( AddressPage ).vm.$emit( 'previous-page' );
 
 		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
 	} );
 
 	it( 'does not overshoot the first or last page when multiple page change events trigger', async () => {
-		const wrapper = getWrapper( 0 );
+		const wrapper = getWrapper();
 
 		const paymentPage = wrapper.findComponent( PaymentPage );
 		await paymentPage.vm.$emit( 'next-page' );
@@ -86,7 +85,7 @@ describe( 'DonationForm.vue', () => {
 	} );
 
 	it( 'scrolls to top of page only when page index changes', async () => {
-		const wrapper = getWrapper( 0 );
+		const wrapper = getWrapper();
 
 		const paymentPage = wrapper.findComponent( PaymentPage );
 		await paymentPage.vm.$emit( 'next-page' );
@@ -100,13 +99,13 @@ describe( 'DonationForm.vue', () => {
 	} );
 
 	it( 'sets a history hijack callback when mounted', async () => {
-		getWrapper( 0 );
+		getWrapper();
 
 		expect( historyHijacker.addHistoryCallback ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	it( 'adds history hijack push state when payment page is submitted', async () => {
-		const wrapper = getWrapper( 0 );
+		const wrapper = getWrapper();
 
 		const paymentPage = wrapper.findComponent( PaymentPage );
 		await paymentPage.vm.$emit( 'next-page' );
@@ -115,12 +114,14 @@ describe( 'DonationForm.vue', () => {
 	} );
 
 	it( 'calls history hijack back when donor clicks back link', async () => {
-		const wrapper = getWrapper( 1 );
+		const wrapper = getWrapper();
+
+		const paymentPage = wrapper.findComponent( PaymentPage );
+		await paymentPage.vm.$emit( 'next-page' );
 
 		const addressPage = wrapper.findComponent( AddressPage );
 		await addressPage.vm.$emit( 'previous-page' );
 
 		expect( historyHijacker.back ).toHaveBeenCalledTimes( 1 );
 	} );
-
 } );

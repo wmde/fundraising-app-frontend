@@ -23,6 +23,7 @@ import App from '@src/components/App.vue';
 import DonationForm from '@src/components/pages/DonationForm.vue';
 import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { WindowHistoryHijacker } from '@src/util/HistoryHijacker';
 
 interface DonationFormModel {
 	initialFormValues: any,
@@ -81,6 +82,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				campaignValues: campaignParameters.getCampaignValues(),
 				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
 				startPageIndex: paymentDataComplete ? 1 : 0,
+				historyHijacker: new WindowHistoryHijacker(),
 			},
 		} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
