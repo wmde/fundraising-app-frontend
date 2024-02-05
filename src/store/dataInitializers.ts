@@ -9,6 +9,7 @@ import { InitialPaymentValues } from '@src/view_models/Payment';
 import { BankAccountData, InitialBankAccountData } from '@src/view_models/BankAccount';
 import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
 import { trackFormFieldRestored } from '@src/util/tracking';
+import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
 
 const replaceInitialValue = ( defaultValue: any, replacement: any ): any => {
 	if ( replacement !== undefined && replacement !== null && replacement !== '' ) {
@@ -46,7 +47,7 @@ export const createInitialDonationAddressValues = ( dataPersister: DataPersister
 		// The address type chosen by the user in the banner should override the choice made later, assuming that
 		// reloading the page (and restoring from localStorage) happens less often than coming back from a banner
 		addressType: replaceInitialValue( dataPersister.getValue( 'addressType' ), initialFormValues.addressType ),
-		newsletter: replaceInitialValue( null, dataPersister.getValue( 'newsletter' ) ),
+		newsletter: replaceInitialValue( MAILING_LIST_ADDRESS_PAGE, dataPersister.getValue( 'newsletter' ) ),
 		receipt: replaceInitialValue( null, dataPersister.getValue( 'receipt' ) ),
 		fields: addressPersistItems,
 	};
