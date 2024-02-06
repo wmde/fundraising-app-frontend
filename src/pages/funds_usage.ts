@@ -10,14 +10,19 @@ const PAGE_IDENTIFIER = 'use-of-funds';
 const pageData = new PageDataInitializer<any>( '#appdata' );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-createVueApp( App, pageData.messages, featureFetcher, {
-	assetsPath: pageData.assetsPath,
-	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-	isFullWidth: true,
-	pageIdentifier: PAGE_IDENTIFIER,
-	page: UseOfFunds,
-	pageProps: {
-		content: JSON.parse( pageData.applicationVars.use_of_funds_content ),
+createVueApp(
+	App,
+	pageData.messages,
+	pageData.allowedCampaignParameters,
+	featureFetcher,
+	{
 		assetsPath: pageData.assetsPath,
-	},
-} ).mount( '#app' );
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+		isFullWidth: true,
+		pageIdentifier: PAGE_IDENTIFIER,
+		page: UseOfFunds,
+		pageProps: {
+			content: JSON.parse( pageData.applicationVars.use_of_funds_content ),
+			assetsPath: pageData.assetsPath,
+		},
+	} ).mount( '#app' );

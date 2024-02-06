@@ -40,15 +40,19 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId, yearlyFee.yearlyFee );
 
-createVueApp( App, pageData.messages, featureFetcher, {
-	assetsPath: pageData.assetsPath,
-	bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-	isFullWidth: true,
-	usesContentCards: false,
-	pageIdentifier: PAGE_IDENTIFIER,
-	page: MembershipConfirmation,
-	pageProps: {
-		confirmationData: pageData.applicationVars,
-		salutations: pageData.applicationVars.salutations,
-	},
-} ).mount( '#app' );
+createVueApp( App,
+	pageData.messages,
+	pageData.allowedCampaignParameters,
+	featureFetcher,
+	{
+		assetsPath: pageData.assetsPath,
+		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+		isFullWidth: true,
+		usesContentCards: false,
+		pageIdentifier: PAGE_IDENTIFIER,
+		page: MembershipConfirmation,
+		pageProps: {
+			confirmationData: pageData.applicationVars,
+			salutations: pageData.applicationVars.salutations,
+		},
+	} ).mount( '#app' );
