@@ -85,7 +85,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 					trackingData: pageData.applicationVars.tracking,
 					campaignValues: campaignParameters.getCampaignValues(),
 					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-					startPageIndex: paymentDataComplete ? 1 : 0,
+					paymentDataComplete,
 				},
 			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
