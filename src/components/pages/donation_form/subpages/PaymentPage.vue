@@ -8,8 +8,6 @@
 		method="post"
 		@keydown.enter.prevent="next()"
 	>
-		<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
-
 		<Payment
 			:payment-amounts="paymentAmounts"
 			:payment-intervals="paymentIntervals"

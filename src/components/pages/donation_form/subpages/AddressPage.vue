@@ -1,6 +1,5 @@
 <template>
 	<div class="address-page">
-		<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
 		<PaymentSummary
 			v-if="paymentWasInitialized"
 			:amount="paymentSummary.amount"
