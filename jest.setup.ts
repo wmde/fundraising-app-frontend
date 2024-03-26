@@ -9,7 +9,13 @@ global._paq = {
 };
 
 config.global.plugins = [ createI18n( { legacy: false, missingWarn: false, fallbackWarn: false } ) ];
-config.global.mocks = {
-	t: ( key: string ) => key,
-	n: ( key: string ) => key,
-};
+
+jest.mock( 'vue-i18n', () => {
+	return {
+		...jest.requireActual( 'vue-i18n' ),
+		useI18n: jest.fn().mockReturnValue( {
+			t: ( key: string, params?: Object ) => JSON.stringify( { key, ...params } ),
+			n: ( amount: string, params?: Object ) => JSON.stringify( { amount, ...params } ),
+		} ),
+	};
+} );

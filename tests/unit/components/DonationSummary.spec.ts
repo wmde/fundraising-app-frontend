@@ -1,39 +1,7 @@
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
-import { config, mount, VueWrapper } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import { Salutation } from '@src/view_models/Salutation';
-import { createI18n } from 'vue-i18n';
 import { nextTick } from 'vue';
-
-const i18n = createI18n( {
-	locale: 'en-US',
-	fallbackLocale: 'en-US',
-	legacy: false,
-	messages: {
-		'en-US': {
-			'BEZ': 'BEZ',
-			'donation_form_payment_interval_12': 'donation_form_payment_interval_12',
-			'donation_confirmation_topbox_donor_type_person': 'Person',
-			'donation_confirmation_review_email_missing': 'Email',
-			'language_item': '{interval} {formattedAmount} {paymentType} {personType} {address} {email}',
-		},
-	},
-	numberFormats: {
-		'en-US': {
-			currency: {
-				style: 'currency',
-				currency: 'EUR',
-				notation: 'standard',
-				currencyDisplay: 'symbol',
-			},
-		},
-	},
-} );
-
-config.global.plugins = [ i18n ];
-config.global.mocks = {
-	t: jest.fn(),
-	n: jest.fn(),
-};
 
 describe( 'DonationSummary.vue', () => {
 	const payment = {
@@ -188,9 +156,9 @@ describe( 'DonationSummary.vue', () => {
 		const wrapper = getWrapper( {} );
 
 		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
-			'interval:donation_form_payment_interval_12',
-			'formattedAmount:14.99 euros',
-			'paymentType:BEZ',
+			'interval:{"key":"donation_form_payment_interval_12"}',
+			'formattedAmount:{"amount":14.99,"key":"currency","currencyDisplay":"name"}',
+			'paymentType:{"key":"BEZ"}',
 			'personType:donation_confirmation_topbox_donor_type_person',
 			'address:donation_confirmation_review_address_missing',
 			'email:donation_confirmation_review_email_missing',
@@ -201,9 +169,9 @@ describe( 'DonationSummary.vue', () => {
 		const wrapper = getWrapper( privateAddress );
 
 		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
-			'interval:donation_form_payment_interval_12',
-			'formattedAmount:14.99 euros',
-			'paymentType:BEZ',
+			'interval:{"key":"donation_form_payment_interval_12"}',
+			'formattedAmount:{"amount":14.99,"key":"currency","currencyDisplay":"name"}',
+			'paymentType:{"key":"BEZ"}',
 			'personType:donation_confirmation_topbox_donor_type_person',
 			'address:Herr Dr. Vlad Dracul, Blutgasse 5, 80666 München, Deutschland',
 			'email:donation_confirmation_review_email_missing',
@@ -213,9 +181,9 @@ describe( 'DonationSummary.vue', () => {
 		await nextTick();
 
 		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
-			'interval:donation_form_payment_interval_12',
-			'formattedAmount:14.99 euros',
-			'paymentType:BEZ',
+			'interval:{"key":"donation_form_payment_interval_12"}',
+			'formattedAmount:{"amount":14.99,"key":"currency","currencyDisplay":"name"}',
+			'paymentType:{"key":"BEZ"}',
 			'personType:donation_confirmation_topbox_donor_type_person',
 			'address:donation_confirmation_review_address_missing',
 			'email:donation_confirmation_review_email_missing',

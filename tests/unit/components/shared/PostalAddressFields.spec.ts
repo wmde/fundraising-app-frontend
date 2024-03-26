@@ -123,6 +123,6 @@ describe( 'Postal.vue', () => {
 
 		expect( props.formData.postcode.pattern ).toEqual( addressValidationPatterns.postcode );
 
-		jest.resetAllMocks();
+		jest.clearAllMocks();
 	} );
 } );
