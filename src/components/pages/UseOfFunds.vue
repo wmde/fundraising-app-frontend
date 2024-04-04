@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="banner_model__section use_of_funds__section--call_to_action">
-			<button class="use_of_funds__button" onclick="location.href='/'">{{ content.callToAction }}</button>
+			<a class="use_of_funds__call-to-action-button" href="/">{{ content.callToAction }}</a>
 		</div>
 	</div>
 </template>
