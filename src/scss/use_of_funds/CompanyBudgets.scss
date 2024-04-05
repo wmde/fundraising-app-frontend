@@ -1,3 +1,4 @@
+@use "../settings/colors";
 @import './variables';
 .company_budgets {
 	table-layout: fixed;
@@ -63,11 +64,11 @@
 	&__row--wikipedia {
 
 		.company_budgets__col--company {
-			color: #4a90e2;
+			color: colors.$primary;
 		}
 
 		.company_budgets__budget_line {
-			background-color: #4a90e2;
+			background-color: colors.$primary;
 		}
 	}
 }
