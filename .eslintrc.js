@@ -8,11 +8,13 @@ module.exports = {
 
 	plugins: [
 		'@typescript-eslint',
+		'eslint-plugin-vuejs-accessibility',
 	],
 
 	extends: [
 		'wikimedia',
 		'plugin:vue/base',
+		'plugin:vuejs-accessibility/recommended',
 	],
 
 	rules: {
