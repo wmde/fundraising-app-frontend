@@ -23,6 +23,7 @@ createVueApp( App,
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: SubscriptionConfirmation,
+		pageTitle: 'subscription_confirmation_page_title',
 		pageProps: {
 			errorMessage: pageData.applicationVars.error_message,
 		},

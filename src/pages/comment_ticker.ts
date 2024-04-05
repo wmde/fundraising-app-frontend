@@ -7,7 +7,11 @@ import CommentTicker from '@src/components/pages/CommentTicker.vue';
 const pageData = new PageDataInitializer<any>( '#appdata' );
 
 const i18n = createLocalisation( pageData.messages );
-const app = createApp( CommentTicker, {} );
+const app = createApp( CommentTicker, {
+	pageTitle: 'comment_ticker_page_title',
+	pageProps: {
+	},
+} );
 
 app.use( i18n );
 app.mount( '#app' );

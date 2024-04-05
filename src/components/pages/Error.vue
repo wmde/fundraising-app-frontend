@@ -40,10 +40,14 @@ interface TraceItem {
 
 interface Props {
 	errorMessage: string,
-	errorTrace: TraceItem[]
+	errorTrace: TraceItem[],
 }
 defineProps<Props>();
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
+
+defineOptions( {
+	name: 'Error',
+} );
 
 </script>

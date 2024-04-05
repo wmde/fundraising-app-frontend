@@ -21,6 +21,7 @@ createVueApp(
 		isFullWidth: true,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: UseOfFunds,
+		pageTitle: 'use_of_funds_page_title',
 		pageProps: {
 			content: JSON.parse( pageData.applicationVars.use_of_funds_content ),
 			assetsPath: pageData.assetsPath,

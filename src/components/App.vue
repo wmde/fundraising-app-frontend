@@ -27,21 +27,29 @@ import AppHeader from '@src/components/layout/AppHeader.vue';
 import AppContent from '@src/components/layout/AppContent.vue';
 import Sidebar from '@src/components/layout/Sidebar.vue';
 import AppFooter from '@src/components/layout/AppFooter.vue';
+import { useI18n } from 'vue-i18n';
+import { onMounted } from 'vue';
 
 interface Props {
 	assetsPath: string;
 	pageIdentifier: string;
 	page: Object;
 	pageProps?: Object;
+	pageTitle: string,
 	isFullWidth?: boolean;
 	usesContentCards?: boolean;
 	bucketClasses?: string[];
 }
 
-withDefaults( defineProps<Props>(), {
+const props = withDefaults( defineProps<Props>(), {
 	isFullWidth: false,
 	bucketClasses: () => [],
 	usesContentCards: false,
+} );
+
+onMounted( () => {
+	const { t } = useI18n();
+	document.title = t( 'site_name', { pageTitle: t( props.pageTitle ) } );
 } );
 
 </script>

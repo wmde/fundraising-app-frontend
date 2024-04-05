@@ -140,6 +140,16 @@ const runTicker = async () => {
 	}
 };
 
+defineOptions( {
+	name: 'CommentTicker',
+} );
+
+interface Props {
+	pageTitle: String;
+}
+
+defineProps<Props>();
+
 onMounted( async () => {
 	currentState.value = TickerStates.Initialising;
 	await fetchComments();

@@ -38,6 +38,7 @@ describe( 'DonationForm.vue', () => {
 				salutations: [],
 				addressValidationPatterns: {} as AddressValidation,
 				startPageIndex,
+				pageTitle: 'TestPageTitle',
 			},
 			global: {
 				stubs: {

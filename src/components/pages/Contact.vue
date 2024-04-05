@@ -137,6 +137,10 @@ interface FormData {
 	comment: FormItem;
 }
 
+defineOptions( {
+	name: 'Contact',
+} );
+
 interface Props {
 	contactData: ContactData;
 	validationPatterns: ContactFormValidation;

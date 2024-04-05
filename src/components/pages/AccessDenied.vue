@@ -5,13 +5,16 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 
-export default defineComponent( {
+defineOptions( {
 	name: 'AccessDenied',
-	props: [
-		'errorData',
-	],
 } );
+
+interface Props {
+	errorData;
+}
+
+defineProps<Props>();
+
 </script>

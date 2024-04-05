@@ -21,6 +21,7 @@ createVueApp(
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: Faq,
+		pageTitle: 'faq_page_title',
 		pageProps: {
 			content: faqContentFromObject( JSON.parse( pageData.applicationVars.faq_content ) ),
 		},

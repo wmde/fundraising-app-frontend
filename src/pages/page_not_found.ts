@@ -24,6 +24,7 @@ createVueApp( App,
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: PageNotFound,
+		pageTitle: 'page_not_found_page_title',
 		pageProps: {
 			errorData: pageData.applicationVars,
 		},

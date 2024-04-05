@@ -54,7 +54,7 @@ interface Props {
 	addressValidationPatterns: AddressValidation;
 	dateOfBirthValidationPattern: String,
 	campaignValues: CampaignValues;
-	trackingData: TrackingData
+	trackingData: TrackingData;
 }
 
 defineProps<Props>();

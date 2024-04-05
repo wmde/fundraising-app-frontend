@@ -26,6 +26,7 @@ createVueApp( App,
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: Supporters,
+		pageTitle: staticPage.getAttribute( 'data-page-title' ),
 		pageProps: {
 			pageTitle: staticPage.getAttribute( 'data-page-title' ),
 			supporters: supportersFromObject( JSON.parse( pageData.applicationVars.supporters ) ),

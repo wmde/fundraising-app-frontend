@@ -38,6 +38,7 @@ const app = createVueApp(
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: UpdateAddress,
+		pageTitle: 'update_address_page_title',
 		pageProps: {
 			validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 			updateAddressURL: pageData.applicationVars.urls.updateAddress,
