@@ -1,6 +1,6 @@
 <template>
 	<div class="navigation">
-		<a class="navigation-left" :href="`/?${ campaignParams }`">
+		<a class="navigation-left" :href="`/?${ campaignParams }`" aria-hidden="true">
 			<Logo/>
 		</a>
 		<div
