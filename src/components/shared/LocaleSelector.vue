@@ -6,10 +6,20 @@
 		</div>
 
 		<div class="navigation-locale-dropdown">
-			<a v-on:click="setCookie( 'de_DE' )" :class="{ 'active': locale === 'de_DE' }">
+			<a :class="{ 'active': locale === 'de_DE' }"
+					role="link"
+					tabindex="0"
+					@click="setCookie( 'de_DE' )"
+					@keyup.enter.space="setCookie( 'de_DE')"
+			>
 				Deutsch <Checkmark v-if="locale === 'de_DE'"/>
 			</a>
-			<a v-on:click="setCookie( 'en_GB' )" :class="{ 'active': locale === 'en_GB' }">
+			<a :class="{ 'active': locale === 'en_GB' }"
+					role="link"
+					tabindex="0"
+					@click="setCookie( 'en_GB' )"
+					@keyup.enter.space="setCookie( 'en_GB')"
+			>
 				English <Checkmark v-if="locale === 'en_GB'"/>
 			</a>
 		</div>

@@ -1,5 +1,6 @@
 <template>
 	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
+		<!-- eslint-disable vuejs-accessibility/label-has-for -->
 		<label for="country" class="form-field-label">{{ label }}</label>
 		<div class="form-field-autocomplete-container">
 			<TextFormInput
@@ -19,7 +20,7 @@
 					<div class="dropdown-content">
 						<template v-for="( country, index ) in filteredCountries">
 							<span v-if="groupSeparatorIndex === index" class="dropdown-separator"><hr></span>
-							<a class="dropdown-item" role="button" tabindex="0" @click.stop="() => onSelectItem( country )">
+							<a class="dropdown-item" role="button" tabindex="0" @click.stop="() => onSelectItem( country )" @keyup.enter.space="onSelectItem(country)">
 								{{ country.countryFullName }}
 							</a>
 						</template>

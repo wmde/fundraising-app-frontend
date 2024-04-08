@@ -1,5 +1,6 @@
 <template>
 	<div class="form-field form-field-select" :class="{ 'is-invalid': showError }">
+		<!-- eslint-disable vuejs-accessibility/label-has-for -->
 		<label :for="name" class="form-field-label">{{ label }}</label>
 		<SelectFormInput
 			v-model="fieldModel"

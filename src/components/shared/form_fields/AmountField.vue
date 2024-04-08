@@ -31,7 +31,8 @@
 				@focus.prevent="resetErrorInput"
 				@update:model-value="updateAmountFromCustom"
 			/>
-			<label for="form-field-amount-custom" class="is-sr-only">{{ $t('donation_form_payment_amount_legend') }}</label>
+			<!-- eslint-disable vuejs-accessibility/label-has-for -->
+			<label for="amount-custom" class="is-sr-only">{{ $t('donation_form_payment_amount_legend') }}</label>
 		</div>
 		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
 

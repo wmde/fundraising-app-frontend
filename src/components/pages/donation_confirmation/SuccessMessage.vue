@@ -11,7 +11,13 @@
 			<span class="comment-thanks" v-if="commentLinkIsDisabled">
 				{{ $t( 'donation_comment_popup_thanks' ) }}
 			</span>
-			<a v-else id="comment-link" @click="$emit( 'show-comment-modal' )">
+			<a v-else
+					id="comment-link"
+					role="link"
+					tabindex="0"
+					@click="$emit( 'show-comment-modal' )"
+					@keyup.enter.space="$emit( 'show-comment-modal' )"
+			>
 				{{ $t( 'donation_confirmation_comment_button' ) }}
 			</a>
 		</p>

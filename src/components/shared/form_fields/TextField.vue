@@ -1,5 +1,6 @@
 <template>
 	<div class="form-field" :class="[ `form-field-${inputType}`, { 'is-invalid': showError } ]">
+		<!-- eslint-disable vuejs-accessibility/label-has-for -->
 		<label :for="inputId" class="form-field-label">
 			{{ label }} <em v-if="labelHelpText">{{ labelHelpText }}</em>
 		</label>
