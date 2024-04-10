@@ -6,6 +6,7 @@
 					:address="confirmationData.address"
 					:membershipApplication="confirmationData.membershipApplication"
 					:salutations="salutations"
+					:address-is-invalid="false"
 				>
 					<template #title>
 						<h1>{{ $t( 'membership_confirmation_thanks_text' ) }}</h1>
@@ -13,7 +14,7 @@
 
 					<template #content>
 						<p v-if="hasIncentives">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</p>
-						<p v-if="!hasIncentives">{{ $t( 'membership_confirmation_success_text' ) }}</p>
+						<p v-else>{{ $t( 'membership_confirmation_success_text' ) }}</p>
 						<p v-if="showBankTransferContent">{{ $t( 'membership_confirmation_success_text_bank_transfer' ) }}</p>
 					</template>
 				</MembershipSummary>
@@ -27,32 +28,21 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
 import SummaryLinks from '@src/components/pages/membership_confirmation/SummaryLinks.vue';
 import MembershipConfirmationBannerNotifier
 	from '@src/components/pages/membership_confirmation/MembershipConfirmationBannerNotifier.vue';
+import { Salutation } from '@src/view_models/Salutation';
+import { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
 
-export default defineComponent( {
-	name: 'MembershipConfirmation',
-	components: {
-		MembershipConfirmationBannerNotifier,
-		MembershipSummary,
-		SummaryLinks,
-	},
-	props: [
-		'confirmationData',
-		'salutations',
-	],
-	computed: {
-		hasIncentives(): boolean {
-			return this.confirmationData.membershipApplication.incentives !== undefined
-				&& this.confirmationData.membershipApplication.incentives.length > 0;
-		},
-		showBankTransferContent(): boolean {
-			return this.$props.confirmationData.membershipApplication.paymentType === 'UEB';
-		},
-	},
-} );
+interface Props {
+	confirmationData: MembershipApplicationConfirmationData;
+	salutations: Salutation[];
+}
+
+const props = defineProps<Props>();
+const hasIncentives = props.confirmationData.membershipApplication.incentives?.length > 0;
+const showBankTransferContent = props.confirmationData.membershipApplication.paymentType === 'UEB';
+
 </script>

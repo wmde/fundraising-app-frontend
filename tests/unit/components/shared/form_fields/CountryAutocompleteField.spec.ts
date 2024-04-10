@@ -24,7 +24,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 	} );
 
 	afterEach( () => {
-		jest.resetAllMocks();
+		jest.clearAllMocks();
 	} );
 
 	it( 'sets country on mount', async () => {
