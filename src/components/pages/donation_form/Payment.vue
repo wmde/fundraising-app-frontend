@@ -1,18 +1,20 @@
 <template>
 	<div class="payment-form">
-		<FormSection :title="$t('donation_form_payment_amount_title')" title-margin="small">
+		<FormSection>
 			<AmountField
 				v-model="amount"
+				:label="$t('donation_form_payment_amount_title')"
 				:payment-amounts="paymentAmounts"
 				:error-message="amountErrorMessage"
 				:show-error="amountErrorMessage !== ''"
 			/>
 		</FormSection>
 
-		<FormSection :title="$t('donation_form_payment_interval_title')" title-margin="x-small">
+		<FormSection>
 			<RadioField
 				name="interval"
 				v-model="interval"
+				:label="$t('donation_form_payment_interval_title')"
 				:options="paymentIntervalsAsOptions"
 				:required="true"
 				:disabled="disabledPaymentIntervals"
@@ -20,10 +22,11 @@
 			/>
 		</FormSection>
 
-		<FormSection :title="$t('donation_form_payment_type_title')" title-margin="x-small">
+		<FormSection>
 			<RadioField
 				name="paymentType"
 				v-model="paymentType"
+				:label="$t('donation_form_payment_type_title')"
 				:options="paymentTypesAsOptions"
 				:required="true"
 				:disabled="disabledPaymentTypes"

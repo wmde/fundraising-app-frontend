@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="radio radio-form-input"
-		:class="{ 'is-disabled': disabled, 'active': inputModel === nativeValue }"
+		:class="{ 'is-disabled': disabled, 'is-active': inputModel === nativeValue }"
 	>
 		<input
 			v-model="inputModel"
@@ -11,11 +11,11 @@
 			:value="nativeValue"
 			:disabled="disabled"
 			:required="required"
-			:aria-labelledby="`${id}-label`"
-			:aria-errormessage="ariaErrorMessage"
+			:aria-describedby="ariaDescribedby"
 			:aria-invalid="ariaInvalid"
+			:aria-errormessage="ariaErrorMessage"
 		/>
-		<label class="control-label" :id="`${id}-label`" :for="id"><slot/></label>
+		<label class="control-label" :for="id"><slot/></label>
 	</div>
 </template>
 
@@ -30,15 +30,17 @@ interface Props {
 	id: string;
 	disabled?: boolean;
 	required?: boolean;
-	ariaErrorMessage?: string
+	ariaDescribedby?: string;
 	ariaInvalid?: boolean
+	ariaErrorMessage?: string
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	disabled: false,
 	required: false,
-	ariaErrorMessage: '',
+	ariaDescribedby: '',
 	ariaInvalid: false,
+	ariaErrorMessage: '',
 } );
 const emit = defineEmits( [ 'update:modelValue' ] );
 
@@ -117,11 +119,12 @@ $check-size: map.get( units.$spacing, 'small' );
 		border-radius: map.get( forms.$input, 'border-radius' );
 		padding: map.get( units.$spacing, 'x-small' ) map.get( units.$spacing, 'small' );
 		cursor: pointer;
+	}
 
-		&:hover,
-		&:focus {
-			border: 1px solid colors.$primary;
-		}
+	label:hover,
+	input:focus + label,
+	input:hover + label {
+		border: 1px solid colors.$primary;
 	}
 
 	&.is-active {

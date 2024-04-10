@@ -1,5 +1,6 @@
 <template>
 	<fieldset class="form-field form-field-amount" :class="`locale-${ $i18n.locale }`">
+		<legend v-if="label" class="form-field-label">{{ label }}</legend>
 		<div v-if="minimumAmountMessage!=''" class="minimum-message">
 			{{ minimumAmountMessage }}
 		</div>
@@ -11,7 +12,7 @@
 					v-model="amount"
 					:class="{ 'inactive': paymentAmount < minimumAmount }"
 					:disabled="paymentAmount < minimumAmount"
-					:id="`amount-${amount}`"
+					:id="`amount-${paymentAmount}`"
 					@update:model-value="updateAmountFromRadio"
 						:aria-invalid="showError"
 						:aria-error-message="showError ? 'amount-error' : ''"
@@ -57,6 +58,7 @@ interface Props {
 	paymentAmounts: number[];
 	minimumAmount?: number;
 	showError?: boolean;
+	label?: String;
 	errorMessage?: String;
 	minimumAmountMessage?: string;
 }
@@ -170,7 +172,6 @@ $input-height: 50px;
 			height: $input-height;
 			line-height: $input-height;
 			text-align: center;
-			color: colors.$primary;
 			transition: background 100ms global.$easing, color 100ms global.$easing;
 
 			input {
@@ -181,12 +182,18 @@ $input-height: 50px;
 				padding: 0;
 			}
 
-			&.active {
+			&.is-active {
 				label {
-					border: 1px solid colors.$primary;
 					background: colors.$primary;
 					color: colors.$white;
 					font-weight: bold;
+				}
+
+				label:hover,
+				input:focus + label,
+				input:hover + label {
+					border-color: colors.$white;
+					box-shadow: 0 0 0 1px colors.$primary;
 				}
 			}
 
