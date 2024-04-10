@@ -51,7 +51,7 @@ the fundraising-app prject) in sync, otherwise the CSS references will be
 broken.
 
 ### Referencing resources in Vue
-Prefix  resources in the `public` directory with the variable `assetsPath`.
+Prefix resources in the `public` directory with the variable `assetsPath`.
 Example: To show the image
 `public/images/logo-vertical-wikimedia.svg` in Vue, use `<img
 :src="assetsPath + '/images/logo-vertical-will.svg' )"/>`.
@@ -61,3 +61,9 @@ the HTML "skeleton" rendered by the PHP templates.
 The code in `src/page_data_initializer.ts` sets the variable from the HTML
 attribute.
 
+
+## Run automated accessibility tests on the command line
+- we test for accessibility issues with a tool called https://github.com/pa11y/pa11y
+- in order to run the tool:
+  - make sure that the fundraising app is running on your localhost
+  - run `npm run pally` to test the code on your current branch
