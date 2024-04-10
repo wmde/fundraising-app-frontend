@@ -23,17 +23,18 @@ describe( 'AddressType.vue', () => {
 
 	it( 'preselects initial address type', () => {
 		const wrapper = getWrapper();
-		const privatePersonRadioElement = wrapper.find<HTMLElement>( '#addressType-0' );
-		const companyRadioElement = wrapper.find<HTMLElement>( '#addressType-1' );
 
-		expect( companyRadioElement.classes() ).toContain( 'active' );
-		expect( privatePersonRadioElement.classes() ).not.toContain( 'active' );
+		const privatePersonRadioElement = wrapper.find( '.radio-form-input:first-child' );
+		const companyRadioElement = wrapper.find( '.radio-form-input:last-child' );
+
+		expect( companyRadioElement.classes() ).toContain( 'is-active' );
+		expect( privatePersonRadioElement.classes() ).not.toContain( 'is-active' );
 	} );
 
 	it( 'emits field changed event on blur', async () => {
 		const wrapper = getWrapper();
 		const event = 'field-changed';
-		const privatePersonRadioElement = wrapper.find<HTMLInputElement>( '#addressType-0 input' );
+		const privatePersonRadioElement = wrapper.find<HTMLInputElement>( '#addressType-0' );
 
 		await privatePersonRadioElement.trigger( 'change' );
 		await privatePersonRadioElement.trigger( 'blur' );

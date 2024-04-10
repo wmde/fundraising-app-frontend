@@ -11,6 +11,7 @@
 					v-model="amount"
 					:class="{ 'inactive': paymentAmount < minimumAmount }"
 					:disabled="paymentAmount < minimumAmount"
+					:id="`amount-${amount}`"
 					@update:model-value="updateAmountFromRadio"
 						:aria-invalid="showError"
 						:aria-error-message="showError ? 'amount-error' : ''"
@@ -159,7 +160,6 @@ $input-height: 50px;
 	&-radio {
 		width: 25%;
 		padding: 0 map.get( units.$spacing, 'small' ) map.get( units.$spacing, 'small' );
-		border-radius: map.get( forms.$input, 'border-radius' );
 		font-size: 16px;
 
 		.radio-form-input {
@@ -170,16 +170,24 @@ $input-height: 50px;
 			height: $input-height;
 			line-height: $input-height;
 			text-align: center;
-			border: 1px solid colors.$gray-mid;
-			border-radius: map.get( forms.$input, 'border-radius' );
 			color: colors.$primary;
 			transition: background 100ms global.$easing, color 100ms global.$easing;
 
+			input {
+				@include visibility.screen-reader-only;
+			}
+
+			label {
+				padding: 0;
+			}
+
 			&.active {
-				border: 1px solid colors.$primary;
-				background: colors.$primary;
-				color: colors.$white;
-				font-weight: bold;
+				label {
+					border: 1px solid colors.$primary;
+					background: colors.$primary;
+					color: colors.$white;
+					font-weight: bold;
+				}
 			}
 
 			&.inactive {
@@ -190,14 +198,6 @@ $input-height: 50px;
 			&.is-disabled {
 				opacity: 0.5;
 				cursor: not-allowed;
-			}
-
-			input {
-				@include visibility.screen-reader-only;
-			}
-
-			.check {
-				display: none;
 			}
 		}
 	}

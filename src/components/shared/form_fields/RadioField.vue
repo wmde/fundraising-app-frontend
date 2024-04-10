@@ -97,10 +97,13 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 					margin-bottom: map.get( units.$spacing, 'small' );
 				}
 
-				.check {
-					margin-right: map.get( units.$spacing, 'small' );
+				input {
 					display: flex;
 					flex-shrink: 0;
+				}
+
+				label {
+					padding-left: map.get( units.$spacing, 'small' ) * 3;
 				}
 
 				.option-info-message {
