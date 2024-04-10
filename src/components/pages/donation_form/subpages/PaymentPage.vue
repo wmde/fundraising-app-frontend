@@ -1,12 +1,12 @@
 <template>
+	<!-- eslint-disable vuejs-accessibility/no-static-element-interactions -->
 	<form
 		name="laika-donation-payment"
 		id="laika-donation-payment"
 		class="payment-page"
 		ref="paymentForm"
-		action="/donation/add"
-		method="post"
 		@keydown.enter.prevent="next()"
+		@submit.prevent="next()"
 	>
 		<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
 
@@ -18,7 +18,8 @@
 
 		<FormButton
 			id="next"
-			@click="next()"
+			button-type="submit"
+			@click.prevent="next()"
 			:is-loading="store.getters.isValidating"
 		>
 			{{ $t( 'donation_form_section_continue' ) }}

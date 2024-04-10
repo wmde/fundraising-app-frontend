@@ -1,5 +1,6 @@
 <template>
 	<div class="form-field form-field-email" :class="{ 'is-invalid': showError }">
+		<!-- eslint-disable vuejs-accessibility/label-has-for -->
 		<label for="email" class="form-field-label">{{ $t( 'donation_form_email_label' ) }}</label>
 		<TextFormInput
 			input-type="text"
@@ -13,7 +14,13 @@
 			@update:modelValue="onUpdateModel"
 			@blur="$emit('field-changed', 'email')"
 		/>
-		<span v-if="suggestedProvider" @click="onSuggestionClicked( suggestedProvider )" class="help is-clickable">
+		<span v-if="suggestedProvider"
+				class="help is-clickable"
+				role="link"
+				tabindex="0"
+				@click="onSuggestionClicked( suggestedProvider )"
+				@keyup.enter.space="onSuggestionClicked( suggestedProvider )"
+		>
 			{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
 		</span>
 		<span v-if="showError" class="help is-danger error-email">{{ $t( 'donation_form_email_error' ) }}</span>

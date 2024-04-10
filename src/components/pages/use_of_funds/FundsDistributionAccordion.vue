@@ -9,8 +9,11 @@
 		>
 			<div
 				class="funds_distribution_info_item__title"
-				@click="setActive( fundsItem.id )"
+				role="button"
+				tabindex="0"
 				:style="{color: fundsItem.colour}"
+				@keyup.enter.space="setActive( fundsItem.id )"
+				@click="setActive( fundsItem.id )"
 			>
 				{{ fundsItem.title }} {{ fundsItem.percentage }}%
 			</div>
