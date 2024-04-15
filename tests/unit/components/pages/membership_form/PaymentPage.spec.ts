@@ -5,7 +5,7 @@ import MembershipTypeField from '@src/components/pages/membership_form/Membershi
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { setAddressType, } from '@src/store/membership_address/actionTypes';
+import { setAddressType } from '@src/store/membership_address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Store } from 'vuex';
 

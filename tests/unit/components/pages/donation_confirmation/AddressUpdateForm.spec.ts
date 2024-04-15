@@ -109,11 +109,11 @@ describe( 'AddressUpdateForm.vue', () => {
 
 		const store = createStore();
 		await store.dispatch(
-			action(NS_ADDRESS, initializeAddress),
-			addressData(inValidAddress, AddressTypeModel.PERSON)
+			action( NS_ADDRESS, initializeAddress ),
+			addressData( inValidAddress, AddressTypeModel.PERSON )
 		);
-		const wrapper = getWrapper(store, bankTransferConfirmationData);
-		await wrapper.find('#address-update-form').trigger('submit');
+		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 
 		await flushPromises();
 

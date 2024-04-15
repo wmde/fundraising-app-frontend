@@ -22,7 +22,9 @@ describe( 'waitForServerValidationToFinish', () => {
 				isValidating: state => state.validationInProgress,
 			},
 			mutations: {
-				endValidation: state => { state.validationInProgress = false; },
+				endValidation: state => {
+					state.validationInProgress = false;
+				},
 			},
 		} );
 		const validationPromise = waitForServerValidationToFinish( store ).then( validationState => {
