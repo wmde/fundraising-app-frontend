@@ -28,13 +28,13 @@ import AppContent from '@src/components/layout/AppContent.vue';
 import Sidebar from '@src/components/layout/Sidebar.vue';
 import AppFooter from '@src/components/layout/AppFooter.vue';
 import { useI18n } from 'vue-i18n';
-import { onMounted } from 'vue';
+import { Component, onMounted } from 'vue';
 
 interface Props {
 	assetsPath: string;
 	pageIdentifier: string;
-	page: Object;
-	pageProps?: Object;
+	page: Component;
+	pageProps?: Record<string, any>;
 	pageTitle: string,
 	isFullWidth?: boolean;
 	usesContentCards?: boolean;
