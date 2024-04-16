@@ -3,11 +3,9 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
 import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 import { action } from '@src/store/util';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
-import { initializeAddress, setAddressType } from '@src/store/address/actionTypes';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
+import { initializeAddress } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { Store } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
@@ -16,9 +14,6 @@ import { nextTick } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
 import { dateOfBirthValidationPattern } from '@test/data/validation';
-import { initializeMembershipFee, setType } from '@src/store/membership_fee/actionTypes';
-import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
-import mockAxios from 'jest-mock-axios';
 
 const testCountry = {
 	countryCode: 'de',

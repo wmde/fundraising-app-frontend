@@ -5,7 +5,6 @@ import each from 'jest-each';
 import { BankAccount, BankAccountRequest, BankAccountResponse } from '@src/view_models/BankAccount';
 import mockAxios from 'jest-mock-axios';
 import { mutations } from '@src/store/bankdata/mutations';
-import { MARK_BANKDATA_INCOMPLETE } from '@src/store/bankdata/mutationTypes';
 
 function newMinimalStore( overrides: Object ): BankAccount {
 	return Object.assign(

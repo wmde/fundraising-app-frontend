@@ -17,7 +17,6 @@ import { nextTick } from 'vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
-import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
 
 const testCountry = {
 	countryCode: 'de',

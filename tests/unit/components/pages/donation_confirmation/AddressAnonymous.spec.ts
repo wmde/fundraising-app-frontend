@@ -3,7 +3,7 @@ import AddressAnonymous from '@src/components/pages/donation_confirmation/Addres
 
 describe( 'AddressAnonymous', () => {
 	it( 'renders messages', () => {
-		const wrapper = mount( AddressAnonymous);
+		const wrapper = mount( AddressAnonymous );
 
 		expect( wrapper.text() ).toContain( 'donation_confirmation_cta_title_alt' );
 		expect( wrapper.text() ).toContain( 'donation_confirmation_cta_summary_alt' );

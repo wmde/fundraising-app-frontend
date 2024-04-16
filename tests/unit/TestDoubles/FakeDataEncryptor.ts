@@ -13,7 +13,7 @@ export class FakeDataEncryptor implements DataEncryptor {
 
 export class FakeFailingDataEncryptor implements DataEncryptor {
 
-	decrypt( data: ArrayBuffer ): Promise<string> {
+	decrypt(): Promise<string> {
 		throw new Error( 'I never return anything' );
 	}
 

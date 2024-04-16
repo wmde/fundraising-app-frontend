@@ -1,12 +1,8 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/membership_store';
-import { action } from '@src/store/util';
-import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { setMembershipType } from '@src/store/membership_address/actionTypes';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import { Store } from 'vuex';
 import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
-import { nextTick } from 'vue';
 
 describe( 'MembershipTypeField.vue', () => {
 	let store: Store<any>;

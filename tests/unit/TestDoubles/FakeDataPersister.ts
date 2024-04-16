@@ -1,7 +1,7 @@
 import { Store } from 'vuex';
 import { DataEncryptor } from '@src/view_models/DataEncryptor';
 import { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
-import { DataPersistenceItem, DataPersister } from '@src/view_models/DataPersistence';
+import { DataPersister } from '@src/view_models/DataPersistence';
 import { FakeDataEncryptor } from './FakeDataEncryptor';
 import FakeDataPersistenceRepository from './FakeDataPersistenceRepository';
 
@@ -19,24 +19,24 @@ export default class FakeDataPersister implements DataPersister {
 		this.repository = new FakeDataPersistenceRepository();
 	}
 
-	async initialize( items: DataPersistenceItem[] ): Promise<void> {
+	async initialize(): Promise<void> {
 		return Promise.resolve( undefined );
 	}
 
 	getValue( key: string ): any {
-		const item = this.initialValues.find( item => item.key === key );
-		return item ? item.value : null;
+		const foundItem = this.initialValues.find( item => item.key === key );
+		return foundItem ? foundItem.value : null;
 	}
 
-	getPlugin( items: DataPersistenceItem[] ): ( store: Store<any> ) => void {
+	getPlugin(): ( store: Store<any> ) => void {
 		return () => {};
 	}
 
-	async loadFromRepository( key: string ): Promise<null | string> {
+	async loadFromRepository(): Promise<null | string> {
 		return Promise.resolve( null );
 	}
 
-	async saveToRepository( key: string, data: string ): Promise<void> {
+	async saveToRepository(): Promise<void> {
 		return Promise.resolve( undefined );
 	}
 }

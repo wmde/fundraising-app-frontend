@@ -1,16 +1,6 @@
 import { getters } from '@src/store/address/getters';
 import { actions } from '@src/store/address/actions';
 import { mutations } from '@src/store/address/mutations';
-import {
-	VALIDATE_INPUT,
-	MARK_EMPTY_FIELDS_INVALID,
-	BEGIN_ADDRESS_VALIDATION,
-	FINISH_ADDRESS_VALIDATION,
-	SET_ADDRESS_FIELD,
-	SET_ADDRESS_TYPE,
-	SET_NEWSLETTER,
-	SET_RECEIPT,
-} from '@src/store/address/mutationTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { AddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';

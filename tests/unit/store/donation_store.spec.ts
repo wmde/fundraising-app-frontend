@@ -6,7 +6,6 @@ import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { initializeAddress } from '@src/store/address/actionTypes';
 import { initializePayment } from '@src/store/payment/actionTypes';
 import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
-import { PaymentType } from '@src/view_models/PaymentType';
 
 describe( 'Donation Store', () => {
 
