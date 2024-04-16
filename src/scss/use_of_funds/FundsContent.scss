@@ -1,13 +1,13 @@
 @use "../settings/colors";
 @use 'sass:color';
 @import './variables';
+@import '../variables';
 $padding: 32px;
 $padding_mobile: 16px;
 
 .use_of_funds {
 	background-color: #ffffff;
 	padding: $padding_mobile;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Lato', 'Helvetica', 'Arial', sans-serif;
 	line-height: 1.5;
 	margin: -18px;
 	@media ( min-width: $use_of_funds_breakpoint_l ) {
