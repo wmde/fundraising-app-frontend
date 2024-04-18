@@ -1,14 +1,20 @@
 <template>
 	<div class="accordion-item" :class="{ 'accordion-item-open': isOpen }">
-		<button class="accordion-item-title" @click="toggle">
-			<span class="accordion-item-title-text">{{ title }}</span>
-			<slot name="title-postfix"/>
-			<span class="accordion-item-title-icon">
-				<ArrowUp v-if="isExpandable && isOpen"/>
-				<ArrowDown v-else-if="isExpandable && !isOpen"/>
+		<h3>
+			<button v-if="isExpandable" class="accordion-item-title" @click="toggle" :aria-expanded="isOpen" :aria-controls="`${id}-content`">
+				<span :id="id" class="accordion-item-title-text">{{ title }}</span>
+				<slot name="title-postfix"/>
+				<span class="accordion-item-title-icon" aria-hidden="true">
+					<ArrowUp v-if="isExpandable && isOpen"/>
+					<ArrowDown v-else-if="isExpandable && !isOpen"/>
+				</span>
+			</button>
+			<span v-else class="accordion-item-title">
+				<span class="accordion-item-title-text">{{ title }}</span>
+				<slot name="title-postfix"/>
 			</span>
-		</button>
-		<div v-html="content" class="accordion-item-content"/>
+		</h3>
+		<div v-if="isExpandable" v-html="content" :id="`${id}-content`" class="accordion-item-content" aria-labelledby=""/>
 	</div>
 </template>
 
@@ -20,6 +26,7 @@ import { computed, ref, watch } from 'vue';
 interface Props {
 	isOpen?: boolean;
 	title: String;
+	id: string;
 	content?: String;
 }
 

@@ -9,6 +9,7 @@ describe( 'AccordionItem.vue', () => {
 		return shallowMount( AccordionItem, {
 			props: {
 				title: 'Item title',
+				id: 'accordion-item',
 				content: 'Wolfman\'s got nards!',
 			},
 		} );
@@ -60,10 +61,30 @@ describe( 'AccordionItem.vue', () => {
 		const wrapper = getWrapper();
 
 		await wrapper.setProps( { content: '' } );
-		await wrapper.find( 'button' ).trigger( 'click' );
 
-		expect( wrapper.classes() ).not.toContain( 'accordion-item-open' );
-		expect( wrapper.findComponent( ArrowUp ).exists() ).toBeFalsy();
-		expect( wrapper.findComponent( ArrowDown ).exists() ).toBeFalsy();
+		expect( wrapper.find( 'span.accordion-item-title' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.accordion-item-content' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'adds aria attributes when toggleable', async () => {
+		const wrapper = getWrapper();
+
+		const button = wrapper.find( 'button' );
+
+		expect( button.attributes( 'aria-expanded' ) ).toStrictEqual( 'false' );
+		expect( button.attributes( 'aria-controls' ) ).toStrictEqual( 'accordion-item-content' );
+		expect( wrapper.find( '#accordion-item' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#accordion-item-content' ).exists() ).toBeTruthy();
+	} );
+
+	it( 'toggles aria-expanded aria attribute', async () => {
+		const wrapper = getWrapper();
+		const button = wrapper.find( 'button' );
+
+		expect( button.attributes( 'aria-expanded' ) ).toStrictEqual( 'false' );
+
+		await button.trigger( 'click' );
+
+		expect( button.attributes( 'aria-expanded' ) ).toStrictEqual( 'true' );
 	} );
 } );

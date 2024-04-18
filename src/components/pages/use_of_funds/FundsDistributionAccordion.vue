@@ -1,60 +1,26 @@
 <template>
 	<div class="funds_distribution_accordion">
-		<div v-for="fundsItem in applicationOfFundsData"
-			:key="fundsItem.id"
-			:class="[
-				'funds_distribution_info_item',
-				activeInfo[fundsItem.id] ? 'active' : ''
-			]"
-		>
-			<div
+		<details v-for="fundsItem in applicationOfFundsData" :key="fundsItem.id" class="funds_distribution_info_item">
+			<summary
 				class="funds_distribution_info_item__title"
-				role="button"
 				tabindex="0"
 				:style="{color: fundsItem.colour}"
-				@keyup.enter.space="setActive( fundsItem.id )"
-				@click="setActive( fundsItem.id )"
 			>
 				{{ fundsItem.title }} {{ fundsItem.percentage }}%
-			</div>
+			</summary>
 			<div class="funds_distribution_info_item__text">
 				{{ fundsItem.text }}
 			</div>
-		</div>
+		</details>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive } from 'vue';
+<script setup lang="ts">
 import { FundsItem } from '@src/view_models/useOfFunds';
 
-interface ActiveInfo {
-	[index: string]: boolean
+interface Props {
+	applicationOfFundsData: FundsItem[]
 }
 
-export default defineComponent( {
-	name: 'FundsDistributionAccordion',
-	props: {
-		applicationOfFundsData: {
-			type: Array as () => Array<FundsItem>,
-			required: true,
-		},
-	},
-	setup( props ) {
-		const fundsData: FundsItem[] = props.applicationOfFundsData;
-		const itemKeyState: ActiveInfo = fundsData.reduce<ActiveInfo>( ( activeInfo: ActiveInfo, fundsItem: FundsItem ): ActiveInfo => {
-			const itemId = fundsItem.id;
-			return { ...activeInfo, [ itemId ]: false };
-		}, {} as ActiveInfo );
-		const activeInfo = reactive<ActiveInfo>( itemKeyState );
-		const setActive = ( id: string ) => {
-			activeInfo[ id ] = !activeInfo[ id ];
-		};
-
-		return {
-			activeInfo,
-			setActive,
-		};
-	},
-} );
+defineProps<Props>();
 </script>

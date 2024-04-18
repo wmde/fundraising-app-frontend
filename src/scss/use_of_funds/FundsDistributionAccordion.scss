@@ -5,6 +5,14 @@
 	display: block;
 
 	.funds_distribution_info_item {
+		summary {
+			list-style-type: none;
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+		}
+
 		&__title {
 			font-weight: bold;
 			cursor: pointer;
@@ -38,17 +46,9 @@
 			transform: rotate(-90deg);
 		}
 
-		&.active .funds_distribution_info_item__title:after {
+		&[open] .funds_distribution_info_item__title:after {
 			/* stylelint-disable-next-line function-parentheses-space-inside */
 			transform: rotate(90deg);
-		}
-
-		&__text {
-			display: none;
-		}
-
-		&.active .funds_distribution_info_item__text {
-			display: block;
 		}
 	}
 }
