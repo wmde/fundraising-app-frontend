@@ -14,6 +14,8 @@
 			:value="nativeValue"
 			:disabled="disabled"
 			:required="required"
+			:aria-errormessage="ariaErrorMessage"
+			:aria-invalid="ariaInvalid"
 		/>
 		<span class="check"/>
 		<span class="control-label"><slot/></span>
@@ -31,11 +33,15 @@ interface Props {
 	name: string;
 	disabled?: boolean;
 	required?: boolean;
+	ariaErrorMessage?: string
+	ariaInvalid?: boolean
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	disabled: false,
 	required: false,
+	ariaErrorMessage: '',
+	ariaInvalid: false,
 } );
 const emit = defineEmits( [ 'update:modelValue' ] );
 

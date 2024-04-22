@@ -12,6 +12,8 @@
 					:class="{ 'inactive': paymentAmount < minimumAmount }"
 					:disabled="paymentAmount < minimumAmount"
 					@update:model-value="updateAmountFromRadio"
+						:aria-invalid="showError"
+						:aria-error-message="showError ? 'amount-error' : ''"
 				>
 					{{ $n( paymentAmount / 100, 'euros' ) }}
 				</RadioFormInput>
@@ -30,11 +32,13 @@
 				@blur="setCustomAmount"
 				@focus.prevent="resetErrorInput"
 				@update:model-value="updateAmountFromCustom"
+				:aria-invalid="showError"
+				:aria-error-message="showError ? 'amount-error' : ''"
 			/>
 			<!-- eslint-disable vuejs-accessibility/label-has-for -->
 			<label for="amount-custom" class="is-sr-only">{{ $t('donation_form_payment_amount_legend') }}</label>
 		</div>
-		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+		<span v-if="showError" class="help is-danger" id="amount-error" role="alert">{{ errorMessage }}</span>
 
 		<slot name="info-message"/>
 	</fieldset>

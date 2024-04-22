@@ -12,6 +12,8 @@
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:required="required"
+			:aria-errormessage="ariaErrorMessage"
+			:aria-invalid="ariaInvalid"
 			@blur="onBlur"
 			@focus="onFocus"
 		/>
@@ -26,6 +28,8 @@
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:required="required"
+			:aria-errormessage="ariaErrorMessage"
+			:aria-invalid="ariaInvalid"
 			@blur="onBlur"
 			@focus="onFocus"
 		/>
@@ -48,11 +52,13 @@ interface Props {
 	modelValue: string | number;
 	autocomplete?: string;
 	inputId: string;
-	placeholder: String;
+	placeholder: string;
 	hasMessage: boolean;
 	hasError?: boolean;
 	disabled?: boolean;
 	required?: boolean;
+	ariaErrorMessage?: string
+	ariaInvalid?: boolean
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -60,6 +66,8 @@ const props = withDefaults( defineProps<Props>(), {
 	hasError: false,
 	disabled: false,
 	required: false,
+	ariaErrorMessage: '',
+	ariaInvalid: false,
 } );
 const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur' ] );
 
