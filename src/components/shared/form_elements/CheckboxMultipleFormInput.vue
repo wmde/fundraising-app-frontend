@@ -1,35 +1,28 @@
 <template>
 	<div class="control checkbox-multiple-form-input">
-		<label
-			ref="labelRef"
-			class="checkbox"
-			:class="{ 'is-disabled': disabled }"
-			@click="focus"
-			@keydown.prevent.enter="click"
-		>
+		<div class="checkbox" :class="{ 'is-disabled': disabled }">
 			<input
 				v-model="inputModel"
 				:value="nativeValue"
 				type="checkbox"
-				ref="inputRef"
 				:name="name"
+				:id="inputId"
 				:disabled="disabled"
 				:required="required"
 			/>
-			<span class="check"/>
-			<span class="control-label"><slot/></span>
-		</label>
+			<label class="control-label" :for="inputId"><slot/></label>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useInputFocusing } from '@src/components/shared/form_elements/useInputFocusing';
 import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
 
 interface Props {
 	modelValue: Array<string | number>;
 	nativeValue: string | number | boolean;
 	name: string;
+	inputId: string;
 	disabled?: boolean;
 	required?: boolean;
 }
@@ -40,7 +33,6 @@ const props = withDefaults( defineProps<Props>(), {
 } );
 const emit = defineEmits( [ 'update:modelValue' ] );
 
-const { labelRef, inputRef, focus, click } = useInputFocusing();
 const inputModel = useInputModel<Array<string | number>>( () => props.modelValue, props.modelValue, emit );
 
 </script>
@@ -57,14 +49,7 @@ $checkbox-size: map.get( units.$spacing, 'small' );
 	padding: 0 0 0 map.get( units.$spacing, 'medium' );
 
 	input[type="checkbox"] {
-		position: absolute;
-		left: 0;
-		opacity: 0;
-		outline: none;
-		z-index: -1;
-	}
-
-	.check {
+		appearance: none;
 		display: block;
 		float: left;
 		width: $checkbox-size;
@@ -76,7 +61,7 @@ $checkbox-size: map.get( units.$spacing, 'small' );
 		background: transparent;
 	}
 
-	input[type="checkbox"]:checked + .check {
+	input[type="checkbox"]:checked {
 		background: colors.$primary forms.$checkbox-checkmark no-repeat center center;
 		border-color: colors.$primary;
 	}

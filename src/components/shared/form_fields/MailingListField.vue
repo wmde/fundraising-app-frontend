@@ -5,12 +5,15 @@
 			name="info"
 			input-id="newsletter"
 			@update:modelValue="onUpdateModel"
+			described-by="mailing-list-hint"
 		>
-			<span class="form-field-mailing-list-label-content">
-				<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
-				<span v-html="appendCampaignQueryParams( $t( 'donation_form_newsletter_label_paragraph_2'), campaignParams )"/>
-			</span>
+			<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
 		</CheckboxSingleFormInput>
+		<p
+			id="mailing-list-hint"
+			class="form-field-mailing-list-hint"
+			v-html="appendCampaignQueryParams( $t( 'donation_form_newsletter_label_paragraph_2'), campaignParams )"
+		/>
 	</div>
 </template>
 
@@ -43,11 +46,9 @@ const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 @use '@src/scss/settings/units';
 @use 'sass:map';
 
-.form-field-mailing-list-label-content {
-	strong {
-		display: block;
-		margin-bottom: map.get( units.$spacing, 'x-small' );
-	}
+.form-field-mailing-list-hint {
+	line-height: 1.5;
+	padding-left: map.get( units.$spacing, 'medium' );
 }
 
 </style>
