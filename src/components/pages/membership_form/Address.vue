@@ -122,7 +122,7 @@ const {
 }, store );
 
 const incentivesAsOptions : FormOption[] = [
-	{ value: 'tote_bag', label: t( 'membership_form_incentive' ) },
+	{ value: 'tote_bag', label: t( 'membership_form_incentive' ), id: 'tote_bag' },
 
 ];
 
