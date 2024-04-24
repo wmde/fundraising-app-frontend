@@ -1,10 +1,14 @@
 <template>
 	<div class="funds_distribution_accordion">
-		<details v-for="fundsItem in applicationOfFundsData" :key="fundsItem.id" class="funds_distribution_info_item">
+		<details
+			v-for="( fundsItem, index ) in applicationOfFundsData"
+			:key="index"
+			class="funds_distribution_info_item"
+			:style="{ 'border-left': `10px solid ${ fundsItem.colour }` }"
+		>
 			<summary
 				class="funds_distribution_info_item__title"
 				tabindex="0"
-				:style="{color: fundsItem.colour}"
 			>
 				{{ fundsItem.title }} {{ fundsItem.percentage }}%
 			</summary>
