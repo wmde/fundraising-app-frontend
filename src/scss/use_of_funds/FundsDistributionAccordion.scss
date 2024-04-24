@@ -5,15 +5,28 @@
 	display: block;
 
 	.funds_distribution_info_item {
+		summary {
+			list-style-type: none;
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+		}
+
 		&__title {
 			font-weight: bold;
 			cursor: pointer;
 			border-top: 1px solid #979797;
 			line-height: 36px;
 			position: relative;
+			padding-left: 10px;
 		}
 
-		&:last-child .funds_distribution_info_item__title {
+		&__text {
+			padding-left: 10px;
+		}
+
+		&:last-child {
 			border-bottom: 1px solid #979797;
 		}
 
@@ -38,17 +51,9 @@
 			transform: rotate(-90deg);
 		}
 
-		&.active .funds_distribution_info_item__title:after {
+		&[open] .funds_distribution_info_item__title:after {
 			/* stylelint-disable-next-line function-parentheses-space-inside */
 			transform: rotate(90deg);
-		}
-
-		&__text {
-			display: none;
-		}
-
-		&.active .funds_distribution_info_item__text {
-			display: block;
 		}
 	}
 }

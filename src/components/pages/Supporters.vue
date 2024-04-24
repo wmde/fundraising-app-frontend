@@ -5,10 +5,12 @@
 			<p v-html="$t( 'hall_of_fame_header_paragraph1' )"/>
 			<p v-html="$t( 'hall_of_fame_header_paragraph2' )"/>
 		</div>
-		<div class="supporters-list">
+		<section class="supporters-list">
+			<h2>{{ $t( 'hall_of_fame_list_title' ) }}</h2>
 			<AccordionItem
 				v-for="( supporter, index ) in supporters"
 				:key="index"
+				:id="`supporter-${index}`"
 				:title="supporter.name"
 				:content="supporter.comment"
 				:is-open="index === visibleSupporterIndex"
@@ -18,7 +20,7 @@
 					<span class="accordion-title-amount">{{ supporter.amount }}</span>
 				</template>
 			</AccordionItem>
-		</div>
+		</section>
 	</div>
 </template>
 

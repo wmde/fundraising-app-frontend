@@ -1,19 +1,16 @@
 <template>
 	<div id="faq" class="faq">
 		<h1>{{ $t('faq_headline') }}</h1>
-
-		<ul class="faq-item">
-			<li v-for="(topic, index) in content.topics" :key="index">
-				<h2>{{ topic.name }}</h2>
-				<AccordionItem
-					v-for="( content, itemIndex ) in getQuestionsByTopic( topic )"
-					:key="topic.id + itemIndex"
-					:title="content.question"
-					:content="appendCampaignQueryParams( content.visibleText, campaignParams )"
-				/>
-			</li>
-		</ul>
-
+		<section v-for="(topic, index) in content.topics" :key="index">
+			<h2>{{ topic.name }}</h2>
+			<AccordionItem
+				v-for="( content, itemIndex ) in getQuestionsByTopic( topic )"
+				:key="topic.id + itemIndex"
+				:id="`faq-item-${topic.id}-${itemIndex}`"
+				:title="content.question"
+				:content="appendCampaignQueryParams( content.visibleText, campaignParams )"
+			/>
+		</section>
 	</div>
 </template>
 
