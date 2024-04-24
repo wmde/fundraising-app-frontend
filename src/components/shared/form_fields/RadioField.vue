@@ -7,12 +7,13 @@
 				v-for="( option, index ) in options"
 				:key="index"
 				input-type="radio"
-				:class="{ 'is-active': modelValue === option.value }"
 				:id="`${name}-${option.value}`"
 				:name="name"
 				:disabled="disabled.includes( option.value )"
 				:required="required"
 				:native-value="option.value"
+				:aria-describedby="showError ? `${name}-error-message` : ''"
+				:aria-invalid="showError"
 				v-model="fieldModel"
 				@update:modelValue="onFieldChange"
 			>
@@ -20,7 +21,7 @@
 				<slot :name="`message-${option.value}`"/>
 			</RadioFormInput>
 		</div>
-		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+		<span v-if="showError" class="help is-danger" :id="`${name}-error-message`">{{ errorMessage }}</span>
 	</fieldset>
 </template>
 
@@ -97,10 +98,13 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 					margin-bottom: map.get( units.$spacing, 'small' );
 				}
 
-				.check {
-					margin-right: map.get( units.$spacing, 'small' );
+				input {
 					display: flex;
 					flex-shrink: 0;
+				}
+
+				label {
+					padding-left: map.get( units.$spacing, 'small' ) * 3;
 				}
 
 				.option-info-message {

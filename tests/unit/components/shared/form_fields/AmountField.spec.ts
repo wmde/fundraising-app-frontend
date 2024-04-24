@@ -113,7 +113,7 @@ describe( 'AmountField.vue', () => {
 
 		await wrapper.find( 'input[value="29900"]' ).trigger( 'change' );
 
-		expect( wrapper.find( '.radio-form-input.active input[value="29900"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.radio-form-input.is-active input[value="29900"]' ).exists() ).toBeTruthy();
 
 		await customAmountInput.setValue( '1998' );
 		await customAmountInput.trigger( 'blur' );

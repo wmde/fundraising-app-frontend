@@ -24,14 +24,14 @@ describe( 'MembershipTypeField.vue', () => {
 		const wrapper = getWrapper();
 		store.dispatch = jest.fn();
 
-		await wrapper.find<HTMLInputElement>( '#membershipType-1 input' ).trigger( 'change' );
+		await wrapper.find<HTMLInputElement>( '#membershipType-1' ).trigger( 'change' );
 
 		expect( wrapper.emitted( 'update:modelValue' ) ).toBeTruthy();
 	} );
 
 	it( 'disables active membership types if they are in disabledMembershipTypes prop', async () => {
 		const wrapper = getWrapper();
-		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1 input' );
+		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1' );
 
 		expect( activeMembershipInputElement.attributes().disabled ).toBeUndefined();
 
@@ -42,11 +42,11 @@ describe( 'MembershipTypeField.vue', () => {
 
 	it( 'displays an error if active membership type is selected and then address type company is selected', async () => {
 		const wrapper = getWrapper();
-		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1 input' );
+		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1' );
 
 		expect( wrapper.find( '.is-danger' ).exists() ).toBe( false );
 
-		await wrapper.find<HTMLInputElement>( '#membershipType-1 input' ).trigger( 'change' );
+		await wrapper.find<HTMLInputElement>( '#membershipType-1' ).trigger( 'change' );
 		await wrapper.setProps( { disabledMembershipTypes: [ MembershipTypeModel.ACTIVE ] } );
 
 		expect( activeMembershipInputElement.attributes().disabled ).toBeDefined();
@@ -55,8 +55,8 @@ describe( 'MembershipTypeField.vue', () => {
 
 	it( 'hides the error when a different membership type is selected', async () => {
 		const wrapper = getWrapper();
-		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1 input' );
-		const sustainingMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-0 input' );
+		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1' );
+		const sustainingMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-0' );
 
 		await activeMembershipInputElement.trigger( 'change' );
 		await wrapper.setProps( { disabledMembershipTypes: [ MembershipTypeModel.ACTIVE ] } );
@@ -73,7 +73,7 @@ describe( 'MembershipTypeField.vue', () => {
 
 	it( 'hides the error when the membership option is not part of the disabled options anymore', async () => {
 		const wrapper = getWrapper();
-		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1 input' );
+		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1' );
 
 		await activeMembershipInputElement.trigger( 'change' );
 		await wrapper.setProps( { disabledMembershipTypes: [ MembershipTypeModel.ACTIVE ] } );

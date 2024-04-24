@@ -9,6 +9,7 @@ describe( 'RadioFormInput.vue', () => {
 				modelValue: '',
 				nativeValue: 'elephant',
 				name: '',
+				id: '',
 				disabled: false,
 				required: false,
 			},
@@ -18,11 +19,11 @@ describe( 'RadioFormInput.vue', () => {
 	it( 'sets active', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.classes() ).not.toContain( 'active' );
+		expect( wrapper.classes() ).not.toContain( 'is-active' );
 
 		await wrapper.setProps( { modelValue: 'elephant' } );
 
-		expect( wrapper.classes() ).toContain( 'active' );
+		expect( wrapper.classes() ).toContain( 'is-active' );
 	} );
 
 	it( 'sets disabled', async () => {
@@ -72,6 +73,7 @@ describe( 'RadioFormInput.vue', () => {
 				modelValue: false,
 				nativeValue: true,
 				name: '',
+				id: '',
 			},
 		} );
 
@@ -87,6 +89,7 @@ describe( 'RadioFormInput.vue', () => {
 				modelValue: false,
 				nativeValue: true,
 				name: '',
+				id: '',
 			},
 		} );
 

@@ -163,7 +163,7 @@ describe( 'AddressUpdateForm.vue', () => {
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
 
-		await wrapper.find( '#addressType-0 input' ).trigger( 'change' );
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 
 		await wrapper.vm.$nextTick();

@@ -51,11 +51,11 @@ describe( 'Payment.vue', () => {
 		const wrapper = getWrapper();
 		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
 
-		await wrapper.find( '#paymentType-BEZ input' ).trigger( 'change' );
+		await wrapper.find( '#paymentType-BEZ' ).trigger( 'change' );
 
 		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
 
-		await wrapper.find( '#paymentType-UEB input' ).trigger( 'change' );
+		await wrapper.find( '#paymentType-UEB' ).trigger( 'change' );
 
 		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
 	} );

@@ -1,5 +1,6 @@
 <template>
 	<fieldset class="form-field form-field-amount" :class="`locale-${ $i18n.locale }`">
+		<legend v-if="label" class="form-field-label">{{ label }}</legend>
 		<div v-if="minimumAmountMessage!=''" class="minimum-message">
 			{{ minimumAmountMessage }}
 		</div>
@@ -11,6 +12,7 @@
 					v-model="amount"
 					:class="{ 'inactive': paymentAmount < minimumAmount }"
 					:disabled="paymentAmount < minimumAmount"
+					:id="`amount-${paymentAmount}`"
 					@update:model-value="updateAmountFromRadio"
 						:aria-invalid="showError"
 						:aria-error-message="showError ? 'amount-error' : ''"
@@ -56,6 +58,7 @@ interface Props {
 	paymentAmounts: number[];
 	minimumAmount?: number;
 	showError?: boolean;
+	label?: String;
 	errorMessage?: String;
 	minimumAmountMessage?: string;
 }
@@ -159,7 +162,6 @@ $input-height: 50px;
 	&-radio {
 		width: 25%;
 		padding: 0 map.get( units.$spacing, 'small' ) map.get( units.$spacing, 'small' );
-		border-radius: map.get( forms.$input, 'border-radius' );
 		font-size: 16px;
 
 		.radio-form-input {
@@ -170,16 +172,29 @@ $input-height: 50px;
 			height: $input-height;
 			line-height: $input-height;
 			text-align: center;
-			border: 1px solid colors.$gray-mid;
-			border-radius: map.get( forms.$input, 'border-radius' );
-			color: colors.$primary;
 			transition: background 100ms global.$easing, color 100ms global.$easing;
 
-			&.active {
-				border: 1px solid colors.$primary;
-				background: colors.$primary;
-				color: colors.$white;
-				font-weight: bold;
+			input {
+				@include visibility.screen-reader-only;
+			}
+
+			label {
+				padding: 0;
+			}
+
+			&.is-active {
+				label {
+					background: colors.$primary;
+					color: colors.$white;
+					font-weight: bold;
+				}
+
+				label:hover,
+				input:focus + label,
+				input:hover + label {
+					border-color: colors.$white;
+					box-shadow: 0 0 0 1px colors.$primary;
+				}
 			}
 
 			&.inactive {
@@ -190,14 +205,6 @@ $input-height: 50px;
 			&.is-disabled {
 				opacity: 0.5;
 				cursor: not-allowed;
-			}
-
-			input {
-				@include visibility.screen-reader-only;
-			}
-
-			.check {
-				display: none;
 			}
 		}
 	}

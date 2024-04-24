@@ -46,19 +46,19 @@ describe( 'RadioField.vue', () => {
 	it( 'sets selected radio active', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '#animal-mouse' ).classes() ).toContain( 'is-active' );
-		expect( wrapper.find( '#animal-elephant' ).classes() ).not.toContain( 'is-active' );
+		expect( wrapper.find( '.radio-form-input:first-child' ).classes() ).toContain( 'is-active' );
+		expect( wrapper.find( '.radio-form-input:last-child' ).classes() ).not.toContain( 'is-active' );
 
 		await wrapper.setProps( { modelValue: 'elephant' } );
 
-		expect( wrapper.find( '#animal-mouse' ).classes() ).not.toContain( 'is-active' );
-		expect( wrapper.find( '#animal-elephant' ).classes() ).toContain( 'is-active' );
+		expect( wrapper.find( '.radio-form-input:first-child' ).classes() ).not.toContain( 'is-active' );
+		expect( wrapper.find( '.radio-form-input:last-child' ).classes() ).toContain( 'is-active' );
 	} );
 
 	it( 'emits events', async () => {
 		const wrapper = getWrapper();
 
-		await wrapper.find( '#animal-elephant input' ).trigger( 'change' );
+		await wrapper.find( '#animal-elephant' ).trigger( 'change' );
 
 		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( 'elephant' );
