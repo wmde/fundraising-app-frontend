@@ -29,13 +29,12 @@
 			<div class="use_of_funds__column">
 				<div class="use_of_funds__comparison">
 					<h2>{{ content.comparison.headline }}</h2>
-					<div>
-						<p v-for="text in content.comparison.paragraphs" :key="text">{{ text }}</p>
-						<h3>{{ content.comparison.subhead }}</h3>
-					</div>
+					<p v-for="text in content.comparison.paragraphs" :key="text">{{ text }}</p>
+					<h3>{{ content.comparison.subhead }}</h3>
 					<CompanyBudgets
-							:companies="content.comparison.companies"
-							:citation-label="content.comparison.citationLabel"/>
+						:companies="content.comparison.companies"
+						:citation-label="content.comparison.citationLabel"
+					/>
 				</div>
 			</div>
 		</div>

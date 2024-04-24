@@ -1,74 +1,47 @@
 @use "../settings/colors";
-@import './variables';
-.company_budgets {
-	table-layout: fixed;
-	width: 100%;
 
-	&__col--company {
-		width: 30%;
-		vertical-align: top;
-		@media ( min-width: $use_of_funds_breakpoint_s ) {
-			width: 17%;
+.use_of_funds .company_budgets {
+	list-style-type: none;
+	padding: 0;
+
+	&__row {
+		display: flex;
+	}
+
+	&__col {
+		&--company {
+			flex: 0 0 80px;
 		}
-	}
-	&__col--graph {
-		position: relative;
-	}
-	&__col--budget_number {
-		white-space: nowrap;
-		text-align: right;
-		vertical-align: top;
-		font-variant-numeric: tabular-nums;
-
-		@media ( min-width: $use_of_funds_breakpoint_s ) {
-			width: 20%;
+		&--graph {
+			flex: 1 0 auto;
+			display: flex;
+			padding: 5px 0;
+			align-items: center;
 		}
-	}
-
-	&__col--citation {
-		display: none;
-
-		@media ( min-width: $use_of_funds_breakpoint_s ) {
-			display: table-cell;
-			width: 10%;
-			vertical-align: top;
+		&--number {
+			flex: 0 0 85px;
+			text-align: right;
+			white-space: nowrap;
+		}
+		&--citation {
+			flex: 0 0 50px;
+			font-size: 14px;
 			text-align: right;
 		}
 	}
 
-	&__number {
-		display: block;
-	}
-	&__inline-citation {
-		display: block;
-		line-height: 14px;
-		@media ( min-width: $use_of_funds_breakpoint_s ) {
-			display: none;
-		}
-	}
-
-	&__citation_link {
-		font-size: 12px;
-		color: #9b9b9b;
-	}
-
 	&__budget_line {
-		height: 9px;
-		display: inline-block;
-		background-color: #cecece;
-		position: absolute;
-		top: 5px;
+		background: #cecece;
 		min-width: 3px;
+		height: 10px;
 	}
 
 	&__row--wikipedia {
-
 		.company_budgets__col--company {
-			color: colors.$primary;
+			font-weight: bold;
 		}
-
 		.company_budgets__budget_line {
-			background-color: colors.$primary;
+			background: colors.$primary;
 		}
 	}
 }
