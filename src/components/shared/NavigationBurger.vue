@@ -1,15 +1,15 @@
 <template>
-	<a
+	<button
 		class="navigation-burger"
 		:class="{ 'active': active }"
-		role="button"
-		aria-label="menu"
-		aria-expanded="false"
+		aria-controls="main-navigation-items"
+		:aria-label="$t( active ? 'aria_navigation_toggle_label_open' : 'aria_navigation_toggle_label_closed' )"
+		:aria-expanded="active"
 	>
 		<span aria-hidden="true"></span>
 		<span aria-hidden="true"></span>
 		<span aria-hidden="true"></span>
-	</a>
+	</button>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +30,10 @@ defineProps<Props>();
 	width: global.$navbar-height;
 	position: relative;
 	flex-shrink: 0;
+	border: 0;
+	border-radius: 0;
+	background: colors.$white;
+	cursor: pointer;
 
 	&:hover {
 		background: colors.$gray-light;

@@ -3,29 +3,33 @@
 		<a class="navigation-left" :href="`/?${ campaignParams }`" aria-hidden="true">
 			<Logo/>
 		</a>
-		<nav
-			class="navigation-items"
-			:aria-label="$t( 'aria_main_navigation_label' )"
-			:class="{ 'active': showMobileNavbar }"
+		<NavigationItems
+			v-if="onLargeScreen"
+			:show-mobile-navbar="showMobileNavbar"
+			:page-identifier="pageIdentifier"
+			:header-menu="headerMenu"
 			@click="showMobileNavbar = !showMobileNavbar"
-		>
-			<ul>
-				<li v-for="( link, index ) in headerMenu" :key="index">
-					<a
-						:href="link.url"
-						class="navigation-item"
-						:class="{ 'active': link.ids.includes( pageIdentifier ) }"
-						:aria-current="link.ids.includes( pageIdentifier ) ? 'page' : null"
-					>
-						{{ $t( 'header_menu_item_' + link.localeId ) }}
-					</a>
-				</li>
-			</ul>
-		</nav>
+			@blur="handleMenuItemBlur"
+			@esc="showMobileNavbar = false"
+		/>
 		<div class="navigation-right">
 			<LocaleSelector :assets-path="assetsPath"/>
-			<NavigationBurger :active="showMobileNavbar" @click="showMobileNavbar = !showMobileNavbar"/>
+			<NavigationBurger
+				:active="showMobileNavbar"
+				@click="showMobileNavbar = !showMobileNavbar"
+				@keyup.esc="showMobileNavbar = false"
+				@blur="handleMenuItemBlur"
+			/>
 		</div>
+		<NavigationItems
+			v-if="!onLargeScreen"
+			:show-mobile-navbar="showMobileNavbar"
+			:page-identifier="pageIdentifier"
+			:header-menu="headerMenu"
+			@click="showMobileNavbar = !showMobileNavbar"
+			@blur="handleMenuItemBlur"
+			@esc="showMobileNavbar = false"
+		/>
 	</div>
 </template>
 
@@ -36,6 +40,8 @@ import LocaleSelector from '@src/components/shared/LocaleSelector.vue';
 import Logo from '@src/components/layout/Logo.vue';
 import NavigationBurger from '@src/components/shared/NavigationBurger.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+import { useDisplaySwitch } from '@src/components/shared/composables/useDisplaySwitch';
+import NavigationItems from '@src/components/layout/NavigationItems.vue';
 
 interface Props {
 	assetsPath: string;
@@ -56,6 +62,20 @@ const headerMenu = [
 	{ ids: [ 'use-of-funds' ], localeId: 'use_of_resources', url: `/use-of-funds?${ campaignParams }` },
 	{ ids: [ 'faq-page' ], localeId: 'faq', url: `/faq?${ campaignParams }` },
 ];
+const onLargeScreen = useDisplaySwitch( 769 );
+
+const handleMenuItemBlur = () => {
+	if ( !showMobileNavbar.value ) {
+		return;
+	}
+	// Use setTimeout to wait for the next tick because the next element won't be focused until then
+	setTimeout( () => {
+		const classes = document.activeElement.classList;
+		if ( !classes.contains( 'navigation-burger' ) && !classes.contains( 'navigation-item' ) ) {
+			showMobileNavbar.value = false;
+		}
+	} );
+};
 
 </script>
 
@@ -113,6 +133,7 @@ $side-width: 80px;
 			align-items: stretch;
 			flex-wrap: nowrap;
 			box-shadow: none;
+			order: 2;
 		}
 	}
 
@@ -147,11 +168,13 @@ $side-width: 80px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		order: 1;
 	}
 
 	&-right {
 		display: flex;
 		align-items: stretch;
+		order: 3;
 
 		@include breakpoints.tablet-up {
 			width: $side-width;
