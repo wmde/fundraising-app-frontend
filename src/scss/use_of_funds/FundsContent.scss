@@ -184,9 +184,11 @@ $padding_mobile: 16px;
 		font-weight: bold;
 		cursor: pointer;
 		display: inline-block;
-		&:hover {
+		&:hover,
+		&:focus {
 			color: colors.$white;
 			background: color.adjust( colors.$primary, $lightness: -5% );
+			text-decoration: none;
 		}
 	}
 }

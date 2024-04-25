@@ -16,7 +16,7 @@
 			</div>
 		</main>
 		<footer class="is-hidden-print">
-			<AppFooter :assets-path="assetsPath"/>
+			<AppFooter :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
 		</footer>
 	</div>
 </template>
@@ -25,7 +25,7 @@
 import AppHeader from '@src/components/layout/AppHeader.vue';
 import AppContent from '@src/components/layout/AppContent.vue';
 import Sidebar from '@src/components/layout/Sidebar.vue';
-import AppFooter from '@src/components/layout/Footer.vue';
+import AppFooter from '@src/components/layout/AppFooter.vue';
 
 interface Props {
 	assetsPath: string;

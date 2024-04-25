@@ -23,6 +23,8 @@ describe( 'AppHeader.vue', () => {
 			},
 		} );
 
-		expect( wrapper.find( '.navigation-items .navigation-item:nth-child(' + navItemIndex + ')' ).classes() ).toContain( 'active' );
+		const link = wrapper.find( '.navigation-items li:nth-child(' + navItemIndex + ') .navigation-item' );
+		expect( link.classes() ).toContain( 'active' );
+		expect( link.attributes( 'aria-current' ) ).toStrictEqual( 'page' );
 	} );
 } );
