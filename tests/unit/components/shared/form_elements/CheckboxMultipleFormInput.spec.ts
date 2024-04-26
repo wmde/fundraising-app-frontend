@@ -9,6 +9,7 @@ describe( 'CheckboxMultipleFormInput.vue', () => {
 				modelValue: [],
 				nativeValue: 'pike',
 				name: 'captain',
+				inputId: 'pike',
 				disabled: false,
 				required: false,
 			},

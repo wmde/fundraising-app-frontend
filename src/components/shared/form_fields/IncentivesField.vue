@@ -7,6 +7,7 @@
 				name="incentives"
 				v-model="fieldModel"
 				@update:modelValue="onUpdateModel"
+				:input-id="incentive.id"
 			>
 				{{ incentive.label}}
 			</CheckboxMultipleFormInput>

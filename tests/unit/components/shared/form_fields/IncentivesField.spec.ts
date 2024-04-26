@@ -6,7 +6,7 @@ describe( 'IncentivesField', () => {
 	it( 'incentive checkbox is checked when set on initial render', async () => {
 		const wrapper = mount( IncentivesField, {
 			props: {
-				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label' } ],
+				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label', id: 'tote_bag' } ],
 				modelValue: [ 'tote_bag' ],
 			},
 		} );
@@ -19,7 +19,7 @@ describe( 'IncentivesField', () => {
 		const wrapper = mount( IncentivesField, {
 			props: {
 				incentiveChoices: [ '' ],
-				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label' } ],
+				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label', id: 'tote_bag' } ],
 				modelValue: [ '' ],
 			},
 		} );
@@ -31,7 +31,7 @@ describe( 'IncentivesField', () => {
 	it( 'emits toggle event on change', async () => {
 		const wrapper = mount( IncentivesField, {
 			props: {
-				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label' } ],
+				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label', id: 'tote_bag' } ],
 				modelValue: [],
 			},
 		} );
