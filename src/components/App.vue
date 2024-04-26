@@ -1,9 +1,10 @@
 <template>
 	<div class="app-container" :class="bucketClasses">
 		<header>
+			<a href="#content" class="skip-link">{{ $t( 'skip_link_text' ) }}</a>
 			<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
 		</header>
-		<main class="main-wrapper">
+		<main class="main-wrapper" id="content">
 			<div class="container">
 				<AppContent :is-full-width="isFullWidth" :uses-content-cards="usesContentCards">
 					<template #content>
@@ -56,6 +57,22 @@ withDefaults( defineProps<Props>(), {
 	flex-direction: column;
 	flex: 1;
 }
+
+.skip-link {
+	background-color: #ffffff;
+	position: absolute;
+	padding: 0.2em;
+	display: block;
+}
+
+.skip-link:not(:focus):not(:active) {
+	clip-path: inset( 50% );
+	height: 1px;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 1px;
+}
+
 .main-wrapper {
 	padding: global.$navbar-height 6px 0;
 
