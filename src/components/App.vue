@@ -11,7 +11,7 @@
 						<component :is="page" v-bind="pageProps"/>
 					</template>
 					<template #sidebar>
-						<Sidebar/>
+						<AppSidebar/>
 					</template>
 				</AppContent>
 			</div>
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import AppHeader from '@src/components/layout/AppHeader.vue';
 import AppContent from '@src/components/layout/AppContent.vue';
-import Sidebar from '@src/components/layout/Sidebar.vue';
+import AppSidebar from '@src/components/layout/AppSidebar.vue';
 import AppFooter from '@src/components/layout/AppFooter.vue';
 
 interface Props {
