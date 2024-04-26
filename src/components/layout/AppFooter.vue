@@ -11,15 +11,15 @@
 					<p v-html="$t( 'footer_text' )"/>
 				</div>
 			</div>
-			<div class="footer-var-right">
+			<nav class="footer-var-right" :aria-label="$t( 'aria_footer_navigation_label' )">
 				<ul class="footer-var-list">
 					<li v-for="( link, index ) in footerMenu" :key="index">
-						<a :href="link.url" :key="link.id">
+						<a :href="link.url" :key="link.id" :aria-current="link.id === pageIdentifier ? 'page' : null">
 							{{ $t( 'footer_menu_' + link.id ) }}
 						</a>
 					</li>
 				</ul>
-			</div>
+			</nav>
 		</div>
 	</div>
 </template>
@@ -29,7 +29,8 @@ import { inject } from 'vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
-	assetsPath: string,
+	assetsPath: string;
+	pageIdentifier: string;
 }
 
 defineProps<Props>();
@@ -108,14 +109,15 @@ const footerMenu = [
 				border-bottom: 1px solid colors.$dark;
 			}
 			a {
-				color: colors.$dark;
+				color: colors.$black;
 				display: block;
 				position: relative;
 				top:50%;
 				transform: translateY(-50%);
 
 				&:hover, &:focus {
-					color: colors.$black;
+					color: colors.$dark;
+					text-decoration: underline;
 				}
 			}
 		}

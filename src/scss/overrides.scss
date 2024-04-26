@@ -192,6 +192,11 @@ button.is-low {
 	}
 }
 
+a:hover,
+a:focus {
+	text-decoration: underline;
+}
+
 a[disabled=disabled] {
     color: gray;
 	cursor: default;

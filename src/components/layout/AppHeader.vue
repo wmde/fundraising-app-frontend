@@ -3,21 +3,25 @@
 		<a class="navigation-left" :href="`/?${ campaignParams }`" aria-hidden="true">
 			<Logo/>
 		</a>
-		<div
+		<nav
 			class="navigation-items"
+			:aria-label="$t( 'aria_main_navigation_label' )"
 			:class="{ 'active': showMobileNavbar }"
 			@click="showMobileNavbar = !showMobileNavbar"
 		>
-			<a
-				v-for="( link, index ) in headerMenu"
-				:key="index"
-				:href="link.url"
-				class="navigation-item"
-				:class="{ 'active': link.ids.includes( pageIdentifier ) }"
-			>
-				{{ $t( 'header_menu_item_' + link.localeId ) }}
-			</a>
-		</div>
+			<ul>
+				<li v-for="( link, index ) in headerMenu" :key="index">
+					<a
+						:href="link.url"
+						class="navigation-item"
+						:class="{ 'active': link.ids.includes( pageIdentifier ) }"
+						:aria-current="link.ids.includes( pageIdentifier ) ? 'page' : null"
+					>
+						{{ $t( 'header_menu_item_' + link.localeId ) }}
+					</a>
+				</li>
+			</ul>
+		</nav>
 		<div class="navigation-right">
 			<LocaleSelector :assets-path="assetsPath"/>
 			<NavigationBurger :active="showMobileNavbar" @click="showMobileNavbar = !showMobileNavbar"/>
@@ -89,6 +93,14 @@ $side-width: 80px;
 		background: colors.$white;
 		box-shadow: 0 8px 8px rgba( 0, 0, 0, 0.1);
 
+		ul {
+			display: flex;
+			flex-direction: column;
+			@include breakpoints.tablet-up {
+				flex-direction: row;
+			}
+		}
+
 		&.active {
 			display: flex;
 		}
@@ -107,17 +119,18 @@ $side-width: 80px;
 	&-item {
 		display: flex;
 		align-items: center;
-		border-bottom: 2px solid colors.$white;
 		padding: map.get( units.$spacing, 'small' );
 		color: colors.$black;
 		border-bottom: 2px solid colors.$gray-light;
 		transition: border-bottom-color 200ms global.$easing, color 200ms global.$easing;
+		height: global.$navbar-height;
 
 		&:hover,
 		&:focus,
 		&.active {
 			color: colors.$primary;
 			border-bottom: 2px solid colors.$primary;
+			text-decoration: none;
 		}
 
 		&.active {

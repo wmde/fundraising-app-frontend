@@ -94,6 +94,7 @@ const setCookie = ( value: string ): void => {
 			&:hover,
 			&:focus {
 				background: colors.$gray-light;
+				text-decoration: none;
 			}
 
 			&.active {
