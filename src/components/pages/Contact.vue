@@ -50,6 +50,7 @@
 
 				<SelectField
 					v-model="formData.topic.value"
+					input-id="topic"
 					name="category"
 					:label="$t( 'contact_form_topic_placeholder' )"
 					:options="[

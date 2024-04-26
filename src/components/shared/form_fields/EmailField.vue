@@ -1,9 +1,9 @@
 <template>
 	<div class="form-field form-field-email" :class="{ 'is-invalid': showError }">
-		<label for="email" class="form-field-label">{{ $t( 'donation_form_email_label' ) }}</label>
+		<label :for="inputId ?? 'email'" class="form-field-label">{{ $t( 'donation_form_email_label' ) }}</label>
 		<TextFormInput
 			input-type="text"
-			input-id="email"
+			:input-id="inputId ?? 'email'"
 			name="email"
 			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_email_placeholder' ) } )"
 			autocomplete="email"
@@ -36,6 +36,7 @@ import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vu
 interface Props {
 	modelValue: string;
 	showError: boolean;
+	inputId?: string;
 }
 
 const props = defineProps<Props>();

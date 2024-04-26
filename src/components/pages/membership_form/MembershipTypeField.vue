@@ -5,10 +5,12 @@
 			{
 				value: MembershipTypeModel.SUSTAINING,
 				label: $t( 'membership_form_membershiptype_option_sustaining' ),
+				id: 'membershipType-0',
 			},
 			{
 				value: MembershipTypeModel.ACTIVE,
 				label: $t( 'membership_form_membershiptype_option_active' ),
+				id: 'membershipType-1',
 			},
 		]"
 		v-model="fieldModel"

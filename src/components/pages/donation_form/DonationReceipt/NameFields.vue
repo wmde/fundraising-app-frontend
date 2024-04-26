@@ -5,7 +5,7 @@
 			name="salutation"
 			v-model="formData.salutation.value"
 			:label="$t( 'donation_form_salutation_label' )"
-			:options="salutations"
+			:options="salutationFormOptions"
 			:show-error="showError.salutation"
 			:error-message="$t( 'donation_form_salutation_error' )"
 			@field-changed="$emit('field-changed', 'salutation')"
@@ -15,6 +15,7 @@
 		<SelectField
 			name="title"
 			v-model="formData.title.value"
+			input-id="title"
 			:label="$t( 'donation_form_academic_title_label' )"
 			:options="[
 				{ label: $t( 'donation_form_academic_title_option_none' ), value: '' },
@@ -67,6 +68,7 @@ import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPla
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
+import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 
 interface Props {
 	salutations: Salutation[];
@@ -74,7 +76,11 @@ interface Props {
 	showError: AddressValidity;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 defineEmits( [ 'field-changed' ] );
+
+const salutationFormOptions: CheckboxFormOption[] = props.salutations.map( ( x, index ) => (
+	{ value: x.value, label: x.label, id: `salutation-${ index }` }
+) );
 
 </script>

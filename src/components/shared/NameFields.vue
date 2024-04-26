@@ -6,7 +6,7 @@
 			name="salutation"
 			v-model="formData.salutation.value"
 			:label="$t( 'donation_form_salutation_label' )"
-			:options="salutations"
+			:options="salutationFormOptions"
 			:show-error="showError.salutation"
 			:error-message="$t( 'donation_form_salutation_error' )"
 			@field-changed="$emit('field-changed', 'salutation')"
@@ -16,6 +16,7 @@
 		<SelectField
 			v-if="showPersonalFields"
 			name="title"
+			:input-id="`${fieldIdNamespace}title`"
 			v-model="formData.title.value"
 			:label="$t( 'donation_form_academic_title_label' )"
 			:options="[
@@ -30,7 +31,7 @@
 		<TextField
 			v-if="showPersonalFields"
 			name="firstName"
-			input-id="first-name"
+			:input-id="`${fieldIdNamespace}first-name`"
 			v-model="formData.firstName.value"
 			:show-error="showError.firstName"
 			:error-message="$t( 'donation_form_firstname_error' )"
@@ -43,7 +44,7 @@
 		<TextField
 			v-if="showPersonalFields"
 			name="lastName"
-			input-id="last-name"
+			:input-id="`${fieldIdNamespace}last-name`"
 			v-model="formData.lastName.value"
 			:show-error="showError.lastName"
 			:error-message="$t( 'donation_form_lastname_error' )"
@@ -64,7 +65,7 @@
 		<TextField
 			v-if="showCompanyFields"
 			name="companyName"
-			input-id="company-name"
+			:input-id="`${fieldIdNamespace}company-name`"
 			v-model="formData.companyName.value"
 			:show-error="showError.companyName"
 			:error-message="$t( 'donation_form_companyname_error' )"
@@ -86,12 +87,14 @@ import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { computed } from 'vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 
 interface Props {
 	addressType: AddressTypeModel
 	salutations: Salutation[];
 	formData: AddressFormData;
 	showError: AddressValidity;
+	fieldIdNamespace?: string;
 }
 
 const props = defineProps<Props>();
@@ -105,5 +108,9 @@ const showPersonalFields = computed( () =>
 	].includes( props.addressType )
 );
 const showCompanyFields = computed( () => props.addressType === AddressTypeModel.COMPANY );
+const fieldIdNamespace = props.fieldIdNamespace ? `${props.fieldIdNamespace}-` : '';
+const salutationFormOptions: CheckboxFormOption[] = props.salutations.map( ( x, index ) => (
+	{ value: x.value, label: x.label, id: `${ fieldIdNamespace }salutation-${ index }` }
+) );
 
 </script>

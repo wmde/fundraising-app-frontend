@@ -87,7 +87,7 @@ import CheckboxSingleFormInput from '@src/components/shared/form_elements/Checkb
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { useReceiptModel } from '@src/components/pages/membership_form/useReceiptModel';
 import { useIncentivesModel } from '@src/components/pages/membership_form/useIncentivesModel';
-import { FormOption } from '@src/components/shared/form_fields/FormOption';
+import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { useI18n } from 'vue-i18n';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
@@ -121,9 +121,8 @@ const {
 	dateOfBirthValidationPattern: props.dateOfBirthValidationPattern.toString(),
 }, store );
 
-const incentivesAsOptions : FormOption[] = [
+const incentivesAsOptions : CheckboxFormOption[] = [
 	{ value: 'tote_bag', label: t( 'membership_form_incentive' ), id: 'tote_bag' },
-
 ];
 
 const addressTypeFromStore = computed( (): AddressTypeModel => {

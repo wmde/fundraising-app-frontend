@@ -2,18 +2,22 @@
 
 	<RadioField
 		name="addressType"
+		input-id="addressType"
 		:options="[
 			{
 				value: AddressTypeModel.PERSON,
 				label: $t( 'donation_form_addresstype_option_private_addresstype_basic' ),
+				id: 'addressType-0'
 			},
 			{
 				value: AddressTypeModel.COMPANY,
 				label: $t( 'donation_form_addresstype_option_company_addresstype_basic' ),
+				id: 'addressType-1'
 			},
 			{
 				value: AddressTypeModel.ANON,
 				label: $t( 'donation_form_addresstype_option_anonymous_addresstype_basic' ),
+				id: 'addressType-2'
 			},
 		]"
 		:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"

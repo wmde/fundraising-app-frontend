@@ -12,6 +12,7 @@
 					:form-data="formData"
 					:address-type="AddressTypeModel.PERSON"
 					:salutations="salutations"
+					field-id-namespace="person"
 					v-on:field-changed="onFieldChange"
 				/>
 				<PostalAddressFields
@@ -20,6 +21,7 @@
 					:countries="countries"
 					:post-code-validation="addressValidationPatterns.postcode"
 					:country-was-restored="countryWasRestored"
+					field-id-namespace="person"
 					v-on:field-changed="onFieldChange"
 				/>
 				<div class="form-field form-field-donation-receipt">
@@ -34,6 +36,7 @@
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
+					input-id="person-email"
 					@field-changed="onFieldChange"
 				>
 					<template #message>
@@ -44,7 +47,7 @@
 						/>
 					</template>
 				</EmailField>
-				<MailingListField v-model="mailingList"/>
+				<MailingListField v-model="mailingList" input-id="person-newsletter"/>
 			</AutofillHandler>
 		</form>
 
@@ -60,6 +63,7 @@
 					:form-data="formData"
 					:address-type="AddressTypeModel.COMPANY"
 					:salutations="salutations"
+					field-id-namespace="company"
 					v-on:field-changed="onFieldChange"
 				/>
 				<PostalAddressFields
@@ -68,6 +72,7 @@
 					:countries="countries"
 					:post-code-validation="addressValidationPatterns.postcode"
 					:country-was-restored="countryWasRestored"
+					field-id-namespace="company"
 					v-on:field-changed="onFieldChange"
 				/>
 				<div class="form-field form-field-donation-receipt">
@@ -81,6 +86,7 @@
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
+					input-id="company-email"
 					@field-changed="onFieldChange"
 				>
 					<template #message>
@@ -91,7 +97,7 @@
 						/>
 					</template>
 				</EmailField>
-				<MailingListField v-model="mailingList"/>
+				<MailingListField v-model="mailingList" input-id="company-newsletter"/>
 			</AutofillHandler>
 		</form>
 
@@ -107,11 +113,13 @@
 					:form-data="formData"
 					:address-type="AddressTypeModel.PERSON"
 					:salutations="salutations"
+					field-id-namespace="email"
 					v-on:field-changed="onFieldChange"
 				/>
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
+					input-id="email-email"
 					@field-changed="onFieldChange"
 				>
 					<template #message>
@@ -122,7 +130,7 @@
 						/>
 					</template>
 				</EmailField>
-				<MailingListField v-model="mailingList"/>
+				<MailingListField v-model="mailingList" input-id="email-newsletter"/>
 			</AutofillHandler>
 		</form>
 

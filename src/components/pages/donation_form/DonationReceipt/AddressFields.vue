@@ -5,8 +5,8 @@
 			v-model="addressType"
 			name="addressTypeSelector"
 			:options="[
-				{ value: AddressTypeModel.PERSON, label: $t( 'C23_WMDE_Desktop_DE_05_contact_details_private' ) },
-				{ value: AddressTypeModel.COMPANY_WITH_CONTACT, label: $t( 'C23_WMDE_Desktop_DE_05_contact_details_company' ) },
+				{ value: AddressTypeModel.PERSON, label: $t( 'C23_WMDE_Desktop_DE_05_contact_details_private' ), id: 'addressTypeSelector-0' },
+				{ value: AddressTypeModel.COMPANY_WITH_CONTACT, label: $t( 'C23_WMDE_Desktop_DE_05_contact_details_company' ), id: 'addressTypeSelector-1' },
 			]"
 			:label="$t( 'C23_WMDE_Desktop_DE_05_contact_details_label' )"
 			:show-error="showAddressTypeError"
@@ -66,6 +66,7 @@
 
 		<CityAutocompleteField
 			v-model="formData.city.value"
+			input-id="city"
 			:show-error="showError.city"
 			:label="$t( 'donation_form_city_label' )"
 			:error-message="$t( 'donation_form_city_error' )"
@@ -82,6 +83,7 @@
 
 		<CountryAutocompleteField
 			v-model="formData.country.value"
+			input-id="country"
 			:countries="countries"
 			:was-restored="countryWasRestored"
 			:show-error="showError.country"

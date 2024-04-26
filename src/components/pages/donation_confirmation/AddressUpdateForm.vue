@@ -4,15 +4,18 @@
 
 			<RadioField
 				name="addressType"
+				input-id="addressType"
 				class="address-type-field"
 				:options="[
 					{
 						value: AddressTypeModel.PERSON,
 						label: $t( 'donation_form_addresstype_option_private_addresstype_basic' ),
+						id: 'addressType-0',
 					},
 					{
 						value: AddressTypeModel.COMPANY,
 						label: $t( 'donation_form_addresstype_option_company_addresstype_basic' ),
+						id: 'addressType-1',
 					}
 				]"
 				:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
@@ -55,7 +58,7 @@
 
 		</AutofillHandler>
 
-		<MailingListField v-model="mailingList"/>
+		<MailingListField v-model="mailingList" input-id="newsletter"/>
 
 		<FormSummary :show-border="false">
 			<template #summary-buttons>
@@ -126,7 +129,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'address-updated' ] );
+const emit = defineEmits( [ 'address-updated', 'close' ] );
 const store = useStore();
 
 const addressForm = ref<HTMLFormElement>( null );

@@ -5,6 +5,7 @@
 				v-for="incentive in incentiveFormFieldOptions"
 				:native-value="incentive.value"
 				name="incentives"
+				input-id="incentives"
 				v-model="fieldModel"
 				@update:modelValue="onUpdateModel"
 				:input-id="incentive.id"
@@ -19,10 +20,10 @@
 
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import CheckboxMultipleFormInput from '@src/components/shared/form_elements/CheckboxMultipleFormInput.vue';
-import { FormOption } from '@src/components/shared/form_fields/FormOption';
+import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 
 interface Props {
-	incentiveFormFieldOptions: FormOption[];
+	incentiveFormFieldOptions: CheckboxFormOption[];
 	modelValue: string[];
 }
 

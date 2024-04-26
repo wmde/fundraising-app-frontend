@@ -11,6 +11,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 				modelValue,
 				countries,
 				label: '',
+				inputId: 'country',
 				placeholder: '',
 				showError: false,
 				errorMessage: 'I haz error',

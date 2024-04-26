@@ -1,6 +1,6 @@
 <template>
 	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
-		<label for="city" class="form-field-label">{{ label }}</label>
+		<label :for="inputId" class="form-field-label">{{ label }}</label>
 		<div class="form-field-autocomplete-container">
 			<TextFormInput
 				v-model="city"
@@ -9,7 +9,7 @@
 				:placeholder="$t( placeholder, { example: $t( examplePlaceholder ) } )"
 				:has-error="showError"
 				:has-message="false"
-				input-id="city"
+				:input-id="inputId"
 				@focus="onFocus"
 				@blur="onBlur"
 			/>
@@ -39,6 +39,7 @@ import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vu
 
 interface Props {
 	modelValue: string;
+	inputId: string;
 	label: String;
 	examplePlaceholder: string;
 	showError: boolean;

@@ -51,11 +51,11 @@ describe( 'Payment.vue', () => {
 		const wrapper = getWrapper();
 		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
 
-		await wrapper.find( '#paymentType-BEZ' ).trigger( 'change' );
+		await wrapper.find( '[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
 
 		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
 
-		await wrapper.find( '#paymentType-UEB' ).trigger( 'change' );
+		await wrapper.find( '[name="paymentType"][value="UEB"]' ).trigger( 'change' );
 
 		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
 	} );
@@ -113,7 +113,7 @@ describe( 'Payment.vue', () => {
 	it( 'Does not show fee error when field is empty and interval changes', async () => {
 		const wrapper = getWrapper();
 
-		await wrapper.find( '#interval-12' ).trigger( 'click' );
+		await wrapper.find( '[name="interval"][value="12"]' ).trigger( 'click' );
 
 		expect( wrapper.find( '.form-field-amount .is-danger' ).exists() ).toBeFalsy();
 	} );
@@ -122,7 +122,7 @@ describe( 'Payment.vue', () => {
 		const wrapper = getWrapper();
 
 		await wrapper.find( 'input[name="amount"][value="10000"]' ).trigger( 'click' );
-		await wrapper.find( '#interval-12' ).trigger( 'click' );
+		await wrapper.find( '[name="interval"][value="12"]' ).trigger( 'click' );
 
 		expect( wrapper.find( '.form-field-amount .is-danger' ).exists() ).toBeFalsy();
 	} );
@@ -131,7 +131,7 @@ describe( 'Payment.vue', () => {
 		const wrapper = getWrapper();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'click' );
-		await wrapper.find( '#interval-12' ).trigger( 'click' );
+		await wrapper.find( '[name="interval"][value="12"]' ).trigger( 'click' );
 
 		expect( wrapper.find( '.form-field-amount .is-danger' ).exists() ).toBeFalsy();
 	} );
