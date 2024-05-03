@@ -3,6 +3,7 @@
 		<button class="navigation-locale-current"
 			type="button"
 			id="menubutton1"
+			:aria-label="$t( 'language_selection' )"
 			aria-haspopup="true"
 			:aria-expanded="popUpIsOpen"
 			aria-controls="menu1"
