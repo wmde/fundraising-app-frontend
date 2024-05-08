@@ -1,6 +1,7 @@
 <template>
 	<div class="navigation">
-		<a class="navigation-left" :href="`/?${ campaignParams }`" aria-hidden="true">
+		<a class="navigation-left" :href="`/?${ campaignParams }`">
+			<span class="visually-hidden">Wikimedia Deutschland e V.</span>
 			<Logo/>
 		</a>
 		<nav
@@ -70,6 +71,17 @@ const headerMenu = [
 $navbar-breakpoint: 600px;
 // Keep the logo and language links equal width so the navigation will be centered
 $side-width: 80px;
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
 
 .navigation {
 	position: fixed;
