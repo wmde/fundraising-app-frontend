@@ -1,9 +1,10 @@
 <template>
 	<div class="payment-section">
 
-		<FormSection :title="$t('membership_form_payment_interval_title')" title-margin="x-small">
+		<FormSection>
 			<RadioField
 				name="interval"
+				:label="$t('membership_form_payment_interval_title')"
 				v-model="interval"
 				:options="paymentIntervalsAsOptions"
 				:required="true"
@@ -14,9 +15,10 @@
 			/>
 		</FormSection>
 
-		<FormSection :title="getAmountTitle" title-margin="small">
+		<FormSection>
 			<AmountField
 				v-model="fee"
+				:label="getAmountTitle"
 				:payment-amounts="paymentAmounts"
 				:error-message="feeErrorMessage"
 				:show-error="!feeIsValid"
@@ -30,9 +32,10 @@
 			</AmountField>
 		</FormSection>
 
-		<FormSection v-if="paymentTypes.length > 1"  :title="$t('donation_form_payment_type_title')" title-margin="x-small">
+		<FormSection v-if="paymentTypes.length > 1">
 			<RadioField
 				name="paymentType"
+				:label="$t('donation_form_payment_type_title')"
 				v-model="paymentType"
 				:options="paymentTypesAsOptions"
 				:required="true"
