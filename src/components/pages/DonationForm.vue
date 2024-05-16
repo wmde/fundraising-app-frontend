@@ -68,6 +68,10 @@ import { Salutation } from '@src/view_models/Salutation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import AddressPageDonationReceipt from '@src/components/pages/donation_form/subpages/AddressPageDonationReceipt.vue';
 
+defineOptions( {
+	name: 'DonationForm',
+} );
+
 interface Props {
 	assetsPath: string;
 	validateAddressUrl: string;

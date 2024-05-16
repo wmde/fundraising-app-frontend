@@ -20,6 +20,7 @@ createVueApp( App,
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: PrivacyProtection,
+		pageTitle: staticPage.getAttribute( 'data-page-title' ),
 		pageProps: {
 			pageId: staticPage.getAttribute( 'data-page-id' ),
 			pageTitle: staticPage.getAttribute( 'data-page-title' ),

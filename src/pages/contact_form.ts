@@ -27,6 +27,7 @@ createVueApp(
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: Contact,
+		pageTitle: 'contact_form_page_title',
 		pageProps: {
 			contactData: pageData.applicationVars,
 			validationPatterns: pageData.applicationVars.contactFormValidationPatterns,

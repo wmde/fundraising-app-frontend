@@ -20,5 +20,7 @@ createVueApp(
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: CommentList,
-		pageProps: {},
+		pageTitle: 'comment_list_page_title',
+		pageProps: {
+		},
 	} ).mount( '#app' );

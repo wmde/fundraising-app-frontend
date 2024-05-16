@@ -20,6 +20,7 @@ createVueApp(
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: UpdateAddressSuccess,
+		pageTitle: 'address_update_success_page_title',
 		pageProps: {
 			donationReceipt: pageData.applicationVars.receipt ? '1' : '0',
 		},

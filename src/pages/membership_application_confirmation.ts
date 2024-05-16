@@ -36,6 +36,7 @@ createVueApp( App,
 		usesContentCards: false,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: MembershipConfirmation,
+		pageTitle: 'membership_application_confirmation_page_title',
 		pageProps: {
 			confirmationData: pageData.applicationVars,
 			salutations: pageData.applicationVars.salutations,

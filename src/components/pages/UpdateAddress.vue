@@ -66,6 +66,10 @@ import { useAddressTypeFunctions } from '@src/components/pages/donation_form/Add
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
+defineOptions( {
+	name: 'UpdateAddress',
+} );
+
 interface Props {
 	validateAddressUrl: string;
 	updateAddressURL: string;

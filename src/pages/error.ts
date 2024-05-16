@@ -25,6 +25,7 @@ createVueApp(
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: Error,
+		pageTitle: 'error_page_title',
 		pageProps: {
 			errorMessage: pageData.applicationVars.message,
 			errorTrace: pageData.applicationVars.trace,

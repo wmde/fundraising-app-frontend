@@ -23,6 +23,7 @@ createVueApp( App,
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: AccessDenied,
+		pageTitle: 'access_denied_page_title',
 		pageProps: {
 			errorData: pageData.applicationVars,
 		},

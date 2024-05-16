@@ -77,6 +77,7 @@ store.dispatch(
 			bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 			pageIdentifier: PAGE_IDENTIFIER,
 			page: DonationConfirmation,
+			pageTitle: 'donation_confirmation_page_title',
 			pageProps: {
 				donation: pageData.applicationVars.donation,
 				address: address,
