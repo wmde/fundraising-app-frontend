@@ -1,12 +1,12 @@
 <template>
 	<div class="sidebar-cards">
 		<div class="sidebar-card">
-			<p class="sidebar-card-title"><InfoIcon/><strong>{{ $t('sidebar_getintouch_headline') }}</strong></p>
+			<h2 class="sidebar-card-title"><InfoIcon/>{{ $t('sidebar_getintouch_headline') }}</h2>
 			<p v-html="appendCampaignQueryParams( $t('sidebar_getintouch_mixed'), campaignParams )"></p>
 			<slot name="default"/>
 		</div>
 		<div class="sidebar-card">
-			<p class="sidebar-card-title"><BankIcon/><strong>{{ $t('bank_data_title') }}</strong></p>
+			<h2 class="sidebar-card-title"><BankIcon/>{{ $t('bank_data_title') }}</h2>
 			<BankData/>
 		</div>
 	</div>
@@ -56,9 +56,14 @@ const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 		margin-bottom: 0;
 	}
 
-	&-title {
+	.sidebar-card-title {
 		position: relative;
 		padding-left: 24px;
+		font-weight: bold;
+		font-size: 1em;
+		line-height: 1.5;
+		margin: 0;
+
 		svg {
 			position: absolute;
 			left: 0;
