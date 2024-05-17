@@ -19,7 +19,10 @@
 		</div>
 
 		<div class="comment-ticker-logo">
-			<a href="https://www.wikimedia.de/"><Logo/></a>
+			<a href="https://www.wikimedia.de/">
+				<span class="visually-hidden">Wikimedia Deutschland e V.</span>
+				<Logo/>
+			</a>
 		</div>
 
 		<blockquote class="comment-ticker-content">
@@ -167,6 +170,17 @@ onMounted( async () => {
 
 $font-family-serif: Superclarendon, 'Bookman Old Style', 'URW Bookman', 'URW Bookman L', 'Georgia Pro', Georgia, serif;
 $font-family-sans: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
 
 @keyframes play-timer {
 	0% {

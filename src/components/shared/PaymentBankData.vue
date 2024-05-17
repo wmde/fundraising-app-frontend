@@ -2,7 +2,6 @@
 	<fieldset class="payment-bank-data-section">
 		<legend class="title is-size-5">{{ $t( 'donation_form_payment_bankdata_title' ) }}</legend>
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]">
-			<!-- eslint-disable vuejs-accessibility/label-has-for -->
 			<label for="iban" class="subtitle">{{ $t( labels.iban ) }}</label>
 			<div class="form-field form-field-text">
 				<div class="control text-form-input">

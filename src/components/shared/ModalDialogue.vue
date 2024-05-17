@@ -1,10 +1,13 @@
 <template>
 	<div class="modal-dialogue" :class="{ 'active': visible }">
-		<div class="modal-dialogue-background" @click.prevent="emit( 'hide' )"/>
+		<button class="modal-dialogue-background" @click.prevent="emit( 'hide' )"/>
 		<div class="modal-dialogue-content-container">
 			<div class="modal-dialogue-title">
 				{{ title }}
-				<a class="modal-dialogue-close" href="#" @click.prevent="emit( 'hide' )"><CloseIcon/></a>
+				<a class="modal-dialogue-close" href="#" @click.prevent="emit( 'hide' )">
+					<span class="is-sr-only">{{ $t( 'close' ) }}</span>
+					<CloseIcon/>
+				</a>
 			</div>
 			<div class="modal-dialogue-scroll">
 				<div class="modal-dialogue-content">
@@ -72,6 +75,7 @@ $title-height: map.get( units.$spacing, 'xxx-large' );
 		background: rgba( 0, 0, 0, 0.8 );
 		height: 100%;
 		width: 100%;
+		border: 0;
 	}
 
 	&-content-container {

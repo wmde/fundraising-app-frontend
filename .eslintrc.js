@@ -45,6 +45,11 @@ module.exports = {
 		'quotes': [ 'error', 'single', { allowTemplateLiterals: true } ],
 
 		'vue/no-unused-components': [ 'error', { 'ignoreWhenBindingPresent': false } ],
+		'vuejs-accessibility/label-has-for': [ 'error', {
+			'required': {
+				'some': [ 'nesting', 'id' ],
+			},
+		} ],
 	},
 
 	parser: 'vue-eslint-parser',

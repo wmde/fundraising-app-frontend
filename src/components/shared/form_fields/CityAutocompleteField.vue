@@ -1,6 +1,5 @@
 <template>
 	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
-		<!-- eslint-disable vuejs-accessibility/label-has-for -->
 		<label for="city" class="form-field-label">{{ label }}</label>
 		<div class="form-field-autocomplete-container">
 			<TextFormInput
@@ -18,7 +17,7 @@
 				<div class="dropdown-menu" v-show="autocompleteIsActive && cities.length > 0">
 					<div class="dropdown-content">
 						<template v-for="city in cities">
-							<a class="dropdown-item" role="button" tabindex="0" @click.stop="onSelectItem( city )">
+							<a class="dropdown-item" role="button" tabindex="0" @click.stop="onSelectItem( city )" @keyup.enter.space="onSelectItem( city )">
 								<strong>{{ postcode }}</strong> {{ city }}
 							</a>
 						</template>
