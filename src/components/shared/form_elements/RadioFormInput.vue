@@ -13,7 +13,6 @@
 			:required="required"
 			:aria-describedby="ariaDescribedby"
 			:aria-invalid="ariaInvalid"
-			:aria-errormessage="ariaErrorMessage"
 		/>
 		<label class="control-label" :for="id"><slot/></label>
 	</div>
@@ -31,8 +30,7 @@ interface Props {
 	disabled?: boolean;
 	required?: boolean;
 	ariaDescribedby?: string;
-	ariaInvalid?: boolean
-	ariaErrorMessage?: string
+	ariaInvalid?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -40,7 +38,6 @@ const props = withDefaults( defineProps<Props>(), {
 	required: false,
 	ariaDescribedby: '',
 	ariaInvalid: false,
-	ariaErrorMessage: '',
 } );
 const emit = defineEmits( [ 'update:modelValue' ] );
 

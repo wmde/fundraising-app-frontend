@@ -1,7 +1,10 @@
 <template>
 	<fieldset class="form-field form-field-amount" :class="`locale-${ $i18n.locale }`">
 		<legend v-if="label" class="form-field-label">{{ label }}</legend>
-		<div v-if="minimumAmountMessage!=''" class="minimum-message">
+		<div class="form-field-amount-help-text">
+			{{ $t( 'donation_form_payment_amount_help_text' ) }}
+		</div>
+		<div v-if="minimumAmountMessage!=''" class="form-field-amount-help-text">
 			{{ minimumAmountMessage }}
 		</div>
 		<div class="control form-field-amount-radio-container">
@@ -14,8 +17,8 @@
 					:disabled="paymentAmount < minimumAmount"
 					:id="`amount-${paymentAmount}`"
 					@update:model-value="updateAmountFromRadio"
-						:aria-invalid="showError"
-						:aria-error-message="showError ? 'amount-error' : ''"
+					:aria-invalid="showError"
+					:aria-describedby="showError ? 'amount-error' : ''"
 				>
 					{{ $n( paymentAmount / 100, 'euros' ) }}
 				</RadioFormInput>
@@ -23,25 +26,25 @@
 		</div>
 
 		<div class="form-field-amount-custom" :class="{ active: isCustomAmount }">
-			<TextFormInput
-				v-model="customAmount"
-				input-type="text"
-				input-id="amount-custom"
-				:has-message="false"
-				name="custom-amount"
-				:placeholder="$t('donation_form_custom_placeholder')"
-				@keydown.enter="setCustomAmount"
-				@blur="setCustomAmount"
-				@focus.prevent="resetErrorInput"
-				@update:model-value="updateAmountFromCustom"
-				:aria-invalid="showError"
-				:aria-error-message="showError ? 'amount-error' : ''"
-			/>
-			<!-- eslint-disable vuejs-accessibility/label-has-for -->
-			<label for="amount-custom" class="is-sr-only">{{ $t('donation_form_payment_amount_legend') }}</label>
+			<label class="form-field-amount-help-text" for="amount-custom">{{ $t('donation_form_payment_amount_label') }}</label>
+			<div class="form-field-amount-custom-euro-symbol">
+				<TextFormInput
+					v-model="customAmount"
+					input-type="text"
+					input-id="amount-custom"
+					:has-message="false"
+					name="custom-amount"
+					:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_custom_placeholder' ) } )"
+					@keydown.enter="setCustomAmount"
+					@blur="setCustomAmount"
+					@focus.prevent="resetErrorInput"
+					@update:model-value="updateAmountFromCustom"
+					:aria-invalid="showError"
+					:aria-describedby="ariaDescribedby"
+				/>
+			</div>
 		</div>
-		<span v-if="showError" class="help is-danger" id="amount-error" role="alert">{{ errorMessage }}</span>
-
+		<span v-if="showError" class="help is-danger" id="amount-error">{{ errorMessage }}</span>
 		<slot name="info-message"/>
 	</fieldset>
 </template>
@@ -61,17 +64,20 @@ interface Props {
 	label?: String;
 	errorMessage?: String;
 	minimumAmountMessage?: string;
+	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	minimumAmount: 0,
 	minimumAmountMessage: '',
+	ariaDescribedby: '',
 	showError: false,
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const { n } = useI18n();
 const amount = ref<number>( Number( props.modelValue ) );
+const ariaDescribedby = computed<string>( () => props.ariaDescribedby + ( props.showError ? ' amount-error' : '' ) );
 const isCustomAmount = computed<boolean>( () => amount.value > 0 && props.paymentAmounts.indexOf( amount.value ) === -1 );
 
 const getFormattedCustomAmount = (): string => {
@@ -144,7 +150,7 @@ $input-height: 50px;
 .form-field-amount {
 	max-width: $max-width;
 
-	.minimum-message {
+	&-help-text {
 		margin-bottom: map.get( units.$spacing, 'small' );
 		line-height: 130%;
 	}
@@ -209,7 +215,7 @@ $input-height: 50px;
 		}
 	}
 
-	&-custom {
+	&-custom-euro-symbol {
 		position: relative;
 
 		&:after {
@@ -240,7 +246,7 @@ $input-height: 50px;
 	}
 
 	&.locale-en-GB {
-		.form-field-amount-custom {
+		.form-field-amount-custom-euro-symbol {
 			input {
 				text-align: left;
 			}
