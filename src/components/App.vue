@@ -1,5 +1,5 @@
 <template>
-	<div class="app-container" :class="bucketClasses">
+	<div class="app-container" :class="bucketClasses" :inert="modalState === ModalStates.Open">
 		<header>
 			<a href="#content" class="skip-link">{{ $t( 'skip_link_text' ) }}</a>
 			<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
@@ -28,7 +28,9 @@ import AppContent from '@src/components/layout/AppContent.vue';
 import AppSidebar from '@src/components/layout/AppSidebar.vue';
 import AppFooter from '@src/components/layout/AppFooter.vue';
 import { useI18n } from 'vue-i18n';
-import { Component, onMounted } from 'vue';
+import { Component, onMounted, watch } from 'vue';
+import { ModalStates, useModalState } from '@src/components/shared/composables/useModalState';
+import { setModalClosed, setModalOpened } from '@src/util/modalPageFreezer';
 
 interface Props {
 	assetsPath: string;
@@ -47,9 +49,22 @@ const props = withDefaults( defineProps<Props>(), {
 	usesContentCards: false,
 } );
 
+const modalState = useModalState();
+
 onMounted( () => {
 	const { t } = useI18n();
 	document.title = t( 'site_name', { pageTitle: t( props.pageTitle ) } );
+} );
+
+watch( modalState, ( newModalState: ModalStates ) => {
+	switch ( newModalState ) {
+		case ModalStates.Open:
+			setModalOpened();
+			break;
+		case ModalStates.Closed:
+			setModalClosed();
+			break;
+	}
 } );
 
 </script>

@@ -1,37 +1,46 @@
 <template>
-	<div class="modal-dialogue" :class="{ 'active': visible }">
-		<button class="modal-dialogue-background" @click.prevent="emit( 'hide' )"/>
-		<div class="modal-dialogue-content-container">
-			<div class="modal-dialogue-title">
-				{{ title }}
-				<a class="modal-dialogue-close" href="#" @click.prevent="emit( 'hide' )">
-					<span class="is-sr-only">{{ $t( 'close' ) }}</span>
-					<CloseIcon/>
-				</a>
-			</div>
-			<div class="modal-dialogue-scroll">
-				<div class="modal-dialogue-content">
-					<slot/>
+	<Teleport to="#modal-target">
+		<div class="modal-dialogue" :class="{ 'active': visible }">
+			<button class="modal-dialogue-background" @click.prevent="emit( 'hide' )"/>
+			<div class="modal-dialogue-content-container">
+				<div class="modal-dialogue-title">
+					{{ title }}
+					<a class="modal-dialogue-close" href="#" @click.prevent="emit( 'hide' )">
+						<span class="is-sr-only">{{ $t( 'close' ) }}</span>
+						<CloseIcon/>
+					</a>
+				</div>
+				<div class="modal-dialogue-scroll">
+					<div class="modal-dialogue-content">
+						<slot/>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</Teleport>
 </template>
 
 <script setup lang="ts">
 
 import CloseIcon from '@src/components/shared/icons/CloseIcon.vue';
+import { ModalStates, useModalState } from '@src/components/shared/composables/useModalState';
+import { watch } from 'vue';
 
 interface Props {
 	visible?: boolean;
 	title: String;
 }
 
-withDefaults( defineProps<Props>(), {
+const props = withDefaults( defineProps<Props>(), {
 	visible: false,
 } );
 
 const emit = defineEmits( [ 'hide' ] );
+
+const modalState = useModalState();
+watch( () => props.visible, ( newVisible: boolean ) => {
+	modalState.value = newVisible ? ModalStates.Open : ModalStates.Closed;
+} );
 
 </script>
 

@@ -35,6 +35,9 @@ describe( 'DonationConfirmation.vue', () => {
 					$t: translateMock,
 					$n: () => {},
 				},
+				stubs: {
+					teleport: true,
+				},
 			},
 		} );
 	};
