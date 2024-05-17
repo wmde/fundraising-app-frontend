@@ -67,10 +67,16 @@ onMounted( () => {
 }
 
 .skip-link {
-	background-color: #ffffff;
-	position: absolute;
-	padding: 0.2em;
+	background-color: #FFCC33;
+	color: #000000;
+	position: fixed;
+	padding: 5px 10px;
+	top: 16px;
+	left: 16px;
+	font-weight: bold;
 	display: block;
+	z-index: 99;
+	border-radius: 5px;
 }
 
 .skip-link:not(:focus):not(:active) {
