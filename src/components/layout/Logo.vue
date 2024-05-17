@@ -1,7 +1,7 @@
 <template>
 	<div class="wikimedia-logo-graphic">
 		<!-- eslint-disable max-len -->
-		<svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 			<g filter="url(#filter0_i_1201_240)">
 				<path fill-rule="evenodd" clip-rule="evenodd"
 					d="M19.5635 29.0678C24.9393 28.3082 29.0748 23.6884 29.0748 18.1022C29.0748 14.7082 27.5481 11.6716 25.1448 9.63965L19.5635 15.2217V29.0678ZM16.4371 29.0678V15.2217L10.8562 9.63965C8.45247 11.6713 6.92578 14.7082 6.92578 18.1022C6.92578 23.6884 11.0615 28.3082 16.4371 29.0678Z"
