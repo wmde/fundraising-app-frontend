@@ -8,11 +8,13 @@ module.exports = {
 
 	plugins: [
 		'@typescript-eslint',
+		'eslint-plugin-vuejs-accessibility',
 	],
 
 	extends: [
 		'wikimedia',
 		'plugin:vue/base',
+		'plugin:vuejs-accessibility/recommended',
 	],
 
 	rules: {
@@ -43,6 +45,11 @@ module.exports = {
 		'quotes': [ 'error', 'single', { allowTemplateLiterals: true } ],
 
 		'vue/no-unused-components': [ 'error', { 'ignoreWhenBindingPresent': false } ],
+		'vuejs-accessibility/label-has-for': [ 'error', {
+			'required': {
+				'some': [ 'nesting', 'id' ],
+			},
+		} ],
 	},
 
 	parser: 'vue-eslint-parser',

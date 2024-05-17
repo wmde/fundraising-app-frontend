@@ -1,6 +1,5 @@
 <template>
 	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
-		<!-- eslint-disable vuejs-accessibility/label-has-for -->
 		<label for="country" class="form-field-label">{{ label }}</label>
 		<div class="form-field-autocomplete-container">
 			<TextFormInput

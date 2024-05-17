@@ -4,7 +4,6 @@
 		class="navigation-items"
 		:aria-label="$t( 'aria_main_navigation_label' )"
 		:class="{ 'active': showMobileNavbar }"
-		@click="$emit( 'click' )"
 	>
 		<ul>
 			<li v-for="( link, index ) in headerMenu" :key="index">
@@ -15,6 +14,7 @@
 					:aria-current="link.ids.includes( pageIdentifier ) ? 'page' : null"
 					@blur="$emit( 'blur' )"
 					@keyup.esc="$emit( 'esc' )"
+					@click="$emit( 'click' )"
 				>
 					{{ $t( 'header_menu_item_' + link.localeId ) }}
 				</a>

@@ -1,6 +1,5 @@
 <template>
 	<div class="form-field form-field-email" :class="{ 'is-invalid': showError }">
-		<!-- eslint-disable vuejs-accessibility/label-has-for -->
 		<label for="email" class="form-field-label">{{ $t( 'donation_form_email_label' ) }}</label>
 		<TextFormInput
 			input-type="text"
