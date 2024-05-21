@@ -15,6 +15,7 @@
 				:aria-describedby="showError ? `${name}-error-message` : ''"
 				:aria-invalid="showError"
 				v-model="fieldModel"
+				:autofocus="autofocus"
 				@update:modelValue="onFieldChange"
 			>
 				{{ option.label }}
@@ -40,6 +41,7 @@ interface Props {
 	showError?: boolean;
 	errorMessage?: String;
 	alignment: 'row' | 'column';
+	autofocus?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {

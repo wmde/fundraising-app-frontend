@@ -1,7 +1,8 @@
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
 import { createStore } from '@src/store/donation_store';
 import {
+	ConfirmationData,
 	anonymousBankTransferConfirmationData,
 	anonymousExportedPayPalConfirmationData,
 	bankTransferConfirmationData,
@@ -15,8 +16,7 @@ import { addressValidationPatterns } from '@test/data/validation';
 import DonorResource from '@src/api/DonorResource';
 
 describe( 'DonationConfirmation.vue', () => {
-
-	const getWrapper = ( bankData: Object, translateMock: ( key: string ) => string = ( key: string ) => key ) => {
+	const getWrapper = ( bankData: ConfirmationData, translateMock: ( key: string ) => string = ( key: string ) => key ): VueWrapper<any> => {
 		return mount( DonationConfirmation, {
 			props: {
 				validateEmailUrl: '',
@@ -27,7 +27,11 @@ describe( 'DonationConfirmation.vue', () => {
 				hasSucceeded: false,
 				addressValidationPatterns,
 				donorResource: {} as DonorResource,
-				...bankData,
+				addressType: bankData.addressType,
+				address: bankData.address,
+				donation: bankData.donation,
+				countries: bankData.countries,
+				salutations: bankData.salutations,
 			},
 			global: {
 				plugins: [ createStore() ],

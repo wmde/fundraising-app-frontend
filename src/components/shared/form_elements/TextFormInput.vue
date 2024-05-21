@@ -9,6 +9,7 @@
 			:class="{ 'is-danger': hasError }"
 			type="text"
 			:autocomplete="autocomplete"
+			:autofocus="autofocus"
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:required="required"
@@ -25,6 +26,7 @@
 			:id="inputId"
 			:class="{ 'is-danger': hasError }"
 			:autocomplete="autocomplete"
+			:autofocus="autofocus"
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:required="required"
@@ -51,6 +53,7 @@ interface Props {
 	name: string;
 	modelValue: string | number;
 	autocomplete?: string;
+	autofocus?: boolean;
 	inputId: string;
 	placeholder: string;
 	hasMessage: boolean;

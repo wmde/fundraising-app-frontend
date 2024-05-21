@@ -24,6 +24,7 @@
 				:label="$t( 'donation_comment_popup_label' )"
 				:error-message="$t( 'donation_comment_popup_error' )"
 				:show-error="commentErrored"
+				:autofocus="true"
 			/>
 
 			<CheckboxField

@@ -14,6 +14,7 @@
 			:required="required"
 			:aria-describedby="ariaDescribedby"
 			:aria-invalid="ariaInvalid"
+			:autofocus="autofocus"
 			@blur="$emit( 'blur' )"
 		/>
 		<label class="control-label" :for="id" :class="labelClass" @blur="$emit( 'blur' )"><slot/></label>
@@ -35,6 +36,7 @@ interface Props {
 	required?: boolean;
 	ariaDescribedby?: string;
 	ariaInvalid?: boolean;
+	autofocus?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {

@@ -2,7 +2,7 @@
 	<div class="donation-confirmation">
 		<a class="mobile-call-to-action is-primary button" href="#membership-application-url"
 			v-if="isMobileCallToActionButtonVisible && !isAddressModalOpen"
-			v-on:click="scrollToCallToAction">
+			@click.prevent="scrollToCallToAction">
 			Jetzt Fördermitglied werden
 			<ChevronDownIcon/>
 		</a>
@@ -14,21 +14,22 @@
 					v-else
 					:donation="donation"
 					:comment-link-is-disabled="commentLinkIsDisabled"
-					v-on:show-comment-modal="showCommentModal()"
+					@show-comment-modal="showCommentModal()"
 				/>
 			</div>
 			<div class="column is-half pt-0 pb-0">
 				<div v-if="!donation.isExported">
 					<AddressKnown
 						v-if="showAddress"
+						:modal-is-visible="isAddressModalOpen"
 						:donation="donation"
 						:address="currentAddress"
 						:address-type="currentAddressType"
 						:countries="countries"
 						:salutations="salutations"
-						v-on:show-address-modal="showAddressModal()"
+						@show-address-modal="showAddressModal()"
 					/>
-					<AddressAnonymous v-else v-on:show-address-modal="showAddressModal()"/>
+					<AddressAnonymous v-else :modal-is-visible="isAddressModalOpen" @show-address-modal="showAddressModal()"/>
 				</div>
 				<DonationExported
 					v-else-if="addressType === 'person' || addressType === 'firma'"
@@ -39,13 +40,14 @@
 			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
 				<MembershipInfo
 					:donation="donation"
-					v-on:membership-cta-button-shown="isMobileCallToActionButtonVisible = false"
-					v-on:membership-cta-button-hidden="isMobileCallToActionButtonVisible = true"
+					@membership-cta-button-shown="isMobileCallToActionButtonVisible = false"
+					@membership-cta-button-hidden="isMobileCallToActionButtonVisible = true"
 				/>
 			</div>
 		</div>
 
 		<ModalDialogue
+			id="address-change-modal"
 			:visible="isAddressModalOpen"
 			:title="$t( 'donation_confirmation_address_update_button_alt' )"
 			@hide="isAddressModalOpen = false">
@@ -63,6 +65,7 @@
 		</ModalDialogue>
 
 		<ModalDialogue
+			id="donation-comment-modal"
 			:visible="openCommentPopUp"
 			:title="$t( 'donation_comment_popup_title' )"
 			@hide="openCommentPopUp = false">
@@ -89,12 +92,12 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 import MembershipInfo from '@src/components/pages/donation_confirmation/MembershipInfo.vue';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Country } from '@src/view_models/Country';
-import { SubmittedAddress } from '@src/view_models/Address';
+import { Address } from '@src/view_models/Address';
 import { Donation } from '@src/view_models/Donation';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
@@ -110,79 +113,64 @@ import DonorResource from '@src/api/DonorResource';
 import ModalDialogue from '@src/components/shared/ModalDialogue.vue';
 import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 
-export default defineComponent( {
-	name: 'DonationConfirmation',
-	components: {
-		AddressAnonymous,
-		AddressKnown,
-		AddressUpdateForm,
-		ChevronDownIcon,
-		SuccessMessageBankTransfer,
-		SuccessMessage,
-		DonationCommentPopUp,
-		DonationExported,
-		DonationSurvey,
-		MembershipInfo,
-		ModalDialogue,
-	},
-	data: function () {
-		return {
-			isAddressModalOpen: false,
-			currentAddress: this.$props.address,
-			currentAddressType: this.$props.addressType,
-			openCommentPopUp: false,
-			commentLinkIsDisabled: false,
-			isMobileCallToActionButtonVisible: true,
-		};
-	},
-	props: {
-		donation: Object as () => Donation,
-		address: Object,
-		addressType: String,
-		tracking: String,
-		cancelMembershipUrl: String,
-		validateAddressUrl: String,
-		validateEmailUrl: String,
-		cancelDonationUrl: String,
-		postCommentUrl: String,
-		countries: Array as () => Array<Country>,
-		salutations: Array as () => Array<Salutation>,
-		addressValidationPatterns: Object as () => AddressValidation,
-		donorResource: Object as () => DonorResource,
-	},
-	methods: {
-		showAddressModal: function () {
-			this.$data.isAddressModalOpen = true;
-		},
-		updateAddress: function ( submittedAddress: SubmittedAddress ) {
-			this.$data.currentAddress = submittedAddress.addressData;
-			this.$data.currentAddressType = submittedAddress.addressType;
-			this.$data.isAddressModalOpen = false;
-		},
-		showCommentModal(): void {
-			if ( !this.$data.commentLinkIsDisabled ) {
-				this.$data.openCommentPopUp = true;
-			}
-		},
-		scrollToCallToAction( e: Event ): void {
-			e.preventDefault();
-			window.scrollTo( {
-				left: 0,
-				top: ( this.$refs.becomeAMember as any ).offsetTop,
-				behavior: 'smooth',
-			} );
-		},
-	},
-	computed: {
-		showBankTransferContent: function () {
-			return this.$props.donation.paymentType === 'UEB';
-		},
-		showAddress: function () {
-			return this.$data.currentAddressType !== addressTypeName( AddressTypeModel.ANON ) &&
-				this.$data.currentAddressType !== addressTypeName( AddressTypeModel.EMAIL );
-		},
-	},
+interface Props {
+	donation: Donation;
+	address: Address,
+	addressType: string,
+	tracking: string,
+	validateAddressUrl: string,
+	validateEmailUrl: string,
+	postCommentUrl: string,
+	countries: Country[],
+	salutations: Salutation[],
+	addressValidationPatterns: AddressValidation,
+	donorResource: DonorResource,
+}
+
+const props = defineProps<Props>();
+
+const becomeAMember = ref<HTMLElement>();
+const isAddressModalOpen = ref<boolean>( false );
+const currentAddress = ref<Address>( props.address );
+const currentAddressType = ref<string>( props.addressType );
+const openCommentPopUp = ref<boolean>( false );
+const commentLinkIsDisabled = ref<boolean>( false );
+const isMobileCallToActionButtonVisible = ref<boolean>( true );
+
+const showAddressModal = (): void => {
+	isAddressModalOpen.value = true;
+};
+
+const updateAddress = ( submittedAddress: { addressData: Address, addressType: string } ): void => {
+	currentAddress.value = submittedAddress.addressData;
+	currentAddressType.value = submittedAddress.addressType;
+	isAddressModalOpen.value = false;
+};
+
+const showCommentModal = (): void => {
+	if ( !commentLinkIsDisabled.value ) {
+		openCommentPopUp.value = true;
+	}
+};
+const scrollToCallToAction = (): void => {
+	window.scrollTo( {
+		left: 0,
+		top: becomeAMember.value.offsetTop,
+		behavior: 'smooth',
+	} );
+};
+
+const showBankTransferContent = computed<boolean>( () => {
+	return props.donation.paymentType === 'UEB';
 } );
+
+const showAddress = computed<boolean>( () => {
+	return ![
+		addressTypeName( AddressTypeModel.ANON ),
+		addressTypeName( AddressTypeModel.EMAIL ),
+	].includes( currentAddressType.value );
+} );
+
 </script>
 
 <style lang="scss">
