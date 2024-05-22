@@ -52,7 +52,7 @@
 			v-model="formData.postcode.value"
 			:show-error="showError.postcode"
 			:error-message="$t('donation_form_zip_error')"
-			autocomplete="street-address"
+			autocomplete="postal-code"
 			:label="$t( 'donation_form_zip_label' )"
 			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_zip_placeholder' ) } )"
 			@field-changed="$emit('field-changed', 'postcode')"
