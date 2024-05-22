@@ -7,6 +7,9 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "bulma"
+      # For `bulma`, ignore all Dependabot updates as we are planning to get rid of it
     reviewers:
       - "wmde/funtech-core"
     groups:

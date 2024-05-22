@@ -15,7 +15,7 @@
     "@airbrake/browser": "^2.1.8",
     "@babel/runtime": "^7.24.5",
     "axios": "^1.7.1",
-    "bulma": "^0.9.4",
+    "bulma": "0.9.4",
     "core-js": "^3.37.1",
     "format-number": "^3.0.0",
     "js-cookie": "^3.0.5",
