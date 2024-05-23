@@ -1,6 +1,7 @@
 <template>
 	<RadioField
 		name="membershipType"
+		:label="$t('membership_form_membershiptype_legend')"
 		:options="[
 			{
 				value: MembershipTypeModel.SUSTAINING,

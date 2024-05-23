@@ -2,7 +2,7 @@
 	<fieldset class="payment-bank-data-section">
 		<legend class="title is-size-5">{{ $t( 'donation_form_payment_bankdata_title' ) }}</legend>
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]">
-			<label for="iban" class="subtitle">{{ $t( labels.iban ) }}</label>
+			<label for="iban" class="form-field-label">{{ $t( labels.iban ) }}</label>
 			<div class="form-field form-field-text">
 				<div class="control text-form-input">
 					<AccountNumberField
@@ -14,7 +14,7 @@
 						@validate="validate"
 						@input="setAccountId"
 					/>
-        </div>
+				</div>
 			</div>
 		</div>
 
@@ -29,7 +29,6 @@
         :error-message="''"
         @field-changed="validate"
     />
-
 		<div id="bank-name-info">
 			<span v-show="bankInfoValidated" class="help">
 				<span id="bank-name-legacy">

@@ -1,6 +1,7 @@
 <template>
 	<RadioField
 		name="addressType"
+		:label="$t('membership_form_section_address_header_type')"
 		:options="[
 			{
 				value: AddressTypeModel.PERSON,
