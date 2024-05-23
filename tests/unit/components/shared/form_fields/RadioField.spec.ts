@@ -10,8 +10,8 @@ describe( 'RadioField.vue', () => {
 				label: '',
 				name: 'animal',
 				options: [
-					{ value: 'mouse', label: 'Mouse' },
-					{ value: 'elephant', label: 'Elephant' },
+					{ value: 'mouse', label: 'Mouse', id: 'animal-0' },
+					{ value: 'elephant', label: 'Elephant', id: 'animal-1' },
 				],
 				errorMessage: 'error_message',
 				alignment: 'row',
@@ -22,8 +22,8 @@ describe( 'RadioField.vue', () => {
 	it( 'fill options', () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '#animal-mouse' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#animal-elephant' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#animal-0' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#animal-1' ).exists() ).toBeTruthy();
 	} );
 
 	it( 'shows the error message', async () => {
@@ -58,7 +58,7 @@ describe( 'RadioField.vue', () => {
 	it( 'emits events', async () => {
 		const wrapper = getWrapper();
 
-		await wrapper.find( '#animal-elephant' ).trigger( 'change' );
+		await wrapper.find( '#animal-1' ).trigger( 'change' );
 
 		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( 'elephant' );

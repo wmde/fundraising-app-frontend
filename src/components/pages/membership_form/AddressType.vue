@@ -5,10 +5,12 @@
 			{
 				value: AddressTypeModel.PERSON,
 				label: $t( 'donation_form_addresstype_option_private' ),
+				id: 'addressType-0',
 			},
 			{
 				value: AddressTypeModel.COMPANY,
 				label: $t( 'donation_form_addresstype_option_company' ),
+				id: 'addressType-1',
 			},
 		]"
 		:disabled="disabledAddressTypes"

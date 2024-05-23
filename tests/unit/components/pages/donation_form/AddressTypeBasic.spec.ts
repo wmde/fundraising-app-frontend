@@ -18,13 +18,13 @@ describe( 'AddressTypeBasic.vue', () => {
 		const wrapper = getWrapper( [], false );
 		const event = 'address-type';
 
-		const person = wrapper.find( `#addressType-${AddressTypeModel.PERSON.valueOf()}` );
+		const person = wrapper.find( `#addressType-0` );
 		await person.trigger( 'change' );
 
-		const company = wrapper.find( `#addressType-${AddressTypeModel.COMPANY.valueOf()}` );
+		const company = wrapper.find( `#addressType-1` );
 		await company.trigger( 'change' );
 
-		const anon = wrapper.find( `#addressType-${AddressTypeModel.ANON.valueOf()}` );
+		const anon = wrapper.find( `#addressType-2` );
 		await anon.trigger( 'change' );
 
 		expect( wrapper.emitted( event ) ).toHaveLength( 3 );
@@ -36,9 +36,9 @@ describe( 'AddressTypeBasic.vue', () => {
 	it( 'disables anonymous address type if supplied via disabledAddressTypes property', async () => {
 		// TODO test with person instead of company and expect it to *not* be disabled, because person is the fallback type
 		const wrapper = getWrapper( [ AddressTypeModel.ANON, AddressTypeModel.COMPANY ], true );
-		const person = wrapper.find( `#addressType-${AddressTypeModel.PERSON.valueOf()}` );
-		const company = wrapper.find( `#addressType-${AddressTypeModel.COMPANY.valueOf()}` );
-		const anonymous = wrapper.find<HTMLInputElement>( `#addressType-${AddressTypeModel.ANON.valueOf()}` );
+		const person = wrapper.find( `#addressType-0` );
+		const company = wrapper.find( `#addressType-1` );
+		const anonymous = wrapper.find<HTMLInputElement>( `#addressType-2` );
 
 		expect( person.attributes( 'disabled' ) ).toBeUndefined();
 		expect( company.attributes( 'disabled' ) ).toBeDefined();

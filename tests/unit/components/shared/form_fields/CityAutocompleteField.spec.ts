@@ -14,6 +14,7 @@ describe( 'CityAutocompleteField.vue', () => {
 			props: {
 				modelValue: '',
 				label: '',
+				inputId: 'city',
 				examplePlaceholder: '',
 				showError: false,
 				errorMessage: 'I haz error',

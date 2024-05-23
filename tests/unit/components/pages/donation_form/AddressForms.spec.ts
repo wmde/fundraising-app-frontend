@@ -103,7 +103,7 @@ describe( 'AddressForms.vue', () => {
 		store.dispatch = jest.fn();
 		const expectedAction = action( NS_ADDRESS, setAddressField );
 		const firstNameValue = 'Vuetiful';
-		await wrapper.find( '#first-name' ).setValue( firstNameValue );
+		await wrapper.find( '#person-first-name' ).setValue( firstNameValue );
 
 		wrapper.findComponent( NameFields ).vm.$emit( 'field-changed', 'firstName' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
@@ -125,7 +125,7 @@ describe( 'AddressForms.vue', () => {
 	it( 'sets email in store when it receives email event', async () => {
 		const testEmail = 'test@wikimedia.de';
 		store.dispatch = jest.fn();
-		await wrapper.find( '#email' ).setValue( testEmail );
+		await wrapper.find( '#person-email' ).setValue( testEmail );
 
 		const expectedAction = action( NS_ADDRESS, setAddressField );
 		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
@@ -172,8 +172,8 @@ describe( 'AddressForms.vue', () => {
 			},
 		} );
 
-		expect( wrapper.find( '#first-name' ).element.value ).toBe( firstName.value );
-		expect( wrapper.find( '#last-name' ).element.value ).toBe( lastName.value );
+		expect( wrapper.find( '#person-first-name' ).element.value ).toBe( firstName.value );
+		expect( wrapper.find( '#person-last-name' ).element.value ).toBe( lastName.value );
 		expect( store.state.address.validity.firstName ).not.toBe( Validity.RESTORED );
 		expect( store.state.address.validity.lastName ).not.toBe( Validity.RESTORED );
 	} );

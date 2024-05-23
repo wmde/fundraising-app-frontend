@@ -1,6 +1,6 @@
 <template>
 	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
-		<label for="country" class="form-field-label">{{ label }}</label>
+		<label :for="inputId" class="form-field-label">{{ label }}</label>
 		<div class="form-field-autocomplete-container">
 			<TextFormInput
 				v-model="countryName"
@@ -8,7 +8,7 @@
 				:placeholder="placeholder"
 				:has-error="showError"
 				:has-message="false"
-				input-id="country"
+				:input-id="inputId"
 				name="countrySelector"
 				@focus="onFocus"
 				@blur="() => onBlur( country )"
@@ -42,6 +42,7 @@ import { useCountryAutocompleteEvents } from '@src/components/shared/form_fields
 
 interface Props {
 	modelValue: string;
+	inputId: string;
 	label: String;
 	placeholder: String;
 	countries?: Array<Country>;

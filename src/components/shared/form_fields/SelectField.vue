@@ -1,9 +1,9 @@
 <template>
 	<div class="form-field form-field-select" :class="{ 'is-invalid': showError }">
-		<label :for="name" class="form-field-label">{{ label }}</label>
+		<label :for="inputId" class="form-field-label">{{ label }}</label>
 		<SelectFormInput
 			v-model="fieldModel"
-			:select-id="name"
+			:select-id="inputId"
 			:name="name"
 			:has-error="showError"
 			@update:modelValue="onFieldChange"
@@ -18,15 +18,16 @@
 
 <script setup lang="ts">
 
-import { FormOption } from '@src/components/shared/form_fields/FormOption';
+import { SelectFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import SelectFormInput from '@src/components/shared/form_elements/SelectFormInput.vue';
 
 interface Props {
 	label: String;
 	name: string;
+	inputId: string;
 	modelValue: string|number;
-	options: FormOption[];
+	options: SelectFormOption[];
 	errorMessage?: String;
 	showError?: boolean;
 }

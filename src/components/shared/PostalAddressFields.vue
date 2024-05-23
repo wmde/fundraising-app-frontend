@@ -3,7 +3,7 @@
 
 		<TextField
 			name="street"
-			input-id="street"
+			:input-id="`${fieldIdNamespace}street`"
 			v-model="formData.street.value"
 			:show-error="showError.street"
 			:error-message="$t('donation_form_street_error')"
@@ -27,7 +27,7 @@
 
 		<TextField
 			name="postcode"
-			input-id="post-code"
+			:input-id="`${fieldIdNamespace}post-code`"
 			v-model="formData.postcode.value"
 			:show-error="showError.postcode"
 			:error-message="$t('donation_form_zip_error')"
@@ -47,6 +47,7 @@
 
 		<CityAutocompleteField
 			v-model="formData.city.value"
+			:input-id="`${fieldIdNamespace}city`"
 			:show-error="showError.city"
 			:label="$t( 'donation_form_city_label' )"
 			:error-message="$t( 'donation_form_city_error' )"
@@ -65,6 +66,7 @@
 
 		<CountryAutocompleteField
 			v-model="formData.country.value"
+			:input-id="`${fieldIdNamespace}country`"
 			:countries="countries"
 			:was-restored="countryWasRestored"
 			:show-error="showError.country"
@@ -93,12 +95,14 @@ interface Props {
 	countries: Country[];
 	postCodeValidation: string;
 	countryWasRestored: boolean;
+	fieldIdNamespace?: string;
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'field-changed' ] );
 
 const showStreetWarning = computed<boolean>( () => /^\D+$/.test( props.formData.street.value ) );
+const fieldIdNamespace = props.fieldIdNamespace ? `${props.fieldIdNamespace}-` : '';
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {

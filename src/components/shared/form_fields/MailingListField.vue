@@ -3,7 +3,7 @@
 		<CheckboxSingleFormInput
 			v-model="fieldModel"
 			name="info"
-			input-id="newsletter"
+			:input-id="inputId"
 			@update:modelValue="onUpdateModel"
 			described-by="mailing-list-hint"
 		>
@@ -27,6 +27,7 @@ import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString'
 
 interface Props {
 	modelValue: boolean;
+	inputId: string;
 }
 
 const props = defineProps<Props>();

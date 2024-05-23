@@ -59,7 +59,7 @@ import { useI18n } from 'vue-i18n';
 import { usePaymentFieldModel } from '@src/components/pages/membership_form/usePaymentFieldModel';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
-import { FormOption } from '@src/components/shared/form_fields/FormOption';
+import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
@@ -96,17 +96,17 @@ const getAmountTitle = computed( () => {
 	return t( `membership_form_payment_amount_title_interval_${interval.value}` );
 } );
 
-const paymentIntervalsAsOptions = computed<FormOption[]>( () => {
+const paymentIntervalsAsOptions = computed<CheckboxFormOption[]>( () => {
 	return props.paymentIntervals.map(
-		( intervalValue: number ) => (
-			{ value: intervalValue.toString(), label: t( 'donation_form_payment_interval_' + intervalValue ) }
+		( intervalValue: number, index: number ) => (
+			{ value: intervalValue.toString(), label: t( 'donation_form_payment_interval_' + intervalValue ), id: `interval-${ index }` }
 		) );
 } );
 
-const paymentTypesAsOptions = computed<FormOption[]>( () => {
+const paymentTypesAsOptions = computed<CheckboxFormOption[]>( () => {
 	return props.paymentTypes.map(
-		( paymentTypeValue: string ) => (
-			{ value: paymentTypeValue, label: t( paymentTypeValue ) }
+		( paymentTypeValue: string, index: number ) => (
+			{ value: paymentTypeValue, label: t( paymentTypeValue ), id: `paymentType-${ index }` }
 		) );
 } );
 

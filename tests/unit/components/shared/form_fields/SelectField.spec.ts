@@ -8,6 +8,7 @@ describe( 'SelectField.vue', () => {
 			props: {
 				label: 'select',
 				name: 'select',
+				inputId: 'select',
 				modelValue: 'rolly',
 				options: [
 					{ value: 'bingo', label: 'Bingo' },

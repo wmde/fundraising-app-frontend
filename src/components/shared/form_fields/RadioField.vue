@@ -7,7 +7,7 @@
 				v-for="( option, index ) in options"
 				:key="index"
 				input-type="radio"
-				:id="`${name}-${option.value}`"
+				:id="option.id"
 				:name="name"
 				:disabled="disabled.includes( option.value )"
 				:required="required"
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { FormOption } from '@src/components/shared/form_fields/FormOption';
+import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 
@@ -34,7 +34,7 @@ interface Props {
 	label?: String;
 	name: string;
 	modelValue: string | number | boolean | null;
-	options: FormOption[];
+	options: CheckboxFormOption[];
 	disabled?: Array<string | number | boolean>;
 	required?: boolean;
 	showError?: boolean;

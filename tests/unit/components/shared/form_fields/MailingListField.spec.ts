@@ -7,6 +7,7 @@ describe( 'MailingListField.vue', () => {
 		return mount( MailingListField, {
 			props: {
 				modelValue: true,
+				inputId: 'newsletter',
 			},
 		} );
 	};

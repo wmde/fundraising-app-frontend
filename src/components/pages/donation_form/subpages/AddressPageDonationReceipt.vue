@@ -40,14 +40,14 @@
 					</template>
 				</EmailField>
 
-				<MailingListField v-model="mailingList"/>
+				<MailingListField v-model="mailingList" input-id="newsletter"/>
 
 				<RadioField
 					v-model="receiptNeeded"
 					name="donationReceipt"
 					:options="[
-						{ value: true, label: $t( 'yes' ) },
-						{ value: false, label: $t( 'no' ) },
+						{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
+						{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
 					]"
 					:label="$t( 'donation_confirmation_cta_title_alt' )"
 					:show-error="showReceiptOptionError"
