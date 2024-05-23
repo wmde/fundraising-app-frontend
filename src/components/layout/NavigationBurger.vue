@@ -22,9 +22,9 @@ defineProps<Props>();
 </script>
 
 <style lang="scss">
-@use "../../scss/settings/global";
-@use "../../scss/settings/colors";
-@use "../../scss/settings/breakpoints";
+@use "@src/scss/settings/global";
+@use "@src/scss/settings/colors";
+@use "@src/scss/settings/breakpoints";
 
 .navigation-burger {
 	width: global.$navbar-height;
@@ -35,7 +35,8 @@ defineProps<Props>();
 	background: colors.$white;
 	cursor: pointer;
 
-	&:hover {
+	&:hover,
+	&:focus {
 		background: colors.$gray-light;
 	}
 

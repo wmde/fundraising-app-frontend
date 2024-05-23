@@ -37,9 +37,9 @@
 <script setup lang="ts">
 
 import { inject, ref } from 'vue';
-import LocaleSelector from '@src/components/shared/LocaleSelector.vue';
+import LocaleSelector from '@src/components/layout/LocaleSelector.vue';
 import Logo from '@src/components/layout/Logo.vue';
-import NavigationBurger from '@src/components/shared/NavigationBurger.vue';
+import NavigationBurger from '@src/components/layout/NavigationBurger.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { useDisplaySwitch } from '@src/components/shared/composables/useDisplaySwitch';
 import NavigationItems from '@src/components/layout/NavigationItems.vue';

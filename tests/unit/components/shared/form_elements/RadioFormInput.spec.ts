@@ -101,4 +101,21 @@ describe( 'RadioFormInput.vue', () => {
 
 		expect( radio.element.checked ).toBeTruthy();
 	} );
+
+	it( 'emits blur event', async () => {
+		const wrapper = mount( RadioFormInput, {
+			props: {
+				modelValue: false,
+				nativeValue: true,
+				name: '',
+				id: '',
+			},
+		} );
+
+		const radio = wrapper.find<HTMLInputElement>( 'input' );
+
+		await radio.trigger( 'blur' );
+
+		expect( wrapper.emitted( 'blur' ).length ).toStrictEqual( 1 );
+	} );
 } );

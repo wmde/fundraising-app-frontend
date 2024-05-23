@@ -8,13 +8,15 @@
 			type="radio"
 			:name="name"
 			:id="id"
+			:class="inputClass"
 			:value="nativeValue"
 			:disabled="disabled"
 			:required="required"
 			:aria-describedby="ariaDescribedby"
 			:aria-invalid="ariaInvalid"
+			@blur="$emit( 'blur' )"
 		/>
-		<label class="control-label" :for="id"><slot/></label>
+		<label class="control-label" :for="id" :class="labelClass" @blur="$emit( 'blur' )"><slot/></label>
 	</div>
 </template>
 
@@ -27,6 +29,8 @@ interface Props {
 	nativeValue: string | number | boolean;
 	name: string;
 	id: string;
+	inputClass?: string;
+	labelClass?: string;
 	disabled?: boolean;
 	required?: boolean;
 	ariaDescribedby?: string;
@@ -39,7 +43,7 @@ const props = withDefaults( defineProps<Props>(), {
 	ariaDescribedby: '',
 	ariaInvalid: false,
 } );
-const emit = defineEmits( [ 'update:modelValue' ] );
+const emit = defineEmits( [ 'update:modelValue', 'blur' ] );
 
 const inputModel = useInputModel<string | number | boolean | null>( () => props.modelValue, props.modelValue, emit );
 
@@ -88,6 +92,7 @@ $check-size: map.get( units.$spacing, 'small' );
 		transition: background 150ms ease-out;
 		border-radius: 50%;
 		border: 2px solid colors.$gray-dark;
+		background: colors.$white;
 
 		&::before {
 			content: "";
