@@ -50,6 +50,9 @@ module.exports = {
 				'some': [ 'nesting', 'id' ],
 			},
 		} ],
+
+		// We use autofocus to ensure the first form field in dialog modals is focused on open
+		'vuejs-accessibility/no-autofocus': 'off',
 	},
 
 	parser: 'vue-eslint-parser',

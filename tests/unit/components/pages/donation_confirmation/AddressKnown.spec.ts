@@ -6,6 +6,7 @@ describe( 'AddressKnown.vue', () => {
 	const getWrapper = (): VueWrapper<any> => {
 		return mount( AddressKnown, {
 			props: {
+				modalIsVisible: false,
 				donation: payPalConfirmationData.donation,
 				address: payPalConfirmationData.address,
 				addressType: payPalConfirmationData.addressType,
@@ -41,6 +42,7 @@ describe( 'AddressKnown.vue', () => {
 	it( 'renders company address for firma address type', () => {
 		const wrapper = mount( AddressKnown, {
 			props: {
+				modalIsVisible: false,
 				donation: companyPayPalConfirmationData.donation,
 				address: companyPayPalConfirmationData.address,
 				addressType: companyPayPalConfirmationData.addressType,

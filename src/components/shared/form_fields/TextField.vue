@@ -14,6 +14,7 @@
 			:autocomplete="autocomplete"
 			:disabled="disabled"
 			:required="required"
+			:autofocus="autofocus"
 			@blur="$emit('field-changed', name )"
 			@update:modelValue="onUpdateModel"
 		/>
@@ -42,6 +43,7 @@ interface Props {
 	disabled?: boolean;
 	required?: boolean;
 	autocomplete?: string;
+	autofocus?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {

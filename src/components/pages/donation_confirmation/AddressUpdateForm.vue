@@ -23,6 +23,7 @@
 				:error-message="$t( 'donation_form_section_address_error' )"
 				v-model="addressTypeModel"
 				alignment="column"
+				:autofocus="true"
 			/>
 
 			<NameFields

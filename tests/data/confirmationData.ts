@@ -1,6 +1,19 @@
+import { Address } from '@src/view_models/Address';
+import { Donation } from '@src/view_models/Donation';
+import { Country } from '@src/view_models/Country';
+import { Salutation } from '@src/view_models/Salutation';
+
 export const testBankTransferCode = 'XW-XLK-M3F-Z';
 
-function createConfirmationData( overrides: any ) {
+export interface ConfirmationData {
+	addressType: string;
+	address: Address;
+	donation: Donation;
+	countries: Country[];
+	salutations: Salutation[];
+}
+
+function createConfirmationData( overrides: any ): ConfirmationData {
 	return Object.assign( {}, {
 		addressType: 'person',
 		address: {
