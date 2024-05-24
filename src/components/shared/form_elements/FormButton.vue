@@ -30,6 +30,7 @@ withDefaults( defineProps<Props>(), {
 @use 'sass:map';
 
 .form-button {
+	display: inline-block;
 	background: colors.$primary;
 	color: colors.$white;
 	border: 0;
@@ -38,12 +39,16 @@ withDefaults( defineProps<Props>(), {
 	margin: 0;
 	font-size: 1em;
 	font-weight: 700;
+	text-align: center;
 	height: 54px;
 	width: 240px;
 	cursor: pointer;
 	transition: background-color 200ms global.$easing, color 200ms global.$easing;
 
-	&:hover {
+	&:hover,
+	&:focus {
+		color: colors.$white;
+		text-decoration: none;
 		background: color.adjust( colors.$primary, $lightness: -5% );
 	}
 
@@ -57,6 +62,10 @@ withDefaults( defineProps<Props>(), {
 			color: colors.$white;
 		}
 	}
+}
+
+a.form-button {
+	line-height: 54px;
 }
 
 </style>
