@@ -65,4 +65,11 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 		margin-top: -0.6em;
 	}
 }
+
+.is-invalid {
+	.select-form-input select {
+		border-color: map.get( forms.$input, 'border-error-color' );
+	}
+}
+
 </style>

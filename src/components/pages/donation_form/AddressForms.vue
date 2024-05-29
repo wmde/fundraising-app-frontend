@@ -33,6 +33,8 @@
 						{{ $t( 'receipt_needed_donation_page' ) }}
 					</CheckboxSingleFormInput>
 				</div>
+
+				<ScrollTarget target-id="person-email-scroll-target"/>
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
@@ -83,6 +85,8 @@
 						{{ $t( 'receipt_needed_donation_page' ) }}
 					</CheckboxSingleFormInput>
 				</div>
+
+				<ScrollTarget target-id="company-email-scroll-target"/>
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
@@ -116,6 +120,8 @@
 					field-id-namespace="email"
 					v-on:field-changed="onFieldChange"
 				/>
+
+				<ScrollTarget target-id="email-email-scroll-target"/>
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
@@ -159,6 +165,7 @@ import { Validity } from '@src/view_models/Validity';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	countries: Country[],

@@ -1,12 +1,17 @@
 @use 'sass:color';
 
+$red100: #fee7e6;
+$red500: #ff4242;
+$red600: #d73333;
+$red700: #b32424;
+
 $primary: #3366CC;
 $primary-light: #1E88CA;
 $primary-lighter: #A5CEE2;
 $primary-lightest: #DCE4E8;
 $primary-hover: color.adjust( $primary, $lightness: -5% );
 $primary-locale-active: #EAF3FF;
-$error: #DD3333;
+$error: $red600;
 $error-light: #FDE1E1;
 
 $footer: #C7D1D8;

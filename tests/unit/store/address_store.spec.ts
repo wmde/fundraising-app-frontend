@@ -51,22 +51,30 @@ describe( 'Address', () => {
 		const requiredFields = REQUIRED_FIELDS[ AddressTypeModel.PERSON ];
 
 		it( 'does not return non-required fields as invalid when they are not set', () => {
+			const expectedInvalidFields = requiredFields.filter( e => e !== 'addressType' );
 			expect( getters.invalidFields(
 				newMinimalStore( {
 					addressType: AddressTypeModel.PERSON,
 					validity: {
-						addressType: Validity.INCOMPLETE,
+						addressType: Validity.VALID,
+						salutation: Validity.INVALID,
+						title: Validity.INVALID,
+						firstName: Validity.INVALID,
+						lastName: Validity.INVALID,
+						street: Validity.INVALID,
+						postcode: Validity.INVALID,
+						city: Validity.INVALID,
+						country: Validity.INVALID,
+						email: Validity.INVALID,
 					},
 				} ),
 				null,
 				null,
 				null
-			) ).toStrictEqual( requiredFields );
+			) ).toStrictEqual( expectedInvalidFields );
 		} );
 
 		it( 'returns an array of all invalid and incomplete fields', () => {
-			// remove email and city because they are VALID
-			var expectedInvalidFields = requiredFields.filter( e => e !== 'email' && e !== 'city' );
 			expect( getters.invalidFields(
 				newMinimalStore( {
 					validity: {
@@ -79,7 +87,7 @@ describe( 'Address', () => {
 				getters,
 				null,
 				null
-			) ).toStrictEqual( expectedInvalidFields );
+			) ).toStrictEqual( [ 'street', 'postcode' ] );
 		} );
 	} );
 

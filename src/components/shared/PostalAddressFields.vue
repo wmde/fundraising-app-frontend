@@ -1,6 +1,7 @@
 <template>
 	<div class="address-section">
 
+		<ScrollTarget :target-id="`${fieldIdNamespace}street-scroll-target`"/>
 		<TextField
 			name="street"
 			:input-id="`${fieldIdNamespace}street`"
@@ -25,6 +26,7 @@
 			</template>
 		</TextField>
 
+		<ScrollTarget :target-id="`${fieldIdNamespace}post-code-scroll-target`"/>
 		<TextField
 			name="postcode"
 			:input-id="`${fieldIdNamespace}post-code`"
@@ -45,6 +47,7 @@
 			</template>
 		</TextField>
 
+		<ScrollTarget :target-id="`${fieldIdNamespace}city-scroll-target`"/>
 		<CityAutocompleteField
 			v-model="formData.city.value"
 			:input-id="`${fieldIdNamespace}city`"
@@ -64,6 +67,7 @@
 			</template>
 		</CityAutocompleteField>
 
+		<ScrollTarget :target-id="`${fieldIdNamespace}country-scroll-target`"/>
 		<CountryAutocompleteField
 			v-model="formData.country.value"
 			:input-id="`${fieldIdNamespace}country`"
@@ -88,6 +92,7 @@ import { computed } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import { Country } from '@src/view_models/Country';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	formData: AddressFormData;

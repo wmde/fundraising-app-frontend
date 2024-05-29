@@ -115,4 +115,11 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 		height: 40px;
 	}
 }
+
+.is-invalid {
+	.text-form-input input,
+	.text-form-input textarea {
+		border-color: map.get( forms.$input, 'border-error-color' );
+	}
+}
 </style>

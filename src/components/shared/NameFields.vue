@@ -1,6 +1,6 @@
 <template>
 	<div class="name-section">
-
+		<ScrollTarget :target-id="`${fieldIdNamespace}salutation-scroll-target`"/>
 		<RadioField
 			v-if="showPersonalFields"
 			name="salutation"
@@ -13,6 +13,7 @@
 			alignment="column"
 		/>
 
+		<ScrollTarget :target-id="`${fieldIdNamespace}title-scroll-target`"/>
 		<SelectField
 			v-if="showPersonalFields"
 			name="title"
@@ -28,6 +29,7 @@
 			@field-changed="$emit('field-changed', 'title')"
 		/>
 
+		<ScrollTarget :target-id="`${fieldIdNamespace}first-name-scroll-target`"/>
 		<TextField
 			v-if="showPersonalFields"
 			name="firstName"
@@ -41,9 +43,11 @@
 			@field-changed="$emit('field-changed', 'firstName')"
 		/>
 
+		<ScrollTarget :target-id="`${fieldIdNamespace}last-name-scroll-target`"/>
 		<TextField
 			v-if="showPersonalFields"
 			name="lastName"
+			:id="`${fieldIdNamespace}last-name-container`"
 			:input-id="`${fieldIdNamespace}last-name`"
 			v-model="formData.lastName.value"
 			:show-error="showError.lastName"
@@ -62,6 +66,7 @@
 			</template>
 		</TextField>
 
+		<ScrollTarget :target-id="`${fieldIdNamespace}company-name-scroll-target`"/>
 		<TextField
 			v-if="showCompanyFields"
 			name="companyName"
@@ -88,6 +93,7 @@ import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { computed } from 'vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	addressType: AddressTypeModel
