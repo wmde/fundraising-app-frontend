@@ -61,6 +61,8 @@
 
 		<MailingListField v-model="mailingList" input-id="newsletter"/>
 
+		<AddressUpdateFormErrorSummaries :address-type="addressType" :show-error-summary="showErrorSummary"/>
+
 		<FormSummary :show-border="false">
 			<template #summary-buttons>
 				<FormButton
@@ -116,8 +118,8 @@ import NameFields from '@src/components/shared/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
-import scrollToFirstError from '@src/util/scroll_to_first_error';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
+import AddressUpdateFormErrorSummaries from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
 
 interface Props {
 	addressValidationPatterns: AddressValidation;
@@ -136,6 +138,7 @@ const store = useStore();
 const addressForm = ref<HTMLFormElement>( null );
 const isValidating = ref<boolean>( false );
 const serverMessage = ref<string>( '' );
+const showErrorSummary = ref<boolean>( false );
 const formData: AddressFormData = {
 	salutation: {
 		name: 'salutation',
@@ -265,7 +268,7 @@ const submit = async (): Promise<void> => {
 
 	if ( validationResult.status !== 'OK' ) {
 		isValidating.value = false;
-		scrollToFirstError();
+		showErrorSummary.value = true;
 		return;
 	}
 
@@ -279,6 +282,18 @@ const submit = async (): Promise<void> => {
 		serverMessage.value = error;
 	} );
 };
+
+store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/addressTypeIsInvalid' ], ( isInvalid: boolean ) => {
+	if ( showErrorSummary.value && !isInvalid ) {
+		showErrorSummary.value = false;
+	}
+} );
+
+store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	if ( showErrorSummary.value && isValid ) {
+		showErrorSummary.value = false;
+	}
+} );
 
 onMounted( () => {
 	trackDynamicForm();

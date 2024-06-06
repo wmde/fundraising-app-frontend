@@ -15,10 +15,6 @@ jest.mock( '@src/util/tracking', () => {
 	};
 } );
 
-jest.mock( '@src/util/scroll_to_first_error', () => {
-	return jest.fn();
-} );
-
 const salutations = [
 	{
 		'label': 'Herr',
