@@ -49,14 +49,15 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 .select-form-input {
 	.select {
 		width: 100%;
-	}
-	select {
-		border: map.get( forms.$input, 'border' );
-		border-radius: map.get( forms.$input, 'border-radius' );
-		width: 100%;
-		padding: 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' );
-		font-size: map.get( forms.$input, 'font-size' );
-		height: map.get( forms.$input, 'height' );
+
+		select {
+			border: map.get( forms.$input, 'border' );
+			border-radius: map.get( forms.$input, 'border-radius' );
+			width: 100%;
+			padding: 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' );
+			font-size: map.get( forms.$input, 'font-size' );
+			height: map.get( forms.$input, 'height' );
+		}
 	}
 
 	.select:not(.is-multiple):not(.is-loading)::after {

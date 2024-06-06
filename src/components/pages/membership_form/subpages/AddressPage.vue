@@ -11,6 +11,60 @@
 			ref="addressFieldsRef">
 		</AddressFields>
 
+		<ErrorSummary
+			:is-visible="showErrorSummary"
+			:items="[
+				{
+					validity: store.state.membership_address.validity.salutation,
+					message: $t( 'donation_form_salutation_error' ),
+					focusElement: 'salutation-0',
+					scrollElement: 'salutation-scroll-target'
+				},
+				{
+					validity: store.state.membership_address.validity.firstName,
+					message: $t( 'donation_form_firstname_error' ),
+					focusElement: 'first-name',
+					scrollElement: 'first-name-scroll-target'
+				},
+				{
+					validity: store.state.membership_address.validity.lastName,
+					message: $t( 'donation_form_lastname_error' ),
+					focusElement: 'last-name',
+					scrollElement: 'last-name-scroll-target'
+				},
+				{
+					validity: store.state.membership_address.validity.street,
+					message: $t( 'donation_form_street_error' ),
+					focusElement: 'street',
+					scrollElement: 'street-scroll-target'
+				},
+				{
+					validity: store.state.membership_address.validity.postcode,
+					message: $t( 'donation_form_zip_error' ),
+					focusElement: 'post-code',
+					scrollElement: 'post-code-scroll-target'
+				},
+				{
+					validity: store.state.membership_address.validity.city,
+					message: $t( 'donation_form_city_error' ),
+					focusElement: 'city',
+					scrollElement: 'city-scroll-target'
+				},
+				{
+					validity: store.state.membership_address.validity.country,
+					message: $t( 'donation_form_country_error' ),
+					focusElement: 'country',
+					scrollElement: 'country-scroll-target'
+				},
+				{
+					validity: store.state.membership_address.validity.email,
+					message: $t( 'donation_form_email_error' ),
+					focusElement: 'email',
+					scrollElement: 'email-scroll-target'
+				},
+			]"
+		/>
+
 		<FormSummary>
 			<template #summary-content>
 				<MembershipSummary
@@ -43,7 +97,7 @@
 			</template>
 		</FormSummary>
 
-		<form action="/apply-for-membership" method="post" ref="submitValuesForm">
+		<form action="/apply-for-membership" method="post" ref="submitValuesForm" id="submit-form">
 			<SubmitValues :campaign-values="campaignValues" :tracking-data="trackingData"/>
 		</form>
 	</div>
@@ -67,6 +121,9 @@ import { useAddressFormEventHandlers } from '@src/components/pages/membership_fo
 import { trackFormSubmission } from '@src/util/tracking';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
+import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
+import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 
 interface Props {
 	validateAddressUrl: String;
@@ -86,19 +143,20 @@ const store = useStore();
 const addressFieldsRef = ref<HTMLFormElement>();
 const addressIsInvalid = computed( (): boolean => !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] );
 
-const membershipApplication = computed( (): object => {
+const membershipApplication = computed( (): MembershipApplication => {
 	const payment = store.state[ NS_MEMBERSHIP_FEE ].values;
 	return {
 		paymentIntervalInMonths: payment.interval,
 		membershipFee: payment.fee / 100,
 		paymentType: payment.type,
 		membershipType: membershipTypeName( store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipType' ] ),
+		incentives: [],
 	};
 } );
 
 const isDirectDebitPayment = computed( (): boolean => store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' );
 
-const addressSummary = computed( (): object => {
+const addressSummary = computed( (): MembershipAddress => {
 	return {
 		...store.state[ NS_MEMBERSHIP_ADDRESS ].values,
 		fullName: store.getters[ NS_MEMBERSHIP_ADDRESS + '/fullName' ],
@@ -113,7 +171,7 @@ const trackAddressForm = () => {
 	trackFormSubmission( addressFieldsRef.value );
 };
 
-const { submit, previousPage, submitValuesForm } = useAddressFormEventHandlers(
+const { submit, previousPage, submitValuesForm, showErrorSummary } = useAddressFormEventHandlers(
 	store,
 	emit,
 	isDirectDebitPayment,

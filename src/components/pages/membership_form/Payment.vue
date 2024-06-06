@@ -2,6 +2,7 @@
 	<div class="payment-section">
 
 		<FormSection>
+			<ScrollTarget target-id="payment-form-interval-scroll-target"/>
 			<RadioField
 				name="interval"
 				:label="$t('membership_form_payment_interval_title')"
@@ -67,6 +68,7 @@ import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces'
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { FeeValidity } from '@src/view_models/MembershipFee';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	validateFeeUrl: string,
