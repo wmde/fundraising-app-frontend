@@ -8,6 +8,8 @@
 				:disabled="disabled"
 				:required="required"
 				:class="{ 'is-danger': hasError }"
+				:aria-invalid="hasError"
+				:aria-describedby="ariaDescribedby"
 			>
                 <slot/>
 			</select>
@@ -26,6 +28,7 @@ interface Props {
 	hasError?: boolean;
 	disabled?: boolean;
 	required?: boolean;
+	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {

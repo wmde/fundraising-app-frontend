@@ -77,6 +77,22 @@ describe( 'TextFormInput.vue', () => {
 		expect( input.element.value ).toStrictEqual( 'Chewy' );
 	} );
 
+	it( 'shows errors', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.setProps( { hasError: true } );
+
+		expect( wrapper.find( 'input' ).attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
+		expect( wrapper.find( 'input' ).classes() ).toContain( 'is-danger' );
+		expect( wrapper.find( '.has-text-danger' ).exists() ).toBeTruthy();
+
+		await wrapper.setProps( { inputType: 'textarea' } );
+
+		expect( wrapper.find( 'textarea' ).attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
+		expect( wrapper.find( 'textarea' ).classes() ).toContain( 'is-danger' );
+		expect( wrapper.find( '.has-text-danger' ).exists() ).toBeTruthy();
+	} );
+
 	it( 'shows error icon', async () => {
 		const wrapper = getWrapper();
 

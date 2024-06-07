@@ -5,7 +5,7 @@
 			<p class="help is-danger">{{ $t('contact_form_error') }}</p>
 			<span class="help is-danger" v-for="error in contactData.errors">{{ $t( error ) }}</span>
 		</div>
-		<form method="post" action="/contact/get-in-touch" v-on:submit.prevent="submit" id="laika-contact" ref="form">
+		<form method="post" action="/contact/get-in-touch" @submit.prevent="submit" id="laika-contact" ref="form">
 			<FormSection>
 				<TextField
 					name="firstname"
@@ -16,6 +16,7 @@
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
 					:show-error="formData.firstname.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_firstname_error' )"
+					@field-changed="() => validateField( 'firstname' )"
 				/>
 
 				<TextField
@@ -27,6 +28,7 @@
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
 					:show-error="formData.lastname.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_lastname_error' )"
+					@field-changed="() => validateField( 'lastname' )"
 				/>
 
 				<TextField
@@ -38,6 +40,7 @@
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
 					:show-error="formData.donationNumber.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_donation_number_error' )"
+					@field-changed="() => validateField( 'donationNumber' )"
 				/>
 			</FormSection>
 
@@ -46,6 +49,7 @@
 				<EmailField
 					v-model="formData.email.value"
 					:show-error="formData.email.validity === Validity.INVALID"
+					@field-changed="() => validateField( 'email' )"
 				/>
 
 				<SelectField
@@ -59,6 +63,7 @@
 					]"
 					:show-error="formData.topic.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_topic_error' )"
+					@field-changed="() => validateField( 'topic' )"
 				/>
 
 				<TextField
@@ -69,6 +74,7 @@
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
 					:show-error="formData.subject.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_subject_error' )"
+					@field-changed="() => validateField( 'subject' )"
 				/>
 
 				<TextField
@@ -80,6 +86,7 @@
 					placeholder=""
 					:show-error="formData.comment.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_body_error' )"
+					@field-changed="() => validateField( 'comment' )"
 				/>
 
 				<div class="contact-form-button">
@@ -106,37 +113,8 @@ import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
-import { useI18n } from 'vue-i18n';
-
-interface ContactData {
-	contact_categories: Record<string, string>;
-	firstname?: string;
-	lastname?: string;
-	donationNumber?: string;
-	email?: string;
-	category?: string;
-	subject?: string;
-	messageBody?: string;
-	errors?: string[];
-}
-
-interface FormItem {
-	name: string;
-	value: string;
-	pattern: string;
-	optionalField: boolean;
-	validity: Validity;
-}
-
-interface FormData {
-	firstname: FormItem;
-	lastname: FormItem;
-	donationNumber: FormItem;
-	email: FormItem;
-	topic: FormItem;
-	subject: FormItem;
-	comment: FormItem;
-}
+import { ContactData } from '@src/components/pages/contact/ContactData';
+import { ContactFormData } from '@src/components/pages/contact/ContactFormData';
 
 defineOptions( {
 	name: 'Contact',
@@ -148,67 +126,70 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const { t } = useI18n();
 
 const form = ref<HTMLFormElement>( null );
-const formData = reactive<FormData>( {
+const formData = reactive<ContactFormData>( {
 	firstname: {
 		name: 'name',
-		value: props.contactData.firstname ? props.contactData.firstname : '',
-		pattern: props.validationPatterns.firstname,
+		value: props.contactData.firstname ?? '',
+		pattern: props.validationPatterns.firstName,
 		optionalField: true,
 		validity: Validity.VALID,
 	},
 	lastname: {
 		name: 'lastname',
-		value: props.contactData.lastname ? props.contactData.lastname : '',
-		pattern: props.validationPatterns.lastname,
+		value: props.contactData.lastname ?? '',
+		pattern: props.validationPatterns.lastName,
 		optionalField: true,
 		validity: Validity.VALID,
 	},
 	donationNumber: {
 		name: 'donationNumber',
-		value: props.contactData.donationNumber ? props.contactData.donationNumber : '',
+		value: props.contactData.donationNumber ?? '',
 		pattern: props.validationPatterns.donationNumber,
 		optionalField: true,
 		validity: Validity.VALID,
 	},
 	email: {
 		name: 'email',
-		value: props.contactData.email ? props.contactData.email : '',
+		value: props.contactData.email ?? '',
 		pattern: props.validationPatterns.email,
 		optionalField: false,
 		validity: Validity.INCOMPLETE,
 	},
 	topic: {
 		name: 'topic',
-		value: props.contactData.category ? t( props.contactData.category ) as string : '',
+		value: props.contactData.category ? props.contactData.category : '',
 		pattern: props.validationPatterns.topic,
 		optionalField: false,
 		validity: Validity.INCOMPLETE,
 	},
 	subject: {
 		name: 'subject',
-		value: props.contactData.subject ? props.contactData.subject : '',
+		value: props.contactData.subject ?? '',
 		pattern: props.validationPatterns.subject,
 		optionalField: false,
 		validity: Validity.INCOMPLETE,
 	},
 	comment: {
 		name: 'comment',
-		value: props.contactData.messageBody ? props.contactData.messageBody : '',
+		value: props.contactData.messageBody ?? '',
 		pattern: props.validationPatterns.comment,
 		optionalField: false,
 		validity: Validity.INCOMPLETE,
 	},
 } );
 
+const validateField = ( fieldName: string ): boolean => {
+	const field = formData[ fieldName ];
+	field.validity = Helper.inputIsValid( field.value, field.pattern, field.optionalField );
+	return field.validity === Validity.VALID;
+};
+
 const submit = (): void => {
 	let isValid = true;
 	Object.keys( formData ).forEach( ( fieldName: string ) => {
-		let field = formData[ fieldName ];
-		field.validity = Helper.inputIsValid( field.value, field.pattern, field.optionalField );
-		if ( field.validity !== Validity.VALID ) {
+		if ( !validateField( fieldName ) ) {
 			isValid = false;
 		}
 	} );

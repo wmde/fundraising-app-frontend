@@ -13,7 +13,7 @@
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:required="required"
-			:aria-invalid="ariaInvalid"
+			:aria-invalid="hasError"
 			:aria-describedby="ariaDescribedby"
 			@blur="onBlur"
 			@focus="onFocus"
@@ -30,7 +30,7 @@
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:required="required"
-			:aria-invalid="ariaInvalid"
+			:aria-invalid="hasError"
 			:aria-describedby="ariaDescribedby"
 			@blur="onBlur"
 			@focus="onFocus"
@@ -60,7 +60,6 @@ interface Props {
 	hasError?: boolean;
 	disabled?: boolean;
 	required?: boolean;
-	ariaInvalid?: boolean;
 	ariaDescribedby?: string;
 }
 
@@ -69,7 +68,6 @@ const props = withDefaults( defineProps<Props>(), {
 	hasError: false,
 	disabled: false,
 	required: false,
-	ariaInvalid: false,
 } );
 const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur' ] );
 

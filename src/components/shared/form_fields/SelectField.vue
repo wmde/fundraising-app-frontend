@@ -6,13 +6,14 @@
 			:select-id="inputId"
 			:name="name"
 			:has-error="showError"
+			:aria-describedby="showError ? `${inputId}-error` : null"
 			@update:modelValue="onFieldChange"
 		>
 			<option v-for="( option, index ) in options" :key="index" :value="option.value">
 				{{ option.label }}
 			</option>
 		</SelectFormInput>
-		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
 	</div>
 </template>
 

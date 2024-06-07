@@ -15,10 +15,11 @@
 			:disabled="disabled"
 			:required="required"
 			:autofocus="autofocus"
+			:aria-describedby="showError ? `${inputId}-error` : null"
 			@blur="$emit('field-changed', name )"
 			@update:modelValue="onUpdateModel"
 		/>
-		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
 		<span class="field-info-message">
 			<slot name="message"/>
 		</span>

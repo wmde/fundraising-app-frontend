@@ -10,6 +10,7 @@
 			v-model="fieldModel"
 			:has-error="showError"
 			:has-message="suggestedProvider !== ''"
+			:aria-describedby="`${(inputId ?? 'email' )}-error`"
 			@update:modelValue="onUpdateModel"
 			@blur="$emit('field-changed', 'email')"
 		/>
@@ -22,7 +23,7 @@
 		>
 			{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
 		</span>
-		<span v-if="showError" class="help is-danger error-email">{{ $t( 'donation_form_email_error' ) }}</span>
+		<span v-if="showError" class="help is-danger error-email" :id="`${(inputId ?? 'email' )}-error`">{{ $t( 'donation_form_email_error' ) }}</span>
 		<slot name="message"/>
 	</div>
 </template>

@@ -14,8 +14,8 @@ export const addressValidationPatterns: AddressValidation = {
 };
 
 export const contactFormValidationPatterns: ContactFormValidation = {
-	firstname: '^.+$',
-	lastname: '^.+$',
+	firstName: '^.+$',
+	lastName: '^.+$',
 	donationNumber: '^[0-9]*$',
 	email: '^(.+)@(.+)\\.(.+)$',
 	topic: '^.+$',
