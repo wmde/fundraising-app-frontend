@@ -60,6 +60,10 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 			padding: 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' );
 			font-size: map.get( forms.$input, 'font-size' );
 			height: map.get( forms.$input, 'height' );
+
+			&:focus {
+				border-color: map.get( forms.$input, 'border-focus-color' );
+			}
 		}
 	}
 
@@ -73,6 +77,10 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 .is-invalid {
 	.select-form-input select {
 		border-color: map.get( forms.$input, 'border-error-color' );
+
+		&:focus {
+			border-color: map.get( forms.$input, 'border-focus-color' );
+		}
 	}
 }
 

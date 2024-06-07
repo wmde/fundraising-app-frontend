@@ -6,6 +6,7 @@
 $input: (
 	'border-radius': 8px,
 	'border': 1px solid colors.$gray-mid,
+	'border-focus-color': colors.$primary,
 	'border-error-color': colors.$error,
 	'height': 46px,
 	'font-size': 16px,

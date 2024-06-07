@@ -97,7 +97,7 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 		}
 
 		&:focus {
-			border-color: colors.$primary;
+			border-color: map.get( forms.$input, 'border-focus-color' );
 		}
 	}
 
@@ -118,6 +118,11 @@ const onBlur = ( event: Event ): void => emit( 'blur', event );
 	.text-form-input input,
 	.text-form-input textarea {
 		border-color: map.get( forms.$input, 'border-error-color' );
+
+		&:focus {
+			border-color: map.get( forms.$input, 'border-focus-color' );
+			box-shadow: none;
+		}
 	}
 }
 </style>
