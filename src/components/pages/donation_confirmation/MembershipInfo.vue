@@ -3,8 +3,8 @@
 		<h2 class="icon-title"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
 		<p>{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
 		<p>
-			<a ref="buttonRef" id="membership-application-url" :href="membershipApplicationUrl">
-				<FormButton>{{ $t('donation_confirmation_membership_button') }}</FormButton>
+			<a ref="buttonRef" class="form-button" id="membership-application-url" :href="membershipApplicationUrl">
+				{{ $t('donation_confirmation_membership_button') }}
 			</a>
 		</p>
 		<ul class="membership-benefits">
@@ -21,7 +21,6 @@
 import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
 import { Donation } from '@src/view_models/Donation';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
-import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
