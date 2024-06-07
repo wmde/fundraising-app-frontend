@@ -46,12 +46,14 @@
 
 			<FormSection>
 
+				<ScrollTarget target-id="email-scroll-target"/>
 				<EmailField
 					v-model="formData.email.value"
 					:show-error="formData.email.validity === Validity.INVALID"
 					@field-changed="() => validateField( 'email' )"
 				/>
 
+				<ScrollTarget target-id="topic-scroll-target"/>
 				<SelectField
 					v-model="formData.topic.value"
 					input-id="topic"
@@ -66,6 +68,7 @@
 					@field-changed="() => validateField( 'topic' )"
 				/>
 
+				<ScrollTarget target-id="subject-scroll-target"/>
 				<TextField
 					name="subject"
 					input-id="subject"
@@ -77,6 +80,7 @@
 					@field-changed="() => validateField( 'subject' )"
 				/>
 
+				<ScrollTarget target-id="messageBody-scroll-target"/>
 				<TextField
 					name="messageBody"
 					input-type="textarea"
@@ -87,6 +91,36 @@
 					:show-error="formData.comment.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_body_error' )"
 					@field-changed="() => validateField( 'comment' )"
+				/>
+
+				<ErrorSummary
+					:is-visible="showErrorSummary"
+					:items="[
+						{
+							validity: formData.email.validity,
+							message: $t( 'donation_form_email_error' ),
+							focusElement: 'email',
+							scrollElement: 'email-scroll-target'
+						},
+						{
+							validity: formData.topic.validity,
+							message: $t( 'contact_form_topic_error' ),
+							focusElement: 'topic',
+							scrollElement: 'topic-scroll-target'
+						},
+						{
+							validity: formData.subject.validity,
+							message: $t( 'contact_form_subject_error' ),
+							focusElement: 'subject',
+							scrollElement: 'subject-scroll-target'
+						},
+						{
+							validity: formData.comment.validity,
+							message: $t( 'contact_form_body_error' ),
+							focusElement: 'messageBody',
+							scrollElement: 'messageBody-scroll-target'
+						},
+					]"
 				/>
 
 				<div class="contact-form-button">
@@ -103,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { Helper } from '@src/store/util';
 import { Validity } from '@src/view_models/Validity';
 import { ContactFormValidation } from '@src/view_models/Validation';
@@ -115,6 +149,8 @@ import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import { ContactData } from '@src/components/pages/contact/ContactData';
 import { ContactFormData } from '@src/components/pages/contact/ContactFormData';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 defineOptions( {
 	name: 'Contact',
@@ -127,6 +163,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const showErrorSummary = ref<boolean>( false );
 const form = ref<HTMLFormElement>( null );
 const formData = reactive<ContactFormData>( {
 	firstname: {
@@ -196,8 +233,23 @@ const submit = (): void => {
 	if ( isValid ) {
 		trackFormSubmission( form.value );
 		form.value.submit();
+	} else {
+		showErrorSummary.value = true;
 	}
 };
+
+watch( formData, ( newFormData: ContactFormData ) => {
+	if ( !showErrorSummary.value ) {
+		return;
+	}
+
+	if ( newFormData.email.validity === Validity.VALID
+		&& newFormData.topic.validity === Validity.VALID
+		&& newFormData.subject.validity === Validity.VALID
+		&& newFormData.comment.validity === Validity.VALID ) {
+		showErrorSummary.value = false;
+	}
+} );
 
 </script>
 

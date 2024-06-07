@@ -53,6 +53,7 @@ describe( 'Contact.vue', () => {
 		expect( topic.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( subject.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( messageBody.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 
 		await email.setValue( 'joe@dolan.com' );
 		await email.trigger( 'blur' );
@@ -67,5 +68,6 @@ describe( 'Contact.vue', () => {
 		expect( topic.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( subject.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( messageBody.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
 } );
