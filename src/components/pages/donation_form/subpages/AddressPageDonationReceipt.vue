@@ -1,6 +1,6 @@
 <template>
 	<div class="address-page">
-		<h1 v-if="!paymentWasInitialized" class="title is-size-1">{{ $t( 'donation_form_section_headline' ) }}</h1>
+		<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
 
 		<PaymentSummary
 			v-if="paymentWasInitialized"
@@ -10,9 +10,9 @@
 			@previous-page="previousPage">
 		</PaymentSummary>
 
-		<form @submit.prevent="submit" action="/donation/add" method="post">
+		<form @submit.prevent="submit" id="donation-form" action="/donation/add" method="post">
 			<AutofillHandler @autofill="onAutofill">
-
+				<ScrollTarget target-id="iban-scroll-target"/>
 				<PaymentBankData
 					v-if="isDirectDebitPayment"
 					:validateBankDataUrl="validateBankDataUrl"
@@ -26,6 +26,7 @@
 					@field-changed="onFieldChange"
 				/>
 
+				<ScrollTarget target-id="email-scroll-target"/>
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
@@ -42,6 +43,7 @@
 
 				<MailingListField v-model="mailingList" input-id="newsletter"/>
 
+				<ScrollTarget target-id="receipt-scroll-target"/>
 				<RadioField
 					v-model="receiptNeeded"
 					name="donationReceipt"
@@ -51,9 +53,16 @@
 					]"
 					:label="$t( 'donation_confirmation_cta_title_alt' )"
 					:show-error="showReceiptOptionError"
-					:error-message="$t( 'C23_WMDE_Desktop_DE_05_receipt_error' )"
+					:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
 					alignment="row"
-				/>
+					aria-describedby="donation-receipt-help-text"
+				>
+					<template #intro-message>
+						<div class="form-field-intro" id="donation-receipt-help-text">
+							{{ $t( 'C24_WMDE_Desktop_DE_01_help_text' ) }}
+						</div>
+					</template>
+				</RadioField>
 
 				<AddressFields
 					v-if="receiptNeeded"
@@ -66,6 +75,12 @@
 				/>
 
 			</AutofillHandler>
+
+			<AddressFormErrorSummaries
+				:show-error-summary="showErrorSummary"
+				:address-type="addressType"
+				:show-receipt-option-error="showReceiptOptionError"
+			/>
 
 			<FormSummary>
 				<template #summary-content>
@@ -89,9 +104,8 @@
 					</FormButton>
 					<PaymentTextFormButton
 						id="submit-btn"
-						:is-loading="$store.getters.isValidating"
+						:is-loading="store.getters.isValidating"
 						:payment-type="paymentSummary.paymentType"
-						@click="submit"
 					/>
 				</template>
 			</FormSummary>
@@ -136,6 +150,8 @@ import { useStore } from 'vuex';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
+import AddressFormErrorSummaries from '@src/components/pages/donation_form/DonationReceipt/AddressFormErrorSummaries.vue';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	assetsPath: string;
@@ -174,8 +190,14 @@ const {
 	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
-const { submit, previousPage, submitValuesForm } =
-	useAddressFormEventHandlers( store, emit, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl );
+const { submit, previousPage, submitValuesForm, showErrorSummary } = useAddressFormEventHandlers(
+	store,
+	emit,
+	isDirectDebitPayment,
+	props.validateAddressUrl,
+	props.validateEmailUrl,
+	receiptNeeded
+);
 
 useAddressTypeFromReceiptSetter( receiptNeeded, addressType, store );
 

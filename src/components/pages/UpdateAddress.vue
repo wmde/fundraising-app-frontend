@@ -119,7 +119,7 @@ import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue'
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
-import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
+import { useReceiptModel } from '@src/components/pages/donation_form/useReceiptModel';
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 import ServerMessage from '@src/components/shared/ServerMessage.vue';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
