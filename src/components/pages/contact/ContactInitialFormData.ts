@@ -1,5 +1,4 @@
-export interface ContactData {
-	contact_categories: Record<string, string>;
+export interface ContactInitialFormData {
 	firstname?: string;
 	lastname?: string;
 	donationNumber?: string;
@@ -7,5 +6,4 @@ export interface ContactData {
 	category?: string;
 	subject?: string;
 	messageBody?: string;
-	errors?: string[];
 }

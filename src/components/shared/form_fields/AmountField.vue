@@ -1,10 +1,10 @@
 <template>
 	<fieldset class="form-field form-field-amount" :class="[ `locale-${ $i18n.locale }`, { 'is-invalid': showError } ]">
 		<legend v-if="label" class="form-field-label">{{ label }}</legend>
-		<div class="form-field-amount-help-text">
+		<div class="form-field-help-text">
 			{{ $t( 'donation_form_payment_amount_help_text' ) }}
 		</div>
-		<div v-if="minimumAmountMessage!=''" class="form-field-amount-help-text">
+		<div v-if="minimumAmountMessage!=''" class="form-field-help-text">
 			{{ minimumAmountMessage }}
 		</div>
 		<div class="control form-field-amount-radio-container">
@@ -149,11 +149,6 @@ $input-height: 50px;
 
 .form-field-amount {
 	max-width: $max-width;
-
-	&-help-text {
-		margin-bottom: map.get( units.$spacing, 'small' );
-		line-height: 130%;
-	}
 
 	.input {
 		max-width: $max-width;

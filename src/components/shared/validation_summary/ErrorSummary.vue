@@ -7,15 +7,15 @@
 		aria-atomic="true"
 		aria-relevant="all"
 		role="region"
-		aria-labelledby="error-summary-heading"
+		:aria-labelledby="`${idNamespace}error-summary-heading`"
 		tabindex="-1"
 	>
-		<h2 class="error-summary-heading" id="error-summary-heading">{{ $t( 'error_summary_headline' ) }}</h2>
+		<h2 class="error-summary-heading" :id="`${idNamespace}error-summary-heading`">{{ $t( 'error_summary_headline' ) }}</h2>
 		<ul class="error-summary-list">
-			<template v-for="(item, index) in items">
-				<li :key="index" v-if="item.validity === Validity.INVALID">
+			<template v-for="item in items">
+				<li :key="item.focusElement" v-if="item.validity === Validity.INVALID">
 					<a
-						:href="`#${item.focusElement}`"
+						:href="`#${ item.focusElement }`"
 						@click.prevent="() => onClickError( item.focusElement, item.scrollElement )"
 						@keydown.space="() => onClickError( item.focusElement, item.scrollElement )"
 						@keydown.enter="() => onClickError( item.focusElement, item.scrollElement )"
@@ -36,9 +36,14 @@ import { nextTick, ref, watch } from 'vue';
 interface Props {
 	isVisible: boolean;
 	items: ValidationSummaryItem[];
+	idNamespace?: string;
+	focusOnSubmit?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults( defineProps<Props>(), {
+	idNamespace: '',
+	focusOnSubmit: true,
+} );
 const errorSummary = ref<HTMLElement>( null );
 
 const onClickError = ( focusElementId: string, scrollElementId: string ) => {
@@ -55,7 +60,7 @@ const onClickError = ( focusElementId: string, scrollElementId: string ) => {
 };
 
 watch( () => props.isVisible, async ( newIsVisible: boolean ) => {
-	if ( newIsVisible ) {
+	if ( props.focusOnSubmit && newIsVisible ) {
 		await nextTick();
 		errorSummary.value.focus();
 	}
@@ -89,8 +94,7 @@ watch( () => props.isVisible, async ( newIsVisible: boolean ) => {
 	}
 
 	&-list {
-		list-style-type: none;
-		padding-left: 0;
+		padding-left: 14px;
 	}
 }
 </style>

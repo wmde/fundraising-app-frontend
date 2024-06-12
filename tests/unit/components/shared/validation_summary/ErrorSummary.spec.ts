@@ -5,6 +5,10 @@ import { nextTick } from 'vue';
 
 describe( 'ErrorSummary.vue', () => {
 
+	afterEach( () => {
+		document.getElementsByTagName( 'html' )[ 0 ].innerHTML = '';
+	} );
+
 	const getWrapper = (): VueWrapper<any> => {
 		return shallowMount( ErrorSummary, {
 			props: {
@@ -23,6 +27,7 @@ describe( 'ErrorSummary.vue', () => {
 						scrollElement: 'payment-form-type',
 					},
 				],
+				focusOnSubmit: true,
 			},
 			attachTo: document.body,
 		} );
@@ -35,6 +40,16 @@ describe( 'ErrorSummary.vue', () => {
 		await nextTick();
 
 		expect( document.activeElement ).toStrictEqual( wrapper.element );
+	} );
+
+	it( 'Does not focus the summary when it becomes visible and focusOnSubmit is false', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.setProps( { focusOnSubmit: false } );
+		await wrapper.setProps( { isVisible: true } );
+		await nextTick();
+
+		expect( document.activeElement ).toStrictEqual( document.body );
 	} );
 
 	it( 'Focuses and scrolls the invalid field when a summary item is clicked', async () => {

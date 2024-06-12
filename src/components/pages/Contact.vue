@@ -1,10 +1,15 @@
 <template>
 	<div class="contact-form">
 		<h1>{{ $t( 'contact_form_title' ) }}</h1>
-		<div class="contact-form-errors" v-if="contactData.errors">
-			<p class="help is-danger">{{ $t('contact_form_error') }}</p>
-			<span class="help is-danger" v-for="error in contactData.errors">{{ $t( error ) }}</span>
-		</div>
+
+		<ErrorSummary
+			id="server-error-summary"
+			:is-visible="showServerErrorSummary"
+			:items="validationItems"
+			id-namespace="server-"
+			:focus-on-submit="false"
+		/>
+
 		<form method="post" action="/contact/get-in-touch" @submit.prevent="submit" id="laika-contact" ref="form">
 			<FormSection>
 				<TextField
@@ -31,12 +36,14 @@
 					@field-changed="() => validateField( 'lastname' )"
 				/>
 
+				<ScrollTarget target-id="donationNumber-scroll-target"/>
 				<TextField
 					name="donationNumber"
 					input-id="donationNumber"
 					v-model="formData.donationNumber.value"
 					:label="$t( 'contact_form_donation_number_label' )"
-					:label-help-text="$t('contact_form_optional')"
+					:label-help-text="$t('contact_form_optional' )"
+					:help-text="$t( 'contact_form_donation_number_help_text' )"
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
 					:show-error="formData.donationNumber.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_donation_number_error' )"
@@ -61,7 +68,7 @@
 					:label="$t( 'contact_form_topic_placeholder' )"
 					:options="[
 						{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
-						...Object.values( contactData.contact_categories ).map( ( value: string ) => ( { label: value, value: value } ) )
+						...Object.values( contactCategories ).map( ( value: string ) => ( { label: value, value: value } ) )
 					]"
 					:show-error="formData.topic.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_topic_error' )"
@@ -93,41 +100,10 @@
 					@field-changed="() => validateField( 'comment' )"
 				/>
 
-				<ErrorSummary
-					:is-visible="showErrorSummary"
-					:items="[
-						{
-							validity: formData.email.validity,
-							message: $t( 'donation_form_email_error' ),
-							focusElement: 'email',
-							scrollElement: 'email-scroll-target'
-						},
-						{
-							validity: formData.topic.validity,
-							message: $t( 'contact_form_topic_error' ),
-							focusElement: 'topic',
-							scrollElement: 'topic-scroll-target'
-						},
-						{
-							validity: formData.subject.validity,
-							message: $t( 'contact_form_subject_error' ),
-							focusElement: 'subject',
-							scrollElement: 'subject-scroll-target'
-						},
-						{
-							validity: formData.comment.validity,
-							message: $t( 'contact_form_body_error' ),
-							focusElement: 'messageBody',
-							scrollElement: 'messageBody-scroll-target'
-						},
-					]"
-				/>
+				<ErrorSummary :is-visible="showErrorSummary" :items="validationItems"/>
 
 				<div class="contact-form-button">
-					<FormButton
-						id="submit-btn"
-						button-type="submit"
-					>
+					<FormButton id="submit-btn" button-type="submit">
 						{{ $t('contact_form_submit_button') }}
 					</FormButton>
 				</div>
@@ -137,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { Helper } from '@src/store/util';
 import { Validity } from '@src/view_models/Validity';
 import { ContactFormValidation } from '@src/view_models/Validation';
@@ -147,75 +123,114 @@ import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
-import { ContactData } from '@src/components/pages/contact/ContactData';
+import { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
 import { ContactFormData } from '@src/components/pages/contact/ContactFormData';
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import { useI18n } from 'vue-i18n';
+import { ValidationSummaryItem } from '@src/components/shared/validation_summary/ValidationSummaryItem';
 
 defineOptions( {
 	name: 'Contact',
 } );
 
 interface Props {
-	contactData: ContactData;
+	contactCategories: Record<string, string>,
+	initialFormData?: ContactInitialFormData;
+	errors?: Record<string, string>,
 	validationPatterns: ContactFormValidation;
 }
 
 const props = defineProps<Props>();
+const { t } = useI18n();
 
+const showServerErrorSummary = ref<boolean>( props.errors !== undefined );
 const showErrorSummary = ref<boolean>( false );
 const form = ref<HTMLFormElement>( null );
 const formData = reactive<ContactFormData>( {
 	firstname: {
 		name: 'name',
-		value: props.contactData.firstname ?? '',
+		value: props.initialFormData?.firstname ?? '',
 		pattern: props.validationPatterns.firstName,
 		optionalField: true,
 		validity: Validity.VALID,
 	},
 	lastname: {
 		name: 'lastname',
-		value: props.contactData.lastname ?? '',
+		value: props.initialFormData?.lastname ?? '',
 		pattern: props.validationPatterns.lastName,
 		optionalField: true,
 		validity: Validity.VALID,
 	},
 	donationNumber: {
 		name: 'donationNumber',
-		value: props.contactData.donationNumber ?? '',
+		value: props.initialFormData?.donationNumber ?? '',
 		pattern: props.validationPatterns.donationNumber,
 		optionalField: true,
 		validity: Validity.VALID,
 	},
 	email: {
 		name: 'email',
-		value: props.contactData.email ?? '',
+		value: props.initialFormData?.email ?? '',
 		pattern: props.validationPatterns.email,
 		optionalField: false,
-		validity: Validity.INCOMPLETE,
+		validity: props.errors?.email ? Validity.INVALID : Validity.INCOMPLETE,
 	},
 	topic: {
 		name: 'topic',
-		value: props.contactData.category ? props.contactData.category : '',
+		value: props.initialFormData?.category ? props.initialFormData?.category : '',
 		pattern: props.validationPatterns.topic,
 		optionalField: false,
-		validity: Validity.INCOMPLETE,
+		validity: props.errors?.category ? Validity.INVALID : Validity.INCOMPLETE,
 	},
 	subject: {
 		name: 'subject',
-		value: props.contactData.subject ?? '',
+		value: props.initialFormData?.subject ?? '',
 		pattern: props.validationPatterns.subject,
 		optionalField: false,
-		validity: Validity.INCOMPLETE,
+		validity: props.errors?.subject ? Validity.INVALID : Validity.INCOMPLETE,
 	},
 	comment: {
 		name: 'comment',
-		value: props.contactData.messageBody ?? '',
+		value: props.initialFormData?.messageBody ?? '',
 		pattern: props.validationPatterns.comment,
 		optionalField: false,
-		validity: Validity.INCOMPLETE,
+		validity: props.errors?.messageBody ? Validity.INVALID : Validity.INCOMPLETE,
 	},
 } );
+
+const validationItems = computed<ValidationSummaryItem[]>( () => [
+	{
+		validity: formData.email.validity,
+		message: t( 'contact_form_donation_number_error' ),
+		focusElement: 'donationNumber',
+		scrollElement: 'donationNumber-scroll-target',
+	},
+	{
+		validity: formData.email.validity,
+		message: t( 'contact_form_email_error' ),
+		focusElement: 'email',
+		scrollElement: 'email-scroll-target',
+	},
+	{
+		validity: formData.topic.validity,
+		message: t( 'contact_form_topic_error' ),
+		focusElement: 'topic',
+		scrollElement: 'topic-scroll-target',
+	},
+	{
+		validity: formData.subject.validity,
+		message: t( 'contact_form_subject_error' ),
+		focusElement: 'subject',
+		scrollElement: 'subject-scroll-target',
+	},
+	{
+		validity: formData.comment.validity,
+		message: t( 'contact_form_body_error' ),
+		focusElement: 'messageBody',
+		scrollElement: 'messageBody-scroll-target',
+	},
+] );
 
 const validateField = ( fieldName: string ): boolean => {
 	const field = formData[ fieldName ];
@@ -239,7 +254,7 @@ const submit = (): void => {
 };
 
 watch( formData, ( newFormData: ContactFormData ) => {
-	if ( !showErrorSummary.value ) {
+	if ( !showErrorSummary.value && !showServerErrorSummary.value ) {
 		return;
 	}
 
@@ -248,6 +263,7 @@ watch( formData, ( newFormData: ContactFormData ) => {
 		&& newFormData.subject.validity === Validity.VALID
 		&& newFormData.comment.validity === Validity.VALID ) {
 		showErrorSummary.value = false;
+		showServerErrorSummary.value = false;
 	}
 } );
 
