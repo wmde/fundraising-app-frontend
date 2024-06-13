@@ -13,6 +13,10 @@ import App from '@src/components/App.vue';
 import UpdateAddress from '@src/components/pages/UpdateAddress.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { action } from '@src/store/util';
+import { NS_ADDRESS } from '@src/store/namespaces';
+import { initializeAddress } from '@src/store/address/actionTypes';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 interface UpdateAddressModel {
 	isCompany: boolean,
@@ -28,28 +32,36 @@ const pageData = new PageDataInitializer<UpdateAddressModel>( '#appdata' );
 const store = createStore( [ createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
-const app = createVueApp(
-	App,
-	pageData.messages,
-	pageData.allowedCampaignParameters,
-	featureFetcher,
+store.dispatch(
+	action( NS_ADDRESS, initializeAddress ),
 	{
-		assetsPath: pageData.assetsPath,
-		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-		pageIdentifier: PAGE_IDENTIFIER,
-		page: UpdateAddress,
-		pageTitle: 'update_address_page_title',
-		pageProps: {
-			validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-			updateAddressURL: pageData.applicationVars.urls.updateAddress,
-			isCompany: pageData.applicationVars.isCompany,
-			countries: pageData.applicationVars.countries,
-			salutations: pageData.applicationVars.salutations,
-			addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-		},
+		addressType: pageData.applicationVars.isCompany ? AddressTypeModel.COMPANY : AddressTypeModel.PERSON,
+		fields: [],
 	}
-);
+).then( () => {
+	const app = createVueApp(
+		App,
+		pageData.messages,
+		pageData.allowedCampaignParameters,
+		featureFetcher,
+		{
+			assetsPath: pageData.assetsPath,
+			bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
+			pageIdentifier: PAGE_IDENTIFIER,
+			page: UpdateAddress,
+			pageTitle: 'update_address_page_title',
+			pageProps: {
+				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
+				updateAddressURL: pageData.applicationVars.urls.updateAddress,
+				isCompany: pageData.applicationVars.isCompany,
+				countries: pageData.applicationVars.countries,
+				salutations: pageData.applicationVars.salutations,
+				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+			},
+		}
+	);
 
-app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
-app.use( store );
-app.mount( '#app' );
+	app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
+	app.use( store );
+	app.mount( '#app' );
+} );

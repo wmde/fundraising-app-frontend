@@ -30,6 +30,60 @@
 				v-on:field-changed="onFieldChange"
 			/>
 
+			<ErrorSummary
+				:is-visible="showErrorSummary"
+				:items="[
+					{
+						validity: store.state.address.validity.companyName,
+						message: $t( 'donation_form_companyname_error' ),
+						focusElement: 'company-name',
+						scrollElement: 'company-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.salutation,
+						message: $t( 'donation_form_salutation_error' ),
+						focusElement: 'salutation-0',
+						scrollElement: 'salutation-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.firstName,
+						message: $t( 'donation_form_firstname_error' ),
+						focusElement: 'first-name',
+						scrollElement: 'first-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.lastName,
+						message: $t( 'donation_form_lastname_error' ),
+						focusElement: 'last-name',
+						scrollElement: 'last-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.street,
+						message: $t( 'donation_form_street_error' ),
+						focusElement: 'street',
+						scrollElement: 'street-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.postcode,
+						message: $t( 'donation_form_zip_error' ),
+						focusElement: 'post-code',
+						scrollElement: 'post-code-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.city,
+						message: $t( 'donation_form_city_error' ),
+						focusElement: 'city',
+						scrollElement: 'city-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.country,
+						message: $t( 'donation_form_country_error' ),
+						focusElement: 'country',
+						scrollElement: 'country-scroll-target'
+					},
+				]"
+			/>
+
 			<submit-values :tracking-data="{}"></submit-values>
 
 			<div class="update-address-form-button">
@@ -46,7 +100,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, ref } from 'vue';
 import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
 import { AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
@@ -64,7 +118,7 @@ import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 
 defineOptions( {
 	name: 'UpdateAddress',
@@ -73,7 +127,6 @@ defineOptions( {
 interface Props {
 	validateAddressUrl: string;
 	updateAddressURL: string;
-	isCompany: boolean;
 	countries: Country[],
 	salutations: Salutation[],
 	addressValidationPatterns: AddressValidation,
@@ -82,6 +135,7 @@ interface Props {
 const props = defineProps<Props>();
 const store = useStore();
 const form = ref<HTMLFormElement>( null );
+const showErrorSummary = ref<boolean>( false );
 
 const formData: AddressFormData = {
 	salutation: {
@@ -149,7 +203,7 @@ const fieldErrors = computed<AddressValidity>( () => {
 	}, ( {} as AddressValidity ) );
 } );
 
-const { addressType, setAddressType } = useAddressTypeFunctions( store );
+const { addressType } = useAddressTypeFunctions( store );
 const { receiptNeeded } = useReceiptModel( store );
 
 const userOnlyWantsToDeclineReceipt = computed<boolean>( () => {
@@ -173,12 +227,16 @@ const submit = (): void => {
 		if ( validationResult.status === 'OK' ) {
 			trackFormSubmission( form.value );
 			form.value.submit();
+		} else {
+			showErrorSummary.value = true;
 		}
 	} );
 };
 
-onBeforeMount( () => {
-	setAddressType( props.isCompany ? AddressTypeModel.COMPANY : AddressTypeModel.PERSON );
+store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	if ( showErrorSummary.value && isValid ) {
+		showErrorSummary.value = false;
+	}
 } );
 
 </script>
