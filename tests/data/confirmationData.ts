@@ -73,6 +73,13 @@ export const bankTransferConfirmationData = createConfirmationData( {
 		paymentType: 'UEB',
 		bankTransferCode: testBankTransferCode,
 		amount: 12.35,
+		updateToken: 'd387cebd6cc05efbd117545492cb0e99',
+		accessToken: 'a839bc8045aba4c8b600bc0477dbbf10',
+		id: 1,
+		interval: 0,
+		receipt: true,
+		newsletter: false,
+		isExported: false,
 	},
 } );
 

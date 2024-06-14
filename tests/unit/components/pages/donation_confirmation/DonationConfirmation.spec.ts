@@ -13,7 +13,7 @@ import {
 	payPalConfirmationData,
 } from '@test/data/confirmationData';
 import { addressValidationPatterns } from '@test/data/validation';
-import DonorResource from '@src/api/DonorResource';
+import { DonorResource } from '@src/api/DonorResource';
 
 describe( 'DonationConfirmation.vue', () => {
 	const getWrapper = ( bankData: ConfirmationData, translateMock: ( key: string ) => string = ( key: string ) => key ): VueWrapper<any> => {

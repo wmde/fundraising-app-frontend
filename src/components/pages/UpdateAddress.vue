@@ -3,7 +3,7 @@
 		<h1>{{ $t( 'address_change_form_title' ) }}</h1>
 		<p>{{ $t( 'address_change_form_label' ) }}</p>
 
-		<form name="laika-address-update" ref="form" :action="updateAddressURL" method="post" @submit.prevent="submit">
+		<form name="laika-address-update" ref="form" @submit.prevent="submit">
 			<CheckboxField
 				v-model="receiptNeeded"
 				input-id="receipt-option-person"
@@ -84,7 +84,9 @@
 				]"
 			/>
 
-			<submit-values :tracking-data="{}"></submit-values>
+			<ServerMessage :server-message="serverErrorMessage"/>
+
+			<SubmitValues :tracking-data="{}"/>
 
 			<div class="update-address-form-button">
 				<FormButton
@@ -102,7 +104,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
-import { AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
+import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { Country } from '@src/view_models/Country';
 import { NS_ADDRESS } from '@src/store/namespaces';
@@ -119,6 +121,10 @@ import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue'
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ServerMessage from '@src/components/shared/ServerMessage.vue';
+import { addressTypeName } from '@src/view_models/AddressTypeModel';
+import { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
+import { AddressChangeResource } from '@src/api/AddressChangeResource';
 
 defineOptions( {
 	name: 'UpdateAddress',
@@ -126,16 +132,17 @@ defineOptions( {
 
 interface Props {
 	validateAddressUrl: string;
-	updateAddressURL: string;
-	countries: Country[],
-	salutations: Salutation[],
-	addressValidationPatterns: AddressValidation,
+	countries: Country[];
+	salutations: Salutation[];
+	addressValidationPatterns: AddressValidation;
+	addressChangeResource: AddressChangeResource;
 }
 
 const props = defineProps<Props>();
 const store = useStore();
 const form = ref<HTMLFormElement>( null );
 const showErrorSummary = ref<boolean>( false );
+const serverErrorMessage = ref<string>( '' );
 
 const formData: AddressFormData = {
 	salutation: {
@@ -218,7 +225,19 @@ const onFieldChange = ( fieldName: string ): void => {
 	store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
 };
 
+const getAddressData = (): Address => {
+	const data = {
+		addressType: addressTypeName( store.getters[ NS_ADDRESS + '/addressType' ] ),
+	} as any;
+	Object.keys( formData ).forEach( fieldName => {
+		data[ fieldName ] = formData[ fieldName ].value;
+	} );
+	return data as Address;
+};
+
 const submit = (): void => {
+	serverErrorMessage.value = '';
+
 	if ( userOnlyWantsToDeclineReceipt.value ) {
 		trackFormSubmission( form.value );
 		form.value.submit();
@@ -226,7 +245,11 @@ const submit = (): void => {
 	validateForm().then( ( validationResult: ValidationResult ) => {
 		if ( validationResult.status === 'OK' ) {
 			trackFormSubmission( form.value );
-			form.value.submit();
+			props.addressChangeResource.put( getAddressData() ).then( ( addressData: UpdateAddressResponse ) => {
+				window.location.href = '/update-address/success?addressToken=' + addressData.identifier;
+			} ).catch( ( error: string ) => {
+				serverErrorMessage.value = error;
+			} );
 		} else {
 			showErrorSummary.value = true;
 		}

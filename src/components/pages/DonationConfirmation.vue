@@ -109,7 +109,7 @@ import DonationSurvey from '@src/components/pages/donation_confirmation/Donation
 import DonationCommentPopUp from '@src/components/pages/donation_confirmation/DonationCommentPopUp.vue';
 import ChevronDownIcon from '@src/components/shared/icons/ChevronDown.vue';
 import DonationExported from '@src/components/pages/donation_confirmation/DonationExported.vue';
-import DonorResource from '@src/api/DonorResource';
+import { DonorResource } from '@src/api/DonorResource';
 import ModalDialogue from '@src/components/shared/ModalDialogue.vue';
 import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 

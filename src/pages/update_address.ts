@@ -17,6 +17,7 @@ import { action } from '@src/store/util';
 import { NS_ADDRESS } from '@src/store/namespaces';
 import { initializeAddress } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { ApiAddressChangeResource } from '@src/api/AddressChangeResource';
 
 interface UpdateAddressModel {
 	isCompany: boolean,
@@ -52,11 +53,10 @@ store.dispatch(
 			pageTitle: 'update_address_page_title',
 			pageProps: {
 				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
-				updateAddressURL: pageData.applicationVars.urls.updateAddress,
-				isCompany: pageData.applicationVars.isCompany,
 				countries: pageData.applicationVars.countries,
 				salutations: pageData.applicationVars.salutations,
 				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+				addressChangeResource: new ApiAddressChangeResource( pageData.applicationVars.urls.updateAddress ),
 			},
 		}
 	);

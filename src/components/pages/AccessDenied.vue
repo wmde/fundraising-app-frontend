@@ -12,7 +12,7 @@ defineOptions( {
 } );
 
 interface Props {
-	errorData;
+	errorData: { message: string };
 }
 
 defineProps<Props>();

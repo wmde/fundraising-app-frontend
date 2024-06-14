@@ -10,7 +10,7 @@ import { Address } from '@src/view_models/Address';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { Store } from 'vuex';
-import DonorResource from '@src/api/DonorResource';
+import { DonorResource } from '@src/api/DonorResource';
 
 const anonAddress = {
 	addressType: 'anonym',
@@ -77,7 +77,6 @@ const addressData = ( address: Address, addressType: AddressTypeModel ) => {
 };
 
 const defaultDonorResource: DonorResource = {
-	putEndpoint: '',
 	put(): Promise<Address> {
 		return Promise.resolve( undefined );
 	},
@@ -231,7 +230,6 @@ describe( 'AddressUpdateForm.vue', () => {
 
 		const error = 'Get outta that garden!';
 		const donorResource = {
-			putEndpoint: '',
 			put: jest.fn().mockRejectedValue( error ),
 		};
 
@@ -240,7 +238,7 @@ describe( 'AddressUpdateForm.vue', () => {
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
 
-		expect( wrapper.find( '.error-server' ).exists() ).toBe( true );
-		expect( wrapper.find( '.error-server' ).text() ).toStrictEqual( error );
+		expect( wrapper.find( '.server-message' ).exists() ).toBe( true );
+		expect( wrapper.find( '.server-message' ).text() ).toStrictEqual( error );
 	} );
 } );

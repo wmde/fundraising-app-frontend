@@ -1,12 +1,12 @@
 import { Address } from '@src/view_models/Address';
 import axios, { AxiosResponse } from 'axios';
-import { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
+import { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
 
-export interface DonorResource {
-	put: ( data: UpdateDonorRequest ) => Promise<Address>;
+export interface AddressChangeResource {
+	put: ( data: Address ) => Promise<UpdateAddressResponse>;
 }
 
-export class ApiDonorResource implements DonorResource {
+export class ApiAddressChangeResource implements AddressChangeResource {
 
 	putEndpoint: string;
 
@@ -14,12 +14,12 @@ export class ApiDonorResource implements DonorResource {
 		this.putEndpoint = putEndpoint;
 	}
 
-	put( data: UpdateDonorRequest ): Promise<Address> {
+	put( data: Address ): Promise<UpdateAddressResponse> {
 		return axios.put(
 			this.putEndpoint,
 			data,
 			{ headers: { 'Content-Type': 'application/json' } }
-		).then( ( response: AxiosResponse<Address> ) => {
+		).then( ( response: AxiosResponse<UpdateAddressResponse> ) => {
 			return Promise.resolve( response.data );
 		} ).catch( ( error: any ) => {
 			return Promise.reject( error.response.data.errors[ 0 ] );
