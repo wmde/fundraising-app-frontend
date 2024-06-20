@@ -31,6 +31,7 @@ describe( 'TextField.vue', () => {
 
 		expect( wrapper.find( 'span.help.is-danger' ).exists() ).toBeTruthy();
 		expect( wrapper.find( 'span.help.is-danger' ).text() ).toStrictEqual( '404 Lasagne not found' );
+		expect( wrapper.find( 'input' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'textField-error' );
 	} );
 
 	it( 'shows the message slot', async () => {

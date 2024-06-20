@@ -14,6 +14,7 @@ describe( 'SelectField.vue', () => {
 					{ value: 'bingo', label: 'Bingo' },
 					{ value: 'rolly', label: 'Rolly' },
 				],
+				errorMessage: '404 Lasagne not found',
 			},
 		} );
 	};
@@ -45,5 +46,15 @@ describe( 'SelectField.vue', () => {
 		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( 'bingo' );
 		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'field-changed' )[ 0 ][ 0 ] ).toStrictEqual( 'select' );
+	} );
+
+	it( 'shows the error message', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.setProps( { showError: true } );
+
+		expect( wrapper.find( 'span.help.is-danger' ).exists() ).toBeTruthy();
+		expect( wrapper.find( 'span.help.is-danger' ).text() ).toStrictEqual( '404 Lasagne not found' );
+		expect( wrapper.find( 'select' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'select-error' );
 	} );
 } );

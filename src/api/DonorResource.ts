@@ -1,12 +1,12 @@
 import { Address } from '@src/view_models/Address';
 import axios, { AxiosResponse } from 'axios';
+import { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
 
-interface DonorResource {
-	putEndpoint: string,
-	put: ( data: Address ) => Promise<Address>
+export interface DonorResource {
+	put: ( data: UpdateDonorRequest ) => Promise<Address>;
 }
 
-export default class implements DonorResource {
+export class ApiDonorResource implements DonorResource {
 
 	putEndpoint: string;
 
@@ -14,7 +14,7 @@ export default class implements DonorResource {
 		this.putEndpoint = putEndpoint;
 	}
 
-	put( data: Address ): Promise<Address> {
+	put( data: UpdateDonorRequest ): Promise<Address> {
 		return axios.put(
 			this.putEndpoint,
 			data,

@@ -8,6 +8,8 @@
 				:disabled="disabled"
 				:required="required"
 				:class="{ 'is-danger': hasError }"
+				:aria-invalid="hasError"
+				:aria-describedby="ariaDescribedby"
 			>
                 <slot/>
 			</select>
@@ -26,6 +28,7 @@ interface Props {
 	hasError?: boolean;
 	disabled?: boolean;
 	required?: boolean;
+	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -49,14 +52,19 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 .select-form-input {
 	.select {
 		width: 100%;
-	}
-	select {
-		border: map.get( forms.$input, 'border' );
-		border-radius: map.get( forms.$input, 'border-radius' );
-		width: 100%;
-		padding: 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' );
-		font-size: map.get( forms.$input, 'font-size' );
-		height: map.get( forms.$input, 'height' );
+
+		select {
+			border: map.get( forms.$input, 'border' );
+			border-radius: map.get( forms.$input, 'border-radius' );
+			width: 100%;
+			padding: 0 map.get( units.$spacing, 'x-large' ) 0 map.get( units.$spacing, 'small' );
+			font-size: map.get( forms.$input, 'font-size' );
+			height: map.get( forms.$input, 'height' );
+
+			&:focus {
+				border-color: map.get( forms.$input, 'border-focus-color' );
+			}
+		}
 	}
 
 	.select:not(.is-multiple):not(.is-loading)::after {
@@ -65,4 +73,15 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 		margin-top: -0.6em;
 	}
 }
+
+.is-invalid {
+	.select-form-input select {
+		border-color: map.get( forms.$input, 'border-error-color' );
+
+		&:focus {
+			border-color: map.get( forms.$input, 'border-focus-color' );
+		}
+	}
+}
+
 </style>

@@ -3,7 +3,7 @@
 		<h1>{{ $t( 'address_change_form_title' ) }}</h1>
 		<p>{{ $t( 'address_change_form_label' ) }}</p>
 
-		<form name="laika-address-update" ref="form" :action="updateAddressURL" method="post" @submit.prevent="submit">
+		<form name="laika-address-update" ref="form" @submit.prevent="submit">
 			<CheckboxField
 				v-model="receiptNeeded"
 				input-id="receipt-option-person"
@@ -30,7 +30,63 @@
 				v-on:field-changed="onFieldChange"
 			/>
 
-			<submit-values :tracking-data="{}"></submit-values>
+			<ErrorSummary
+				:is-visible="showErrorSummary"
+				:items="[
+					{
+						validity: store.state.address.validity.companyName,
+						message: $t( 'donation_form_companyname_error' ),
+						focusElement: 'company-name',
+						scrollElement: 'company-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.salutation,
+						message: $t( 'donation_form_salutation_error' ),
+						focusElement: 'salutation-0',
+						scrollElement: 'salutation-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.firstName,
+						message: $t( 'donation_form_firstname_error' ),
+						focusElement: 'first-name',
+						scrollElement: 'first-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.lastName,
+						message: $t( 'donation_form_lastname_error' ),
+						focusElement: 'last-name',
+						scrollElement: 'last-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.street,
+						message: $t( 'donation_form_street_error' ),
+						focusElement: 'street',
+						scrollElement: 'street-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.postcode,
+						message: $t( 'donation_form_zip_error' ),
+						focusElement: 'post-code',
+						scrollElement: 'post-code-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.city,
+						message: $t( 'donation_form_city_error' ),
+						focusElement: 'city',
+						scrollElement: 'city-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.country,
+						message: $t( 'donation_form_country_error' ),
+						focusElement: 'country',
+						scrollElement: 'country-scroll-target'
+					},
+				]"
+			/>
+
+			<ServerMessage :server-message="serverErrorMessage"/>
+
+			<SubmitValues :tracking-data="{}"/>
 
 			<div class="update-address-form-button">
 				<FormButton
@@ -46,9 +102,9 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, ref } from 'vue';
 import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
-import { AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
+import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { Country } from '@src/view_models/Country';
 import { NS_ADDRESS } from '@src/store/namespaces';
@@ -64,7 +120,11 @@ import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ServerMessage from '@src/components/shared/ServerMessage.vue';
+import { addressTypeName } from '@src/view_models/AddressTypeModel';
+import { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
+import { AddressChangeResource } from '@src/api/AddressChangeResource';
 
 defineOptions( {
 	name: 'UpdateAddress',
@@ -72,16 +132,17 @@ defineOptions( {
 
 interface Props {
 	validateAddressUrl: string;
-	updateAddressURL: string;
-	isCompany: boolean;
-	countries: Country[],
-	salutations: Salutation[],
-	addressValidationPatterns: AddressValidation,
+	countries: Country[];
+	salutations: Salutation[];
+	addressValidationPatterns: AddressValidation;
+	addressChangeResource: AddressChangeResource;
 }
 
 const props = defineProps<Props>();
 const store = useStore();
 const form = ref<HTMLFormElement>( null );
+const showErrorSummary = ref<boolean>( false );
+const serverErrorMessage = ref<string>( '' );
 
 const formData: AddressFormData = {
 	salutation: {
@@ -149,7 +210,7 @@ const fieldErrors = computed<AddressValidity>( () => {
 	}, ( {} as AddressValidity ) );
 } );
 
-const { addressType, setAddressType } = useAddressTypeFunctions( store );
+const { addressType } = useAddressTypeFunctions( store );
 const { receiptNeeded } = useReceiptModel( store );
 
 const userOnlyWantsToDeclineReceipt = computed<boolean>( () => {
@@ -164,7 +225,19 @@ const onFieldChange = ( fieldName: string ): void => {
 	store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
 };
 
+const getAddressData = (): Address => {
+	const data = {
+		addressType: addressTypeName( store.getters[ NS_ADDRESS + '/addressType' ] ),
+	} as any;
+	Object.keys( formData ).forEach( fieldName => {
+		data[ fieldName ] = formData[ fieldName ].value;
+	} );
+	return data as Address;
+};
+
 const submit = (): void => {
+	serverErrorMessage.value = '';
+
 	if ( userOnlyWantsToDeclineReceipt.value ) {
 		trackFormSubmission( form.value );
 		form.value.submit();
@@ -172,13 +245,21 @@ const submit = (): void => {
 	validateForm().then( ( validationResult: ValidationResult ) => {
 		if ( validationResult.status === 'OK' ) {
 			trackFormSubmission( form.value );
-			form.value.submit();
+			props.addressChangeResource.put( getAddressData() ).then( ( addressData: UpdateAddressResponse ) => {
+				window.location.href = '/update-address/success?addressToken=' + addressData.identifier;
+			} ).catch( ( error: string ) => {
+				serverErrorMessage.value = error;
+			} );
+		} else {
+			showErrorSummary.value = true;
 		}
 	} );
 };
 
-onBeforeMount( () => {
-	setAddressType( props.isCompany ? AddressTypeModel.COMPANY : AddressTypeModel.PERSON );
+store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	if ( showErrorSummary.value && isValid ) {
+		showErrorSummary.value = false;
+	}
 } );
 
 </script>

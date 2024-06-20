@@ -5,7 +5,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 export const getters: GetterTree<AddressState, any> = {
 	invalidFields: ( state: AddressState ): Array<string> => {
-		return state.requiredFields[ state.addressType ].filter( fieldName => state.validity[ fieldName ] !== Validity.VALID );
+		return state.requiredFields[ state.addressType ].filter( fieldName => state.validity[ fieldName ] === Validity.INVALID );
 	},
 	requiredFieldsAreValid: ( state: AddressState, addressGetters: GetterTree<AddressState, any> ): boolean => {
 		return addressGetters.invalidFields.length === 0;

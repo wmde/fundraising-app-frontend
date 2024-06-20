@@ -42,6 +42,11 @@
 		}
 	}
 
+	&-help-text {
+		margin-bottom: map.get( units.$spacing, 'small' );
+		line-height: 130%;
+	}
+
 	&-intro {
 		margin: -( map.get( units.$spacing, 'xx-small' ) ) 0 map.get( units.$spacing, 'xx-small' );
 	}

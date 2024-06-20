@@ -27,9 +27,35 @@
 			:validate-bank-data-url="props.validateBankDataUrl.toString()"
 			:validate-legacy-bank-data-url="props.validateLegacyBankDataUrl.toString()"
 		/>
+
+		<ErrorSummary
+			:is-visible="showErrorSummary"
+			:items="[
+				{
+					validity: store.state.membership_fee.validity.interval,
+					message: $t( 'error_summary_payment_interval' ),
+					focusElement: 'interval-0',
+					scrollElement: 'payment-form-interval-scroll-target'
+				},
+				{
+					validity: store.state.membership_fee.validity.fee,
+					message: $t( 'error_summary_amount' ),
+					focusElement: 'amount-500',
+					scrollElement: 'payment-form-amount-scroll-target'
+				},
+				{
+					validity: store.state.bankdata.validity.bankdata,
+					message: $t( 'error_summary_iban' ),
+					focusElement: 'iban',
+					scrollElement: 'payment-form-iban-scroll-target'
+				}
+			]"
+		/>
+
 		<FormSection title="" title-margin="small">
 			<FormButton
 				@click="next()"
+				id="next"
 				:is-loading="store.getters.isValidating"
 			>
 				{{ $t('donation_form_section_continue') }}
@@ -47,7 +73,7 @@ import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@src/st
 import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { useStore } from 'vuex';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
@@ -56,6 +82,7 @@ import MembershipTypeField from '@src/components/pages/membership_form/Membershi
 import { useMembershipTypeModel } from '@src/components/pages/membership_form/useMembershipTypeModel';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 
 interface Props {
 	validateFeeUrl: String,
@@ -79,6 +106,7 @@ const {
 	setAddressType,
 } = useAddressTypeFunctions( store );
 
+const showErrorSummary = ref<boolean>( false );
 const membershipTypeModel = useMembershipTypeModel( store );
 const disabledMembershipTypes = computed(
 	(): MembershipTypeModel[] => {
@@ -98,10 +126,16 @@ const next = async (): Promise<any> => {
 			if ( store.getters.paymentDataIsValid && store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {
 				emit( 'next-page' );
 			} else {
-				document.getElementsByClassName( 'is-danger' )[ 0 ].scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
+				showErrorSummary.value = true;
 			}
 		} );
 	} );
 };
+
+store.watch( ( state, getters ) => getters.paymentDataIsValid, ( isValid: boolean ) => {
+	if ( showErrorSummary.value && isValid ) {
+		showErrorSummary.value = false;
+	}
+} );
 
 </script>

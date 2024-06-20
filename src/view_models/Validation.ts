@@ -12,8 +12,8 @@ export interface AddressValidation {
 }
 
 export interface ContactFormValidation {
-	firstname: string,
-	lastname: string,
+	firstName: string,
+	lastName: string,
 	donationNumber: string,
 	email: string,
 	topic: string,

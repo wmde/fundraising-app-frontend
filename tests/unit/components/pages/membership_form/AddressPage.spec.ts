@@ -1,5 +1,6 @@
-import { mount, VueWrapper } from '@vue/test-utils';
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
+import axios from 'axios';
 import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
 import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 import { action } from '@src/store/util';
@@ -34,6 +35,9 @@ const salutations: Salutation[] = [
 		},
 	},
 ];
+
+jest.mock( 'axios' );
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe( 'AddressPage.vue', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
@@ -73,22 +77,42 @@ describe( 'AddressPage.vue', () => {
 		expect( wrapper.emitted( 'previous-page' ).length ).toStrictEqual( 1 );
 	} );
 
-	it( 'scrolls to first error on submit bad data', async () => {
-		const scrollIntoView = jest.fn();
-		jest.spyOn( document, 'getElementsByClassName' ).mockImplementation( () => {
-			return [ { scrollIntoView } ] as unknown as HTMLCollectionOf<HTMLElement>;
-		} );
-
+	it( 'shows and hides the error summary', async () => {
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
+		await nextTick();
 
-		expect( scrollIntoView ).toHaveBeenCalled();
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#salutation-0' ).trigger( 'change' );
+
+		await wrapper.find( '#first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#first-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#last-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#street' ).setValue( 'street' );
+		await wrapper.find( '#street' ).trigger( 'blur' );
+
+		await wrapper.find( '#post-code' ).setValue( 'post-code' );
+		await wrapper.find( '#post-code' ).trigger( 'blur' );
+
+		await wrapper.find( '#city' ).setValue( 'city' );
+		await wrapper.find( '#city' ).trigger( 'blur' );
+
+		await wrapper.find( '#country' ).setValue( 'country' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+
+		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#email' ).trigger( 'blur' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
 
-	// TODO: Figure out how to test that the form submits
-	it.skip( 'submits the form', async () => {
+	it( 'submits the form', async () => {
 		const store = createStore();
 		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), {
 			addressType: AddressTypeModel.PERSON,
@@ -105,17 +129,19 @@ describe( 'AddressPage.vue', () => {
 				{ name: 'email', value: 'value@gmail.com', validity: Validity.RESTORED },
 				{ name: 'companyName', value: 'value', validity: Validity.RESTORED },
 			],
+			incentives: [ 'tote_bag' ],
 		} );
 
-		const submit = jest.fn();
-		jest.spyOn( document, 'getElementById' ).mockImplementation( () => {
-			return { submit } as unknown as HTMLElement;
-		} );
+		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
 		const { wrapper } = getWrapper( store );
 
-		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
+		submitForm.element.submit = jest.fn();
 
-		expect( submit ).toHaveBeenCalled();
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		await flushPromises();
+
+		expect( submitForm.element.submit ).toHaveBeenCalled();
 	} );
 
 } );

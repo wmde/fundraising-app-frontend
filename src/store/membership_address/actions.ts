@@ -91,11 +91,14 @@ export const actions = {
 			field => bodyFormData.append( field, context.state.values[ field ] )
 		);
 		bodyFormData.append( 'addressType', addressTypeName( context.state.addressType ) );
-		return axios( validateAddressUrl, {
-			method: 'post',
-			data: bodyFormData,
-			headers: { 'Content-Type': 'multipart/form-data' },
-		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
+
+		return axios.post(
+			validateAddressUrl,
+			bodyFormData,
+			{
+				headers: { 'Content-Type': 'multipart/form-data' },
+			},
+		).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
 			context.commit( FINISH_ADDRESS_VALIDATION, validationResult.data );
 			return validationResult.data;
 		} );
@@ -110,9 +113,7 @@ export const actions = {
 		const bodyFormData = new FormData();
 		bodyFormData.append( 'email', context.state.values.email );
 
-		return axios( validateEmailUrl, {
-			method: 'post',
-			data: bodyFormData,
+		return axios.post( validateEmailUrl, bodyFormData, {
 			headers: { 'Content-Type': 'multipart/form-data' },
 		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
 			context.commit( FINISH_EMAIL_VALIDATION, validationResult.data );

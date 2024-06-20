@@ -10,8 +10,7 @@ import { Address } from '@src/view_models/Address';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { Store } from 'vuex';
-import { nextTick } from 'vue';
-import DonorResource from '@src/api/DonorResource';
+import { DonorResource } from '@src/api/DonorResource';
 
 const anonAddress = {
 	addressType: 'anonym',
@@ -78,7 +77,6 @@ const addressData = ( address: Address, addressType: AddressTypeModel ) => {
 };
 
 const defaultDonorResource: DonorResource = {
-	putEndpoint: '',
 	put(): Promise<Address> {
 		return Promise.resolve( undefined );
 	},
@@ -100,25 +98,6 @@ describe( 'AddressUpdateForm.vue', () => {
 			},
 		} );
 	};
-
-	it( 'scrolls to first error on submit bad data', async () => {
-		const scrollIntoView = jest.fn();
-		jest.spyOn( document, 'querySelector' ).mockImplementation( () => {
-			return { scrollIntoView } as unknown as HTMLElement;
-		} );
-
-		const store = createStore();
-		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
-			addressData( inValidAddress, AddressTypeModel.PERSON )
-		);
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
-		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
-
-		await flushPromises();
-
-		expect( scrollIntoView ).toHaveBeenCalled();
-	} );
 
 	it( 'prefills address data if it exists', async () => {
 		const store = createStore();
@@ -182,28 +161,84 @@ describe( 'AddressUpdateForm.vue', () => {
 		expect( wrapper.find( '.form-field-email .is-danger' ).exists() ).toBe( true );
 	} );
 
+	it( 'shows error summary when there are validation errors', async () => {
+		const store = createStore();
+		await store.dispatch(
+			action( NS_ADDRESS, initializeAddress ),
+			addressData( inValidAddress, AddressTypeModel.ANON )
+		);
+
+		const wrapper = getWrapper( store, bankTransferConfirmationData );
+
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
+		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+	} );
+
+	it( 'shows and hides the error summary', async () => {
+		jest.useFakeTimers();
+
+		const store = createStore();
+		await store.dispatch(
+			action( NS_ADDRESS, initializeAddress ),
+			addressData( inValidAddress, AddressTypeModel.ANON )
+		);
+
+		const wrapper = getWrapper( store, bankTransferConfirmationData );
+
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
+		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#salutation-0' ).trigger( 'change' );
+
+		await wrapper.find( '#first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#first-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#last-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#street' ).setValue( 'street' );
+		await wrapper.find( '#street' ).trigger( 'blur' );
+
+		await wrapper.find( '#post-code' ).setValue( '14059' );
+		await wrapper.find( '#post-code' ).trigger( 'blur' );
+
+		await wrapper.find( '#city' ).setValue( 'city' );
+		await wrapper.find( '#city' ).trigger( 'blur' );
+
+		await wrapper.find( '#country' ).setValue( 'Deutschland' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#email' ).trigger( 'blur' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+
+		jest.restoreAllMocks();
+	} );
+
 	it( 'displays an error if one is returned from the server', async () => {
 		const store = createStore();
 		store.dispatch = jest.fn().mockResolvedValue( { status: 'OK', messages: {} } );
 
 		const error = 'Get outta that garden!';
 		const donorResource = {
-			putEndpoint: '',
 			put: jest.fn().mockRejectedValue( error ),
 		};
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData, donorResource );
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
 
-		// The submission process goes many promises deep, so wait until they all resolve
-		await nextTick();
-		await nextTick();
-		await nextTick();
-		await nextTick();
-		await nextTick();
-
-		expect( wrapper.find( '.error-server' ).exists() ).toBe( true );
-		expect( wrapper.find( '.error-server' ).text() ).toStrictEqual( error );
+		expect( wrapper.find( '.server-message' ).exists() ).toBe( true );
+		expect( wrapper.find( '.server-message' ).text() ).toStrictEqual( error );
 	} );
 } );

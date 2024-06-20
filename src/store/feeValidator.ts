@@ -4,7 +4,7 @@ const maxCentAmount = 100_000_00;
 
 export function validateFee( amount: number, minimumAmount: number ): FeeValidity {
 
-	if ( amount < minimumAmount ) {
+	if ( amount === 0 || amount < minimumAmount ) {
 		return FeeValidity.FEE_TOO_LOW;
 	}
 

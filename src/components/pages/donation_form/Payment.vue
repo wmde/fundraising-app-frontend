@@ -1,6 +1,7 @@
 <template>
 	<div class="payment-form">
-		<FormSection>
+		<FormSection id="payment-form-amount">
+			<ScrollTarget target-id="payment-form-amount-scroll-target"/>
 			<AmountField
 				v-model="amount"
 				:label="$t('donation_form_payment_amount_title')"
@@ -23,7 +24,8 @@
 			/>
 		</FormSection>
 
-		<FormSection>
+		<FormSection id="payment-form-type">
+			<ScrollTarget target-id="payment-form-type-scroll-target"/>
 			<RadioField
 				name="paymentType"
 				input-id="paymentType"
@@ -65,6 +67,7 @@ import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptio
 import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePaymentFieldModel';
 import { Validity } from '@src/view_models/Validity';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	paymentAmounts: number[];

@@ -61,6 +61,8 @@
 
 		<MailingListField v-model="mailingList" input-id="newsletter"/>
 
+		<AddressUpdateFormErrorSummaries :address-type="addressType" :show-error-summary="showErrorSummary"/>
+
 		<FormSummary :show-border="false">
 			<template #summary-buttons>
 				<FormButton
@@ -80,11 +82,7 @@
 			</template>
 		</FormSummary>
 
-		<div v-if="serverMessage !== ''" class="columns error-server">
-			<div class="column has-text-danger has-text-centered has-text-weight-bold">
-				{{ $t( serverMessage ) }}
-			</div>
-		</div>
+		<ServerMessage :server-message="serverErrorMessage"/>
 
 	</form>
 </template>
@@ -104,7 +102,7 @@ import { camelizeName } from '@src/util/camlize_name';
 import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
-import DonorResource from '@src/api/DonorResource';
+import { DonorResource } from '@src/api/DonorResource';
 import { useStore } from 'vuex';
 import { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
@@ -116,8 +114,10 @@ import NameFields from '@src/components/shared/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
-import scrollToFirstError from '@src/util/scroll_to_first_error';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
+import AddressUpdateFormErrorSummaries from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
+import { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
+import ServerMessage from '@src/components/shared/ServerMessage.vue';
 
 interface Props {
 	addressValidationPatterns: AddressValidation;
@@ -135,7 +135,8 @@ const store = useStore();
 
 const addressForm = ref<HTMLFormElement>( null );
 const isValidating = ref<boolean>( false );
-const serverMessage = ref<string>( '' );
+const serverErrorMessage = ref<string>( '' );
+const showErrorSummary = ref<boolean>( false );
 const formData: AddressFormData = {
 	salutation: {
 		name: 'salutation',
@@ -244,28 +245,34 @@ const onAutofill = ( autofilledFields: { [key: string]: string; } ) => {
 	} );
 };
 
-const getAddressData = (): Address => {
-	const data = {
-		updateToken: props.donation.updateToken,
+const getAddressData = (): UpdateDonorRequest => {
+	return {
 		donationId: props.donation.id,
+		updateToken: props.donation.updateToken,
 		addressType: addressTypeName( store.getters[ NS_ADDRESS + '/addressType' ] ),
-		mailingList: mailingList.value,
-	} as any;
-	Object.keys( formData ).forEach( fieldName => {
-		data[ fieldName ] = formData[ fieldName ].value;
-	} );
-	return data as Address;
+		city: formData.city.value,
+		companyName: formData.companyName.value,
+		country: formData.country.value,
+		email: formData.email.value,
+		firstName: formData.firstName.value,
+		lastName: formData.lastName.value,
+		postcode: formData.postcode.value,
+		salutation: formData.salutation.value,
+		street: formData.street.value,
+		title: formData.title.value,
+		mailingList: false,
+	};
 };
 
 const submit = async (): Promise<void> => {
 	isValidating.value = true;
-	serverMessage.value = '';
+	serverErrorMessage.value = '';
 
 	const validationResult = await validateForm();
 
 	if ( validationResult.status !== 'OK' ) {
 		isValidating.value = false;
-		scrollToFirstError();
+		showErrorSummary.value = true;
 		return;
 	}
 
@@ -276,9 +283,21 @@ const submit = async (): Promise<void> => {
 		emit( 'address-updated', { addressData, addressType: addressData.addressType } );
 	} ).catch( ( error: string ) => {
 		isValidating.value = false;
-		serverMessage.value = error;
+		serverErrorMessage.value = error;
 	} );
 };
+
+store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/addressTypeIsInvalid' ], ( isInvalid: boolean ) => {
+	if ( showErrorSummary.value && !isInvalid ) {
+		showErrorSummary.value = false;
+	}
+} );
+
+store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	if ( showErrorSummary.value && isValid ) {
+		showErrorSummary.value = false;
+	}
+} );
 
 onMounted( () => {
 	trackDynamicForm();

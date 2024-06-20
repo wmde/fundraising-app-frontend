@@ -8,7 +8,7 @@ import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { discardInitialization } from '@src/store/payment/actionTypes';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
-import { ComputedRef, ref, Ref } from 'vue';
+import { computed, ComputedRef, ref, Ref } from 'vue';
 
 const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 	if ( addressType === AddressTypeModel.ANON ) {
@@ -25,15 +25,11 @@ const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 	trackFormSubmission( currentAddressForm );
 };
 
-const scrollToFirstError = () => {
-	document.getElementsByClassName( 'help is-danger' )[ 0 ]
-		.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-};
-
 type ReturnType = {
 	submit: () => Promise<void>,
 	previousPage: () => void,
     submitValuesForm: Ref<HTMLFormElement>,
+	showErrorSummary: Ref<boolean>,
 }
 
 export function useAddressFormEventHandlers(
@@ -45,6 +41,9 @@ export function useAddressFormEventHandlers(
 	validateEmailUrl: string,
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
+	const bankDataIsValid = ref<boolean>( true );
+	const addressDataIsValid = ref<boolean>( true );
+	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value );
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( NS_ADDRESS, validateAddressType ), {
@@ -64,11 +63,12 @@ export function useAddressFormEventHandlers(
 		await waitForServerValidationToFinish( store );
 
 		if ( !store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
-			scrollToFirstError();
+			addressDataIsValid.value = false;
 			return;
 		}
+
 		if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
-			scrollToFirstError();
+			bankDataIsValid.value = false;
 			return;
 		}
 
@@ -83,9 +83,22 @@ export function useAddressFormEventHandlers(
 		emit( 'previous-page' );
 	};
 
+	store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+		if ( !addressDataIsValid.value && isValid ) {
+			addressDataIsValid.value = true;
+		}
+	} );
+
+	store.watch( ( state, getters ) => getters[ NS_BANKDATA + '/bankDataIsValid' ], ( isValid: boolean ) => {
+		if ( !bankDataIsValid.value && isValid ) {
+			bankDataIsValid.value = true;
+		}
+	} );
+
 	return {
 		submit,
 		previousPage,
 		submitValuesForm,
+		showErrorSummary,
 	};
 }

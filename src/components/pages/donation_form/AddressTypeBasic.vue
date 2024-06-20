@@ -2,7 +2,6 @@
 
 	<RadioField
 		name="addressType"
-		input-id="addressType"
 		:options="[
 			{
 				value: AddressTypeModel.PERSON,

@@ -10,6 +10,7 @@
 		</PaymentSummary>
 
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
+			<ScrollTarget target-id="iban-scroll-target"/>
 			<PaymentBankData
 				:validateBankDataUrl="validateBankDataUrl"
 				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
@@ -17,6 +18,7 @@
 		</form>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
+			<ScrollTarget target-id="address-type-scroll-target"/>
 			<AddressTypeBasic
 				@address-type="setAddressType( $event )"
 				@set-full-selected="setFullSelected"
@@ -40,6 +42,8 @@
 			:tracking-data="trackingData"
 			:campaign-values="campaignValues">
 		</AddressForms>
+
+		<AddressFormErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
 
 		<FormSummary>
 			<template #summary-content>
@@ -70,8 +74,8 @@
 			</template>
 
 		</FormSummary>
-		<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm">
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
+		<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
+			<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
 		</form>
 	</div>
 </template>
@@ -99,6 +103,8 @@ import { useAddressTypeFunctions } from '@src/components/pages/donation_form/Add
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { useStore } from 'vuex';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import AddressFormErrorSummaries from '@src/components/pages/donation_form/AddressFormErrorSummaries.vue';
 
 interface Props {
 	assetsPath: string;
@@ -146,7 +152,7 @@ const {
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
 
-const { submit, previousPage, submitValuesForm } = useAddressFormEventHandlers(
+const { submit, previousPage, submitValuesForm, showErrorSummary } = useAddressFormEventHandlers(
 	store,
 	emit,
 	addressType,

@@ -1,5 +1,6 @@
 <template>
 	<fieldset class="payment-bank-data-section">
+		<ScrollTarget target-id="payment-form-iban-scroll-target"/>
 		<legend class="title is-size-5">{{ $t( 'donation_form_payment_bankdata_title' ) }}</legend>
 		<div v-bind:class="['form-input', { 'is-invalid': bankDataIsInvalid }]">
 			<label for="iban" class="form-field-label">{{ $t( labels.iban ) }}</label>
@@ -53,10 +54,12 @@ import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
 import AccountNumberField from '@src/components/shared/AccountNumberField.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 export default defineComponent( {
 	name: 'PaymentBankData',
 	components: {
+		ScrollTarget,
 		TextField,
 		AccountNumberField,
 	},

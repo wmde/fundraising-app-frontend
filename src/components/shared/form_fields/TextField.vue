@@ -3,6 +3,9 @@
 		<label :for="inputId" class="form-field-label">
 			{{ label }} <em v-if="labelHelpText">{{ labelHelpText }}</em>
 		</label>
+		<div v-if="helpText" class="form-field-help-text" :id="`${inputId}-help-text`">
+			{{ helpText }}
+		</div>
 		<TextFormInput
 			:name="name"
 			:input-type="inputType"
@@ -15,10 +18,11 @@
 			:disabled="disabled"
 			:required="required"
 			:autofocus="autofocus"
+			:aria-describedby="describedBy"
 			@blur="$emit('field-changed', name )"
 			@update:modelValue="onUpdateModel"
 		/>
-		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
 		<span class="field-info-message">
 			<slot name="message"/>
 		</span>
@@ -29,11 +33,13 @@
 
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
+import { computed } from 'vue';
 
 interface Props {
 	inputType?: 'text'|'textarea';
 	label: String;
 	labelHelpText?: String;
+	helpText?: String;
 	name: string;
 	inputId: string;
 	placeholder: string;
@@ -55,6 +61,11 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
+
+const describedBy = computed<string|null>( () => {
+	const text = ( ( props.helpText ? `${ props.inputId }-help-text` : '' ) + ( props.showError ? ` ${props.inputId}-error` : '' ) ).trim();
+	return text === '' ? null : text;
+} );
 
 const onUpdateModel = ( newValue: string|number ): void => {
 	emit( 'update:modelValue', newValue );

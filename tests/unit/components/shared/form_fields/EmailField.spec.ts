@@ -29,6 +29,7 @@ describe( 'EmailField.vue', () => {
 
 		expect( wrapper.find( 'span.help.is-danger' ).exists() ).toBeTruthy();
 		expect( wrapper.find( 'span.help.is-danger' ).text() ).toStrictEqual( 'donation_form_email_error' );
+		expect( wrapper.find( 'input' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'email-error' );
 	} );
 
 	it( 'shows the message slot', async () => {

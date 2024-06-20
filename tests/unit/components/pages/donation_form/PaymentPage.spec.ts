@@ -6,16 +6,13 @@ import { Store } from 'vuex';
 import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
 import { createStore } from '@src/store/donation_store';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
+import { nextTick } from 'vue';
 
 jest.mock( '@src/util/tracking', () => {
 	return {
 		trackFormSubmission: jest.fn(),
 		trackDynamicForm: jest.fn(),
 	};
-} );
-
-jest.mock( '@src/util/scroll_to_first_error', () => {
-	return jest.fn();
 } );
 
 const salutations = [
@@ -36,16 +33,13 @@ describe( 'PaymentPage.vue', () => {
 	const getWrapper = ( store: Store<any> ): VueWrapper<any> => {
 		return mount( PaymentPage, {
 			props: {
-				paymentAmounts: [ 5 ],
+				paymentAmounts: [ 500 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
 				salutations,
 			},
 			global: {
 				plugins: [ store ],
-				stubs: {
-					Payment: { template: '<div class="i-am-payment" />' },
-				},
 			},
 			components: {
 				FeatureToggle: createFeatureToggle( [] ),
@@ -67,14 +61,40 @@ describe( 'PaymentPage.vue', () => {
 		expect( store.dispatch ).toHaveBeenCalledWith( action( NS_PAYMENT, markEmptyValuesAsInvalid ) );
 	} );
 
-	it( 'doesn\'t load the next page if there are validation errors', async () => {
+	it( 'emits event if there are no validation errors', async () => {
+		const store = createStore();
+		const wrapper = getWrapper( store );
+
+		await wrapper.find( '#amount-500' ).trigger( 'change' );
+		await wrapper.find( '#paymentType-0' ).trigger( 'change' );
+		await wrapper.find( '#next' ).trigger( 'click' );
+
+		expect( wrapper.emitted( 'next-page' ) ).toBeTruthy();
+	} );
+
+	it( 'doesn\'t emit event if there are validation errors', async () => {
 		const store = createStore();
 		store.dispatch = jest.fn().mockResolvedValue( true );
 		const wrapper = getWrapper( store );
 
 		await wrapper.find( '#next' ).trigger( 'click' );
 
-		expect( wrapper.find( '.i-am-address-form' ).exists() ).toBe( false );
-		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
+		expect( wrapper.emitted( 'next-page' ) ).toBeUndefined();
+	} );
+
+	it( 'shows and hides the error summary', async () => {
+		const store = createStore();
+		const wrapper = getWrapper( store );
+
+		await wrapper.find( '#next' ).trigger( 'click' );
+		await nextTick();
+		await nextTick();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#amount-500' ).trigger( 'change' );
+		await wrapper.find( '#paymentType-0' ).trigger( 'change' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
 } );

@@ -139,4 +139,11 @@ $check-size: map.get( units.$spacing, 'small' );
 		}
 	}
 }
+
+.is-invalid {
+	.radio-form-input label {
+		border-color: colors.$error;
+	}
+}
+
 </style>

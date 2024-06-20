@@ -4,17 +4,13 @@ import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { validateAddress, validateEmail } from '@src/store/address/actionTypes';
 import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
-import { ComputedRef, ref, Ref } from 'vue';
-
-const scrollToFirstError = () => {
-	document.getElementsByClassName( 'help is-danger' )[ 0 ]
-		.scrollIntoView( { behavior: 'smooth', block: 'center', inline: 'nearest' } );
-};
+import { computed, ComputedRef, ref, Ref } from 'vue';
 
 type ReturnType = {
 	submit: () => Promise<void>,
 	previousPage: () => void,
     submitValuesForm: Ref<HTMLFormElement>,
+	showErrorSummary: Ref<boolean>,
 }
 
 export function useAddressFormEventHandlers(
@@ -26,6 +22,10 @@ export function useAddressFormEventHandlers(
 	trackAddressForm: () => void,
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
+	const bankDataIsValid = ref<boolean>( true );
+	const addressDataIsValid = ref<boolean>( true );
+	const dateOfBirthIsValid = ref<boolean>( true );
+	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value || !dateOfBirthIsValid.value );
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddress ), validateAddressUrl ),
@@ -41,15 +41,15 @@ export function useAddressFormEventHandlers(
 		await waitForServerValidationToFinish( store );
 
 		if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] ) {
-			scrollToFirstError();
+			addressDataIsValid.value = false;
 			return;
 		}
 		if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
-			scrollToFirstError();
+			bankDataIsValid.value = false;
 			return;
 		}
 		if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ] ) {
-			scrollToFirstError();
+			dateOfBirthIsValid.value = false;
 			return;
 		}
 
@@ -61,9 +61,28 @@ export function useAddressFormEventHandlers(
 		emit( 'previous-page' );
 	};
 
+	store.watch( ( state, getters ) => getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+		if ( !addressDataIsValid.value && isValid ) {
+			addressDataIsValid.value = true;
+		}
+	} );
+
+	store.watch( ( state, getters ) => getters[ NS_BANKDATA + '/bankDataIsValid' ], ( isValid: boolean ) => {
+		if ( !bankDataIsValid.value && isValid ) {
+			bankDataIsValid.value = true;
+		}
+	} );
+
+	store.watch( ( state, getters ) => getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ], ( isValid: boolean ) => {
+		if ( !dateOfBirthIsValid.value && isValid ) {
+			dateOfBirthIsValid.value = true;
+		}
+	} );
+
 	return {
 		submit,
 		previousPage,
 		submitValuesForm,
+		showErrorSummary,
 	};
 }

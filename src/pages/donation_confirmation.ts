@@ -2,7 +2,7 @@ import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
 import { createStore } from '@src/store/donor_update_store';
 
-import DonorResource from '@src/api/DonorResource';
+import { ApiDonorResource } from '@src/api/DonorResource';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
 import PageDataInitializer from '@src/util/page_data_initializer';
 import { Address } from '@src/view_models/Address';
@@ -90,7 +90,7 @@ store.dispatch(
 				cancelDonationUrl: pageData.applicationVars.urls.cancelDonation,
 				postCommentUrl: pageData.applicationVars.urls.postComment,
 				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-				donorResource: new DonorResource( pageData.applicationVars.urls.updateDonor ),
+				donorResource: new ApiDonorResource( pageData.applicationVars.urls.updateDonor ),
 			},
 		} );
 	app.use( store );
