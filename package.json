@@ -51,7 +51,7 @@
     "css-minimizer-webpack-plugin": "^7.0.0",
     "eslint": "^8.57.0",
     "eslint-config-wikimedia": "^0.28.2",
-    "eslint-plugin-jsdoc": "^48.2.12",
+    "eslint-plugin-jsdoc": "^48.4.0",
     "eslint-plugin-json": "^4.0.0",
     "eslint-plugin-json-es": "^1.6.0",
     "eslint-plugin-vuejs-accessibility": "^2.3.0",
