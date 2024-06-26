@@ -4,8 +4,10 @@ import CountryAutocompleteField from '@src/components/shared/form_fields/Country
 import countries from '@test/data/countries';
 
 describe( 'CountryAutocompleteField.vue', () => {
-
 	const getWrapper = ( modelValue: string = '', wasRestored: boolean = false ): VueWrapper<any> => {
+		const currentElement = { clientHeight: 0, offsetTop: 0 };
+		Object.defineProperty( document, 'querySelector', { writable: true, configurable: true, value: () => currentElement } );
+
 		return mount( CountryAutocompleteField, {
 			props: {
 				modelValue,
@@ -156,5 +158,79 @@ describe( 'CountryAutocompleteField.vue', () => {
 		await field.setValue( 'Ireland' );
 
 		expect( wrapper.find( '.dropdown-content > .dropdown-separator' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'highlights countries on the list on keyboard up and down', async () => {
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#country' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+
+		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+
+		await field.trigger( 'keydown', { key: 'ArrowUp' } );
+
+		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+
+		expect( wrapper.find( '.dropdown-content > *:nth-child(5)' ).classes() ).toContain( 'is-active-item' );
+
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+
+		expect( wrapper.find( '.dropdown-content > *:nth-child(5)' ).classes() ).toContain( 'is-active-item' );
+	} );
+
+	it( 'sets the field value when the donor presses submit while navigating the list', async () => {
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#country' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'Enter' } );
+
+		expect( field.element.value ).toStrictEqual( 'Austria' );
+	} );
+
+	it( 'sets the field when the donor presses tab while navigating the list', async () => {
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#country' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'Tab' } );
+
+		expect( field.element.value ).toStrictEqual( 'Austria' );
+	} );
+
+	it( 'does not set the field value when the donor presses submit while navigating the list', async () => {
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#country' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'u' } );
+		await field.trigger( 'keydown', { key: 'Enter' } );
+
+		expect( field.element.value ).toStrictEqual( '' );
+	} );
+
+	it( 'does not set the field value when the donor presses tab while navigating the list', async () => {
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#country' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'u' } );
+		await field.trigger( 'keydown', { key: 'Tab' } );
+
+		expect( field.element.value ).toStrictEqual( '' );
 	} );
 } );
