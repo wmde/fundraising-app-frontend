@@ -21,7 +21,7 @@ export function useFilteredCountries( countries: Array<Country>, inputCountry: R
 			return countryOption.countryFullName
 				.toString()
 				.toLowerCase()
-				.indexOf( inputCountry.value.toLowerCase() ) >= 0;
+				.indexOf( inputCountry.value.trim().toLowerCase() ) >= 0;
 		} );
 
 		return countryList.length > 0 ? countryList : countries;
