@@ -67,10 +67,6 @@ $check-size: map.get( units.$spacing, 'small' );
 	width: auto;
 	line-height: 20px;
 
-	@include breakpoints.tablet-up {
-		width: map.get( units.$spacing, 'xxx-large' );
-	}
-
 	&:last-child {
 		margin: 0;
 		flex: 0 0 auto;

@@ -1,6 +1,6 @@
 <template>
 	<div class="name-section">
-
+		<ScrollTarget target-id="salutation-scroll-target"/>
 		<RadioField
 			name="salutation"
 			v-model="formData.salutation.value"
@@ -12,6 +12,7 @@
 			alignment="row"
 		/>
 
+		<ScrollTarget target-id="title-scroll-target"/>
 		<SelectField
 			name="title"
 			v-model="formData.title.value"
@@ -26,6 +27,7 @@
 			@field-changed="$emit('field-changed', 'title')"
 		/>
 
+		<ScrollTarget target-id="first-name-scroll-target"/>
 		<TextField
 			name="firstName"
 			input-id="first-name"
@@ -38,6 +40,7 @@
 			@field-changed="$emit('field-changed', 'firstName')"
 		/>
 
+		<ScrollTarget target-id="last-name-scroll-target"/>
 		<TextField
 			name="lastName"
 			input-id="last-name"
@@ -69,6 +72,7 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	salutations: Salutation[];

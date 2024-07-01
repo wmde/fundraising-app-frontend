@@ -1,8 +1,8 @@
 <template>
-	<fieldset class="form-field form-field-radio" :class="{ 'is-invalid': showError }">
+	<fieldset class="form-field form-field-radio" :class="[ alignment + '-alignment', { 'is-invalid': showError } ]" >
 		<legend v-if="label" class="form-field-label">{{ label }}</legend>
 		<slot name="intro-message"></slot>
-		<div class="control form-field-radio-container" :class="alignment+ '-alignment'">
+		<div class="control form-field-radio-container">
 			<RadioFormInput
 				v-for="( option, index ) in options"
 				:key="index"
@@ -12,7 +12,7 @@
 				:disabled="disabled.includes( option.value )"
 				:required="required"
 				:native-value="option.value"
-				:aria-describedby="showError ? `${name}-error-message` : ''"
+				:aria-describedby="describedBy"
 				:aria-invalid="showError"
 				v-model="fieldModel"
 				:autofocus="autofocus"
@@ -30,6 +30,7 @@
 import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
+import { computed } from 'vue';
 
 interface Props {
 	label?: String;
@@ -42,15 +43,20 @@ interface Props {
 	errorMessage?: String;
 	alignment: 'row' | 'column';
 	autofocus?: boolean;
+	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	disabled: () => [],
 	required: false,
 	showError: false,
+	ariaDescribedby: '',
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
+const describedBy = computed<string|null>( () => {
+	return props.ariaDescribedby + ( props.showError ? ` ${props.name}-error-message` : '' );
+} );
 const fieldModel = useFieldModel<string | number | boolean | null>( () => props.modelValue, props.modelValue );
 
 const onFieldChange = ( newValue: string | number | boolean | null ): void => {
@@ -76,28 +82,55 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 		.radio + .radio {
 			margin-left: 0;
 		}
-		&.row-alignment {
+
+		label {
+			padding-left: map.get( units.$spacing, 'small' ) * 3;
+		}
+
+	}
+
+	&.row-alignment {
+		@include breakpoints.tablet-up {
+			max-width: none;
+		}
+
+		.form-field-radio-container {
 			flex-direction: column;
+
+			.radio-form-input {
+				margin: 0 0 map.get(units.$spacing, 'small');
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
 
 			@include breakpoints.tablet-up {
 				flex-direction: row;
 
 				.radio-form-input {
-					margin: 0 map.get( units.$spacing, 'large' ) 0 0;
+					margin: 0 map.get(units.$spacing, 'large') 0 0;
+				}
+
+				label {
+					padding-left: map.get(units.$spacing, 'x-large');
 				}
 			}
 		}
-		&.column-alignment {
+	}
+
+	&.column-alignment {
+		.form-field-radio-container {
 			flex-direction: column;
 
 			.radio-form-input {
 				width: 100%;
-				max-width: map.get( forms.$input, 'max-width' );
+				max-width: map.get(forms.$input, 'max-width');
 				display: inline-flex;
 				align-items: flex-start;
 
 				&:not( :last-child ) {
-					margin-bottom: map.get( units.$spacing, 'small' );
+					margin-bottom: map.get(units.$spacing, 'small');
 				}
 
 				input {
@@ -105,13 +138,9 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 					flex-shrink: 0;
 				}
 
-				label {
-					padding-left: map.get( units.$spacing, 'small' ) * 3;
-				}
-
 				.option-info-message {
-					color: rgba(0,0,0,.6);
-					margin-top: map.get( units.$spacing, 'xx-small' );
+					color: rgba(0, 0, 0, .6);
+					margin-top: map.get(units.$spacing, 'xx-small');
 				}
 
 				&.is-disabled {

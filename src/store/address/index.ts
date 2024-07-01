@@ -38,6 +38,7 @@ export default function ( requiredFields: AddressRequirements ): Module<AddressS
 			country: Validity.VALID,
 			email: Validity.INCOMPLETE,
 			addressType: Validity.VALID,
+			receipt: Validity.INCOMPLETE,
 		},
 	};
 

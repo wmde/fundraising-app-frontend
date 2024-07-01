@@ -11,7 +11,8 @@ export const REQUIRED_FIELDS: AddressRequirements = {
 	[ AddressTypeModel.COMPANY_WITH_CONTACT ]: [ 'salutation', 'firstName', 'lastName', 'companyName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],
 	[ AddressTypeModel.EMAIL ]: [ 'email', 'salutation', 'firstName', 'lastName' ],
 	[ AddressTypeModel.ANON ]: [],
-	[ AddressTypeModel.UNSET ]: [ 'addressType' ],
+	// We show the person address fields when the address type is UNSET so make sure to validate them
+	[ AddressTypeModel.UNSET ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],
 };
 
 export const REQUIRED_FIELDS_ADDRESS_UPDATE: AddressRequirements = {

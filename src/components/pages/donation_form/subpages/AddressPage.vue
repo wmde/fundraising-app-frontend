@@ -48,28 +48,28 @@
 		<FormSummary>
 			<template #summary-content>
 				<DonationSummary
-						:payment="paymentSummary"
-						:address-type="addressTypeName"
-						:address="addressSummary"
-						:countries="countries"
-						:salutations="salutations"
-						:language-item="inlineSummaryLanguageItem"
+					:payment="paymentSummary"
+					:address-type="addressTypeName"
+					:address="addressSummary"
+					:countries="countries"
+					:salutations="salutations"
+					:language-item="inlineSummaryLanguageItem"
 				/>
 			</template>
 
 			<template #summary-buttons>
 				<FormButton
-						id="previous-btn"
-						:is-outlined="true"
-						@click="previousPage"
+					id="previous-btn"
+					:is-outlined="true"
+					@click="previousPage"
 				>
 					{{ $t( 'donation_form_section_back' ) }}
 				</FormButton>
 				<PaymentTextFormButton
-						id="submit-btn"
-						:is-loading="store.getters.isValidating"
-						:payment-type="paymentSummary.paymentType"
-						@click="submit"
+					id="submit-btn"
+					:is-loading="store.getters.isValidating"
+					:payment-type="paymentSummary.paymentType"
+					@click="submit"
 				/>
 			</template>
 

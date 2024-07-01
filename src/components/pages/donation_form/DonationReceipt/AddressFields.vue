@@ -1,19 +1,21 @@
 <template>
 	<div class="address-section">
 
+		<ScrollTarget target-id="address-type-scroll-target"/>
 		<RadioField
 			v-model="addressType"
 			name="addressTypeSelector"
 			:options="[
-				{ value: AddressTypeModel.PERSON, label: $t( 'C23_WMDE_Desktop_DE_05_contact_details_private' ), id: 'addressTypeSelector-0' },
-				{ value: AddressTypeModel.COMPANY_WITH_CONTACT, label: $t( 'C23_WMDE_Desktop_DE_05_contact_details_company' ), id: 'addressTypeSelector-1' },
+				{ value: AddressTypeModel.PERSON, label: $t( 'C24_WMDE_Desktop_DE_01_contact_details_private' ), id: 'addressType-0' },
+				{ value: AddressTypeModel.COMPANY_WITH_CONTACT, label: $t( 'C24_WMDE_Desktop_DE_01_contact_details_company' ), id: 'addressType-1' },
 			]"
-			:label="$t( 'C23_WMDE_Desktop_DE_05_contact_details_label' )"
+			:label="$t( 'C24_WMDE_Desktop_DE_01_contact_details_label' )"
 			:show-error="showAddressTypeError"
 			:error-message="$t( 'donation_form_section_address_error' )"
 			alignment="row"
 		/>
 
+		<ScrollTarget target-id="company-name-scroll-target"/>
 		<TextField
 			v-if="addressType === AddressTypeModel.COMPANY_WITH_CONTACT"
 			name="companyName"
@@ -27,6 +29,7 @@
 			@field-changed="$emit('field-changed', 'companyName')"
 		/>
 
+		<ScrollTarget target-id="street-scroll-target"/>
 		<TextField
 			name="street"
 			input-id="street"
@@ -46,6 +49,7 @@
 			/>
 		</TextField>
 
+		<ScrollTarget target-id="post-code-scroll-target"/>
 		<TextField
 			name="postcode"
 			input-id="post-code"
@@ -64,6 +68,7 @@
 			/>
 		</TextField>
 
+		<ScrollTarget target-id="city-scroll-target"/>
 		<CityAutocompleteField
 			v-model="formData.city.value"
 			input-id="city"
@@ -81,6 +86,7 @@
 			/>
 		</CityAutocompleteField>
 
+		<ScrollTarget target-id="country-scroll-target"/>
 		<CountryAutocompleteField
 			v-model="formData.country.value"
 			input-id="country"
@@ -110,6 +116,7 @@ import { computed } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import { Country } from '@src/view_models/Country';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	formData: AddressFormData;

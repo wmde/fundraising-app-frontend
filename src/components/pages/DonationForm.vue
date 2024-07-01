@@ -27,7 +27,7 @@
 					/>
 				</keep-alive>
 			</template>
-			<template #campaigns.address_pages.test_01>
+			<template #campaigns.address_pages.test_02>
 				<keep-alive>
 					<PaymentPage
 						v-if="currentPageIndex === 0"
@@ -78,7 +78,7 @@ interface Props {
 	validateEmailUrl: string;
 	validateBankDataUrl: string;
 	validateLegacyBankDataUrl: string;
-	paymentAmounts: string[];
+	paymentAmounts: number[];
 	paymentIntervals: number[];
 	paymentTypes: string[];
 	countries: Country[];

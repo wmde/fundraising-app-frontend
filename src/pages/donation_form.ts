@@ -60,7 +60,8 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			action( NS_ADDRESS, initializeAddress ),
 			createInitialDonationAddressValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
-	] ).then( ( [ paymentDataComplete ] ) => { // ignoring result of initializeAddress
+	] ).then( ( [ paymentDataComplete ] ) => {
+		// ignoring result of initializeAddress
 		const app = createVueApp(
 			App,
 			pageData.messages,

@@ -3,16 +3,14 @@ import { computed, ComputedRef, Ref, ref, watch } from 'vue';
 import { action } from '@src/store/util';
 import { NS_ADDRESS } from '@src/store/namespaces';
 import { setReceiptChoice } from '@src/store/address/actionTypes';
-import { Validity } from '@src/view_models/Validity';
 
 type ReturnType = {
-	receiptNeeded: Ref<boolean|null>,
+	receiptNeeded: Ref<boolean>,
 	showReceiptOptionError: ComputedRef<any>
 };
 
 export function useReceiptModel( store: Store<any> ): ReturnType {
-	const initialReceipt = store.state[ NS_ADDRESS ].validity.receipt === Validity.RESTORED ? store.state[ NS_ADDRESS ].receipt : null;
-	const receiptNeeded = ref<boolean|null>( initialReceipt );
+	const receiptNeeded = ref<boolean>( store.state[ NS_ADDRESS ].receipt );
 
 	const showReceiptOptionError = computed( () => {
 		return !receiptNeeded.value && store.getters[ 'address/addressTypeIsInvalid' ];

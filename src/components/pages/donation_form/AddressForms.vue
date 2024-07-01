@@ -163,7 +163,7 @@ import { injectStrict } from '@src/util/injectStrict';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { Validity } from '@src/view_models/Validity';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
+import { useReceiptModel } from '@src/components/pages/donation_form/useReceiptModel';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 

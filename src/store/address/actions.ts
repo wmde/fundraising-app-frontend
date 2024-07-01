@@ -71,8 +71,31 @@ export const actions = {
 		} );
 
 	},
+	/**
+	 * This is a hacky workaround for test C24_WMDE_Desktop_DE_01 if we move to that style of form we
+	 * need to add proper store fields to handle it, if not then we should delete this
+	 */
+	validateDonationReceiptAddress( context: ActionContext<AddressState, any>, payload: { receiptNeeded: boolean | null, validateAddressUrl: string } ) {
+		context.commit( 'markEmptyDonationReceiptFieldsAsInvalid', payload.receiptNeeded );
+		if ( !context.getters.requiredFieldsAreValid ) {
+			return Promise.resolve( { status: 'ERR', messages: [] } );
+		}
+
+		context.commit( BEGIN_ADDRESS_VALIDATION );
+		const bodyFormData = new FormData();
+		Object.keys( context.state.values ).forEach(
+			field => bodyFormData.append( field, context.state.values[ field ] )
+		);
+		bodyFormData.append( 'addressType', addressTypeName( context.state.addressType ) );
+		return axios.post( payload.validateAddressUrl, bodyFormData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
+			context.commit( FINISH_ADDRESS_VALIDATION, validationResult.data );
+			return validationResult.data;
+		} );
+
+	},
 	[ validateEmail ]( context: ActionContext<AddressState, any>, validateEmailUrl: string ) {
-		context.commit( MARK_EMPTY_FIELDS_INVALID );
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );
 		}
