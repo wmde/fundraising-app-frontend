@@ -15,6 +15,7 @@
 			:required="required"
 			:aria-invalid="hasError"
 			:aria-describedby="ariaDescribedby"
+			:aria-autocomplete="ariaAutocomplete"
 			@blur="onBlur"
 			@focus="onFocus"
 		/>
@@ -61,6 +62,7 @@ interface Props {
 	disabled?: boolean;
 	required?: boolean;
 	ariaDescribedby?: string;
+	ariaAutocomplete?: 'none'|'inline'|'list'|'both';
 }
 
 const props = withDefaults( defineProps<Props>(), {
