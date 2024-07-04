@@ -1,0 +1,35 @@
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      # "partial: false" and depth will copy several commits from the source repo,
+      # enabling history checks for the ocular tool
+      # "lfs: false" disables downloading resources from LFS, which we don't use
+      partial: false
+      depth: 10
+      lfs: false
+
+steps:
+    -   name: build
+        when: 
+          - event: [ push, pull_request, cron, manual ]
+        image: node:18-alpine
+        volumes:
+          - /home/deploy/fundraising-app-frontend-builds:/build
+          - /tmp/woodpeckerci/cache/npm:/npmcache
+        environment:
+          VUE_APP_ERRBIT_PROJECT_KEY:
+            from_secret: errbit_key
+        commands:
+            - npm ci --cache /npmcache
+            - npm run build
+            - echo "$CI_COMMIT_BRANCH" > dist/DEPLOY_ID
+            - echo "$CI_COMMIT_SHA" >> dist/DEPLOY_ID
+            - echo "$CI_PIPELINE_STARTED" >> dist/DEPLOY_ID
+            - cd dist/
+            # Replace slashes with underscores, add suffix
+            - ARCHIVE_NAME="${CI_COMMIT_BRANCH//\//_}.tar.gz"
+            - tar -czvf /build/$ARCHIVE_NAME .
+            # 1008 is the hardcoded user ID of the deploy user
+            - chown 1008:1008 /build/$ARCHIVE_NAME
+
