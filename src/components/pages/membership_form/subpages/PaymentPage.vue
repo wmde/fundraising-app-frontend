@@ -33,7 +33,7 @@
 			:items="[
 				{
 					validity: store.state.membership_fee.validity.interval,
-					message: $t( 'error_summary_payment_interval' ),
+					message: $t( 'error_summary_interval' ),
 					focusElement: 'interval-0',
 					scrollElement: 'payment-form-interval-scroll-target'
 				},
