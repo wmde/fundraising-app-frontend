@@ -1,6 +1,14 @@
 <template>
-	<div class="payment-page">
-		<h1 class="title is-size-1">{{ $t('membership_form_headline' ) }}</h1>
+	<div
+		class="payment-page"
+		aria-live="assertive"
+		aria-labelledby="membership-form-heading membership-form-subheading"
+		tabindex="-1"
+		ref="pageRef"
+	>
+
+		<h1 id="membership-form-heading" class="form-title">{{ $t( 'membership_form_headline' ) }}</h1>
+		<h2 id="membership-form-subheading" class="form-subtitle">{{ $t( 'membership_form_payment_subheading' ) }}</h2>
 
 		<FormSection v-if="showMembershipTypeOption" title-margin="x-small">
 			<MembershipTypeField
@@ -97,6 +105,8 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'next-page' ] );
 const store = useStore();
+const pageRef = ref<HTMLElement>( null );
+defineExpose( { focus: (): void => pageRef.value.focus() } );
 
 onMounted( trackDynamicForm );
 
