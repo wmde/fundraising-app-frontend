@@ -13,7 +13,7 @@ steps:
     -   name: build
         when: 
           - event: [ push, pull_request, cron, manual ]
-        image: node:18-alpine
+        image: node:20-alpine
         volumes:
           - /home/deploy/fundraising-app-frontend-builds:/build
           - /tmp/woodpeckerci/cache/npm:/npmcache
