@@ -1,4 +1,3 @@
-export const validateEmail = 'validateEmail';
 export const validateAddressField = 'validateAddressField';
 export const validateDateOfBirth = 'validateDateOfBirth';
 export const setAddressField = 'setAddressField';

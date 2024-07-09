@@ -8,7 +8,6 @@ import {
 	setReceiptChoice,
 	validateAddressField,
 	validateDateOfBirth,
-	validateEmail,
 } from '@src/store/membership_address/actionTypes';
 import { InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
 import { ValidationResponse } from '@src/store/ValidationResponse';
@@ -94,7 +93,7 @@ export const actions = {
 			return validationResult.data;
 		} );
 	},
-	[ validateEmail ]( context: ActionContext<MembershipAddressState, any>, validateEmailUrl: string ) {
+	validateEmail( context: ActionContext<MembershipAddressState, any>, validateEmailUrl: string ) {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );
