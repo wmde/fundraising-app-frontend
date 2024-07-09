@@ -3,7 +3,6 @@ import Address from '@src/components/pages/membership_form/Address.vue';
 import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { setIncentives } from '@src/store/membership_address/actionTypes';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -93,7 +92,7 @@ describe( 'Address.vue', () => {
 	it( 'sets incentive preference in store when it receives field-change event', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setIncentives );
+		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, 'setIncentives' );
 		const expectedPayload = [ 'tote_bag' ];
 
 		const inputElement = wrapper.findComponent( IncentivesField ).find<HTMLInputElement>( 'input' );
