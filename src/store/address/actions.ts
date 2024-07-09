@@ -5,7 +5,6 @@ import {
 	setAddressType,
 	setNewsletterChoice,
 	setReceiptChoice,
-	validateAddress,
 	validateAddressField,
 	validateAddressType,
 	validateEmail,
@@ -42,7 +41,7 @@ export const actions = {
 		context.commit( SET_ADDRESS_FIELD, field );
 		context.commit( VALIDATE_INPUT, field );
 	},
-	[ validateAddress ]( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
+	validateAddress( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );

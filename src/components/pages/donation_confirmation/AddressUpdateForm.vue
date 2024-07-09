@@ -99,7 +99,12 @@ import { Address, AddressFormData, AddressValidity, ValidationResult } from '@sr
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import { setAddressField, validateAddress, validateAddressField, validateAddressType, validateEmail } from '@src/store/address/actionTypes';
+import {
+	setAddressField,
+	validateAddressField,
+	validateAddressType,
+	validateEmail,
+} from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { mergeValidationResults } from '@src/util/merge_validation_results';
@@ -120,7 +125,8 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
-import AddressUpdateFormErrorSummaries from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
+import AddressUpdateFormErrorSummaries
+	from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
 import { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
 import ServerMessage from '@src/components/shared/ServerMessage.vue';
 
@@ -228,7 +234,7 @@ const validateForm = async (): Promise<ValidationResult> => {
 			type: store.state.address.addressType,
 			disallowed: [ AddressTypeModel.UNSET, AddressTypeModel.ANON, AddressTypeModel.EMAIL ],
 		} ),
-		store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
+		store.dispatch( action( NS_ADDRESS, 'validateAddress' ), props.validateAddressUrl ),
 		store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
 	] );
 	return mergeValidationResults( results );

@@ -108,7 +108,7 @@ import { Address, AddressFormData, AddressValidity, ValidationResult } from '@sr
 import { Validity } from '@src/view_models/Validity';
 import { Country } from '@src/view_models/Country';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import { setAddressField, validateAddress } from '@src/store/address/actionTypes';
+import { setAddressField } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import { AddressValidation } from '@src/view_models/Validation';
 import { useStore } from 'vuex';
@@ -218,7 +218,7 @@ const userOnlyWantsToDeclineReceipt = computed<boolean>( () => {
 } );
 
 const validateForm = (): Promise<ValidationResult> => {
-	return store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl );
+	return store.dispatch( action( NS_ADDRESS, 'validateAddress' ), props.validateAddressUrl );
 };
 
 const onFieldChange = ( fieldName: string ): void => {
