@@ -8,7 +8,6 @@ import PageDataInitializer from '@src/util/page_data_initializer';
 import persistenceItems from '@src/store/data_persistence/donation_form';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Country } from '@src/view_models/Country';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { Salutation } from '@src/view_models/Salutation';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { action } from '@src/store/util';
@@ -55,7 +54,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			}
 		),
 		store.dispatch(
-			action( NS_ADDRESS, 'initializeAddress' ),
+			action( 'address', 'initializeAddress' ),
 			createInitialDonationAddressValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
 	] ).then( ( [ paymentDataComplete ] ) => {

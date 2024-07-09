@@ -1,13 +1,12 @@
 import { mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 const getWrapper = ( addressType: AddressTypeModel ) => {
 	const store = new Vuex.Store( {
 		modules: {
-			[ NS_ADDRESS ]: {
+			[ 'address' ]: {
 				namespaced: true,
 				state: {
 					addressType: addressType,

@@ -17,7 +17,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { AddressState } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
 
@@ -27,7 +26,7 @@ export default defineComponent( {
 		'trackingData',
 	],
 	computed: {
-		...mapState<AddressState>( NS_ADDRESS, {
+		...mapState<AddressState>( 'address', {
 			address: ( state: AddressState ) => state.values,
 			addressType: ( state: AddressState ) => {
 				return addressTypeName( state.addressType );

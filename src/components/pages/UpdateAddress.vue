@@ -107,7 +107,6 @@ import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue'
 import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { Country } from '@src/view_models/Country';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { AddressValidation } from '@src/view_models/Validation';
 import { useStore } from 'vuex';
@@ -213,20 +212,20 @@ const { addressType } = useAddressTypeFunctions( store );
 const { receiptNeeded } = useReceiptModel( store );
 
 const userOnlyWantsToDeclineReceipt = computed<boolean>( () => {
-	return !store.state.address.receipt && store.getters[ NS_ADDRESS + '/allRequiredFieldsEmpty' ];
+	return !store.state.address.receipt && store.getters[ 'address/allRequiredFieldsEmpty' ];
 } );
 
 const validateForm = (): Promise<ValidationResult> => {
-	return store.dispatch( action( NS_ADDRESS, 'validateAddress' ), props.validateAddressUrl );
+	return store.dispatch( action( 'address', 'validateAddress' ), props.validateAddressUrl );
 };
 
 const onFieldChange = ( fieldName: string ): void => {
-	store.dispatch( action( NS_ADDRESS, 'setAddressField' ), formData[ fieldName ] );
+	store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
 };
 
 const getAddressData = (): Address => {
 	const data = {
-		addressType: addressTypeName( store.getters[ NS_ADDRESS + '/addressType' ] ),
+		addressType: addressTypeName( store.getters[ 'address/addressType' ] ),
 	} as any;
 	Object.keys( formData ).forEach( fieldName => {
 		data[ fieldName ] = formData[ fieldName ].value;
@@ -255,7 +254,7 @@ const submit = (): void => {
 	} );
 };
 
-store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+store.watch( ( state, getters ) => getters[ 'address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 	if ( showErrorSummary.value && isValid ) {
 		showErrorSummary.value = false;
 	}

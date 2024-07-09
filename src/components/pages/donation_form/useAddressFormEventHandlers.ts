@@ -1,7 +1,6 @@
 import { Store } from 'vuex';
 import { trackFormSubmission } from '@src/util/tracking';
 import { action } from '@src/store/util';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
@@ -43,12 +42,12 @@ export function useAddressFormEventHandlers(
 	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value );
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
-			store.dispatch( action( NS_ADDRESS, 'validateAddressType' ), {
+			store.dispatch( action( 'address', 'validateAddressType' ), {
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
 			} ),
-			store.dispatch( action( NS_ADDRESS, 'validateAddress' ), validateAddressUrl ),
-			store.dispatch( action( NS_ADDRESS, 'validateEmail' ), validateEmailUrl ),
+			store.dispatch( action( 'address', 'validateAddress' ), validateAddressUrl ),
+			store.dispatch( action( 'address', 'validateEmail' ), validateEmailUrl ),
 		];
 
 		if ( isDirectDebit.value ) {
@@ -59,7 +58,7 @@ export function useAddressFormEventHandlers(
 		// We need to wait for the asynchronous bank data validation, that might still be going on
 		await waitForServerValidationToFinish( store );
 
-		if ( !store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
+		if ( !store.getters[ 'address/requiredFieldsAreValid' ] ) {
 			addressDataIsValid.value = false;
 			return;
 		}
@@ -80,7 +79,7 @@ export function useAddressFormEventHandlers(
 		emit( 'previous-page' );
 	};
 
-	store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	store.watch( ( state, getters ) => getters[ 'address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 		if ( !addressDataIsValid.value && isValid ) {
 			addressDataIsValid.value = true;
 		}

@@ -1,5 +1,4 @@
 import { mutation } from '@src/store/util';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
 import address from '@src/store/data_persistence/address';
 
@@ -25,20 +24,20 @@ export default [
 	{
 		storageKey: 'receipt',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_ADDRESS, 'SET_RECEIPT' ),
+		mutationKey: mutation( 'address', 'SET_RECEIPT' ),
 		fields: [],
 	},
 	{
 		storageKey: 'newsletter',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_ADDRESS, 'SET_NEWSLETTER' ),
+		mutationKey: mutation( 'address', 'SET_NEWSLETTER' ),
 		fields: [],
 	},
 	{
 		storageKey: 'addressType',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_ADDRESS, 'SET_ADDRESS_TYPE' ),
+		mutationKey: mutation( 'address', 'SET_ADDRESS_TYPE' ),
 		fields: [],
 	},
-	address( NS_ADDRESS ),
+	address( 'address' ),
 ];

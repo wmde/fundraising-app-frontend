@@ -9,7 +9,6 @@ import { Address } from '@src/view_models/Address';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Country } from '@src/view_models/Country';
 import { Donation } from '@src/view_models/Donation';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { Salutation } from '@src/view_models/Salutation';
 import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
@@ -46,7 +45,7 @@ clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESP
 trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
 store.dispatch(
-	action( NS_ADDRESS, 'initializeAddress' ),
+	action( 'address', 'initializeAddress' ),
 	{
 		addressType: addressTypeFromName( pageData.applicationVars.addressType.toString() ),
 		newsletter: pageData.applicationVars.donation.newsletter,

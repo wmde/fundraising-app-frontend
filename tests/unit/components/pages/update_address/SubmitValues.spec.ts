@@ -1,7 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from 'vuex';
 import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 describe( 'SubmitValues.vue', () => {
@@ -10,7 +9,7 @@ describe( 'SubmitValues.vue', () => {
 	beforeEach( () => {
 		const store = createStore( {
 			modules: {
-				[ NS_ADDRESS ]: {
+				[ 'address' ]: {
 					namespaced: true,
 					state: {
 						receipt: true,

@@ -2,7 +2,7 @@ import { FieldInitialization } from '@src/view_models/FieldInitialization';
 import persistenceAddress from '@src/store/data_persistence/address';
 import { Validity } from '@src/view_models/Validity';
 import { DataPersister } from '@src/view_models/DataPersistence';
-import { NS_ADDRESS, NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
+import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { InitialAddressValues, InitialMembershipAddressValues } from '@src/view_models/Address';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { InitialPaymentValues } from '@src/view_models/Payment';
@@ -35,7 +35,7 @@ export const createInitialDonationAddressValues = ( dataPersister: DataPersister
 		initialFormValues.addressType = addressTypeFromName( initialFormValues.addressType );
 	}
 
-	persistenceAddress( NS_ADDRESS ).fields.forEach( field => {
+	persistenceAddress( 'address' ).fields.forEach( field => {
 		const value = dataPersister.getValue( field );
 		if ( value ) {
 			addressPersistItems.push( { name: field, value: value, validity: Validity.RESTORED } );

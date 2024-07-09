@@ -3,7 +3,6 @@ import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import axios from 'axios';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { action } from '@src/store/util';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
@@ -153,7 +152,7 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 
 	it( 'submits the form', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_ADDRESS, 'initializeAddress' ), {
+		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.PERSON,
 			newsletter: true,
 			receipt: true,

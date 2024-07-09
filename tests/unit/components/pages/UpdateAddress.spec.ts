@@ -7,7 +7,6 @@ import { addressValidationPatterns } from '@test/data/validation';
 import { Store } from 'vuex';
 import { createStore } from '@src/store/update_address_store';
 import { action } from '@src/store/util';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { nextTick } from 'vue';
 import { AddressChangeResource } from '@src/api/AddressChangeResource';
@@ -47,7 +46,7 @@ describe( 'UpdateAddress.vue', () => {
 
 	it( 'Shows person form fields', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_ADDRESS, 'initializeAddress' ), { addressType: AddressTypeModel.PERSON, fields: [] } );
+		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.PERSON, fields: [] } );
 
 		const wrapper = getWrapper( store );
 
@@ -63,7 +62,7 @@ describe( 'UpdateAddress.vue', () => {
 
 	it( 'Shows company form fields', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_ADDRESS, 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
+		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
 
 		const wrapper = getWrapper( store );
 
@@ -76,7 +75,7 @@ describe( 'UpdateAddress.vue', () => {
 
 	it( 'shows and hides the error summary', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_ADDRESS, 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
+		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
 		const wrapper = getWrapper( store );
 
 		await wrapper.find( 'form' ).trigger( 'submit' );
@@ -117,7 +116,7 @@ describe( 'UpdateAddress.vue', () => {
 		};
 
 		const store = createStore();
-		await store.dispatch( action( NS_ADDRESS, 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
+		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
 		const wrapper = getWrapper( store, addressChangeResource );
 
 		await wrapper.find( '#company-name' ).setValue( 'company' );

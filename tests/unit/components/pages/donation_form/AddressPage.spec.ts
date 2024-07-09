@@ -4,7 +4,6 @@ import axios from 'axios';
 import AddressPage from '@src/components/pages/donation_form/subpages/AddressPage.vue';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { action } from '@src/store/util';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
@@ -111,7 +110,7 @@ describe( 'AddressPage.vue', () => {
 		const { wrapper, store } = getWrapper();
 
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_ADDRESS, 'setAddressType' );
+		const expectedAction = action( 'address', 'setAddressType' );
 		const expectedPayload = AddressTypeModel.ANON;
 
 		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.ANON );
@@ -175,7 +174,7 @@ describe( 'AddressPage.vue', () => {
 
 	it( 'submits the form', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_ADDRESS, 'initializeAddress' ), {
+		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.ANON,
 			newsletter: true,
 			receipt: true,
