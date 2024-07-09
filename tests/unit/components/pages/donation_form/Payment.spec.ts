@@ -4,7 +4,7 @@ import { action } from '@src/store/util';
 
 import Payment from '@src/components/pages/donation_form/Payment.vue';
 import { NS_PAYMENT } from '@src/store/namespaces';
-import { setInterval, setType } from '@src/store/payment/actionTypes';
+import { setType } from '@src/store/payment/actionTypes';
 import { Store } from 'vuex';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
@@ -45,7 +45,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 0 ].vm.$emit( 'update:modelValue', 6 );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_PAYMENT, setInterval ), 6 );
+		expect( store.dispatch ).toBeCalledWith( action( NS_PAYMENT, 'setInterval' ), 6 );
 	} );
 
 	it( 'sends payment type to store when payment model updates', async () => {
