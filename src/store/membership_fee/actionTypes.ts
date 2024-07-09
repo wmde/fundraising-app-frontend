@@ -1,4 +1,3 @@
-export const setFee = 'setFee';
 export const resetFeeForAddressType = 'resetFeeForAddressType';
 export const setInterval = 'setInterval';
 export const setType = 'setType';

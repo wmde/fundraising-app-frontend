@@ -4,7 +4,7 @@ import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
+import { setInterval, setType } from '@src/store/membership_fee/actionTypes';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
 import { Store } from 'vuex';
@@ -46,7 +46,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findComponent( AmountField ).vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setFee ), expectedPayload );
+		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, 'setFee' ), expectedPayload );
 	} );
 
 	it( 'shows bank data when payment type is selected and removes it when unselected', async () => {

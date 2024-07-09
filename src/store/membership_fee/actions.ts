@@ -4,7 +4,6 @@ import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '
 
 import {
 	resetFeeForAddressType,
-	setFee,
 	setInterval,
 	setType,
 	validateFee,
@@ -90,7 +89,7 @@ export const actions = {
 			context.commit( SET_IS_VALIDATING, false );
 		} );
 	},
-	[ setFee ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
+	setFee( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
 		context.commit( SET_FEE, payload.selectedValue );
 		const feeValidity: Validity = validateFeeOnClientSide( payload.selectedValue );
 		context.commit( SET_FEE_VALIDITY, feeValidity );
