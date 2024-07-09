@@ -48,7 +48,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BankAccountData, BankAccountRequest } from '@src/view_models/BankAccount';
-import { setBankData } from '@src/store/bankdata/actionTypes';
 import { NS_BANKDATA } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
@@ -153,7 +152,7 @@ export default defineComponent( {
 			}
 			if ( this.looksLikeIban() ) {
 				this.$store.dispatch(
-					action( NS_BANKDATA, setBankData ),
+					action( NS_BANKDATA, 'setBankData' ),
 					{
 						validationUrl: this.validateBankDataUrl,
 						requestParams: { iban: this.$data.accountId.toUpperCase() },
@@ -161,7 +160,7 @@ export default defineComponent( {
 				);
 			} else {
 				this.$store.dispatch(
-					action( NS_BANKDATA, setBankData ),
+					action( NS_BANKDATA, 'setBankData' ),
 						{
 							validationUrl: this.validateLegacyBankDataUrl,
 							requestParams: { accountNumber: this.$data.accountId, bankCode: this.$data.bankId },

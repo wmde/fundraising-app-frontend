@@ -1,7 +1,6 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
 import { BankAccount, BankAccountData, BankAccountRequest, BankAccountResponse } from '@src/view_models/BankAccount';
-import { setBankData } from '@src/store/bankdata/actionTypes';
 import {
 	MARK_BANKDATA_INCOMPLETE,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -13,7 +12,7 @@ import {
 import { Validity } from '@src/view_models/Validity';
 
 export const actions = {
-	[ setBankData ]( context: ActionContext<BankAccount, any>, payload: BankAccountRequest ): Promise<void> {
+	setBankData( context: ActionContext<BankAccount, any>, payload: BankAccountRequest ): Promise<void> {
 		context.commit( SET_IS_VALIDATING, true );
 		return axios( payload.validationUrl, {
 			method: 'get',
