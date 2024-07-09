@@ -20,7 +20,6 @@ import {
 	createInitialMembershipFeeValues,
 } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
-import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 
 import MembershipForm from '@src/components/pages/MembershipForm.vue';
 import App from '@src/components/App.vue';
@@ -77,7 +76,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			createInitialMembershipAddressValues( dataPersister, initialFormValues ),
 		),
 		store.dispatch(
-			action( NS_MEMBERSHIP_FEE, initializeMembershipFee ),
+			action( NS_MEMBERSHIP_FEE, 'initializeMembershipFee' ),
 			createInitialMembershipFeeValues( dataPersister, initialFeeValues ),
 		),
 		store.dispatch(

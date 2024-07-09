@@ -3,7 +3,6 @@ import { ActionContext } from 'vuex';
 import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
 
 import {
-	initializeMembershipFee,
 	markEmptyFeeAsInvalid,
 	markEmptyValuesAsInvalid,
 	resetFeeForAddressType,
@@ -46,7 +45,7 @@ const validateFeeOnClientSide = ( fee: string ): Validity => {
 };
 
 export const actions = {
-	[ initializeMembershipFee ]( context: ActionContext<MembershipFee, any>, initialData: InitialMembershipFeeValues ) {
+	initializeMembershipFee( context: ActionContext<MembershipFee, any>, initialData: InitialMembershipFeeValues ) {
 		if ( initialData.fee ) {
 			context.commit( SET_FEE, initialData.fee );
 			const feeValidity: Validity = validateFeeOnClientSide( initialData.fee );

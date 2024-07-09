@@ -3,7 +3,6 @@ import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 import { validateFeeDataRemotely } from '@src/store/axios';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 
@@ -25,7 +24,7 @@ describe( 'Membership Store', () => {
 				fields: [],
 			};
 			const store = createStore();
-			await store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialFeeData );
+			await store.dispatch( action( NS_MEMBERSHIP_FEE, 'initializeMembershipFee' ), initialFeeData );
 			await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'initializeAddress' ), initialAddressData );
 
 			expect( store.getters.feeValidity ).toEqual( FeeValidity.FEE_VALID );
@@ -58,7 +57,7 @@ describe( 'Membership Store', () => {
 			const mockedValidateFeeDataRemotely = jest.mocked( validateFeeDataRemotely, { shallow: true } );
 			mockedValidateFeeDataRemotely.mockResolvedValue( { status: 'OK' } );
 			const store = createStore();
-			await store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialData );
+			await store.dispatch( action( NS_MEMBERSHIP_FEE, 'initializeMembershipFee' ), initialData );
 
 			expect( store.state.membership_fee.values.fee ).toBe( initialData.fee );
 			expect( store.state.membership_fee.values.interval ).toBe( initialData.interval );
