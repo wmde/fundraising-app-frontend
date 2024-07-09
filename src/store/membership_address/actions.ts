@@ -6,7 +6,6 @@ import {
 	setIncentives,
 	setMembershipType,
 	setReceiptChoice,
-	validateAddressField,
 	validateDateOfBirth,
 } from '@src/store/membership_address/actionTypes';
 import { InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
@@ -61,7 +60,7 @@ export const actions = {
 			context.commit( SET_ADDRESS_FIELD_VALIDITY, { name: field.name, validity: field.validity } );
 		} );
 	},
-	[ validateAddressField ]( context: ActionContext<MembershipAddressState, any>, field: InputField ) {
+	validateAddressField( context: ActionContext<MembershipAddressState, any>, field: InputField ) {
 		context.commit( VALIDATE_INPUT, field );
 	},
 	[ setAddressField ]( context: ActionContext<MembershipAddressState, any>, field: InputField ) {

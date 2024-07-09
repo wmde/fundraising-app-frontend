@@ -1,11 +1,7 @@
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import { computed, reactive } from 'vue';
 import { Validity } from '@src/view_models/Validity';
-import {
-	setAddressField,
-	setReceiptChoice,
-	validateAddressField,
-} from '@src/store/membership_address/actionTypes';
+import { setAddressField, setReceiptChoice } from '@src/store/membership_address/actionTypes';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { camelizeName } from '@src/util/camlize_name';
@@ -144,7 +140,7 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 			const key: string = formItem[ 0 ];
 			formData[ key ].value = store.state.membership_address.values[ key ];
 			if ( store.state[ NS_MEMBERSHIP_ADDRESS ].validity[ key ] === Validity.RESTORED ) {
-				store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddressField ), formData[ key ] );
+				store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'validateAddressField' ), formData[ key ] );
 			}
 		} );
 	}
