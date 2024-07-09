@@ -6,7 +6,7 @@ import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeM
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { FieldInitialization } from '@src/view_models/FieldInitialization';
-import { resetFeeForAddressType, validateFee } from '@src/store/membership_fee/actionTypes';
+import { validateFee } from '@src/store/membership_fee/actionTypes';
 import { NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 
@@ -96,7 +96,7 @@ export const actions = {
 		if ( type === AddressTypeModel.COMPANY && context.getters.membershipType === MembershipTypeModel.ACTIVE ) {
 			context.commit( 'SET_MEMBERSHIP_TYPE_VALIDITY', Validity.INVALID );
 		}
-		const result = context.dispatch( action( NS_MEMBERSHIP_FEE, resetFeeForAddressType ), type, { root: true } );
+		const result = context.dispatch( action( NS_MEMBERSHIP_FEE, 'resetFeeForAddressType' ), type, { root: true } );
 		// Trigger server-side re-validation of membership fee when address type changes
 		if ( context.rootGetters.allPaymentValuesAreSet ) {
 			result.then( () => context.dispatch(

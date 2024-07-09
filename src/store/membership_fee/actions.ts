@@ -2,12 +2,7 @@ import { ActionContext } from 'vuex';
 
 import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
 
-import {
-	resetFeeForAddressType,
-	setInterval,
-	setType,
-	validateFee,
-} from '@src/store/membership_fee/actionTypes';
+import { setInterval, setType, validateFee } from '@src/store/membership_fee/actionTypes';
 import {
 	MARK_EMPTY_FEE_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -101,7 +96,7 @@ export const actions = {
 		}
 		return Promise.resolve();
 	},
-	[ resetFeeForAddressType ]( context: ActionContext<MembershipFee, any>, addressType: AddressTypeModel ): Promise<void> {
+	resetFeeForAddressType( context: ActionContext<MembershipFee, any>, addressType: AddressTypeModel ): Promise<void> {
 		if ( context.state.values.fee < context.getters.minimumAmount( addressType ) ) {
 			context.commit( SET_FEE, '' );
 			context.commit( SET_FEE_VALIDITY, Validity.INCOMPLETE );
