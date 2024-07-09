@@ -2,7 +2,7 @@ import { createStore } from '@src/store/membership_store';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { validateFeeDataRemotely } from '@src/store/axios';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 
@@ -71,7 +71,7 @@ describe( 'Membership Store', () => {
 			};
 
 			const store = createStore();
-			await store.dispatch( action( NS_BANKDATA, 'initializeBankData' ), initialData );
+			await store.dispatch( action( 'bankdata', 'initializeBankData' ), initialData );
 
 			expect( store.state.bankdata.values.iban ).toBe( initialData.accountId );
 			expect( store.state.bankdata.values.bic ).toBe( initialData.bankId );

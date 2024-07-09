@@ -10,7 +10,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import { Country } from '@src/view_models/Country';
 import { InitialMembershipData } from '@src/view_models/Address';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { Salutation } from '@src/view_models/Salutation';
 import { action } from '@src/store/util';
 import { createDataPersister } from '@src/store/create_data_persister';
@@ -80,7 +80,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			createInitialMembershipFeeValues( dataPersister, initialFeeValues ),
 		),
 		store.dispatch(
-			action( NS_BANKDATA, 'initializeBankData' ),
+			action( 'bankdata', 'initializeBankData' ),
 			createInitialBankDataValues( initialBankAccountData ),
 		),
 	] ).then( () => {

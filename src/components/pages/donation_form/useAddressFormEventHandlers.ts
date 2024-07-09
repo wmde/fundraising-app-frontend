@@ -1,7 +1,7 @@
 import { Store } from 'vuex';
 import { trackFormSubmission } from '@src/util/tracking';
 import { action } from '@src/store/util';
-import { NS_ADDRESS, NS_BANKDATA } from '@src/store/namespaces';
+import { NS_ADDRESS } from '@src/store/namespaces';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
@@ -52,7 +52,7 @@ export function useAddressFormEventHandlers(
 		];
 
 		if ( isDirectDebit.value ) {
-			validationCalls.push( store.dispatch( action( NS_BANKDATA, 'markEmptyFieldsAsInvalid' ) ) );
+			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
 		}
 
 		await Promise.all( validationCalls );
@@ -64,7 +64,7 @@ export function useAddressFormEventHandlers(
 			return;
 		}
 
-		if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+		if ( isDirectDebit.value && !store.getters[ 'bankdata/bankDataIsValid' ] ) {
 			bankDataIsValid.value = false;
 			return;
 		}
@@ -86,7 +86,7 @@ export function useAddressFormEventHandlers(
 		}
 	} );
 
-	store.watch( ( state, getters ) => getters[ NS_BANKDATA + '/bankDataIsValid' ], ( isValid: boolean ) => {
+	store.watch( ( state, getters ) => getters[ 'bankdata/bankDataIsValid' ], ( isValid: boolean ) => {
 		if ( !bankDataIsValid.value && isValid ) {
 			bankDataIsValid.value = true;
 		}

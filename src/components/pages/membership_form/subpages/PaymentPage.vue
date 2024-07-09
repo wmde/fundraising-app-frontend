@@ -75,7 +75,7 @@
 <script setup lang="ts">
 import Payment from '@src/components/pages/membership_form/Payment.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { useStore } from 'vuex';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
@@ -128,7 +128,7 @@ const next = async (): Promise<any> => {
 	waitForServerValidationToFinish( store ).then( () => {
 		const storeCleanupActions = [ store.dispatch( action( NS_MEMBERSHIP_FEE, 'markEmptyValuesAsInvalid' ) ) ];
 		if ( isDirectDebitPayment ) {
-			storeCleanupActions.push( store.dispatch( action( NS_BANKDATA, 'markEmptyFieldsAsInvalid' ) ) );
+			storeCleanupActions.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
 		}
 		return Promise.all( storeCleanupActions ).then( () => {
 			if ( store.getters.paymentDataIsValid && store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {

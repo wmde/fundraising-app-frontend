@@ -2,11 +2,7 @@ import Vuex, { Store, StoreOptions } from 'vuex';
 import createAddress from '@src/store/membership_address';
 import createBankData from '@src/store/bankdata';
 import createPayment from '@src/store/membership_fee';
-import {
-	NS_BANKDATA,
-	NS_MEMBERSHIP_ADDRESS,
-	NS_MEMBERSHIP_FEE,
-} from './namespaces';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from './namespaces';
 import { InjectionKey } from 'vue';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
@@ -17,18 +13,18 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 		modules: {
 			[ NS_MEMBERSHIP_ADDRESS ]: createAddress(),
 			[ NS_MEMBERSHIP_FEE ]: createPayment(),
-			[ NS_BANKDATA ]: createBankData(),
+			[ 'bankdata' ]: createBankData(),
 		},
 		strict: process.env.NODE_ENV !== 'production',
 		getters: {
 			isValidating: function ( state ): boolean {
 				return state[ NS_MEMBERSHIP_FEE ].isValidating ||
 					state[ NS_MEMBERSHIP_ADDRESS ].isValidating ||
-					state[ NS_BANKDATA ].isValidating;
+					state.bankdata.isValidating;
 			},
 			paymentDataIsValid: function ( state, getters ): boolean {
 				if ( state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' ) {
-					return getters[ NS_MEMBERSHIP_FEE + '/paymentDataIsValid' ] && getters[ NS_BANKDATA + '/bankDataIsValid' ];
+					return getters[ NS_MEMBERSHIP_FEE + '/paymentDataIsValid' ] && getters[ 'bankdata/bankDataIsValid' ];
 				} else {
 					return getters[ NS_MEMBERSHIP_FEE + '/paymentDataIsValid' ];
 				}

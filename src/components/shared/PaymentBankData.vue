@@ -48,7 +48,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BankAccountData, BankAccountRequest } from '@src/view_models/BankAccount';
-import { NS_BANKDATA } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
 import AccountNumberField from '@src/components/shared/AccountNumberField.vue';
@@ -64,8 +63,8 @@ export default defineComponent( {
 	},
 	data: function (): BankAccountData {
 		return {
-			accountId: this.$store.getters[ NS_BANKDATA + '/getAccountId' ],
-			bankId: this.$store.getters[ NS_BANKDATA + '/getBankId' ],
+			accountId: this.$store.getters[ 'bankdata/getAccountId' ],
+			bankId: this.$store.getters[ 'bankdata/getBankId' ],
 		};
 	},
 	props: {
@@ -82,21 +81,21 @@ export default defineComponent( {
 			return '';
 		},
 		bankInfoValidated(): boolean {
-			if ( !this.$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+			if ( !this.$store.getters[ 'bankdata/bankDataIsValid' ] ) {
 				return false;
 			}
 			if ( this.bankIdentifier !== '' ) {
 				return true;
 			}
-			if ( this.$store.getters[ NS_BANKDATA + '/getBankId' ] !== '' ) {
+			if ( this.$store.getters[ 'bankdata/getBankId' ] !== '' ) {
 				return true;
 			}
 			return false;
 		},
 		bankInfoValidatedButInfoMissing(): boolean {
-			return this.$store.getters[ NS_BANKDATA + '/bankDataIsValid' ] &&
+			return this.$store.getters[ 'bankdata/bankDataIsValid' ] &&
 					this.bankIdentifier === '' &&
-					this.$store.getters[ NS_BANKDATA + '/getBankId' ] === '';
+					this.$store.getters[ 'bankdata/getBankId' ] === '';
 		},
 		showBankId(): boolean {
 			return this.bankIdentifier !== '' && this.looksLikeIban();
@@ -107,7 +106,7 @@ export default defineComponent( {
 		bankIdentifier: {
 			get: function (): string {
 				if ( this.looksLikeGermanIban() ) {
-					return this.$store.getters[ NS_BANKDATA + '/getBankId' ];
+					return this.$store.getters[ 'bankdata/getBankId' ];
 				}
 				return this.$data.bankId;
 			},
@@ -135,7 +134,7 @@ export default defineComponent( {
 				bicPlaceholder: '',
 			};
 		},
-		...mapGetters( NS_BANKDATA, [
+		...mapGetters( 'bankdata', [
 			'bankDataIsInvalid',
 			'getBankName',
 		] ),
@@ -143,16 +142,16 @@ export default defineComponent( {
 	methods: {
 		validate() {
 			if ( !this.isAccountIdEmpty() && !this.looksLikeValidAccountNumber() ) {
-				this.$store.dispatch( ( action( NS_BANKDATA, 'markBankDataAsInvalid' ) ) );
+				this.$store.dispatch( ( action( 'bankdata', 'markBankDataAsInvalid' ) ) );
 				return;
 			}
 			if ( this.isAccountIdEmpty() || ( !this.looksLikeIban() && this.isBankIdEmpty() ) ) {
-				this.$store.dispatch( action( NS_BANKDATA, 'markBankDataAsIncomplete' ) );
+				this.$store.dispatch( action( 'bankdata', 'markBankDataAsIncomplete' ) );
 				return;
 			}
 			if ( this.looksLikeIban() ) {
 				this.$store.dispatch(
-					action( NS_BANKDATA, 'setBankData' ),
+					action( 'bankdata', 'setBankData' ),
 					{
 						validationUrl: this.validateBankDataUrl,
 						requestParams: { iban: this.$data.accountId.toUpperCase() },
@@ -160,7 +159,7 @@ export default defineComponent( {
 				);
 			} else {
 				this.$store.dispatch(
-					action( NS_BANKDATA, 'setBankData' ),
+					action( 'bankdata', 'setBankData' ),
 						{
 							validationUrl: this.validateLegacyBankDataUrl,
 							requestParams: { accountNumber: this.$data.accountId, bankCode: this.$data.bankId },

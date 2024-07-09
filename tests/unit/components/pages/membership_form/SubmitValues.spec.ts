@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { createStore } from 'vuex';
 import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
+import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel, membershipTypeName } from '@src/view_models/MembershipTypeModel';
 
@@ -32,7 +32,7 @@ describe( 'SubmitValues.vue', () => {
 					},
 
 				},
-				[ NS_BANKDATA ]: {
+				[ 'bankdata' ]: {
 					namespaced: true,
 					state: {
 						values: {
