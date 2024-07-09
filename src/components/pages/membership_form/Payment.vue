@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import { setInterval, setType } from '@src/store/membership_fee/actionTypes';
+import { setType } from '@src/store/membership_fee/actionTypes';
 import { useI18n } from 'vue-i18n';
 import { usePaymentFieldModel } from '@src/components/pages/membership_form/usePaymentFieldModel';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
@@ -84,7 +84,7 @@ const store = useStore();
 const { t } = useI18n();
 
 const fee = usePaymentFieldModel( store, 'fee', 'setFee', props.validateFeeUrl );
-const interval = usePaymentFieldModel( store, 'interval', setInterval, props.validateFeeUrl );
+const interval = usePaymentFieldModel( store, 'interval', 'setInterval', props.validateFeeUrl );
 const paymentType = usePaymentFieldModel( store, 'type', setType, props.validateFeeUrl );
 
 const paymentTypeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/typeIsValid' ] );

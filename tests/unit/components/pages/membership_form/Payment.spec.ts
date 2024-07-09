@@ -4,7 +4,7 @@ import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { setInterval, setType } from '@src/store/membership_fee/actionTypes';
+import { setType } from '@src/store/membership_fee/actionTypes';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
 import { Store } from 'vuex';
@@ -73,7 +73,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 0 ].vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setInterval ), expectedPayload );
+		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, 'setInterval' ), expectedPayload );
 	} );
 
 	it( 'sends payment type to store when payment model updates', async () => {
@@ -102,7 +102,7 @@ describe( 'Payment.vue', () => {
 
 		// address type changes / interval changes
 		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'setAddressType' ), AddressTypeModel.COMPANY );
-		await store.dispatch( action( NS_MEMBERSHIP_FEE, setInterval ), {
+		await store.dispatch( action( NS_MEMBERSHIP_FEE, 'setInterval' ), {
 			selectedValue: '12',
 			validateFeeUrl: 'https://example.com/amount-check',
 		} );

@@ -2,7 +2,7 @@ import { ActionContext } from 'vuex';
 
 import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
 
-import { setInterval, setType, validateFee } from '@src/store/membership_fee/actionTypes';
+import { setType, validateFee } from '@src/store/membership_fee/actionTypes';
 import {
 	MARK_EMPTY_FEE_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -103,7 +103,7 @@ export const actions = {
 		}
 		return Promise.resolve();
 	},
-	[ setInterval ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
+	setInterval( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
 		context.commit( SET_INTERVAL, payload.selectedValue );
 
 		// Trigger client-side validation - store will inspect set value
