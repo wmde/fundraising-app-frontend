@@ -4,12 +4,7 @@ import BankData from '@src/components/shared/PaymentBankData.vue';
 import { createStore } from '@src/store/donation_store';
 import { NS_BANKDATA } from '@src/store/namespaces';
 import { action } from '@src/store/util';
-import {
-	initializeBankData,
-	markBankDataAsIncomplete,
-	markBankDataAsInvalid,
-	setBankData,
-} from '@src/store/bankdata/actionTypes';
+import { markBankDataAsIncomplete, markBankDataAsInvalid, setBankData } from '@src/store/bankdata/actionTypes';
 import { BankAccountRequest } from '@src/view_models/BankAccount';
 import { nextTick } from 'vue';
 
@@ -241,7 +236,7 @@ describe( 'BankData.vue', () => {
 
 	it( 'puts initial values form the store in the fields', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_BANKDATA, initializeBankData ), {
+		await store.dispatch( action( NS_BANKDATA, 'initializeBankData' ), {
 			accountId: 'DE12345605171238489890',
 			bankId: 'ABCDDEFFXXX',
 			bankName: 'Cool Bank',

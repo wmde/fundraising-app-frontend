@@ -21,7 +21,6 @@ import {
 } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
 import { initializeAddress } from '@src/store/membership_address/actionTypes';
-import { initializeBankData } from '@src/store/bankdata/actionTypes';
 import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 
 import MembershipForm from '@src/components/pages/MembershipForm.vue';
@@ -83,7 +82,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			createInitialMembershipFeeValues( dataPersister, initialFeeValues ),
 		),
 		store.dispatch(
-			action( NS_BANKDATA, initializeBankData ),
+			action( NS_BANKDATA, 'initializeBankData' ),
 			createInitialBankDataValues( initialBankAccountData ),
 		),
 	] ).then( () => {

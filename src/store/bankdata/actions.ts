@@ -1,12 +1,9 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
+import { BankAccount, BankAccountData, BankAccountRequest, BankAccountResponse } from '@src/view_models/BankAccount';
 import {
-	BankAccount, BankAccountData,
-	BankAccountRequest,
-	BankAccountResponse,
-} from '@src/view_models/BankAccount';
-import {
-	initializeBankData, markBankDataAsIncomplete, markBankDataAsInvalid,
+	markBankDataAsIncomplete,
+	markBankDataAsInvalid,
 	markEmptyValuesAsInvalid,
 	setBankData,
 } from '@src/store/bankdata/actionTypes';
@@ -14,7 +11,9 @@ import {
 	MARK_BANKDATA_INCOMPLETE,
 	MARK_EMPTY_FIELDS_INVALID,
 	SET_BANK_DATA_VALIDITY,
-	SET_BANKDATA, SET_BANKNAME, SET_IS_VALIDATING,
+	SET_BANKDATA,
+	SET_BANKNAME,
+	SET_IS_VALIDATING,
 } from '@src/store/bankdata/mutationTypes';
 import { Validity } from '@src/view_models/Validity';
 
@@ -40,7 +39,7 @@ export const actions = {
 			context.commit( SET_IS_VALIDATING, false );
 		} );
 	},
-	[ initializeBankData ]( context: ActionContext<BankAccount, any>, payload: BankAccountData & { bankName: string} ): void {
+	initializeBankData( context: ActionContext<BankAccount, any>, payload: BankAccountData & { bankName: string} ): void {
 		if ( payload.accountId === '' ) {
 			return;
 		}
