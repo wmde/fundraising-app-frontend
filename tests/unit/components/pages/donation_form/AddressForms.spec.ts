@@ -5,7 +5,7 @@ import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import { initializeAddress, setAddressField, setReceiptChoice } from '@src/store/address/actionTypes';
+import { setAddressField, setReceiptChoice } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -144,7 +144,7 @@ describe( 'AddressForms.vue', () => {
 			addressType: AddressTypeModel.PERSON,
 			fields: [ firstName, lastName ],
 		};
-		await store.dispatch( action( NS_ADDRESS, initializeAddress ), initialData );
+		await store.dispatch( action( NS_ADDRESS, 'initializeAddress' ), initialData );
 		wrapper = mount( AddressForms, {
 			props: {
 				addressType: AddressTypeModel.PERSON,

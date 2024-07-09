@@ -1,16 +1,15 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
 import {
-	validateAddress,
-	validateEmail,
+	setAddressField,
 	setAddressType,
 	setNewsletterChoice,
 	setReceiptChoice,
+	validateAddress,
 	validateAddressField,
-	setAddressField,
-	initializeAddress,
 	validateAddressType,
 	validateCountry,
+	validateEmail,
 } from '@src/store/address/actionTypes';
 import {
 	AddressState,
@@ -128,7 +127,7 @@ export const actions = {
 	[ setReceiptChoice ]( context: ActionContext<AddressState, any>, choice: boolean ) {
 		context.commit( SET_RECEIPT, choice );
 	},
-	[ initializeAddress ]( context: ActionContext<AddressState, any>, initialValues: InitialAddressValues ): void {
+	initializeAddress( context: ActionContext<AddressState, any>, initialValues: InitialAddressValues ): void {
 		if ( initialValues.addressType !== null && initialValues.addressType !== undefined ) {
 			context.commit( SET_ADDRESS_TYPE, initialValues.addressType );
 			context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.VALID } );

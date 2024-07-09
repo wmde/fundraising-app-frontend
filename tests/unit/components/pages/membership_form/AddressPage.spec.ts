@@ -5,7 +5,6 @@ import AddressPage from '@src/components/pages/membership_form/subpages/AddressP
 import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { initializeAddress } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Store } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
@@ -114,7 +113,7 @@ describe( 'AddressPage.vue', () => {
 
 	it( 'submits the form', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), {
+		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'initializeAddress' ), {
 			addressType: AddressTypeModel.PERSON,
 			receipt: true,
 			fields: [

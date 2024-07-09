@@ -15,7 +15,6 @@ import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { clearPersistentData } from '@src/store/create_data_persister';
-import { initializeAddress } from '@src/store/address/actionTypes';
 import { trackGoal } from '@src/util/tracking';
 
 import App from '@src/components/App.vue';
@@ -47,7 +46,7 @@ clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESP
 trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 
 store.dispatch(
-	action( NS_ADDRESS, initializeAddress ),
+	action( NS_ADDRESS, 'initializeAddress' ),
 	{
 		addressType: addressTypeFromName( pageData.applicationVars.addressType.toString() ),
 		newsletter: pageData.applicationVars.donation.newsletter,

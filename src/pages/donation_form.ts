@@ -16,7 +16,6 @@ import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { createDataPersister } from '@src/store/create_data_persister';
 import { createInitialDonationAddressValues, createInitialDonationPaymentValues } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
-import { initializeAddress } from '@src/store/address/actionTypes';
 import { initializePayment } from '@src/store/payment/actionTypes';
 
 import App from '@src/components/App.vue';
@@ -57,7 +56,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			}
 		),
 		store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( NS_ADDRESS, 'initializeAddress' ),
 			createInitialDonationAddressValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
 	] ).then( ( [ paymentDataComplete ] ) => {

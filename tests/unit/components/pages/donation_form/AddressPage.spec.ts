@@ -7,7 +7,7 @@ import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { initializePayment } from '@src/store/payment/actionTypes';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
-import { initializeAddress, setAddressType } from '@src/store/address/actionTypes';
+import { setAddressType } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { Store } from 'vuex';
@@ -177,7 +177,7 @@ describe( 'AddressPage.vue', () => {
 
 	it( 'submits the form', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_ADDRESS, initializeAddress ), {
+		await store.dispatch( action( NS_ADDRESS, 'initializeAddress' ), {
 			addressType: AddressTypeModel.ANON,
 			newsletter: true,
 			receipt: true,
