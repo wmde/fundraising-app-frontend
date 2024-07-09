@@ -3,7 +3,6 @@ import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { initializeAddress } from '@src/store/membership_address/actionTypes';
 import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 import { validateFeeDataRemotely } from '@src/store/axios';
 import { FeeValidity } from '@src/view_models/MembershipFee';
@@ -27,7 +26,7 @@ describe( 'Membership Store', () => {
 			};
 			const store = createStore();
 			await store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialFeeData );
-			await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), initialAddressData );
+			await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'initializeAddress' ), initialAddressData );
 
 			expect( store.getters.feeValidity ).toEqual( FeeValidity.FEE_VALID );
 
@@ -44,7 +43,7 @@ describe( 'Membership Store', () => {
 				fields: [ firstName, lastName ],
 			};
 			const store = createStore();
-			await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), initialData );
+			await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'initializeAddress' ), initialData );
 
 			expect( store.state.membership_address.values.firstName ).toBe( firstName.value );
 			expect( store.state.membership_address.values.lastName ).toBe( lastName.value );

@@ -1,7 +1,6 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
 import {
-	initializeAddress,
 	setAddressField,
 	setAddressType,
 	setIncentives,
@@ -13,7 +12,12 @@ import {
 	validateDateOfBirth,
 	validateEmail,
 } from '@src/store/membership_address/actionTypes';
-import { CountryValidationFields, InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
+import {
+	CountryValidationFields,
+	InitialMembershipAddressValues,
+	InputField,
+	MembershipAddressState,
+} from '@src/view_models/Address';
 import { ValidationResponse } from '@src/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
@@ -39,7 +43,7 @@ import { NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 
 export const actions = {
-	[ initializeAddress ]( context: ActionContext<MembershipAddressState, any>, initialData: InitialMembershipAddressValues ) {
+	initializeAddress( context: ActionContext<MembershipAddressState, any>, initialData: InitialMembershipAddressValues ) {
 
 		if ( initialData.addressType ) {
 			context.commit( SET_ADDRESS_TYPE, initialData.addressType );

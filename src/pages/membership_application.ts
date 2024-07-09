@@ -20,7 +20,6 @@ import {
 	createInitialMembershipFeeValues,
 } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
-import { initializeAddress } from '@src/store/membership_address/actionTypes';
 import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
 
 import MembershipForm from '@src/components/pages/MembershipForm.vue';
@@ -74,7 +73,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	// Send the combined values to the store, as the "final initial" value in the store.
 	Promise.all( [
 		store.dispatch(
-			action( NS_MEMBERSHIP_ADDRESS, initializeAddress ),
+			action( NS_MEMBERSHIP_ADDRESS, 'initializeAddress' ),
 			createInitialMembershipAddressValues( dataPersister, initialFormValues ),
 		),
 		store.dispatch(

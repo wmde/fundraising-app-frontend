@@ -1,4 +1,3 @@
-export const initializeAddress = 'initializeAddress';
 export const validateCountry = 'validateCountry';
 export const validateAddress = 'validateAddress';
 export const validateEmail = 'validateEmail';

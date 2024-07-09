@@ -3,7 +3,12 @@ import Address from '@src/components/pages/membership_form/Address.vue';
 import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { initializeAddress, setAddressField, setReceiptChoice, setAddressType, setIncentives } from '@src/store/membership_address/actionTypes';
+import {
+	setAddressField,
+	setAddressType,
+	setIncentives,
+	setReceiptChoice,
+} from '@src/store/membership_address/actionTypes';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -131,7 +136,7 @@ describe( 'Address.vue', () => {
 			receipt: false,
 			incentives: [],
 		};
-		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), initialMembershipAddressValues );
+		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'initializeAddress' ), initialMembershipAddressValues );
 
 		const localWrapper = mount( Address, {
 			props: {
