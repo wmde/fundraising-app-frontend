@@ -1,7 +1,6 @@
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { validateEmail } from '@src/store/address/actionTypes';
 import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { computed, ComputedRef, ref, Ref } from 'vue';
@@ -29,7 +28,7 @@ export function useAddressFormEventHandlers(
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'validateAddress' ), validateAddressUrl ),
-			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateEmail ), validateEmailUrl ),
+			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'validateEmail' ), validateEmailUrl ),
 		];
 
 		if ( isDirectDebit.value ) {

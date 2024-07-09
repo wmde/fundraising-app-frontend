@@ -7,7 +7,6 @@ import {
 	setReceiptChoice,
 	validateAddressField,
 	validateAddressType,
-	validateEmail,
 } from '@src/store/address/actionTypes';
 import {
 	AddressState,
@@ -85,7 +84,7 @@ export const actions = {
 		} );
 
 	},
-	[ validateEmail ]( context: ActionContext<AddressState, any>, validateEmailUrl: string ) {
+	validateEmail( context: ActionContext<AddressState, any>, validateEmailUrl: string ) {
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );
 		}
