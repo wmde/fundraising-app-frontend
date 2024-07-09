@@ -2,12 +2,7 @@ import { ActionContext } from 'vuex';
 import { IntervalData, TypeData } from '@src/view_models/Payment';
 import { DonationPayment } from '@src/store/payment/types';
 
-import {
-	discardInitialization,
-	setAmount,
-	setInterval,
-	setType,
-} from '@src/store/payment/actionTypes';
+import { discardInitialization, setInterval, setType } from '@src/store/payment/actionTypes';
 import {
 	MARK_EMPTY_AMOUNT_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -58,7 +53,7 @@ export const actions = {
 	markEmptyAmountAsInvalid( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( MARK_EMPTY_AMOUNT_INVALID );
 	},
-	[ setAmount ]( context: ActionContext<DonationPayment, any>, payload: string ): void {
+	setAmount( context: ActionContext<DonationPayment, any>, payload: string ): void {
 		const isValid = isValidAmount( Number( payload ) );
 		context.commit( SET_AMOUNT, payload );
 		context.commit( SET_AMOUNT_VALIDITY, isValid ? Validity.VALID : Validity.INVALID );

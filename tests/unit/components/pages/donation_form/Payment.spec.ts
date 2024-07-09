@@ -4,7 +4,7 @@ import { action } from '@src/store/util';
 
 import Payment from '@src/components/pages/donation_form/Payment.vue';
 import { NS_PAYMENT } from '@src/store/namespaces';
-import { setAmount, setInterval, setType } from '@src/store/payment/actionTypes';
+import { setInterval, setType } from '@src/store/payment/actionTypes';
 import { Store } from 'vuex';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
@@ -35,7 +35,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findComponent( AmountField ).vm.$emit( 'update:modelValue', payload );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_PAYMENT, setAmount ), payload );
+		expect( store.dispatch ).toBeCalledWith( action( NS_PAYMENT, 'setAmount' ), payload );
 	} );
 
 	it( 'sends interval to store when interval model updates', async () => {

@@ -3,7 +3,6 @@ import { actions } from '@src/store/payment/actions';
 import { mutations } from '@src/store/payment/mutations';
 import { Validity } from '@src/view_models/Validity';
 import { AmountValidity } from '@src/view_models/Payment';
-import { setAmount } from '@src/store/payment/actionTypes';
 import {
 	SET_AMOUNT,
 	SET_AMOUNT_VALIDITY,
@@ -462,7 +461,7 @@ describe( 'Payment', () => {
 		it( 'commits to mutation [SET_AMOUNT]', () => {
 			const context = newMockActionContext();
 			const payload = '2500';
-			actions[ setAmount ]( context, '2500' );
+			actions.setAmount( context, '2500' );
 
 			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT', payload );
 		} );
@@ -470,7 +469,7 @@ describe( 'Payment', () => {
 		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on successful validation', () => {
 			const context = newMockActionContext();
 
-			actions[ setAmount ]( context, '2500' );
+			actions.setAmount( context, '2500' );
 
 			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
 		} );
@@ -478,7 +477,7 @@ describe( 'Payment', () => {
 		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on failed validation', () => {
 			const context = newMockActionContext();
 
-			actions[ setAmount ]( context, '999999999999' );
+			actions.setAmount( context, '999999999999' );
 
 			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.INVALID );
 		} );
