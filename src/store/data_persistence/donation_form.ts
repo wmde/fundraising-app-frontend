@@ -1,7 +1,6 @@
 import { mutation } from '@src/store/util';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { SET_AMOUNT, SET_INTERVAL, SET_TYPE } from '@src/store/payment/mutationTypes';
-import { SET_ADDRESS_TYPE, SET_NEWSLETTER, SET_RECEIPT } from '@src/store/address/mutationTypes';
 import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
 import address from '@src/store/data_persistence/address';
 
@@ -27,19 +26,19 @@ export default [
 	{
 		storageKey: 'receipt',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_ADDRESS, SET_RECEIPT ),
+		mutationKey: mutation( NS_ADDRESS, 'SET_RECEIPT' ),
 		fields: [],
 	},
 	{
 		storageKey: 'newsletter',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_ADDRESS, SET_NEWSLETTER ),
+		mutationKey: mutation( NS_ADDRESS, 'SET_NEWSLETTER' ),
 		fields: [],
 	},
 	{
 		storageKey: 'addressType',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_ADDRESS, SET_ADDRESS_TYPE ),
+		mutationKey: mutation( NS_ADDRESS, 'SET_ADDRESS_TYPE' ),
 		fields: [],
 	},
 	address( NS_ADDRESS ),
