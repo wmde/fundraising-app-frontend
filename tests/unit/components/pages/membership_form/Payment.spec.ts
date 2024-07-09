@@ -4,7 +4,6 @@ import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { setType } from '@src/store/membership_fee/actionTypes';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
 import { Store } from 'vuex';
@@ -87,7 +86,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 1 ].vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setType ), expectedPayload );
+		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, 'setType' ), expectedPayload );
 	} );
 
 	it( 'unsets selected fee when it is below the allowed minimum amount', async () => {
