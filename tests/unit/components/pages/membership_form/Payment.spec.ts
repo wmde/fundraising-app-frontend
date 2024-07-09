@@ -10,7 +10,6 @@ import { nextTick } from 'vue';
 import { Store } from 'vuex';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { GenericValuePayload } from '@src/view_models/MembershipFee';
-import { setAddressType } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 describe( 'Payment.vue', () => {
@@ -102,7 +101,7 @@ describe( 'Payment.vue', () => {
 		expect( lowFeeInputElement.element ).toBeChecked();
 
 		// address type changes / interval changes
-		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), AddressTypeModel.COMPANY );
+		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'setAddressType' ), AddressTypeModel.COMPANY );
 		await store.dispatch( action( NS_MEMBERSHIP_FEE, setInterval ), {
 			selectedValue: '12',
 			validateFeeUrl: 'https://example.com/amount-check',

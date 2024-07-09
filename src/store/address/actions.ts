@@ -1,11 +1,6 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
-import {
-	setAddressType,
-	setNewsletterChoice,
-	setReceiptChoice,
-	validateAddressType,
-} from '@src/store/address/actionTypes';
+import { setNewsletterChoice, setReceiptChoice, validateAddressType } from '@src/store/address/actionTypes';
 import {
 	AddressState,
 	AddressTypeValidationRequest,
@@ -98,7 +93,7 @@ export const actions = {
 			return validationResult.data;
 		} );
 	},
-	[ setAddressType ]( context: ActionContext<AddressState, any>, type: AddressTypeModel ) {
+	setAddressType( context: ActionContext<AddressState, any>, type: AddressTypeModel ) {
 		context.commit( SET_ADDRESS_TYPE, type );
 		context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.VALID } );
 	},

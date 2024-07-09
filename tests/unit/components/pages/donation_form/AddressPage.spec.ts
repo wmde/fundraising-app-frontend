@@ -7,7 +7,6 @@ import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { initializePayment } from '@src/store/payment/actionTypes';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
-import { setAddressType } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { Store } from 'vuex';
@@ -113,7 +112,7 @@ describe( 'AddressPage.vue', () => {
 		const { wrapper, store } = getWrapper();
 
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_ADDRESS, setAddressType );
+		const expectedAction = action( NS_ADDRESS, 'setAddressType' );
 		const expectedPayload = AddressTypeModel.ANON;
 
 		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.ANON );

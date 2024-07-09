@@ -2,7 +2,6 @@ import { computed } from 'vue';
 import { AddressTypeModel, addressTypeName as getAddressTypeName } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import { setAddressType as setAddressTypeActionType } from '@src/store/address/actionTypes';
 
 export const useAddressTypeFunctions = ( store: any ) => {
 	const disabledAddressTypes = computed(
@@ -19,7 +18,7 @@ export const useAddressTypeFunctions = ( store: any ) => {
 	);
 
 	function setAddressType( newAddressType: AddressTypeModel ): void {
-		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), newAddressType );
+		store.dispatch( action( NS_ADDRESS, 'setAddressType' ), newAddressType );
 	}
 
 	return {
