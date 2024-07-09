@@ -1,7 +1,7 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
 import { BankAccount, BankAccountData, BankAccountRequest, BankAccountResponse } from '@src/view_models/BankAccount';
-import { markBankDataAsIncomplete, markBankDataAsInvalid, setBankData } from '@src/store/bankdata/actionTypes';
+import { markBankDataAsInvalid, setBankData } from '@src/store/bankdata/actionTypes';
 import {
 	MARK_BANKDATA_INCOMPLETE,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -48,7 +48,7 @@ export const actions = {
 	markEmptyFieldsAsInvalid( context: ActionContext<BankAccount, any> ): void {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );
 	},
-	[ markBankDataAsIncomplete ]( context: ActionContext<BankAccount, any> ): void {
+	markBankDataAsIncomplete( context: ActionContext<BankAccount, any> ): void {
 		context.commit( MARK_BANKDATA_INCOMPLETE );
 		context.commit( SET_BANKNAME, '' );
 	},

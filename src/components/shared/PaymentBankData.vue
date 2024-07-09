@@ -48,7 +48,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BankAccountData, BankAccountRequest } from '@src/view_models/BankAccount';
-import { markBankDataAsIncomplete, markBankDataAsInvalid, setBankData } from '@src/store/bankdata/actionTypes';
+import { markBankDataAsInvalid, setBankData } from '@src/store/bankdata/actionTypes';
 import { NS_BANKDATA } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { mapGetters } from 'vuex';
@@ -148,7 +148,7 @@ export default defineComponent( {
 				return;
 			}
 			if ( this.isAccountIdEmpty() || ( !this.looksLikeIban() && this.isBankIdEmpty() ) ) {
-				this.$store.dispatch( action( NS_BANKDATA, markBankDataAsIncomplete ) );
+				this.$store.dispatch( action( NS_BANKDATA, 'markBankDataAsIncomplete' ) );
 				return;
 			}
 			if ( this.looksLikeIban() ) {

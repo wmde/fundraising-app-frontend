@@ -4,7 +4,7 @@ import BankData from '@src/components/shared/PaymentBankData.vue';
 import { createStore } from '@src/store/donation_store';
 import { NS_BANKDATA } from '@src/store/namespaces';
 import { action } from '@src/store/util';
-import { markBankDataAsIncomplete, markBankDataAsInvalid, setBankData } from '@src/store/bankdata/actionTypes';
+import { markBankDataAsInvalid, setBankData } from '@src/store/bankdata/actionTypes';
 import { BankAccountRequest } from '@src/view_models/BankAccount';
 import { nextTick } from 'vue';
 
@@ -102,7 +102,7 @@ describe( 'BankData.vue', () => {
 		wrapper.setData( { accountId: '' } );
 		iban.trigger( 'blur' );
 
-		const expectedAction = action( NS_BANKDATA, markBankDataAsIncomplete );
+		const expectedAction = action( NS_BANKDATA, 'markBankDataAsIncomplete' );
 		expect( store.dispatch ).toHaveBeenNthCalledWith( 2, expectedAction );
 	} );
 
