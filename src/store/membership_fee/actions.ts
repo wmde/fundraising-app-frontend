@@ -5,7 +5,6 @@ import { ValidationResponse } from '@src/store/ValidationResponse';
 import { Validity } from '@src/view_models/Validity';
 import { Helper } from '@src/store/util';
 import { validateFeeDataRemotely } from '@src/store/axios';
-import { SET_TYPE, SET_TYPE_VALIDITY } from '@src/store/payment/mutationTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 /**
@@ -15,7 +14,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 const fieldToValidationMutation = new Map( [
 	[ 'fee', 'SET_FEE_VALIDITY' ],
 	[ 'interval', 'SET_INTERVAL_VALIDITY' ],
-	[ 'type', SET_TYPE_VALIDITY ],
+	[ 'type', 'SET_TYPE_VALIDITY' ],
 ] );
 
 const validateFeeOnClientSide = ( fee: string ): Validity => {
@@ -40,8 +39,8 @@ export const actions = {
 		}
 
 		if ( initialData.type ) {
-			context.commit( SET_TYPE, initialData.type );
-			context.commit( SET_TYPE_VALIDITY );
+			context.commit( 'SET_TYPE', initialData.type );
+			context.commit( 'SET_TYPE_VALIDITY' );
 		}
 
 		// Trigger server-side validation to restore server-side validation state
@@ -109,9 +108,9 @@ export const actions = {
 		return Promise.resolve();
 	},
 	setType( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
-		context.commit( SET_TYPE, payload.selectedValue );
+		context.commit( 'SET_TYPE', payload.selectedValue );
 		// Trigger client-side validation - store will inspect set value
-		context.commit( SET_TYPE_VALIDITY );
+		context.commit( 'SET_TYPE_VALIDITY' );
 		if ( context.getters.allPaymentValuesAreSet ) {
 			return context.dispatch( 'validateFee', {
 				selectedValue: context.state.values.fee,

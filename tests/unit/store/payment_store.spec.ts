@@ -3,13 +3,6 @@ import { actions } from '@src/store/payment/actions';
 import { mutations } from '@src/store/payment/mutations';
 import { Validity } from '@src/view_models/Validity';
 import { AmountValidity } from '@src/view_models/Payment';
-import {
-	SET_AMOUNT,
-	SET_AMOUNT_VALIDITY,
-	SET_INTERVAL,
-	SET_TYPE,
-	SET_TYPE_VALIDITY,
-} from '@src/store/payment/mutationTypes';
 import each from 'jest-each';
 import { DonationPayment } from '@src/store/payment/types';
 import { ActionContext } from 'vuex';
@@ -181,7 +174,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_AMOUNT, '0' );
+			expect( commit ).not.toBeCalledWith( 'SET_AMOUNT', '0' );
 		} );
 
 		it( 'commits amount and sets it to valid when amount is set', () => {
@@ -199,8 +192,8 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_AMOUNT, '2399' );
-			expect( commit ).toBeCalledWith( SET_AMOUNT_VALIDITY, Validity.VALID );
+			expect( commit ).toBeCalledWith( 'SET_AMOUNT', '2399' );
+			expect( commit ).toBeCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
 		} );
 
 		it( 'does not commit empty payment type', () => {
@@ -218,7 +211,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_TYPE );
+			expect( commit ).not.toBeCalledWith( 'SET_TYPE' );
 		} );
 
 		it( 'commits payment type and set it to valid when payment type is set', () => {
@@ -236,8 +229,8 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_TYPE, 'BEZ' );
-			expect( commit ).toBeCalledWith( SET_TYPE_VALIDITY, Validity.VALID );
+			expect( commit ).toBeCalledWith( 'SET_TYPE', 'BEZ' );
+			expect( commit ).toBeCalledWith( 'SET_TYPE_VALIDITY', Validity.VALID );
 		} );
 
 		it( 'commits interval', () => {
@@ -255,7 +248,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_INTERVAL, '12' );
+			expect( commit ).toBeCalledWith( 'SET_INTERVAL', '12' );
 		} );
 
 		const paymentAndAmountCases = [
@@ -301,7 +294,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_TYPE );
+			expect( commit ).not.toBeCalledWith( 'SET_TYPE' );
 		} );
 
 		it( 'initialises Sofort payment type if interval is 0', () => {
@@ -319,7 +312,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_TYPE, PaymentType.SOFORT );
+			expect( commit ).toBeCalledWith( 'SET_TYPE', PaymentType.SOFORT );
 		} );
 
 		it( 'initialises Sofort payment type if interval is emtpy', () => {
@@ -337,7 +330,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_TYPE, PaymentType.SOFORT );
+			expect( commit ).toBeCalledWith( 'SET_TYPE', PaymentType.SOFORT );
 		} );
 
 		it( 'does not initialise payment type if it is not in allowed list', () => {
@@ -355,7 +348,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_TYPE, PaymentType.DIRECT_DEBIT );
+			expect( commit ).not.toBeCalledWith( 'SET_TYPE', PaymentType.DIRECT_DEBIT );
 		} );
 
 		it( 'does not initialise interval if it is not in allowed list', () => {
@@ -373,7 +366,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_INTERVAL, PaymentType.DIRECT_DEBIT );
+			expect( commit ).not.toBeCalledWith( 'SET_INTERVAL', PaymentType.DIRECT_DEBIT );
 		} );
 	} );
 
