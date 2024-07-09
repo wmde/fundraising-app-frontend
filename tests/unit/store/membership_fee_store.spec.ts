@@ -3,7 +3,6 @@ import { actions } from '@src/store/membership_fee/actions';
 import { mutations } from '@src/store/membership_fee/mutations';
 import { GenericValuePayload, MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
-import { validateFee } from '@src/store/membership_fee/actionTypes';
 import {
 	MARK_EMPTY_FEE_INVALID,
 	SET_FEE,
@@ -214,7 +213,7 @@ describe( 'MembershipFee', () => {
 
 			const action = actions.setInterval as any;
 			return action( context, { selectedValue: '3', validateFeeUrl: '/validate-fee-url' } as GenericValuePayload ).then( () => {
-				expect( context.dispatch ).toHaveBeenCalledWith( validateFee, expectedPayload );
+				expect( context.dispatch ).toHaveBeenCalledWith( 'validateFee', expectedPayload );
 			} );
 		} );
 	} );

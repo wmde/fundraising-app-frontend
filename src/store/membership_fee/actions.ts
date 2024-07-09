@@ -2,7 +2,6 @@ import { ActionContext } from 'vuex';
 
 import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
 
-import { validateFee } from '@src/store/membership_fee/actionTypes';
 import {
 	MARK_EMPTY_FEE_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -57,7 +56,7 @@ export const actions = {
 
 		// Trigger server-side validation to restore server-side validation state
 		if ( context.getters.allPaymentValuesAreSet ) {
-			return context.dispatch( validateFee, {
+			return context.dispatch( 'validateFee', {
 				selectedValue: initialData.fee,
 				validateFeeUrl: initialData.validateFeeUrl,
 			} );
@@ -69,7 +68,7 @@ export const actions = {
 	markEmptyFeeAsInvalid( context: ActionContext<MembershipFee, any> ): void {
 		context.commit( MARK_EMPTY_FEE_INVALID );
 	},
-	[ validateFee ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
+	validateFee( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
 		context.commit( SET_IS_VALIDATING, true );
 		return validateFeeDataRemotely(
 			context,
@@ -92,7 +91,7 @@ export const actions = {
 
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {
-			return context.dispatch( validateFee, payload );
+			return context.dispatch( 'validateFee', payload );
 		}
 		return Promise.resolve();
 	},
@@ -111,7 +110,7 @@ export const actions = {
 
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {
-			return context.dispatch( validateFee, {
+			return context.dispatch( 'validateFee', {
 				selectedValue: context.state.values.fee,
 				// validateFeeUrl should not be part of the payload, see https://phabricator.wikimedia.org/T315068
 				validateFeeUrl: payload.validateFeeUrl,
@@ -124,7 +123,7 @@ export const actions = {
 		// Trigger client-side validation - store will inspect set value
 		context.commit( SET_TYPE_VALIDITY );
 		if ( context.getters.allPaymentValuesAreSet ) {
-			return context.dispatch( validateFee, {
+			return context.dispatch( 'validateFee', {
 				selectedValue: context.state.values.fee,
 				validateFeeUrl: payload.validateFeeUrl,
 			} );

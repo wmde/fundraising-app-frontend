@@ -6,7 +6,6 @@ import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeM
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { FieldInitialization } from '@src/view_models/FieldInitialization';
-import { validateFee } from '@src/store/membership_fee/actionTypes';
 import { NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 
@@ -100,7 +99,7 @@ export const actions = {
 		// Trigger server-side re-validation of membership fee when address type changes
 		if ( context.rootGetters.allPaymentValuesAreSet ) {
 			result.then( () => context.dispatch(
-				action( NS_MEMBERSHIP_FEE, validateFee ),
+				action( NS_MEMBERSHIP_FEE, 'validateFee' ),
 				{
 					selectedValue: context.rootState[ NS_MEMBERSHIP_FEE ].values.fee,
 					// Hard-coded URL without host name for now
