@@ -4,7 +4,6 @@ import { DonationPayment } from '@src/store/payment/types';
 
 import {
 	discardInitialization,
-	markEmptyAmountAsInvalid,
 	markEmptyValuesAsInvalid,
 	setAmount,
 	setInterval,
@@ -57,7 +56,7 @@ export const actions = {
 	[ markEmptyValuesAsInvalid ]( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );
 	},
-	[ markEmptyAmountAsInvalid ]( context: ActionContext<DonationPayment, any> ): void {
+	markEmptyAmountAsInvalid( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( MARK_EMPTY_AMOUNT_INVALID );
 	},
 	[ setAmount ]( context: ActionContext<DonationPayment, any>, payload: string ): void {

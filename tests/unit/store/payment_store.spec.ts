@@ -3,7 +3,7 @@ import { actions } from '@src/store/payment/actions';
 import { mutations } from '@src/store/payment/mutations';
 import { Validity } from '@src/view_models/Validity';
 import { AmountValidity } from '@src/view_models/Payment';
-import { markEmptyAmountAsInvalid, setAmount } from '@src/store/payment/actionTypes';
+import { setAmount } from '@src/store/payment/actionTypes';
 import {
 	SET_AMOUNT,
 	SET_AMOUNT_VALIDITY,
@@ -381,7 +381,7 @@ describe( 'Payment', () => {
 	describe( 'Actions/markEmptyAmountAsInvalid', () => {
 		it( 'commits to mutation [MARK_EMPTY_AMOUNT_INVALID]', () => {
 			const commit = jest.fn();
-			const action = actions[ markEmptyAmountAsInvalid ] as any;
+			const action = actions.markEmptyAmountAsInvalid as any;
 			action( { commit } );
 			expect( commit ).toBeCalledWith(
 				'MARK_EMPTY_AMOUNT_INVALID'
