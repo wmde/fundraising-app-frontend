@@ -1,7 +1,6 @@
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { computed, ComputedRef, ref, Ref } from 'vue';
 
@@ -32,7 +31,7 @@ export function useAddressFormEventHandlers(
 		];
 
 		if ( isDirectDebit.value ) {
-			validationCalls.push( store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
+			validationCalls.push( store.dispatch( action( NS_BANKDATA, 'markEmptyFieldsAsInvalid' ) ) );
 		}
 
 		await Promise.all( validationCalls );
