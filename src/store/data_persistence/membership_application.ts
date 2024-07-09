@@ -1,6 +1,5 @@
 import { mutation } from '@src/store/util';
 import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { SET_FEE, SET_INTERVAL, SET_TYPE } from '@src/store/membership_fee/mutationTypes';
 import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
 import address from '@src/store/data_persistence/address';
 
@@ -20,7 +19,7 @@ export default [
 	{
 		storageKey: 'fee',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_FEE, SET_FEE ),
+		mutationKey: mutation( NS_MEMBERSHIP_FEE, 'SET_FEE' ),
 		fields: [],
 	},
 	{
@@ -38,13 +37,13 @@ export default [
 	{
 		storageKey: 'interval',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_FEE, SET_INTERVAL ),
+		mutationKey: mutation( NS_MEMBERSHIP_FEE, 'SET_INTERVAL' ),
 		fields: [],
 	},
 	{
 		storageKey: 'type',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_FEE, SET_TYPE ),
+		mutationKey: mutation( NS_MEMBERSHIP_FEE, 'SET_TYPE' ),
 		fields: [],
 	},
 	address( NS_MEMBERSHIP_ADDRESS ),

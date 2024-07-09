@@ -1,16 +1,6 @@
 import { ActionContext } from 'vuex';
 
 import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
-
-import {
-	MARK_EMPTY_FEE_INVALID,
-	MARK_EMPTY_FIELDS_INVALID,
-	SET_FEE,
-	SET_FEE_VALIDITY,
-	SET_INTERVAL,
-	SET_INTERVAL_VALIDITY,
-	SET_IS_VALIDATING,
-} from '@src/store/membership_fee/mutationTypes';
 import { ValidationResponse } from '@src/store/ValidationResponse';
 import { Validity } from '@src/view_models/Validity';
 import { Helper } from '@src/store/util';
@@ -23,8 +13,8 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
  * We'll use this map to process the result from the server-side validation
  */
 const fieldToValidationMutation = new Map( [
-	[ 'fee', SET_FEE_VALIDITY ],
-	[ 'interval', SET_INTERVAL_VALIDITY ],
+	[ 'fee', 'SET_FEE_VALIDITY' ],
+	[ 'interval', 'SET_INTERVAL_VALIDITY' ],
 	[ 'type', SET_TYPE_VALIDITY ],
 ] );
 
@@ -38,15 +28,15 @@ const validateFeeOnClientSide = ( fee: string ): Validity => {
 export const actions = {
 	initializeMembershipFee( context: ActionContext<MembershipFee, any>, initialData: InitialMembershipFeeValues ) {
 		if ( initialData.fee ) {
-			context.commit( SET_FEE, initialData.fee );
+			context.commit( 'SET_FEE', initialData.fee );
 			const feeValidity: Validity = validateFeeOnClientSide( initialData.fee );
-			context.commit( SET_FEE_VALIDITY, feeValidity );
-			context.commit( SET_FEE, feeValidity === Validity.VALID ? initialData.fee : '' );
+			context.commit( 'SET_FEE_VALIDITY', feeValidity );
+			context.commit( 'SET_FEE', feeValidity === Validity.VALID ? initialData.fee : '' );
 		}
 
 		if ( initialData.interval ) {
-			context.commit( SET_INTERVAL, initialData.interval );
-			context.commit( SET_INTERVAL_VALIDITY );
+			context.commit( 'SET_INTERVAL', initialData.interval );
+			context.commit( 'SET_INTERVAL_VALIDITY' );
 		}
 
 		if ( initialData.type ) {
@@ -63,13 +53,13 @@ export const actions = {
 		}
 	},
 	markEmptyValuesAsInvalid( context: ActionContext<MembershipFee, any> ): void {
-		context.commit( MARK_EMPTY_FIELDS_INVALID );
+		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );
 	},
 	markEmptyFeeAsInvalid( context: ActionContext<MembershipFee, any> ): void {
-		context.commit( MARK_EMPTY_FEE_INVALID );
+		context.commit( 'MARK_EMPTY_FEE_INVALID' );
 	},
 	validateFee( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
-		context.commit( SET_IS_VALIDATING, true );
+		context.commit( 'SET_IS_VALIDATING', true );
 		return validateFeeDataRemotely(
 			context,
 			payload.validateFeeUrl,
@@ -80,14 +70,14 @@ export const actions = {
 			fieldToValidationMutation.forEach( ( mutationFunction, errorSource ) => {
 				context.commit( mutationFunction, Helper.validationSucceeded( validationResult, errorSource ) );
 			} );
-			context.commit( SET_IS_VALIDATING, false );
+			context.commit( 'SET_IS_VALIDATING', false );
 		} );
 	},
 	setFee( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
-		context.commit( SET_FEE, payload.selectedValue );
+		context.commit( 'SET_FEE', payload.selectedValue );
 		const feeValidity: Validity = validateFeeOnClientSide( payload.selectedValue );
-		context.commit( SET_FEE_VALIDITY, feeValidity );
-		context.commit( SET_FEE, feeValidity === Validity.VALID ? payload.selectedValue : '' );
+		context.commit( 'SET_FEE_VALIDITY', feeValidity );
+		context.commit( 'SET_FEE', feeValidity === Validity.VALID ? payload.selectedValue : '' );
 
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {
@@ -97,16 +87,16 @@ export const actions = {
 	},
 	resetFeeForAddressType( context: ActionContext<MembershipFee, any>, addressType: AddressTypeModel ): Promise<void> {
 		if ( context.state.values.fee < context.getters.minimumAmount( addressType ) ) {
-			context.commit( SET_FEE, '' );
-			context.commit( SET_FEE_VALIDITY, Validity.INCOMPLETE );
+			context.commit( 'SET_FEE', '' );
+			context.commit( 'SET_FEE_VALIDITY', Validity.INCOMPLETE );
 		}
 		return Promise.resolve();
 	},
 	setInterval( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {
-		context.commit( SET_INTERVAL, payload.selectedValue );
+		context.commit( 'SET_INTERVAL', payload.selectedValue );
 
 		// Trigger client-side validation - store will inspect set value
-		context.commit( SET_INTERVAL_VALIDITY );
+		context.commit( 'SET_INTERVAL_VALIDITY' );
 
 		// Trigger server-side validation on full completion
 		if ( context.getters.allPaymentValuesAreSet ) {
