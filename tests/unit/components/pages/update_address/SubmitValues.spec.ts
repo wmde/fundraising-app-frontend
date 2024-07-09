@@ -1,7 +1,7 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from 'vuex';
 import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import { NS_ADDRESS, NS_BANKDATA } from '@src/store/namespaces';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 describe( 'SubmitValues.vue', () => {
@@ -39,7 +39,7 @@ describe( 'SubmitValues.vue', () => {
 						},
 					},
 				},
-				[ NS_PAYMENT ]: {
+				[ 'payment' ]: {
 					namespaced: true,
 					state: {
 						values: {

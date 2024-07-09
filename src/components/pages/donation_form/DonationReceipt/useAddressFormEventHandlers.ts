@@ -1,6 +1,6 @@
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import { NS_ADDRESS, NS_BANKDATA } from '@src/store/namespaces';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { computed, ComputedRef, ref, Ref } from 'vue';
@@ -59,7 +59,7 @@ export function useAddressFormEventHandlers(
 	};
 
 	const previousPage = async () => {
-		await store.dispatch( action( NS_PAYMENT, 'discardInitialization' ) );
+		await store.dispatch( action( 'payment', 'discardInitialization' ) );
 		emit( 'previous-page' );
 	};
 

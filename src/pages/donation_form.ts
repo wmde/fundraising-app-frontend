@@ -8,7 +8,7 @@ import PageDataInitializer from '@src/util/page_data_initializer';
 import persistenceItems from '@src/store/data_persistence/donation_form';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Country } from '@src/view_models/Country';
-import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
+import { NS_ADDRESS } from '@src/store/namespaces';
 import { Salutation } from '@src/view_models/Salutation';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { action } from '@src/store/util';
@@ -47,7 +47,7 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
 		store.dispatch(
-			action( NS_PAYMENT, 'initializePayment' ),
+			action( 'payment', 'initializePayment' ),
 			{
 				initialValues: createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues ),
 				allowedIntervals: pageData.applicationVars.paymentIntervals,

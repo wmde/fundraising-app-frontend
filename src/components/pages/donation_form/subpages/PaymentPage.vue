@@ -60,7 +60,6 @@
 import { onMounted, ref } from 'vue';
 import Payment from '@src/components/pages/donation_form/Payment.vue';
 import { action } from '@src/store/util';
-import { NS_PAYMENT } from '@src/store/namespaces';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
@@ -84,8 +83,8 @@ defineExpose( { focus: (): void => pageRef.value.focus() } );
 
 const next = async (): Promise<any> => {
 	await waitForServerValidationToFinish( store );
-	store.dispatch( action( NS_PAYMENT, 'markEmptyValuesAsInvalid' ) ).then( () => {
-		if ( store.getters[ NS_PAYMENT + '/paymentDataIsValid' ] ) {
+	store.dispatch( action( 'payment', 'markEmptyValuesAsInvalid' ) ).then( () => {
+		if ( store.getters[ 'payment/paymentDataIsValid' ] ) {
 			trackFormSubmission( paymentForm.value );
 			emit( 'next-page' );
 		} else {
@@ -94,7 +93,7 @@ const next = async (): Promise<any> => {
 	} );
 };
 
-store.watch( ( state, getters ) => getters[ NS_PAYMENT + '/paymentDataIsValid' ], ( isValid: boolean ) => {
+store.watch( ( state, getters ) => getters[ 'payment/paymentDataIsValid' ], ( isValid: boolean ) => {
 	if ( showErrorSummary.value && isValid ) {
 		showErrorSummary.value = false;
 	}

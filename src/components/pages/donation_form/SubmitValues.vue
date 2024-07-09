@@ -38,7 +38,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import { NS_ADDRESS, NS_BANKDATA } from '@src/store/namespaces';
 import { Payment } from '@src/view_models/Payment';
 import { AddressState } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
@@ -53,7 +53,7 @@ export default defineComponent( {
 		campaignValues: Object as () => CampaignValues,
 	},
 	computed: {
-		...mapState<Payment>( NS_PAYMENT, {
+		...mapState<Payment>( 'payment', {
 			payment: ( state: Payment ) => state.values,
 		} ),
 		...mapState<AddressState>( NS_ADDRESS, {

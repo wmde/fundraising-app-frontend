@@ -2,7 +2,7 @@ import { createStore } from '@src/store/donation_store';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
-import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
+import { NS_ADDRESS } from '@src/store/namespaces';
 import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
 
 describe( 'Donation Store', () => {
@@ -40,7 +40,7 @@ describe( 'Donation Store', () => {
 			};
 
 			const store = createStore();
-			await store.dispatch( action( NS_PAYMENT, 'initializePayment' ), payload );
+			await store.dispatch( action( 'payment', 'initializePayment' ), payload );
 
 			expect( store.state.payment.values.amount ).toBe( amount );
 			expect( store.state.payment.values.type ).toBe( type );

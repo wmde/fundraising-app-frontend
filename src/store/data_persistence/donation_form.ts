@@ -1,5 +1,5 @@
 import { mutation } from '@src/store/util';
-import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
+import { NS_ADDRESS } from '@src/store/namespaces';
 import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
 import address from '@src/store/data_persistence/address';
 
@@ -7,19 +7,19 @@ export default [
 	{
 		storageKey: 'amount',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_PAYMENT, 'SET_AMOUNT' ),
+		mutationKey: mutation( 'payment', 'SET_AMOUNT' ),
 		fields: [],
 	},
 	{
 		storageKey: 'interval',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_PAYMENT, 'SET_INTERVAL' ),
+		mutationKey: mutation( 'payment', 'SET_INTERVAL' ),
 		fields: [],
 	},
 	{
 		storageKey: 'type',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_PAYMENT, 'SET_TYPE' ),
+		mutationKey: mutation( 'payment', 'SET_TYPE' ),
 		fields: [],
 	},
 	{

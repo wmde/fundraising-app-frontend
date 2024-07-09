@@ -1,7 +1,7 @@
 import { Store } from 'vuex';
 import { trackFormSubmission } from '@src/util/tracking';
 import { action } from '@src/store/util';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import { NS_ADDRESS, NS_BANKDATA } from '@src/store/namespaces';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
@@ -76,7 +76,7 @@ export function useAddressFormEventHandlers(
 	};
 
 	const previousPage = async () => {
-		await store.dispatch( action( NS_PAYMENT, 'discardInitialization' ) );
+		await store.dispatch( action( 'payment', 'discardInitialization' ) );
 		emit( 'previous-page' );
 	};
 

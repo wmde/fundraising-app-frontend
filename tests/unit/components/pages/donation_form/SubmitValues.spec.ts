@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
+import { NS_ADDRESS, NS_BANKDATA } from '@src/store/namespaces';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 const getWrapper = ( addressType: AddressTypeModel ) => {
@@ -41,7 +41,7 @@ const getWrapper = ( addressType: AddressTypeModel ) => {
 					},
 				},
 			},
-			[ NS_PAYMENT ]: {
+			[ 'payment' ]: {
 				namespaced: true,
 				state: {
 					values: {
