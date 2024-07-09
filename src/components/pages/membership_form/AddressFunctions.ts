@@ -5,7 +5,7 @@ import {
 	setAddressField,
 	setReceiptChoice,
 	validateAddressField,
-} from '@src/store/address/actionTypes';
+} from '@src/store/membership_address/actionTypes';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { camelizeName } from '@src/util/camlize_name';

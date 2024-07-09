@@ -5,7 +5,7 @@ import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import { setAddressField, setReceiptChoice } from '@src/store/address/actionTypes';
+import { setReceiptChoice } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -101,7 +101,7 @@ describe( 'AddressForms.vue', () => {
 
 	it( 'sets address field in store when it receives field-changed event', async () => {
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_ADDRESS, setAddressField );
+		const expectedAction = action( NS_ADDRESS, 'setAddressField' );
 		const firstNameValue = 'Vuetiful';
 		await wrapper.find( '#person-first-name' ).setValue( firstNameValue );
 
@@ -127,7 +127,7 @@ describe( 'AddressForms.vue', () => {
 		store.dispatch = jest.fn();
 		await wrapper.find( '#person-email' ).setValue( testEmail );
 
-		const expectedAction = action( NS_ADDRESS, setAddressField );
+		const expectedAction = action( NS_ADDRESS, 'setAddressField' );
 		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'email',

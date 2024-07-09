@@ -1,7 +1,6 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
 import {
-	setAddressField,
 	setAddressType,
 	setNewsletterChoice,
 	setReceiptChoice,
@@ -35,7 +34,7 @@ export const actions = {
 	[ validateAddressField ]( context: ActionContext<AddressState, any>, field: InputField ) {
 		context.commit( VALIDATE_INPUT, field );
 	},
-	[ setAddressField ]( context: ActionContext<AddressState, any>, field: InputField ) {
+	setAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
 		field.value = field.value.trim();
 		context.commit( SET_ADDRESS_FIELD, field );
 		context.commit( VALIDATE_INPUT, field );

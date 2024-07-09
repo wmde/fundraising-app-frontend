@@ -99,7 +99,7 @@ import { Address, AddressFormData, AddressValidity, ValidationResult } from '@sr
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import { setAddressField, validateAddressField, validateAddressType } from '@src/store/address/actionTypes';
+import { validateAddressField, validateAddressType } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { mergeValidationResults } from '@src/util/merge_validation_results';
@@ -236,14 +236,14 @@ const validateForm = async (): Promise<ValidationResult> => {
 };
 
 const onFieldChange = ( fieldName: string ): void => {
-	store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
+	store.dispatch( action( NS_ADDRESS, 'setAddressField' ), formData[ fieldName ] );
 };
 
 const onAutofill = ( autofilledFields: { [key: string]: string; } ) => {
 	Object.keys( autofilledFields ).forEach( key => {
 		const fieldName = camelizeName( key );
 		if ( formData[ fieldName ] ) {
-			store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
+			store.dispatch( action( NS_ADDRESS, 'setAddressField' ), formData[ fieldName ] );
 		}
 	} );
 };
