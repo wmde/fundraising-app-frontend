@@ -99,7 +99,6 @@ import { Address, AddressFormData, AddressValidity, ValidationResult } from '@sr
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import { validateAddressType } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { mergeValidationResults } from '@src/util/merge_validation_results';

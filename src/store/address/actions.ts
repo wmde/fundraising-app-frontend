@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
-import { setNewsletterChoice, setReceiptChoice, validateAddressType } from '@src/store/address/actionTypes';
+import { setNewsletterChoice, setReceiptChoice } from '@src/store/address/actionTypes';
 import {
 	AddressState,
 	AddressTypeValidationRequest,
@@ -97,7 +97,7 @@ export const actions = {
 		context.commit( SET_ADDRESS_TYPE, type );
 		context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.VALID } );
 	},
-	[ validateAddressType ]( context: ActionContext<AddressState, any>, request: AddressTypeValidationRequest ) {
+	validateAddressType( context: ActionContext<AddressState, any>, request: AddressTypeValidationRequest ) {
 		if ( request.disallowed.includes( request.type ) ) {
 			context.commit( SET_VALIDITY, { name: 'addressType', value: Validity.INVALID } );
 			return Promise.resolve( { status: 'ERR', messages: [] } );

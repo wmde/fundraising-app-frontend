@@ -2,7 +2,6 @@ import { Store } from 'vuex';
 import { trackFormSubmission } from '@src/util/tracking';
 import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
-import { validateAddressType } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
@@ -46,7 +45,7 @@ export function useAddressFormEventHandlers(
 	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value );
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
-			store.dispatch( action( NS_ADDRESS, validateAddressType ), {
+			store.dispatch( action( NS_ADDRESS, 'validateAddressType' ), {
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
 			} ),
