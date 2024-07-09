@@ -16,7 +16,6 @@ import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { createDataPersister } from '@src/store/create_data_persister';
 import { createInitialDonationAddressValues, createInitialDonationPaymentValues } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
-import { initializePayment } from '@src/store/payment/actionTypes';
 
 import App from '@src/components/App.vue';
 import DonationForm from '@src/components/pages/DonationForm.vue';
@@ -48,7 +47,7 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
 		store.dispatch(
-			action( NS_PAYMENT, initializePayment ),
+			action( NS_PAYMENT, 'initializePayment' ),
 			{
 				initialValues: createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues ),
 				allowedIntervals: pageData.applicationVars.paymentIntervals,

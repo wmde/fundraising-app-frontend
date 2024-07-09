@@ -3,10 +3,7 @@ import { actions } from '@src/store/payment/actions';
 import { mutations } from '@src/store/payment/mutations';
 import { Validity } from '@src/view_models/Validity';
 import { AmountValidity } from '@src/view_models/Payment';
-import {
-	initializePayment,
-	markEmptyAmountAsInvalid, setAmount,
-} from '@src/store/payment/actionTypes';
+import { markEmptyAmountAsInvalid, setAmount } from '@src/store/payment/actionTypes';
 import {
 	SET_AMOUNT,
 	SET_AMOUNT_VALIDITY,
@@ -172,7 +169,7 @@ describe( 'Payment', () => {
 	describe( 'Actions/initializePayment', () => {
 		it( 'does not commit empty amount', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -190,7 +187,7 @@ describe( 'Payment', () => {
 
 		it( 'commits amount and sets it to valid when amount is set', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -209,7 +206,7 @@ describe( 'Payment', () => {
 
 		it( 'does not commit empty payment type', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -227,7 +224,7 @@ describe( 'Payment', () => {
 
 		it( 'commits payment type and set it to valid when payment type is set', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -246,7 +243,7 @@ describe( 'Payment', () => {
 
 		it( 'commits interval', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -273,7 +270,7 @@ describe( 'Payment', () => {
 		describe.each( paymentAndAmountCases )( 'with initial payment data', ( data: any ) => {
 			it( `whose amount is ${ data.amount } and type is ${ data.type } should be ${ data.expectedResolution }`, () => {
 				const commit = jest.fn();
-				const action = actions[ initializePayment ] as any;
+				const action = actions.initializePayment as any;
 				const payload: PaymentInitialisationPayload = {
 					allowedIntervals: [ 0, 12 ],
 					allowedPaymentTypes: [ 'BEZ', 'PPL' ],
@@ -292,7 +289,7 @@ describe( 'Payment', () => {
 
 		it( 'does not initialise Sofort payment type if initialised with an interval', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.SOFORT ],
@@ -310,7 +307,7 @@ describe( 'Payment', () => {
 
 		it( 'initialises Sofort payment type if interval is 0', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.SOFORT ],
@@ -328,7 +325,7 @@ describe( 'Payment', () => {
 
 		it( 'initialises Sofort payment type if interval is emtpy', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.SOFORT ],
@@ -346,7 +343,7 @@ describe( 'Payment', () => {
 
 		it( 'does not initialise payment type if it is not in allowed list', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.PAYPAL ],
@@ -364,7 +361,7 @@ describe( 'Payment', () => {
 
 		it( 'does not initialise interval if it is not in allowed list', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.PAYPAL ],

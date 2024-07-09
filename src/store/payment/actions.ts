@@ -4,7 +4,6 @@ import { DonationPayment } from '@src/store/payment/types';
 
 import {
 	discardInitialization,
-	initializePayment,
 	markEmptyAmountAsInvalid,
 	markEmptyValuesAsInvalid,
 	setAmount,
@@ -31,7 +30,7 @@ export const actions = {
 	[ discardInitialization ]( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( SET_INITIALIZED, false );
 	},
-	[ initializePayment ]( context: ActionContext<DonationPayment, any>, payload: PaymentInitialisationPayload ): Promise<boolean> {
+	initializePayment( context: ActionContext<DonationPayment, any>, payload: PaymentInitialisationPayload ): Promise<boolean> {
 		const { initialValues, allowedPaymentTypes, allowedIntervals } = payload;
 
 		const amountIsValid = isValidAmount( Number( initialValues.amount ) );

@@ -4,7 +4,6 @@ import axios from 'axios';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { action } from '@src/store/util';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
-import { initializePayment } from '@src/store/payment/actionTypes';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
@@ -73,7 +72,7 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 	};
 
 	const setPaymentType = ( store: Store<any>, paymentType: string ): Promise<any> => {
-		return store.dispatch( action( NS_PAYMENT, initializePayment ), {
+		return store.dispatch( action( NS_PAYMENT, 'initializePayment' ), {
 			allowedIntervals: [ 0 ],
 			allowedPaymentTypes: [ paymentType ],
 			initialValues: {
