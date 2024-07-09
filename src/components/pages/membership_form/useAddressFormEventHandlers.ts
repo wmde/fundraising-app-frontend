@@ -1,6 +1,5 @@
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
-import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { computed, ComputedRef, ref, Ref } from 'vue';
 
@@ -26,8 +25,8 @@ export function useAddressFormEventHandlers(
 	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value || !dateOfBirthIsValid.value );
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
-			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'validateAddress' ), validateAddressUrl ),
-			store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'validateEmail' ), validateEmailUrl ),
+			store.dispatch( action( 'membership_address', 'validateAddress' ), validateAddressUrl ),
+			store.dispatch( action( 'membership_address', 'validateEmail' ), validateEmailUrl ),
 		];
 
 		if ( isDirectDebit.value ) {
@@ -38,7 +37,7 @@ export function useAddressFormEventHandlers(
 		// We need to wait for the asynchronous bank data validation, that might still be going on
 		await waitForServerValidationToFinish( store );
 
-		if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] ) {
+		if ( !store.getters[ 'membership_address/requiredFieldsAreValid' ] ) {
 			addressDataIsValid.value = false;
 			return;
 		}
@@ -46,7 +45,7 @@ export function useAddressFormEventHandlers(
 			bankDataIsValid.value = false;
 			return;
 		}
-		if ( !store.getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ] ) {
+		if ( !store.getters[ 'membership_address/dateOfBirthIsValid' ] ) {
 			dateOfBirthIsValid.value = false;
 			return;
 		}
@@ -59,7 +58,7 @@ export function useAddressFormEventHandlers(
 		emit( 'previous-page' );
 	};
 
-	store.watch( ( state, getters ) => getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	store.watch( ( state, getters ) => getters[ 'membership_address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 		if ( !addressDataIsValid.value && isValid ) {
 			addressDataIsValid.value = true;
 		}
@@ -71,7 +70,7 @@ export function useAddressFormEventHandlers(
 		}
 	} );
 
-	store.watch( ( state, getters ) => getters[ NS_MEMBERSHIP_ADDRESS + '/dateOfBirthIsValid' ], ( isValid: boolean ) => {
+	store.watch( ( state, getters ) => getters[ 'membership_address/dateOfBirthIsValid' ], ( isValid: boolean ) => {
 		if ( !dateOfBirthIsValid.value && isValid ) {
 			dateOfBirthIsValid.value = true;
 		}

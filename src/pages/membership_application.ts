@@ -10,7 +10,6 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import { Country } from '@src/view_models/Country';
 import { InitialMembershipData } from '@src/view_models/Address';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { Salutation } from '@src/view_models/Salutation';
 import { action } from '@src/store/util';
 import { createDataPersister } from '@src/store/create_data_persister';
@@ -72,11 +71,11 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	// Send the combined values to the store, as the "final initial" value in the store.
 	Promise.all( [
 		store.dispatch(
-			action( NS_MEMBERSHIP_ADDRESS, 'initializeAddress' ),
+			action( 'membership_address', 'initializeAddress' ),
 			createInitialMembershipAddressValues( dataPersister, initialFormValues ),
 		),
 		store.dispatch(
-			action( NS_MEMBERSHIP_FEE, 'initializeMembershipFee' ),
+			action( 'membership_fee', 'initializeMembershipFee' ),
 			createInitialMembershipFeeValues( dataPersister, initialFeeValues ),
 		),
 		store.dispatch(

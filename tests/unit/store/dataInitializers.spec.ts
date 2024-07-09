@@ -2,12 +2,12 @@ import FakeDataPersister from '../TestDoubles/FakeDataPersister';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import persistenceAddress from '@src/store/data_persistence/address';
-import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import {
 	createInitialBankDataValues,
 	createInitialDonationAddressValues,
 	createInitialDonationPaymentValues,
-	createInitialMembershipAddressValues, createInitialMembershipFeeValues,
+	createInitialMembershipAddressValues,
+	createInitialMembershipFeeValues,
 } from '@src/store/dataInitializers';
 
 describe( 'createInitialDonationAddressValues', () => {
@@ -166,7 +166,7 @@ describe( 'createInitialMembershipAddressValues', () => {
 		expect( values.membershipType ).toBeUndefined();
 		expect( values.date ).toBeNull();
 
-		persistenceAddress( NS_MEMBERSHIP_ADDRESS ).fields.forEach( key => {
+		persistenceAddress( 'membership_address' ).fields.forEach( key => {
 			const field = values.fields.find( f => f.name === key );
 			expect( field ).toBeDefined();
 			expect( ( field || {} ).value ).toEqual( ( initialValues as any )[ key ] );

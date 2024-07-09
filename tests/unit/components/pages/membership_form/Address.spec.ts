@@ -2,7 +2,6 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import Address from '@src/components/pages/membership_form/Address.vue';
 import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -55,7 +54,7 @@ describe( 'Address.vue', () => {
 
 		expect( wrapper.find( '#company-name' ).exists() ).toBe( false );
 
-		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'setAddressType' ), AddressTypeModel.COMPANY );
+		await store.dispatch( action( 'membership_address', 'setAddressType' ), AddressTypeModel.COMPANY );
 
 		expect( wrapper.find( '#company-name' ).exists() ).toBe( true );
 	} );
@@ -63,7 +62,7 @@ describe( 'Address.vue', () => {
 	it( 'sets address field in store when it receives field-changed event', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, 'setAddressField' );
+		const expectedAction = action( 'membership_address', 'setAddressField' );
 		const firstNameValue = 'Vuetiful';
 		await wrapper.find( '#first-name' ).setValue( firstNameValue );
 
@@ -79,7 +78,7 @@ describe( 'Address.vue', () => {
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, 'setReceiptChoice' );
+		const expectedAction = action( 'membership_address', 'setReceiptChoice' );
 		const expectedPayload = false;
 
 		// assumes the receipt checkbox is the first checkbox on the address component
@@ -92,7 +91,7 @@ describe( 'Address.vue', () => {
 	it( 'sets incentive preference in store when it receives field-change event', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, 'setIncentives' );
+		const expectedAction = action( 'membership_address', 'setIncentives' );
 		const expectedPayload = [ 'tote_bag' ];
 
 		const inputElement = wrapper.findComponent( IncentivesField ).find<HTMLInputElement>( 'input' );
@@ -108,7 +107,7 @@ describe( 'Address.vue', () => {
 		store.dispatch = jest.fn();
 		await wrapper.find( '#email' ).setValue( testEmail );
 
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, 'setAddressField' );
+		const expectedAction = action( 'membership_address', 'setAddressField' );
 		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'email',
@@ -130,7 +129,7 @@ describe( 'Address.vue', () => {
 			receipt: false,
 			incentives: [],
 		};
-		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'initializeAddress' ), initialMembershipAddressValues );
+		await store.dispatch( action( 'membership_address', 'initializeAddress' ), initialMembershipAddressValues );
 
 		const localWrapper = mount( Address, {
 			props: {

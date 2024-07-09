@@ -116,7 +116,6 @@ import { computed, ref } from 'vue';
 import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
 import AddressFields from '@src/components/pages/membership_form/Address.vue';
 import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
@@ -150,29 +149,29 @@ const store = useStore();
 const pageRef = ref<HTMLElement>( null );
 defineExpose( { focus: (): void => pageRef.value.focus() } );
 const addressFieldsRef = ref<HTMLFormElement>();
-const addressIsInvalid = computed( (): boolean => !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] );
+const addressIsInvalid = computed( (): boolean => !store.getters[ 'membership_address/requiredFieldsAreValid' ] );
 
 const membershipApplication = computed( (): MembershipApplication => {
-	const payment = store.state[ NS_MEMBERSHIP_FEE ].values;
+	const payment = store.state.membership_fee.values;
 	return {
 		paymentIntervalInMonths: payment.interval,
 		membershipFee: payment.fee / 100,
 		paymentType: payment.type,
-		membershipType: membershipTypeName( store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipType' ] ),
+		membershipType: membershipTypeName( store.getters[ 'membership_address/membershipType' ] ),
 		incentives: [],
 	};
 } );
 
-const isDirectDebitPayment = computed( (): boolean => store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' );
+const isDirectDebitPayment = computed( (): boolean => store.state.membership_fee.values.type === 'BEZ' );
 
 const addressSummary = computed( (): MembershipAddress => {
 	return {
-		...store.state[ NS_MEMBERSHIP_ADDRESS ].values,
-		fullName: store.getters[ NS_MEMBERSHIP_ADDRESS + '/fullName' ],
-		streetAddress: store.state[ NS_MEMBERSHIP_ADDRESS ].values.street,
-		postalCode: store.state[ NS_MEMBERSHIP_ADDRESS ].values.postcode,
-		countryCode: store.state[ NS_MEMBERSHIP_ADDRESS ].values.country,
-		applicantType: addressTypeName( store.getters[ NS_MEMBERSHIP_ADDRESS + '/addressType' ] ),
+		...store.state.membership_address.values,
+		fullName: store.getters[ 'membership_address/fullName' ],
+		streetAddress: store.state.membership_address.values.street,
+		postalCode: store.state.membership_address.values.postcode,
+		countryCode: store.state.membership_address.values.country,
+		applicantType: addressTypeName( store.getters[ 'membership_address/addressType' ] ),
 	};
 } );
 

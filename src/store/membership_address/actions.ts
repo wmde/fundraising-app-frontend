@@ -6,7 +6,6 @@ import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeM
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { FieldInitialization } from '@src/view_models/FieldInitialization';
-import { NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 
 export const actions = {
@@ -95,13 +94,13 @@ export const actions = {
 		if ( type === AddressTypeModel.COMPANY && context.getters.membershipType === MembershipTypeModel.ACTIVE ) {
 			context.commit( 'SET_MEMBERSHIP_TYPE_VALIDITY', Validity.INVALID );
 		}
-		const result = context.dispatch( action( NS_MEMBERSHIP_FEE, 'resetFeeForAddressType' ), type, { root: true } );
+		const result = context.dispatch( action( 'membership_fee', 'resetFeeForAddressType' ), type, { root: true } );
 		// Trigger server-side re-validation of membership fee when address type changes
 		if ( context.rootGetters.allPaymentValuesAreSet ) {
 			result.then( () => context.dispatch(
-				action( NS_MEMBERSHIP_FEE, 'validateFee' ),
+				action( 'membership_fee', 'validateFee' ),
 				{
-					selectedValue: context.rootState[ NS_MEMBERSHIP_FEE ].values.fee,
+					selectedValue: context.rootState.membership_fee.values.fee,
 					// Hard-coded URL without host name for now
 					// validateFeeUrl should not be part of the payload, see https://phabricator.wikimedia.org/T315068
 					validateFeeUrl: '/validate-fee',

@@ -7,7 +7,6 @@ import { MembershipAddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { REQUIRED_FIELDS } from '@src/store/membership_address/constants';
 import mockAxios from 'jest-mock-axios';
-import { NS_MEMBERSHIP_FEE } from '../../../src/store/namespaces';
 
 function newMinimalStore( overrides: Object ): MembershipAddressState {
 	return Object.assign(
@@ -474,7 +473,7 @@ describe( 'MembershipAddress', () => {
 					commit: jest.fn(),
 					dispatch: jest.fn().mockImplementation( () => Promise.resolve() ),
 					rootGetters: { allPaymentValuesAreSet: true },
-					rootState: { [ NS_MEMBERSHIP_FEE ]: { values: { fee: '500' } } },
+					rootState: { [ 'membership_fee' ]: { values: { fee: '500' } } },
 					state: newMinimalStore( {} ),
 					getters: {
 						membershipType: MembershipTypeModel.SUSTAINING,
