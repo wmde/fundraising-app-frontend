@@ -1,7 +1,6 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
 import {
-	setAddressType,
 	setIncentives,
 	setMembershipType,
 	setReceiptChoice,
@@ -112,7 +111,7 @@ export const actions = {
 		const status = context.state.validity.date === Validity.VALID ? 'OK' : 'ERR';
 		return Promise.resolve( { status, messages: {} } );
 	},
-	[ setAddressType ]( context: ActionContext<MembershipAddressState, any>, type: AddressTypeModel ) {
+	setAddressType( context: ActionContext<MembershipAddressState, any>, type: AddressTypeModel ) {
 		context.commit( SET_ADDRESS_TYPE, type );
 		if ( type === AddressTypeModel.COMPANY && context.getters.membershipType === MembershipTypeModel.ACTIVE ) {
 			context.commit( SET_MEMBERSHIP_TYPE_VALIDITY, Validity.INVALID );
