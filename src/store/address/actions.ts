@@ -1,6 +1,6 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
-import { setNewsletterChoice, setReceiptChoice } from '@src/store/address/actionTypes';
+import { setReceiptChoice } from '@src/store/address/actionTypes';
 import {
 	AddressState,
 	AddressTypeValidationRequest,
@@ -104,7 +104,7 @@ export const actions = {
 		}
 		return Promise.resolve( { status: 'OK', messages: [] } );
 	},
-	[ setNewsletterChoice ]( context: ActionContext<AddressState, any>, choice: boolean ) {
+	setNewsletterChoice( context: ActionContext<AddressState, any>, choice: boolean ) {
 		context.commit( SET_NEWSLETTER, choice );
 	},
 	[ setReceiptChoice ]( context: ActionContext<AddressState, any>, choice: boolean ) {
