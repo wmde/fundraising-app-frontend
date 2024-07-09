@@ -2,7 +2,7 @@ import { Store } from 'vuex';
 import { Ref, ref, watch } from 'vue';
 import { action } from '@src/store/util';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { setReceiptChoice } from '@src/store/address/actionTypes';
+import { setReceiptChoice } from '@src/store/membership_address/actionTypes';
 
 type ReturnType = {
 	receiptNeeded: Ref<boolean>,

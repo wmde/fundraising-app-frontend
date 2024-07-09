@@ -5,7 +5,6 @@ import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_ADDRESS } from '@src/store/namespaces';
-import { setReceiptChoice } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -116,7 +115,7 @@ describe( 'AddressForms.vue', () => {
 
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_ADDRESS, setReceiptChoice );
+		const expectedAction = action( NS_ADDRESS, 'setReceiptChoice' );
 		const expectedPayload = false;
 		await wrapper.find( '#receipt-option-company' ).setValue( false );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
