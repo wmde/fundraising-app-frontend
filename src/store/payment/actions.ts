@@ -2,7 +2,6 @@ import { ActionContext } from 'vuex';
 import { IntervalData, TypeData } from '@src/view_models/Payment';
 import { DonationPayment } from '@src/store/payment/types';
 
-import { discardInitialization } from '@src/store/payment/actionTypes';
 import {
 	MARK_EMPTY_AMOUNT_INVALID,
 	MARK_EMPTY_FIELDS_INVALID,
@@ -20,7 +19,7 @@ import { isValidPaymentType } from '@src/store/paymentTypeValidator';
 import { isValidInterval } from '@src/store/intervalValidator';
 
 export const actions = {
-	[ discardInitialization ]( context: ActionContext<DonationPayment, any> ): void {
+	discardInitialization( context: ActionContext<DonationPayment, any> ): void {
 		context.commit( SET_INITIALIZED, false );
 	},
 	initializePayment( context: ActionContext<DonationPayment, any>, payload: PaymentInitialisationPayload ): Promise<boolean> {
