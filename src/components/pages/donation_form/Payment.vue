@@ -56,7 +56,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
-import { setType } from '@src/store/payment/actionTypes';
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { AmountValidity } from '@src/view_models/Payment';
@@ -82,7 +81,7 @@ const { t } = useI18n();
 
 const amount = usePaymentFieldModel( store, 'amount', 'setAmount' );
 const interval = usePaymentFieldModel( store, 'interval', 'setInterval' );
-const paymentType = usePaymentFieldModel( store, 'type', setType );
+const paymentType = usePaymentFieldModel( store, 'type', 'setType' );
 const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type !== Validity.INVALID );
 
 const paymentIntervalsAsOptions = computed<CheckboxFormOption[]>( () => {
