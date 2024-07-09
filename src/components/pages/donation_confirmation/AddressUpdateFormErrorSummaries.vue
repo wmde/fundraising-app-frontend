@@ -1,6 +1,6 @@
 <template>
 	<ErrorSummary
-		v-if="addressType === AddressTypeModel.PERSON || addressType === AddressTypeModel.ANON"
+		v-if="addressType === AddressTypeModel.PERSON || addressType === AddressTypeModel.ANON || addressType === AddressTypeModel.EMAIL"
 		:is-visible="showErrorSummary"
 		:items="[
 			{
@@ -66,68 +66,38 @@
 			{
 				validity: store.state.address.validity.companyName,
 				message: $t( 'donation_form_companyname_error' ),
-				focusElement: 'company-company-name',
-				scrollElement: 'company-company-name-scroll-target'
+				focusElement: 'company-name',
+				scrollElement: 'company-name-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.street,
 				message: $t( 'donation_form_street_error' ),
-				focusElement: 'company-street',
-				scrollElement: 'company-street-scroll-target'
+				focusElement: 'street',
+				scrollElement: 'street-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.postcode,
 				message: $t( 'donation_form_zip_error' ),
-				focusElement: 'company-post-code',
-				scrollElement: 'company-post-code-scroll-target'
+				focusElement: 'post-code',
+				scrollElement: 'post-code-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.city,
 				message: $t( 'donation_form_city_error' ),
-				focusElement: 'company-city',
-				scrollElement: 'company-city-scroll-target'
+				focusElement: 'city',
+				scrollElement: 'city-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.country,
 				message: $t( 'donation_form_country_error' ),
-				focusElement: 'company-country',
-				scrollElement: 'company-country-scroll-target'
+				focusElement: 'country',
+				scrollElement: 'country-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.email,
 				message: $t( 'donation_form_email_error' ),
-				focusElement: 'company-email',
-				scrollElement: 'company-email-scroll-target'
-			},
-		]"
-	/>
-	<ErrorSummary
-		v-if="addressType === AddressTypeModel.EMAIL"
-		:is-visible="showErrorSummary"
-		:items="[
-			{
-				validity: store.state.address.validity.salutation,
-				message: $t( 'donation_form_salutation_error' ),
-				focusElement: 'email-salutation-0',
-				scrollElement: 'email-salutation-scroll-target'
-			},
-			{
-				validity: store.state.address.validity.firstName,
-				message: $t( 'donation_form_firstname_error' ),
-				focusElement: 'email-first-name',
-				scrollElement: 'email-first-name-scroll-target'
-			},
-			{
-				validity: store.state.address.validity.lastName,
-				message: $t( 'donation_form_lastname_error' ),
-				focusElement: 'email-last-name',
-				scrollElement: 'email-last-name-scroll-target'
-			},
-			{
-				validity: store.state.address.validity.email,
-				message: $t( 'donation_form_email_error' ),
-				focusElement: 'email-email',
-				scrollElement: 'email-email-scroll-target'
+				focusElement: 'email',
+				scrollElement: 'email-scroll-target'
 			},
 		]"
 	/>

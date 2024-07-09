@@ -1,5 +1,5 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
-import { createStore } from '@src/store/donation_store';
+import { createStore } from '@src/store/donor_update_store';
 import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 import { action } from '@src/store/util';
 import { NS_ADDRESS } from '@src/store/namespaces';
@@ -55,6 +55,21 @@ const inValidAddress = {
 	city: '',
 	country: '',
 	email: 'not.a.real.email@domainlalalaxoxoxo.de',
+};
+
+const emptyAddress = {
+	addressType: '',
+	salutation: '',
+	title: '',
+	firstName: '',
+	lastName: '',
+	fullName: '',
+	companyName: '',
+	street: '',
+	postcode: '',
+	city: '',
+	country: '',
+	email: '',
 };
 
 const addressData = ( address: Address, addressType: AddressTypeModel ) => {
@@ -240,5 +255,69 @@ describe( 'AddressUpdateForm.vue', () => {
 
 		expect( wrapper.find( '.server-message' ).exists() ).toBe( true );
 		expect( wrapper.find( '.server-message' ).text() ).toStrictEqual( error );
+	} );
+
+	test.each( [
+		[ AddressTypeModel.PERSON ],
+		[ AddressTypeModel.EMAIL ],
+		[ AddressTypeModel.ANON ],
+	] )( 'shows and validates as person when initial address type is %s', async ( addressType: AddressTypeModel ) => {
+		const store = createStore();
+		await store.dispatch(
+			action( NS_ADDRESS, initializeAddress ),
+			addressData( emptyAddress, addressType )
+		);
+
+		const wrapper = getWrapper( store, bankTransferConfirmationData );
+
+		expect( wrapper.find( '#salutation-0' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#title' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#first-name' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#last-name' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#street' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#post-code' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#city' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#country' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#email' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#salutation-0"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#first-name"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#last-name"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#street"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#post-code"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#city"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#country"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#email"]' ).exists() ).toBeTruthy();
+	} );
+
+	it( 'shows and validates as company when address type is company', async () => {
+		const store = createStore();
+		emptyAddress.addressType = 'firma';
+		await store.dispatch(
+			action( NS_ADDRESS, initializeAddress ),
+			addressData( emptyAddress, AddressTypeModel.COMPANY )
+		);
+
+		const wrapper = getWrapper( store, bankTransferConfirmationData );
+
+		expect( wrapper.find( '#company-name' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#street' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#city' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#country' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#email' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#company-name"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#street"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#city"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#country"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '[href="#email"]' ).exists() ).toBeTruthy();
 	} );
 } );

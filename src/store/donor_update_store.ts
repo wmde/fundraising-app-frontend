@@ -1,12 +1,12 @@
 import Vuex, { StoreOptions } from 'vuex';
 import createAddress from '@src/store/address';
 import { NS_ADDRESS } from './namespaces';
-import { REQUIRED_FIELDS } from '@src/store/address/constants';
+import { REQUIRED_FIELDS_DONOR_UPDATE } from '@src/store/address/constants';
 
 export function createStore() {
 	const storeBundle: StoreOptions<any> = {
 		modules: {
-			[ NS_ADDRESS ]: createAddress( REQUIRED_FIELDS ),
+			[ NS_ADDRESS ]: createAddress( REQUIRED_FIELDS_DONOR_UPDATE ),
 		},
 		strict: process.env.NODE_ENV !== 'production',
 		getters: {

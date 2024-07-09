@@ -101,18 +101,19 @@ interface Props {
 	formData: AddressFormData;
 	showError: AddressValidity;
 	fieldIdNamespace?: string;
+	addressTypesToShowPersonalFields?: AddressTypeModel[];
 }
 
-const props = defineProps<Props>();
-defineEmits( [ 'field-changed' ] );
-
-const showPersonalFields = computed( () =>
-	[
+const props = withDefaults( defineProps<Props>(), {
+	addressTypesToShowPersonalFields: () => [
 		AddressTypeModel.PERSON,
 		AddressTypeModel.EMAIL,
 		AddressTypeModel.UNSET,
-	].includes( props.addressType )
-);
+	],
+} );
+defineEmits( [ 'field-changed' ] );
+
+const showPersonalFields = computed( () => props.addressTypesToShowPersonalFields.includes( props.addressType ) );
 const showCompanyFields = computed( () => props.addressType === AddressTypeModel.COMPANY );
 const fieldIdNamespace = props.fieldIdNamespace ? `${props.fieldIdNamespace}-` : '';
 const salutationFormOptions: CheckboxFormOption[] = props.salutations.map( ( x, index ) => (
