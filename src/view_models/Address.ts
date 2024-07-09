@@ -34,11 +34,6 @@ export interface AddressFormData {
     [key: string]: InputField
 }
 
-export interface CountryValidationFields {
-    country: InputField,
-    postcode: InputField,
-}
-
 export interface FormValidity {
     [key: string]: Validity
 }

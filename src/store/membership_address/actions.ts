@@ -8,12 +8,10 @@ import {
 	setReceiptChoice,
 	validateAddress,
 	validateAddressField,
-	validateCountry,
 	validateDateOfBirth,
 	validateEmail,
 } from '@src/store/membership_address/actionTypes';
 import {
-	CountryValidationFields,
 	InitialMembershipAddressValues,
 	InputField,
 	MembershipAddressState,
@@ -76,12 +74,6 @@ export const actions = {
 		field.value = field.value.trim();
 		context.commit( SET_ADDRESS_FIELD, field );
 		context.commit( VALIDATE_INPUT, field );
-	},
-	[ validateCountry ]( context: ActionContext<MembershipAddressState, any>, countryValidation: CountryValidationFields ) {
-		context.commit( SET_ADDRESS_FIELD, countryValidation.country );
-		context.commit( VALIDATE_INPUT, countryValidation.country );
-		context.commit( SET_ADDRESS_FIELD, countryValidation.postcode );
-		context.commit( VALIDATE_INPUT, countryValidation.postcode );
 	},
 	[ validateAddress ]( context: ActionContext<MembershipAddressState, any>, validateAddressUrl: string ) {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );
