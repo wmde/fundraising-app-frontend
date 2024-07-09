@@ -6,7 +6,6 @@ import {
 	setIncentives,
 	setMembershipType,
 	setReceiptChoice,
-	validateDateOfBirth,
 } from '@src/store/membership_address/actionTypes';
 import { InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
 import { ValidationResponse } from '@src/store/ValidationResponse';
@@ -109,7 +108,7 @@ export const actions = {
 			return validationResult.data;
 		} );
 	},
-	[ validateDateOfBirth ]( context: ActionContext<MembershipAddressState, any> ) {
+	validateDateOfBirth( context: ActionContext<MembershipAddressState, any> ) {
 		// We don't send the date of birth to the server, instead we rely on it being already validated with the client-side pattern
 		const status = context.state.validity.date === Validity.VALID ? 'OK' : 'ERR';
 		return Promise.resolve( { status, messages: {} } );
