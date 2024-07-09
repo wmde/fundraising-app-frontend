@@ -6,16 +6,11 @@ import {
 	setIncentives,
 	setMembershipType,
 	setReceiptChoice,
-	validateAddress,
 	validateAddressField,
 	validateDateOfBirth,
 	validateEmail,
 } from '@src/store/membership_address/actionTypes';
-import {
-	InitialMembershipAddressValues,
-	InputField,
-	MembershipAddressState,
-} from '@src/view_models/Address';
+import { InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
 import { ValidationResponse } from '@src/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
@@ -75,7 +70,7 @@ export const actions = {
 		context.commit( SET_ADDRESS_FIELD, field );
 		context.commit( VALIDATE_INPUT, field );
 	},
-	[ validateAddress ]( context: ActionContext<MembershipAddressState, any>, validateAddressUrl: string ) {
+	validateAddress( context: ActionContext<MembershipAddressState, any>, validateAddressUrl: string ) {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );
