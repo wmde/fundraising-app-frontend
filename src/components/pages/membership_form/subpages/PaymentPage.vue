@@ -77,7 +77,6 @@ import Payment from '@src/components/pages/membership_form/Payment.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { action } from '@src/store/util';
-import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@src/store/membership_fee/actionTypes';
 import { useStore } from 'vuex';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { computed, onMounted, ref } from 'vue';
@@ -127,7 +126,7 @@ const isDirectDebitPayment = computed( (): boolean => store.state[ NS_MEMBERSHIP
 
 const next = async (): Promise<any> => {
 	waitForServerValidationToFinish( store ).then( () => {
-		const storeCleanupActions = [ store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeValuesAsInvalid ) ) ];
+		const storeCleanupActions = [ store.dispatch( action( NS_MEMBERSHIP_FEE, 'markEmptyValuesAsInvalid' ) ) ];
 		if ( isDirectDebitPayment ) {
 			storeCleanupActions.push( store.dispatch( action( NS_BANKDATA, 'markEmptyFieldsAsInvalid' ) ) );
 		}
