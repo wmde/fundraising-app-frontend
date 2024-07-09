@@ -3,7 +3,7 @@ import Address from '@src/components/pages/membership_form/Address.vue';
 import { createStore, StoreKeyMembership } from '@src/store/membership_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { setIncentives, setReceiptChoice } from '@src/store/membership_address/actionTypes';
+import { setIncentives } from '@src/store/membership_address/actionTypes';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -80,7 +80,7 @@ describe( 'Address.vue', () => {
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setReceiptChoice );
+		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, 'setReceiptChoice' );
 		const expectedPayload = false;
 
 		// assumes the receipt checkbox is the first checkbox on the address component

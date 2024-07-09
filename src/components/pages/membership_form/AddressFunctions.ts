@@ -1,7 +1,6 @@
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import { computed, reactive } from 'vue';
 import { Validity } from '@src/view_models/Validity';
-import { setReceiptChoice } from '@src/store/membership_address/actionTypes';
 import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { camelizeName } from '@src/util/camlize_name';
@@ -129,7 +128,7 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 	}
 
 	function setReceipt( choice: boolean ): void {
-		store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setReceiptChoice ), choice );
+		store.dispatch( action( NS_MEMBERSHIP_ADDRESS, 'setReceiptChoice' ), choice );
 	}
 
 	/**
