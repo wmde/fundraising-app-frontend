@@ -1,4 +1,3 @@
-export const validateAddressField = 'validateAddressField';
 export const setAddressType = 'setAddressType';
 export const validateAddressType = 'validateAddressType';
 export const setNewsletterChoice = 'setNewsletterChoice';

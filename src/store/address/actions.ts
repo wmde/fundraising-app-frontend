@@ -4,7 +4,6 @@ import {
 	setAddressType,
 	setNewsletterChoice,
 	setReceiptChoice,
-	validateAddressField,
 	validateAddressType,
 } from '@src/store/address/actionTypes';
 import {
@@ -31,7 +30,7 @@ import {
 import { Validity } from '@src/view_models/Validity';
 
 export const actions = {
-	[ validateAddressField ]( context: ActionContext<AddressState, any>, field: InputField ) {
+	validateAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
 		context.commit( VALIDATE_INPUT, field );
 	},
 	setAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
