@@ -3,7 +3,6 @@ import { ActionContext } from 'vuex';
 import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
 
 import {
-	markEmptyFeeAsInvalid,
 	markEmptyValuesAsInvalid,
 	resetFeeForAddressType,
 	setFee,
@@ -74,7 +73,7 @@ export const actions = {
 	[ markEmptyValuesAsInvalid ]( context: ActionContext<MembershipFee, any> ): void {
 		context.commit( MARK_EMPTY_FIELDS_INVALID );
 	},
-	[ markEmptyFeeAsInvalid ]( context: ActionContext<MembershipFee, any> ): void {
+	markEmptyFeeAsInvalid( context: ActionContext<MembershipFee, any> ): void {
 		context.commit( MARK_EMPTY_FEE_INVALID );
 	},
 	[ validateFee ]( context: ActionContext<MembershipFee, any>, payload: GenericValuePayload ): Promise<void> {

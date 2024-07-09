@@ -3,8 +3,14 @@ import { actions } from '@src/store/membership_fee/actions';
 import { mutations } from '@src/store/membership_fee/mutations';
 import { GenericValuePayload, MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
-import { markEmptyFeeAsInvalid, validateFee } from '@src/store/membership_fee/actionTypes';
-import { MARK_EMPTY_FEE_INVALID, SET_FEE, SET_FEE_VALIDITY, SET_INTERVAL, SET_INTERVAL_VALIDITY } from '@src/store/membership_fee/mutationTypes';
+import { validateFee } from '@src/store/membership_fee/actionTypes';
+import {
+	MARK_EMPTY_FEE_INVALID,
+	SET_FEE,
+	SET_FEE_VALIDITY,
+	SET_INTERVAL,
+	SET_INTERVAL_VALIDITY,
+} from '@src/store/membership_fee/mutationTypes';
 import each from 'jest-each';
 import mockAxios from 'jest-mock-axios';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -131,7 +137,7 @@ describe( 'MembershipFee', () => {
 	describe( 'Actions/markEmptyFeeAsInvalid', () => {
 		it( 'commits to mutation [MARK_EMPTY_FEE_INVALID]', () => {
 			const commit = jest.fn();
-			const action = actions[ markEmptyFeeAsInvalid ] as any;
+			const action = actions.markEmptyFeeAsInvalid as any;
 			action( { commit } );
 			expect( commit ).toBeCalledWith(
 				MARK_EMPTY_FEE_INVALID
