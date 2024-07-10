@@ -5,7 +5,6 @@
 				v-for="incentive in incentiveFormFieldOptions"
 				:native-value="incentive.value"
 				name="incentives"
-				input-id="incentives"
 				v-model="fieldModel"
 				@update:modelValue="onUpdateModel"
 				:input-id="incentive.id"
