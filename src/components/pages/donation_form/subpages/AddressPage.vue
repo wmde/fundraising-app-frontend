@@ -1,6 +1,15 @@
 <template>
-	<div class="address-page">
-		<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
+	<div
+		class="address-page"
+		aria-live="assertive"
+		aria-labelledby="donation-form-heading donation-form-subheading donation-form-tagline"
+		tabindex="-1"
+		ref="pageRef"
+	>
+		<h1 id="donation-form-heading" class="form-title">{{ $t( 'donation_form_heading' ) }}</h1>
+		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
+		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
+
 		<PaymentSummary
 			v-if="paymentWasInitialized"
 			:amount="paymentSummary.amount"
@@ -125,6 +134,8 @@ const emit = defineEmits( [ 'previous-page' ] );
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const isFullSelected = ref( false );
 const store = useStore();
+const pageRef = ref<HTMLElement>( null );
+defineExpose( { focus: (): void => pageRef.value.focus() } );
 
 const setFullSelected = ( selected: boolean ) => {
 	isFullSelected.value = selected;

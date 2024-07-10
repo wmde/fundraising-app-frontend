@@ -29,6 +29,9 @@ describe( 'Payment.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					'paymentPageRef': { focus: () => {} },
+				},
 			},
 		} );
 	};

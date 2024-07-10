@@ -3,6 +3,9 @@ import DonationForm from '@src/components/pages/DonationForm.vue';
 import countries from '@src/../tests/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
+import PaymentPage from '@test/data/DonationFormPages/PaymentPageStub.vue';
+import AddressPage from '@test/data/DonationFormPages/AddressPageStub.vue';
+import { nextTick } from 'vue';
 
 declare global {
 	namespace NodeJS {
@@ -12,20 +15,17 @@ declare global {
 	}
 }
 
-const PaymentPage = { template: '<div class="i-am-payment" />' };
-const AddressPage = { template: '<div class="i-am-address-form" />' };
-
 describe( 'DonationForm.vue', () => {
 
 	beforeEach( () => {
 		global.window.scrollTo = jest.fn();
 	} );
 
-	const getWrapper = ( startPageIndex: number = 0 ): VueWrapper<any> => {
+	const getWrapper = ( startPageIndex: 0 | 1 = 0 ): VueWrapper<any> => {
 		return mount( DonationForm, {
 			props: {
 				assetsPath: '',
-				paymentAmounts: [ '5' ],
+				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
 				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
 				validateAddressUrl: 'https://example.com/address-check',
@@ -75,16 +75,16 @@ describe( 'DonationForm.vue', () => {
 		const wrapper = getWrapper( 0 );
 
 		const paymentPage = wrapper.findComponent( PaymentPage );
-		await paymentPage.vm.$emit( 'next-page' );
-		await paymentPage.vm.$emit( 'next-page' );
-		await paymentPage.vm.$emit( 'next-page' );
+
+		paymentPage.vm.$emit( 'next-page' );
+		await nextTick();
 
 		expect( wrapper.find( '.i-am-address-form' ).exists() ).toBe( true );
 
 		const addressPage = wrapper.findComponent( AddressPage );
-		await addressPage.vm.$emit( 'previous-page' );
-		await addressPage.vm.$emit( 'previous-page' );
-		await addressPage.vm.$emit( 'previous-page' );
+
+		addressPage.vm.$emit( 'previous-page' );
+		await nextTick();
 
 		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
 	} );
@@ -93,12 +93,12 @@ describe( 'DonationForm.vue', () => {
 		const wrapper = getWrapper( 0 );
 
 		const paymentPage = wrapper.findComponent( PaymentPage );
-		await paymentPage.vm.$emit( 'next-page' );
-		await paymentPage.vm.$emit( 'next-page' );
+		paymentPage.vm.$emit( 'next-page' );
+		await nextTick();
 
 		const addressPage = wrapper.findComponent( AddressPage );
-		await addressPage.vm.$emit( 'previous-page' );
-		await addressPage.vm.$emit( 'previous-page' );
+		addressPage.vm.$emit( 'previous-page' );
+		await nextTick();
 
 		expect( global.window.scrollTo ).toHaveBeenCalledTimes( 2 );
 	} );

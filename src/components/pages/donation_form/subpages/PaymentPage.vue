@@ -1,49 +1,59 @@
 <template>
 	<!-- eslint-disable vuejs-accessibility/no-static-element-interactions -->
-	<form
-		name="laika-donation-payment"
+	<div
 		id="laika-donation-payment"
-		class="payment-page"
-		ref="paymentForm"
-		@keydown.enter.prevent="next()"
-		@submit.prevent="next()"
+		aria-live="assertive"
+		aria-labelledby="donation-form-heading donation-form-subheading"
+		tabindex="-1"
+		ref="pageRef"
 	>
-		<h1 class="form-title" v-html="$t( 'donation_form_section_address_headline' )"/>
 
-		<Payment
-			:payment-amounts="paymentAmounts"
-			:payment-intervals="paymentIntervals"
-			:payment-types="paymentTypes"
-		/>
+		<h1 id="donation-form-heading" class="form-title">{{ $t( 'donation_form_heading' ) }}</h1>
+		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_subheading' ) }}</h2>
 
-		<ErrorSummary
-			:is-visible="showErrorSummary"
-			:items="[
-				{
-					validity: store.state.payment.validity.amount,
-					message: $t( 'error_summary_amount' ),
-					focusElement: 'amount-500',
-					scrollElement: 'payment-form-amount-scroll-target'
-				},
-				{
-					validity: store.state.payment.validity.type,
-					message: $t( 'error_summary_payment_type' ),
-					focusElement: 'paymentType-0',
-					scrollElement: 'payment-form-type-scroll-target'
-				}
-			]"
-		/>
-
-		<FormButton
-			id="next"
-			button-type="submit"
-			@click.prevent="next()"
-			:is-loading="store.getters.isValidating"
+		<form
+			name="laika-donation-payment"
+			class="payment-page"
+			ref="paymentForm"
+			@keydown.enter.prevent="next()"
+			@submit.prevent="next()"
 		>
-			{{ $t( 'donation_form_section_continue' ) }}
-		</FormButton>
 
-	</form>
+			<Payment
+				:payment-amounts="paymentAmounts"
+				:payment-intervals="paymentIntervals"
+				:payment-types="paymentTypes"
+			/>
+
+			<ErrorSummary
+				:is-visible="showErrorSummary"
+				:items="[
+					{
+						validity: store.state.payment.validity.amount,
+						message: $t( 'error_summary_amount' ),
+						focusElement: 'amount-500',
+						scrollElement: 'payment-form-amount-scroll-target'
+					},
+					{
+						validity: store.state.payment.validity.type,
+						message: $t( 'error_summary_payment_type' ),
+						focusElement: 'paymentType-0',
+						scrollElement: 'payment-form-type-scroll-target'
+					}
+				]"
+			/>
+
+			<FormButton
+				id="next"
+				button-type="submit"
+				@click.prevent="next()"
+				:is-loading="store.getters.isValidating"
+			>
+				{{ $t( 'donation_form_section_continue' ) }}
+			</FormButton>
+
+		</form>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -70,6 +80,8 @@ const emit = defineEmits( [ 'next-page' ] );
 const store = useStore();
 const paymentForm = ref<HTMLFormElement>( null );
 const showErrorSummary = ref<boolean>( false );
+const pageRef = ref<HTMLElement>( null );
+defineExpose( { focus: (): void => pageRef.value.focus() } );
 
 const next = async (): Promise<any> => {
 	await waitForServerValidationToFinish( store );

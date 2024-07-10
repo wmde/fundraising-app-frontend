@@ -5,6 +5,7 @@
 				<keep-alive>
 					<PaymentPage
 						v-if="currentPageIndex === 0"
+						ref="paymentPage"
 						@next-page="currentPageIndex = 1"
 						:assets-path="assetsPath"
 						:payment-amounts="paymentAmounts"
@@ -13,6 +14,7 @@
 					/>
 					<AddressPage
 						v-else
+						ref="addressPage"
 						@previous-page="currentPageIndex = 0"
 						:assets-path="assetsPath"
 						:validate-address-url="validateAddressUrl"
@@ -31,6 +33,7 @@
 				<keep-alive>
 					<PaymentPage
 						v-if="currentPageIndex === 0"
+						ref="paymentPage"
 						@next-page="currentPageIndex = 1"
 						:assets-path="assetsPath"
 						:payment-amounts="paymentAmounts"
@@ -39,6 +42,7 @@
 					/>
 					<AddressPageDonationReceipt
 						v-else
+						ref="addressPage"
 						@previous-page="currentPageIndex = 0"
 						:assets-path="assetsPath"
 						:validate-address-url="validateAddressUrl"
@@ -58,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import { TrackingData } from '@src/view_models/TrackingData';
 import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
 import AddressPage from '@src/components/pages/donation_form/subpages/AddressPage.vue';
@@ -86,15 +90,29 @@ interface Props {
 	trackingData: TrackingData;
 	campaignValues: CampaignValues;
 	addressValidationPatterns: AddressValidation;
-	startPageIndex: number;
+	startPageIndex: 0 | 1;
 }
 
 const props = defineProps<Props>();
 
-const currentPageIndex = ref<number>( props.startPageIndex );
+const currentPageIndex = ref<0 | 1>( props.startPageIndex );
+const addressPage = ref<HTMLElement>( null );
+const paymentPage = ref<HTMLElement>( null );
 
-watch( currentPageIndex, () => {
+const focusFormPage = ( newPageIndex: 0 | 1 ): void => {
+	if ( newPageIndex === 0 ) {
+		paymentPage.value.focus();
+	} else {
+		addressPage.value.focus();
+	}
+};
+
+watch( currentPageIndex, async ( newPageIndex: 0 | 1 ) => {
 	window.scrollTo( 0, 0 );
+
+	await nextTick();
+
+	focusFormPage( newPageIndex );
 } );
 
 </script>

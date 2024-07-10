@@ -1,6 +1,14 @@
 <template>
-	<div class="address-page">
-		<h1 class="title is-size-5">{{ $t( 'membership_form_section_address_title' ) }}</h1>
+	<div
+		class="address-page"
+		aria-live="assertive"
+		aria-labelledby="membership-form-heading membership-form-subheading"
+		tabindex="-1"
+		ref="pageRef"
+	>
+		<h1 id="membership-form-heading" class="form-title">{{ $t( 'membership_form_headline' ) }}</h1>
+		<h2 id="membership-form-subheading" class="form-subtitle">{{ $t( 'membership_form_address_subheading' ) }}</h2>
+
 		<AddressFields
 			:validate-address-url="validateAddressUrl.toString()"
 			:validate-email-url="validateEmailUrl.toString()"
@@ -139,7 +147,8 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'previous-page', 'submit-membership' ] );
 const store = useStore();
-
+const pageRef = ref<HTMLElement>( null );
+defineExpose( { focus: (): void => pageRef.value.focus() } );
 const addressFieldsRef = ref<HTMLFormElement>();
 const addressIsInvalid = computed( (): boolean => !store.getters[ NS_MEMBERSHIP_ADDRESS + '/requiredFieldsAreValid' ] );
 

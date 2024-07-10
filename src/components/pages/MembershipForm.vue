@@ -2,6 +2,7 @@
 	<form name="laika-membership" ref="form" :action="`/apply-for-membership?${campaignParams}`" method="post">
 		<keep-alive>
 			<PaymentPage
+				ref="paymentPage"
 				v-if="currentPageIndex === 0"
 				@next-page="goToAddressPage"
 				:validate-fee-url="validateFeeUrl"
@@ -14,6 +15,7 @@
 			/>
 			<AddressPage
 				v-else
+				ref="addressPage"
 				@previous-page="goToPaymentPage"
 				:campaign-values="campaignValues"
 				:validate-email-url="validateEmailUrl"
@@ -29,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, watch } from 'vue';
+import { inject, nextTick, ref, watch } from 'vue';
 import { Country } from '@src/view_models/Country';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
@@ -58,8 +60,10 @@ interface Props {
 }
 
 defineProps<Props>();
-const currentPageIndex = ref<number>( 0 );
+const currentPageIndex = ref<0 | 1>( 0 );
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
+const addressPage = ref<HTMLElement>( null );
+const paymentPage = ref<HTMLElement>( null );
 
 const goToAddressPage = () => {
 	currentPageIndex.value = 1;
@@ -68,8 +72,20 @@ const goToPaymentPage = () => {
 	currentPageIndex.value = 0;
 };
 
-watch( currentPageIndex, () => {
+const focusFormPage = ( newPageIndex: 0 | 1 ): void => {
+	if ( newPageIndex === 0 ) {
+		paymentPage.value.focus();
+	} else {
+		addressPage.value.focus();
+	}
+};
+
+watch( currentPageIndex, async ( newPageIndex: 0 | 1 ) => {
 	window.scrollTo( 0, 0 );
+
+	await nextTick();
+
+	focusFormPage( newPageIndex );
 } );
 
 </script>
