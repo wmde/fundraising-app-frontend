@@ -25,7 +25,7 @@
 				:show-error="!feeIsValid"
 				:minimum-amount="minimumAmount"
 				:minimum-amount-message="$t('membership_form_payment_amount_description')"
-				:aria-describedby="'cap-notice'"
+				aria-describedby="cap-notice"
 			>
 				<template #info-message>
 					<span id="cap-notice">{{ $t('membership_form_payment_amount_cap_notice') }}</span>

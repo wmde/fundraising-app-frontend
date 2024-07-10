@@ -155,4 +155,18 @@ describe( 'AmountField.vue', () => {
 		expect( wrapper.find( '.form-field-amount-radio:nth-child(3) .control-label' ).text() ).toStrictEqual( '100-euros' );
 		expect( wrapper.find( '.form-field-amount-radio:nth-child(4) .control-label' ).text() ).toStrictEqual( '299-euros' );
 	} );
+
+	it( 'sets aria-describedby', async () => {
+		const wrapper = getWrapper();
+		expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 0 );
+
+		await wrapper.setProps( { ariaDescribedby: 'help-text' } );
+
+		expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 5 );
+		expect( wrapper.find( '#amount-custom' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'help-text' );
+
+		await wrapper.setProps( { showError: true } );
+
+		expect( wrapper.find( '#amount-custom' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'help-text amount-error' );
+	} );
 } );

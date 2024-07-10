@@ -18,7 +18,7 @@
 					:id="`amount-${paymentAmount}`"
 					@update:model-value="updateAmountFromRadio"
 					:aria-invalid="showError"
-					:aria-describedby="showError ? 'amount-error' : ''"
+					:aria-describedby="ariaDescribedby"
 				>
 					{{ $n( paymentAmount / 100, 'euros' ) }}
 				</RadioFormInput>
@@ -55,6 +55,7 @@ import { computed, ref, watch } from 'vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { useI18n } from 'vue-i18n';
+import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 
 interface Props {
 	modelValue: string;
@@ -77,7 +78,11 @@ const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const { n } = useI18n();
 const amount = ref<number>( Number( props.modelValue ) );
-const ariaDescribedby = computed<string>( () => props.ariaDescribedby + ( props.showError ? ' amount-error' : '' ) );
+const ariaDescribedby = useAriaDescribedby(
+	computed<string>( () => props.ariaDescribedby ),
+	'amount-error',
+	computed<boolean>( () => props.showError )
+);
 const isCustomAmount = computed<boolean>( () => amount.value > 0 && props.paymentAmounts.indexOf( amount.value ) === -1 );
 
 const getFormattedCustomAmount = (): string => {
