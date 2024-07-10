@@ -10,7 +10,7 @@
 			v-model="fieldModel"
 			:has-error="showError"
 			:has-message="suggestedProvider !== ''"
-			:aria-describedby="`${(inputId ?? 'email' )}-error`"
+			:aria-describedby="ariaDescribedby"
 			@update:modelValue="onUpdateModel"
 			@blur="$emit('field-changed', 'email')"
 		/>
@@ -33,19 +33,29 @@ import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel'
 import { useSuggestedEmailProvider } from '@src/components/shared/form_fields/useSuggestedEmailProvider';
 import { useMailHostList } from '@src/components/shared/useMailHostList';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
+import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { computed } from 'vue';
 
 interface Props {
 	modelValue: string;
 	showError: boolean;
 	inputId?: string;
+	ariaDescribedby?: string;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults( defineProps<Props>(), {
+	ariaDescribedby: '',
+} );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const mailHostList = useMailHostList();
 const fieldModel = useFieldModel<string>( () => props.modelValue, props.modelValue );
 const { suggestedProvider, onSuggestionClicked } = useSuggestedEmailProvider( fieldModel, mailHostList, emit );
+const ariaDescribedby = useAriaDescribedby(
+	computed<string>( () => props.ariaDescribedby ),
+	`${( props.inputId ?? 'email' )}-error`,
+	computed<boolean>( () => props.showError )
+);
 
 const onUpdateModel = ( newValue: string ): void => {
 	emit( 'update:modelValue', newValue );
