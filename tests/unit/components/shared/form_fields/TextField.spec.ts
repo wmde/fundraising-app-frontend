@@ -64,4 +64,17 @@ describe( 'TextField.vue', () => {
 		expect( wrapper.emitted( 'field-changed' )[ 0 ][ 0 ] ).toStrictEqual( 'textField' );
 	} );
 
+	it( 'sets aria-describedby', async () => {
+		const wrapper = getWrapper();
+		expect( wrapper.find( '[aria-describedby]' ).exists() ).toBeFalsy();
+
+		await wrapper.setProps( { helpText: 'help-text' } );
+
+		expect( wrapper.find( '#textField' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'textField-help-text' );
+
+		await wrapper.setProps( { showError: true } );
+
+		expect( wrapper.find( '#textField' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'textField-help-text textField-error' );
+	} );
+
 } );

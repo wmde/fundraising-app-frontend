@@ -18,7 +18,7 @@
 			:disabled="disabled"
 			:required="required"
 			:autofocus="autofocus"
-			:aria-describedby="describedBy"
+			:aria-describedby="ariaDescribedby"
 			@blur="$emit('field-changed', name )"
 			@update:modelValue="onUpdateModel"
 		/>
@@ -34,6 +34,7 @@
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { computed } from 'vue';
+import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 
 interface Props {
 	inputType?: 'text'|'textarea';
@@ -61,11 +62,11 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
-
-const describedBy = computed<string|null>( () => {
-	const text = ( ( props.helpText ? `${ props.inputId }-help-text` : '' ) + ( props.showError ? ` ${props.inputId}-error` : '' ) ).trim();
-	return text === '' ? null : text;
-} );
+const ariaDescribedby = useAriaDescribedby(
+	computed<string>( () => ( props.helpText ? `${ props.inputId }-help-text` : '' ) ),
+	`${props.inputId}-error`,
+	computed<boolean>( () => props.showError )
+);
 
 const onUpdateModel = ( newValue: string|number ): void => {
 	emit( 'update:modelValue', newValue );
