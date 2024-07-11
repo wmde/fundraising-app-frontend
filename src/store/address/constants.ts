@@ -15,6 +15,16 @@ export const REQUIRED_FIELDS: AddressRequirements = {
 	[ AddressTypeModel.UNSET ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],
 };
 
+export const REQUIRED_FIELDS_DONOR_UPDATE: AddressRequirements = {
+	[ AddressTypeModel.PERSON ]: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
+	[ AddressTypeModel.COMPANY ]: [ 'addressType', 'companyName', 'street', 'postcode', 'city', 'country', 'email' ],
+	[ AddressTypeModel.COMPANY_WITH_CONTACT ]: [ 'addressType', 'salutation', 'firstName', 'lastName', 'companyName', 'street', 'postcode', 'city', 'country', 'email' ],
+	// We show the person fields as default so if the address type before updating is email or anon we still need to validate them
+	[ AddressTypeModel.EMAIL ]: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
+	[ AddressTypeModel.ANON ]: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
+	[ AddressTypeModel.UNSET ]: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
+};
+
 export const REQUIRED_FIELDS_ADDRESS_UPDATE: AddressRequirements = {
 	[ AddressTypeModel.PERSON ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country' ],
 	[ AddressTypeModel.COMPANY ]: [ 'companyName', 'street', 'postcode', 'city', 'country' ],

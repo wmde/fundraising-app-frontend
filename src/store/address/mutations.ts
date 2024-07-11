@@ -29,8 +29,8 @@ export const mutations: MutationTree<AddressState> = {
 		}
 	},
 	[ MARK_EMPTY_FIELDS_INVALID ]( state: AddressState ) {
+		let addressTypeRequirements = state.requiredFields[ state.addressType ];
 		state.requiredFields[ state.addressType ].forEach( ( fieldName: string ) => {
-			let addressTypeRequirements = state.requiredFields[ state.addressType ];
 			if ( state.validity[ fieldName ] === Validity.INCOMPLETE &&
 				addressTypeRequirements[ addressTypeRequirements.indexOf( fieldName ) ] ) {
 				state.validity[ fieldName ] = Validity.INVALID;

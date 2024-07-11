@@ -31,6 +31,11 @@
 				:form-data="formData"
 				:salutations="salutations"
 				:address-type="addressType"
+				:address-types-to-show-personal-fields="[
+					AddressTypeModel.PERSON,
+					AddressTypeModel.EMAIL,
+					AddressTypeModel.ANON,
+				]"
 				@field-changed="onFieldChange"
 			/>
 
@@ -218,14 +223,11 @@ watch( addressTypeModel, ( newAddressType: AddressTypeModel ) => setAddressType(
 const mailingList = ref<boolean>( MAILING_LIST_ADDRESS_PAGE );
 
 const validateForm = async (): Promise<ValidationResult> => {
-	let response = await store.dispatch( action( NS_ADDRESS, validateAddressType ), {
-		type: store.state.address.addressType,
-		disallowed: [ AddressTypeModel.UNSET, AddressTypeModel.ANON ],
-	} );
-	if ( response.status !== 'OK' ) {
-		return Promise.resolve( response );
-	}
-	let results = await Promise.all( [
+	const results = await Promise.all( [
+		store.dispatch( action( NS_ADDRESS, validateAddressType ), {
+			type: store.state.address.addressType,
+			disallowed: [ AddressTypeModel.UNSET, AddressTypeModel.ANON, AddressTypeModel.EMAIL ],
+		} ),
 		store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
 		store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
 	] );

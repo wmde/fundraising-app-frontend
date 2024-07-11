@@ -15,7 +15,7 @@ describe( 'PaymentTextFormButton.vue', () => {
 
 	test.each( cases )(
 		'given payment method %p the submit button shows %p',
-		( paymentMethod: string, expectedTranslationKey: string ) => {
+		( paymentMethod: 'PPL' | 'UEB' | 'MCP' | 'SUB', expectedTranslationKey: string ) => {
 
 			const wrapper = mount( PaymentTextFormButton, {
 				props: {
