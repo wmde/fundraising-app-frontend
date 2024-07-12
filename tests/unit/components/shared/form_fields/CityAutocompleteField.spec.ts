@@ -198,4 +198,20 @@ describe( 'CityAutocompleteField.vue', () => {
 
 		expect( field.element.value ).toStrictEqual( '' );
 	} );
+
+	it( 'sets aria-describedby', async () => {
+		const wrapper = getWrapper( '12345' );
+		const field = wrapper.find<HTMLInputElement>( '#city' );
+
+		expect( wrapper.find( '[aria-describedby]' ).exists() ).toBeFalsy();
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+
+		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'city-selected' );
+
+		await wrapper.setProps( { showError: true } );
+
+		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'city-selected city-error' );
+	} );
 } );
