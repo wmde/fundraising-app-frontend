@@ -262,7 +262,7 @@ describe( 'AddressUpdateForm.vue', () => {
 	] )( 'shows and validates as person when initial address type is %s', async ( addressType: AddressTypeModel ) => {
 		const store = createStore();
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( emptyAddress, addressType )
 		);
 
@@ -296,7 +296,7 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		emptyAddress.addressType = 'firma';
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( emptyAddress, AddressTypeModel.COMPANY )
 		);
 
