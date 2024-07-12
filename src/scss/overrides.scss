@@ -134,6 +134,10 @@
 	.dropdown-item {
 		font-size: 1rem;
 	}
+
+	.is-active-item {
+		background: colors.$gray-lighter;
+	}
 }
 
 button.is-main {

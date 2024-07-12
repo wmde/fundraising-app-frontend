@@ -10,6 +10,9 @@ const placeholderKeyWhenSuggestionsExist = 'form_autocomplete_prompt';
 describe( 'CityAutocompleteField.vue', () => {
 
 	const getWrapper = ( postcode: string = '' ): VueWrapper<any> => {
+		const currentElement = { clientHeight: 0, offsetTop: 0 };
+		Object.defineProperty( document, 'querySelector', { writable: true, configurable: true, value: () => currentElement } );
+
 		return mount( CityAutocompleteField, {
 			props: {
 				modelValue: '',
@@ -113,5 +116,86 @@ describe( 'CityAutocompleteField.vue', () => {
 
 		expect( wrapper.find( '.help.is-danger' ).exists() ).toBeTruthy();
 		expect( wrapper.find( '.help.is-danger' ).text() ).toStrictEqual( 'I haz error' );
+	} );
+
+	it( 'highlights cities on the list on keyboard up and down', async () => {
+		const wrapper = getWrapper( '12345' );
+
+		const field = wrapper.find<HTMLInputElement>( '#city' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+
+		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+
+		await field.trigger( 'keydown', { key: 'ArrowUp' } );
+
+		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+
+		// Go to the bottom of the list
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+
+		expect( wrapper.find( '.dropdown-content > *:nth-child(9)' ).classes() ).toContain( 'is-active-item' );
+
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+
+		expect( wrapper.find( '.dropdown-content > *:nth-child(9)' ).classes() ).toContain( 'is-active-item' );
+	} );
+
+	it( 'sets the field value when the donor presses submit while navigating the list', async () => {
+		const wrapper = getWrapper( '12345' );
+		const field = wrapper.find<HTMLInputElement>( '#city' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'Enter' } );
+
+		expect( field.element.value ).toStrictEqual( 'Mushroom Kingdom City' );
+	} );
+
+	it( 'sets the field when the donor presses tab while navigating the list', async () => {
+		const wrapper = getWrapper( '12345' );
+		const field = wrapper.find<HTMLInputElement>( '#city' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'Tab' } );
+
+		expect( field.element.value ).toStrictEqual( 'Mushroom Kingdom City' );
+	} );
+
+	it( 'does not set the field value when the donor presses submit while navigating the list', async () => {
+		const wrapper = getWrapper( '12345' );
+		const field = wrapper.find<HTMLInputElement>( '#city' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'u' } );
+		await field.trigger( 'keydown', { key: 'Enter' } );
+
+		expect( field.element.value ).toStrictEqual( '' );
+	} );
+
+	it( 'does not set the field value when the donor presses tab while navigating the list', async () => {
+		const wrapper = getWrapper( '12345' );
+		const field = wrapper.find<HTMLInputElement>( '#city' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+		await field.trigger( 'keydown', { key: 'u' } );
+		await field.trigger( 'keydown', { key: 'Tab' } );
+
+		expect( field.element.value ).toStrictEqual( '' );
 	} );
 } );
