@@ -17,7 +17,7 @@
 				@keydown.down.prevent="onKeyArrows('down')"
 				@keydown.tab="onKeySubmit"
 				@keydown.enter="onKeySubmit"
-				:aria-describedby="activeCountry ? `${inputId}-selected` : ''"
+				:aria-describedby="ariaDescribedby"
 				aria-autocomplete="list"
 			/>
 			<span class="is-sr-only" :id="`${inputId}-selected`" aria-live="assertive">
@@ -57,6 +57,7 @@ import { Country } from '@src/view_models/Country';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { computed, nextTick, ref } from 'vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
+import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 
 enum InteractionState {
 	Typing,
@@ -87,6 +88,11 @@ const activeCountryName = computed<string>( () => {
 const scrollElement = ref<HTMLElement>();
 const wasFocusedBefore = ref<Boolean>( false );
 const autocompleteIsActive = ref<Boolean>( false );
+const ariaDescribedby = useAriaDescribedby(
+	computed<string>( () => activeCountry.value ? `${props.inputId}-selected` : '' ),
+	`${props.inputId}-error`,
+	computed<boolean>( () => props.showError )
+);
 
 const isFirstFocusOnDefaultValue = (): boolean => {
 	return !wasFocusedBefore.value && !props.wasRestored;

@@ -233,4 +233,20 @@ describe( 'CountryAutocompleteField.vue', () => {
 
 		expect( field.element.value ).toStrictEqual( '' );
 	} );
+
+	it( 'sets aria-describedby', async () => {
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#country' );
+
+		expect( wrapper.find( '[aria-describedby]' ).exists() ).toBeFalsy();
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'keydown', { key: 'ArrowDown' } );
+
+		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'country-selected' );
+
+		await wrapper.setProps( { showError: true } );
+
+		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'country-selected country-error' );
+	} );
 } );
