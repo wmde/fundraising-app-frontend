@@ -33,13 +33,15 @@
 .fun-radio.radio {
 	height: auto;
 	width: 380px;
-	@include from($tablet) {
-		width: $fun-max-width;
-	}
-    border-bottom: 2px solid colors.$very-transparent-black;
+	border-bottom: 2px solid colors.$very-transparent-black;
 	align-items: flex-start;
 	padding-bottom: 1.5em;
 	padding-top: 1.5em;
+
+	@include from($tablet) {
+	  width: $fun-max-width;
+	}
+
 	&:hover {
 		border-bottom: 2px solid colors.$gray-dark;
 	}
@@ -202,7 +204,7 @@ a:focus {
 }
 
 a[disabled=disabled] {
-    color: gray;
+	color: gray;
 	cursor: default;
 	&:hover {
 		text-decoration: none;
