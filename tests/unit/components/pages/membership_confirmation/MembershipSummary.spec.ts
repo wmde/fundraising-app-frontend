@@ -3,6 +3,7 @@ import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
 import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
 import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
 import { Salutation } from '@src/view_models/Salutation';
+import countries from '@test/data/countries';
 
 const privateAddress: MembershipAddress = {
 	applicantType: 'person',
@@ -77,6 +78,7 @@ describe( 'MembershipSummary.vue', () => {
 		return mount( MembershipSummary, {
 			props: {
 				address,
+				countries,
 				membershipApplication,
 				salutations,
 				addressIsInvalid,
@@ -102,7 +104,7 @@ describe( 'MembershipSummary.vue', () => {
 			membershipFeeFormatted: '{"amount":15,"key":"currency","currencyDisplay":"name"}',
 			membershipFeeYearlyFormatted: '({"amount":180,"key":"currency","currencyDisplay":"name"} {"key":"donation_form_payment_interval_12"})',
 			paymentType: '{"key":"BEZ"}',
-			address: 'Herr Prof. Dr. Testy MacTest, Tempelhofer Ufer 26, 10963 Berlin, {"key":"donation_form_country_option_DE"} E-Mail: testperson@wikimedia.de',
+			address: 'Herr Prof. Dr. Testy MacTest, Tempelhofer Ufer 26, 10963 Berlin, Deutschland E-Mail: testperson@wikimedia.de',
 		} );
 
 	} );
@@ -119,7 +121,7 @@ describe( 'MembershipSummary.vue', () => {
 			membershipFeeFormatted: '{"amount":15,"key":"currency","currencyDisplay":"name"}',
 			membershipFeeYearlyFormatted: '({"amount":180,"key":"currency","currencyDisplay":"name"} {"key":"donation_form_payment_interval_12"})',
 			paymentType: '{"key":"BEZ"}',
-			address: 'Test Company, Teststreet 123, 12345 Company City, {"key":"donation_form_country_option_DE"} E-Mail: testcompany@wikimedia.de',
+			address: 'Test Company, Teststreet 123, 12345 Company City, Deutschland E-Mail: testcompany@wikimedia.de',
 		} );
 	} );
 
@@ -135,7 +137,7 @@ describe( 'MembershipSummary.vue', () => {
 			membershipFeeFormatted: '{"amount":15,"key":"currency","currencyDisplay":"name"}',
 			membershipFeeYearlyFormatted: '({"amount":180,"key":"currency","currencyDisplay":"name"} {"key":"donation_form_payment_interval_12"})',
 			paymentType: '{"key":"BEZ"}',
-			address: 'Test Company, Teststreet 123, 12345 Company City, {"key":"donation_form_country_option_DE"} E-Mail: testcompany@wikimedia.de',
+			address: 'Test Company, Teststreet 123, 12345 Company City, Deutschland E-Mail: testcompany@wikimedia.de',
 		} );
 	} );
 
@@ -151,7 +153,7 @@ describe( 'MembershipSummary.vue', () => {
 			membershipFeeFormatted: '{"amount":45,"key":"currency","currencyDisplay":"name"}',
 			membershipFeeYearlyFormatted: '({"amount":180,"key":"currency","currencyDisplay":"name"} {"key":"donation_form_payment_interval_12"})',
 			paymentType: '{"key":"BEZ"}',
-			address: 'Test Company, Teststreet 123, 12345 Company City, {"key":"donation_form_country_option_DE"} E-Mail: testcompany@wikimedia.de',
+			address: 'Test Company, Teststreet 123, 12345 Company City, Deutschland E-Mail: testcompany@wikimedia.de',
 		} );
 	} );
 
@@ -165,7 +167,7 @@ describe( 'MembershipSummary.vue', () => {
 			membershipFeeFormatted: '{"amount":180,"key":"currency","currencyDisplay":"name"}',
 			membershipFeeYearlyFormatted: '',
 			paymentType: '{"key":"BEZ"}',
-			address: 'Test Company, Teststreet 123, 12345 Company City, {"key":"donation_form_country_option_DE"} E-Mail: testcompany@wikimedia.de',
+			address: 'Test Company, Teststreet 123, 12345 Company City, Deutschland E-Mail: testcompany@wikimedia.de',
 		} );
 	} );
 

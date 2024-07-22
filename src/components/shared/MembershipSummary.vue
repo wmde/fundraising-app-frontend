@@ -15,9 +15,11 @@ import { useI18n } from 'vue-i18n';
 import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
 import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
 import { computed } from 'vue';
+import { Country } from '@src/view_models/Country';
 
 interface Props {
 	address: MembershipAddress;
+	countries: Array<Country>;
 	membershipApplication: MembershipApplication;
 	salutations: Salutation[];
 	addressIsInvalid: boolean;
@@ -60,6 +62,7 @@ const renderAddress = ( address: MembershipAddress, countryName: string, salutat
 };
 
 const summaryData = computed( () => {
+	const countryObject = props.countries.find( c => ( c.countryCode === props.address.countryCode ) );
 	const yearlyFee = new YearlyMembershipFee( props.membershipApplication.paymentIntervalInMonths, props.membershipApplication.membershipFee );
 	return {
 		paymentInterval: t( 'donation_form_payment_interval_' + props.membershipApplication.paymentIntervalInMonths ),
@@ -73,7 +76,7 @@ const summaryData = computed( () => {
 		paymentType: t( props.membershipApplication.paymentType ),
 		address: renderAddress(
 			props.address,
-			t( 'donation_form_country_option_' + props.address.countryCode ),
+			countryObject ? countryObject.countryFullName : '',
 			renderSalutation()
 		),
 	};

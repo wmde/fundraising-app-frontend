@@ -80,6 +80,7 @@
 					:address="addressSummary"
 					:salutations="salutations"
 					:address-is-invalid="addressIsInvalid"
+					:countries="countries"
 				>
 					<template #title>
 						<h3>{{ $t( 'membership_confirmation_thanks_text' ) }}</h3>
