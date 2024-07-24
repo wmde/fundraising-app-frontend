@@ -7,6 +7,7 @@
 					:membershipApplication="confirmationData.membershipApplication"
 					:salutations="salutations"
 					:address-is-invalid="false"
+					:countries="countries"
 				>
 					<template #title>
 						<h1>{{ $t( 'membership_confirmation_thanks_text' ) }}</h1>
@@ -35,10 +36,12 @@ import MembershipConfirmationBannerNotifier
 	from '@src/components/pages/membership_confirmation/MembershipConfirmationBannerNotifier.vue';
 import { Salutation } from '@src/view_models/Salutation';
 import { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
+import { Country } from '@src/view_models/Country';
 
 interface Props {
 	confirmationData: MembershipApplicationConfirmationData;
 	salutations: Salutation[];
+	countries: Country[];
 }
 
 const props = defineProps<Props>();

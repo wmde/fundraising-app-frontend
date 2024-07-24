@@ -40,5 +40,6 @@ createVueApp( App,
 		pageProps: {
 			confirmationData: pageData.applicationVars,
 			salutations: pageData.applicationVars.salutations,
+			countries: pageData.applicationVars.countries,
 		},
 	} ).mount( '#app' );
