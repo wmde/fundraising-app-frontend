@@ -9,6 +9,7 @@ import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
 import { addressValidationPatterns } from '@test/data/validation';
 import each from 'jest-each';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
 
 const store = createStore();
 
@@ -69,6 +70,9 @@ describe( 'AddressForms.vue', () => {
 			plugins: [ store ],
 			provide: {
 				[ StoreKey as symbol ]: store,
+			},
+			components: {
+				FeatureToggle: createFeatureToggle( [ 'campaigns.address_field_order.legacy' ] ),
 			},
 		},
 	} );

@@ -52,7 +52,15 @@
 			:campaign-values="campaignValues">
 		</AddressForms>
 
-		<AddressFormErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
+		<FeatureToggle default-template="campaigns.address_field_order.legacy">
+			<template #campaigns.address_field_order.legacy>
+				<AddressFormErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
+			</template>
+
+			<template #campaigns.address_field_order.new_order>
+				<StreetAutocompleteAddressFormErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
+			</template>
+		</FeatureToggle>
 
 		<FormSummary>
 			<template #summary-content>
@@ -114,6 +122,7 @@ import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString'
 import { useStore } from 'vuex';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import AddressFormErrorSummaries from '@src/components/pages/donation_form/AddressFormErrorSummaries.vue';
+import StreetAutocompleteAddressFormErrorSummaries from '@src/components/pages/donation_form/StreetAutocomplete/AddressFormErrorSummaries.vue';
 
 interface Props {
 	assetsPath: string;
