@@ -12,7 +12,7 @@
 				:disabled="disabled.includes( option.value )"
 				:required="required"
 				:native-value="option.value"
-				:aria-describedby="describedBy"
+				:aria-describedby="ariaDescribedby"
 				:aria-invalid="showError"
 				v-model="fieldModel"
 				:autofocus="autofocus"
@@ -31,6 +31,7 @@ import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptio
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import { computed } from 'vue';
+import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 
 interface Props {
 	label?: String;
@@ -54,9 +55,11 @@ const props = withDefaults( defineProps<Props>(), {
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
-const describedBy = computed<string|null>( () => {
-	return props.ariaDescribedby + ( props.showError ? ` ${props.name}-error-message` : '' );
-} );
+const ariaDescribedby = useAriaDescribedby(
+	computed<string>( () => props.ariaDescribedby ),
+	`${props.name}-error-message`,
+	computed<boolean>( () => props.showError )
+);
 const fieldModel = useFieldModel<string | number | boolean | null>( () => props.modelValue, props.modelValue );
 
 const onFieldChange = ( newValue: string | number | boolean | null ): void => {

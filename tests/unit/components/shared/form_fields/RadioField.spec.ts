@@ -77,4 +77,18 @@ describe( 'RadioField.vue', () => {
 		expect( wrapper.find<HTMLInputElement>( 'input[value=mouse]' ).element.checked ).toBeFalsy();
 		expect( wrapper.find<HTMLInputElement>( 'input[value=elephant]' ).element.checked ).toBeTruthy();
 	} );
+
+	it( 'sets aria-describedby', async () => {
+		const wrapper = getWrapper();
+		expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 0 );
+
+		await wrapper.setProps( { ariaDescribedby: 'help-text' } );
+
+		expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 2 );
+		expect( wrapper.find( 'input[value=mouse]' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'help-text' );
+
+		await wrapper.setProps( { showError: true } );
+
+		expect( wrapper.find( 'input[value=mouse]' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'help-text animal-error-message' );
+	} );
 } );

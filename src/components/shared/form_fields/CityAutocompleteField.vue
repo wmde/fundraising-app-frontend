@@ -17,7 +17,7 @@
 				@keydown.down.prevent="onKeyArrows( 'down' )"
 				@keydown.tab="onKeySubmit"
 				@keydown.enter="onKeySubmit"
-				:aria-describedby="activeCity ? `${inputId}-selected` : ''"
+				:aria-describedby="ariaDescribedby"
 				aria-autocomplete="list"
 			/>
 			<span class="is-sr-only" :id="`${inputId}-selected`" aria-live="assertive">
@@ -42,7 +42,7 @@
 				</div>
 			</transition>
 		</div>
-		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
 		<slot name="message"/>
 	</div>
 </template>
@@ -53,6 +53,7 @@ import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesR
 import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
+import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 
 enum InteractionState {
 	Typing,
@@ -78,6 +79,11 @@ const { cities, fetchCitiesForPostcode } = useCitiesResource( inject<CityAutocom
 const activeCity = ref<string>();
 const interactionState = ref<InteractionState>( InteractionState.Typing );
 const scrollElement = ref<HTMLElement>();
+const ariaDescribedby = useAriaDescribedby(
+	computed<string>( () => activeCity.value ? `${props.inputId}-selected` : '' ),
+	`${props.inputId}-error`,
+	computed<boolean>( () => props.showError )
+);
 
 const placeholder = computed( () => {
 	if ( cities.value.length > 0 ) {

@@ -92,4 +92,17 @@ describe( 'EmailField.vue', () => {
 		expect( wrapper.emitted( 'update:modelValue' )[ 1 ][ 0 ] ).toStrictEqual( 'space@gmail.com' );
 		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 2 );
 	} );
+
+	it( 'sets aria-describedby', async () => {
+		const wrapper = getWrapper();
+		expect( wrapper.find( '[aria-describedby]' ).exists() ).toBeFalsy();
+
+		await wrapper.setProps( { ariaDescribedby: 'help-text' } );
+
+		expect( wrapper.find( '#email' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'help-text' );
+
+		await wrapper.setProps( { showError: true } );
+
+		expect( wrapper.find( '#email' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'help-text email-error' );
+	} );
 } );

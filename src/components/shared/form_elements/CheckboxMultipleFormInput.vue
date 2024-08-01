@@ -9,6 +9,7 @@
 				:id="inputId"
 				:disabled="disabled"
 				:required="required"
+				:aria-describedby="describedBy"
 			/>
 			<label class="control-label" :for="inputId"><slot/></label>
 		</div>
@@ -25,6 +26,7 @@ interface Props {
 	inputId: string;
 	disabled?: boolean;
 	required?: boolean;
+	describedBy?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {

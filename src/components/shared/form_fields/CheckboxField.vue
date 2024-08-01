@@ -6,6 +6,7 @@
 			:input-id="inputId"
 			:disabled="disabled"
 			:required="required"
+			:ariaDescribedby="ariaDescribedby"
 			@update:modelValue="onFieldChange"
 		>
 			<slot/>
@@ -23,11 +24,13 @@ interface Props {
 	modelValue: boolean;
 	disabled?: boolean;
 	required?: boolean;
+	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	disabled: false,
 	required: false,
+	ariaDescribedby: '',
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
