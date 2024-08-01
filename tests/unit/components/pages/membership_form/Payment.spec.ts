@@ -3,14 +3,11 @@ import Payment from '@src/components/pages/membership_form/Payment.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
 import { Store } from 'vuex';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { GenericValuePayload } from '@src/view_models/MembershipFee';
-import { setAddressType } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 describe( 'Payment.vue', () => {
@@ -47,7 +44,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findComponent( AmountField ).vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setFee ), expectedPayload );
+		expect( store.dispatch ).toBeCalledWith( action( 'membership_fee', 'setFee' ), expectedPayload );
 	} );
 
 	it( 'shows bank data when payment type is selected and removes it when unselected', async () => {
@@ -74,7 +71,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 0 ].vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setInterval ), expectedPayload );
+		expect( store.dispatch ).toBeCalledWith( action( 'membership_fee', 'setInterval' ), expectedPayload );
 	} );
 
 	it( 'sends payment type to store when payment model updates', async () => {
@@ -88,7 +85,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 1 ].vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( NS_MEMBERSHIP_FEE, setType ), expectedPayload );
+		expect( store.dispatch ).toBeCalledWith( action( 'membership_fee', 'setType' ), expectedPayload );
 	} );
 
 	it( 'unsets selected fee when it is below the allowed minimum amount', async () => {
@@ -102,8 +99,8 @@ describe( 'Payment.vue', () => {
 		expect( lowFeeInputElement.element ).toBeChecked();
 
 		// address type changes / interval changes
-		await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressType ), AddressTypeModel.COMPANY );
-		await store.dispatch( action( NS_MEMBERSHIP_FEE, setInterval ), {
+		await store.dispatch( action( 'membership_address', 'setAddressType' ), AddressTypeModel.COMPANY );
+		await store.dispatch( action( 'membership_fee', 'setInterval' ), {
 			selectedValue: '12',
 			validateFeeUrl: 'https://example.com/amount-check',
 		} );

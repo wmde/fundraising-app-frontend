@@ -98,8 +98,6 @@ import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
-import { NS_ADDRESS } from '@src/store/namespaces';
-import { setAddressField, validateAddress, validateAddressField, validateAddressType, validateEmail } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { mergeValidationResults } from '@src/util/merge_validation_results';
@@ -120,7 +118,8 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
-import AddressUpdateFormErrorSummaries from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
+import AddressUpdateFormErrorSummaries
+	from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
 import { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
 import ServerMessage from '@src/components/shared/ServerMessage.vue';
 
@@ -224,25 +223,25 @@ const mailingList = ref<boolean>( MAILING_LIST_ADDRESS_PAGE );
 
 const validateForm = async (): Promise<ValidationResult> => {
 	const results = await Promise.all( [
-		store.dispatch( action( NS_ADDRESS, validateAddressType ), {
+		store.dispatch( action( 'address', 'validateAddressType' ), {
 			type: store.state.address.addressType,
 			disallowed: [ AddressTypeModel.UNSET, AddressTypeModel.ANON, AddressTypeModel.EMAIL ],
 		} ),
-		store.dispatch( action( NS_ADDRESS, validateAddress ), props.validateAddressUrl ),
-		store.dispatch( action( NS_ADDRESS, validateEmail ), props.validateEmailUrl ),
+		store.dispatch( action( 'address', 'validateAddress' ), props.validateAddressUrl ),
+		store.dispatch( action( 'address', 'validateEmail' ), props.validateEmailUrl ),
 	] );
 	return mergeValidationResults( results );
 };
 
 const onFieldChange = ( fieldName: string ): void => {
-	store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
+	store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
 };
 
 const onAutofill = ( autofilledFields: { [key: string]: string; } ) => {
 	Object.keys( autofilledFields ).forEach( key => {
 		const fieldName = camelizeName( key );
 		if ( formData[ fieldName ] ) {
-			store.dispatch( action( NS_ADDRESS, setAddressField ), formData[ fieldName ] );
+			store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
 		}
 	} );
 };
@@ -251,7 +250,7 @@ const getAddressData = (): UpdateDonorRequest => {
 	return {
 		donationId: props.donation.id,
 		updateToken: props.donation.updateToken,
-		addressType: addressTypeName( store.getters[ NS_ADDRESS + '/addressType' ] ),
+		addressType: addressTypeName( store.getters[ 'address/addressType' ] ),
 		city: formData.city.value,
 		companyName: formData.companyName.value,
 		country: formData.country.value,
@@ -289,13 +288,13 @@ const submit = async (): Promise<void> => {
 	} );
 };
 
-store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/addressTypeIsInvalid' ], ( isInvalid: boolean ) => {
+store.watch( ( state, getters ) => getters[ 'address/addressTypeIsInvalid' ], ( isInvalid: boolean ) => {
 	if ( showErrorSummary.value && !isInvalid ) {
 		showErrorSummary.value = false;
 	}
 } );
 
-store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+store.watch( ( state, getters ) => getters[ 'address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 	if ( showErrorSummary.value && isValid ) {
 		showErrorSummary.value = false;
 	}
@@ -307,7 +306,7 @@ onMounted( () => {
 	Object.entries( formData ).forEach( ( formItem ) => {
 		const key: string = formItem[ 0 ];
 		if ( formData[ key ].value !== '' ) {
-			store.dispatch( action( NS_ADDRESS, validateAddressField ), formData[ key ] );
+			store.dispatch( action( 'address', 'validateAddressField' ), formData[ key ] );
 		}
 	} );
 } );

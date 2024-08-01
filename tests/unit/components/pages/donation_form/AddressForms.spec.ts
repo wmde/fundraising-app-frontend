@@ -4,8 +4,6 @@ import NameFields from '@src/components/shared/NameFields.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import { createStore, StoreKey } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { NS_ADDRESS } from '@src/store/namespaces';
-import { initializeAddress, setAddressField, setReceiptChoice } from '@src/store/address/actionTypes';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
@@ -101,7 +99,7 @@ describe( 'AddressForms.vue', () => {
 
 	it( 'sets address field in store when it receives field-changed event', async () => {
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_ADDRESS, setAddressField );
+		const expectedAction = action( 'address', 'setAddressField' );
 		const firstNameValue = 'Vuetiful';
 		await wrapper.find( '#person-first-name' ).setValue( firstNameValue );
 
@@ -116,7 +114,7 @@ describe( 'AddressForms.vue', () => {
 
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		store.dispatch = jest.fn();
-		const expectedAction = action( NS_ADDRESS, setReceiptChoice );
+		const expectedAction = action( 'address', 'setReceiptChoice' );
 		const expectedPayload = false;
 		await wrapper.find( '#receipt-option-company' ).setValue( false );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
@@ -127,7 +125,7 @@ describe( 'AddressForms.vue', () => {
 		store.dispatch = jest.fn();
 		await wrapper.find( '#person-email' ).setValue( testEmail );
 
-		const expectedAction = action( NS_ADDRESS, setAddressField );
+		const expectedAction = action( 'address', 'setAddressField' );
 		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'email',
@@ -144,7 +142,7 @@ describe( 'AddressForms.vue', () => {
 			addressType: AddressTypeModel.PERSON,
 			fields: [ firstName, lastName ],
 		};
-		await store.dispatch( action( NS_ADDRESS, initializeAddress ), initialData );
+		await store.dispatch( action( 'address', 'initializeAddress' ), initialData );
 		wrapper = mount( AddressForms, {
 			props: {
 				addressType: AddressTypeModel.PERSON,

@@ -1,11 +1,7 @@
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
-import { validateAddressType, validateEmail } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { markEmptyValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
-import { discardInitialization } from '@src/store/payment/actionTypes';
 import { computed, ComputedRef, ref, Ref } from 'vue';
 
 type ReturnType = {
@@ -29,31 +25,31 @@ export function useAddressFormEventHandlers(
 	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value );
 	const submit = async () => {
 		const validationCalls: Promise<any>[] = [
-			store.dispatch( action( NS_ADDRESS, validateAddressType ), {
+			store.dispatch( action( 'address', 'validateAddressType' ), {
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
 			} ),
-			store.dispatch( action( NS_ADDRESS, 'validateDonationReceiptAddress' ), {
+			store.dispatch( action( 'address', 'validateDonationReceiptAddress' ), {
 				receiptNeeded: receiptNeeded.value,
 				validateAddressUrl: validateAddressUrl,
 			} ),
-			store.dispatch( action( NS_ADDRESS, validateEmail ), validateEmailUrl ),
+			store.dispatch( action( 'address', 'validateEmail' ), validateEmailUrl ),
 		];
 
 		if ( isDirectDebit.value ) {
-			validationCalls.push( store.dispatch( action( NS_BANKDATA, markEmptyValuesAsInvalid ) ) );
+			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
 		}
 
 		await Promise.all( validationCalls );
 		// We need to wait for the asynchronous bank data validation, that might still be going on
 		await waitForServerValidationToFinish( store );
 
-		if ( !store.getters[ NS_ADDRESS + '/requiredFieldsAreValid' ] ) {
+		if ( !store.getters[ 'address/requiredFieldsAreValid' ] ) {
 			addressDataIsValid.value = false;
 			return;
 		}
 
-		if ( isDirectDebit.value && !store.getters[ NS_BANKDATA + '/bankDataIsValid' ] ) {
+		if ( isDirectDebit.value && !store.getters[ 'bankdata/bankDataIsValid' ] ) {
 			bankDataIsValid.value = false;
 			return;
 		}
@@ -62,17 +58,17 @@ export function useAddressFormEventHandlers(
 	};
 
 	const previousPage = async () => {
-		await store.dispatch( action( NS_PAYMENT, discardInitialization ) );
+		await store.dispatch( action( 'payment', 'discardInitialization' ) );
 		emit( 'previous-page' );
 	};
 
-	store.watch( ( state, getters ) => getters[ NS_ADDRESS + '/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	store.watch( ( state, getters ) => getters[ 'address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 		if ( !addressDataIsValid.value && isValid ) {
 			addressDataIsValid.value = true;
 		}
 	} );
 
-	store.watch( ( state, getters ) => getters[ NS_BANKDATA + '/bankDataIsValid' ], ( isValid: boolean ) => {
+	store.watch( ( state, getters ) => getters[ 'bankdata/bankDataIsValid' ], ( isValid: boolean ) => {
 		if ( !bankDataIsValid.value && isValid ) {
 			bankDataIsValid.value = true;
 		}

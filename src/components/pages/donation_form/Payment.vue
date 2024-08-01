@@ -55,8 +55,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
-import { setAmount, setInterval, setType } from '@src/store/payment/actionTypes';
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { AmountValidity } from '@src/view_models/Payment';
@@ -80,10 +78,10 @@ const props = defineProps<Props>();
 const store = useStore();
 const { t } = useI18n();
 
-const amount = usePaymentFieldModel( store, 'amount', setAmount );
-const interval = usePaymentFieldModel( store, 'interval', setInterval );
-const paymentType = usePaymentFieldModel( store, 'type', setType );
-const paymentTypeIsValid = computed<boolean>( () => store.state[ NS_PAYMENT ].validity.type !== Validity.INVALID );
+const amount = usePaymentFieldModel( store, 'amount', 'setAmount' );
+const interval = usePaymentFieldModel( store, 'interval', 'setInterval' );
+const paymentType = usePaymentFieldModel( store, 'type', 'setType' );
+const paymentTypeIsValid = computed<boolean>( () => store.state.payment.validity.type !== Validity.INVALID );
 
 const paymentIntervalsAsOptions = computed<CheckboxFormOption[]>( () => {
 	return props.paymentIntervals.map(
@@ -100,10 +98,10 @@ const paymentTypesAsOptions = computed<CheckboxFormOption[]>( () => {
 
 const disabledPaymentTypes = computed<string[]>( () => {
 	let disabledTypes: string[] = [];
-	if ( store.state[ NS_ADDRESS ].addressType === AddressTypeModel.ANON ) {
+	if ( store.state.address.addressType === AddressTypeModel.ANON ) {
 		disabledTypes.push( 'BEZ' );
 	}
-	if ( store.state[ NS_PAYMENT ].values.interval !== '0' ) {
+	if ( store.state.payment.values.interval !== '0' ) {
 		disabledTypes.push( 'SUB' );
 	}
 	return disabledTypes;
@@ -111,7 +109,7 @@ const disabledPaymentTypes = computed<string[]>( () => {
 
 const disabledPaymentIntervals = computed<string[]>( () => {
 	let disabledIntervals: string[] = [];
-	if ( store.state[ NS_PAYMENT ].values.type === 'SUB' ) {
+	if ( store.state.payment.values.type === 'SUB' ) {
 		disabledIntervals = props.paymentIntervals
 			.filter( ( x: number ) => Number( x ) > 0 )
 			.map( ( x: number ) => String( x ) );
@@ -125,7 +123,7 @@ const amountErrorMessage = computed<String>( () => {
 		[ AmountValidity.AMOUNT_TOO_LOW ]: t( 'donation_form_payment_amount_error' ),
 		[ AmountValidity.AMOUNT_TOO_HIGH ]: t( 'donation_form_payment_amount_too_high' ),
 	};
-	return messages[ store.getters[ NS_PAYMENT + '/amountValidity' ] ];
+	return messages[ store.getters[ 'payment/amountValidity' ] ];
 } );
 
 </script>

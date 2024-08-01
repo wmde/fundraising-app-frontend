@@ -1,5 +1,4 @@
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { NS_ADDRESS } from '@src/store/namespaces';
 import { Store } from 'vuex';
 import { computed, ComputedRef } from 'vue';
 
@@ -10,15 +9,15 @@ type ReturnType = {
 
 export function useAddressSummary( store: Store<any> ): ReturnType {
 	const addressSummary = computed( () => ( {
-		...store.state[ NS_ADDRESS ].values,
-		fullName: store.getters[ NS_ADDRESS + '/fullName' ],
-		streetAddress: store.state[ NS_ADDRESS ].values.street,
-		postalCode: store.state[ NS_ADDRESS ].values.postcode,
-		country: store.state[ NS_ADDRESS ].values.country,
+		...store.state.address.values,
+		fullName: store.getters[ 'address/fullName' ],
+		streetAddress: store.state.address.values.street,
+		postalCode: store.state.address.values.postcode,
+		country: store.state.address.values.country,
 	} ) );
 
 	const inlineSummaryLanguageItem = computed( (): string => {
-		switch ( store.state[ NS_ADDRESS ].addressType ) {
+		switch ( store.state.address.addressType ) {
 			case AddressTypeModel.ANON:
 			case AddressTypeModel.UNSET:
 				return 'donation_confirmation_inline_summary_anonymous';

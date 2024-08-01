@@ -3,8 +3,6 @@ import { actions } from '@src/store/membership_fee/actions';
 import { mutations } from '@src/store/membership_fee/mutations';
 import { GenericValuePayload, MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
-import { markEmptyFeeAsInvalid, validateFee } from '@src/store/membership_fee/actionTypes';
-import { MARK_EMPTY_FEE_INVALID, SET_FEE, SET_FEE_VALIDITY, SET_INTERVAL, SET_INTERVAL_VALIDITY } from '@src/store/membership_fee/mutationTypes';
 import each from 'jest-each';
 import mockAxios from 'jest-mock-axios';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -131,10 +129,10 @@ describe( 'MembershipFee', () => {
 	describe( 'Actions/markEmptyFeeAsInvalid', () => {
 		it( 'commits to mutation [MARK_EMPTY_FEE_INVALID]', () => {
 			const commit = jest.fn();
-			const action = actions[ markEmptyFeeAsInvalid ] as any;
+			const action = actions.markEmptyFeeAsInvalid as any;
 			action( { commit } );
 			expect( commit ).toBeCalledWith(
-				MARK_EMPTY_FEE_INVALID
+				'MARK_EMPTY_FEE_INVALID'
 			);
 		} );
 	} );
@@ -172,12 +170,12 @@ describe( 'MembershipFee', () => {
 			action( context, { selectedValue: '3', validateFeeUrl: '' } as GenericValuePayload );
 			expect( context.commit ).toHaveBeenNthCalledWith(
 				1,
-				SET_INTERVAL,
+				'SET_INTERVAL',
 				'3'
 			);
 			expect( context.commit ).toHaveBeenNthCalledWith(
 				2,
-				SET_INTERVAL_VALIDITY,
+				'SET_INTERVAL_VALIDITY',
 			);
 		} );
 
@@ -208,7 +206,7 @@ describe( 'MembershipFee', () => {
 
 			const action = actions.setInterval as any;
 			return action( context, { selectedValue: '3', validateFeeUrl: '/validate-fee-url' } as GenericValuePayload ).then( () => {
-				expect( context.dispatch ).toHaveBeenCalledWith( validateFee, expectedPayload );
+				expect( context.dispatch ).toHaveBeenCalledWith( 'validateFee', expectedPayload );
 			} );
 		} );
 	} );
@@ -239,7 +237,7 @@ describe( 'MembershipFee', () => {
 				} as GenericValuePayload;
 			const action = actions.setFee as any;
 			return action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith( SET_FEE, payload.selectedValue );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_FEE', payload.selectedValue );
 			} );
 		} );
 
@@ -296,7 +294,7 @@ describe( 'MembershipFee', () => {
 			const action = actions.setFee as any;
 			return action( context, payload ).then( () => {
 				expect( context.commit ).toHaveBeenCalledWith(
-					SET_FEE_VALIDITY,
+					'SET_FEE_VALIDITY',
 					Validity.INVALID
 				);
 				expect( context.dispatch ).not.toBeCalled();
@@ -328,7 +326,7 @@ describe( 'MembershipFee', () => {
 			const action = actions.setFee as any;
 			return action( context, payload ).then( () => {
 				expect( context.commit ).toHaveBeenCalledWith(
-					SET_FEE,
+					'SET_FEE',
 					''
 				);
 				expect( context.dispatch ).not.toBeCalled();

@@ -4,8 +4,6 @@ import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
-import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
-import { setAddressType } from '@src/store/membership_address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Store } from 'vuex';
 import { nextTick } from 'vue';
@@ -34,7 +32,7 @@ describe( 'PaymentPage.vue', () => {
 
 	it( 'sets address type in store when it receives address-type event', () => {
 		store.dispatch = jest.fn( () => Promise.resolve() );
-		const expectedAction = action( NS_MEMBERSHIP_ADDRESS, setAddressType );
+		const expectedAction = action( 'membership_address', 'setAddressType' );
 		const expectedPayload = AddressTypeModel.PERSON;
 
 		wrapper.findComponent( AddressType ).vm.$emit( 'field-changed', AddressTypeModel.PERSON );

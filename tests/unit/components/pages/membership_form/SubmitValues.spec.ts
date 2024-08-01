@@ -1,7 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { createStore } from 'vuex';
 import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel, membershipTypeName } from '@src/view_models/MembershipTypeModel';
 
@@ -10,7 +9,7 @@ describe( 'SubmitValues.vue', () => {
 	beforeEach( () => {
 		const store = createStore( {
 			modules: {
-				[ NS_MEMBERSHIP_ADDRESS ]: {
+				[ 'membership_address' ]: {
 					namespaced: true,
 					state: {
 						membershipType: MembershipTypeModel.SUSTAINING,
@@ -32,7 +31,7 @@ describe( 'SubmitValues.vue', () => {
 					},
 
 				},
-				[ NS_BANKDATA ]: {
+				[ 'bankdata' ]: {
 					namespaced: true,
 					state: {
 						values: {
@@ -41,7 +40,7 @@ describe( 'SubmitValues.vue', () => {
 						},
 					},
 				},
-				[ NS_MEMBERSHIP_FEE ]: {
+				[ 'membership_fee' ]: {
 					namespaced: true,
 					state: {
 						values: {

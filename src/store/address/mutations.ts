@@ -1,34 +1,19 @@
 import { MutationTree } from 'vuex';
 import { Validity } from '@src/view_models/Validity';
 import { Helper } from '@src/store/util';
-import {
-	BEGIN_ADDRESS_VALIDATION,
-	BEGIN_EMAIL_VALIDATION,
-	FINISH_ADDRESS_VALIDATION,
-	FINISH_EMAIL_VALIDATION,
-	INITIALIZE_ADDRESS,
-	MARK_EMPTY_FIELDS_INVALID,
-	SET_ADDRESS_FIELD,
-	SET_ADDRESS_FIELDS,
-	SET_ADDRESS_TYPE,
-	SET_NEWSLETTER,
-	SET_RECEIPT,
-	SET_VALIDITY,
-	VALIDATE_INPUT,
-} from '@src/store/address/mutationTypes';
 import { AddressState, InputField } from '@src/view_models/Address';
 import { FieldInitialization } from '@src/view_models/FieldInitialization';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 export const mutations: MutationTree<AddressState> = {
-	[ VALIDATE_INPUT ]( state: AddressState, field: InputField ) {
+	VALIDATE_INPUT( state: AddressState, field: InputField ) {
 		if ( field.value === '' && field.optionalField ) {
 			state.validity[ field.name ] = Validity.VALID;
 		} else {
 			state.validity[ field.name ] = Helper.inputIsValid( field.value, field.pattern );
 		}
 	},
-	[ MARK_EMPTY_FIELDS_INVALID ]( state: AddressState ) {
+	MARK_EMPTY_FIELDS_INVALID( state: AddressState ) {
 		let addressTypeRequirements = state.requiredFields[ state.addressType ];
 		state.requiredFields[ state.addressType ].forEach( ( fieldName: string ) => {
 			if ( state.validity[ fieldName ] === Validity.INCOMPLETE &&
@@ -56,10 +41,10 @@ export const mutations: MutationTree<AddressState> = {
 			state.validity.addressType = Validity.INVALID;
 		}
 	},
-	[ BEGIN_ADDRESS_VALIDATION ]( state: AddressState ) {
+	BEGIN_ADDRESS_VALIDATION( state: AddressState ) {
 		state.serverSideValidationCount++;
 	},
-	[ FINISH_ADDRESS_VALIDATION ]( state: AddressState, payload ) {
+	FINISH_ADDRESS_VALIDATION( state: AddressState, payload ) {
 		state.serverSideValidationCount--;
 		if ( payload.status === 'OK' ) {
 			return;
@@ -70,10 +55,10 @@ export const mutations: MutationTree<AddressState> = {
 			}
 		} );
 	},
-	[ BEGIN_EMAIL_VALIDATION ]( state: AddressState ) {
+	BEGIN_EMAIL_VALIDATION( state: AddressState ) {
 		state.serverSideValidationCount++;
 	},
-	[ FINISH_EMAIL_VALIDATION ]( state: AddressState, payload ) {
+	FINISH_EMAIL_VALIDATION( state: AddressState, payload ) {
 		state.serverSideValidationCount--;
 		if ( payload.status === 'OK' ) {
 			return;
@@ -82,10 +67,10 @@ export const mutations: MutationTree<AddressState> = {
 			state.validity.email = Validity.INVALID;
 		}
 	},
-	[ SET_ADDRESS_TYPE ]( state: AddressState, type ) {
+	SET_ADDRESS_TYPE( state: AddressState, type ) {
 		state.addressType = type;
 	},
-	[ SET_ADDRESS_FIELDS ]( state: AddressState, fields ) {
+	SET_ADDRESS_FIELDS( state: AddressState, fields ) {
 		Object.keys( fields ).forEach( ( field: string ) => {
 			const fieldName = fields[ field ];
 			if ( state.validity[ fieldName.name ] !== Validity.INVALID ) {
@@ -93,19 +78,19 @@ export const mutations: MutationTree<AddressState> = {
 			}
 		} );
 	},
-	[ SET_ADDRESS_FIELD ]( state: AddressState, field: InputField ) {
+	SET_ADDRESS_FIELD( state: AddressState, field: InputField ) {
 		state.values[ field.name ] = field.value;
 	},
-	[ SET_NEWSLETTER ]( state: AddressState, choice ) {
+	SET_NEWSLETTER( state: AddressState, choice ) {
 		state.newsletter = choice;
 	},
-	[ SET_RECEIPT ]( state: AddressState, choice ) {
+	SET_RECEIPT( state: AddressState, choice ) {
 		state.receipt = choice;
 	},
-	[ SET_VALIDITY ]( state: AddressState, { name, value } ) {
+	SET_VALIDITY( state: AddressState, { name, value } ) {
 		state.validity[ name ] = value;
 	},
-	[ INITIALIZE_ADDRESS ]( state: AddressState, fields: FieldInitialization[] ) {
+	INITIALIZE_ADDRESS( state: AddressState, fields: FieldInitialization[] ) {
 		fields.forEach( ( field: FieldInitialization ) => {
 			state.validity[ field.name ] = field.validity;
 			state.values[ field.name ] = field.value;

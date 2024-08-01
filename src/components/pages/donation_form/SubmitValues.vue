@@ -38,7 +38,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import { NS_ADDRESS, NS_BANKDATA, NS_PAYMENT } from '@src/store/namespaces';
 import { Payment } from '@src/view_models/Payment';
 import { AddressState } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
@@ -53,16 +52,16 @@ export default defineComponent( {
 		campaignValues: Object as () => CampaignValues,
 	},
 	computed: {
-		...mapState<Payment>( NS_PAYMENT, {
+		...mapState<Payment>( 'payment', {
 			payment: ( state: Payment ) => state.values,
 		} ),
-		...mapState<AddressState>( NS_ADDRESS, {
+		...mapState<AddressState>( 'address', {
 			address: ( state: AddressState ) => state.values,
 			addressType: ( state: AddressState ) => {
 				return addressTypeName( state.addressType );
 			},
 		} ),
-		...mapState<BankAccount>( NS_BANKDATA, {
+		...mapState<BankAccount>( 'bankdata', {
 			bankdata: ( state: BankAccount ) => state.values,
 		} ),
 		sendPostalAddress(): boolean {
@@ -72,10 +71,10 @@ export default defineComponent( {
 			return this.addressType !== 'anonym';
 		},
 		newsletter(): string {
-			return this.$store.getters[ NS_ADDRESS + '/willGetNewsletter' ] ? '1' : '0';
+			return this.$store.getters[ 'address/willGetNewsletter' ] ? '1' : '0';
 		},
 		receipt(): string {
-			return this.$store.getters[ NS_ADDRESS + '/willGetReceipt' ] ? '1' : '0';
+			return this.$store.getters[ 'address/willGetReceipt' ] ? '1' : '0';
 		},
 	},
 } );

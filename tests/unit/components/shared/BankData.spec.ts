@@ -2,14 +2,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import Vuex, { Store } from 'vuex';
 import BankData from '@src/components/shared/PaymentBankData.vue';
 import { createStore } from '@src/store/donation_store';
-import { NS_BANKDATA } from '@src/store/namespaces';
 import { action } from '@src/store/util';
-import {
-	initializeBankData,
-	markBankDataAsIncomplete,
-	markBankDataAsInvalid,
-	setBankData,
-} from '@src/store/bankdata/actionTypes';
 import { BankAccountRequest } from '@src/view_models/BankAccount';
 import { nextTick } from 'vue';
 
@@ -39,7 +32,7 @@ describe( 'BankData.vue', () => {
 		const iban = wrapper.find( '#iban' );
 		wrapper.setData( { accountId: 'DE12345605171238489890' } );
 		iban.trigger( 'blur' );
-		const expectedAction = action( NS_BANKDATA, setBankData );
+		const expectedAction = action( 'bankdata', 'setBankData' );
 		const expectedPayload = {
 			validationUrl: '/check-iban',
 			requestParams: { iban: 'DE12345605171238489890' },
@@ -55,7 +48,7 @@ describe( 'BankData.vue', () => {
 		const iban = wrapper.find( '#iban' );
 		wrapper.setData( { accountId: 'NL18ABNA0484869868 ' } );
 		iban.trigger( 'blur' );
-		const expectedAction = action( NS_BANKDATA, setBankData );
+		const expectedAction = action( 'bankdata', 'setBankData' );
 		const expectedPayload = {
 			validationUrl: '/check-iban',
 			requestParams: { iban: 'NL18ABNA0484869868 ' },
@@ -74,7 +67,7 @@ describe( 'BankData.vue', () => {
 		const bic = wrapper.find( '#bic' );
 		wrapper.setData( { bankId: '50010517' } );
 		bic.trigger( 'blur' );
-		const expectedAction = action( NS_BANKDATA, setBankData );
+		const expectedAction = action( 'bankdata', 'setBankData' );
 		const expectedPayload = {
 			validationUrl: '/generate-iban',
 			requestParams: { accountNumber: '34560517', bankCode: '50010517' },
@@ -91,7 +84,7 @@ describe( 'BankData.vue', () => {
 		wrapper.setData( { accountId: 'DE123456051äh?' } );
 		iban.trigger( 'blur' );
 
-		const expectedAction = action( NS_BANKDATA, markBankDataAsInvalid );
+		const expectedAction = action( 'bankdata', 'markBankDataAsInvalid' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction );
 	} );
 
@@ -107,7 +100,7 @@ describe( 'BankData.vue', () => {
 		wrapper.setData( { accountId: '' } );
 		iban.trigger( 'blur' );
 
-		const expectedAction = action( NS_BANKDATA, markBankDataAsIncomplete );
+		const expectedAction = action( 'bankdata', 'markBankDataAsIncomplete' );
 		expect( store.dispatch ).toHaveBeenNthCalledWith( 2, expectedAction );
 	} );
 
@@ -126,7 +119,7 @@ describe( 'BankData.vue', () => {
 	it( 'renders the bank name set in the store', async () => {
 		const { wrapper, store } = getWrapper();
 
-		store.commit( NS_BANKDATA + '/SET_BANKNAME', 'Test Bank' );
+		store.commit( 'bankdata/SET_BANKNAME', 'Test Bank' );
 		await nextTick();
 
 		expect( wrapper.find( '#bank-name-iban' ).text() ).toMatch( 'Test Bank' );
@@ -135,7 +128,7 @@ describe( 'BankData.vue', () => {
 	it( 'renders info message when bank info is valid but no bankname and bankId available', async () => {
 		const { wrapper } = getWrapper( new Vuex.Store<any>( {
 			modules: {
-				[ NS_BANKDATA ]: {
+				[ 'bankdata' ]: {
 					namespaced: true,
 					getters: {
 						bankDataIsValid: () => true,
@@ -171,7 +164,7 @@ describe( 'BankData.vue', () => {
 	it( 'does not render bank code / BIC field when valid IBAN was validated', async () => {
 		const { wrapper } = getWrapper( new Vuex.Store<any>( {
 			modules: {
-				[ NS_BANKDATA ]: {
+				[ 'bankdata' ]: {
 					namespaced: true,
 					getters: {
 						bankDataIsValid: () => true,
@@ -192,7 +185,7 @@ describe( 'BankData.vue', () => {
 	it( 'does not render bank code / BIC field if IBAN is invalid', async () => {
 		const { wrapper } = getWrapper( new Vuex.Store<any>( {
 			modules: {
-				[ NS_BANKDATA ]: {
+				[ 'bankdata' ]: {
 					namespaced: true,
 					getters: {
 						bankDataIsValid: () => false,
@@ -241,7 +234,7 @@ describe( 'BankData.vue', () => {
 
 	it( 'puts initial values form the store in the fields', async () => {
 		const store = createStore();
-		await store.dispatch( action( NS_BANKDATA, initializeBankData ), {
+		await store.dispatch( action( 'bankdata', 'initializeBankData' ), {
 			accountId: 'DE12345605171238489890',
 			bankId: 'ABCDDEFFXXX',
 			bankName: 'Cool Bank',

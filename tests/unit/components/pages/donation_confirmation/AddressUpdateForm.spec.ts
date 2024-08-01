@@ -2,8 +2,6 @@ import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donor_update_store';
 import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 import { action } from '@src/store/util';
-import { NS_ADDRESS } from '@src/store/namespaces';
-import { initializeAddress } from '@src/store/address/actionTypes';
 import { addressValidationPatterns } from '@test/data/validation';
 import { anonymousBankTransferConfirmationData, bankTransferConfirmationData } from '@test/data/confirmationData';
 import { Address } from '@src/view_models/Address';
@@ -117,7 +115,7 @@ describe( 'AddressUpdateForm.vue', () => {
 	it( 'prefills address data if it exists', async () => {
 		const store = createStore();
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( validAddress, AddressTypeModel.PERSON )
 		);
 
@@ -138,7 +136,7 @@ describe( 'AddressUpdateForm.vue', () => {
 	it( 'marks address type invalid if submitted without selecting', async () => {
 		const store = createStore();
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( anonAddress, AddressTypeModel.ANON )
 		);
 
@@ -151,7 +149,7 @@ describe( 'AddressUpdateForm.vue', () => {
 	it( 'marks empty address fields invalid if submitted after selecting address type', async () => {
 		const store = createStore();
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( anonAddress, AddressTypeModel.ANON )
 		);
 
@@ -179,7 +177,7 @@ describe( 'AddressUpdateForm.vue', () => {
 	it( 'shows error summary when there are validation errors', async () => {
 		const store = createStore();
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( inValidAddress, AddressTypeModel.ANON )
 		);
 
@@ -197,7 +195,7 @@ describe( 'AddressUpdateForm.vue', () => {
 
 		const store = createStore();
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( inValidAddress, AddressTypeModel.ANON )
 		);
 
@@ -264,7 +262,7 @@ describe( 'AddressUpdateForm.vue', () => {
 	] )( 'shows and validates as person when initial address type is %s', async ( addressType: AddressTypeModel ) => {
 		const store = createStore();
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( emptyAddress, addressType )
 		);
 
@@ -298,7 +296,7 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		emptyAddress.addressType = 'firma';
 		await store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			addressData( emptyAddress, AddressTypeModel.COMPANY )
 		);
 

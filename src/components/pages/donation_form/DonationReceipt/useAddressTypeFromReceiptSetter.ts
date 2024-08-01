@@ -1,8 +1,6 @@
 import { ComputedRef, Ref, ref, watch } from 'vue';
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
-import { NS_ADDRESS } from '@src/store/namespaces';
-import { setAddressType as setAddressTypeActionType } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 /**
@@ -39,13 +37,13 @@ export function useAddressTypeFromReceiptSetter( receiptModel: Ref<boolean | nul
 	const lastAddressType = ref<number>( addressType.value );
 
 	if ( receiptModel.value && ![ AddressTypeModel.PERSON, AddressTypeModel.EMAIL, AddressTypeModel.COMPANY_WITH_CONTACT ].includes( addressType.value ) ) {
-		store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), AddressTypeModel.UNSET );
+		store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.UNSET );
 	}
 
 	const setAddressTypeFromReceipt = ( receipt: boolean | null ): void => {
 		if ( !receipt ) {
 			lastAddressType.value = addressType.value;
-			store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), AddressTypeModel.EMAIL );
+			store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.EMAIL );
 		} else {
 			// If the last address type was email it means the donor changed
 			// the donation receipt from no to yes after refreshing the page,
@@ -54,7 +52,7 @@ export function useAddressTypeFromReceiptSetter( receiptModel: Ref<boolean | nul
 				lastAddressType.value = AddressTypeModel.UNSET;
 			}
 
-			store.dispatch( action( NS_ADDRESS, setAddressTypeActionType ), lastAddressType.value );
+			store.dispatch( action( 'address', 'setAddressType' ), lastAddressType.value );
 			lastAddressType.value = AddressTypeModel.UNSET;
 		}
 	};

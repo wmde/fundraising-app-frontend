@@ -58,13 +58,11 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import { setFee, setInterval, setType } from '@src/store/membership_fee/actionTypes';
 import { useI18n } from 'vue-i18n';
 import { usePaymentFieldModel } from '@src/components/pages/membership_form/usePaymentFieldModel';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { FeeValidity } from '@src/view_models/MembershipFee';
@@ -83,16 +81,16 @@ const props = defineProps<Props>();
 const store = useStore();
 const { t } = useI18n();
 
-const fee = usePaymentFieldModel( store, 'fee', setFee, props.validateFeeUrl );
-const interval = usePaymentFieldModel( store, 'interval', setInterval, props.validateFeeUrl );
-const paymentType = usePaymentFieldModel( store, 'type', setType, props.validateFeeUrl );
+const fee = usePaymentFieldModel( store, 'fee', 'setFee', props.validateFeeUrl );
+const interval = usePaymentFieldModel( store, 'interval', 'setInterval', props.validateFeeUrl );
+const paymentType = usePaymentFieldModel( store, 'type', 'setType', props.validateFeeUrl );
 
-const paymentTypeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/typeIsValid' ] );
-const feeIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/feeIsValid' ] );
-const intervalIsValid = computed( () => store.getters[ NS_MEMBERSHIP_FEE + '/intervalIsValid' ] );
+const paymentTypeIsValid = computed( () => store.getters[ 'membership_fee/typeIsValid' ] );
+const feeIsValid = computed( () => store.getters[ 'membership_fee/feeIsValid' ] );
+const intervalIsValid = computed( () => store.getters[ 'membership_fee/intervalIsValid' ] );
 
 const minimumAmount = computed(
-	() => store.getters[ NS_MEMBERSHIP_FEE + '/minimumAmount' ]( store.state[ NS_MEMBERSHIP_ADDRESS ].addressType )
+	() => store.getters[ 'membership_fee/minimumAmount' ]( store.state.membership_address.addressType )
 );
 const getAmountTitle = computed( () => {
 	if ( interval.value === '' ) {

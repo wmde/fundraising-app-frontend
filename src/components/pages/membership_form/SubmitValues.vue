@@ -35,7 +35,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { Payment } from '@src/view_models/Payment';
 import { MembershipAddressState } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
@@ -51,10 +50,10 @@ export default defineComponent( {
 		campaignValues: Object as () => CampaignValues,
 	},
 	computed: {
-		...mapState<Payment>( NS_MEMBERSHIP_FEE, {
+		...mapState<Payment>( 'membership_fee', {
 			fee: ( state: Payment ) => state.values,
 		} ),
-		...mapState<MembershipAddressState>( NS_MEMBERSHIP_ADDRESS, {
+		...mapState<MembershipAddressState>( 'membership_address', {
 			address: ( state: MembershipAddressState ) => state.values,
 			addressType: ( state: MembershipAddressState ) => {
 				return addressTypeName( state.addressType );
@@ -66,7 +65,7 @@ export default defineComponent( {
 				return state.values.date.replaceAll( '/', '-' );
 			},
 		} ),
-		...mapState( NS_BANKDATA, {
+		...mapState( 'bankdata', {
 			bankdata: ( state: any ) => ( state as BankAccount ).values,
 		} ),
 	},

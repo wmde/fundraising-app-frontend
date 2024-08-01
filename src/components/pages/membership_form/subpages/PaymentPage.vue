@@ -75,10 +75,7 @@
 <script setup lang="ts">
 import Payment from '@src/components/pages/membership_form/Payment.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
 import { action } from '@src/store/util';
-import { markEmptyValuesAsInvalid as markEmptyFeeValuesAsInvalid } from '@src/store/membership_fee/actionTypes';
-import { markEmptyValuesAsInvalid as markemptyBankDataValuesAsInvalid } from '@src/store/bankdata/actionTypes';
 import { useStore } from 'vuex';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { computed, onMounted, ref } from 'vue';
@@ -120,20 +117,20 @@ const showErrorSummary = ref<boolean>( false );
 const membershipTypeModel = useMembershipTypeModel( store );
 const disabledMembershipTypes = computed(
 	(): MembershipTypeModel[] => {
-		return store.state[ NS_MEMBERSHIP_ADDRESS ].addressType === AddressTypeModel.COMPANY ? [ MembershipTypeModel.ACTIVE ] : [];
+		return store.state.membership_address.addressType === AddressTypeModel.COMPANY ? [ MembershipTypeModel.ACTIVE ] : [];
 	}
 );
 
-const isDirectDebitPayment = computed( (): boolean => store.state[ NS_MEMBERSHIP_FEE ].values.type === 'BEZ' );
+const isDirectDebitPayment = computed( (): boolean => store.state.membership_fee.values.type === 'BEZ' );
 
 const next = async (): Promise<any> => {
 	waitForServerValidationToFinish( store ).then( () => {
-		const storeCleanupActions = [ store.dispatch( action( NS_MEMBERSHIP_FEE, markEmptyFeeValuesAsInvalid ) ) ];
+		const storeCleanupActions = [ store.dispatch( action( 'membership_fee', 'markEmptyValuesAsInvalid' ) ) ];
 		if ( isDirectDebitPayment ) {
-			storeCleanupActions.push( store.dispatch( action( NS_BANKDATA, markemptyBankDataValuesAsInvalid ) ) );
+			storeCleanupActions.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
 		}
 		return Promise.all( storeCleanupActions ).then( () => {
-			if ( store.getters.paymentDataIsValid && store.getters[ NS_MEMBERSHIP_ADDRESS + '/membershipTypeIsValid' ] ) {
+			if ( store.getters.paymentDataIsValid && store.getters[ 'membership_address/membershipTypeIsValid' ] ) {
 				emit( 'next-page' );
 			} else {
 				showErrorSummary.value = true;

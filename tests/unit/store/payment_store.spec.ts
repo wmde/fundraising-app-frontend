@@ -3,17 +3,6 @@ import { actions } from '@src/store/payment/actions';
 import { mutations } from '@src/store/payment/mutations';
 import { Validity } from '@src/view_models/Validity';
 import { AmountValidity } from '@src/view_models/Payment';
-import {
-	initializePayment,
-	markEmptyAmountAsInvalid, setAmount,
-} from '@src/store/payment/actionTypes';
-import {
-	SET_AMOUNT,
-	SET_AMOUNT_VALIDITY,
-	SET_INTERVAL,
-	SET_TYPE,
-	SET_TYPE_VALIDITY,
-} from '@src/store/payment/mutationTypes';
 import each from 'jest-each';
 import { DonationPayment } from '@src/store/payment/types';
 import { ActionContext } from 'vuex';
@@ -172,7 +161,7 @@ describe( 'Payment', () => {
 	describe( 'Actions/initializePayment', () => {
 		it( 'does not commit empty amount', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -185,12 +174,12 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_AMOUNT, '0' );
+			expect( commit ).not.toBeCalledWith( 'SET_AMOUNT', '0' );
 		} );
 
 		it( 'commits amount and sets it to valid when amount is set', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -203,13 +192,13 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_AMOUNT, '2399' );
-			expect( commit ).toBeCalledWith( SET_AMOUNT_VALIDITY, Validity.VALID );
+			expect( commit ).toBeCalledWith( 'SET_AMOUNT', '2399' );
+			expect( commit ).toBeCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
 		} );
 
 		it( 'does not commit empty payment type', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -222,12 +211,12 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_TYPE );
+			expect( commit ).not.toBeCalledWith( 'SET_TYPE' );
 		} );
 
 		it( 'commits payment type and set it to valid when payment type is set', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -240,13 +229,13 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_TYPE, 'BEZ' );
-			expect( commit ).toBeCalledWith( SET_TYPE_VALIDITY, Validity.VALID );
+			expect( commit ).toBeCalledWith( 'SET_TYPE', 'BEZ' );
+			expect( commit ).toBeCalledWith( 'SET_TYPE_VALIDITY', Validity.VALID );
 		} );
 
 		it( 'commits interval', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
 				allowedPaymentTypes: [ 'BEZ' ],
@@ -259,7 +248,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_INTERVAL, '12' );
+			expect( commit ).toBeCalledWith( 'SET_INTERVAL', '12' );
 		} );
 
 		const paymentAndAmountCases = [
@@ -273,7 +262,7 @@ describe( 'Payment', () => {
 		describe.each( paymentAndAmountCases )( 'with initial payment data', ( data: any ) => {
 			it( `whose amount is ${ data.amount } and type is ${ data.type } should be ${ data.expectedResolution }`, () => {
 				const commit = jest.fn();
-				const action = actions[ initializePayment ] as any;
+				const action = actions.initializePayment as any;
 				const payload: PaymentInitialisationPayload = {
 					allowedIntervals: [ 0, 12 ],
 					allowedPaymentTypes: [ 'BEZ', 'PPL' ],
@@ -292,7 +281,7 @@ describe( 'Payment', () => {
 
 		it( 'does not initialise Sofort payment type if initialised with an interval', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.SOFORT ],
@@ -305,12 +294,12 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_TYPE );
+			expect( commit ).not.toBeCalledWith( 'SET_TYPE' );
 		} );
 
 		it( 'initialises Sofort payment type if interval is 0', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.SOFORT ],
@@ -323,12 +312,12 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_TYPE, PaymentType.SOFORT );
+			expect( commit ).toBeCalledWith( 'SET_TYPE', PaymentType.SOFORT );
 		} );
 
 		it( 'initialises Sofort payment type if interval is emtpy', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.SOFORT ],
@@ -341,12 +330,12 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( SET_TYPE, PaymentType.SOFORT );
+			expect( commit ).toBeCalledWith( 'SET_TYPE', PaymentType.SOFORT );
 		} );
 
 		it( 'does not initialise payment type if it is not in allowed list', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.PAYPAL ],
@@ -359,12 +348,12 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_TYPE, PaymentType.DIRECT_DEBIT );
+			expect( commit ).not.toBeCalledWith( 'SET_TYPE', PaymentType.DIRECT_DEBIT );
 		} );
 
 		it( 'does not initialise interval if it is not in allowed list', () => {
 			const commit = jest.fn();
-			const action = actions[ initializePayment ] as any;
+			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
 				allowedPaymentTypes: [ PaymentType.PAYPAL ],
@@ -377,14 +366,14 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( SET_INTERVAL, PaymentType.DIRECT_DEBIT );
+			expect( commit ).not.toBeCalledWith( 'SET_INTERVAL', PaymentType.DIRECT_DEBIT );
 		} );
 	} );
 
 	describe( 'Actions/markEmptyAmountAsInvalid', () => {
 		it( 'commits to mutation [MARK_EMPTY_AMOUNT_INVALID]', () => {
 			const commit = jest.fn();
-			const action = actions[ markEmptyAmountAsInvalid ] as any;
+			const action = actions.markEmptyAmountAsInvalid as any;
 			action( { commit } );
 			expect( commit ).toBeCalledWith(
 				'MARK_EMPTY_AMOUNT_INVALID'
@@ -465,7 +454,7 @@ describe( 'Payment', () => {
 		it( 'commits to mutation [SET_AMOUNT]', () => {
 			const context = newMockActionContext();
 			const payload = '2500';
-			actions[ setAmount ]( context, '2500' );
+			actions.setAmount( context, '2500' );
 
 			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT', payload );
 		} );
@@ -473,7 +462,7 @@ describe( 'Payment', () => {
 		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on successful validation', () => {
 			const context = newMockActionContext();
 
-			actions[ setAmount ]( context, '2500' );
+			actions.setAmount( context, '2500' );
 
 			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
 		} );
@@ -481,7 +470,7 @@ describe( 'Payment', () => {
 		it( 'commits to mutation [SET_AMOUNT_VALIDITY] on failed validation', () => {
 			const context = newMockActionContext();
 
-			actions[ setAmount ]( context, '999999999999' );
+			actions.setAmount( context, '999999999999' );
 
 			expect( context.commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.INVALID );
 		} );

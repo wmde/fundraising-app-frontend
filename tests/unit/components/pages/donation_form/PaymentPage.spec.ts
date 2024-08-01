@@ -1,6 +1,4 @@
 import { action } from '@src/store/util';
-import { NS_PAYMENT } from '@src/store/namespaces';
-import { markEmptyValuesAsInvalid } from '@src/store/payment/actionTypes';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { Store } from 'vuex';
 import PaymentPage from '@src/components/pages/donation_form/subpages/PaymentPage.vue';
@@ -58,7 +56,7 @@ describe( 'PaymentPage.vue', () => {
 
 		await wrapper.find( '#next' ).trigger( 'click' );
 
-		expect( store.dispatch ).toHaveBeenCalledWith( action( NS_PAYMENT, markEmptyValuesAsInvalid ) );
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
 	} );
 
 	it( 'emits event if there are no validation errors', async () => {

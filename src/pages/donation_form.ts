@@ -8,7 +8,6 @@ import PageDataInitializer from '@src/util/page_data_initializer';
 import persistenceItems from '@src/store/data_persistence/donation_form';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Country } from '@src/view_models/Country';
-import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
 import { Salutation } from '@src/view_models/Salutation';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { action } from '@src/store/util';
@@ -16,8 +15,6 @@ import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { createDataPersister } from '@src/store/create_data_persister';
 import { createInitialDonationAddressValues, createInitialDonationPaymentValues } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
-import { initializeAddress } from '@src/store/address/actionTypes';
-import { initializePayment } from '@src/store/payment/actionTypes';
 
 import App from '@src/components/App.vue';
 import DonationForm from '@src/components/pages/DonationForm.vue';
@@ -49,7 +46,7 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
 		store.dispatch(
-			action( NS_PAYMENT, initializePayment ),
+			action( 'payment', 'initializePayment' ),
 			{
 				initialValues: createInitialDonationPaymentValues( dataPersister, pageData.applicationVars.initialFormValues ),
 				allowedIntervals: pageData.applicationVars.paymentIntervals,
@@ -57,7 +54,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			}
 		),
 		store.dispatch(
-			action( NS_ADDRESS, initializeAddress ),
+			action( 'address', 'initializeAddress' ),
 			createInitialDonationAddressValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
 	] ).then( ( [ paymentDataComplete ] ) => {

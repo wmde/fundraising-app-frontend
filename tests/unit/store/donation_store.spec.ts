@@ -2,9 +2,6 @@ import { createStore } from '@src/store/donation_store';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
-import { NS_ADDRESS, NS_PAYMENT } from '@src/store/namespaces';
-import { initializeAddress } from '@src/store/address/actionTypes';
-import { initializePayment } from '@src/store/payment/actionTypes';
 import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
 
 describe( 'Donation Store', () => {
@@ -19,7 +16,7 @@ describe( 'Donation Store', () => {
 				fields: [ firstName, lastName ],
 			};
 			const store = createStore();
-			await store.dispatch( action( NS_ADDRESS, initializeAddress ), initialData );
+			await store.dispatch( action( 'address', 'initializeAddress' ), initialData );
 
 			expect( store.state.address.values.firstName ).toBe( firstName.value );
 			expect( store.state.address.values.lastName ).toBe( lastName.value );
@@ -42,7 +39,7 @@ describe( 'Donation Store', () => {
 			};
 
 			const store = createStore();
-			await store.dispatch( action( NS_PAYMENT, initializePayment ), payload );
+			await store.dispatch( action( 'payment', 'initializePayment' ), payload );
 
 			expect( store.state.payment.values.amount ).toBe( amount );
 			expect( store.state.payment.values.type ).toBe( type );

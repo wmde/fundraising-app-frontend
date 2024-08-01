@@ -1,12 +1,4 @@
 import { mutation } from '@src/store/util';
-import { NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import {
-	SET_ADDRESS_TYPE,
-	SET_MEMBERSHIP_TYPE,
-	SET_RECEIPT,
-	SET_INCENTIVES,
-} from '@src/store/membership_address/mutationTypes';
-import { SET_FEE, SET_INTERVAL, SET_TYPE } from '@src/store/membership_fee/mutationTypes';
 import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
 import address from '@src/store/data_persistence/address';
 
@@ -14,44 +6,44 @@ export default [
 	{
 		storageKey: 'membershipType',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_ADDRESS, SET_MEMBERSHIP_TYPE ),
+		mutationKey: mutation( 'membership_address', 'SET_MEMBERSHIP_TYPE' ),
 		fields: [],
 	},
 	{
 		storageKey: 'addressType',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_ADDRESS, SET_ADDRESS_TYPE ),
+		mutationKey: mutation( 'membership_address', 'SET_ADDRESS_TYPE' ),
 		fields: [],
 	},
 	{
 		storageKey: 'fee',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_FEE, SET_FEE ),
+		mutationKey: mutation( 'membership_fee', 'SET_FEE' ),
 		fields: [],
 	},
 	{
 		storageKey: 'receipt',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_ADDRESS, SET_RECEIPT ),
+		mutationKey: mutation( 'membership_address', 'SET_RECEIPT' ),
 		fields: [],
 	},
 	{
 		storageKey: 'incentives',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_ADDRESS, SET_INCENTIVES ),
+		mutationKey: mutation( 'membership_address', 'SET_INCENTIVES' ),
 		fields: [],
 	},
 	{
 		storageKey: 'interval',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_FEE, SET_INTERVAL ),
+		mutationKey: mutation( 'membership_fee', 'SET_INTERVAL' ),
 		fields: [],
 	},
 	{
 		storageKey: 'type',
 		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( NS_MEMBERSHIP_FEE, SET_TYPE ),
+		mutationKey: mutation( 'membership_fee', 'SET_TYPE' ),
 		fields: [],
 	},
-	address( NS_MEMBERSHIP_ADDRESS ),
+	address( 'membership_address' ),
 ];

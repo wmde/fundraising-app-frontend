@@ -1,12 +1,6 @@
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import { computed, reactive } from 'vue';
 import { Validity } from '@src/view_models/Validity';
-import {
-	setAddressField,
-	setReceiptChoice,
-	validateAddressField,
-} from '@src/store/address/actionTypes';
-import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { action } from '@src/store/util';
 import { camelizeName } from '@src/util/camlize_name';
 
@@ -120,20 +114,20 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 
 	// methods
 	function onFieldChange( fieldName: string ): void {
-		store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressField ), formData[ fieldName ] );
+		store.dispatch( action( 'membership_address', 'setAddressField' ), formData[ fieldName ] );
 	}
 
 	function onAutofill( autofilledFields: { [key: string]: string; } ): void {
 		Object.keys( autofilledFields ).forEach( key => {
 			const fieldName = camelizeName( key );
 			if ( formData[ fieldName ] ) {
-				store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setAddressField ), formData[ fieldName ] );
+				store.dispatch( action( 'membership_address', 'setAddressField' ), formData[ fieldName ] );
 			}
 		} );
 	}
 
 	function setReceipt( choice: boolean ): void {
-		store.dispatch( action( NS_MEMBERSHIP_ADDRESS, setReceiptChoice ), choice );
+		store.dispatch( action( 'membership_address', 'setReceiptChoice' ), choice );
 	}
 
 	/**
@@ -143,8 +137,8 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		Object.entries( formData ).forEach( ( formItem ) => {
 			const key: string = formItem[ 0 ];
 			formData[ key ].value = store.state.membership_address.values[ key ];
-			if ( store.state[ NS_MEMBERSHIP_ADDRESS ].validity[ key ] === Validity.RESTORED ) {
-				store.dispatch( action( NS_MEMBERSHIP_ADDRESS, validateAddressField ), formData[ key ] );
+			if ( store.state.membership_address.validity[ key ] === Validity.RESTORED ) {
+				store.dispatch( action( 'membership_address', 'validateAddressField' ), formData[ key ] );
 			}
 		} );
 	}

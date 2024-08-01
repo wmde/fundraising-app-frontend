@@ -14,8 +14,6 @@ import UpdateAddress from '@src/components/pages/UpdateAddress.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { action } from '@src/store/util';
-import { NS_ADDRESS } from '@src/store/namespaces';
-import { initializeAddress } from '@src/store/address/actionTypes';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { ApiAddressChangeResource } from '@src/api/AddressChangeResource';
 
@@ -34,7 +32,7 @@ const store = createStore( [ createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
 store.dispatch(
-	action( NS_ADDRESS, initializeAddress ),
+	action( 'address', 'initializeAddress' ),
 	{
 		addressType: pageData.applicationVars.isCompany ? AddressTypeModel.COMPANY : AddressTypeModel.PERSON,
 		fields: [],

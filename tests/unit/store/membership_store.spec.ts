@@ -2,10 +2,6 @@ import { createStore } from '@src/store/membership_store';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
-import { NS_BANKDATA, NS_MEMBERSHIP_ADDRESS, NS_MEMBERSHIP_FEE } from '@src/store/namespaces';
-import { initializeAddress } from '@src/store/membership_address/actionTypes';
-import { initializeMembershipFee } from '@src/store/membership_fee/actionTypes';
-import { initializeBankData } from '@src/store/bankdata/actionTypes';
 import { validateFeeDataRemotely } from '@src/store/axios';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 
@@ -27,8 +23,8 @@ describe( 'Membership Store', () => {
 				fields: [],
 			};
 			const store = createStore();
-			await store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialFeeData );
-			await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), initialAddressData );
+			await store.dispatch( action( 'membership_fee', 'initializeMembershipFee' ), initialFeeData );
+			await store.dispatch( action( 'membership_address', 'initializeAddress' ), initialAddressData );
 
 			expect( store.getters.feeValidity ).toEqual( FeeValidity.FEE_VALID );
 
@@ -45,7 +41,7 @@ describe( 'Membership Store', () => {
 				fields: [ firstName, lastName ],
 			};
 			const store = createStore();
-			await store.dispatch( action( NS_MEMBERSHIP_ADDRESS, initializeAddress ), initialData );
+			await store.dispatch( action( 'membership_address', 'initializeAddress' ), initialData );
 
 			expect( store.state.membership_address.values.firstName ).toBe( firstName.value );
 			expect( store.state.membership_address.values.lastName ).toBe( lastName.value );
@@ -60,7 +56,7 @@ describe( 'Membership Store', () => {
 			const mockedValidateFeeDataRemotely = jest.mocked( validateFeeDataRemotely, { shallow: true } );
 			mockedValidateFeeDataRemotely.mockResolvedValue( { status: 'OK' } );
 			const store = createStore();
-			await store.dispatch( action( NS_MEMBERSHIP_FEE, initializeMembershipFee ), initialData );
+			await store.dispatch( action( 'membership_fee', 'initializeMembershipFee' ), initialData );
 
 			expect( store.state.membership_fee.values.fee ).toBe( initialData.fee );
 			expect( store.state.membership_fee.values.interval ).toBe( initialData.interval );
@@ -74,7 +70,7 @@ describe( 'Membership Store', () => {
 			};
 
 			const store = createStore();
-			await store.dispatch( action( NS_BANKDATA, initializeBankData ), initialData );
+			await store.dispatch( action( 'bankdata', 'initializeBankData' ), initialData );
 
 			expect( store.state.bankdata.values.iban ).toBe( initialData.accountId );
 			expect( store.state.bankdata.values.bic ).toBe( initialData.bankId );

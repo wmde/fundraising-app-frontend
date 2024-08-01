@@ -70,7 +70,6 @@
 <script setup lang="ts">
 import { Salutation } from '@src/view_models/Salutation';
 import { AddressValidation } from '@src/view_models/Validation';
-import { NS_MEMBERSHIP_ADDRESS } from '@src/store/namespaces';
 import { Validity } from '@src/view_models/Validity';
 import { computed, onBeforeMount, ref, toRefs } from 'vue';
 import { Country } from '@src/view_models/Country';
@@ -126,15 +125,15 @@ const incentivesAsOptions : CheckboxFormOption[] = [
 ];
 
 const addressTypeFromStore = computed( (): AddressTypeModel => {
-	return store.state[ NS_MEMBERSHIP_ADDRESS ].addressType;
+	return store.state.membership_address.addressType;
 } );
 
 const isPerson = computed( (): boolean => {
-	return store.getters[ NS_MEMBERSHIP_ADDRESS + '/isPerson' ];
+	return store.getters[ 'membership_address/isPerson' ];
 } );
 
 onBeforeMount( () => {
-	countryWasRestored.value = store.state[ NS_MEMBERSHIP_ADDRESS ].validity.country === Validity.RESTORED;
+	countryWasRestored.value = store.state.membership_address.validity.country === Validity.RESTORED;
 	initializeDataFromStore();
 } );
 
