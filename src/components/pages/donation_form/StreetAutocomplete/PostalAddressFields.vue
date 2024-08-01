@@ -56,29 +56,21 @@
 		</CityAutocompleteField>
 
 		<ScrollTarget :target-id="`${fieldIdNamespace}street-scroll-target`"/>
-		<TextField
-			name="street"
-			:input-id="`${fieldIdNamespace}street`"
+		<StreetAutocompleteField
+			:input-id-street-name="`${fieldIdNamespace}street`"
+			:input-id-building-number="`${fieldIdNamespace}building-number`"
 			v-model="formData.street.value"
 			:show-error="showError.street"
-			:error-message="$t('donation_form_street_error')"
-			autocomplete="street-address"
-			:label="$t( 'donation_form_street_label' )"
-			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_placeholder' ) } )"
-			@field-changed="$emit('field-changed', 'street')"
+			@field-changed="$emit('field-changed', 'street' )"
 		>
 			<template #message>
-				<span
-					v-if="showStreetWarning"
-					class="street-number-warning help"
-				>{{ $t( 'donation_form_street_number_warning' ) }}</span>
 				<ValueEqualsPlaceholderWarning
 					:value="formData.street.value"
 					:placeholder="$t( 'donation_form_street_placeholder' )"
 					:warning="'donation_form_street_placeholder_warning'"
 				/>
 			</template>
-		</TextField>
+		</StreetAutocompleteField>
 
 	</div>
 </template>
@@ -88,11 +80,11 @@
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import { computed } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import { Country } from '@src/view_models/Country';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 
 interface Props {
 	formData: AddressFormData;
@@ -106,7 +98,6 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'field-changed' ] );
 
-const showStreetWarning = computed<boolean>( () => /^\D+$/.test( props.formData.street.value ) );
 const fieldIdNamespace = props.fieldIdNamespace ? `${props.fieldIdNamespace}-` : '';
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {

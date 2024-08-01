@@ -3,22 +3,10 @@ import { computed, reactive } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
 import { camelizeName } from '@src/util/camlize_name';
-
-interface AddressValidationPatterns {
-	salutation: string,
-	title: string,
-	companyName: string,
-	firstName: string,
-	lastName: string,
-	street: string,
-	city: string,
-	postcode: string,
-	country: string,
-	email: string
-}
+import { AddressValidation } from '@src/view_models/Validation';
 
 interface AddressFunctionParams {
-	addressValidationPatterns: AddressValidationPatterns
+	addressValidationPatterns: AddressValidation
 }
 
 export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) => {

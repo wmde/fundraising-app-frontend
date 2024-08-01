@@ -171,6 +171,9 @@ describe( 'AddressForms.vue', () => {
 				mocks: {
 					$t: ( key: string ) => key,
 				},
+				components: {
+					FeatureToggle: createFeatureToggle( [ 'campaigns.address_field_order.legacy' ] ),
+				},
 			},
 		} );
 

@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
+
 export default {
 	name: 'PaymentSummaryCompany',
 	props: [
@@ -39,7 +41,7 @@ export default {
 			}
 			return [
 				this.$props.address.fullName,
-				this.$props.address.streetAddress,
+				clearStreetAndBuildingNumberSeparator( this.$props.address.streetAddress ),
 				this.$props.address.postalCode + ' ' + this.$props.address.city,
 				this.$props.country,
 			].join( ', ' );
