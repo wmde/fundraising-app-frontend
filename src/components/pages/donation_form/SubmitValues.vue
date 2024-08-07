@@ -18,7 +18,7 @@
 		</template>
 
 		<template v-if="sendPostalAddress">
-			<input type="hidden" name="street" :value="address.street">
+			<input type="hidden" name="street" :value="street">
 			<input type="hidden" name="postcode" :value="address.postcode">
 			<input type="hidden" name="city" :value="address.city">
 			<input type="hidden" name="country" :value="address.country">
@@ -44,6 +44,7 @@ import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import { BankAccount } from '@src/view_models/BankAccount';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
+import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
 
 export default defineComponent( {
 	name: 'SubmitValues',
@@ -75,6 +76,9 @@ export default defineComponent( {
 		},
 		receipt(): string {
 			return this.$store.getters[ 'address/willGetReceipt' ] ? '1' : '0';
+		},
+		street(): string {
+			return clearStreetAndBuildingNumberSeparator( this.$store.state.address.values.street );
 		},
 	},
 } );
