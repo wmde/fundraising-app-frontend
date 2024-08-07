@@ -14,7 +14,7 @@
   "dependencies": {
     "@airbrake/browser": "^2.1.8",
     "@babel/runtime": "^7.25.0",
-    "axios": "^1.7.2",
+    "axios": "^1.7.3",
     "bulma": "0.9.4",
     "core-js": "^3.37.1",
     "format-number": "^3.0.0",
@@ -72,7 +72,7 @@
     "sass-loader": "^14.2.1",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.10",
-    "ts-jest": "^29.2.3",
+    "ts-jest": "^29.2.4",
     "ts-loader": "^9.5.1",
     "typescript": "~5.5.4",
     "vue-eslint-parser": "^9.4.3",
