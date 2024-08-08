@@ -28,7 +28,7 @@
 				<div class="dropdown-menu" v-show="autocompleteIsActive">
 					<div class="dropdown-content" ref="scrollElement" tabindex="-1">
 						<template v-for="( country, index ) in filteredCountries">
-							<span v-if="groupSeparatorIndex === index" class="dropdown-separator"><hr></span>
+							<span v-if="groupSeparatorIndex === index" class="dropdown-divider"/>
 							<a
 								class="dropdown-item"
 								:class="{ 'is-active-item': country.countryCode === activeCountry }"
