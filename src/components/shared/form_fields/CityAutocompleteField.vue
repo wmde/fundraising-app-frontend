@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesResource';
-import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
+import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';

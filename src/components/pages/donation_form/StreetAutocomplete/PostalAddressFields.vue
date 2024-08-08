@@ -60,18 +60,11 @@
 			:input-id-street-name="`${fieldIdNamespace}street`"
 			:input-id-building-number="`${fieldIdNamespace}building-number`"
 			v-model="formData.street.value"
+			:postcode="formData.postcode.value"
 			:show-error="showError.street"
+			:error-message="$t( 'donation_form_street_error' )"
 			@field-changed="$emit('field-changed', 'street' )"
-		>
-			<template #message>
-				<ValueEqualsPlaceholderWarning
-					:value="formData.street.value"
-					:placeholder="$t( 'donation_form_street_placeholder' )"
-					:warning="'donation_form_street_placeholder_warning'"
-				/>
-			</template>
-		</StreetAutocompleteField>
-
+		/>
 	</div>
 </template>
 

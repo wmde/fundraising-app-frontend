@@ -1,6 +1,6 @@
-import { CityAutocompleteResource } from '@src/util/CityAutocompleteResource';
+import { CityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 
-export class FakeAutocompleteResource implements CityAutocompleteResource {
+export class FakeCityAutocompleteResource implements CityAutocompleteResource {
 	getCitiesInPostcode(): Promise<Array<string>> {
 		return Promise.resolve( [
 			'Takeshi\'s Castle',

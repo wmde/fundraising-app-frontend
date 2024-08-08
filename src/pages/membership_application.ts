@@ -7,7 +7,7 @@ import LocalStorageRepository from '@src/store/LocalStorageRepository';
 import PageDataInitializer from '@src/util/page_data_initializer';
 import persistenceItems from '@src/store/data_persistence/membership_application';
 import { AddressValidation } from '@src/view_models/Validation';
-import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
+import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { Country } from '@src/view_models/Country';
 import { InitialMembershipData } from '@src/view_models/Address';
 import { Salutation } from '@src/view_models/Salutation';
