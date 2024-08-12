@@ -1,5 +1,5 @@
 <template>
-	<ul class="bank-data-content">
+	<ul class="bank-data-list">
 		<li><strong>{{ $t( 'bank_data_account_owner' ) }}:</strong> {{ $t( 'bank_data_operator_account_owner' ) }}</li>
 		<li>
 			<strong>{{ $t( 'bank_data_iban')  }}:</strong>
@@ -10,8 +10,12 @@
 		</li>
 		<li><strong>{{ $t( 'bank_data_bic')  }}:</strong> {{ $t( 'bank_data_operator_account_bic')  }}</li>
 		<li>{{ $t( 'bank_data_operator_bank_name')  }}</li>
+		<li v-if="bankTransferAmount">
+			<strong>{{ $t( 'bank_data_transfer_amount_label' ) }}: </strong>
+			<span class="bank-transfer-code"> {{ bankTransferAmount }}</span>
+		</li>
 		<li v-if="bankTransferCode">
-			<strong>{{ $t( 'bank_data_transfer_code' ) }}:</strong>
+			<strong>{{ $t( 'bank_data_transfer_code' ) }}: </strong>
 			<span class="bank-transfer-code"> {{ bankTransferCode }}</span>
 		</li>
 	</ul>
@@ -23,6 +27,7 @@ import { useI18n } from 'vue-i18n';
 
 interface Props {
 	bankTransferCode?: String;
+	bankTransferAmount?: String
 }
 
 defineProps<Props>();
