@@ -67,6 +67,7 @@ enum InteractionState {
 interface Props {
 	modelValue: string;
 	inputId: string;
+	scrollTargetId: string;
 	label: String;
 	placeholder: String;
 	countries?: Array<Country>;
@@ -98,6 +99,13 @@ const isFirstFocusOnDefaultValue = (): boolean => {
 	return !wasFocusedBefore.value && !props.wasRestored;
 };
 
+const scrollIntoView = (): void => {
+	const scrollIntoViewElement = document.getElementById( props.scrollTargetId );
+	if ( scrollIntoViewElement ) {
+		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
+	}
+};
+
 const onFocus = ( event: Event ) => {
 	if ( isFirstFocusOnDefaultValue() ) {
 		countryName.value = '';
@@ -105,6 +113,7 @@ const onFocus = ( event: Event ) => {
 	wasFocusedBefore.value = true;
 
 	autocompleteIsActive.value = true;
+	scrollIntoView();
 	( event.target as HTMLInputElement ).select();
 };
 

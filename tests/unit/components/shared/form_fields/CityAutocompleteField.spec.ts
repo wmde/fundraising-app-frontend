@@ -8,16 +8,21 @@ const placeholderKey = 'form_for_example';
 const placeholderKeyWhenSuggestionsExist = 'form_autocomplete_prompt';
 
 describe( 'CityAutocompleteField.vue', () => {
+	let scrollElement: { scrollIntoView: jest.Mock };
 
 	const getWrapper = ( postcode: string = '' ): VueWrapper<any> => {
 		const currentElement = { clientHeight: 0, offsetTop: 0 };
 		Object.defineProperty( document, 'querySelector', { writable: true, configurable: true, value: () => currentElement } );
+
+		scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
 
 		return mount( CityAutocompleteField, {
 			props: {
 				modelValue: '',
 				label: '',
 				inputId: 'city',
+				scrollTargetId: 'scroll',
 				examplePlaceholder: '',
 				showError: false,
 				errorMessage: 'I haz error',
@@ -213,5 +218,13 @@ describe( 'CityAutocompleteField.vue', () => {
 		await wrapper.setProps( { showError: true } );
 
 		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'city-selected city-error' );
+	} );
+
+	it( 'scrolls field into view when focused', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find<HTMLInputElement>( '#city' ).trigger( 'focus' );
+
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalled();
 	} );
 } );
