@@ -7,12 +7,17 @@ import { FakeStreetAutocompleteResource } from '@test/unit/TestDoubles/FakeStree
 const streetAutocompleteResource = new FakeStreetAutocompleteResource();
 
 describe( 'StreetAutocompleteField.vue', () => {
+	let scrollElement: { scrollIntoView: jest.Mock };
 
 	const getWrapper = ( value: string = '', postcode: string = '' ): VueWrapper<any> => {
+		scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+
 		return mount( StreetAutocompleteField, {
 			props: {
 				inputIdStreetName: 'street',
 				inputIdBuildingNumber: 'building-number',
+				scrollTargetId: 'scroll-target',
 				modelValue: value,
 				showError: false,
 				errorMessage: 'I haz error',
@@ -23,6 +28,7 @@ describe( 'StreetAutocompleteField.vue', () => {
 					streetAutocompleteResource,
 				},
 			},
+			attachTo: document.body,
 		} );
 	};
 
@@ -225,5 +231,13 @@ describe( 'StreetAutocompleteField.vue', () => {
 		await wrapper.setProps( { showError: true } );
 
 		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'street-selected street-error' );
+	} );
+
+	it( 'scrolls field into view when focused', async () => {
+		const wrapper = getWrapper( '', '12345' );
+
+		await wrapper.find<HTMLInputElement>( '#street' ).trigger( 'focus' );
+
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalled();
 	} );
 } );

@@ -88,6 +88,7 @@ enum InteractionState {
 interface Props {
 	inputIdStreetName: string;
 	inputIdBuildingNumber: string;
+	scrollTargetId: string;
 	modelValue: string;
 	showError: boolean;
 	errorMessage: String;
@@ -126,8 +127,16 @@ const onUpdateModel = (): void => {
 	emit( 'update:modelValue', joinStreetAndBuildingNumber( streetNameModel.value, buildingNumberModel.value ) );
 };
 
+const scrollIntoView = (): void => {
+	const scrollIntoViewElement = document.getElementById( props.scrollTargetId );
+	if ( scrollIntoViewElement ) {
+		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
+	}
+};
+
 const onStreetNameFocus = ( event: Event ) => {
 	autocompleteIsActive.value = true;
+	scrollIntoView();
 	( event.target as HTMLInputElement ).select();
 };
 

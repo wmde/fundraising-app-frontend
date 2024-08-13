@@ -59,6 +59,7 @@
 		<StreetAutocompleteField
 			:input-id-street-name="`${fieldIdNamespace}street`"
 			:input-id-building-number="`${fieldIdNamespace}building-number`"
+			:scroll-target-id="`${fieldIdNamespace}street-scroll-target`"
 			v-model="formData.street.value"
 			:postcode="formData.postcode.value"
 			:show-error="showError.street"
