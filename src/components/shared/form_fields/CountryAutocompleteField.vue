@@ -44,7 +44,7 @@
 				</div>
 			</transition>
 		</div>
-		<span v-if="showError" class="help is-danger">{{ errorMessage }}</span>
+		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
 		<slot name="message"/>
 	</div>
 </template>
