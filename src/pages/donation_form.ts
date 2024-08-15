@@ -18,8 +18,9 @@ import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin
 
 import App from '@src/components/App.vue';
 import DonationForm from '@src/components/pages/DonationForm.vue';
-import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
+import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
+import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 
 interface DonationFormModel {
 	initialFormValues: any,
@@ -88,6 +89,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				},
 			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
+		app.provide( 'streetAutocompleteResource', new ApiStreetAutocompleteResource() );
 		app.provide( StoreKey, store );
 		app.use( store );
 		app.mount( '#app' );

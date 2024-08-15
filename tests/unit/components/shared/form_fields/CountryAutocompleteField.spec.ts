@@ -129,35 +129,35 @@ describe( 'CountryAutocompleteField.vue', () => {
 		expect( field.element.selectionEnd ).toBe( 7 );
 	} );
 
-	it( 'sets the list separator at the correct place', async () => {
+	it( 'sets the list divider at the correct place', async () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.trigger( 'focus' );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(3)' ).classes() ).toContain( 'dropdown-separator' );
+		expect( wrapper.find( '.dropdown-content > *:nth-child(3)' ).classes() ).toContain( 'dropdown-divider' );
 
 		await field.setValue( 'Aus' );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(2)' ).classes() ).toContain( 'dropdown-separator' );
+		expect( wrapper.find( '.dropdown-content > *:nth-child(2)' ).classes() ).toContain( 'dropdown-divider' );
 	} );
 
-	it( 'hides the list separator when there are only frequent countries in the list', async () => {
+	it( 'hides the list divider when there are only frequent countries in the list', async () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.setValue( 'Austria' );
 
-		expect( wrapper.find( '.dropdown-content > .dropdown-separator' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.dropdown-content > .dropdown-divider' ).exists() ).toBeFalsy();
 	} );
 
-	it( 'hides the list separator when there are only infrequent countries in the list', async () => {
+	it( 'hides the list divider when there are only infrequent countries in the list', async () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.setValue( 'Ireland' );
 
-		expect( wrapper.find( '.dropdown-content > .dropdown-separator' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.dropdown-content > .dropdown-divider' ).exists() ).toBeFalsy();
 	} );
 
 	it( 'highlights countries on the list on keyboard up and down', async () => {

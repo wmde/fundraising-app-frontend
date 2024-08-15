@@ -20,7 +20,7 @@ import App from '@src/components/App.vue';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
-import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
+import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 
 interface DonationConfirmationModel {
 	urls: { [ key: string ]: string },

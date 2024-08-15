@@ -4,7 +4,7 @@ import { createStore } from '@src/store/update_address_store';
 
 import PageDataInitializer from '@src/util/page_data_initializer';
 import { AddressValidation } from '@src/view_models/Validation';
-import { ApiCityAutocompleteResource } from '@src/util/CityAutocompleteResource';
+import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
