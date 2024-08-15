@@ -63,6 +63,7 @@ enum InteractionState {
 interface Props {
 	modelValue: string;
 	inputId: string;
+	scrollTargetId: string;
 	label: String;
 	examplePlaceholder: string;
 	showError: boolean;
@@ -92,8 +93,16 @@ const placeholder = computed( () => {
 	return 'form_for_example';
 } );
 
+const scrollIntoView = (): void => {
+	const scrollIntoViewElement = document.getElementById( props.scrollTargetId );
+	if ( scrollIntoViewElement ) {
+		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
+	}
+};
+
 const onFocus = ( event: Event ) => {
 	autocompleteIsActive.value = true;
+	scrollIntoView();
 	( event.target as HTMLInputElement ).select();
 };
 

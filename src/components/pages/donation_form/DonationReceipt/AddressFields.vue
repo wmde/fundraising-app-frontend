@@ -90,6 +90,7 @@
 		<CountryAutocompleteField
 			v-model="formData.country.value"
 			input-id="country"
+			scroll-target-id="country-scroll-target"
 			:countries="countries"
 			:was-restored="countryWasRestored"
 			:show-error="showError.country"

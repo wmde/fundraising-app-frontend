@@ -4,9 +4,14 @@ import CountryAutocompleteField from '@src/components/shared/form_fields/Country
 import countries from '@test/data/countries';
 
 describe( 'CountryAutocompleteField.vue', () => {
+	let scrollElement: { scrollIntoView: jest.Mock };
+
 	const getWrapper = ( modelValue: string = '', wasRestored: boolean = false ): VueWrapper<any> => {
 		const currentElement = { clientHeight: 0, offsetTop: 0 };
 		Object.defineProperty( document, 'querySelector', { writable: true, configurable: true, value: () => currentElement } );
+
+		scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
 
 		return mount( CountryAutocompleteField, {
 			props: {
@@ -14,6 +19,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 				countries,
 				label: '',
 				inputId: 'country',
+				scrollTargetId: 'scroll',
 				placeholder: '',
 				showError: false,
 				errorMessage: 'I haz error',
@@ -248,5 +254,13 @@ describe( 'CountryAutocompleteField.vue', () => {
 		await wrapper.setProps( { showError: true } );
 
 		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'country-selected country-error' );
+	} );
+
+	it( 'scrolls field into view when focused', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find<HTMLInputElement>( '#country' ).trigger( 'focus' );
+
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalled();
 	} );
 } );
