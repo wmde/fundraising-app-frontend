@@ -9,6 +9,7 @@ import {
 	createInitialMembershipAddressValues,
 	createInitialMembershipFeeValues,
 } from '@src/store/dataInitializers';
+import { InitialBankAccountData } from '@src/view_models/BankAccount';
 
 describe( 'createInitialDonationAddressValues', () => {
 	it( 'fills data from storage', () => {
@@ -264,24 +265,24 @@ describe( 'createInitialMembershipFeeValues', () => {
 
 describe( 'createInitialBankDataValues', () => {
 	it( 'fills data from initial data', () => {
-		const initialValues = {
-			iban: 'fakeAccountID',
-			bic: 'IAmBIC',
+		const initialValues: InitialBankAccountData = {
+			accountNumber: 'fakeAccountID',
+			bankCode: 'IAmBIC',
 			bankname: 'Bank of fakey fake',
 		};
 
 		const values = createInitialBankDataValues( initialValues );
 
-		expect( values.accountId ).toEqual( initialValues.iban );
-		expect( values.bankId ).toEqual( initialValues.bic );
+		expect( values.accountNumber ).toEqual( initialValues.accountNumber );
+		expect( values.bankCode ).toEqual( initialValues.bankCode );
 		expect( values.bankName ).toEqual( initialValues.bankname );
 	} );
 
 	it( 'handles null initial value object', () => {
 		const values = createInitialBankDataValues( null );
 
-		expect( values.accountId ).toEqual( '' );
-		expect( values.bankId ).toEqual( '' );
+		expect( values.accountNumber ).toEqual( '' );
+		expect( values.bankCode ).toEqual( '' );
 		expect( values.bankName ).toEqual( '' );
 	} );
 } );

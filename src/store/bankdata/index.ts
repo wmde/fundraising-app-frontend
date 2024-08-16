@@ -9,12 +9,15 @@ export default function (): Module<BankAccount, any> {
 	const state: BankAccount = {
 		isValidating: false,
 		validity: {
-			bankdata: Validity.INCOMPLETE,
+			accountNumber: Validity.INCOMPLETE,
+			bankCode: Validity.INCOMPLETE,
 		},
 		values: {
+			accountNumber: '',
+			bankCode: '',
+			bankName: '',
 			iban: '',
 			bic: '',
-			bankName: '',
 		},
 	};
 

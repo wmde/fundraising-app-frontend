@@ -2,21 +2,24 @@ import { getters } from '@src/store/bankdata/getters';
 import { actions } from '@src/store/bankdata/actions';
 import { Validity } from '@src/view_models/Validity';
 import each from 'jest-each';
-import { BankAccount, BankAccountRequest, BankAccountResponse } from '@src/view_models/BankAccount';
+import { BankAccount, BankAccountData, BankAccountRequest } from '@src/view_models/BankAccount';
 import mockAxios from 'jest-mock-axios';
 import { mutations } from '@src/store/bankdata/mutations';
 
-function newMinimalStore( overrides: Object ): BankAccount {
+function newMinimalStore( overrides: Object = {} ): BankAccount {
 	return Object.assign(
 		{
 			isValidating: false,
 			validity: {
-				bankdata: Validity.INCOMPLETE,
+				accountNumber: Validity.INCOMPLETE,
+				bankCode: Validity.INCOMPLETE,
 			},
 			values: {
+				accountNumber: '',
+				bankCode: '',
 				bankName: '',
-				bic: '',
 				iban: '',
+				bic: '',
 			},
 		},
 		overrides
@@ -26,124 +29,109 @@ function newMinimalStore( overrides: Object ): BankAccount {
 describe( 'BankData', () => {
 
 	const testIban = 'DE12345605171238489890',
-		testBIC = 'ABCDDEFFXXX',
+		testBic = 'INGDDEFFXXX',
 		testAccount = '34560517',
 		testBankCode = '50010517',
 		testBankName = 'Cool Bank 3000';
 
 	describe( 'Getters/bankDataIsInvalid', () => {
 		it( 'does not return invalid bank data on initalization', () => {
-			expect( getters.bankDataIsInvalid(
-				newMinimalStore( {} ),
-				null,
-				null,
-				null
-			) ).toBe( false );
+			expect( getters.bankDataIsInvalid( newMinimalStore(), null, null, null ) ).toBe( false );
 		} );
 
-		const validityCases = [
-			[ Validity.VALID, false ],
-			[ Validity.INVALID, true ],
-			[ Validity.INCOMPLETE, false ],
-		];
+		each( [
+			[ Validity.VALID, Validity.INCOMPLETE, '', false ],
+			[ Validity.INVALID, Validity.INCOMPLETE, '', true ],
+			[ Validity.INCOMPLETE, Validity.INCOMPLETE, '', false ],
+			[ Validity.VALID, Validity.INCOMPLETE, testIban, false ],
+			[ Validity.INVALID, Validity.INCOMPLETE, testIban, true ],
+			[ Validity.INCOMPLETE, Validity.INCOMPLETE, testIban, false ],
+			[ Validity.INCOMPLETE, Validity.INCOMPLETE, '$$ Not IBAN $$', false ],
+			[ Validity.INVALID, Validity.INCOMPLETE, '$$ Not IBAN $$', true ],
+			[ Validity.INCOMPLETE, Validity.INVALID, '$$ Not IBAN $$', true ],
+			[ Validity.INVALID, Validity.INVALID, '$$ Not IBAN $$', true ],
+		] ).it( 'returns correct invalidity (test index %#)', (
+			accountNumberValidity: Validity,
+			bankCodeValidity: Validity,
+			accountNumber: string,
+			isInvalid: boolean
+		) => {
+			const store = newMinimalStore();
+			store.validity.accountNumber = accountNumberValidity;
+			store.validity.bankCode = bankCodeValidity;
+			store.values.accountNumber = accountNumber;
 
-		each( validityCases ).it( 'returns correct boolean representation of bank data validity (test index %#)',
-			( bankDataValidity, isInvalid ) => {
-				const state = {
-					validity: {
-						bankdata: bankDataValidity,
-					},
-				};
-				expect( getters.bankDataIsInvalid(
-					newMinimalStore( state ),
-					null,
-					null,
-					null
-				) ).toBe( isInvalid );
-			},
-		);
+			expect( getters.bankDataIsInvalid( store, null, null, null ) ).toBe( isInvalid );
+		} );
 	} );
 
 	describe( 'Getters/bankDataIsValid', () => {
 		it( 'does not return valid bank data on initalization', () => {
-			expect( getters.bankDataIsValid(
-				newMinimalStore( {} ),
-				null,
-				null,
-				null
-			) ).toBe( false );
+			expect( getters.bankDataIsValid( newMinimalStore(), null, null, null ) ).toBe( false );
 		} );
 
-		const validityCases = [
-			[ Validity.VALID, true ],
-			[ Validity.INVALID, false ],
-			[ Validity.INCOMPLETE, false ],
-		];
+		each( [
+			[ Validity.VALID, Validity.INCOMPLETE, '', true ],
+			[ Validity.INVALID, Validity.INCOMPLETE, '', false ],
+			[ Validity.INCOMPLETE, Validity.INCOMPLETE, '', false ],
+			[ Validity.VALID, Validity.INCOMPLETE, testIban, true ],
+			[ Validity.INVALID, Validity.INCOMPLETE, testIban, false ],
+			[ Validity.INCOMPLETE, Validity.INCOMPLETE, testIban, false ],
+			[ Validity.INCOMPLETE, Validity.INCOMPLETE, '$$ Not IBAN $$', false ],
+			[ Validity.VALID, Validity.INCOMPLETE, '$$ Not IBAN $$', false ],
+			[ Validity.INCOMPLETE, Validity.VALID, '$$ Not IBAN $$', false ],
+			[ Validity.VALID, Validity.VALID, '$$ Not IBAN $$', true ],
+		] ).it( 'returns correct boolean representation of bank data validity (test index %#)', (
+			accountNumberValidity: Validity,
+			bankCodeValidity: Validity,
+			accountNumber: string,
+			isValid: boolean
+		) => {
+			const store = newMinimalStore();
+			store.validity.accountNumber = accountNumberValidity;
+			store.validity.bankCode = bankCodeValidity;
+			store.values.accountNumber = accountNumber;
 
-		each( validityCases ).it( 'returns correct boolean representation of bank data validity (test index %#)',
-			( bankDataValidity, isValid ) => {
-				const state = {
-					validity: {
-						bankdata: bankDataValidity,
-					},
-				};
-				expect( getters.bankDataIsValid(
-					newMinimalStore( state ),
-					null,
-					null,
-					null
-				) ).toBe( isValid );
-			},
-		);
-	} );
-
-	describe( 'Getters/getBankName', () => {
-		it( 'does not return a bank name on initalization', () => {
-			expect( getters.getBankName(
-				newMinimalStore( {} ),
-				null,
-				null,
-				null
-			) ).toBe( '' );
-		} );
-
-		it( 'does returns bank name from the store', () => {
-			const state = {
-				values: {
-					bankName: 'Cool Bank 3000',
-				},
-			};
-			expect( getters.getBankName(
-				newMinimalStore( state ),
-				null,
-				null,
-				null
-			) ).toBe( 'Cool Bank 3000' );
+			expect( getters.bankDataIsValid( store, null, null, null ) ).toBe( isValid );
 		} );
 	} );
 
-	describe( 'Getters/getBankId', () => {
+	describe( 'Getters/accountNumber', () => {
 		it( 'does not return a bank identifier on initalization', () => {
-			expect( getters.getBankId(
-				newMinimalStore( {} ),
-				null,
-				null,
-				null
-			) ).toBe( '' );
+			expect( getters.accountNumber( newMinimalStore(), null, null, null ) ).toBe( '' );
 		} );
 
 		it( 'returns bank identifier from the store', () => {
-			const state = {
-				values: {
-					bic: 'ABCDDEFFXXX',
-				},
-			};
-			expect( getters.getBankId(
-				newMinimalStore( state ),
-				null,
-				null,
-				null
-			) ).toBe( 'ABCDDEFFXXX' );
+			const store = newMinimalStore();
+			store.values.accountNumber = 'ABCDDEFFXXX';
+
+			expect( getters.accountNumber( store, null, null, null ) ).toBe( 'ABCDDEFFXXX' );
+		} );
+	} );
+
+	describe( 'Getters/bankCode', () => {
+		it( 'does not return a bank identifier on initalization', () => {
+			expect( getters.bankCode( newMinimalStore(), null, null, null ) ).toBe( '' );
+		} );
+
+		it( 'returns bank identifier from the store', () => {
+			const store = newMinimalStore();
+			store.values.bankCode = 'ABCDDEFFXXX';
+
+			expect( getters.bankCode( store, null, null, null ) ).toBe( 'ABCDDEFFXXX' );
+		} );
+	} );
+
+	describe( 'Getters/bankName', () => {
+		it( 'does not return a bank name on initalization', () => {
+			expect( getters.bankName( newMinimalStore(), null, null, null ) ).toBe( '' );
+		} );
+
+		it( 'does returns bank name from the store', () => {
+			const store = newMinimalStore();
+			store.values.bankName = 'Cool Bank 3000';
+
+			expect( getters.bankName( store, null, null, null ) ).toBe( 'Cool Bank 3000' );
 		} );
 	} );
 
@@ -153,20 +141,24 @@ describe( 'BankData', () => {
 			mockAxios.reset();
 		} );
 
-		it( 'commits to mutations [SET_BANK_DATA_VALIDITY], [SET_BANKNAME], [SET_BANKDATA], [SET_IS_VALIDATING]', () => {
+		it( 'commits to the required mutations', () => {
 			const context = {
 					commit: jest.fn(),
 				},
 				payload = {
 					validationUrl: '/check-iban',
-					requestParams: { iban: testIban },
+					requestParams: { iban: testAccount },
 				} as BankAccountRequest,
 				action = actions.setBankData as any;
 
 			const actionResult = action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_DATA_VALIDITY', Validity.VALID );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKNAME', testBankName );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKDATA', { accountId: testIban, bankId: testBIC } );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.VALID );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE_VALIDITY', Validity.VALID );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER', testAccount );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE', testBankCode );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_NAME', testBankName );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_IBAN', testIban );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BIC', testBic );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
 			} );
@@ -175,12 +167,12 @@ describe( 'BankData', () => {
 				status: 200,
 				data: {
 					status: 'OK',
-					bic: testBIC,
-					iban: testIban,
 					account: testAccount,
 					bankCode: testBankCode,
 					bankName: testBankName,
-				} as BankAccountResponse,
+					iban: testIban,
+					bic: testBic,
+				},
 			} );
 
 			return actionResult;
@@ -197,14 +189,15 @@ describe( 'BankData', () => {
 				action = actions.setBankData as any;
 
 			const actionResult = action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_DATA_VALIDITY', Validity.INVALID );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKNAME', '' );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.INVALID );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE_VALIDITY', Validity.INVALID );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_NAME', '' );
 			} );
 			mockAxios.mockResponse( {
 				status: 200,
 				data: {
 					status: 'ERR',
-				} as BankAccountResponse,
+				},
 			} );
 			return actionResult;
 		} );
@@ -230,8 +223,9 @@ describe( 'BankData', () => {
 				action = actions.markBankDataAsIncomplete as any;
 			action( context );
 
-			expect( context.commit ).toHaveBeenNthCalledWith( 1, 'MARK_BANKDATA_INCOMPLETE' );
-			expect( context.commit ).toHaveBeenNthCalledWith( 2, 'SET_BANKNAME', '' );
+			expect( context.commit ).toHaveBeenNthCalledWith( 1, 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.INCOMPLETE );
+			expect( context.commit ).toHaveBeenNthCalledWith( 2, 'SET_BANK_CODE_VALIDITY', Validity.INCOMPLETE );
+			expect( context.commit ).toHaveBeenNthCalledWith( 3, 'SET_BANK_NAME', '' );
 		} );
 	} );
 
@@ -243,21 +237,25 @@ describe( 'BankData', () => {
 				action = actions.markBankDataAsInvalid as any;
 			action( context );
 
-			expect( context.commit ).toHaveBeenNthCalledWith( 1, 'SET_BANK_DATA_VALIDITY', Validity.INVALID );
-			expect( context.commit ).toHaveBeenNthCalledWith( 2, 'SET_BANKNAME', '' );
+			expect( context.commit ).toHaveBeenNthCalledWith( 1, 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.INVALID );
+			expect( context.commit ).toHaveBeenNthCalledWith( 2, 'SET_BANK_CODE_VALIDITY', Validity.INVALID );
+			expect( context.commit ).toHaveBeenNthCalledWith( 3, 'SET_BANK_NAME', '' );
 		} );
 	} );
 
-	function getState( overrides = {} ) {
+	function getState( overrides = {} ): BankAccount {
 		return {
 			isValidating: false,
 			validity: {
-				bankdata: Validity.INCOMPLETE,
+				accountNumber: Validity.INCOMPLETE,
+				bankCode: Validity.INCOMPLETE,
 			},
 			values: {
+				accountNumber: '',
+				bankCode: '',
+				bankName: '',
 				iban: '',
 				bic: '',
-				bankName: '',
 			},
 			...overrides,
 		};
@@ -268,44 +266,72 @@ describe( 'BankData', () => {
 			const context = {
 					commit: jest.fn(),
 				},
-				payload = {
-					accountId: testIban,
-					bankId: testBIC,
+				payload: BankAccountData = {
+					accountNumber: testIban,
+					bankCode: testBankCode,
 					bankName: testBankName,
 				},
 				action = actions.initializeBankData as any;
 
 			action( context, payload );
 
-			expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKDATA', {
-				accountId: testIban,
-				bankId: testBIC,
-			} );
-			expect( context.commit ).toHaveBeenCalledWith( 'SET_BANKNAME', testBankName );
-			expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_DATA_VALIDITY', Validity.VALID );
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER', testIban );
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE', testBankCode );
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_NAME', testBankName );
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.RESTORED );
+			expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE_VALIDITY', Validity.RESTORED );
+		} );
+
+		it( 'does not restore validity if fields are empty', () => {
+			const context = {
+					commit: jest.fn(),
+				},
+				payload: BankAccountData = {
+					accountNumber: '',
+					bankCode: '',
+					bankName: '',
+				},
+				action = actions.initializeBankData as any;
+
+			action( context, payload );
+
+			expect( context.commit ).not.toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.RESTORED );
+			expect( context.commit ).not.toHaveBeenCalledWith( 'SET_BANK_CODE_VALIDITY', Validity.RESTORED );
 		} );
 	} );
 
 	describe( 'mutations/MARK_EMPTY_FIELDS_INVALID', () => {
 
-		it( 'marks validity as invalid when validity is INCOMPLETE', () => {
+		test.each( [
+			[ Validity.INCOMPLETE, Validity.INVALID ],
+			[ Validity.RESTORED, Validity.INVALID ],
+			[ Validity.INVALID, Validity.INVALID ],
+			[ Validity.VALID, Validity.VALID ],
+		] )( 'updates account number validity', ( startValidity: Validity, endValidity: Validity ) => {
 			const state = getState();
+			state.validity.accountNumber = startValidity;
+			state.values.accountNumber = testIban;
 			mutations.MARK_EMPTY_FIELDS_INVALID( state );
-			expect( state.validity.bankdata ).toBe( Validity.INVALID );
+
+			expect( state.validity.accountNumber ).toBe( endValidity );
 		} );
 
-		it( 'marks keeps validity validity is VALID', () => {
-			const state = getState( { validity: { bankdata: Validity.VALID } } );
+		test.each( [
+			[ Validity.INCOMPLETE, testIban, Validity.INCOMPLETE ],
+			[ Validity.RESTORED, testIban, Validity.INCOMPLETE ],
+			[ Validity.INVALID, testIban, Validity.INCOMPLETE ],
+			[ Validity.VALID, testIban, Validity.INCOMPLETE ],
+			[ Validity.INCOMPLETE, '', Validity.INVALID ],
+			[ Validity.RESTORED, '', Validity.INVALID ],
+			[ Validity.INVALID, '', Validity.INVALID ],
+			[ Validity.VALID, '', Validity.VALID ],
+		] )( 'updates bank code validity', ( startValidity: Validity, accountNumber: string, endValidity: Validity ) => {
+			const state = getState();
+			state.validity.bankCode = startValidity;
+			state.values.accountNumber = accountNumber;
 			mutations.MARK_EMPTY_FIELDS_INVALID( state );
-			expect( state.validity.bankdata ).toBe( Validity.VALID );
 
+			expect( state.validity.bankCode ).toBe( endValidity );
 		} );
-
-		it( 'marks keeps validity validity is INVALID', () => {
-			const state = getState( { validity: { bankdata: Validity.INVALID } } );
-			mutations.MARK_EMPTY_FIELDS_INVALID( state );
-			expect( state.validity.bankdata ).toBe( Validity.INVALID );
-		} );
-
 	} );
 } );

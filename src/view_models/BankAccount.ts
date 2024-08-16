@@ -1,31 +1,56 @@
 import { Validity } from './Validity';
 
 export interface BankAccount {
-    isValidating: boolean,
+    isValidating: boolean;
     validity: {
-        [key: string]: Validity
-    },
+        accountNumber: Validity;
+        bankCode: Validity;
+    };
     values: {
-        [key: string]: string
-    }
+        accountNumber: string;
+        bankCode: string;
+        bankName: string;
+        iban: string;
+        bic: string;
+    };
+}
+
+export enum AccountNumberType {
+    None,
+    IBAN,
+    Account
 }
 
 export interface BankAccountData {
-    accountId: string
-    bankId: string
+    accountNumber: string;
+    bankCode: string;
+    bankName?: string;
 }
 
 export interface InitialBankAccountData {
-    iban?: string
-    bic?: string
-    bankname?: string
+    accountNumber?: string;
+    bankCode?: string;
+    bankname?: string;
 }
 
 export interface BankAccountRequest {
-    validationUrl: string
-    requestParams: object
+    validationUrl: string;
+    requestParams: object;
+}
+
+export interface BankAccountNumberRequest {
+    accountNumber: string;
+    bankCode: string;
+}
+
+export interface BankIbanRequest {
+    iban: string;
 }
 
 export interface BankAccountResponse {
-    [key: string]: string
+    iban: string;
+    bic: string;
+    accountNumber: string;
+    bankCode: string;
+    bankName?: string;
 }

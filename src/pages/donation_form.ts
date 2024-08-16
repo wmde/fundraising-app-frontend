@@ -21,6 +21,7 @@ import DonationForm from '@src/components/pages/DonationForm.vue';
 import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
+import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 
 interface DonationFormModel {
 	initialFormValues: any,
@@ -90,6 +91,10 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
 		app.provide( 'streetAutocompleteResource', new ApiStreetAutocompleteResource() );
+		app.provide( 'bankValidationResource', new ApiBankValidationResource(
+			pageData.applicationVars.urls.validateIban,
+			pageData.applicationVars.urls.convertBankData
+		) );
 		app.provide( StoreKey, store );
 		app.use( store );
 		app.mount( '#app' );
