@@ -30,7 +30,7 @@ describe( 'BankData.vue', () => {
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
-		wrapper.setData( { accountId: 'DE12345605171238489890' } );
+		wrapper.setData( { accountNumber: 'DE12345605171238489890' } );
 		iban.trigger( 'blur' );
 		const expectedAction = action( 'bankdata', 'setBankData' );
 		const expectedPayload = {
@@ -46,7 +46,7 @@ describe( 'BankData.vue', () => {
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
-		wrapper.setData( { accountId: 'NL18ABNA0484869868 ' } );
+		wrapper.setData( { accountNumber: 'NL18ABNA0484869868 ' } );
 		iban.trigger( 'blur' );
 		const expectedAction = action( 'bankdata', 'setBankData' );
 		const expectedPayload = {
@@ -62,10 +62,10 @@ describe( 'BankData.vue', () => {
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
-		wrapper.setData( { accountId: '34560517' } );
+		wrapper.setData( { accountNumber: '34560517' } );
 		iban.trigger( 'blur' );
 		const bic = wrapper.find( '#bic' );
-		wrapper.setData( { bankId: '50010517' } );
+		wrapper.setData( { bankCode: '50010517' } );
 		bic.trigger( 'blur' );
 		const expectedAction = action( 'bankdata', 'setBankData' );
 		const expectedPayload = {
@@ -81,7 +81,7 @@ describe( 'BankData.vue', () => {
 		store.dispatch = jest.fn();
 
 		const iban = wrapper.find( '#iban' );
-		wrapper.setData( { accountId: 'DE123456051äh?' } );
+		wrapper.setData( { accountNumber: 'DE123456051äh?' } );
 		iban.trigger( 'blur' );
 
 		const expectedAction = action( 'bankdata', 'markBankDataAsInvalid' );
@@ -94,10 +94,10 @@ describe( 'BankData.vue', () => {
 
 		const iban = wrapper.find( '#iban' );
 
-		wrapper.setData( { accountId: 'DE12345605171238489890' } );
+		wrapper.setData( { accountNumber: 'DE12345605171238489890' } );
 		iban.trigger( 'blur' );
 
-		wrapper.setData( { accountId: '' } );
+		wrapper.setData( { accountNumber: '' } );
 		iban.trigger( 'blur' );
 
 		const expectedAction = action( 'bankdata', 'markBankDataAsIncomplete' );
@@ -110,7 +110,7 @@ describe( 'BankData.vue', () => {
 		const iban = wrapper.find( '#iban' );
 		const bic = wrapper.find( '#bic' );
 
-		await wrapper.setData( { accountId: 'AT12345605171238489890', bankId: 'ABCDDEFFXXX' } );
+		await wrapper.setData( { accountNumber: 'AT12345605171238489890', bankCode: 'ABCDDEFFXXX' } );
 
 		expect( ( ( <HTMLInputElement> iban.element ).value ) ).toMatch( 'AT12 3456 0517 1238 4898 90' );
 		expect( ( ( <HTMLInputElement> bic.element ).value ) ).toMatch( 'ABCDDEFFXXX' );
@@ -119,13 +119,13 @@ describe( 'BankData.vue', () => {
 	it( 'renders the bank name set in the store', async () => {
 		const { wrapper, store } = getWrapper();
 
-		store.commit( 'bankdata/SET_BANKNAME', 'Test Bank' );
+		store.commit( 'bankdata/SET_BANK_NAME', 'Test Bank' );
 		await nextTick();
 
 		expect( wrapper.find( '#bank-name-iban' ).text() ).toMatch( 'Test Bank' );
 	} );
 
-	it( 'renders info message when bank info is valid but no bankname and bankId available', async () => {
+	it( 'renders info message when bank info is valid but no bank name and bank code available', async () => {
 		const { wrapper } = getWrapper( new Vuex.Store<any>( {
 			modules: {
 				[ 'bankdata' ]: {
@@ -133,11 +133,12 @@ describe( 'BankData.vue', () => {
 					getters: {
 						bankDataIsValid: () => true,
 						bankDataIsInvalid: () => false,
-						getBankName: () => '',
-						getBankId: () => '',
-						getAccountId: () => '',
+						accountNumber: () => '',
+						bankCode: () => '',
+						bankName: () => '',
 					},
 					actions: {
+						markBankDataAsIncomplete: () => {},
 						setBankData: () => {},
 					},
 				},
@@ -156,7 +157,7 @@ describe( 'BankData.vue', () => {
 
 		expect( wrapper.find( 'input#bic' ).isVisible() ).toBe( false );
 
-		await wrapper.setData( { accountId: '123' } );
+		await wrapper.setData( { accountNumber: '123' } );
 
 		expect( wrapper.find( 'input#bic' ).isVisible() ).toBe( true );
 	} );
@@ -169,9 +170,9 @@ describe( 'BankData.vue', () => {
 					getters: {
 						bankDataIsValid: () => true,
 						bankDataIsInvalid: () => false,
-						getBankName: () => 'gute Bank',
-						getAccountId: () => '',
-						getBankId: (): string => '',
+						accountNumber: () => '',
+						bankCode: (): string => '',
+						bankName: () => 'gute Bank',
 					},
 				},
 			},
@@ -190,9 +191,9 @@ describe( 'BankData.vue', () => {
 					getters: {
 						bankDataIsValid: () => false,
 						bankDataIsInvalid: () => true,
-						getBankName: () => '',
-						getAccountId: () => '',
-						getBankId: (): string => '',
+						accountNumber: () => '',
+						bankCode: (): string => '',
+						bankName: () => '',
 					},
 				},
 			},
@@ -215,7 +216,7 @@ describe( 'BankData.vue', () => {
 	it( 'renders the appropriate labels for IBANs', async () => {
 		const { wrapper } = getWrapper();
 
-		await wrapper.setData( { accountId: 'DE12345605171238489890', bankId: 'ABCDDEFFXXX' } );
+		await wrapper.setData( { accountNumber: 'DE12345605171238489890', bankCode: 'ABCDDEFFXXX' } );
 
 		const bankDataLabels = wrapper.findAll( 'label' );
 		expect( bankDataLabels.at( 0 ).text() ).toMatch( 'donation_form_payment_bankdata_account_iban_label' );
@@ -225,7 +226,7 @@ describe( 'BankData.vue', () => {
 	it( 'renders the appropriate labels for legacy bank accounts', async () => {
 		const { wrapper } = getWrapper();
 
-		await wrapper.setData( { accountId: '34560517', bankId: '50010517' } );
+		await wrapper.setData( { accountNumber: '34560517', bankCode: '50010517' } );
 
 		const bankDataLabels = wrapper.findAll( 'label' );
 		expect( bankDataLabels.at( 0 ).text() ).toMatch( 'donation_form_payment_bankdata_account_legacy_label' );
@@ -235,8 +236,8 @@ describe( 'BankData.vue', () => {
 	it( 'puts initial values form the store in the fields', async () => {
 		const store = createStore();
 		await store.dispatch( action( 'bankdata', 'initializeBankData' ), {
-			accountId: 'DE12345605171238489890',
-			bankId: 'ABCDDEFFXXX',
+			accountNumber: 'DE12345605171238489890',
+			bankCode: 'ABCDDEFFXXX',
 			bankName: 'Cool Bank',
 		} );
 

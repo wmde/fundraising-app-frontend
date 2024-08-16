@@ -9,7 +9,7 @@
 					<AccountNumberField
 						:id="'iban'"
 						:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' )"
-						:account-id="accountId"
+						:account-id="accountNumber"
 						:data-track-content="getTrackingCode !== ''"
 						:data-content-piece="getTrackingCode"
 						@validate="validate"
@@ -19,22 +19,22 @@
 			</div>
 		</div>
 
-    <TextField
-        v-show="isBankFieldEnabled"
-        :label="$t( labels.bic )"
-        :placeholder="labels.bicPlaceholder != '' ? $t( labels.bicPlaceholder ) : ''"
-        v-model="bankIdentifier"
-        name="bic"
-        input-id="bic"
-        :show-error="bankDataIsInvalid"
-        :error-message="''"
-        @field-changed="validate"
-    />
+		<TextField
+			v-show="isBankFieldEnabled"
+			:label="$t( labels.bic )"
+			:placeholder="labels.bicPlaceholder != '' ? $t( labels.bicPlaceholder ) : ''"
+			v-model="bankIdentifier"
+			name="bic"
+			input-id="bic"
+			:show-error="bankDataIsInvalid"
+			:error-message="''"
+			@field-changed="validate"
+		/>
+
 		<div id="bank-name-info">
 			<span v-show="bankInfoValidated" class="help">
 				<span id="bank-name-legacy">
-					<span id="bank-name-iban">{{ getBankName }}</span>
-					<span v-show="showBankId"> ({{ bankIdentifier }})</span>
+					<span id="bank-name-iban">{{ bankName }}</span><span v-show="showBankId"> ({{ bankIdentifier }})</span>
 				</span>
 			</span>
 			<span v-if="bankInfoValidatedButInfoMissing" id="bank-name-not-available" class="help">
@@ -63,8 +63,8 @@ export default defineComponent( {
 	},
 	data: function (): BankAccountData {
 		return {
-			accountId: this.$store.getters[ 'bankdata/getAccountId' ],
-			bankId: this.$store.getters[ 'bankdata/getBankId' ],
+			accountNumber: this.$store.getters[ 'bankdata/accountNumber' ],
+			bankCode: this.$store.getters[ 'bankdata/bankCode' ],
 		};
 	},
 	props: {
@@ -87,7 +87,7 @@ export default defineComponent( {
 			if ( this.bankIdentifier !== '' ) {
 				return true;
 			}
-			if ( this.$store.getters[ 'bankdata/getBankId' ] !== '' ) {
+			if ( this.$store.getters[ 'bankdata/bankCode' ] !== '' ) {
 				return true;
 			}
 			return false;
@@ -95,7 +95,7 @@ export default defineComponent( {
 		bankInfoValidatedButInfoMissing(): boolean {
 			return this.$store.getters[ 'bankdata/bankDataIsValid' ] &&
 					this.bankIdentifier === '' &&
-					this.$store.getters[ 'bankdata/getBankId' ] === '';
+					this.$store.getters[ 'bankdata/bankCode' ] === '';
 		},
 		showBankId(): boolean {
 			return this.bankIdentifier !== '' && this.looksLikeIban();
@@ -106,12 +106,12 @@ export default defineComponent( {
 		bankIdentifier: {
 			get: function (): string {
 				if ( this.looksLikeGermanIban() ) {
-					return this.$store.getters[ 'bankdata/getBankId' ];
+					return this.$store.getters[ 'bankdata/bankCode' ];
 				}
-				return this.$data.bankId;
+				return this.$data.bankCode;
 			},
-			set: function ( bankId: string ) {
-				this.$data.bankId = bankId;
+			set: function ( bankCode: string ) {
+				this.$data.bankCode = bankCode;
 			},
 		},
 		labels() {
@@ -136,7 +136,7 @@ export default defineComponent( {
 		},
 		...mapGetters( 'bankdata', [
 			'bankDataIsInvalid',
-			'getBankName',
+			'bankName',
 		] ),
 	},
 	methods: {
@@ -154,7 +154,7 @@ export default defineComponent( {
 					action( 'bankdata', 'setBankData' ),
 					{
 						validationUrl: this.validateBankDataUrl,
-						requestParams: { iban: this.$data.accountId.toUpperCase() },
+						requestParams: { iban: this.$data.accountNumber.toUpperCase() },
 					} as BankAccountRequest
 				);
 			} else {
@@ -162,28 +162,28 @@ export default defineComponent( {
 					action( 'bankdata', 'setBankData' ),
 						{
 							validationUrl: this.validateLegacyBankDataUrl,
-							requestParams: { accountNumber: this.$data.accountId, bankCode: this.$data.bankId },
+							requestParams: { accountNumber: this.$data.accountNumber, bankCode: this.$data.bankCode },
 						} as BankAccountRequest
 				);
 			}
 		},
-		setAccountId: function ( accountId: string ) {
-			this.$data.accountId = accountId;
+		setAccountId: function ( accountNumber: string ) {
+			this.$data.accountNumber = accountNumber;
 		},
 		isAccountIdEmpty: function () {
-			return this.$data.accountId === '';
+			return this.$data.accountNumber === '';
 		},
 		isBankIdEmpty: function () {
 			return this.bankId === '';
 		},
 		looksLikeIban: function () {
-			return /^[A-Z]{2}[A-Z0-9\s]+$/i.test( this.$data.accountId );
+			return /^[A-Z]{2}[A-Z0-9\s]+$/i.test( this.$data.accountNumber );
 		},
 		looksLikeBankAccountNumber: function () {
-			return /^\d+$/.test( this.$data.accountId );
+			return /^\d+$/.test( this.$data.accountNumber );
 		},
 		looksLikeGermanIban() {
-			return /^DE[0-9\s]+$/i.test( this.$data.accountId );
+			return /^DE[0-9\s]+$/i.test( this.$data.accountNumber );
 		},
 		looksLikeValidAccountNumber() {
 			return this.looksLikeIban() || this.looksLikeBankAccountNumber();

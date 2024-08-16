@@ -120,21 +120,21 @@ export const createInitialMembershipFeeValues = ( dataPersister: DataPersister, 
 /**
  * Look for initial bank fields in initial form data
  */
-export const createInitialBankDataValues = ( initialFormValues: InitialBankAccountData|null ): BankAccountData & { bankName: string } => {
+export const createInitialBankDataValues = ( initialFormValues: InitialBankAccountData|null ): BankAccountData => {
 
-	let iban = '';
-	let bic = '';
-	let bankname = '';
+	let accountNumber = '';
+	let bankCode = '';
+	let bankName = '';
 
 	if ( initialFormValues ) {
-		iban = initialFormValues.iban || '';
-		bic = initialFormValues.bic || '';
-		bankname = initialFormValues.bankname || '';
+		accountNumber = initialFormValues.accountNumber || '';
+		bankCode = initialFormValues.bankCode || '';
+		bankName = initialFormValues.bankname || '';
 	}
 
 	return {
-		accountId: iban,
-		bankId: bic,
-		bankName: bankname,
+		accountNumber: accountNumber,
+		bankCode: bankCode,
+		bankName: bankName,
 	};
 };
