@@ -158,14 +158,13 @@ import { useAddressFunctions } from './AddressFunctions';
 import { Salutation } from '@src/view_models/Salutation';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
-import { StoreKey } from '@src/store/donation_store';
-import { injectStrict } from '@src/util/injectStrict';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { Validity } from '@src/view_models/Validity';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { useReceiptModel } from '@src/components/pages/donation_form/useReceiptModel';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import { useStore } from 'vuex';
 
 interface Props {
 	countries: Country[],
@@ -183,7 +182,7 @@ const props = withDefaults( defineProps<Props>(), {
 } );
 
 const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );
-const store = injectStrict( StoreKey );
+const store = useStore();
 const {
 	formData,
 	fieldErrors,

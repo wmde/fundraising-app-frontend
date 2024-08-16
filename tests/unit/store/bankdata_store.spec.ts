@@ -2,7 +2,7 @@ import { getters } from '@src/store/bankdata/getters';
 import { actions } from '@src/store/bankdata/actions';
 import { Validity } from '@src/view_models/Validity';
 import each from 'jest-each';
-import { BankAccount, BankAccountData, BankAccountRequest, BankAccountResponse } from '@src/view_models/BankAccount';
+import { BankAccount, BankAccountData, BankAccountRequest } from '@src/view_models/BankAccount';
 import mockAxios from 'jest-mock-axios';
 import { mutations } from '@src/store/bankdata/mutations';
 
@@ -18,6 +18,8 @@ function newMinimalStore( overrides: Object = {} ): BankAccount {
 				accountNumber: '',
 				bankCode: '',
 				bankName: '',
+				iban: '',
+				bic: '',
 			},
 		},
 		overrides
@@ -27,6 +29,7 @@ function newMinimalStore( overrides: Object = {} ): BankAccount {
 describe( 'BankData', () => {
 
 	const testIban = 'DE12345605171238489890',
+		testBic = 'INGDDEFFXXX',
 		testAccount = '34560517',
 		testBankCode = '50010517',
 		testBankName = 'Cool Bank 3000';
@@ -154,6 +157,8 @@ describe( 'BankData', () => {
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER', testAccount );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE', testBankCode );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_NAME', testBankName );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_IBAN', testIban );
+				expect( context.commit ).toHaveBeenCalledWith( 'SET_BIC', testBic );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
 			} );
@@ -162,10 +167,12 @@ describe( 'BankData', () => {
 				status: 200,
 				data: {
 					status: 'OK',
-					accountNumber: testAccount,
+					account: testAccount,
 					bankCode: testBankCode,
 					bankName: testBankName,
-				} as BankAccountResponse,
+					iban: testIban,
+					bic: testBic,
+				},
 			} );
 
 			return actionResult;
@@ -190,7 +197,7 @@ describe( 'BankData', () => {
 				status: 200,
 				data: {
 					status: 'ERR',
-				} as BankAccountResponse,
+				},
 			} );
 			return actionResult;
 		} );
@@ -247,6 +254,8 @@ describe( 'BankData', () => {
 				accountNumber: '',
 				bankCode: '',
 				bankName: '',
+				iban: '',
+				bic: '',
 			},
 			...overrides,
 		};

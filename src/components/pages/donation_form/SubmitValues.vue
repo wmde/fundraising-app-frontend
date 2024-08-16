@@ -4,8 +4,8 @@
 		<input type="hidden" name="interval" :value="payment.interval">
 		<input type="hidden" name="amount" :value="payment.amount">
 
-		<input type="hidden" name="iban" :value="bankdata.accountNumber">
-		<input type="hidden" name="bic" :value="bankdata.bankCode">
+		<input type="hidden" name="iban" :value="bankdata.iban">
+		<input type="hidden" name="bic" :value="bankdata.bic">
 
 		<input type="hidden" name="addressType" :value="addressType">
 

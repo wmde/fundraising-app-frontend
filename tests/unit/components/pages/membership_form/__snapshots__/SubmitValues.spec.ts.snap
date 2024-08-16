@@ -27,12 +27,10 @@ exports[`SubmitValues.vue renders input fields 1`] = `
   <input
     name="iban"
     type="hidden"
-    value="DE12500105170648489890"
   />
   <input
     name="bic"
     type="hidden"
-    value="INGDDEFFXXX"
   />
   <input
     name="adresstyp"

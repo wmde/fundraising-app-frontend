@@ -16,6 +16,8 @@ export default function (): Module<BankAccount, any> {
 			accountNumber: '',
 			bankCode: '',
 			bankName: '',
+			iban: '',
+			bic: '',
 		},
 	};
 

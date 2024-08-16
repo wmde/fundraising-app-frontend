@@ -7,7 +7,8 @@ export class FakeBankValidationResource implements BankValidationResource {
 			accountNumber: '',
 			bankCode: '',
 			bankName: '',
-			status: '',
+			iban: '',
+			bic: '',
 		};
 	}
 
@@ -16,7 +17,8 @@ export class FakeBankValidationResource implements BankValidationResource {
 			accountNumber: '',
 			bankCode: '',
 			bankName: '',
-			status: '',
+			iban: '',
+			bic: '',
 		};
 	}
 }

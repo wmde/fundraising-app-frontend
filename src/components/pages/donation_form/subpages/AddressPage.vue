@@ -7,7 +7,6 @@
 		ref="pageRef"
 	>
 		<h1 id="donation-form-heading" class="form-title">{{ $t( 'donation_form_heading' ) }}</h1>
-		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 
 		<PaymentSummary
@@ -19,12 +18,12 @@
 		</PaymentSummary>
 
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
+			<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
 			<ScrollTarget target-id="iban-scroll-target"/>
-			<PaymentBankData
-				:validateBankDataUrl="validateBankDataUrl"
-				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
-			/>
+			<BankFields/>
 		</form>
+
+		<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
 			<ScrollTarget target-id="address-type-scroll-target"/>
@@ -96,7 +95,6 @@ import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBas
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
@@ -114,6 +112,7 @@ import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString'
 import { useStore } from 'vuex';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import AddressFormErrorSummaries from '@src/components/pages/donation_form/AddressFormErrorSummaries.vue';
+import BankFields from '@src/components/shared/BankFields.vue';
 
 interface Props {
 	assetsPath: string;

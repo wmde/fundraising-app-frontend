@@ -35,8 +35,8 @@ describe( 'SubmitValues.vue', () => {
 					namespaced: true,
 					state: {
 						values: {
-							accountNumber: 'DE12500105170648489890',
-							bankCode: 'INGDDEFFXXX',
+							iban: 'DE12500105170648489890',
+							bic: 'INGDDEFFXXX',
 						},
 					},
 				},

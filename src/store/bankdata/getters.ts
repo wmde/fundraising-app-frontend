@@ -3,6 +3,9 @@ import { BankAccount } from '@src/view_models/BankAccount';
 import { Validity } from '@src/view_models/Validity';
 import { looksLikeIban } from '@src/util/bank_account_number_helpers';
 
+// It's important to note here that !bankDataIsInvalid is not the same as bankDataIsValid and
+// vice versa. This is because we have states Validity.INCOMPLETE and Validity.RESTORED. If
+// the validity of one of the values is one of these states then both of these will return false.
 export const getters: GetterTree<BankAccount, any> = {
 	bankDataIsInvalid: function ( state: BankAccount ): boolean {
 		if ( state.values.accountNumber === '' || looksLikeIban( state.values.accountNumber ) ) {
@@ -26,5 +29,11 @@ export const getters: GetterTree<BankAccount, any> = {
 	},
 	bankName: function ( state: BankAccount ): string {
 		return state.values.bankName;
+	},
+	iban: function ( state: BankAccount ): string {
+		return state.values.iban;
+	},
+	bic: function ( state: BankAccount ): string {
+		return state.values.bic;
 	},
 };

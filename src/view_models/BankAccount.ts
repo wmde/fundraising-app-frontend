@@ -10,7 +10,15 @@ export interface BankAccount {
         accountNumber: string;
         bankCode: string;
         bankName: string;
+        iban: string;
+        bic: string;
     };
+}
+
+export enum AccountNumberType {
+    None,
+    IBAN,
+    Account
 }
 
 export interface BankAccountData {
@@ -40,7 +48,6 @@ export interface BankIbanRequest {
 }
 
 export interface BankAccountResponse {
-    status: string;
     iban: string;
     bic: string;
     accountNumber: string;
