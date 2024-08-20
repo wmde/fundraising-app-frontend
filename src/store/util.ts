@@ -16,7 +16,7 @@ function createBrowserSpecificRegex( pattern: string ) {
 	try {
 		// eslint-disable-next-line security/detect-non-literal-regexp
 		return new RegExp( pattern, 'u' );
-	} catch ( e ) {
+	} catch {
 		return /\w+/;
 	}
 }

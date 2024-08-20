@@ -32,7 +32,7 @@ export class ActiveDataPersister implements DataPersister {
 
 		try {
 			return await this.dataEncryptor.decrypt( data );
-		} catch ( e ) {
+		} catch {
 			this.repository.removeItem( `${this.keyNamespace}/${key}` );
 			return null;
 		}
