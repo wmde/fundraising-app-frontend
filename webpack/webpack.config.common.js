@@ -68,7 +68,9 @@ const webpackConfig = {
 				use: [
 					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
 					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
-					{ loader: 'sass-loader', options: { sourceMap: isDev } },
+					{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
+						loadPaths: [ path.resolve( __dirname, '..' ) ]
+					} } },
 				],
 			},
 			{
