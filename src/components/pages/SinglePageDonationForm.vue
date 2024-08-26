@@ -52,10 +52,10 @@ import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
-import PaymentSection from '@src/components/pages/donation_form/formPageSections/PaymentSection.vue';
-import PersonalDataSection from '@src/components/pages/donation_form/formPageSections/PersonalDataSection.vue';
+import PaymentSection from '@src/components/pages/donation_form/singlePageFromSections/PaymentSection.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/singlePageFromSections/PersonalDataSection.vue';
 import PersonalDataSectionDonationReceipt
-	from '@src/components/pages/donation_form/formPageSections/PersonalDataSectionDonationReceipt.vue';
+	from '@src/components/pages/donation_form/singlePageFromSections/PersonalDataSectionDonationReceipt.vue';
 
 defineOptions( {
 	name: 'SinglePageDonationForm',
@@ -75,7 +75,31 @@ interface Props {
 	trackingData: TrackingData;
 	campaignValues: CampaignValues;
 	addressValidationPatterns: AddressValidation;
+	usesContentCards: true;
 }
 defineProps<Props>();
 
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use '@src/scss/settings/colors';
+@use '@src/scss/settings/breakpoints';
+@use 'sass:map';
+
+.app-content-main.uses-cards {
+	padding-top: 0;
+}
+
+.single-page-form-section {
+	background: colors.$white;
+	border-bottom: 1px solid colors.$primary;
+	margin-bottom: 32px;
+	padding: map.get( units.$spacing, 'small' );
+
+	@include breakpoints.tablet-up {
+		padding: map.get( units.$spacing, 'large' );
+	}
+}
+
+</style>

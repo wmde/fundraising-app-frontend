@@ -1,6 +1,7 @@
 <template>
 	<div
-		class="form-section-personal-data-donation-receipt"
+		id="single-page-form-section-personal-data-donation-receipt"
+		class="single-page-form-section donation-confirmation-card"
 	>
 
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
@@ -179,7 +180,7 @@ const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
 
 const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementsByClassName( 'form-section-payment' )[ 0 ];
+	const scrollIntoViewElement = document.getElementById( 'single-page-form-section-payment' );
 	if ( scrollIntoViewElement ) {
 		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
 	}
@@ -214,7 +215,7 @@ onBeforeMount( () => {
 } );
 
 onMounted( () => {
-	//TODO tracking: needs simple form tracking
+	// TODO tracking: needs simple form tracking
 	trackDynamicForm();
 
 	// TODO: This should probably be initialised elsewhere maybe in the entry point?
