@@ -3,6 +3,8 @@
 	<div
 		class="form-section-personal-data"
 	>
+		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
+		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<ScrollTarget target-id="iban-scroll-target"/>
@@ -135,7 +137,10 @@ const setFullSelected = ( selected: boolean ) => {
 };
 
 const scrollToPaymentSection = () => {
-
+	const scrollIntoViewElement = document.getElementsByClassName( 'form-section-payment' )[ 0 ];
+	if ( scrollIntoViewElement ) {
+		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
+	}
 };
 
 // TODO tracking: (form can be tracked normally, doesn't have to do fancy dynamic tracking anymore)
