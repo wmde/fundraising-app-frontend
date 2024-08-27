@@ -18,7 +18,8 @@ const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 		throw new Error( `Address form with ID "${ formId }" not found.` );
 	}
 
-	trackFormSubmission( currentAddressForm );
+	// TODO handle tracking
+	// trackFormSubmission( currentAddressForm );
 };
 
 type ReturnType = {
@@ -29,7 +30,6 @@ type ReturnType = {
 
 export function usePersonalDataSectionEventHandlers(
 	store: Store<any>,
-	emit: ( eventName: string ) => void,
 	addressType: ComputedRef<AddressTypeModel>,
 	isDirectDebit: ComputedRef<boolean>,
 	validateAddressUrl: string,
@@ -41,6 +41,8 @@ export function usePersonalDataSectionEventHandlers(
 	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value );
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
+			//TODO add more payment validation calls here
+			// store.dispatch( action( 'payment', 'markEmptyValuesAsInvalid' ) ),
 			store.dispatch( action( 'address', 'validateAddressType' ), {
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
