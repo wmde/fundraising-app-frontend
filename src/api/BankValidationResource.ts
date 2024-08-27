@@ -29,7 +29,7 @@ export class ApiBankValidationResource implements BankValidationResource {
 			return {
 				accountNumber: response.account,
 				bankCode: response.bankCode,
-				bankName: response.bankName,
+				bankName: response.bankName ?? '',
 				iban: response.iban,
 				bic: response.bic,
 			};
@@ -41,7 +41,7 @@ export class ApiBankValidationResource implements BankValidationResource {
 			return {
 				accountNumber: response.account,
 				bankCode: response.bankCode,
-				bankName: response.bankName,
+				bankName: response.bankName ?? '',
 				iban: response.iban,
 				bic: response.bic,
 			};

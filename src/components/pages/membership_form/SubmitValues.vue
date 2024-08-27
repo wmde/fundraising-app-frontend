@@ -6,8 +6,8 @@
 		<input type="hidden" name="payment_type" :value="fee.type">
 		<input type="hidden" name="membership_fee_interval" :value="fee.interval">
 		<input type="hidden" name="membership_fee" :value="fee.fee">
-		<input type="hidden" name="iban" :value="bankdata.accountNumber">
-		<input type="hidden" name="bic" :value="bankdata.bankCode">
+		<input type="hidden" name="iban" :value="bankdata.iban">
+		<input type="hidden" name="bic" :value="bankdata.bic">
 
 		<input type="hidden" name="adresstyp" :value="addressType">
 

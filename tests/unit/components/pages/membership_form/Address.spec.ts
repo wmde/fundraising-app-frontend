@@ -1,6 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import Address from '@src/components/pages/membership_form/Address.vue';
-import { createStore, StoreKeyMembership } from '@src/store/membership_store';
+import { createStore } from '@src/store/membership_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
@@ -29,9 +29,6 @@ describe( 'Address.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
-				provide: {
-					[ StoreKeyMembership as symbol ]: store,
-				},
 			},
 		} );
 
@@ -142,9 +139,6 @@ describe( 'Address.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
-				provide: {
-					[ StoreKeyMembership as symbol ]: store,
-				},
 			},
 		} );
 

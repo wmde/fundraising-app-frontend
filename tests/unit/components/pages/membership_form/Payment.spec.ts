@@ -1,6 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import Payment from '@src/components/pages/membership_form/Payment.vue';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
@@ -9,6 +8,8 @@ import { Store } from 'vuex';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { GenericValuePayload } from '@src/view_models/MembershipFee';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
+import BankFields from '@src/components/shared/BankFields.vue';
 
 describe( 'Payment.vue', () => {
 	let store: Store<any>;
@@ -28,6 +29,7 @@ describe( 'Payment.vue', () => {
 				plugins: [ store ],
 				provide: {
 					'paymentPageRef': { focus: () => {} },
+					bankValidationResource: new FakeBankValidationResource(),
 				},
 			},
 		} );
@@ -49,15 +51,15 @@ describe( 'Payment.vue', () => {
 
 	it( 'shows bank data when payment type is selected and removes it when unselected', async () => {
 		const wrapper = getWrapper();
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 
 		await wrapper.find( '[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 
 		await wrapper.find( '[name="paymentType"][value="UEB"]' ).trigger( 'change' );
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 	} );
 
 	it( 'sends interval to store when interval model updates', async () => {

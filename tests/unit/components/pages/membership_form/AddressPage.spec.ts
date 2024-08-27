@@ -2,7 +2,7 @@ import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
 import axios from 'axios';
 import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
-import { createStore, StoreKeyMembership } from '@src/store/membership_store';
+import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Store } from 'vuex';
@@ -57,9 +57,6 @@ describe( 'AddressPage.vue', () => {
 				plugins: [ store ],
 				stubs: {
 					Address: true,
-				},
-				provide: {
-					[ StoreKeyMembership as symbol ]: store,
 				},
 			},
 		} );

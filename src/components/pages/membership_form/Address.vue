@@ -80,8 +80,6 @@ import IncentivesField from '@src/components/shared/form_fields/IncentivesField.
 import { useAddressFunctions } from '@src/components/pages/membership_form/AddressFunctions';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import { StoreKeyMembership } from '@src/store/membership_store';
-import { injectStrict } from '@src/util/injectStrict';
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { useReceiptModel } from '@src/components/pages/membership_form/useReceiptModel';
@@ -89,6 +87,7 @@ import { useIncentivesModel } from '@src/components/pages/membership_form/useInc
 import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { useI18n } from 'vue-i18n';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { useStore } from 'vuex';
 
 interface Props {
 	validateAddressUrl: string,
@@ -99,7 +98,7 @@ interface Props {
 	dateOfBirthValidationPattern: String,
 }
 const props = defineProps<Props>();
-const store = injectStrict( StoreKeyMembership );
+const store = useStore();
 const { t } = useI18n();
 
 const { addressValidationPatterns } = toRefs( props );
