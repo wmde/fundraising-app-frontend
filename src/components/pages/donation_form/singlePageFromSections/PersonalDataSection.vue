@@ -2,7 +2,7 @@
 
 	<div
 		id="single-page-form-section-personal-data"
-		class="single-page-form-section donation-confirmation-card"
+		class="single-page-form-section"
 	>
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>

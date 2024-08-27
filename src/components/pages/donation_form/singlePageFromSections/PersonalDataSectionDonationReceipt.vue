@@ -1,7 +1,7 @@
 <template>
 	<div
 		id="single-page-form-section-personal-data-donation-receipt"
-		class="single-page-form-section donation-confirmation-card"
+		class="single-page-form-section"
 	>
 
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>

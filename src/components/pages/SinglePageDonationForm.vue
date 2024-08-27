@@ -93,12 +93,30 @@ defineProps<Props>();
 
 .single-page-form-section {
 	background: colors.$white;
+	border: 0;
 	border-bottom: 1px solid colors.$primary;
 	margin-bottom: 32px;
 	padding: map.get( units.$spacing, 'small' );
 
 	@include breakpoints.tablet-up {
 		padding: map.get( units.$spacing, 'large' );
+	}
+}
+
+#payment-form-interval, #payment-form-type {
+	.radio-form-input {
+		width: 100%;
+		margin: 0 0 16px 0;
+		@include breakpoints.tablet-up {
+			width: 36%;
+			margin: 0 32px 16px 0;
+		}
+	}
+}
+
+.form-field-radio.row-alignment {
+	.form-field-radio-container {
+		flex-wrap: wrap;
 	}
 }
 

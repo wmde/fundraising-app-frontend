@@ -11,7 +11,7 @@
 			/>
 		</FormSection>
 
-		<FormSection>
+		<FormSection id="payment-form-interval">
 			<RadioField
 				name="interval"
 				input-id="interval"
@@ -20,7 +20,7 @@
 				:options="paymentIntervalsAsOptions"
 				:required="true"
 				:disabled="disabledPaymentIntervals"
-				alignment="column"
+				alignment="row"
 			/>
 		</FormSection>
 
@@ -34,7 +34,7 @@
 				:options="paymentTypesAsOptions"
 				:required="true"
 				:disabled="disabledPaymentTypes"
-				alignment="column"
+				alignment="row"
 				:show-error="!paymentTypeIsValid"
 				:error-message="$t('donation_form_payment_type_error')"
 			>
