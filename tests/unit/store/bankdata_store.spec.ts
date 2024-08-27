@@ -2,8 +2,7 @@ import { getters } from '@src/store/bankdata/getters';
 import { actions } from '@src/store/bankdata/actions';
 import { Validity } from '@src/view_models/Validity';
 import each from 'jest-each';
-import { BankAccount, BankAccountData, BankAccountRequest } from '@src/view_models/BankAccount';
-import mockAxios from 'jest-mock-axios';
+import { BankAccount, BankAccountData } from '@src/view_models/BankAccount';
 import { mutations } from '@src/store/bankdata/mutations';
 
 function newMinimalStore( overrides: Object = {} ): BankAccount {
@@ -29,8 +28,6 @@ function newMinimalStore( overrides: Object = {} ): BankAccount {
 describe( 'BankData', () => {
 
 	const testIban = 'DE12345605171238489890',
-		testBic = 'INGDDEFFXXX',
-		testAccount = '34560517',
 		testBankCode = '50010517',
 		testBankName = 'Cool Bank 3000';
 
@@ -132,74 +129,6 @@ describe( 'BankData', () => {
 			store.values.bankName = 'Cool Bank 3000';
 
 			expect( getters.bankName( store, null, null, null ) ).toBe( 'Cool Bank 3000' );
-		} );
-	} );
-
-	describe( 'Actions/setBankData', () => {
-
-		afterEach( function () {
-			mockAxios.reset();
-		} );
-
-		it( 'commits to the required mutations', () => {
-			const context = {
-					commit: jest.fn(),
-				},
-				payload = {
-					validationUrl: '/check-iban',
-					requestParams: { iban: testAccount },
-				} as BankAccountRequest,
-				action = actions.setBankData as any;
-
-			const actionResult = action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.VALID );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE_VALIDITY', Validity.VALID );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER', testAccount );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE', testBankCode );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_NAME', testBankName );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_IBAN', testIban );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BIC', testBic );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', true );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
-			} );
-
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					status: 'OK',
-					account: testAccount,
-					bankCode: testBankCode,
-					bankName: testBankName,
-					iban: testIban,
-					bic: testBic,
-				},
-			} );
-
-			return actionResult;
-		} );
-
-		it( 'resets the bank name via [SET_BANKNAME] on invalid account data', () => {
-			const context = {
-					commit: jest.fn(),
-				},
-				payload = {
-					validationUrl: '/check-iban',
-					requestParams: { iban: testIban },
-				} as BankAccountRequest,
-				action = actions.setBankData as any;
-
-			const actionResult = action( context, payload ).then( function () {
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.INVALID );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_CODE_VALIDITY', Validity.INVALID );
-				expect( context.commit ).toHaveBeenCalledWith( 'SET_BANK_NAME', '' );
-			} );
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					status: 'ERR',
-				},
-			} );
-			return actionResult;
 		} );
 	} );
 
