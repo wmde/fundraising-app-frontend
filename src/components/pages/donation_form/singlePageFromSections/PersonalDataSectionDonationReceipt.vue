@@ -73,7 +73,7 @@
 
 			</AutofillHandler>
 
-			<AddressFormErrorSummaries
+			<SinglePageErrorSummary
 				:show-error-summary="showErrorSummary"
 				:address-type="addressType"
 				:show-receipt-option-error="showReceiptOptionError"
@@ -117,8 +117,6 @@
 
 <script setup lang="ts">
 
-import AddressFormErrorSummaries
-	from '@src/components/pages/donation_form/DonationReceipt/AddressFormErrorSummaries.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
@@ -156,6 +154,7 @@ import {
 import { Validity } from '@src/view_models/Validity';
 import { trackDynamicForm } from '@src/util/tracking';
 import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
+import SinglePageErrorSummary from '@src/components/pages/donation_form/singlePageFromSections/SinglePageErrorSummary.vue';
 
 interface Props {
 	assetsPath: string;

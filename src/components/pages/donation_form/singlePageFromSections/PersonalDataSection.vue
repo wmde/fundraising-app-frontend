@@ -43,11 +43,11 @@
 
 		<FeatureToggle default-template="campaigns.address_field_order.legacy">
 			<template #campaigns.address_field_order.legacy>
-				<AddressFormErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
+				<SinglePageErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
 			</template>
 
 			<template #campaigns.address_field_order.new_order>
-				<StreetAutocompleteAddressFormErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
+				<StreetAutocompleteSinglePageErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
 			</template>
 		</FeatureToggle>
 
@@ -92,9 +92,10 @@ import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
-import AddressFormErrorSummaries from '@src/components/pages/donation_form/AddressFormErrorSummaries.vue';
-import StreetAutocompleteAddressFormErrorSummaries
-	from '@src/components/pages/donation_form/StreetAutocomplete/AddressFormErrorSummaries.vue';
+import SinglePageErrorSummary
+	from '@src/components/pages/donation_form/singlePageFromSections/SinglePageErrorSummary.vue';
+import StreetAutocompleteSinglePageErrorSummaries
+	from '@src/components/pages/donation_form/StreetAutocomplete/SinglePageErrorSummary.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';

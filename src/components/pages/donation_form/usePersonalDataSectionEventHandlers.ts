@@ -36,13 +36,13 @@ export function usePersonalDataSectionEventHandlers(
 	validateEmailUrl: string,
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
+	const paymentDataIsValid = ref<boolean>( true );
 	const bankDataIsValid = ref<boolean>( true );
 	const addressDataIsValid = ref<boolean>( true );
-	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value );
+	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value || !paymentDataIsValid.value );
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
-			//TODO add more payment validation calls here
-			// store.dispatch( action( 'payment', 'markEmptyValuesAsInvalid' ) ),
+			store.dispatch( action( 'payment', 'markEmptyValuesAsInvalid' ) ),
 			store.dispatch( action( 'address', 'validateAddressType' ), {
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
@@ -59,6 +59,11 @@ export function usePersonalDataSectionEventHandlers(
 		// We need to wait for the asynchronous bank data validation, that might still be going on
 		await waitForServerValidationToFinish( store );
 
+		if ( !store.getters[ 'payment/paymentDataIsValid' ] ) {
+			paymentDataIsValid.value = false;
+			return;
+		}
+
 		if ( !store.getters[ 'address/requiredFieldsAreValid' ] ) {
 			addressDataIsValid.value = false;
 			return;
@@ -74,6 +79,12 @@ export function usePersonalDataSectionEventHandlers(
 		trackFormSubmissionForAddressType( addressType.value );
 		submitValuesForm.value.submit();
 	};
+
+	store.watch( ( state, getters ) => getters[ 'payment/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+		if ( !paymentDataIsValid.value && isValid ) {
+			paymentDataIsValid.value = true;
+		}
+	} );
 
 	store.watch( ( state, getters ) => getters[ 'address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 		if ( !addressDataIsValid.value && isValid ) {
