@@ -23,7 +23,15 @@ module.exports = {
 
 		// problematic in TypeScript / ES6
 		'no-unused-vars': 'off',
-		'@typescript-eslint/no-unused-vars': 'error',
+		'@typescript-eslint/no-unused-vars': [ 'error', {
+			'args': 'after-used',
+			'argsIgnorePattern': '^_',
+			'caughtErrors': 'none',
+			'caughtErrorsIgnorePattern': '^_',
+			'destructuredArrayIgnorePattern': '^_',
+			'varsIgnorePattern': '^_',
+			'ignoreRestSiblings': true,
+		} ],
 		'one-var': 'off',
 		'no-undef': 'off',
 		// See https://stackoverflow.com/a/65768375/130121
