@@ -18,8 +18,15 @@
 				:autofocus="autofocus"
 				@update:modelValue="onFieldChange"
 			>
-				{{ option.label }}
-				<slot :name="`message-${option.value}`"/>
+				<template #label>
+					{{ option.label }}
+				</template>
+				<template #help-text>
+					<slot :name="`message-${option.value}`"/>
+				</template>
+				<template #tooltip>
+					<slot :name="`tooltip-${option.value}`"/>
+				</template>
 			</RadioFormInput>
 		</div>
 		<span v-if="showError" class="help is-danger" :id="`${name}-error-message`">{{ errorMessage }}</span>
@@ -144,11 +151,6 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 				.option-info-message {
 					color: rgba(0, 0, 0, .6);
 					margin-top: map.get(units.$spacing, 'xx-small');
-				}
-
-				&.is-disabled {
-					opacity: 0.5;
-					cursor: not-allowed;
 				}
 			}
 		}

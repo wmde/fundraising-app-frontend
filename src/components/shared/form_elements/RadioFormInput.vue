@@ -12,12 +12,19 @@
 			:value="nativeValue"
 			:disabled="disabled"
 			:required="required"
+			:readonly="disabled"
+			:aria-readonly="disabled"
 			:aria-describedby="ariaDescribedby"
 			:aria-invalid="ariaInvalid"
+			:aria-disabled="disabled"
 			:autofocus="autofocus"
 			@blur="$emit( 'blur' )"
 		/>
-		<label class="control-label" :for="id" :class="labelClass" @blur="$emit( 'blur' )"><slot/></label>
+		<label class="control-label" :for="id" :class="labelClass" @blur="$emit( 'blur' )">
+			<slot name="label"/>
+			<slot name="help-text"/>
+			<slot name="tooltip"/>
+		</label>
 	</div>
 </template>
 
@@ -112,6 +119,7 @@ $check-size: map.get( units.$spacing, 'small' );
 	}
 
 	label {
+		position: relative;
 		display: block;
 		width: 100%;
 		height: 100%;
@@ -125,6 +133,23 @@ $check-size: map.get( units.$spacing, 'small' );
 	input:focus + label,
 	input:hover + label {
 		border: 1px solid colors.$primary;
+
+		.radio-field-tooltip-text {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
+
+	&.is-disabled {
+		label {
+			border-color: colors.$gray-light;
+			color: colors.$gray-mid;
+			cursor: not-allowed;
+		}
+
+		input {
+			border-color: colors.$gray-mid;
+		}
 	}
 
 	&.is-active {

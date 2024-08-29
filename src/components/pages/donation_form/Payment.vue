@@ -38,15 +38,15 @@
 				:show-error="!paymentTypeIsValid"
 				:error-message="$t('donation_form_payment_type_error')"
 			>
-				<template #message-BEZ>
-					<div v-if="disabledPaymentTypes.includes( 'BEZ' )" class="option-info-message">
+				<template #tooltip-BEZ>
+					<RadioFieldHelpText v-if="disabledPaymentTypes.includes( 'BEZ' )">
 						{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
-					</div>
+					</RadioFieldHelpText>
 				</template>
-				<template #message-SUB>
-					<div v-if="disabledPaymentTypes.includes( 'SUB' )" class="option-info-message">
+				<template #tooltip-SUB>
+					<RadioFieldHelpText v-if="disabledPaymentTypes.includes( 'SUB' )">
 						{{ $t( 'donation_form_SUB_payment_type_info' ) }}
-					</div>
+					</RadioFieldHelpText>
 				</template>
 			</RadioField>
 		</FormSection>
@@ -66,6 +66,7 @@ import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePay
 import { Validity } from '@src/view_models/Validity';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
 
 interface Props {
 	paymentAmounts: number[];

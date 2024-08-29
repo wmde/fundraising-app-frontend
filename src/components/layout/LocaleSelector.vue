@@ -28,7 +28,9 @@
 						@keyup.esc="active = false"
 						@blur="handleLocaleItemBlur"
 					>
-						{{ localeItem.label }}
+						<template #label>
+							{{ localeItem.label }}
+						</template>
 					</RadioFormInput>
 				</div>
 				<div class="navigation-locale-button-container">
@@ -162,6 +164,7 @@ useDetectOutsideClick( localeSelectorRef, handleLocaleItemBlur );
 
 		input {
 			left: map.get(units.$spacing, 'small');
+			z-index: 1;
 		}
 
 		label {
@@ -178,6 +181,7 @@ useDetectOutsideClick( localeSelectorRef, handleLocaleItemBlur );
 		}
 
 		input:checked + label {
+			border: 0;
 			background: colors.$primary-locale-active;
 			color: colors.$primary;
 		}
