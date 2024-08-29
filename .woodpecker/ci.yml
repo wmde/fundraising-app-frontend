@@ -1,18 +1,14 @@
-clone:
-  git:
-    image: woodpeckerci/plugin-git
-    settings:
-      # "partial: false" and depth will copy several commits from the source repo,
-      # enabling history checks for the ocular tool
-      # "lfs: false" disables downloading resources from LFS, which we don't use
-      partial: false
-      depth: 10
-      lfs: false
-
+# This is the "build" step for creating deployable archives of the frontend app.
+# 
+# We don't run `npm run ci` again, because the Jest tests take too long (~10 minutes).
+# Instead, we rely on the checks being run in the GitHub action and blindly build the assets.
+#
 steps:
     -   name: build
         when: 
-          - event: [ push, pull_request, cron, manual ]
+          - event: [ push, cron, manual ]
+            branch:
+              exclude: [ dependabot/* ]
         image: node:20-alpine
         volumes:
           - /home/deploy/fundraising-app-frontend-builds:/build
@@ -28,6 +24,8 @@ steps:
             - echo "$CI_PIPELINE_STARTED" >> dist/DEPLOY_ID
             - cd dist/
             # Replace slashes with underscores, add suffix
+            # Note that for pull request events (which are not included in the when clause above),
+            # the branch name is the *target* branch (e.g. "main" for a PR to main from a feature branch)
             - ARCHIVE_NAME="${CI_COMMIT_BRANCH//\//_}.tar.gz"
             - tar -czvf /build/$ARCHIVE_NAME .
             # 1008 is the hardcoded user ID of the deploy user
