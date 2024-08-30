@@ -20,7 +20,9 @@
 					:aria-invalid="showError"
 					:aria-describedby="ariaDescribedby"
 				>
-					{{ $n( paymentAmount / 100, 'euros' ) }}
+					<template #label>
+						{{ $n( paymentAmount / 100, 'euros' ) }}
+					</template>
 				</RadioFormInput>
 			</div>
 		</div>
