@@ -26,10 +26,10 @@
 		v-model="addressType"
 		alignment="column"
 	>
-		<template #intro-message>
-			<div v-show="isDirectDebit" class="form-field-intro">
-				{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_basic' ) }}
-			</div>
+		<template #tooltip-4>
+			<RadioFieldHelpText v-if="isDirectDebit">
+				{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_basic') }}
+			</RadioFieldHelpText>
 		</template>
 	</RadioField>
 
@@ -40,6 +40,7 @@
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { ref, watch } from 'vue';
+import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
 
 interface Props {
 	disabledAddressTypes: AddressTypeModel[]
