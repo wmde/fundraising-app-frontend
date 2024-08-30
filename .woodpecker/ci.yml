@@ -6,7 +6,7 @@
 steps:
     -   name: build
         when: 
-          - event: [ push, cron, manual ]
+          - event: [ push, pull_request_closed, cron, manual ]
             branch:
               exclude: [ dependabot/* ]
         image: node:20-alpine
