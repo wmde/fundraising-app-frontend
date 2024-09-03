@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@airbrake/browser": "^2.1.8",
-    "@babel/runtime": "^7.25.4",
-    "axios": "^1.7.5",
+    "@babel/runtime": "^7.25.6",
+    "axios": "^1.7.7",
     "bulma": "0.9.4",
     "core-js": "^3.38.0",
     "format-number": "^3.0.0",
