@@ -12,7 +12,11 @@
 			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_2' ) }}</li>
 			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_3' ) }}</li>
 			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_4' ) }}</li>
-			<li><a href="https://wikimedia.de/de/mitglied-werden">{{ $t( 'donation_confirmation_bottombox_membership_link' ) }}</a></li>
+			<li>
+				<a href="https://www.wikimedia.de/wikipedia-unterstuetzen/spenden/mitglieder/">
+					{{ $t( 'donation_confirmation_bottombox_membership_link' ) }}
+				</a>
+			</li>
 		</ul>
 	</div>
 </template>
