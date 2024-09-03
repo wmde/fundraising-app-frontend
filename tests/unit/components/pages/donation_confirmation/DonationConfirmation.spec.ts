@@ -14,6 +14,7 @@ import {
 } from '@test/data/confirmationData';
 import { addressValidationPatterns } from '@test/data/validation';
 import { DonorResource } from '@src/api/DonorResource';
+import { FakeSucceedingCommentResource } from '@test/unit/TestDoubles/FakeCommentResource';
 
 describe( 'DonationConfirmation.vue', () => {
 	const getWrapper = ( bankData: ConfirmationData, translateMock: ( key: string ) => string = ( key: string ) => key ): VueWrapper<any> => {
@@ -38,6 +39,9 @@ describe( 'DonationConfirmation.vue', () => {
 				mocks: {
 					$t: translateMock,
 					$n: () => {},
+				},
+				provide: {
+					commentResource: new FakeSucceedingCommentResource(),
 				},
 			},
 		} );

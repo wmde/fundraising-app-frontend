@@ -1,6 +1,11 @@
 import { mount } from '@vue/test-utils';
 import DonationCommentPopUp from '@src/components/pages/donation_confirmation/DonationCommentPopUp.vue';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import {
+	FakeFailingCommentResource,
+	FakeSucceedingCommentResource,
+	successMessage
+} from '@test/unit/TestDoubles/FakeCommentResource';
 
 describe( 'DonationCommentPopUp.vue', () => {
 	function getDefaultConfirmationData( isAnonymous: boolean ): any {
@@ -34,6 +39,11 @@ describe( 'DonationCommentPopUp.vue', () => {
 	it( 'displays anyonmous comment toggle for private / company donations', () => {
 		const wrapper = mount( DonationCommentPopUp, {
 			props: getDefaultConfirmationData( false ),
+			global: {
+				provide: {
+					commentResource: new FakeSucceedingCommentResource(),
+				},
+			},
 		} );
 
 		expect( wrapper.find( '#withName' ).exists() ).toBeTruthy();
@@ -42,8 +52,46 @@ describe( 'DonationCommentPopUp.vue', () => {
 	it( 'hides anyonmous comment toggle for anonymous donations', () => {
 		const wrapper = mount( DonationCommentPopUp, {
 			props: getDefaultConfirmationData( true ),
+			global: {
+				provide: {
+					commentResource: new FakeSucceedingCommentResource(),
+				},
+			},
 		} );
 
 		expect( wrapper.find( '#withName' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'shows error when API response is rejected', async () => {
+		const wrapper = mount( DonationCommentPopUp, {
+			props: getDefaultConfirmationData( true ),
+			global: {
+				provide: {
+					commentResource: new FakeFailingCommentResource(),
+				},
+			},
+		} );
+
+		await wrapper.trigger( 'submit' );
+
+		expect( wrapper.find( '#comment-error' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#comment-error' ).text() ).toStrictEqual( 'donation_comment_popup_error' );
+	} );
+
+	it( 'shows message returned from API', async () => {
+		const wrapper = mount( DonationCommentPopUp, {
+			props: getDefaultConfirmationData( true ),
+			global: {
+				provide: {
+					commentResource: new FakeSucceedingCommentResource(),
+				},
+			},
+		} );
+
+		await wrapper.find( '#comment' ).setValue( 'My super great comment' );
+		await wrapper.trigger( 'submit' );
+
+		expect( wrapper.find( '.donation-comment-server-response' ).text() ).toStrictEqual( successMessage );
+		expect( wrapper.find( '.donation-comment-return-button' ).exists() ).toBeTruthy();
 	} );
 } );

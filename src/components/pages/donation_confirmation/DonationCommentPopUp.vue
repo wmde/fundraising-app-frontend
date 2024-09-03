@@ -3,9 +3,10 @@
 		<input type="hidden" name="donationId" :value="donation.id"/>
 		<input type="hidden" name="updateToken" :value="donation.updateToken">
 		<div v-if="commentHasBeenSubmitted">
-			<p v-html="$t( serverResponse )"></p>
+			<p class="donation-comment-server-response" v-html="$t( serverResponse )"></p>
 			<FormButton
 				button-type="button"
+				class="donation-comment-return-button"
 				:is-outlined="true"
 				@click="$emit( 'close' )"
 			>
@@ -66,8 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import axios, { AxiosResponse } from 'axios';
+import { computed, inject, onMounted, ref } from 'vue';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Donation } from '@src/view_models/Donation';
@@ -75,15 +75,16 @@ import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
+import { CommentResource } from '@src/api/CommentResource';
 
 interface Props {
 	donation: Donation;
 	addressType: string;
-	postCommentUrl: string;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'disable-comment-link' ] );
+const emit = defineEmits( [ 'disable-comment-link', 'close' ] );
+const commentResource = inject<CommentResource>( 'commentResource' );
 
 const commentForm = ref<HTMLFormElement>( null );
 const comment = ref<string>( '' );
@@ -95,19 +96,23 @@ const serverResponse = ref<string>( '' );
 
 const showPublishAuthor = computed<boolean>( () => addressTypeFromName( props.addressType ) !== AddressTypeModel.ANON );
 
-const postComment = (): void => {
+const postComment = async (): Promise<void> => {
 	trackFormSubmission( commentForm.value );
-	const jsonForm = new FormData( commentForm.value );
-	axios.post( props.postCommentUrl, jsonForm ).then( ( validationResult: AxiosResponse<any> ) => {
-		if ( validationResult.data.status === 'OK' ) {
-			commentErrored.value = false;
-			commentHasBeenSubmitted.value = true;
-			serverResponse.value = validationResult.data.message;
-			emit( 'disable-comment-link' );
-		} else {
-			commentErrored.value = true;
-		}
-	} );
+	try {
+		const message = await commentResource.post( {
+			donationId: props.donation.id,
+			updateToken: props.donation.updateToken,
+			comment: comment.value,
+			withName: commentHasPublicAuthorName.value,
+			isPublic: commentIsPublic.value,
+		} );
+		commentErrored.value = false;
+		commentHasBeenSubmitted.value = true;
+		serverResponse.value = message;
+		emit( 'disable-comment-link' );
+	} catch ( e ) {
+		commentErrored.value = true;
+	}
 };
 
 onMounted( trackDynamicForm );
