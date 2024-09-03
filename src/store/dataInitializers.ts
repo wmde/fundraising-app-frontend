@@ -5,7 +5,7 @@ import { DataPersister } from '@src/view_models/DataPersistence';
 import { InitialAddressValues, InitialMembershipAddressValues } from '@src/view_models/Address';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { InitialPaymentValues } from '@src/view_models/Payment';
-import { BankAccountData, InitialBankAccountData } from '@src/view_models/BankAccount';
+import { InitialBankAccountData } from '@src/view_models/BankAccount';
 import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
 import { trackFormFieldRestored } from '@src/util/tracking';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
@@ -120,21 +120,12 @@ export const createInitialMembershipFeeValues = ( dataPersister: DataPersister, 
 /**
  * Look for initial bank fields in initial form data
  */
-export const createInitialBankDataValues = ( initialFormValues: InitialBankAccountData|null ): BankAccountData => {
-
-	let accountNumber = '';
-	let bankCode = '';
-	let bankName = '';
-
-	if ( initialFormValues ) {
-		accountNumber = initialFormValues.accountNumber || '';
-		bankCode = initialFormValues.bankCode || '';
-		bankName = initialFormValues.bankname || '';
-	}
-
+export const createInitialBankDataValues = ( dataPersister: DataPersister, initialFormValues: InitialBankAccountData ): InitialBankAccountData => {
 	return {
-		accountNumber: accountNumber,
-		bankCode: bankCode,
-		bankName: bankName,
+		accountNumber: replaceInitialValue( initialFormValues.accountNumber, dataPersister.getValue( 'accountNumber' ) ),
+		bankCode: replaceInitialValue( initialFormValues.bankCode, dataPersister.getValue( 'bankCode' ) ),
+		bankName: replaceInitialValue( initialFormValues.bankName, dataPersister.getValue( 'bankName' ) ),
+		iban: replaceInitialValue( initialFormValues.iban, dataPersister.getValue( 'iban' ) ),
+		bic: replaceInitialValue( initialFormValues.bic, dataPersister.getValue( 'bic' ) ),
 	};
 };

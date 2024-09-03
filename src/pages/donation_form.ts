@@ -13,7 +13,7 @@ import { TrackingData } from '@src/view_models/TrackingData';
 import { action } from '@src/store/util';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { createDataPersister } from '@src/store/create_data_persister';
-import { createInitialDonationAddressValues, createInitialDonationPaymentValues } from '@src/store/dataInitializers';
+import { createInitialBankDataValues, createInitialDonationAddressValues, createInitialDonationPaymentValues } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
 
 import App from '@src/components/App.vue';
@@ -54,6 +54,16 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				allowedIntervals: pageData.applicationVars.paymentIntervals,
 				allowedPaymentTypes: pageData.applicationVars.paymentTypes,
 			}
+		),
+		store.dispatch(
+			action( 'bankdata', 'initializeBankData' ),
+			createInitialBankDataValues( dataPersister, {
+				accountNumber: '',
+				bankCode: '',
+				bankName: '',
+				iban: '',
+				bic: '',
+			} ),
 		),
 		store.dispatch(
 			action( 'address', 'initializeAddress' ),

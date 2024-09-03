@@ -265,24 +265,21 @@ describe( 'createInitialMembershipFeeValues', () => {
 
 describe( 'createInitialBankDataValues', () => {
 	it( 'fills data from initial data', () => {
+		const dataPersister = new FakeDataPersister( [] );
 		const initialValues: InitialBankAccountData = {
 			accountNumber: 'fakeAccountID',
 			bankCode: 'IAmBIC',
-			bankname: 'Bank of fakey fake',
+			bankName: 'Bank of fakey fake',
+			iban: 'IBANANA',
+			bic: 'BISCUIT',
 		};
 
-		const values = createInitialBankDataValues( initialValues );
+		const values = createInitialBankDataValues( dataPersister, initialValues );
 
 		expect( values.accountNumber ).toEqual( initialValues.accountNumber );
 		expect( values.bankCode ).toEqual( initialValues.bankCode );
-		expect( values.bankName ).toEqual( initialValues.bankname );
-	} );
-
-	it( 'handles null initial value object', () => {
-		const values = createInitialBankDataValues( null );
-
-		expect( values.accountNumber ).toEqual( '' );
-		expect( values.bankCode ).toEqual( '' );
-		expect( values.bankName ).toEqual( '' );
+		expect( values.bankName ).toEqual( initialValues.bankName );
+		expect( values.iban ).toEqual( initialValues.iban );
+		expect( values.bic ).toEqual( initialValues.bic );
 	} );
 } );

@@ -1,6 +1,7 @@
 import { mutation } from '@src/store/util';
 import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
 import address from '@src/store/data_persistence/address';
+import bankdata from '@src/store/data_persistence/bankdata';
 
 export default [
 	{
@@ -46,4 +47,5 @@ export default [
 		fields: [],
 	},
 	address( 'membership_address' ),
+	...bankdata,
 ];

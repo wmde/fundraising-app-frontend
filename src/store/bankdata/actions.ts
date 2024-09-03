@@ -1,12 +1,14 @@
 import { ActionContext } from 'vuex';
-import { BankAccount, BankAccountData } from '@src/view_models/BankAccount';
+import { BankAccount, InitialBankAccountData } from '@src/view_models/BankAccount';
 import { Validity } from '@src/view_models/Validity';
 
 export const actions = {
-	initializeBankData( context: ActionContext<BankAccount, any>, payload: BankAccountData ): void {
+	initializeBankData( context: ActionContext<BankAccount, any>, payload: InitialBankAccountData ): void {
 		context.commit( 'SET_ACCOUNT_NUMBER', payload.accountNumber );
 		context.commit( 'SET_BANK_CODE', payload.bankCode );
 		context.commit( 'SET_BANK_NAME', payload.bankName );
+		context.commit( 'SET_IBAN', payload.iban );
+		context.commit( 'SET_BIC', payload.bic );
 
 		if ( payload.accountNumber !== '' ) {
 			context.commit( 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.RESTORED );

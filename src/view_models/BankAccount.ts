@@ -30,7 +30,9 @@ export interface BankAccountData {
 export interface InitialBankAccountData {
     accountNumber?: string;
     bankCode?: string;
-    bankname?: string;
+    bankName?: string;
+    iban?: string;
+    bic?: string;
 }
 
 export interface BankAccountRequest {

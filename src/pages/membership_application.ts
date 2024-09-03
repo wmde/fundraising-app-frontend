@@ -62,9 +62,11 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	);
 	initialFeeValues.setTypeFromAvailablePaymentTypes( pageData.applicationVars.paymentTypes );
 	const initialBankAccountData = {
+		accountNumber: initialFormValues.get( 'iban' ),
+		bankCode: '',
+		bankName: initialFormValues.get( 'bankname' ),
 		iban: initialFormValues.get( 'iban' ),
 		bic: initialFormValues.get( 'bic' ),
-		bankname: initialFormValues.get( 'bankname' ),
 	};
 
 	// Combine the initial values (from app data and URL) with the values from the local storage.
@@ -81,7 +83,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 		),
 		store.dispatch(
 			action( 'bankdata', 'initializeBankData' ),
-			createInitialBankDataValues( initialBankAccountData ),
+			createInitialBankDataValues( dataPersister, initialBankAccountData ),
 		),
 	] ).then( () => {
 		const app = createVueApp( App,
