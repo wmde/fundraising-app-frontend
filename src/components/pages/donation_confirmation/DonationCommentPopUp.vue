@@ -16,6 +16,7 @@
 		<div v-else>
 			<p>{{ $t( 'donation_comment_popup_explanation' ) }}</p>
 
+			<ScrollTarget target-id="comment-scroll-target"/>
 			<TextField
 				input-type="textarea"
 				v-model="comment"
@@ -23,7 +24,7 @@
 				input-id="comment"
 				placeholder=""
 				:label="$t( 'donation_comment_popup_label' )"
-				:error-message="$t( 'donation_comment_popup_error' )"
+				:error-message="$t( commentError )"
 				:show-error="commentErrored"
 				:autofocus="true"
 			/>
@@ -44,6 +45,18 @@
 			>
 				{{ $t( 'donation_comment_popup_is_public' ) }}
 			</CheckboxField>
+
+			<ErrorSummary
+				:is-visible="commentErrored"
+				:items="[
+					{
+						validity: commentErrored ? Validity.INVALID : Validity.VALID,
+						message: $t( commentError ),
+						focusElement: 'comment',
+						scrollElement: 'comment-scroll-target'
+					},
+				]"
+			/>
 
 			<FormSummary :show-border="false">
 				<template #summary-buttons>
@@ -67,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Donation } from '@src/view_models/Donation';
@@ -76,6 +89,14 @@ import FormSummary from '@src/components/shared/FormSummary.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 import { CommentResource } from '@src/api/CommentResource';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import { Validity } from '@src/view_models/Validity';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+
+enum CommentErrorTypes {
+	Empty,
+	Server
+}
 
 interface Props {
 	donation: Donation;
@@ -91,31 +112,54 @@ const comment = ref<string>( '' );
 const commentIsPublic = ref<boolean>( false );
 const commentHasPublicAuthorName = ref<boolean>( false );
 const commentErrored = ref<boolean>( false );
+const commentErrorType = ref<CommentErrorTypes>( CommentErrorTypes.Empty );
 const commentHasBeenSubmitted = ref<boolean>( false );
 const serverResponse = ref<string>( '' );
+const serverError = ref<string>( '' );
 
 const showPublishAuthor = computed<boolean>( () => addressTypeFromName( props.addressType ) !== AddressTypeModel.ANON );
 
-const postComment = async (): Promise<void> => {
+const postComment = (): Promise<void> => {
 	trackFormSubmission( commentForm.value );
-	try {
-		const message = await commentResource.post( {
-			donationId: props.donation.id,
-			updateToken: props.donation.updateToken,
-			comment: comment.value,
-			withName: commentHasPublicAuthorName.value,
-			isPublic: commentIsPublic.value,
-		} );
+
+	if ( comment.value === '' ) {
+		commentErrorType.value = CommentErrorTypes.Empty;
+		commentErrored.value = true;
+		return;
+	}
+
+	commentResource.post( {
+		donationId: props.donation.id,
+		updateToken: props.donation.updateToken,
+		comment: comment.value,
+		withName: commentHasPublicAuthorName.value,
+		isPublic: commentIsPublic.value,
+	} ).then( ( message: string ) => {
 		commentErrored.value = false;
 		commentHasBeenSubmitted.value = true;
 		serverResponse.value = message;
 		emit( 'disable-comment-link' );
-	} catch ( e ) {
+	} ).catch( ( message: string ) => {
+		commentErrorType.value = CommentErrorTypes.Server;
 		commentErrored.value = true;
-	}
+		serverError.value = message;
+	} );
 };
 
 onMounted( trackDynamicForm );
+
+const commentError = computed<string>( () => {
+	if ( commentErrorType.value === CommentErrorTypes.Empty ) {
+		return 'donation_comment_popup_empty_error';
+	}
+	return serverError.value;
+} );
+
+watch( comment, ( newComment: string ) => {
+	if ( commentErrored.value && newComment !== '' ) {
+		commentErrored.value = false;
+	}
+} );
 
 </script>
 

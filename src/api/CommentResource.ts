@@ -26,8 +26,8 @@ export class ApiCommentResource implements CommentResource {
 
 	post( data: CommentRequest ): Promise<string> {
 		return axios.post( this.postEndpoint, data ).then( ( validationResult: AxiosResponse<CommentResponse> ) => {
-			if ( validationResult.data.status === 'OK' ) {
-				return Promise.reject();
+			if ( validationResult.data.status !== 'OK' ) {
+				return Promise.reject( validationResult.data.message );
 			}
 			return validationResult.data.message;
 		} );
