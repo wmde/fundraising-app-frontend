@@ -45,15 +45,15 @@ describe( 'AddressTypeBasic.vue', () => {
 		expect( anonymous.attributes( 'disabled' ) ).toBeDefined();
 	} );
 
-	it( 'renders hint if payment is direct debit', () => {
+	it( 'renders tooltip hint if payment is direct debit', () => {
 		const wrapper = getWrapper( [ AddressTypeModel.ANON ], true );
 
-		expect( wrapper.find( '.form-field-intro' ).isVisible() ).toBe( true );
+		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
 	} );
 
-	it( 'does not render hint if payment is not direct debit', () => {
+	it( 'does not render tooltip hint if payment is not direct debit', () => {
 		const wrapper = getWrapper( [ AddressTypeModel.ANON ], false );
 
-		expect( wrapper.find( '.form-field-intro' ).isVisible() ).toBe( false );
+		expect( wrapper.find( '.radio-field-tooltip' ).exists() ).toBe( false );
 	} );
 } );

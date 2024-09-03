@@ -1,53 +1,38 @@
 import { Store } from 'vuex';
-import { trackFormSubmission } from '@src/util/tracking';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
-import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { computed, ComputedRef, ref, Ref } from 'vue';
-
-const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
-	if ( addressType === AddressTypeModel.ANON ) {
-		// We don't have a separate form for Matomo here
-		return;
-	}
-	const formId = `laika-donation-personal-data-${ AddressTypeIds.get( addressType ) }`;
-	const currentAddressForm: HTMLFormElement = document.getElementById( formId ) as HTMLFormElement;
-	if ( !currentAddressForm ) {
-		// This should only happen if the child component has the wrong ID
-		throw new Error( `Address form with ID "${ formId }" not found.` );
-	}
-
-	// TODO handle tracking
-	// trackFormSubmission( currentAddressForm );
-};
 
 type ReturnType = {
 	submit: () => Promise<void>,
-    submitValuesForm: Ref<HTMLFormElement>,
+	submitValuesForm: Ref<HTMLFormElement>,
 	showErrorSummary: Ref<boolean>,
 }
 
 export function usePersonalDataSectionEventHandlers(
 	store: Store<any>,
-	addressType: ComputedRef<AddressTypeModel>,
-	isDirectDebit: ComputedRef<boolean>,
+	isDirectDebit: ComputedRef<any>,
 	validateAddressUrl: string,
 	validateEmailUrl: string,
+	receiptNeeded: Ref<boolean|null>
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
-	const paymentDataIsValid = ref<boolean>( true );
 	const bankDataIsValid = ref<boolean>( true );
 	const addressDataIsValid = ref<boolean>( true );
+	const paymentDataIsValid = ref<boolean>( true );
 	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value || !paymentDataIsValid.value );
-	const submit = async (): Promise<void> => {
+	const submit = async () => {
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( 'payment', 'markEmptyValuesAsInvalid' ) ),
 			store.dispatch( action( 'address', 'validateAddressType' ), {
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
 			} ),
-			store.dispatch( action( 'address', 'validateAddress' ), validateAddressUrl ),
+			store.dispatch( action( 'address', 'validateDonationReceiptAddress' ), {
+				receiptNeeded: receiptNeeded.value,
+				validateAddressUrl: validateAddressUrl,
+			} ),
 			store.dispatch( action( 'address', 'validateEmail' ), validateEmailUrl ),
 		];
 
@@ -74,9 +59,6 @@ export function usePersonalDataSectionEventHandlers(
 			return;
 		}
 
-		// Track the form submission with the Matomo Form Analytics plugin
-		// The form is a different one than the one for the submitValuesForm
-		trackFormSubmissionForAddressType( addressType.value );
 		submitValuesForm.value.submit();
 	};
 

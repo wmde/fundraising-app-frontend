@@ -7,6 +7,8 @@ import { Store } from 'vuex';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import AddressType from '@src/components/pages/membership_form/AddressType.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 describe( 'Payment.vue', () => {
 	let store: Store<any>;
@@ -17,7 +19,7 @@ describe( 'Payment.vue', () => {
 			props: {
 				paymentAmounts: [ 5 ],
 				paymentIntervals: [ 0, 1, 3, 6, 12 ],
-				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'BTC' ],
+				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'SUB', 'BTC' ],
 			},
 			global: {
 				plugins: [ store ],
@@ -54,6 +56,40 @@ describe( 'Payment.vue', () => {
 		await nextTick();
 
 		expect( store.dispatch ).toBeCalledWith( action( 'payment', 'setType' ), 'PPL' );
+	} );
+
+	it( 'renders tooltip hint if SUB payment method is disabled', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find<HTMLInputElement>( '#interval-1' ).trigger( 'change' );
+		await nextTick();
+
+		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
+	} );
+
+	it( 'does not render tooltip hint if SUB payment method is enabled', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( '#interval-0' ).trigger( 'click' );
+		await nextTick();
+
+		expect( wrapper.find( '.radio-field-tooltip' ).exists() ).toBe( false );
+	} );
+
+	it( 'renders tooltip hint if address type is Anonymous', async () => {
+		const wrapper = getWrapper();
+
+		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.ANON );
+
+		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
+	} );
+
+	it( 'does not render tooltip hint if address type is something different than Anonymous', async () => {
+		const wrapper = getWrapper();
+
+		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.EMAIL );
+
+		expect( wrapper.find( '.radio-field-tooltip' ).exists() ).toBe( false );
 	} );
 
 } );

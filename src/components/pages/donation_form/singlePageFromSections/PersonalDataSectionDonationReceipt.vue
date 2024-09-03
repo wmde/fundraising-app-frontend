@@ -147,14 +147,14 @@ import { useAddressFunctions } from '@src/components/pages/donation_form/Address
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import {
 	usePersonalDataSectionEventHandlers,
-} from '@src/components/pages/donation_form/usePersonalDataSectionEventHandlers';
+} from '@src/components/pages/donation_form/DonationReceipt/usePersonalDataSectionEventHandlers';
 import {
 	useAddressTypeFromReceiptSetter,
 } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
 import { Validity } from '@src/view_models/Validity';
 import { trackDynamicForm } from '@src/util/tracking';
 import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
-import SinglePageErrorSummary from '@src/components/pages/donation_form/singlePageFromSections/SinglePageErrorSummary.vue';
+import SinglePageErrorSummary from '@src/components/pages/donation_form/DonationReceipt/SinglePageErrorSummary.vue';
 
 interface Props {
 	assetsPath: string;

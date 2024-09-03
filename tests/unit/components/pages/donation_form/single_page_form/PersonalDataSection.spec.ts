@@ -44,8 +44,8 @@ describe( 'PersonalDataSection.vue', () => {
 		const wrapper = mount( PersonalDataSection, {
 			props: {
 				assetsPath: '',
-				validateAddressUrl: '',
-				validateEmailUrl: '',
+				validateAddressUrl: 'https://localhost:8082',
+				validateEmailUrl: 'https://localhost:8082',
 				validateBankDataUrl: 'https://localhost:8082',
 				validateLegacyBankDataUrl: 'https://localhost:8082',
 				countries: [ testCountry ],
@@ -118,14 +118,27 @@ describe( 'PersonalDataSection.vue', () => {
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
-	it( 'shows and hides the error summary', async () => {
+	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
+		const scrollElement = { scrollIntoView: jest.fn() };
 		const { wrapper } = getWrapper();
+
+		await wrapper.find( '#previous-btn' ).trigger( 'click' );
+		await nextTick();
+
+		//TODO test that payment section got scrolled to
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledTimes( 1 );
+	} );
+
+	it( 'shows and hides the error summary', async () => {
+		const { wrapper, store } = getWrapper();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await setPaymentType( store, 'UEB' );
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#person-salutation-0' ).trigger( 'change' );
@@ -164,8 +177,18 @@ describe( 'PersonalDataSection.vue', () => {
 		expect( wrapper.find( '.address-type-person' ).exists() ).toBeTruthy();
 	} );
 
+	it( 'validates the payment section input on page submit', async () => {
+		const { wrapper, store } = getWrapper();
+		store.dispatch = jest.fn().mockResolvedValue( true );
+
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
+	} );
+
 	it( 'submits the form', async () => {
 		const store = createStore();
+		await setPaymentType( store, 'UEB' );
 		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.ANON,
 			newsletter: true,

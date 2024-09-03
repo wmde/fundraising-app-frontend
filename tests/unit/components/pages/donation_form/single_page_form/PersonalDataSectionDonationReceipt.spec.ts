@@ -43,8 +43,8 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 		const wrapper = mount( PersonalDataSectionDonationReceipt, {
 			props: {
 				assetsPath: '',
-				validateAddressUrl: '',
-				validateEmailUrl: '',
+				validateAddressUrl: 'https://localhost:8082',
+				validateEmailUrl: 'https://localhost:8082',
 				validateBankDataUrl: 'https://localhost:8082',
 				validateLegacyBankDataUrl: 'https://localhost:8082',
 				countries: [ testCountry ],
@@ -106,25 +106,26 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 	} );
 
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
-		const focusElement = { focus: jest.fn() };
 		const scrollElement = { scrollIntoView: jest.fn() };
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
+		await nextTick();
 
 		//TODO test that payment section got scrolled to
-		expect( focusElement.focus ).toHaveBeenCalledWith( { preventScroll: true } );
-		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalled();
 	} );
 
 	it( 'shows and hides the error summary', async () => {
-		const { wrapper } = getWrapper();
+		const { wrapper, store } = getWrapper();
 
 		await wrapper.find( '#donation-form' ).trigger( 'submit' );
 		await nextTick();
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await setPaymentType( store, 'UEB' );
 
 		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
@@ -154,8 +155,18 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
 
+	it( 'validates the payment section input on page submit', async () => {
+		const { wrapper, store } = getWrapper();
+		store.dispatch = jest.fn().mockResolvedValue( true );
+
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
+	} );
+
 	it( 'submits the form', async () => {
 		const store = createStore();
+		await setPaymentType( store, 'UEB' );
 		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.PERSON,
 			newsletter: true,

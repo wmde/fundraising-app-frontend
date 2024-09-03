@@ -3,9 +3,10 @@ import SinglePageDonationForm from '@src/components/pages/SinglePageDonationForm
 import countries from '@src/../tests/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
-import PaymentPage from '@test/data/DonationFormPages/PaymentPageStub.vue';
-import AddressPage from '@test/data/DonationFormPages/AddressPageStub.vue';
-import { nextTick } from 'vue';
+import PaymentSection from '@src/components/pages/donation_form/singlePageFromSections/PaymentSection.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/singlePageFromSections/PersonalDataSection.vue';
+import { Store } from 'vuex';
+import { createStore, StoreKey } from '@src/store/donation_store';
 
 declare global {
 	namespace NodeJS {
@@ -21,8 +22,8 @@ describe( 'SinglePageDonationForm.vue', () => {
 		global.window.scrollTo = jest.fn();
 	} );
 
-	const getWrapper = ( startPageIndex: 0 | 1 = 0 ): VueWrapper<any> => {
-		return mount( SinglePageDonationForm, {
+	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
+		const wrapper = mount( SinglePageDonationForm, {
 			props: {
 				assetsPath: '',
 				paymentAmounts: [ 5 ],
@@ -37,27 +38,24 @@ describe( 'SinglePageDonationForm.vue', () => {
 				validateLegacyBankDataUrl: '',
 				salutations: [],
 				addressValidationPatterns: {} as AddressValidation,
-				startPageIndex,
+				usesContentCards: true,
 			},
 			global: {
-				stubs: {
-					PaymentPage,
-					AddressPage,
+				plugins: [ store ],
+				provide: {
+					[ StoreKey as symbol ]: store,
 				},
 				components: {
 					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
 				},
 			},
 		} );
+		return { wrapper, store };
 	};
 
 	it( 'displays payment section and address data section', () => {
+		const wrapper = getWrapper().wrapper;
+		expect( wrapper.findComponent( PaymentSection ).exists() ).toBe( true );
+		expect( wrapper.findComponent( PersonalDataSection ).exists() ).toBe( true );
 	} );
-
-	it( 'displays Payment page by default ', () => {
-		const wrapper = getWrapper( 0 );
-		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
-	} );
-
-
 } );
