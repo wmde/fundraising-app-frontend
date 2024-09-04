@@ -72,6 +72,7 @@
 		<CityAutocompleteField
 			v-model="formData.city.value"
 			input-id="city"
+			scroll-target-id="city-scroll-target"
 			:show-error="showError.city"
 			:label="$t( 'donation_form_city_label' )"
 			:error-message="$t( 'donation_form_city_error' )"
