@@ -50,6 +50,8 @@ withDefaults( defineProps<Props>(), {
 		color: colors.$white;
 		text-decoration: none;
 		background: color.adjust( colors.$primary, $lightness: -5% );
+		border: 1px solid colors.$white;
+		box-shadow: 0 0 0 2px colors.$primary;
 	}
 
 	&-outlined {
