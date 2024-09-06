@@ -123,6 +123,38 @@ describe( 'CountryAutocompleteField.vue', () => {
 		expect( field.element.value ).toBe( countries[ 2 ].countryFullName );
 	} );
 
+	it( 'emits single field changed event when an autocomplete item is clicked', async () => {
+		jest.useFakeTimers();
+
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#country' );
+
+		await field.trigger( 'focus' );
+		await wrapper.find( '.dropdown-item:nth-of-type(3)' ).trigger( 'click' );
+
+		await jest.runAllTimersAsync();
+
+		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+
+		jest.clearAllMocks();
+	} );
+
+	it( 'emits field changed event when field is blurred', async () => {
+		jest.useFakeTimers();
+
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#country' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+
+		jest.clearAllMocks();
+	} );
+
 	it( 'selects the input text on second focus when initialised with default', async () => {
 		const wrapper = getWrapper();
 		const field = wrapper.find<HTMLInputElement>( '#country' );

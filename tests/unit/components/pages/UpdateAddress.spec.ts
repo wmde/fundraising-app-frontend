@@ -74,6 +74,8 @@ describe( 'UpdateAddress.vue', () => {
 	} );
 
 	it( 'shows and hides the error summary', async () => {
+		jest.useFakeTimers();
+
 		const store = createStore();
 		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
 		const wrapper = getWrapper( store );
@@ -100,7 +102,11 @@ describe( 'UpdateAddress.vue', () => {
 		await country.setValue( 'country' );
 		await country.trigger( 'blur' );
 
+		await jest.runAllTimersAsync();
+
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+
+		jest.restoreAllMocks();
 	} );
 
 	it( 'redirects to the success page on successful submit', async () => {

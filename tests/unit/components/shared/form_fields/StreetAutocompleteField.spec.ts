@@ -119,6 +119,38 @@ describe( 'StreetAutocompleteField.vue', () => {
 		expect( wrapper.emitted( 'update:modelValue' )[ 1 ][ 0 ] ).toBe( `Cobblestone Way${ separator }42` );
 	} );
 
+	it( 'emits single field changed event when an autocomplete item is clicked', async () => {
+		jest.useFakeTimers();
+
+		const wrapper = getWrapper( '', '12345' );
+		const field = wrapper.find<HTMLInputElement>( '#street' );
+
+		await field.trigger( 'focus' );
+		await wrapper.find( '.dropdown-item:nth-child(3)' ).trigger( 'click' );
+
+		await jest.runAllTimersAsync();
+
+		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+
+		jest.clearAllMocks();
+	} );
+
+	it( 'emits field changed event when field is blurred', async () => {
+		jest.useFakeTimers();
+
+		const wrapper = getWrapper();
+		const field = wrapper.find<HTMLInputElement>( '#street' );
+
+		await field.trigger( 'focus' );
+		await field.trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+
+		jest.clearAllMocks();
+	} );
+
 	it( 'shows and hides the street number help text', async () => {
 		const wrapper = getWrapper();
 
