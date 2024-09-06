@@ -163,6 +163,51 @@ describe( 'AddressPage.vue', () => {
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
 
+	it.skip( 'shows and hides the error summary when payment data is invalid', async () => {
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'BEZ' );
+
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		await nextTick();
+		await nextTick();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
+		await wrapper.find( '#person-salutation-0' ).trigger( 'change' );
+
+		await wrapper.find( '#person-first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#person-first-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#person-last-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-street' ).setValue( 'street' );
+		await wrapper.find( '#person-street' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-post-code' ).setValue( 'post-code' );
+		await wrapper.find( '#person-post-code' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-city' ).setValue( 'city' );
+		await wrapper.find( '#person-city' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-country' ).setValue( 'country' );
+		await wrapper.find( '#person-country' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#person-email' ).trigger( 'blur' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#account-number' ).setValue( 'DE12500105170648489890' );
+		await wrapper.find( '#account-number' ).trigger( 'blur' );
+
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+	} );
+
 	it( 'updates full selected', async () => {
 		const { wrapper } = getWrapper();
 

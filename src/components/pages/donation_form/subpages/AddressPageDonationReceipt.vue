@@ -72,23 +72,45 @@
 					</template>
 				</RadioField>
 
-				<AddressFields
-					v-if="receiptNeeded"
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:countries="countries"
-					:post-code-validation="addressValidationPatterns.postcode"
-					:country-was-restored="countryWasRestored"
-					@field-changed="onFieldChange"
-				/>
+				<FeatureToggle default-template="campaigns.address_field_order.legacy">
+					<template #campaigns.address_field_order.legacy>
+						<AddressFields
+							v-if="receiptNeeded"
+							:show-error="fieldErrors"
+							:form-data="formData"
+							:countries="countries"
+							:post-code-validation="addressValidationPatterns.postcode"
+							:country-was-restored="countryWasRestored"
+							@field-changed="onFieldChange"
+						/>
+						<AddressFormErrorSummaries
+							:show-error-summary="showErrorSummary"
+							:address-type="addressType"
+							:show-receipt-option-error="showReceiptOptionError"
+							:receipt-needed="receiptNeeded"
+						/>
+					</template>
+
+					<template #campaigns.address_field_order.new_order>
+						<AddressFieldsStreetAutocomplete
+							v-if="receiptNeeded"
+							:show-error="fieldErrors"
+							:form-data="formData"
+							:countries="countries"
+							:post-code-validation="addressValidationPatterns.postcode"
+							:country-was-restored="countryWasRestored"
+							@field-changed="onFieldChange"
+						/>
+						<AddressFormErrorSummariesStreetAutocomplete
+							:show-error-summary="showErrorSummary"
+							:address-type="addressType"
+							:show-receipt-option-error="showReceiptOptionError"
+							:receipt-needed="receiptNeeded"
+						/>
+					</template>
+				</FeatureToggle>
 
 			</AutofillHandler>
-
-			<AddressFormErrorSummaries
-				:show-error-summary="showErrorSummary"
-				:address-type="addressType"
-				:show-receipt-option-error="showReceiptOptionError"
-			/>
 
 			<FormSummary>
 				<template #summary-content>
@@ -159,6 +181,10 @@ import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import AddressFormErrorSummaries from '@src/components/pages/donation_form/DonationReceipt/AddressFormErrorSummaries.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import BankFields from '@src/components/shared/BankFields.vue';
+import AddressFieldsStreetAutocomplete
+	from '@src/components/pages/donation_form/DonationReceipt/AddressFieldsStreetAutocomplete.vue';
+import AddressFormErrorSummariesStreetAutocomplete
+	from '@src/components/pages/donation_form/DonationReceipt/AddressFormErrorSummariesStreetAutocomplete.vue';
 
 interface Props {
 	assetsPath: string;

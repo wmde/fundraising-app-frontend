@@ -1,6 +1,6 @@
 <template>
 	<div class="payment-bank-data-section">
-		<ScrollTarget target-id="iban-scroll-target"/>
+		<ScrollTarget target-id="account-number-scroll-target"/>
 		<DirectDebitField
 			v-model:account-number="accountNumber"
 			v-model:bank-code="bankCode"
