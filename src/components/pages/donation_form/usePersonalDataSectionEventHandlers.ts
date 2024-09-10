@@ -18,8 +18,7 @@ const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 		throw new Error( `Address form with ID "${ formId }" not found.` );
 	}
 
-	// TODO handle tracking
-	// trackFormSubmission( currentAddressForm );
+	trackFormSubmission( currentAddressForm );
 };
 
 type ReturnType = {
