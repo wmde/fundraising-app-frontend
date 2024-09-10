@@ -1,9 +1,8 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
 import axios from 'axios';
-import { createStore, StoreKey } from '@src/store/donation_store';
+import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { Store } from 'vuex';
@@ -14,6 +13,8 @@ import { nextTick } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
 import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFromSections/PersonalDataSectionDonationReceipt.vue';
+import BankFields from '@src/components/shared/BankFields.vue';
+import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 const testCountry = {
 	countryCode: 'de',
@@ -59,7 +60,7 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 					Address: true,
 				},
 				provide: {
-					[ StoreKey as symbol ]: store,
+					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
 					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
@@ -86,11 +87,11 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 	it( 'shows bank data fields if payment type is direct debit', async () => {
 		const { wrapper, store } = getWrapper();
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 
 		await setPaymentType( store, 'BEZ' );
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 	} );
 
 	it( 'hides bank data fields if payment type is not direct debit', async () => {
@@ -98,11 +99,11 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 
 		await setPaymentType( store, 'BEZ' );
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 
 		await setPaymentType( store, 'UEB' );
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 	} );
 
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
@@ -112,7 +113,7 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
 		await nextTick();
 
-		//TODO test that payment section got scrolled to
+		// TODO test that payment section got scrolled to
 		expect( scrollElement.scrollIntoView ).toHaveBeenCalled();
 	} );
 

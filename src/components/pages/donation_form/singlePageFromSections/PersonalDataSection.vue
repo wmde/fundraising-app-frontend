@@ -1,18 +1,16 @@
 <template>
-
 	<div
 		id="single-page-form-section-personal-data"
 		class="single-page-form-section"
+		aria-live="assertive"
+		aria-labelledby="donation-form-subheading donation-form-tagline"
 	>
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
-			<ScrollTarget target-id="iban-scroll-target"/>
-			<PaymentBankData
-				:validateBankDataUrl="validateBankDataUrl"
-				:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
-			/>
+			<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
+			<BankFields/>
 		</form>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
@@ -83,38 +81,38 @@
 		<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
 			<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
 		</form>
-
 	</div>
 </template>
 
 <script setup lang="ts">
+import { inject, onMounted, ref } from 'vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
+import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
+import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
+import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import FormSummary from '@src/components/shared/FormSummary.vue';
+import { CampaignValues } from '@src/view_models/CampaignValues';
+import { Country } from '@src/view_models/Country';
+import { Salutation } from '@src/view_models/Salutation';
+import { TrackingData } from '@src/view_models/TrackingData';
+import { trackDynamicForm } from '@src/util/tracking';
+import {
+	usePersonalDataSectionEventHandlers,
+} from '@src/components/pages/donation_form/usePersonalDataSectionEventHandlers';
+import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
+import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
+import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import { AddressValidation } from '@src/view_models/Validation';
+import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+import { useStore } from 'vuex';
 import SinglePageErrorSummary
 	from '@src/components/pages/donation_form/singlePageFromSections/SinglePageErrorSummary.vue';
 import StreetAutocompleteSinglePageErrorSummaries
 	from '@src/components/pages/donation_form/StreetAutocomplete/SinglePageErrorSummary.vue';
-import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
-import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
-import FormSummary from '@src/components/shared/FormSummary.vue';
-import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import { Country } from '@src/view_models/Country';
-import { Salutation } from '@src/view_models/Salutation';
-import { TrackingData } from '@src/view_models/TrackingData';
-import { CampaignValues } from '@src/view_models/CampaignValues';
-import { AddressValidation } from '@src/view_models/Validation';
-import { inject, ref } from 'vue';
-import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
-import { useStore } from 'vuex';
-import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
-import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
-import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
-import {
-	usePersonalDataSectionEventHandlers,
-} from '@src/components/pages/donation_form/usePersonalDataSectionEventHandlers';
+import BankFields from '@src/components/shared/BankFields.vue';
 
 interface Props {
 	assetsPath: string;
@@ -133,6 +131,7 @@ const props = defineProps<Props>();
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const isFullSelected = ref( false );
 const store = useStore();
+defineExpose( { focus: (): void => pageRef.value.focus() } );
 
 const setFullSelected = ( selected: boolean ) => {
 	isFullSelected.value = selected;
@@ -145,7 +144,7 @@ const scrollToPaymentSection = () => {
 	}
 };
 
-// TODO tracking: (form can be tracked normally, doesn't have to do fancy dynamic tracking anymore)
+onMounted( trackDynamicForm );
 
 const {
 	disabledAddressTypes,
@@ -166,7 +165,6 @@ const {
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
 
-// TODO this submit button/behaviour has to be adjusted/rewritten for the new singlepage form
 const { submit, submitValuesForm, showErrorSummary } = usePersonalDataSectionEventHandlers(
 	store,
 	addressType,
@@ -176,3 +174,12 @@ const { submit, submitValuesForm, showErrorSummary } = usePersonalDataSectionEve
 );
 
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/units';
+@use 'sass:map';
+
+.address-type-anonymous-disclaimer {
+	margin-top: map.get( units.$spacing, 'medium' );
+}
+</style>

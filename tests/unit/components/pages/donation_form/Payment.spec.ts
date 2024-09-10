@@ -7,7 +7,6 @@ import { Store } from 'vuex';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 describe( 'Payment.vue', () => {

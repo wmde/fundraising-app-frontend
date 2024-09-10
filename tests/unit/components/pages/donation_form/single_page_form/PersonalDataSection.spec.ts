@@ -2,9 +2,8 @@ import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
 import axios from 'axios';
 import PersonalDataSection from '@src/components/pages/donation_form/singlePageFromSections/PersonalDataSection.vue';
-import { createStore, StoreKey } from '@src/store/donation_store';
+import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { Store } from 'vuex';
@@ -15,6 +14,8 @@ import { nextTick } from 'vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
+import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
+import BankFields from '@src/components/shared/BankFields.vue';
 
 const testCountry = {
 	countryCode: 'de',
@@ -60,7 +61,7 @@ describe( 'PersonalDataSection.vue', () => {
 					Address: true,
 				},
 				provide: {
-					[ StoreKey as symbol ]: store,
+					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
 					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
@@ -87,11 +88,11 @@ describe( 'PersonalDataSection.vue', () => {
 	it( 'shows bank data fields if payment type is direct debit', async () => {
 		const { wrapper, store } = getWrapper();
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 
 		await setPaymentType( store, 'BEZ' );
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 	} );
 
 	it( 'hides bank data fields if payment type is not direct debit', async () => {
@@ -99,11 +100,11 @@ describe( 'PersonalDataSection.vue', () => {
 
 		await setPaymentType( store, 'BEZ' );
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 
 		await setPaymentType( store, 'UEB' );
 
-		expect( wrapper.findComponent( PaymentBankData ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 	} );
 
 	it( 'sets address type in store when it receives address-type event', () => {
@@ -125,11 +126,13 @@ describe( 'PersonalDataSection.vue', () => {
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
 		await nextTick();
 
-		//TODO test that payment section got scrolled to
+		// TODO test that payment section got scrolled to
 		expect( scrollElement.scrollIntoView ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	it( 'shows and hides the error summary', async () => {
+		jest.useFakeTimers();
+
 		const { wrapper, store } = getWrapper();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
@@ -163,6 +166,57 @@ describe( 'PersonalDataSection.vue', () => {
 
 		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#person-email' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+
+		jest.restoreAllMocks();
+	} );
+
+	it( 'shows and hides the error summary when payment data is invalid', async () => {
+		jest.useFakeTimers();
+
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'BEZ' );
+
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		await nextTick();
+		await nextTick();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
+		await wrapper.find( '#person-salutation-0' ).trigger( 'change' );
+
+		await wrapper.find( '#person-first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#person-first-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#person-last-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-street' ).setValue( 'street' );
+		await wrapper.find( '#person-street' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-post-code' ).setValue( 'post-code' );
+		await wrapper.find( '#person-post-code' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-city' ).setValue( 'city' );
+		await wrapper.find( '#person-city' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-country' ).setValue( 'country' );
+		await wrapper.find( '#person-country' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#person-email' ).trigger( 'blur' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#account-number' ).setValue( 'DE12500105170648489890' );
+		await wrapper.find( '#account-number' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
