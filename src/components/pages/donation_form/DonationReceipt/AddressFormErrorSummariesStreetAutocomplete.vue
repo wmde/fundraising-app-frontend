@@ -82,10 +82,10 @@
 				scrollElement: 'address-type-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.street,
-				message: $t( 'donation_form_street_error' ),
-				focusElement: 'street',
-				scrollElement: 'street-scroll-target'
+				validity: store.state.address.validity.country,
+				message: $t( 'donation_form_country_error' ),
+				focusElement: 'country',
+				scrollElement: 'country-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.postcode,
@@ -100,10 +100,10 @@
 				scrollElement: 'city-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.country,
-				message: $t( 'donation_form_country_error' ),
-				focusElement: 'country',
-				scrollElement: 'country-scroll-target'
+				validity: store.state.address.validity.street,
+				message: $t( 'donation_form_street_error' ),
+				focusElement: 'street',
+				scrollElement: 'street-scroll-target'
 			},
 		]"
 	/>
@@ -154,10 +154,10 @@
 				scrollElement: 'company-name-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.street,
-				message: $t( 'donation_form_street_error' ),
-				focusElement: 'street',
-				scrollElement: 'street-scroll-target'
+				validity: store.state.address.validity.country,
+				message: $t( 'donation_form_country_error' ),
+				focusElement: 'country',
+				scrollElement: 'country-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.postcode,
@@ -172,10 +172,10 @@
 				scrollElement: 'city-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.country,
-				message: $t( 'donation_form_country_error' ),
-				focusElement: 'country',
-				scrollElement: 'country-scroll-target'
+				validity: store.state.address.validity.street,
+				message: $t( 'donation_form_street_error' ),
+				focusElement: 'street',
+				scrollElement: 'street-scroll-target'
 			},
 		]"
 	/>
@@ -229,7 +229,7 @@ interface Props {
 	showErrorSummary: boolean;
 	addressType: AddressTypeModel;
 	showReceiptOptionError: boolean;
-	receiptNeeded?: boolean;
+	receiptNeeded: boolean;
 }
 
 defineProps<Props>();

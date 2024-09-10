@@ -4,10 +4,10 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
-				validity: store.getters[ 'bankdata/bankDataIsInvalid' ] ? Validity.INVALID : Validity.VALID,
+				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
-				scrollElement: 'iban-scroll-target'
+				scrollElement: 'account-number-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.addressType,
@@ -70,10 +70,10 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
-				validity: store.getters[ 'bankdata/bankDataIsInvalid' ] ? Validity.INVALID : Validity.VALID,
+				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
-				scrollElement: 'iban-scroll-target'
+				scrollElement: 'account-number-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.companyName,
@@ -118,10 +118,10 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
-				validity: store.getters[ 'bankdata/bankDataIsInvalid' ] ? Validity.INVALID : Validity.VALID,
+				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
-				scrollElement: 'iban-scroll-target'
+				scrollElement: 'account-number-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.firstName,
@@ -151,6 +151,7 @@ import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
+import { computed } from 'vue';
 
 interface Props {
 	showErrorSummary: boolean;
@@ -159,5 +160,6 @@ interface Props {
 
 defineProps<Props>();
 const store = useStore();
+const bankDataValidity = computed<Validity>( () => store.getters[ 'bankdata/bankDataIsInvalid' ] ? Validity.INVALID : Validity.VALID );
 
 </script>

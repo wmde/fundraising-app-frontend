@@ -54,8 +54,8 @@
 				{
 					validity: store.state.bankdata.validity.bankdata,
 					message: $t( 'error_summary_iban' ),
-					focusElement: 'iban',
-					scrollElement: 'payment-form-iban-scroll-target'
+					focusElement: 'account-number',
+					scrollElement: 'account-number-scroll-target'
 				}
 			]"
 		/>
