@@ -147,14 +147,20 @@ const onKeySubmit = () => {
 	city.value = activeCity.value;
 };
 
+let itemWasJustSelectedFromList = false;
+
 const onBlur = () => {
 	setTimeout( () => {
 		autocompleteIsActive.value = false;
+		if ( !itemWasJustSelectedFromList ) {
+			emit( 'field-changed' );
+		}
+		itemWasJustSelectedFromList = false;
 	}, 200 );
-	emit( 'field-changed' );
 };
 
 const onSelectItem = async ( newCity: string ) => {
+	itemWasJustSelectedFromList = true;
 	city.value = newCity;
 	await nextTick();
 	emit( 'field-changed' );

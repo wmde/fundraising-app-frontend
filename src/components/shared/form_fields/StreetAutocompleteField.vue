@@ -182,14 +182,20 @@ const onStreetNameKeySubmit = () => {
 	streetNameModel.value = activeStreet.value;
 };
 
+let itemWasJustSelectedFromList = false;
+
 const onStreetNameBlur = () => {
 	setTimeout( () => {
 		autocompleteIsActive.value = false;
+		if ( !itemWasJustSelectedFromList ) {
+			emit( 'field-changed' );
+		}
+		itemWasJustSelectedFromList = false;
 	}, 200 );
-	emit( 'field-changed' );
 };
 
 const onSelectStreet = async ( newStreet: string ) => {
+	itemWasJustSelectedFromList = true;
 	streetNameModel.value = newStreet;
 	await nextTick();
 	emit( 'field-changed' );

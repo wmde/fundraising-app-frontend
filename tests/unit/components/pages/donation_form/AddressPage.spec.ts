@@ -128,6 +128,8 @@ describe( 'AddressPage.vue', () => {
 	} );
 
 	it( 'shows and hides the error summary', async () => {
+		jest.useFakeTimers();
+
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
@@ -160,7 +162,11 @@ describe( 'AddressPage.vue', () => {
 		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#person-email' ).trigger( 'blur' );
 
+		await jest.runAllTimersAsync();
+
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+
+		jest.restoreAllMocks();
 	} );
 
 	it( 'updates full selected', async () => {

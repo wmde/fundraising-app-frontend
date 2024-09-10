@@ -2,6 +2,7 @@ import { nextTick } from 'vue';
 import { mount, VueWrapper } from '@vue/test-utils';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import { FakeCityAutocompleteResource } from '@test/unit/TestDoubles/FakeCityAutocompleteResource';
+import runAllTimersAsync = jest.runAllTimersAsync;
 
 const cityAutocompleteResource = new FakeCityAutocompleteResource();
 const placeholderKey = 'form_for_example';
@@ -87,21 +88,31 @@ describe( 'CityAutocompleteField.vue', () => {
 	} );
 
 	it( 'emits input event when an autocomplete item is selected', async () => {
+		jest.useFakeTimers();
+
 		const wrapper = getWrapper( '12345' );
 		await nextTick();
 		await nextTick();
 
 		await wrapper.find( '.dropdown-item:nth-child( 6 )' ).trigger( 'click' );
+		await runAllTimersAsync();
 
 		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toBe( 'Satan City' );
+		expect( wrapper.emitted( 'field-changed' ).length ).toBe( 1 );
+
+		jest.clearAllMocks();
 	} );
 
 	it( 'emits field changed event when text input is blurred', async () => {
+		jest.useFakeTimers();
+
 		const wrapper = getWrapper();
 
 		await wrapper.find<HTMLInputElement>( '#city' ).trigger( 'blur' );
+		await runAllTimersAsync();
 
 		expect( wrapper.emitted( 'field-changed' ).length ).toBe( 1 );
+		jest.clearAllMocks();
 	} );
 
 	it( 'emits field changed event when an autocomplete item is selected', async () => {
