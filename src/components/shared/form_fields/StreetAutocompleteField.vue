@@ -5,7 +5,7 @@
 			<TextFormInput
 				v-model="streetNameModel"
 				input-type="text"
-				name="city"
+				name="street"
 				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_name_placeholder' ) } )"
 				:has-error="showError"
 				:has-message="false"
