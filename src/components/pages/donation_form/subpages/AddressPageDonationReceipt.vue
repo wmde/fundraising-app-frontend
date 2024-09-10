@@ -7,7 +7,6 @@
 		ref="pageRef"
 	>
 		<h1 id="donation-form-heading" class="form-title">{{ $t( 'donation_form_heading' ) }}</h1>
-		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 
 		<PaymentSummary
@@ -18,14 +17,15 @@
 			@previous-page="previousPage">
 		</PaymentSummary>
 
+		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
+			<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
+			<BankFields/>
+		</form>
+
+		<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
+
 		<form @submit.prevent="submit" id="donation-form" action="/donation/add" method="post">
 			<AutofillHandler @autofill="onAutofill">
-				<ScrollTarget target-id="iban-scroll-target"/>
-				<PaymentBankData
-					v-if="isDirectDebitPayment"
-					:validateBankDataUrl="validateBankDataUrl"
-					:validateLegacyBankDataUrl="validateLegacyBankDataUrl"
-				/>
 
 				<NameFields
 					:show-error="fieldErrors"
@@ -133,7 +133,6 @@ import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
@@ -141,7 +140,6 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
-import { StoreKey } from '@src/store/donation_store';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { Validity } from '@src/view_models/Validity';
 import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
@@ -160,6 +158,7 @@ import FormSummary from '@src/components/shared/FormSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import AddressFormErrorSummaries from '@src/components/pages/donation_form/DonationReceipt/AddressFormErrorSummaries.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import BankFields from '@src/components/shared/BankFields.vue';
 
 interface Props {
 	assetsPath: string;
@@ -176,7 +175,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'previous-page' ] );
-const store = useStore( StoreKey );
+const store = useStore();
 
 const { addressType, addressTypeName } = useAddressType( store );
 const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );

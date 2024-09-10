@@ -2,7 +2,6 @@ import Vuex, { Store, StoreOptions } from 'vuex';
 import createAddress from '@src/store/membership_address';
 import createBankData from '@src/store/bankdata';
 import createPayment from '@src/store/membership_fee';
-import { InjectionKey } from 'vue';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
 import { validateFee } from '@src/store/feeValidator';
@@ -47,5 +46,3 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 
 	return new Vuex.Store<any>( storeBundle );
 }
-
-export const StoreKeyMembership: InjectionKey<Store<any>> = Symbol( 'Store' );

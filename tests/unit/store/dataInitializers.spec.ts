@@ -9,6 +9,7 @@ import {
 	createInitialMembershipAddressValues,
 	createInitialMembershipFeeValues,
 } from '@src/store/dataInitializers';
+import { InitialBankAccountData } from '@src/view_models/BankAccount';
 
 describe( 'createInitialDonationAddressValues', () => {
 	it( 'fills data from storage', () => {
@@ -264,24 +265,21 @@ describe( 'createInitialMembershipFeeValues', () => {
 
 describe( 'createInitialBankDataValues', () => {
 	it( 'fills data from initial data', () => {
-		const initialValues = {
-			iban: 'fakeAccountID',
-			bic: 'IAmBIC',
-			bankname: 'Bank of fakey fake',
+		const dataPersister = new FakeDataPersister( [] );
+		const initialValues: InitialBankAccountData = {
+			accountNumber: 'fakeAccountID',
+			bankCode: 'IAmBIC',
+			bankName: 'Bank of fakey fake',
+			iban: 'IBANANA',
+			bic: 'BISCUIT',
 		};
 
-		const values = createInitialBankDataValues( initialValues );
+		const values = createInitialBankDataValues( dataPersister, initialValues );
 
-		expect( values.accountId ).toEqual( initialValues.iban );
-		expect( values.bankId ).toEqual( initialValues.bic );
-		expect( values.bankName ).toEqual( initialValues.bankname );
-	} );
-
-	it( 'handles null initial value object', () => {
-		const values = createInitialBankDataValues( null );
-
-		expect( values.accountId ).toEqual( '' );
-		expect( values.bankId ).toEqual( '' );
-		expect( values.bankName ).toEqual( '' );
+		expect( values.accountNumber ).toEqual( initialValues.accountNumber );
+		expect( values.bankCode ).toEqual( initialValues.bankCode );
+		expect( values.bankName ).toEqual( initialValues.bankName );
+		expect( values.iban ).toEqual( initialValues.iban );
+		expect( values.bic ).toEqual( initialValues.bic );
 	} );
 } );

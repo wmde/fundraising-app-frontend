@@ -1,6 +1,6 @@
 import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
-import { createStore, StoreKeyMembership } from '@src/store/membership_store';
+import { createStore } from '@src/store/membership_store';
 
 import FilteredUrlMembershipValues from '@src/util/FilteredUrlMembershipValues';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
@@ -26,6 +26,7 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import CampaignParameters from '@src/util/CampaignParameters';
 import { TrackingData } from '@src/view_models/TrackingData';
+import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 
 interface MembershipAmountModel {
 	presetAmounts: Array<string>,
@@ -61,9 +62,11 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	);
 	initialFeeValues.setTypeFromAvailablePaymentTypes( pageData.applicationVars.paymentTypes );
 	const initialBankAccountData = {
+		accountNumber: initialFormValues.get( 'iban' ),
+		bankCode: '',
+		bankName: initialFormValues.get( 'bankname' ),
 		iban: initialFormValues.get( 'iban' ),
 		bic: initialFormValues.get( 'bic' ),
-		bankname: initialFormValues.get( 'bankname' ),
 	};
 
 	// Combine the initial values (from app data and URL) with the values from the local storage.
@@ -80,7 +83,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 		),
 		store.dispatch(
 			action( 'bankdata', 'initializeBankData' ),
-			createInitialBankDataValues( initialBankAccountData ),
+			createInitialBankDataValues( dataPersister, initialBankAccountData ),
 		),
 	] ).then( () => {
 		const app = createVueApp( App,
@@ -112,7 +115,10 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				},
 			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
-		app.provide( StoreKeyMembership, store );
+		app.provide( 'bankValidationResource', new ApiBankValidationResource(
+			pageData.applicationVars.urls.validateIban,
+			pageData.applicationVars.urls.convertBankData
+		) );
 		app.use( store );
 		app.mount( '#app' );
 	} );

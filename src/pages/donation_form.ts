@@ -13,7 +13,7 @@ import { TrackingData } from '@src/view_models/TrackingData';
 import { action } from '@src/store/util';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { createDataPersister } from '@src/store/create_data_persister';
-import { createInitialDonationAddressValues, createInitialDonationPaymentValues } from '@src/store/dataInitializers';
+import { createInitialBankDataValues, createInitialDonationAddressValues, createInitialDonationPaymentValues } from '@src/store/dataInitializers';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
 
 import App from '@src/components/App.vue';
@@ -21,6 +21,7 @@ import DonationForm from '@src/components/pages/DonationForm.vue';
 import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
+import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 
 interface DonationFormModel {
 	initialFormValues: any,
@@ -53,6 +54,16 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				allowedIntervals: pageData.applicationVars.paymentIntervals,
 				allowedPaymentTypes: pageData.applicationVars.paymentTypes,
 			}
+		),
+		store.dispatch(
+			action( 'bankdata', 'initializeBankData' ),
+			createInitialBankDataValues( dataPersister, {
+				accountNumber: '',
+				bankCode: '',
+				bankName: '',
+				iban: '',
+				bic: '',
+			} ),
 		),
 		store.dispatch(
 			action( 'address', 'initializeAddress' ),
@@ -90,6 +101,10 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );
 		app.provide( 'streetAutocompleteResource', new ApiStreetAutocompleteResource() );
+		app.provide( 'bankValidationResource', new ApiBankValidationResource(
+			pageData.applicationVars.urls.validateIban,
+			pageData.applicationVars.urls.convertBankData
+		) );
 		app.provide( StoreKey, store );
 		app.use( store );
 		app.mount( '#app' );

@@ -47,11 +47,7 @@
 			/>
 		</FormSection>
 
-		<PaymentBankData
-			v-if="paymentType === 'BEZ'"
-			:validateBankDataUrl="validateBankDataUrl.toString()"
-			:validateLegacyBankDataUrl="validateLegacyBankDataUrl.toString()"
-		/>
+		<BankFields v-if="paymentType === 'BEZ'"/>
 	</div>
 </template>
 
@@ -63,10 +59,10 @@ import { usePaymentFieldModel } from '@src/components/pages/membership_form/useP
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
-import PaymentBankData from '@src/components/shared/PaymentBankData.vue';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import BankFields from '@src/components/shared/BankFields.vue';
 
 interface Props {
 	validateFeeUrl: string,

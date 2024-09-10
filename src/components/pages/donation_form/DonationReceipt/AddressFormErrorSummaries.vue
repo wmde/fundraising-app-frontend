@@ -4,9 +4,9 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
-				validity: store.state.bankdata.validity.bankdata,
+				validity: store.getters[ 'bankdata/bankDataIsInvalid' ] ? Validity.INVALID : Validity.VALID,
 				message: $t( 'donation_form_payment_bankdata_error' ),
-				focusElement: 'iban',
+				focusElement: 'account-number',
 				scrollElement: 'iban-scroll-target'
 			},
 			{
@@ -46,9 +46,9 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
-				validity: store.state.bankdata.validity.bankdata,
+				validity: store.getters[ 'bankdata/bankDataIsInvalid' ] ? Validity.INVALID : Validity.VALID,
 				message: $t( 'donation_form_payment_bankdata_error' ),
-				focusElement: 'iban',
+				focusElement: 'account-number',
 				scrollElement: 'iban-scroll-target'
 			},
 			{
@@ -112,9 +112,9 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
-				validity: store.state.bankdata.validity.bankdata,
+				validity: store.getters[ 'bankdata/bankDataIsInvalid' ] ? Validity.INVALID : Validity.VALID,
 				message: $t( 'donation_form_payment_bankdata_error' ),
-				focusElement: 'iban',
+				focusElement: 'account-number',
 				scrollElement: 'iban-scroll-target'
 			},
 			{
