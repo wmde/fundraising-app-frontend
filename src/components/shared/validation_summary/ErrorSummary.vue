@@ -16,6 +16,7 @@
 				<li :key="item.focusElement" v-if="item.validity === Validity.INVALID">
 					<a
 						:href="`#${ item.focusElement }`"
+						:data-scroll-element="item.scrollElement"
 						@click.prevent="() => onClickError( item.focusElement, item.scrollElement )"
 						@keydown.space="() => onClickError( item.focusElement, item.scrollElement )"
 						@keydown.enter="() => onClickError( item.focusElement, item.scrollElement )"

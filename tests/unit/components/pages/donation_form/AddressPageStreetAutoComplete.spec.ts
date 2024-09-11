@@ -1,6 +1,7 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
 import axios from 'axios';
+import AddressPage from '@src/components/pages/donation_form/subpages/AddressPage.vue';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -10,11 +11,11 @@ import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
 import { nextTick } from 'vue';
+import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
-import AddressPageDonationReceipt from '@src/components/pages/donation_form/subpages/AddressPageDonationReceipt.vue';
-import BankFields from '@src/components/shared/BankFields.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
+import BankFields from '@src/components/shared/BankFields.vue';
 
 const testCountry = {
 	countryCode: 'de',
@@ -39,9 +40,9 @@ const salutations: Salutation[] = [
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe( 'AddressPageDonationReceipt.vue', () => {
+describe( 'AddressPage.vue (With Street Autocomplete)', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
-		const wrapper = mount( AddressPageDonationReceipt, {
+		const wrapper = mount( AddressPage, {
 			props: {
 				assetsPath: '',
 				validateAddressUrl: '',
@@ -52,7 +53,7 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 				salutations,
 				trackingData: {} as TrackingData,
 				campaignValues: {} as CampaignValues,
-				addressValidationPatterns: { postcode: '' } as AddressValidation,
+				addressValidationPatterns: { postcode: '', country: null } as AddressValidation,
 			},
 			global: {
 				plugins: [ store ],
@@ -63,7 +64,10 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
+					FeatureToggle: createFeatureToggle( [
+						'campaigns.address_type_steps.preselect',
+						'campaigns.address_field_order.new_order',
+					] ),
 				},
 			},
 		} );
@@ -106,6 +110,18 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 	} );
 
+	it( 'sets address type in store when it receives address-type event', () => {
+		const { wrapper, store } = getWrapper();
+
+		store.dispatch = jest.fn();
+		const expectedAction = action( 'address', 'setAddressType' );
+		const expectedPayload = AddressTypeModel.ANON;
+
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.ANON );
+
+		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+	} );
+
 	it( 'emits previous event', async () => {
 		const { wrapper } = getWrapper();
 
@@ -115,40 +131,45 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 	} );
 
 	it( 'shows and hides the error summary', async () => {
+		jest.useFakeTimers();
+
 		const { wrapper } = getWrapper();
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 
-		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
-		await wrapper.find( '#salutation-0' ).trigger( 'change' );
+		await wrapper.find( '#person-salutation-0' ).trigger( 'change' );
 
-		await wrapper.find( '#first-name' ).setValue( 'first-name' );
-		await wrapper.find( '#first-name' ).trigger( 'blur' );
+		await wrapper.find( '#person-first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#person-first-name' ).trigger( 'blur' );
 
-		await wrapper.find( '#last-name' ).setValue( 'last-name' );
-		await wrapper.find( '#last-name' ).trigger( 'blur' );
+		await wrapper.find( '#person-last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#person-last-name' ).trigger( 'blur' );
 
-		await wrapper.find( '#street' ).setValue( 'street' );
-		await wrapper.find( '#street' ).trigger( 'blur' );
+		await wrapper.find( '#person-street' ).setValue( 'street' );
+		await wrapper.find( '#person-street' ).trigger( 'blur' );
 
-		await wrapper.find( '#post-code' ).setValue( 'post-code' );
-		await wrapper.find( '#post-code' ).trigger( 'blur' );
+		await wrapper.find( '#person-post-code' ).setValue( 'post-code' );
+		await wrapper.find( '#person-post-code' ).trigger( 'blur' );
 
-		await wrapper.find( '#city' ).setValue( 'city' );
-		await wrapper.find( '#city' ).trigger( 'blur' );
+		await wrapper.find( '#person-city' ).setValue( 'city' );
+		await wrapper.find( '#person-city' ).trigger( 'blur' );
 
-		await wrapper.find( '#country' ).setValue( 'country' );
-		await wrapper.find( '#country' ).trigger( 'blur' );
+		await wrapper.find( '#person-country' ).setValue( 'country' );
+		await wrapper.find( '#person-country' ).trigger( 'blur' );
 
-		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
-		await wrapper.find( '#email' ).trigger( 'blur' );
+		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#person-email' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+
+		jest.clearAllMocks();
 	} );
 
 	it( 'shows and hides the error summary when payment data is invalid', async () => {
@@ -158,38 +179,37 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 
 		await setPaymentType( store, 'BEZ' );
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 
-		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
-		await wrapper.find( '#salutation-0' ).trigger( 'change' );
+		await wrapper.find( '#person-salutation-0' ).trigger( 'change' );
 
-		await wrapper.find( '#first-name' ).setValue( 'first-name' );
-		await wrapper.find( '#first-name' ).trigger( 'blur' );
+		await wrapper.find( '#person-first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#person-first-name' ).trigger( 'blur' );
 
-		await wrapper.find( '#last-name' ).setValue( 'last-name' );
-		await wrapper.find( '#last-name' ).trigger( 'blur' );
+		await wrapper.find( '#person-last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#person-last-name' ).trigger( 'blur' );
 
-		await wrapper.find( '#street' ).setValue( 'street' );
-		await wrapper.find( '#street' ).trigger( 'blur' );
+		await wrapper.find( '#person-street' ).setValue( 'street' );
+		await wrapper.find( '#person-street' ).trigger( 'blur' );
 
-		await wrapper.find( '#post-code' ).setValue( 'post-code' );
-		await wrapper.find( '#post-code' ).trigger( 'blur' );
+		await wrapper.find( '#person-post-code' ).setValue( 'post-code' );
+		await wrapper.find( '#person-post-code' ).trigger( 'blur' );
 
-		await wrapper.find( '#city' ).setValue( 'city' );
-		await wrapper.find( '#city' ).trigger( 'blur' );
+		await wrapper.find( '#person-city' ).setValue( 'city' );
+		await wrapper.find( '#person-city' ).trigger( 'blur' );
 
 		await jest.runAllTimersAsync();
 
-		await wrapper.find( '#country' ).setValue( 'country' );
-		await wrapper.find( '#country' ).trigger( 'blur' );
+		await wrapper.find( '#person-country' ).setValue( 'country' );
+		await wrapper.find( '#person-country' ).trigger( 'blur' );
 
-		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
-		await wrapper.find( '#email' ).trigger( 'blur' );
+		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#person-email' ).trigger( 'blur' );
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 
@@ -203,46 +223,33 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 		jest.clearAllMocks();
 	} );
 
-	it( 'handles all error summary clicks when no donation receipt has been selected', async () => {
-		const { wrapper, store } = getWrapper();
-
-		await setPaymentType( store, 'BEZ' );
-
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
-		await nextTick();
-		await nextTick();
-
-		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
-
-		expect( errorLinks.length ).toStrictEqual( 6 );
-
-		errorLinks.forEach( x => {
-			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
-			expect( wrapper.find( '#' + x.attributes( 'data-scroll-element' ) ).exists() ).toBeTruthy();
-		} );
-	} );
-
-	it( 'handles all error summary clicks when donation receipt has been selected', async () => {
+	test.each( [
+		[ '', 10 ],
+		[ '#addressType-0', 9 ],
+		[ '#addressType-1', 7 ],
+	] )( 'focuses inputs on error summary clicks', async ( addressTypeSelector: string, numberOfErrors: number ) => {
 		jest.useFakeTimers();
 
 		const { wrapper, store } = getWrapper();
 
 		await setPaymentType( store, 'BEZ' );
 
-		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
+		if ( addressTypeSelector !== '' ) {
+			await wrapper.find( addressTypeSelector ).trigger( 'change' );
+		}
 
-		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
-		await wrapper.find( '#country' ).trigger( 'blur' );
+		await wrapper.find( '#person-country' ).setValue( 'I am clearly not a country' );
+		await wrapper.find( '#person-country' ).trigger( 'blur' );
 
 		await jest.runAllTimersAsync();
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
 		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
 
-		expect( errorLinks.length ).toStrictEqual( 9 );
+		expect( errorLinks.length ).toStrictEqual( numberOfErrors );
 
 		errorLinks.forEach( x => {
 			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
@@ -252,72 +259,20 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 		jest.clearAllMocks();
 	} );
 
-	it( 'handles all error summary clicks when address type is person', async () => {
-		jest.useFakeTimers();
+	it( 'updates full selected', async () => {
+		const { wrapper } = getWrapper();
 
-		const { wrapper, store } = getWrapper();
-
-		await setPaymentType( store, 'BEZ' );
-
-		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
-		await wrapper.find( '#addressType-0' ).trigger( 'change' );
-
-		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
-		await wrapper.find( '#country' ).trigger( 'blur' );
-
-		await jest.runAllTimersAsync();
-
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
-		await nextTick();
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'set-full-selected' );
 		await nextTick();
 
-		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
-
-		expect( errorLinks.length ).toStrictEqual( 8 );
-
-		errorLinks.forEach( x => {
-			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
-			expect( wrapper.find( '#' + x.attributes( 'data-scroll-element' ) ).exists() ).toBeTruthy();
-		} );
-
-		jest.clearAllMocks();
-	} );
-
-	it( 'handles all error summary clicks when address type is company', async () => {
-		jest.useFakeTimers();
-
-		const { wrapper, store } = getWrapper();
-
-		await setPaymentType( store, 'BEZ' );
-
-		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
-
-		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
-		await wrapper.find( '#country' ).trigger( 'blur' );
-
-		await jest.runAllTimersAsync();
-
-		await wrapper.find( '#addressType-0' ).trigger( 'change' );
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
-		await nextTick();
-		await nextTick();
-
-		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
-
-		expect( errorLinks.length ).toStrictEqual( 8 );
-
-		errorLinks.forEach( x => {
-			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
-			expect( wrapper.find( '#' + x.attributes( 'data-scroll-element' ) ).exists() ).toBeTruthy();
-		} );
-
-		jest.clearAllMocks();
+		expect( wrapper.find( '.address-type-person' ).exists() ).toBeTruthy();
 	} );
 
 	it( 'submits the form', async () => {
 		const store = createStore();
 		await store.dispatch( action( 'address', 'initializeAddress' ), {
-			addressType: AddressTypeModel.PERSON,
+			addressType: AddressTypeModel.ANON,
 			newsletter: true,
 			receipt: true,
 			fields: [
@@ -337,10 +292,10 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
 		const { wrapper } = getWrapper( store );
 
-		const submitForm = wrapper.find<HTMLFormElement>( '#donation-form-submit-values' );
+		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
 		submitForm.element.submit = jest.fn();
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await flushPromises();
 
 		expect( submitForm.element.submit ).toHaveBeenCalled();
