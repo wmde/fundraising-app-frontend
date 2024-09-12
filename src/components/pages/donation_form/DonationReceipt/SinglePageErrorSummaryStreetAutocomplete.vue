@@ -277,7 +277,7 @@ interface Props {
 	showErrorSummary: boolean;
 	addressType: AddressTypeModel;
 	showReceiptOptionError: boolean;
-	receiptNeeded: boolean;
+	receiptNeeded?: boolean;
 }
 
 defineProps<Props>();

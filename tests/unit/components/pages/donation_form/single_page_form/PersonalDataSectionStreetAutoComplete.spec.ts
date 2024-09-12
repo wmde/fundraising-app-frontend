@@ -40,13 +40,13 @@ const salutations: Salutation[] = [
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe( 'PersonalDataSection.vue', () => {
+describe( 'PersonalDataSection.vue (With Street Autocomplete)', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
 		const wrapper = mount( PersonalDataSection, {
 			props: {
 				assetsPath: '',
-				validateAddressUrl: 'https://localhost:8082',
-				validateEmailUrl: 'https://localhost:8082',
+				validateAddressUrl: '',
+				validateEmailUrl: '',
 				validateBankDataUrl: 'https://localhost:8082',
 				validateLegacyBankDataUrl: 'https://localhost:8082',
 				countries: [ testCountry ],
@@ -64,7 +64,10 @@ describe( 'PersonalDataSection.vue', () => {
 					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
+					FeatureToggle: createFeatureToggle( [
+						'campaigns.address_type_steps.preselect',
+						'campaigns.address_field_order.new_order',
+					] ),
 				},
 			},
 		} );
@@ -119,29 +122,24 @@ describe( 'PersonalDataSection.vue', () => {
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
-	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
-		const scrollElement = { scrollIntoView: jest.fn() };
+	it( 'emits previous event', async () => {
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
-		await nextTick();
 
-		// TODO test that payment section got scrolled to
-		expect( scrollElement.scrollIntoView ).toHaveBeenCalledTimes( 1 );
+		expect( wrapper.emitted( 'previous-page' ).length ).toStrictEqual( 1 );
 	} );
 
 	it( 'shows and hides the error summary', async () => {
 		jest.useFakeTimers();
 
-		const { wrapper, store } = getWrapper();
+		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-
-		await setPaymentType( store, 'UEB' );
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#person-salutation-0' ).trigger( 'change' );
@@ -271,18 +269,8 @@ describe( 'PersonalDataSection.vue', () => {
 		expect( wrapper.find( '.address-type-person' ).exists() ).toBeTruthy();
 	} );
 
-	it( 'validates the payment section input on page submit', async () => {
-		const { wrapper, store } = getWrapper();
-		store.dispatch = jest.fn().mockResolvedValue( true );
-
-		await wrapper.find( '#submit-btn' ).trigger( 'click' );
-
-		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
-	} );
-
 	it( 'submits the form', async () => {
 		const store = createStore();
-		await setPaymentType( store, 'UEB' );
 		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.ANON,
 			newsletter: true,

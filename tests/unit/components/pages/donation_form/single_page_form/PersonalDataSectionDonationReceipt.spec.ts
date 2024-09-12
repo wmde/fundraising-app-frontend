@@ -156,6 +156,169 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
 
+	it( 'shows and hides the error summary when payment data is invalid', async () => {
+		jest.useFakeTimers();
+
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'BEZ' );
+
+		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await nextTick();
+		await nextTick();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
+		await wrapper.find( '#salutation-0' ).trigger( 'change' );
+
+		await wrapper.find( '#first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#first-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#last-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#street' ).setValue( 'street' );
+		await wrapper.find( '#street' ).trigger( 'blur' );
+
+		await wrapper.find( '#post-code' ).setValue( 'post-code' );
+		await wrapper.find( '#post-code' ).trigger( 'blur' );
+
+		await wrapper.find( '#city' ).setValue( 'city' );
+		await wrapper.find( '#city' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( '#country' ).setValue( 'country' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+
+		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#email' ).trigger( 'blur' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#account-number' ).setValue( 'DE12500105170648489890' );
+		await wrapper.find( '#account-number' ).trigger( 'blur' );
+
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+
+		jest.clearAllMocks();
+	} );
+
+	it( 'handles all error summary clicks when no donation receipt has been selected', async () => {
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'BEZ' );
+
+		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await nextTick();
+		await nextTick();
+
+		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
+
+		expect( errorLinks.length ).toStrictEqual( 6 );
+
+		errorLinks.forEach( x => {
+			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
+			expect( wrapper.find( '#' + x.attributes( 'data-scroll-element' ) ).exists() ).toBeTruthy();
+		} );
+	} );
+
+	it( 'handles all error summary clicks when donation receipt has been selected', async () => {
+		jest.useFakeTimers();
+
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'BEZ' );
+
+		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
+
+		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await nextTick();
+		await nextTick();
+
+		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
+
+		expect( errorLinks.length ).toStrictEqual( 9 );
+
+		errorLinks.forEach( x => {
+			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
+			expect( wrapper.find( '#' + x.attributes( 'data-scroll-element' ) ).exists() ).toBeTruthy();
+		} );
+
+		jest.clearAllMocks();
+	} );
+
+	it( 'handles all error summary clicks when address type is person', async () => {
+		jest.useFakeTimers();
+
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'BEZ' );
+
+		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
+
+		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await nextTick();
+		await nextTick();
+
+		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
+
+		expect( errorLinks.length ).toStrictEqual( 8 );
+
+		errorLinks.forEach( x => {
+			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
+			expect( wrapper.find( '#' + x.attributes( 'data-scroll-element' ) ).exists() ).toBeTruthy();
+		} );
+
+		jest.clearAllMocks();
+	} );
+
+	it( 'handles all error summary clicks when address type is company', async () => {
+		jest.useFakeTimers();
+
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'BEZ' );
+
+		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
+
+		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
+		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await nextTick();
+		await nextTick();
+
+		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
+
+		expect( errorLinks.length ).toStrictEqual( 8 );
+
+		errorLinks.forEach( x => {
+			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
+			expect( wrapper.find( '#' + x.attributes( 'data-scroll-element' ) ).exists() ).toBeTruthy();
+		} );
+
+		jest.clearAllMocks();
+	} );
+
 	it( 'validates the payment section input on page submit', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn().mockResolvedValue( true );
@@ -197,4 +360,5 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 
 		expect( submitForm.element.submit ).toHaveBeenCalled();
 	} );
+
 } );

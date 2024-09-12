@@ -46,16 +46,17 @@ export function usePersonalDataSectionEventHandlers(
 
 		if ( !store.getters[ 'address/requiredFieldsAreValid' ] ) {
 			addressDataIsValid.value = false;
-			return;
 		}
 
 		if ( isDirectDebit.value && !store.getters[ 'bankdata/bankDataIsValid' ] ) {
 			bankDataIsValid.value = false;
-			return;
 		}
 
 		if ( !store.getters[ 'payment/paymentDataIsValid' ] ) {
 			paymentDataIsValid.value = false;
+		}
+
+		if ( !addressDataIsValid.value || !bankDataIsValid.value || !paymentDataIsValid.value ) {
 			return;
 		}
 
