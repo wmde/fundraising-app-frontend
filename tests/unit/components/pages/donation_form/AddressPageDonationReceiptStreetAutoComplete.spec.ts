@@ -39,7 +39,7 @@ const salutations: Salutation[] = [
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe( 'AddressPageDonationReceipt.vue', () => {
+describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
 		const wrapper = mount( AddressPageDonationReceipt, {
 			props: {
@@ -63,7 +63,10 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
+					FeatureToggle: createFeatureToggle( [
+						'campaigns.address_type_steps.preselect',
+						'campaigns.address_field_order.new_order',
+					] ),
 				},
 			},
 		} );

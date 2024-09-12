@@ -53,7 +53,7 @@ describe( 'AddressPage.vue', () => {
 				salutations,
 				trackingData: {} as TrackingData,
 				campaignValues: {} as CampaignValues,
-				addressValidationPatterns: { postcode: '' } as AddressValidation,
+				addressValidationPatterns: { postcode: '', country: null } as AddressValidation,
 			},
 			global: {
 				plugins: [ store ],
@@ -166,10 +166,12 @@ describe( 'AddressPage.vue', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 
-		jest.restoreAllMocks();
+		jest.clearAllMocks();
 	} );
 
-	it.skip( 'shows and hides the error summary when payment data is invalid', async () => {
+	it( 'shows and hides the error summary when payment data is invalid', async () => {
+		jest.useFakeTimers();
+
 		const { wrapper, store } = getWrapper();
 
 		await setPaymentType( store, 'BEZ' );
@@ -198,6 +200,8 @@ describe( 'AddressPage.vue', () => {
 		await wrapper.find( '#person-city' ).setValue( 'city' );
 		await wrapper.find( '#person-city' ).trigger( 'blur' );
 
+		await jest.runAllTimersAsync();
+
 		await wrapper.find( '#person-country' ).setValue( 'country' );
 		await wrapper.find( '#person-country' ).trigger( 'blur' );
 
@@ -212,6 +216,44 @@ describe( 'AddressPage.vue', () => {
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+
+		jest.clearAllMocks();
+	} );
+
+	test.each( [
+		[ '', 10 ],
+		[ '#addressType-0', 9 ],
+		[ '#addressType-1', 7 ],
+	] )( 'focuses inputs on error summary clicks', async ( addressTypeSelector: string, numberOfErrors: number ) => {
+		jest.useFakeTimers();
+
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'BEZ' );
+
+		if ( addressTypeSelector !== '' ) {
+			await wrapper.find( addressTypeSelector ).trigger( 'change' );
+		}
+
+		await wrapper.find( '#person-country' ).setValue( 'I am clearly not a country' );
+		await wrapper.find( '#person-country' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		await nextTick();
+		await nextTick();
+
+		const errorLinks = wrapper.findAll<HTMLLinkElement>( '.error-summary-list a' );
+
+		expect( errorLinks.length ).toStrictEqual( numberOfErrors );
+
+		errorLinks.forEach( x => {
+			expect( wrapper.find( x.attributes( 'href' ) ).exists() ).toBeTruthy();
+			expect( wrapper.find( '#' + x.attributes( 'data-scroll-element' ) ).exists() ).toBeTruthy();
+		} );
+
+		jest.clearAllMocks();
 	} );
 
 	it( 'updates full selected', async () => {
