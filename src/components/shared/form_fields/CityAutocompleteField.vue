@@ -54,6 +54,7 @@ import { CityAutocompleteResource, NullCityAutocompleteResource } from '@src/api
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
 
 enum InteractionState {
 	Typing,
@@ -85,6 +86,7 @@ const ariaDescribedby = useAriaDescribedby(
 	`${props.inputId}-error`,
 	computed<boolean>( () => props.showError )
 );
+const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );
 
 const placeholder = computed( () => {
 	if ( cities.value.length > 0 ) {
@@ -92,13 +94,6 @@ const placeholder = computed( () => {
 	}
 	return 'form_for_example';
 } );
-
-const scrollIntoView = (): void => {
-	const scrollIntoViewElement = document.getElementById( props.scrollTargetId );
-	if ( scrollIntoViewElement ) {
-		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
-	}
-};
 
 const onFocus = ( event: Event ) => {
 	autocompleteIsActive.value = true;

@@ -79,6 +79,7 @@ import { useStreetsResource } from '@src/components/shared/form_fields/useStreet
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
+import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
 
 enum InteractionState {
 	Typing,
@@ -112,6 +113,7 @@ const ariaDescribedby = useAriaDescribedby(
 	`${props.inputIdStreetName}-error`,
 	computed<boolean>( () => props.showError )
 );
+const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );
 
 const filteredStreets = computed<Array<string>>( () => {
 	const streetList = streets.value.filter( ( streetItem: string ) => {
@@ -125,13 +127,6 @@ const filteredStreets = computed<Array<string>>( () => {
 
 const onUpdateModel = (): void => {
 	emit( 'update:modelValue', joinStreetAndBuildingNumber( streetNameModel.value, buildingNumberModel.value ) );
-};
-
-const scrollIntoView = (): void => {
-	const scrollIntoViewElement = document.getElementById( props.scrollTargetId );
-	if ( scrollIntoViewElement ) {
-		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
-	}
 };
 
 const onStreetNameFocus = ( event: Event ) => {

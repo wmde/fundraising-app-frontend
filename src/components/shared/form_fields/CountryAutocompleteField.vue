@@ -58,6 +58,7 @@ import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vu
 import { computed, nextTick, ref } from 'vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
 
 enum InteractionState {
 	Typing,
@@ -94,16 +95,10 @@ const ariaDescribedby = useAriaDescribedby(
 	`${props.inputId}-error`,
 	computed<boolean>( () => props.showError )
 );
+const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );
 
 const isFirstFocusOnDefaultValue = (): boolean => {
 	return !wasFocusedBefore.value && !props.wasRestored;
-};
-
-const scrollIntoView = (): void => {
-	const scrollIntoViewElement = document.getElementById( props.scrollTargetId );
-	if ( scrollIntoViewElement ) {
-		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
-	}
 };
 
 const onFocus = ( event: Event ) => {
