@@ -62,11 +62,11 @@ dataPersister.initialize( persistenceItems ).then( () => {
 	);
 	initialFeeValues.setTypeFromAvailablePaymentTypes( pageData.applicationVars.paymentTypes );
 	const initialBankAccountData = {
-		accountNumber: initialFormValues.get( 'iban' ),
+		accountNumber: initialFormValues.get( 'iban' ) ?? '',
 		bankCode: '',
-		bankName: initialFormValues.get( 'bankname' ),
-		iban: initialFormValues.get( 'iban' ),
-		bic: initialFormValues.get( 'bic' ),
+		bankName: initialFormValues.get( 'bankname' ) ?? '',
+		iban: initialFormValues.get( 'iban' ) ?? '',
+		bic: initialFormValues.get( 'bic' ) ?? '',
 	};
 
 	// Combine the initial values (from app data and URL) with the values from the local storage.
