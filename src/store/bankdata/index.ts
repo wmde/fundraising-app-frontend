@@ -11,6 +11,7 @@ export default function (): Module<BankAccount, any> {
 		validity: {
 			accountNumber: Validity.INCOMPLETE,
 			bankCode: Validity.INCOMPLETE,
+			iban: Validity.INCOMPLETE,
 		},
 		values: {
 			accountNumber: '',
