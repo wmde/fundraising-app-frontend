@@ -288,11 +288,21 @@ describe( 'CountryAutocompleteField.vue', () => {
 		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'country-selected country-error' );
 	} );
 
-	it( 'scrolls field into view when focused', async () => {
+	it( 'scrolls field into view on small size when focused', async () => {
 		const wrapper = getWrapper();
+		Object.defineProperty( window, 'innerWidth', { writable: true, configurable: true, value: 769 } );
 
 		await wrapper.find<HTMLInputElement>( '#country' ).trigger( 'focus' );
 
 		expect( scrollElement.scrollIntoView ).toHaveBeenCalled();
+	} );
+
+	it( 'does not scroll field into view on large size when focused', async () => {
+		const wrapper = getWrapper();
+		Object.defineProperty( window, 'innerWidth', { writable: true, configurable: true, value: 770 } );
+
+		await wrapper.find<HTMLInputElement>( '#country' ).trigger( 'focus' );
+
+		expect( scrollElement.scrollIntoView ).not.toHaveBeenCalled();
 	} );
 } );

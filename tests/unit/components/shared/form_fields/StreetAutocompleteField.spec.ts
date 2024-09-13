@@ -265,11 +265,21 @@ describe( 'StreetAutocompleteField.vue', () => {
 		expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'street-selected street-error' );
 	} );
 
-	it( 'scrolls field into view when focused', async () => {
+	it( 'scrolls field into view on small size when focused', async () => {
 		const wrapper = getWrapper( '', '12345' );
+		Object.defineProperty( window, 'innerWidth', { writable: true, configurable: true, value: 769 } );
 
 		await wrapper.find<HTMLInputElement>( '#street' ).trigger( 'focus' );
 
 		expect( scrollElement.scrollIntoView ).toHaveBeenCalled();
+	} );
+
+	it( 'does not scroll field into view on large size when focused', async () => {
+		const wrapper = getWrapper( '', '12345' );
+		Object.defineProperty( window, 'innerWidth', { writable: true, configurable: true, value: 770 } );
+
+		await wrapper.find<HTMLInputElement>( '#street' ).trigger( 'focus' );
+
+		expect( scrollElement.scrollIntoView ).not.toHaveBeenCalled();
 	} );
 } );
