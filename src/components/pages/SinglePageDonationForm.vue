@@ -103,22 +103,4 @@ defineProps<Props>();
 	}
 }
 
-#payment-form-interval, #payment-form-type {
-	.radio-form-input {
-		width: 100%;
-		margin: 0 0 16px 0;
-		@include breakpoints.tablet-up {
-			width: 50%;
-			padding-right: 16px;
-		}
-	}
-}
-
-.form-field-radio.row-alignment {
-	.form-field-radio-container {
-		max-width: 430px;
-		flex-wrap: wrap;
-	}
-}
-
 </style>

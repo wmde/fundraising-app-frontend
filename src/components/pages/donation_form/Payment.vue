@@ -20,7 +20,7 @@
 				:options="paymentIntervalsAsOptions"
 				:required="true"
 				:disabled="disabledPaymentIntervals"
-				alignment="row"
+				alignment="twocolumnsperrow"
 			/>
 		</FormSection>
 
@@ -34,7 +34,7 @@
 				:options="paymentTypesAsOptions"
 				:required="true"
 				:disabled="disabledPaymentTypes"
-				alignment="row"
+				alignment="twocolumnsperrow"
 				:show-error="!paymentTypeIsValid"
 				:error-message="$t('donation_form_payment_type_error')"
 			>

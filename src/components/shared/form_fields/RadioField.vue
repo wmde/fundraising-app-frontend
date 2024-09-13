@@ -49,7 +49,7 @@ interface Props {
 	required?: boolean;
 	showError?: boolean;
 	errorMessage?: String;
-	alignment: 'row' | 'column';
+	alignment: 'row' | 'column' | 'twocolumnsperrow';
 	autofocus?: boolean;
 	ariaDescribedby?: string;
 }
@@ -120,6 +120,36 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 
 				.radio-form-input {
 					margin: 0 map.get(units.$spacing, 'large') 0 0;
+				}
+
+				label {
+					padding-left: map.get(units.$spacing, 'x-large');
+				}
+			}
+		}
+	}
+
+	&.twocolumnsperrow-alignment {
+		max-width: 430px;
+		.form-field-radio-container {
+			flex-direction: column;
+			flex-wrap: wrap;
+
+			.radio-form-input {
+				width: 100%;
+				margin: 0 0 16px 0;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+
+			@include breakpoints.tablet-up {
+				flex-direction: row;
+
+				.radio-form-input {
+					width: 50%;
+					padding-right: 16px;
 				}
 
 				label {
