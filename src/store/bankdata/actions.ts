@@ -45,6 +45,9 @@ export const actions = {
 		context.commit( 'SET_ACCOUNT_NUMBER_VALIDITY', payload );
 		context.commit( 'SET_BANK_CODE_VALIDITY', payload );
 	},
+	setIbanValidity( context: ActionContext<BankAccount, any>, payload: Validity ): void {
+		context.commit( 'SET_IBAN_VALIDITY', payload );
+	},
 	markBankDataAsIncomplete( context: ActionContext<BankAccount, any> ): void {
 		context.commit( 'SET_ACCOUNT_NUMBER_VALIDITY', Validity.INCOMPLETE );
 		context.commit( 'SET_BANK_CODE_VALIDITY', Validity.INCOMPLETE );

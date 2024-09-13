@@ -31,6 +31,9 @@ export const mutations: MutationTree<BankAccount> = {
 	SET_BANK_CODE_VALIDITY( state: BankAccount, validity: Validity ) {
 		state.validity.bankCode = validity;
 	},
+	SET_IBAN_VALIDITY( state: BankAccount, validity: Validity ) {
+		state.validity.iban = validity;
+	},
 	SET_IS_VALIDATING( state: BankAccount, isValidating: boolean ) {
 		state.isValidating = isValidating;
 	},

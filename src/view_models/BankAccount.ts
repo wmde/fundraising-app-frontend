@@ -5,6 +5,7 @@ export interface BankAccount {
     validity: {
         accountNumber: Validity;
         bankCode: Validity;
+        iban: Validity;
     };
     values: {
         accountNumber: string;

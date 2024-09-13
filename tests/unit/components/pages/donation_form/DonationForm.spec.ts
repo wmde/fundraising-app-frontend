@@ -7,6 +7,7 @@ import PaymentSection from '@src/components/pages/donation_form/singlePageFormSe
 import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
 import { Store } from 'vuex';
 import { createStore, StoreKey } from '@src/store/donation_store';
+import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 declare global {
 	namespace NodeJS {
@@ -43,6 +44,7 @@ describe( 'DonationForm.vue', () => {
 				plugins: [ store ],
 				provide: {
 					[ StoreKey as symbol ]: store,
+					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
 					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
