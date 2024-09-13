@@ -1,7 +1,7 @@
 <template>
 	<div
-		class="single-page-form-section"
-		id="single-page-form-section-personal-data-donation-receipt"
+		class="donation-page-form-section"
+		id="donation-page-form-section-personal-data-donation-receipt"
 		aria-labelledby="donation-form-subheading donation-form-tagline"
 	>
 
@@ -201,7 +201,7 @@ const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
 defineExpose( { focus: (): void => pageRef.value.focus() } );
 const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementById( 'single-page-form-section-payment' );
+	const scrollIntoViewElement = document.getElementById( 'donation-page-form-section-payment' );
 	if ( scrollIntoViewElement ) {
 		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
 	}

@@ -1,7 +1,7 @@
 <template>
 	<div
-		id="single-page-form-section-personal-data"
-		class="single-page-form-section"
+		id="donation-page-form-section-personal-data"
+		class="donation-page-form-section"
 		aria-live="assertive"
 		aria-labelledby="donation-form-subheading donation-form-tagline"
 	>
@@ -138,7 +138,7 @@ const setFullSelected = ( selected: boolean ) => {
 };
 
 const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementById( 'single-page-form-section-payment' );
+	const scrollIntoViewElement = document.getElementById( 'donation-page-form-section-payment' );
 	if ( scrollIntoViewElement ) {
 		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
 	}
