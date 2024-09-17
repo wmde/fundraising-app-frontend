@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import SinglePageDonationForm from '@src/components/pages/SinglePageDonationForm.vue';
+import DonationForm from '@src/components/pages/DonationForm.vue';
 import countries from '@src/../tests/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
@@ -16,14 +16,14 @@ declare global {
 	}
 }
 
-describe( 'SinglePageDonationForm.vue', () => {
+describe( 'DonationForm.vue', () => {
 
 	beforeEach( () => {
 		global.window.scrollTo = jest.fn();
 	} );
 
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
-		const wrapper = mount( SinglePageDonationForm, {
+		const wrapper = mount( DonationForm, {
 			props: {
 				assetsPath: '',
 				paymentAmounts: [ 5 ],

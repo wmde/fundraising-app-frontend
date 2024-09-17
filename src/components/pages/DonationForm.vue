@@ -58,7 +58,7 @@ import PersonalDataSectionDonationReceipt
 	from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
 
 defineOptions( {
-	name: 'SinglePageDonationForm',
+	name: 'DonationForm',
 } );
 
 interface Props {

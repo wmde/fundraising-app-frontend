@@ -17,7 +17,7 @@ import { createInitialBankDataValues, createInitialDonationAddressValues, create
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
 
 import App from '@src/components/App.vue';
-import DonationForm from '@src/components/pages/SinglePageDonationForm.vue';
+import DonationForm from '@src/components/pages/DonationForm.vue';
 import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
