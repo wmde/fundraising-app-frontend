@@ -216,6 +216,7 @@ import { computed } from 'vue';
 interface Props {
 	showErrorSummary: boolean;
 	addressType: AddressTypeModel;
+	receiptNeeded?: boolean;
 }
 
 defineProps<Props>();

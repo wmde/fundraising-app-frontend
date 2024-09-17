@@ -4,7 +4,8 @@ import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
-import { computed, ComputedRef, ref, Ref } from 'vue';
+import { computed, ComputedRef, ref, Ref, watch } from 'vue';
+import { Validity } from '@src/view_models/Validity';
 
 const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 	if ( addressType === AddressTypeModel.ANON ) {
@@ -60,16 +61,17 @@ export function usePersonalDataSectionEventHandlers(
 
 		if ( !store.getters[ 'address/requiredFieldsAreValid' ] ) {
 			addressDataIsValid.value = false;
-			return;
 		}
 
 		if ( isDirectDebit.value && !store.getters[ 'bankdata/bankDataIsValid' ] ) {
 			bankDataIsValid.value = false;
-			return;
 		}
 
 		if ( !store.getters[ 'payment/paymentDataIsValid' ] ) {
 			paymentDataIsValid.value = false;
+		}
+
+		if ( !addressDataIsValid.value || !bankDataIsValid.value || !paymentDataIsValid.value ) {
 			return;
 		}
 
@@ -94,6 +96,13 @@ export function usePersonalDataSectionEventHandlers(
 	store.watch( ( state, getters ) => getters[ 'payment/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 		if ( !paymentDataIsValid.value && isValid ) {
 			paymentDataIsValid.value = true;
+		}
+	} );
+
+	watch( () => store.state.payment.values.type, ( newType: string ) => {
+		if ( newType !== 'BEZ' ) {
+			bankDataIsValid.value = true;
+			store.dispatch( action( 'bankdata', 'setBankDataValidity' ), Validity.VALID );
 		}
 	} );
 

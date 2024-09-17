@@ -2,7 +2,8 @@ import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
-import { computed, ComputedRef, ref, Ref } from 'vue';
+import { computed, ComputedRef, ref, Ref, watch } from 'vue';
+import { Validity } from '@src/view_models/Validity';
 
 type ReturnType = {
 	submit: () => Promise<void>,
@@ -78,6 +79,13 @@ export function usePersonalDataSectionEventHandlers(
 	store.watch( ( state, getters ) => getters[ 'payment/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 		if ( !paymentDataIsValid.value && isValid ) {
 			paymentDataIsValid.value = true;
+		}
+	} );
+
+	watch( () => store.state.payment.values.type, ( newType: string ) => {
+		if ( newType !== 'BEZ' ) {
+			bankDataIsValid.value = true;
+			store.dispatch( action( 'bankdata', 'setBankDataValidity' ), Validity.VALID );
 		}
 	} );
 

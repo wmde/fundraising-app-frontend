@@ -199,7 +199,6 @@ const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store )
 const mailingList = useMailingListModel( store );
 const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
-defineExpose( { focus: (): void => pageRef.value.focus() } );
 const scrollToPaymentSection = () => {
 	const scrollIntoViewElement = document.getElementById( 'donation-page-form-section-payment' );
 	if ( scrollIntoViewElement ) {

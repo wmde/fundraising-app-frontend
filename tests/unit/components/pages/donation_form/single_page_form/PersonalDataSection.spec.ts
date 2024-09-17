@@ -1,7 +1,6 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
 import axios from 'axios';
-import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -14,6 +13,7 @@ import { nextTick } from 'vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
+import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 import BankFields from '@src/components/shared/BankFields.vue';
 
@@ -72,7 +72,7 @@ describe( 'PersonalDataSection.vue', () => {
 		return { wrapper, store };
 	};
 
-	const setPaymentType = ( store: Store<any>, paymentType: string ): Promise<any> => {
+	const setPaymentTypeAndInitializeOtherPaymentValues = ( store: Store<any>, paymentType: string ): Promise<any> => {
 		return store.dispatch( action( 'payment', 'initializePayment' ), {
 			allowedIntervals: [ 0 ],
 			allowedPaymentTypes: [ paymentType ],
@@ -90,7 +90,7 @@ describe( 'PersonalDataSection.vue', () => {
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 	} );
@@ -98,11 +98,11 @@ describe( 'PersonalDataSection.vue', () => {
 	it( 'hides bank data fields if payment type is not direct debit', async () => {
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 
-		await setPaymentType( store, 'UEB' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 	} );
@@ -121,13 +121,13 @@ describe( 'PersonalDataSection.vue', () => {
 
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
 		const scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
-		await nextTick();
 
-		// TODO test that payment section got scrolled to
-		expect( scrollElement.scrollIntoView ).toHaveBeenCalledTimes( 1 );
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
 	} );
 
 	it( 'shows and hides the error summary', async () => {
@@ -135,13 +135,13 @@ describe( 'PersonalDataSection.vue', () => {
 
 		const { wrapper, store } = getWrapper();
 
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
+
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-
-		await setPaymentType( store, 'UEB' );
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#person-salutation-0' ).trigger( 'change' );
@@ -179,7 +179,7 @@ describe( 'PersonalDataSection.vue', () => {
 
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -234,7 +234,7 @@ describe( 'PersonalDataSection.vue', () => {
 
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		if ( addressTypeSelector !== '' ) {
 			await wrapper.find( addressTypeSelector ).trigger( 'change' );
@@ -282,7 +282,7 @@ describe( 'PersonalDataSection.vue', () => {
 
 	it( 'submits the form', async () => {
 		const store = createStore();
-		await setPaymentType( store, 'UEB' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
 		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.ANON,
 			newsletter: true,

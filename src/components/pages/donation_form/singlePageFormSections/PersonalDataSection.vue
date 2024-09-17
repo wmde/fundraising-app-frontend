@@ -131,7 +131,6 @@ const props = defineProps<Props>();
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const isFullSelected = ref( false );
 const store = useStore();
-defineExpose( { focus: (): void => pageRef.value.focus() } );
 
 const setFullSelected = ( selected: boolean ) => {
 	isFullSelected.value = selected;

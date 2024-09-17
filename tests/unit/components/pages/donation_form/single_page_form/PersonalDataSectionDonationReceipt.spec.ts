@@ -44,8 +44,8 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 		const wrapper = mount( PersonalDataSectionDonationReceipt, {
 			props: {
 				assetsPath: '',
-				validateAddressUrl: 'https://localhost:8082',
-				validateEmailUrl: 'https://localhost:8082',
+				validateAddressUrl: '',
+				validateEmailUrl: '',
 				validateBankDataUrl: 'https://localhost:8082',
 				validateLegacyBankDataUrl: 'https://localhost:8082',
 				countries: [ testCountry ],
@@ -108,25 +108,25 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
 		const scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
-		await nextTick();
 
-		// TODO test that payment section got scrolled to
-		expect( scrollElement.scrollIntoView ).toHaveBeenCalled();
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
 	} );
 
 	it( 'shows and hides the error summary', async () => {
 		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'UEB' );
 
 		await wrapper.find( '#donation-form' ).trigger( 'submit' );
 		await nextTick();
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-
-		await setPaymentType( store, 'UEB' );
 
 		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
@@ -323,7 +323,7 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn().mockResolvedValue( true );
 
-		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		await wrapper.find( '#donation-form' ).trigger( 'submit' );
 
 		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
 	} );
