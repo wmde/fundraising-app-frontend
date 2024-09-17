@@ -109,7 +109,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { useStore } from 'vuex';
 import SinglePageErrorSummary
-	from '@src/components/pages/donation_form/singlePageFromSections/SinglePageErrorSummary.vue';
+	from '@src/components/pages/donation_form/singlePageFormSections/SinglePageErrorSummary.vue';
 import StreetAutocompleteSinglePageErrorSummaries
 	from '@src/components/pages/donation_form/StreetAutocomplete/SinglePageErrorSummary.vue';
 import BankFields from '@src/components/shared/BankFields.vue';

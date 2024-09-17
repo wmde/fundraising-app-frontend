@@ -12,7 +12,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { nextTick } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
-import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFromSections/PersonalDataSectionDonationReceipt.vue';
+import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
 import BankFields from '@src/components/shared/BankFields.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 

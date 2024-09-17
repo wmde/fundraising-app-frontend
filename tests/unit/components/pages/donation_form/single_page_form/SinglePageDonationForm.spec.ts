@@ -3,8 +3,8 @@ import SinglePageDonationForm from '@src/components/pages/SinglePageDonationForm
 import countries from '@src/../tests/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
-import PaymentSection from '@src/components/pages/donation_form/singlePageFromSections/PaymentSection.vue';
-import PersonalDataSection from '@src/components/pages/donation_form/singlePageFromSections/PersonalDataSection.vue';
+import PaymentSection from '@src/components/pages/donation_form/singlePageFormSections/PaymentSection.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
 import { Store } from 'vuex';
 import { createStore, StoreKey } from '@src/store/donation_store';
 
