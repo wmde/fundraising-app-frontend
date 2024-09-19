@@ -1,6 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import DonationForm from '@src/components/pages/DonationForm.vue';
-import countries from '@src/../tests/data/countries';
+import countries from '@test/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import PaymentSection from '@src/components/pages/donation_form/singlePageFormSections/PaymentSection.vue';
