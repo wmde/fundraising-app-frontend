@@ -1,4 +1,5 @@
 <template>
+	<ScrollTarget target-id="payment-section-top-scroll-target"/>
 	<div
 		id="donation-page-form-section-payment"
 		class="donation-page-form-section"
@@ -22,6 +23,7 @@
 
 <script setup lang="ts">
 import Payment from '@src/components/pages/donation_form/Payment.vue';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	paymentAmounts: number[];

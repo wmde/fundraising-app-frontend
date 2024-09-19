@@ -137,7 +137,7 @@ const setFullSelected = ( selected: boolean ) => {
 };
 
 const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementById( 'donation-page-form-section-payment' );
+	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
 	if ( scrollIntoViewElement ) {
 		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
 	}
