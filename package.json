@@ -22,7 +22,7 @@
     "jsonp": "^0.2.1",
     "process": "^0.11.10",
     "vue": "~3.4.27",
-    "vue-i18n": "^10.0.1",
+    "vue-i18n": "^10.0.3",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
@@ -48,7 +48,7 @@
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "eslint-config-wikimedia": "^0.28.2",
-    "eslint-plugin-jsdoc": "^50.2.3",
+    "eslint-plugin-jsdoc": "^50.2.4",
     "eslint-plugin-json": "^4.0.1",
     "eslint-plugin-json-es": "^1.6.0",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
@@ -69,7 +69,7 @@
     "regenerator-runtime": "^0.14.1",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.78.0",
-    "sass-loader": "^16.0.1",
+    "sass-loader": "^16.0.2",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.10",
     "ts-jest": "^29.2.5",
