@@ -4,7 +4,7 @@
 			<p v-html="props.paymentType ? summary : summaryWithoutPaymentType"/>
 		</div>
 		<div class="payment-summary-link">
-			<a href="#" @click.prevent="$emit( 'previous-page' )">{{ $t('donation_form_section_back') }}</a>
+			<a href="#" @click.prevent="$emit( 'show-payment-form' )">{{ $t('donation_form_section_back') }}</a>
 		</div>
 	</div>
 </template>
