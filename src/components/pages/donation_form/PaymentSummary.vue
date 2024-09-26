@@ -1,7 +1,7 @@
 <template>
 	<div class="payment-summary">
 		<div class="payment-summary-text">
-			<p v-html="getSummary()"/>
+			<p v-html="props.paymentType ? summary : summaryWithoutPaymentType"/>
 		</div>
 		<div class="payment-summary-link">
 			<a href="#" @click.prevent="$emit( 'previous-page' )">{{ $t('donation_form_section_back') }}</a>
@@ -9,21 +9,32 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
 
-export default defineComponent( {
-	name: 'PaymentSummary',
-	props: [ 'amount', 'interval', 'paymentType' ],
-	methods: {
-		getSummary: function () {
-			const interval = this.$t( 'donation_form_payment_interval_' + this.$props.interval );
-			const formattedAmount = this.$n( this.$props.amount, { key: 'currency', currencyDisplay: 'name' } );
-			const paymentType = this.$t( this.$props.paymentType );
-			return this.$t( 'donation_form_payment_summary', { interval: interval, formattedAmount, paymentType } );
-		},
-	},
+interface Props {
+	amount: number;
+	interval: string;
+	paymentType?: string;
+}
+
+const { t, n } = useI18n();
+const props = withDefaults( defineProps<Props>(), { paymentType: '' } );
+
+const summary = computed( () => {
+	const interval = t( 'donation_form_payment_interval_' + props.interval );
+	const formattedAmount = n( props.amount, { key: 'currency', currencyDisplay: 'name' } );
+	const paymentType = t( props.paymentType );
+	return t( 'donation_form_payment_summary', { interval, formattedAmount, paymentType } );
 } );
+
+const summaryWithoutPaymentType = computed( () => {
+	const interval = t( 'donation_form_payment_interval_' + props.interval );
+	const formattedAmount = n( props.amount, { key: 'currency', currencyDisplay: 'name' } );
+	return t( 'donation_form_payment_summary_payment_type_missing', { interval, formattedAmount } );
+} );
+
 </script>
 
 <style lang="scss">
