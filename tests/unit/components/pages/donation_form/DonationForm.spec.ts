@@ -38,7 +38,6 @@ describe( 'DonationForm.vue', () => {
 				validateLegacyBankDataUrl: '',
 				salutations: [],
 				addressValidationPatterns: { postcode: '' } as AddressValidation,
-				usesContentCards: true,
 			},
 			global: {
 				plugins: [ store ],

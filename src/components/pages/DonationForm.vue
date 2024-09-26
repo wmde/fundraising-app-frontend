@@ -75,7 +75,6 @@ interface Props {
 	trackingData: TrackingData;
 	campaignValues: CampaignValues;
 	addressValidationPatterns: AddressValidation;
-	usesContentCards: true;
 }
 defineProps<Props>();
 
