@@ -8,6 +8,14 @@
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 
+		<PaymentSummary
+			v-if="paymentWasInitialized"
+			:amount="paymentSummary.amount"
+			:payment-type="paymentSummary.paymentType"
+			:interval="paymentSummary.interval"
+			@previous-page="previousPage">
+		</PaymentSummary>
+
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
 			<BankFields/>
@@ -85,6 +93,7 @@ import { inject, onMounted, ref } from 'vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
+import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
@@ -152,6 +161,7 @@ const {
 const {
 	isDirectDebitPayment,
 	paymentSummary,
+	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
 const {
