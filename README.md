@@ -4,7 +4,7 @@ This repository contains the frontend code for the WMDE Fundraising App.
 
 ## Running the development server
 
-	npm run serve
+	npm run dev
 	
 This will start the development server on port 7072. In your local
 development configuration for the Fundraising
@@ -47,7 +47,7 @@ The bundler will preserve all `url()` references as-is.
 
 On your local development machine, you must manually keep the contents of
 `dist` (of the fundraising-app-client project) and `web/skins/laika` (of
-the fundraising-app prject) in sync, otherwise the CSS references will be
+the fundraising-app project) in sync, otherwise the CSS references will be
 broken.
 
 ### Referencing resources in Vue
