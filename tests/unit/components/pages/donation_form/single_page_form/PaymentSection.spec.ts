@@ -37,8 +37,10 @@ describe( 'PaymentSection.vue', () => {
 		await store.dispatch( action( 'payment', 'setType' ), '' );
 		const wrapper = getWrapper( store );
 
+		const paymentComponent = wrapper.findComponent( Payment );
 		expect( wrapper.findComponent( PaymentSummary ).exists() ).toBeTruthy();
-		expect( wrapper.findComponent( Payment ).exists() ).toBeTruthy();
+		expect( paymentComponent.exists() ).toBeTruthy();
+		expect( paymentComponent.props().displaySections ).toEqual( [ 'paymentType' ] );
 	} );
 
 	it( 'should display the full form when the store is empty', async () => {

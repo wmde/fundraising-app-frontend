@@ -26,7 +26,9 @@
 				:payment-amounts="paymentAmounts"
 				:payment-intervals="paymentIntervals"
 				:payment-types="paymentTypes"
+				:display-sections="[ 'paymentType' ]"
 			/>
+
 		</div>
 
 		<form
@@ -78,9 +80,3 @@ const state = ref<formStates>( initialFormState );
 const { paymentSummary } = usePaymentFunctions( store );
 
 </script>
-<style>
-.show-summary-and-payment-type #payment-form-amount,
-.show-summary-and-payment-type #payment-form-interval {
-	display: none;
-}
-</style>
