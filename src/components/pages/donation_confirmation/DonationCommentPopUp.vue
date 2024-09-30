@@ -3,9 +3,10 @@
 		<input type="hidden" name="donationId" :value="donation.id"/>
 		<input type="hidden" name="updateToken" :value="donation.updateToken">
 		<div v-if="commentHasBeenSubmitted">
-			<p v-html="$t( serverResponse )"></p>
+			<p class="donation-comment-server-response" v-html="$t( serverResponse )"></p>
 			<FormButton
 				button-type="button"
+				class="donation-comment-return-button"
 				:is-outlined="true"
 				@click="$emit( 'close' )"
 			>
@@ -15,6 +16,7 @@
 		<div v-else>
 			<p>{{ $t( 'donation_comment_popup_explanation' ) }}</p>
 
+			<ScrollTarget target-id="comment-scroll-target"/>
 			<TextField
 				input-type="textarea"
 				v-model="comment"
@@ -22,7 +24,7 @@
 				input-id="comment"
 				placeholder=""
 				:label="$t( 'donation_comment_popup_label' )"
-				:error-message="$t( 'donation_comment_popup_error' )"
+				:error-message="$t( commentError )"
 				:show-error="commentErrored"
 				:autofocus="true"
 			/>
@@ -43,6 +45,18 @@
 			>
 				{{ $t( 'donation_comment_popup_is_public' ) }}
 			</CheckboxField>
+
+			<ErrorSummary
+				:is-visible="commentErrored"
+				:items="[
+					{
+						validity: commentErrored ? Validity.INVALID : Validity.VALID,
+						message: $t( commentError ),
+						focusElement: 'comment',
+						scrollElement: 'comment-scroll-target'
+					},
+				]"
+			/>
 
 			<FormSummary :show-border="false">
 				<template #summary-buttons>
@@ -66,8 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import axios, { AxiosResponse } from 'axios';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Donation } from '@src/view_models/Donation';
@@ -75,42 +88,78 @@ import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
+import { CommentResource } from '@src/api/CommentResource';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import { Validity } from '@src/view_models/Validity';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+
+enum CommentErrorTypes {
+	Empty,
+	Server
+}
 
 interface Props {
 	donation: Donation;
 	addressType: string;
-	postCommentUrl: string;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'disable-comment-link' ] );
+const emit = defineEmits( [ 'disable-comment-link', 'close' ] );
+const commentResource = inject<CommentResource>( 'commentResource' );
 
 const commentForm = ref<HTMLFormElement>( null );
 const comment = ref<string>( '' );
 const commentIsPublic = ref<boolean>( false );
 const commentHasPublicAuthorName = ref<boolean>( false );
 const commentErrored = ref<boolean>( false );
+const commentErrorType = ref<CommentErrorTypes>( CommentErrorTypes.Empty );
 const commentHasBeenSubmitted = ref<boolean>( false );
 const serverResponse = ref<string>( '' );
+const serverError = ref<string>( '' );
 
 const showPublishAuthor = computed<boolean>( () => addressTypeFromName( props.addressType ) !== AddressTypeModel.ANON );
 
-const postComment = (): void => {
+const postComment = (): Promise<void> => {
 	trackFormSubmission( commentForm.value );
-	const jsonForm = new FormData( commentForm.value );
-	axios.post( props.postCommentUrl, jsonForm ).then( ( validationResult: AxiosResponse<any> ) => {
-		if ( validationResult.data.status === 'OK' ) {
-			commentErrored.value = false;
-			commentHasBeenSubmitted.value = true;
-			serverResponse.value = validationResult.data.message;
-			emit( 'disable-comment-link' );
-		} else {
-			commentErrored.value = true;
-		}
+
+	if ( comment.value === '' ) {
+		commentErrorType.value = CommentErrorTypes.Empty;
+		commentErrored.value = true;
+		return;
+	}
+
+	commentResource.post( {
+		donationId: props.donation.id,
+		updateToken: props.donation.updateToken,
+		comment: comment.value,
+		withName: commentHasPublicAuthorName.value,
+		isPublic: commentIsPublic.value,
+	} ).then( ( message: string ) => {
+		commentErrored.value = false;
+		commentHasBeenSubmitted.value = true;
+		serverResponse.value = message;
+		emit( 'disable-comment-link' );
+	} ).catch( ( message: string ) => {
+		commentErrorType.value = CommentErrorTypes.Server;
+		commentErrored.value = true;
+		serverError.value = message;
 	} );
 };
 
 onMounted( trackDynamicForm );
+
+const commentError = computed<string>( () => {
+	if ( commentErrorType.value === CommentErrorTypes.Empty ) {
+		return 'donation_comment_popup_empty_error';
+	}
+	return serverError.value;
+} );
+
+watch( comment, ( newComment: string ) => {
+	if ( commentErrored.value && newComment !== '' ) {
+		commentErrored.value = false;
+	}
+} );
 
 </script>
 
