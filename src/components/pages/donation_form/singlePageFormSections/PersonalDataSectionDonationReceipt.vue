@@ -1,21 +1,12 @@
 <template>
 	<div
-		class="address-page"
-		aria-live="assertive"
-		aria-labelledby="donation-form-heading donation-form-subheading donation-form-tagline"
-		tabindex="-1"
-		ref="pageRef"
+		class="donation-page-form-section"
+		id="donation-page-form-section-personal-data-donation-receipt"
+		aria-labelledby="donation-form-subheading donation-form-tagline"
 	>
-		<h1 id="donation-form-heading" class="form-title">{{ $t( 'donation_form_heading' ) }}</h1>
-		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 
-		<PaymentSummary
-			v-if="paymentWasInitialized"
-			:amount="paymentSummary.amount"
-			:payment-type="paymentSummary.paymentType"
-			:interval="paymentSummary.interval"
-			@previous-page="previousPage">
-		</PaymentSummary>
+		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
+		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
@@ -83,7 +74,7 @@
 							:country-was-restored="countryWasRestored"
 							@field-changed="onFieldChange"
 						/>
-						<AddressFormErrorSummaries
+						<SinglePageErrorSummary
 							:show-error-summary="showErrorSummary"
 							:address-type="addressType"
 							:show-receipt-option-error="showReceiptOptionError"
@@ -101,7 +92,7 @@
 							:country-was-restored="countryWasRestored"
 							@field-changed="onFieldChange"
 						/>
-						<AddressFormErrorSummariesStreetAutocomplete
+						<SinglePageErrorSummaryStreetAutocomplete
 							:show-error-summary="showErrorSummary"
 							:address-type="addressType"
 							:show-receipt-option-error="showReceiptOptionError"
@@ -128,7 +119,7 @@
 					<FormButton
 						id="previous-btn"
 						:is-outlined="true"
-						@click="previousPage"
+						@click="scrollToPaymentSection()"
 					>
 						{{ $t( 'donation_form_section_back' ) }}
 					</FormButton>
@@ -155,7 +146,6 @@ import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
-import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { AddressValidation } from '@src/view_models/Validation';
@@ -166,7 +156,9 @@ import { TrackingData } from '@src/view_models/TrackingData';
 import { Validity } from '@src/view_models/Validity';
 import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
 import { trackDynamicForm } from '@src/util/tracking';
-import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/DonationReceipt/useAddressFormEventHandlers';
+import {
+	usePersonalDataSectionEventHandlers,
+} from '@src/components/pages/donation_form/DonationReceipt/usePersonalDataSectionEventHandlers';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressType } from '@src/components/pages/donation_form/DonationReceipt/useAddressType';
@@ -178,13 +170,13 @@ import { useStore } from 'vuex';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import AddressFormErrorSummaries from '@src/components/pages/donation_form/DonationReceipt/AddressFormErrorSummaries.vue';
+import SinglePageErrorSummary from '@src/components/pages/donation_form/DonationReceipt/SinglePageErrorSummary.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import BankFields from '@src/components/shared/BankFields.vue';
 import AddressFieldsStreetAutocomplete
 	from '@src/components/pages/donation_form/DonationReceipt/AddressFieldsStreetAutocomplete.vue';
-import AddressFormErrorSummariesStreetAutocomplete
-	from '@src/components/pages/donation_form/DonationReceipt/AddressFormErrorSummariesStreetAutocomplete.vue';
+import SinglePageErrorSummaryStreetAutocomplete
+	from '@src/components/pages/donation_form/DonationReceipt/SinglePageErrorSummaryStreetAutocomplete.vue';
 
 interface Props {
 	assetsPath: string;
@@ -200,7 +192,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'previous-page' ] );
 const store = useStore();
 
 const { addressType, addressTypeName } = useAddressType( store );
@@ -208,8 +199,12 @@ const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store )
 const mailingList = useMailingListModel( store );
 const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
 const countryWasRestored = ref<boolean>( false );
-const pageRef = ref<HTMLElement>( null );
-defineExpose( { focus: (): void => pageRef.value.focus() } );
+const scrollToPaymentSection = () => {
+	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
+	if ( scrollIntoViewElement ) {
+		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
+	}
+};
 
 const {
 	formData,
@@ -222,12 +217,10 @@ const {
 const {
 	isDirectDebitPayment,
 	paymentSummary,
-	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
-const { submit, previousPage, submitValuesForm, showErrorSummary } = useAddressFormEventHandlers(
+const { submit, submitValuesForm, showErrorSummary } = usePersonalDataSectionEventHandlers(
 	store,
-	emit,
 	isDirectDebitPayment,
 	props.validateAddressUrl,
 	props.validateEmailUrl,

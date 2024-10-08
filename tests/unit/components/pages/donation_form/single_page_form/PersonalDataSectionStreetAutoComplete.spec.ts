@@ -1,7 +1,7 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 
 import axios from 'axios';
-import AddressPage from '@src/components/pages/donation_form/subpages/AddressPage.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -40,15 +40,15 @@ const salutations: Salutation[] = [
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe( 'AddressPage.vue (With Street Autocomplete)', () => {
+describe( 'PersonalDataSection.vue (With Street Autocomplete)', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
-		const wrapper = mount( AddressPage, {
+		const wrapper = mount( PersonalDataSection, {
 			props: {
 				assetsPath: '',
 				validateAddressUrl: '',
 				validateEmailUrl: '',
-				validateBankDataUrl: 'https://localhost:8082',
-				validateLegacyBankDataUrl: 'https://localhost:8082',
+				validateBankDataUrl: '',
+				validateLegacyBankDataUrl: '',
 				countries: [ testCountry ],
 				salutations,
 				trackingData: {} as TrackingData,
@@ -75,7 +75,7 @@ describe( 'AddressPage.vue (With Street Autocomplete)', () => {
 		return { wrapper, store };
 	};
 
-	const setPaymentType = ( store: Store<any>, paymentType: string ): Promise<any> => {
+	const setPaymentTypeAndInitializeOtherPaymentValues = ( store: Store<any>, paymentType: string ): Promise<any> => {
 		return store.dispatch( action( 'payment', 'initializePayment' ), {
 			allowedIntervals: [ 0 ],
 			allowedPaymentTypes: [ paymentType ],
@@ -93,7 +93,7 @@ describe( 'AddressPage.vue (With Street Autocomplete)', () => {
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 	} );
@@ -101,11 +101,11 @@ describe( 'AddressPage.vue (With Street Autocomplete)', () => {
 	it( 'hides bank data fields if payment type is not direct debit', async () => {
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 
-		await setPaymentType( store, 'UEB' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 	} );
@@ -122,18 +122,23 @@ describe( 'AddressPage.vue (With Street Autocomplete)', () => {
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
-	it( 'emits previous event', async () => {
+	it( 'scrolls to top when the donor clicks the previous button', async () => {
+		const scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
 
-		expect( wrapper.emitted( 'previous-page' ).length ).toStrictEqual( 1 );
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
 	} );
 
 	it( 'shows and hides the error summary', async () => {
 		jest.useFakeTimers();
 
-		const { wrapper } = getWrapper();
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -177,7 +182,7 @@ describe( 'AddressPage.vue (With Street Autocomplete)', () => {
 
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -232,7 +237,7 @@ describe( 'AddressPage.vue (With Street Autocomplete)', () => {
 
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		if ( addressTypeSelector !== '' ) {
 			await wrapper.find( addressTypeSelector ).trigger( 'change' );
@@ -269,8 +274,18 @@ describe( 'AddressPage.vue (With Street Autocomplete)', () => {
 		expect( wrapper.find( '.address-type-person' ).exists() ).toBeTruthy();
 	} );
 
+	it( 'validates the payment section input on page submit', async () => {
+		const { wrapper, store } = getWrapper();
+		store.dispatch = jest.fn().mockResolvedValue( true );
+
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
+	} );
+
 	it( 'submits the form', async () => {
 		const store = createStore();
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
 		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.ANON,
 			newsletter: true,

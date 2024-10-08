@@ -4,6 +4,18 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
@@ -70,6 +82,18 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
@@ -118,6 +142,18 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
@@ -146,6 +182,24 @@
 				message: $t( 'donation_form_email_error' ),
 				focusElement: 'email-email',
 				scrollElement: 'email-email-scroll-target'
+			},
+		]"
+	/>
+	<ErrorSummary
+		v-if="addressType === AddressTypeModel.ANON"
+		:is-visible="showErrorSummary"
+		:items="[
+			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
 			},
 		]"
 	/>

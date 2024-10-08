@@ -12,7 +12,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { nextTick } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
-import AddressPageDonationReceipt from '@src/components/pages/donation_form/subpages/AddressPageDonationReceipt.vue';
+import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
 import BankFields from '@src/components/shared/BankFields.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
@@ -39,9 +39,9 @@ const salutations: Salutation[] = [
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe( 'AddressPageDonationReceipt.vue', () => {
+describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
-		const wrapper = mount( AddressPageDonationReceipt, {
+		const wrapper = mount( PersonalDataSectionDonationReceipt, {
 			props: {
 				assetsPath: '',
 				validateAddressUrl: '',
@@ -106,16 +106,21 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 	} );
 
-	it( 'emits previous event', async () => {
+	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
+		const scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
 
-		expect( wrapper.emitted( 'previous-page' ).length ).toStrictEqual( 1 );
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
 	} );
 
 	it( 'shows and hides the error summary', async () => {
-		const { wrapper } = getWrapper();
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentType( store, 'UEB' );
 
 		await wrapper.find( '#donation-form' ).trigger( 'submit' );
 		await nextTick();
@@ -314,8 +319,18 @@ describe( 'AddressPageDonationReceipt.vue', () => {
 		jest.clearAllMocks();
 	} );
 
+	it( 'validates the payment section input on page submit', async () => {
+		const { wrapper, store } = getWrapper();
+		store.dispatch = jest.fn().mockResolvedValue( true );
+
+		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
+	} );
+
 	it( 'submits the form', async () => {
 		const store = createStore();
+		await setPaymentType( store, 'UEB' );
 		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.PERSON,
 			newsletter: true,

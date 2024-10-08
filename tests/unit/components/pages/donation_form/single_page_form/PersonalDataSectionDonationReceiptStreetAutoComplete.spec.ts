@@ -12,7 +12,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { nextTick } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
-import AddressPageDonationReceipt from '@src/components/pages/donation_form/subpages/AddressPageDonationReceipt.vue';
+import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
 import BankFields from '@src/components/shared/BankFields.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
@@ -39,9 +39,9 @@ const salutations: Salutation[] = [
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
+describe( 'PersonalDataSectionDonationReceipt.vue (With Street Autocomplete)', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
-		const wrapper = mount( AddressPageDonationReceipt, {
+		const wrapper = mount( PersonalDataSectionDonationReceipt, {
 			props: {
 				assetsPath: '',
 				validateAddressUrl: '',
@@ -74,7 +74,7 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 		return { wrapper, store };
 	};
 
-	const setPaymentType = ( store: Store<any>, paymentType: string ): Promise<any> => {
+	const setPaymentTypeAndInitializeOtherPaymentValues = ( store: Store<any>, paymentType: string ): Promise<any> => {
 		return store.dispatch( action( 'payment', 'initializePayment' ), {
 			allowedIntervals: [ 0 ],
 			allowedPaymentTypes: [ paymentType ],
@@ -92,7 +92,7 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 	} );
@@ -100,25 +100,30 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 	it( 'hides bank data fields if payment type is not direct debit', async () => {
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
 
-		await setPaymentType( store, 'UEB' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
 
 		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
 	} );
 
-	it( 'emits previous event', async () => {
+	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
+		const scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
 
-		expect( wrapper.emitted( 'previous-page' ).length ).toStrictEqual( 1 );
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
 	} );
 
 	it( 'shows and hides the error summary', async () => {
-		const { wrapper } = getWrapper();
+		const { wrapper, store } = getWrapper();
+
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
 
 		await wrapper.find( '#donation-form' ).trigger( 'submit' );
 		await nextTick();
@@ -159,7 +164,7 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		await wrapper.find( '#donation-form' ).trigger( 'submit' );
 		await nextTick();
@@ -209,7 +214,7 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 	it( 'handles all error summary clicks when no donation receipt has been selected', async () => {
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		await wrapper.find( '#donation-form' ).trigger( 'submit' );
 		await nextTick();
@@ -230,7 +235,7 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
 
@@ -260,7 +265,7 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
@@ -291,7 +296,7 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 
 		const { wrapper, store } = getWrapper();
 
-		await setPaymentType( store, 'BEZ' );
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
 
 		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
 
@@ -317,8 +322,18 @@ describe( 'AddressPageDonationReceipt.vue (With Street Autocomplete)', () => {
 		jest.clearAllMocks();
 	} );
 
+	it( 'validates the payment section input on page submit', async () => {
+		const { wrapper, store } = getWrapper();
+		store.dispatch = jest.fn().mockResolvedValue( true );
+
+		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
+	} );
+
 	it( 'submits the form', async () => {
 		const store = createStore();
+		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
 		await store.dispatch( action( 'address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.PERSON,
 			newsletter: true,

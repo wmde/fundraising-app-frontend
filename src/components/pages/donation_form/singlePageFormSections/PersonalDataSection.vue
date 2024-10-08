@@ -1,28 +1,17 @@
 <template>
 	<div
-		class="address-page"
+		id="donation-page-form-section-personal-data"
+		class="donation-page-form-section"
 		aria-live="assertive"
-		aria-labelledby="donation-form-heading donation-form-subheading donation-form-tagline"
-		tabindex="-1"
-		ref="pageRef"
+		aria-labelledby="donation-form-subheading donation-form-tagline"
 	>
-		<h1 id="donation-form-heading" class="form-title">{{ $t( 'donation_form_heading' ) }}</h1>
+		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
-
-		<PaymentSummary
-			v-if="paymentWasInitialized"
-			:amount="paymentSummary.amount"
-			:payment-type="paymentSummary.paymentType"
-			:interval="paymentSummary.interval"
-			@previous-page="previousPage">
-		</PaymentSummary>
 
 		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
 			<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
 			<BankFields/>
 		</form>
-
-		<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
 			<ScrollTarget target-id="address-type-scroll-target"/>
@@ -52,11 +41,11 @@
 
 		<FeatureToggle default-template="campaigns.address_field_order.legacy">
 			<template #campaigns.address_field_order.legacy>
-				<AddressFormErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
+				<SinglePageErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
 			</template>
 
 			<template #campaigns.address_field_order.new_order>
-				<StreetAutocompleteAddressFormErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
+				<StreetAutocompleteSinglePageErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
 			</template>
 		</FeatureToggle>
 
@@ -76,7 +65,7 @@
 				<FormButton
 					id="previous-btn"
 					:is-outlined="true"
-					@click="previousPage"
+					@click="scrollToPaymentSection()"
 				>
 					{{ $t( 'donation_form_section_back' ) }}
 				</FormButton>
@@ -97,29 +86,32 @@
 
 <script setup lang="ts">
 import { inject, onMounted, ref } from 'vue';
-import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
-import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
-import { AddressValidation } from '@src/view_models/Validation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { trackDynamicForm } from '@src/util/tracking';
-import { useAddressFormEventHandlers } from '@src/components/pages/donation_form/useAddressFormEventHandlers';
+import {
+	usePersonalDataSectionEventHandlers,
+} from '@src/components/pages/donation_form/usePersonalDataSectionEventHandlers';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import { AddressValidation } from '@src/view_models/Validation';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { useStore } from 'vuex';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
-import AddressFormErrorSummaries from '@src/components/pages/donation_form/AddressFormErrorSummaries.vue';
-import StreetAutocompleteAddressFormErrorSummaries from '@src/components/pages/donation_form/StreetAutocomplete/AddressFormErrorSummaries.vue';
+import SinglePageErrorSummary
+	from '@src/components/pages/donation_form/singlePageFormSections/SinglePageErrorSummary.vue';
+import StreetAutocompleteSinglePageErrorSummaries
+	from '@src/components/pages/donation_form/StreetAutocomplete/SinglePageErrorSummary.vue';
 import BankFields from '@src/components/shared/BankFields.vue';
 
 interface Props {
@@ -136,16 +128,19 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'previous-page' ] );
-
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const isFullSelected = ref( false );
 const store = useStore();
-const pageRef = ref<HTMLElement>( null );
-defineExpose( { focus: (): void => pageRef.value.focus() } );
 
 const setFullSelected = ( selected: boolean ) => {
 	isFullSelected.value = selected;
+};
+
+const scrollToPaymentSection = () => {
+	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
+	if ( scrollIntoViewElement ) {
+		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
+	}
 };
 
 onMounted( trackDynamicForm );
@@ -162,7 +157,6 @@ const {
 const {
 	isDirectDebitPayment,
 	paymentSummary,
-	paymentWasInitialized,
 } = usePaymentFunctions( store );
 
 const {
@@ -170,9 +164,8 @@ const {
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
 
-const { submit, previousPage, submitValuesForm, showErrorSummary } = useAddressFormEventHandlers(
+const { submit, submitValuesForm, showErrorSummary } = usePersonalDataSectionEventHandlers(
 	store,
-	emit,
 	addressType,
 	isDirectDebitPayment,
 	props.validateAddressUrl,

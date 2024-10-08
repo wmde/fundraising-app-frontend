@@ -69,7 +69,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			action( 'address', 'initializeAddress' ),
 			createInitialDonationAddressValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
-	] ).then( ( [ paymentDataComplete ] ) => {
+	] ).then( () => {
 		// ignoring result of initializeAddress
 		const app = createVueApp(
 			App,
@@ -81,6 +81,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 				pageIdentifier: PAGE_IDENTIFIER,
 				page: DonationForm,
+				usesContentCards: true,
 				pageTitle: 'donation_form_page_title',
 				pageProps: {
 					assetsPath: pageData.assetsPath,
@@ -96,7 +97,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 					trackingData: pageData.applicationVars.tracking,
 					campaignValues: campaignParameters.getCampaignValues(),
 					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-					startPageIndex: paymentDataComplete ? 1 : 0,
 				},
 			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );

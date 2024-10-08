@@ -1,11 +1,12 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import DonationForm from '@src/components/pages/DonationForm.vue';
-import countries from '@src/../tests/data/countries';
+import countries from '@test/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
-import PaymentPage from '@test/data/DonationFormPages/PaymentPageStub.vue';
-import AddressPage from '@test/data/DonationFormPages/AddressPageStub.vue';
-import { nextTick } from 'vue';
+import PaymentSection from '@src/components/pages/donation_form/singlePageFormSections/PaymentSection.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
+import { Store } from 'vuex';
+import { createStore, StoreKey } from '@src/store/donation_store';
 
 declare global {
 	namespace NodeJS {
@@ -21,8 +22,8 @@ describe( 'DonationForm.vue', () => {
 		global.window.scrollTo = jest.fn();
 	} );
 
-	const getWrapper = ( startPageIndex: 0 | 1 = 0 ): VueWrapper<any> => {
-		return mount( DonationForm, {
+	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
+		const wrapper = mount( DonationForm, {
 			props: {
 				assetsPath: '',
 				paymentAmounts: [ 5 ],
@@ -36,71 +37,24 @@ describe( 'DonationForm.vue', () => {
 				validateBankDataUrl: '',
 				validateLegacyBankDataUrl: '',
 				salutations: [],
-				addressValidationPatterns: {} as AddressValidation,
-				startPageIndex,
+				addressValidationPatterns: { postcode: '' } as AddressValidation,
 			},
 			global: {
-				stubs: {
-					PaymentPage,
-					AddressPage,
+				plugins: [ store ],
+				provide: {
+					[ StoreKey as symbol ]: store,
 				},
 				components: {
 					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
 				},
 			},
 		} );
+		return { wrapper, store };
 	};
 
-	it( 'displays Payment page by default ', () => {
-		const wrapper = getWrapper( 0 );
-		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
+	it( 'displays payment section and address data section', () => {
+		const wrapper = getWrapper().wrapper;
+		expect( wrapper.findComponent( PaymentSection ).exists() ).toBe( true );
+		expect( wrapper.findComponent( PersonalDataSection ).exists() ).toBe( true );
 	} );
-
-	it( 'loads Address page when next-page is triggered', async () => {
-		const wrapper = getWrapper( 0 );
-		await wrapper.findComponent( PaymentPage ).vm.$emit( 'next-page' );
-
-		expect( wrapper.find( '.i-am-address-form' ).exists() ).toBe( true );
-	} );
-
-	it( 'loads Payment component on the previous page', async () => {
-		const wrapper = getWrapper( 1 );
-
-		await wrapper.findComponent( AddressPage ).vm.$emit( 'previous-page' );
-
-		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
-	} );
-
-	it( 'does not overshoot the first or last page when multiple page change events trigger', async () => {
-		const wrapper = getWrapper( 0 );
-
-		const paymentPage = wrapper.findComponent( PaymentPage );
-
-		paymentPage.vm.$emit( 'next-page' );
-		await nextTick();
-
-		expect( wrapper.find( '.i-am-address-form' ).exists() ).toBe( true );
-
-		const addressPage = wrapper.findComponent( AddressPage );
-
-		addressPage.vm.$emit( 'previous-page' );
-		await nextTick();
-
-		expect( wrapper.find( '.i-am-payment' ).exists() ).toBe( true );
-	} );
-
-	it( 'scrolls to top of page only when page index changes', async () => {
-		const wrapper = getWrapper( 0 );
-
-		const paymentPage = wrapper.findComponent( PaymentPage );
-		paymentPage.vm.$emit( 'next-page' );
-		await nextTick();
-
-		const addressPage = wrapper.findComponent( AddressPage );
-		addressPage.vm.$emit( 'previous-page' );
-		await nextTick();
-
-		expect( global.window.scrollTo ).toHaveBeenCalledTimes( 2 );
-	} );
-
 } );

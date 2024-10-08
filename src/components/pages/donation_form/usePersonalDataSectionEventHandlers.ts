@@ -4,7 +4,8 @@ import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
-import { computed, ComputedRef, ref, Ref } from 'vue';
+import { computed, ComputedRef, ref, Ref, watch } from 'vue';
+import { Validity } from '@src/view_models/Validity';
 
 const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 	if ( addressType === AddressTypeModel.ANON ) {
@@ -23,25 +24,25 @@ const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 
 type ReturnType = {
 	submit: () => Promise<void>,
-	previousPage: () => void,
     submitValuesForm: Ref<HTMLFormElement>,
 	showErrorSummary: Ref<boolean>,
 }
 
-export function useAddressFormEventHandlers(
+export function usePersonalDataSectionEventHandlers(
 	store: Store<any>,
-	emit: ( eventName: string ) => void,
 	addressType: ComputedRef<AddressTypeModel>,
 	isDirectDebit: ComputedRef<boolean>,
 	validateAddressUrl: string,
 	validateEmailUrl: string,
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
+	const paymentDataIsValid = ref<boolean>( true );
 	const bankDataIsValid = ref<boolean>( true );
 	const addressDataIsValid = ref<boolean>( true );
-	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value );
+	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value || !paymentDataIsValid.value );
 	const submit = async (): Promise<void> => {
 		const validationCalls: Promise<any>[] = [
+			store.dispatch( action( 'payment', 'markEmptyValuesAsInvalid' ) ),
 			store.dispatch( action( 'address', 'validateAddressType' ), {
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
@@ -66,7 +67,11 @@ export function useAddressFormEventHandlers(
 			bankDataIsValid.value = false;
 		}
 
-		if ( !addressDataIsValid.value || !bankDataIsValid.value ) {
+		if ( !store.getters[ 'payment/paymentDataIsValid' ] ) {
+			paymentDataIsValid.value = false;
+		}
+
+		if ( !addressDataIsValid.value || !bankDataIsValid.value || !paymentDataIsValid.value ) {
 			return;
 		}
 
@@ -74,11 +79,6 @@ export function useAddressFormEventHandlers(
 		// The form is a different one than the one for the submitValuesForm
 		trackFormSubmissionForAddressType( addressType.value );
 		submitValuesForm.value.submit();
-	};
-
-	const previousPage = async () => {
-		await store.dispatch( action( 'payment', 'discardInitialization' ) );
-		emit( 'previous-page' );
 	};
 
 	store.watch( ( state, getters ) => getters[ 'address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
@@ -93,9 +93,21 @@ export function useAddressFormEventHandlers(
 		}
 	} );
 
+	store.watch( ( state, getters ) => getters[ 'payment/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+		if ( !paymentDataIsValid.value && isValid ) {
+			paymentDataIsValid.value = true;
+		}
+	} );
+
+	watch( () => store.state.payment.values.type, ( newType: string ) => {
+		if ( newType !== 'BEZ' ) {
+			bankDataIsValid.value = true;
+			store.dispatch( action( 'bankdata', 'setBankDataValidity' ), Validity.VALID );
+		}
+	} );
+
 	return {
 		submit,
-		previousPage,
 		submitValuesForm,
 		showErrorSummary,
 	};

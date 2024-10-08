@@ -4,6 +4,18 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
@@ -46,6 +58,18 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
@@ -82,10 +106,10 @@
 				scrollElement: 'address-type-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.street,
-				message: $t( 'donation_form_street_error' ),
-				focusElement: 'street',
-				scrollElement: 'street-scroll-target'
+				validity: store.state.address.validity.country,
+				message: $t( 'donation_form_country_error' ),
+				focusElement: 'country',
+				scrollElement: 'country-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.postcode,
@@ -100,10 +124,10 @@
 				scrollElement: 'city-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.country,
-				message: $t( 'donation_form_country_error' ),
-				focusElement: 'country',
-				scrollElement: 'country-scroll-target'
+				validity: store.state.address.validity.street,
+				message: $t( 'donation_form_street_error' ),
+				focusElement: 'street',
+				scrollElement: 'street-scroll-target'
 			},
 		]"
 	/>
@@ -111,6 +135,18 @@
 		v-if="addressType === AddressTypeModel.COMPANY_WITH_CONTACT"
 		:is-visible="showErrorSummary"
 		:items="[
+			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
 			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
@@ -154,10 +190,10 @@
 				scrollElement: 'company-name-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.street,
-				message: $t( 'donation_form_street_error' ),
-				focusElement: 'street',
-				scrollElement: 'street-scroll-target'
+				validity: store.state.address.validity.country,
+				message: $t( 'donation_form_country_error' ),
+				focusElement: 'country',
+				scrollElement: 'country-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.postcode,
@@ -172,10 +208,10 @@
 				scrollElement: 'city-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.country,
-				message: $t( 'donation_form_country_error' ),
-				focusElement: 'country',
-				scrollElement: 'country-scroll-target'
+				validity: store.state.address.validity.street,
+				message: $t( 'donation_form_street_error' ),
+				focusElement: 'street',
+				scrollElement: 'street-scroll-target'
 			},
 		]"
 	/>
@@ -183,6 +219,18 @@
 		v-if="addressType === AddressTypeModel.EMAIL"
 		:is-visible="showErrorSummary"
 		:items="[
+			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
 			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),

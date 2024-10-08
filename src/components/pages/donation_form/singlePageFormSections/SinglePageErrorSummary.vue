@@ -4,6 +4,18 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
@@ -70,6 +82,18 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
@@ -118,10 +142,28 @@
 		:is-visible="showErrorSummary"
 		:items="[
 			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+			{
 				validity: bankDataValidity,
 				message: $t( 'donation_form_payment_bankdata_error' ),
 				focusElement: 'account-number',
 				scrollElement: 'account-number-scroll-target'
+			},
+			{
+				validity: store.state.address.validity.salutation,
+				message: $t( 'donation_form_salutation_error' ),
+				focusElement: 'email-salutation-0',
+				scrollElement: 'email-salutation-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.firstName,
@@ -143,6 +185,24 @@
 			},
 		]"
 	/>
+	<ErrorSummary
+		v-if="addressType === AddressTypeModel.ANON"
+		:is-visible="showErrorSummary"
+		:items="[
+			{
+				validity: store.state.payment.validity.amount,
+				message: $t( 'error_summary_amount' ),
+				focusElement: 'amount-500',
+				scrollElement: 'payment-form-amount-scroll-target',
+			},
+			{
+				validity: store.state.payment.validity.type,
+				message: $t( 'error_summary_payment_type' ),
+				focusElement: 'paymentType-0',
+				scrollElement: 'payment-form-type-scroll-target',
+			},
+		]"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -156,6 +216,7 @@ import { computed } from 'vue';
 interface Props {
 	showErrorSummary: boolean;
 	addressType: AddressTypeModel;
+	receiptNeeded?: boolean;
 }
 
 defineProps<Props>();
