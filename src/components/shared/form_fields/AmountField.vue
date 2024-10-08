@@ -29,7 +29,7 @@
 
 		<div class="form-field-amount-custom" :class="{ active: isCustomAmount }">
 			<label class="form-field-amount-help-text" for="amount-custom">{{ $t('donation_form_payment_amount_label') }}</label>
-			<div class="form-field-amount-custom-euro-symbol">
+			<div class="form-field-amount-custom-euro-symbol" :class="{ active: isCustomAmount }">
 				<TextFormInput
 					v-model="customAmount"
 					input-type="text"
@@ -238,7 +238,6 @@ $input-height: 50px;
 		&.active {
 			input {
 				border-color: colors.$primary;
-				box-shadow: 0 1px 0 0 colors.$primary;
 			}
 		}
 
