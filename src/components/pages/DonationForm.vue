@@ -3,7 +3,6 @@
 		<FeatureToggle default-template="campaigns.address_pages.legacy">
 			<template #campaigns.address_pages.legacy>
 					<PaymentSection
-						:assets-path="assetsPath"
 						:payment-amounts="paymentAmounts"
 						:payment-intervals="paymentIntervals"
 						:payment-types="paymentTypes"
@@ -23,7 +22,6 @@
 			</template>
 			<template #campaigns.address_pages.test_02>
 					<PaymentSection
-						:assets-path="assetsPath"
 						:payment-amounts="paymentAmounts"
 						:payment-intervals="paymentIntervals"
 						:payment-types="paymentTypes"

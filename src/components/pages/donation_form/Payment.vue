@@ -1,6 +1,6 @@
 <template>
 	<div class="payment-form">
-		<FormSection id="payment-form-amount">
+		<FormSection v-if="displaySections.includes( 'amount' )" id="payment-form-amount">
 			<ScrollTarget target-id="payment-form-amount-scroll-target"/>
 			<AmountField
 				v-model="amount"
@@ -11,7 +11,7 @@
 			/>
 		</FormSection>
 
-		<FormSection id="payment-form-interval">
+		<FormSection v-if="displaySections.includes( 'interval' )" id="payment-form-interval">
 			<RadioField
 				name="interval"
 				input-id="interval"
@@ -24,7 +24,7 @@
 			/>
 		</FormSection>
 
-		<FormSection id="payment-form-type">
+		<FormSection v-if="displaySections.includes( 'paymentType' )" id="payment-form-type">
 			<ScrollTarget target-id="payment-form-type-scroll-target"/>
 			<RadioField
 				name="paymentType"
@@ -67,14 +67,18 @@ import { Validity } from '@src/view_models/Validity';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
+import { DisplaySectionCollection } from '@src/components/pages/donation_form/Payment';
 
 interface Props {
 	paymentAmounts: number[];
 	paymentIntervals: number[];
 	paymentTypes: string[];
+	displaySections?: DisplaySectionCollection;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults( defineProps<Props>(), {
+	displaySections: () => [ 'amount', 'interval', 'paymentType' ],
+} );
 
 const store = useStore();
 const { t } = useI18n();
