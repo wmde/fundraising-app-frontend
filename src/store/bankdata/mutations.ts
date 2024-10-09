@@ -37,6 +37,9 @@ export const mutations: MutationTree<BankAccount> = {
 	SET_IS_VALIDATING( state: BankAccount, isValidating: boolean ) {
 		state.isValidating = isValidating;
 	},
+	/**
+	 * @deprecated this is for use with the combined account number/IBAN field
+	 */
 	MARK_EMPTY_FIELDS_INVALID( state: BankAccount ) {
 		if ( [ Validity.INCOMPLETE, Validity.RESTORED ].includes( state.validity.accountNumber ) ) {
 			state.validity.accountNumber = Validity.INVALID;
@@ -46,6 +49,11 @@ export const mutations: MutationTree<BankAccount> = {
 			state.validity.bankCode = Validity.INCOMPLETE;
 		} else if ( [ Validity.INCOMPLETE, Validity.RESTORED ].includes( state.validity.bankCode ) ) {
 			state.validity.bankCode = Validity.INVALID;
+		}
+	},
+	MARK_EMPTY_IBAN_INVALID( state: BankAccount ) {
+		if ( [ Validity.INCOMPLETE, Validity.RESTORED ].includes( state.validity.iban ) ) {
+			state.validity.iban = Validity.INVALID;
 		}
 	},
 };

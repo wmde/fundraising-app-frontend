@@ -100,6 +100,7 @@
 		</form>
 
 		<form class="iban-form" @submit.prevent="() => {}">
+			<ScrollTarget target-id="iban-scroll-target"/>
 			<IbanField
 				v-model="iban"
 				:bank-name="bankName"

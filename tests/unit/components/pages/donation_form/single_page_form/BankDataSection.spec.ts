@@ -4,36 +4,10 @@ import { Store } from 'vuex';
 import { createStore } from '@src/store/donation_store';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 import { BankValidationResource } from '@src/api/BankValidationResource';
-import { BankAccountResponse } from '@src/view_models/BankAccount';
 import { action } from '@src/store/util';
-
-const IBAN = 'DE12500105170648489890';
-const formattedIBAN = 'DE12 5001 0517 0648 4898 90';
-const BIC = 'INGDDEFFXXX';
-const accountNumber = '0648489890';
-const bankCode = '50010517';
-const bankName = 'ING-DiBa';
-
-const succeedingBankValidationResource = ( apiReturnValue: BankAccountResponse = null ): BankValidationResource => {
-	const returnValue: BankAccountResponse = apiReturnValue ?? {
-		accountNumber,
-		bankCode,
-		bankName,
-		iban: IBAN,
-		bic: BIC,
-	};
-	return {
-		validateBankNumber: jest.fn( () => Promise.resolve( returnValue ) ),
-		validateIban: jest.fn( () => Promise.resolve( returnValue ) ),
-	};
-};
-
-const failingBankValidationResource = (): BankValidationResource => {
-	return {
-		validateBankNumber: jest.fn().mockRejectedValue( 'ERR' ),
-		validateIban: jest.fn().mockRejectedValue( 'ERR' ),
-	};
-};
+import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
+import { accountNumber, bankCode, bankName, BIC, formattedIBAN, IBAN } from '@test/data/bankdata';
+import { newFailingBankValidationResource } from '@test/unit/TestDoubles/FailingBankValidationResource';
 
 describe( 'BankDataSection.vue', () => {
 	const getWrapper = ( bankValidationResource: BankValidationResource = null, store: Store<any> = null ): VueWrapper<any> => {
@@ -65,7 +39,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Searches for IBAN using calculator', async () => {
-		const resource = succeedingBankValidationResource();
+		const resource = newSucceedingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '.calculate-iban-button' ).trigger( 'click' );
@@ -79,15 +53,20 @@ describe( 'BankDataSection.vue', () => {
 
 		expect( resource.validateBankNumber ).toHaveBeenCalledWith( { accountNumber, bankCode } );
 		expect( wrapper.find( '.iban-calculator-pages' ).classes() ).toContain( 'page-2' );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 1 )' ).text() ).toStrictEqual( `Bank Account Number: ${ accountNumber }` );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 2 )' ).text() ).toStrictEqual( `Bank Code: ${ bankCode }` );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 3 )' ).text() ).toStrictEqual( `IBAN: ${ IBAN }` );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 4 )' ).text() ).toStrictEqual( `BIC: ${ BIC }` );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 5 )' ).text() ).toStrictEqual( `Bank Name: ${ bankName }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 1 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_bank_account ${ accountNumber }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 2 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_bank_code ${ bankCode }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 3 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_iban ${ IBAN }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 4 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_bic ${ BIC }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 5 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_bank_name ${ bankName }` );
 	} );
 
 	it( 'Shows error for empty account number field', async () => {
-		const resource = succeedingBankValidationResource();
+		const resource = newSucceedingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '.calculate-iban-button' ).trigger( 'click' );
@@ -104,7 +83,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Shows error for empty bank code field', async () => {
-		const resource = succeedingBankValidationResource();
+		const resource = newSucceedingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '.calculate-iban-button' ).trigger( 'click' );
@@ -121,7 +100,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Handles error result from calculator API call', async () => {
-		const resource = failingBankValidationResource();
+		const resource = newFailingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '.calculate-iban-button' ).trigger( 'click' );
@@ -138,7 +117,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Shows and hides the calculator error summary', async () => {
-		const resource = failingBankValidationResource();
+		const resource = newFailingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '.calculate-iban-button' ).trigger( 'click' );
@@ -157,7 +136,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Returns to page 1 of the calculator when the donor hits no', async () => {
-		const resource = succeedingBankValidationResource();
+		const resource = newSucceedingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '.calculate-iban-button' ).trigger( 'click' );
@@ -177,7 +156,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Fills the IBAN field and store when the donor hits fill', async () => {
-		const resource = succeedingBankValidationResource();
+		const resource = newSucceedingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '.calculate-iban-button' ).trigger( 'click' );
@@ -197,7 +176,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Sets the IBAN field as valid when donor fills from calculator', async () => {
-		const resource = succeedingBankValidationResource();
+		const resource = newSucceedingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '#iban' ).trigger( 'blur' );
@@ -220,7 +199,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Validates the IBAN when the IBAN field is blurred', async () => {
-		const resource = succeedingBankValidationResource();
+		const resource = newSucceedingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '#iban' ).setValue( IBAN );
@@ -233,7 +212,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Handles error result from IBAN validation API call', async () => {
-		const resource = failingBankValidationResource();
+		const resource = newFailingBankValidationResource();
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '#iban' ).setValue( IBAN );
@@ -245,7 +224,7 @@ describe( 'BankDataSection.vue', () => {
 	} );
 
 	it( 'Validates the IBAN on load when one is present in store', async () => {
-		const resource = succeedingBankValidationResource();
+		const resource = newSucceedingBankValidationResource();
 		const store = createStore();
 		await store.dispatch( action( 'bankdata', 'setIban' ), IBAN );
 

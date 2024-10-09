@@ -38,9 +38,18 @@ export const actions = {
 	setBic( context: ActionContext<BankAccount, any>, payload: string ): void {
 		context.commit( 'SET_BIC', payload );
 	},
+	/**
+	 * @deprecated this is for use with the combined account number/IBAN field
+	 */
 	markEmptyFieldsAsInvalid( context: ActionContext<BankAccount, any> ): void {
 		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );
 	},
+	markEmptyIbanAsInvalid( context: ActionContext<BankAccount, any> ): void {
+		context.commit( 'MARK_EMPTY_IBAN_INVALID' );
+	},
+	/**
+	 * @deprecated this is for use with the combined account number/IBAN field
+	 */
 	setBankDataValidity( context: ActionContext<BankAccount, any>, payload: Validity ): void {
 		context.commit( 'SET_ACCOUNT_NUMBER_VALIDITY', payload );
 		context.commit( 'SET_BANK_CODE_VALIDITY', payload );
