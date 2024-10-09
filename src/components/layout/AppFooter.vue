@@ -1,18 +1,18 @@
 <template>
-	<div class="footer-var-wrapper">
-		<div class="container footer-var">
-			<div class="footer-var-left">
-				<div class="footer-var-logo">
+	<footer class="footer-wrapper is-hidden-print">
+		<div class="container footer">
+			<div class="footer-left">
+				<div class="footer-logo">
 					<a href="https://www.wikimedia.de/">
 						<img :src="assetsPath + '/images/logo-vertical-wikimedia.svg'" alt="Wikimedia Deutschland">
 					</a>
 				</div>
-				<div class="footer-var-text">
+				<div class="footer-text">
 					<p v-html="$t( 'footer_text' )"/>
 				</div>
 			</div>
-			<nav class="footer-var-right" :aria-label="$t( 'aria_footer_navigation_label' )">
-				<ul class="footer-var-list">
+			<nav class="footer-right" :aria-label="$t( 'aria_footer_navigation_label' )">
+				<ul class="footer-list">
 					<li v-for="( link, index ) in footerMenu" :key="index">
 						<a :href="link.url" :key="link.id" :aria-current="link.id === pageIdentifier ? 'page' : null">
 							{{ $t( 'footer_menu_' + link.id ) }}
@@ -21,7 +21,7 @@
 				</ul>
 			</nav>
 		</div>
-	</div>
+	</footer>
 </template>
 
 <script setup lang="ts">
@@ -52,7 +52,7 @@ const footerMenu = [
 @use '@src/scss/settings/colors';
 @use 'sass:map';
 
-.footer-var {
+.footer {
 	display: flex;
 	flex-direction: column;
 	padding: map.get(units.$spacing, 'small') 0 88px;
@@ -64,6 +64,7 @@ const footerMenu = [
 	}
 
 	&-wrapper {
+		margin-top: auto;
 		background: colors.$footer;
 	}
 
