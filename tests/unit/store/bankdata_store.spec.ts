@@ -12,6 +12,7 @@ function newMinimalStore( overrides: Object = {} ): BankAccount {
 			validity: {
 				accountNumber: Validity.INCOMPLETE,
 				bankCode: Validity.INCOMPLETE,
+				iban: Validity.INCOMPLETE,
 			},
 			values: {
 				accountNumber: '',
@@ -178,6 +179,7 @@ describe( 'BankData', () => {
 			validity: {
 				accountNumber: Validity.INCOMPLETE,
 				bankCode: Validity.INCOMPLETE,
+				iban: Validity.INCOMPLETE,
 			},
 			values: {
 				accountNumber: '',

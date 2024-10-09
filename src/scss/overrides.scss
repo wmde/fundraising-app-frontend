@@ -213,21 +213,15 @@ a[disabled=disabled] {
 
 // Ensure footer always sticks to the bottom of the page
 // by setting min-height of the root elements to 100vh
-// and ensuring the main element is set to flex: 1
-// When in doubt, it's probably a workaround to make something work in IE11 :D
 body {
 	display: flex;
 	min-height: 100vh;
 	width: 100%;
 	.app-container {
-		display: flex;
 		min-height: 100vh;
+		display: flex;
 		flex-direction: column;
-		flex: 1;
 	}
-}
-main {
-	flex: 1 0 auto;
 }
 
 .icon {

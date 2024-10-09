@@ -7,6 +7,9 @@ import PaymentSection from '@src/components/pages/donation_form/singlePageFormSe
 import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
 import { Store } from 'vuex';
 import { createStore, StoreKey } from '@src/store/donation_store';
+import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
+import BankDataSection from '@src/components/pages/donation_form/singlePageFormSections/BankDataSection.vue';
+import { action } from '@src/store/util';
 
 declare global {
 	namespace NodeJS {
@@ -43,6 +46,7 @@ describe( 'DonationForm.vue', () => {
 				plugins: [ store ],
 				provide: {
 					[ StoreKey as symbol ]: store,
+					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
 					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
@@ -56,5 +60,27 @@ describe( 'DonationForm.vue', () => {
 		const wrapper = getWrapper().wrapper;
 		expect( wrapper.findComponent( PaymentSection ).exists() ).toBe( true );
 		expect( wrapper.findComponent( PersonalDataSection ).exists() ).toBe( true );
+	} );
+
+	it( 'shows bank data fields if payment type is direct debit', async () => {
+		const { wrapper, store } = getWrapper();
+
+		expect( wrapper.findComponent( BankDataSection ).exists() ).toBeFalsy();
+
+		await store.dispatch( action( 'payment', 'setType' ), 'BEZ' );
+
+		expect( wrapper.findComponent( BankDataSection ).exists() ).toBeTruthy();
+	} );
+
+	it( 'hides bank data fields if payment type is not direct debit', async () => {
+		const { wrapper, store } = getWrapper();
+
+		await store.dispatch( action( 'payment', 'setType' ), 'BEZ' );
+
+		expect( wrapper.findComponent( BankDataSection ).exists() ).toBeTruthy();
+
+		await store.dispatch( action( 'payment', 'setType' ), 'UEB' );
+
+		expect( wrapper.findComponent( BankDataSection ).exists() ).toBeFalsy();
 	} );
 } );

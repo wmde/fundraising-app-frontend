@@ -16,9 +16,7 @@
 				</AppContent>
 			</div>
 		</main>
-		<footer class="is-hidden-print">
-			<AppFooter :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
-		</footer>
+		<AppFooter :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
 	</div>
 </template>
 
@@ -75,10 +73,8 @@ watch( modalState, ( newModalState: ModalStates ) => {
 @import "../scss/custom";
 
 #app {
-	display: flex;
+	width: 100%;
 	min-height: 100vh;
-	flex-direction: column;
-	flex: 1;
 }
 
 .skip-link {
