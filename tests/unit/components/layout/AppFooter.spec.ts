@@ -22,7 +22,7 @@ describe( 'AppFooter.vue', () => {
 			},
 		} );
 
-		const link = wrapper.find( '.footer-var-list li:nth-child(' + navItemIndex + ') a' );
+		const link = wrapper.find( '.footer-list li:nth-child(' + navItemIndex + ') a' );
 		expect( link.attributes( 'aria-current' ) ).toStrictEqual( 'page' );
 	} );
 } );
