@@ -79,11 +79,16 @@ describe( 'BankDataSection.vue', () => {
 
 		expect( resource.validateBankNumber ).toHaveBeenCalledWith( { accountNumber, bankCode } );
 		expect( wrapper.find( '.iban-calculator-pages' ).classes() ).toContain( 'page-2' );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 1 )' ).text() ).toStrictEqual( `Bank Account Number: ${ accountNumber }` );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 2 )' ).text() ).toStrictEqual( `Bank Code: ${ bankCode }` );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 3 )' ).text() ).toStrictEqual( `IBAN: ${ IBAN }` );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 4 )' ).text() ).toStrictEqual( `BIC: ${ BIC }` );
-		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 5 )' ).text() ).toStrictEqual( `Bank Name: ${ bankName }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 1 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_bank_account ${ accountNumber }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 2 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_bank_code ${ bankCode }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 3 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_iban ${ IBAN }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 4 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_bic ${ BIC }` );
+		expect( wrapper.find( '.iban-calculator-results-list li:nth-child( 5 )' ).text() )
+			.toStrictEqual( `donation_form_iban_calculator_result_bank_name ${ bankName }` );
 	} );
 
 	it( 'Shows error for empty account number field', async () => {

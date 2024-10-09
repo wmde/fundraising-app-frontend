@@ -13,7 +13,6 @@ import { nextTick } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 import { Salutation } from '@src/view_models/Salutation';
 import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
-import BankFields from '@src/components/shared/BankFields.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 const testCountry = {
@@ -83,28 +82,6 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 			},
 		} );
 	};
-
-	it( 'shows bank data fields if payment type is direct debit', async () => {
-		const { wrapper, store } = getWrapper();
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
-
-		await setPaymentType( store, 'BEZ' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
-	} );
-
-	it( 'hides bank data fields if payment type is not direct debit', async () => {
-		const { wrapper, store } = getWrapper();
-
-		await setPaymentType( store, 'BEZ' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
-
-		await setPaymentType( store, 'UEB' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
-	} );
 
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
 		const scrollElement = { scrollIntoView: jest.fn() };
@@ -198,8 +175,8 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 
-		await wrapper.find( '#account-number' ).setValue( 'DE12500105170648489890' );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( 'DE12500105170648489890' );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await flushPromises();
 
