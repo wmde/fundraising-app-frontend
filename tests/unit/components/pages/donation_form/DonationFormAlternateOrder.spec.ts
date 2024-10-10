@@ -29,7 +29,7 @@ const errorSummaryItemIsFunctional = ( wrapper: VueWrapper<any>, formElement: st
 	return errorItemExists && formElementExists && scrollElementExists;
 };
 
-describe( 'DonationForm.vue', () => {
+describe( 'DonationForm.vue (alternate order for street autocomplete)', () => {
 
 	beforeEach( () => {
 		global.window.scrollTo = jest.fn();
@@ -86,7 +86,7 @@ describe( 'DonationForm.vue', () => {
 					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
+					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy', 'campaigns.address_field_order.new_order' ] ),
 				},
 			},
 			attachTo: document.body,
