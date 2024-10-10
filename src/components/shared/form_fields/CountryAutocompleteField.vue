@@ -160,7 +160,7 @@ const onBlur = ( selectedCountry: Country ) => {
 		autocompleteIsActive.value = false;
 
 		if ( !itemWasJustSelectedFromList ) {
-			emit( 'field-changed', selectedCountry );
+			emit( 'field-changed', selectedCountry ?? '' );
 		}
 		itemWasJustSelectedFromList = false;
 	}, 200 );

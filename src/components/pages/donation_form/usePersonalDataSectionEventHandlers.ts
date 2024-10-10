@@ -47,9 +47,12 @@ export function usePersonalDataSectionEventHandlers(
 				type: store.state.address.addressType,
 				disallowed: [ AddressTypeModel.UNSET ],
 			} ),
-			store.dispatch( action( 'address', 'validateAddress' ), validateAddressUrl ),
-			store.dispatch( action( 'address', 'validateEmail' ), validateEmailUrl ),
 		];
+
+		if ( store.state.address.addressType !== AddressTypeModel.ANON ) {
+			validationCalls.push( store.dispatch( action( 'address', 'validateAddress' ), validateAddressUrl ) );
+			validationCalls.push( store.dispatch( action( 'address', 'validateEmail' ), validateEmailUrl ) );
+		}
 
 		if ( isDirectDebit.value ) {
 			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
@@ -93,7 +96,7 @@ export function usePersonalDataSectionEventHandlers(
 		}
 	} );
 
-	store.watch( ( state, getters ) => getters[ 'payment/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	store.watch( ( state, getters ) => getters[ 'payment/paymentDataIsValid' ], ( isValid: boolean ) => {
 		if ( !paymentDataIsValid.value && isValid ) {
 			paymentDataIsValid.value = true;
 		}
