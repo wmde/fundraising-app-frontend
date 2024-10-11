@@ -1,5 +1,5 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
-import BankDataSection from '@src/components/pages/donation_form/singlePageFormSections/BankDataSection.vue';
+import IbanFields from '@src/components/shared/IbanFields.vue';
 import { Store } from 'vuex';
 import { createStore } from '@src/store/donation_store';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
@@ -9,9 +9,9 @@ import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/Succ
 import { accountNumber, bankCode, bankName, BIC, formattedIBAN, IBAN } from '@test/data/bankdata';
 import { newFailingBankValidationResource } from '@test/unit/TestDoubles/FailingBankValidationResource';
 
-describe( 'BankDataSection.vue', () => {
+describe( 'IbanFields.vue', () => {
 	const getWrapper = ( bankValidationResource: BankValidationResource = null, store: Store<any> = null ): VueWrapper<any> => {
-		return mount( BankDataSection, {
+		return mount( IbanFields, {
 			global: {
 				plugins: [ store ?? createStore() ],
 				provide: {

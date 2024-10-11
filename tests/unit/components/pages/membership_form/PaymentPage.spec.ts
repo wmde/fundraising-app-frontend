@@ -1,4 +1,4 @@
-import { mount, VueWrapper } from '@vue/test-utils';
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import PaymentPage from '@src/components/pages/membership_form/subpages/PaymentPage.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
@@ -7,6 +7,8 @@ import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Store } from 'vuex';
 import { nextTick } from 'vue';
+import { IBAN } from '@test/data/bankdata';
+import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
 
 describe( 'PaymentPage.vue', () => {
 	let wrapper: VueWrapper<any>;
@@ -26,6 +28,9 @@ describe( 'PaymentPage.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					bankValidationResource: newSucceedingBankValidationResource(),
+				},
 			},
 		} );
 	} );
@@ -58,7 +63,12 @@ describe( 'PaymentPage.vue', () => {
 
 		await wrapper.find( '#amount-500' ).trigger( 'change' );
 		await wrapper.find( '#interval-0' ).trigger( 'change' );
-		await wrapper.find( '#paymentType-1' ).trigger( 'change' );
+		await wrapper.find( '#paymentType-0' ).trigger( 'change' );
+
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
+
+		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );

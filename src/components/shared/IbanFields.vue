@@ -1,6 +1,6 @@
 <template>
-	<div class="donation-page-form-section donation-page-form-section-iban">
-		<div class="donation-page-form-section-iban-title">
+	<div class="form-section-iban">
+		<div class="form-section-iban-title">
 			<h2 class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
 
 			<ButtonLink class="calculate-iban-button" aria-controls="iban-calculator" :aria-expanded="showCalculator" @click="showCalculator = !showCalculator">
@@ -114,20 +114,20 @@
 
 <script setup lang="ts">
 
-import { useStore } from 'vuex';
-import { computed, inject, onMounted, ref } from 'vue';
-import IbanField from '@src/components/shared/form_fields/IbanField.vue';
-import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import CloseIcon from '@src/components/shared/icons/CloseIcon.vue';
-import TextField from '@src/components/shared/form_fields/TextField.vue';
-import BankIcon from '@src/components/shared/icons/BankIcon.vue';
-import { BankValidationResource } from '@src/api/BankValidationResource';
-import { action } from '@src/store/util';
-import { BankAccountResponse } from '@src/view_models/BankAccount';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 import { Validity } from '@src/view_models/Validity';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import IbanField from '@src/components/shared/form_fields/IbanField.vue';
 import ButtonLink from '@src/components/shared/ButtonLink.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import BankIcon from '@src/components/shared/icons/BankIcon.vue';
+import CloseIcon from '@src/components/shared/icons/CloseIcon.vue';
+import { computed, inject, onMounted, ref } from 'vue';
+import { BankValidationResource } from '@src/api/BankValidationResource';
+import { useStore } from 'vuex';
+import { BankAccountResponse } from '@src/view_models/BankAccount';
+import { action } from '@src/store/util';
 
 const bankValidationResource = inject<BankValidationResource>( 'bankValidationResource' );
 const store = useStore();
@@ -248,6 +248,7 @@ store.watch( ( state, getters ) => getters[ 'bankdata/iban' ], ( newIban: string
 </script>
 
 <style lang="scss">
+
 @use '@src/scss/settings/global';
 @use '@src/scss/settings/colors';
 @use '@src/scss/settings/units';
@@ -255,7 +256,7 @@ store.watch( ( state, getters ) => getters[ 'bankdata/iban' ], ( newIban: string
 @use 'sass:map';
 @use 'sass:color';
 
-.donation-page-form-section-iban {
+.form-section-iban {
 	position: relative;
 
 	&-title{

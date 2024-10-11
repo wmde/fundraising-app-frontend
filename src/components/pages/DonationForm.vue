@@ -7,7 +7,9 @@
 					:payment-intervals="paymentIntervals"
 					:payment-types="paymentTypes"
 				/>
-				<BankDataSection v-if="isDirectDebit"/>
+				<div class="donation-page-form-section" v-if="isDirectDebit">
+					<IbanFields/>
+				</div>
 				<PersonalDataSection
 					:assets-path="assetsPath"
 					:validate-address-url="validateAddressUrl"
@@ -27,7 +29,9 @@
 					:payment-intervals="paymentIntervals"
 					:payment-types="paymentTypes"
 				/>
-				<BankDataSection v-if="isDirectDebit"/>
+				<div class="donation-page-form-section" v-if="isDirectDebit">
+					<IbanFields/>
+				</div>
 				<PersonalDataSectionDonationReceipt
 					:assets-path="assetsPath"
 					:validate-address-url="validateAddressUrl"
@@ -56,9 +60,9 @@ import PaymentSection from '@src/components/pages/donation_form/singlePageFormSe
 import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
 import PersonalDataSectionDonationReceipt
 	from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
-import BankDataSection from '@src/components/pages/donation_form/singlePageFormSections/BankDataSection.vue';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import IbanFields from '@src/components/shared/IbanFields.vue';
 
 defineOptions( {
 	name: 'DonationForm',
