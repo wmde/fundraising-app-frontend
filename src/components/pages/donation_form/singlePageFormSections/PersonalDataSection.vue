@@ -23,10 +23,6 @@
 				:initial-address-type="addressType"
 				:address-type-is-invalid="addressTypeIsInvalid"
 			/>
-			<div
-				class="address-type-anonymous-disclaimer"
-				v-show="!addressTypeIsNotAnon">{{ $t( 'donation_addresstype_option_anonymous_disclaimer' ) }}
-			</div>
 		</form>
 
 		<AddressForms
@@ -148,7 +144,6 @@ onMounted( trackDynamicForm );
 const {
 	disabledAddressTypes,
 	addressType,
-	addressTypeIsNotAnon,
 	addressTypeIsInvalid,
 	addressTypeName,
 	setAddressType,

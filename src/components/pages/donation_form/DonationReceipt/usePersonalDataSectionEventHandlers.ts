@@ -76,7 +76,7 @@ export function usePersonalDataSectionEventHandlers(
 		}
 	} );
 
-	store.watch( ( state, getters ) => getters[ 'payment/requiredFieldsAreValid' ], ( isValid: boolean ) => {
+	store.watch( ( state, getters ) => getters[ 'payment/paymentDataIsValid' ], ( isValid: boolean ) => {
 		if ( !paymentDataIsValid.value && isValid ) {
 			paymentDataIsValid.value = true;
 		}
