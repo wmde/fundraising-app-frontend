@@ -31,7 +31,7 @@ export function useAddressFormEventHandlers(
 		];
 
 		if ( isDirectDebit.value ) {
-			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
+			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyIbanAsInvalid' ) ) );
 		}
 
 		await Promise.all( validationCalls );

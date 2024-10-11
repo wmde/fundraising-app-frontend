@@ -85,7 +85,7 @@ export function usePersonalDataSectionEventHandlers(
 	watch( () => store.state.payment.values.type, ( newType: string ) => {
 		if ( newType !== 'BEZ' ) {
 			bankDataIsValid.value = true;
-			store.dispatch( action( 'bankdata', 'setBankDataValidity' ), Validity.VALID );
+			store.dispatch( action( 'bankdata', 'setIbanValidity' ), Validity.VALID );
 		}
 	} );
 

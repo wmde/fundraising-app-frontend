@@ -58,8 +58,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 		store.dispatch(
 			action( 'bankdata', 'initializeBankData' ),
 			createInitialBankDataValues( dataPersister, {
-				accountNumber: '',
-				bankCode: '',
 				bankName: '',
 				iban: '',
 				bic: '',

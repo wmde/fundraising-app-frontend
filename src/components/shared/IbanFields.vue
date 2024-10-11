@@ -123,7 +123,7 @@ import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import BankIcon from '@src/components/shared/icons/BankIcon.vue';
 import CloseIcon from '@src/components/shared/icons/CloseIcon.vue';
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { BankValidationResource } from '@src/api/BankValidationResource';
 import { useStore } from 'vuex';
 import { BankAccountResponse } from '@src/view_models/BankAccount';
@@ -131,9 +131,9 @@ import { action } from '@src/store/util';
 
 const bankValidationResource = inject<BankValidationResource>( 'bankValidationResource' );
 const store = useStore();
-const iban = ref<string>( store.getters[ 'bankdata/iban' ] );
-const bic = computed<string>( () => store.getters[ 'bankdata/bic' ] );
-const bankName = computed<string>( () => store.getters[ 'bankdata/bankName' ] );
+const iban = ref<string>( store.state.bankdata.values.iban );
+const bic = computed<string>( () => store.state.bankdata.values.bic );
+const bankName = computed<string>( () => store.state.bankdata.values.bankName );
 const showIbanError = computed<boolean>( () => store.state.bankdata.validity.iban === Validity.INVALID );
 
 const showCalculator = ref<boolean>( false );
@@ -241,7 +241,7 @@ onMounted( () => {
 	}
 } );
 
-store.watch( ( state, getters ) => getters[ 'bankdata/iban' ], ( newIban: string ) => {
+watch( () => store.state.bankdata.values.iban, ( newIban: string ) => {
 	iban.value = newIban;
 } );
 
