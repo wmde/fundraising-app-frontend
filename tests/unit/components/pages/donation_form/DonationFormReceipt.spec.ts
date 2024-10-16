@@ -4,9 +4,10 @@ import countries from '@test/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { createStore } from '@src/store/donation_store';
-import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 import { nextTick } from 'vue';
 import axios from 'axios';
+import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
+import { IBAN } from '@test/data/bankdata';
 
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -18,8 +19,6 @@ declare global {
 		}
 	}
 }
-
-const IBAN = 'DE12500105170648489890';
 
 const errorSummaryItemIsFunctional = ( wrapper: VueWrapper<any>, formElement: string, scrollElement: string ): boolean => {
 	const errorItemExists = wrapper.find( `.error-summary a[href="#${formElement}"]` ).exists();
@@ -83,7 +82,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 			global: {
 				plugins: [ store ],
 				provide: {
-					bankValidationResource: new FakeBankValidationResource(),
+					bankValidationResource: newSucceedingBankValidationResource(),
 				},
 				components: {
 					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.test_02' ] ),
@@ -151,7 +150,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'account-number', 'account-number-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'salutation-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'first-name-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'last-name-scroll-target' ) ).toBeTruthy();
@@ -165,8 +164,8 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( '#first-name' ).setValue( 'first-name' );
 		await wrapper.find( '#first-name' ).trigger( 'blur' );
@@ -219,7 +218,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'account-number', 'account-number-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'salutation-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'first-name-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'last-name-scroll-target' ) ).toBeTruthy();
@@ -232,8 +231,8 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( '#first-name' ).setValue( 'first-name' );
 		await wrapper.find( '#first-name' ).trigger( 'blur' );
@@ -286,7 +285,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'account-number', 'account-number-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'salutation-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'first-name-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'last-name-scroll-target' ) ).toBeTruthy();
@@ -300,8 +299,8 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( '#first-name' ).setValue( 'first-name' );
 		await wrapper.find( '#first-name' ).trigger( 'blur' );
@@ -342,8 +341,8 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 
@@ -391,8 +390,8 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 
@@ -443,8 +442,8 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 

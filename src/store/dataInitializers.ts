@@ -122,8 +122,6 @@ export const createInitialMembershipFeeValues = ( dataPersister: DataPersister, 
  */
 export const createInitialBankDataValues = ( dataPersister: DataPersister, initialFormValues: InitialBankAccountData ): InitialBankAccountData => {
 	return {
-		accountNumber: replaceInitialValue( initialFormValues.accountNumber, dataPersister.getValue( 'accountNumber' ) ),
-		bankCode: replaceInitialValue( initialFormValues.bankCode, dataPersister.getValue( 'bankCode' ) ),
 		bankName: replaceInitialValue( initialFormValues.bankName, dataPersister.getValue( 'bankName' ) ),
 		iban: replaceInitialValue( initialFormValues.iban, dataPersister.getValue( 'iban' ) ),
 		bic: replaceInitialValue( initialFormValues.bic, dataPersister.getValue( 'bic' ) ),

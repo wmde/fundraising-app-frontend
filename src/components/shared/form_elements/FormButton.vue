@@ -3,11 +3,14 @@
 		:class="[ 'form-button', { 'form-button-outlined': isOutlined, 'form-button-loading' : isLoading } ]"
 		:type="buttonType"
 	>
+		<LoadingSpinner v-if="isLoading"/>
 		<slot/>
 	</button>
 </template>
 
 <script setup lang="ts">
+import LoadingSpinner from '@src/components/shared/LoadingSpinner.vue';
+
 interface Props {
 	buttonType?: 'submit' | 'reset' | 'button',
 	isOutlined?: boolean,
@@ -29,7 +32,10 @@ withDefaults( defineProps<Props>(), {
 @use 'sass:color';
 @use 'sass:map';
 
+$hover-color: color.adjust( colors.$primary, $lightness: -5% );
+
 .form-button {
+	position: relative;
 	display: inline-block;
 	background: colors.$primary;
 	color: colors.$white;
@@ -49,7 +55,7 @@ withDefaults( defineProps<Props>(), {
 	&:focus {
 		color: colors.$white;
 		text-decoration: none;
-		background: color.adjust( colors.$primary, $lightness: -5% );
+		background: $hover-color;
 		border: 1px solid colors.$white;
 		box-shadow: 0 0 0 2px colors.$primary;
 	}
@@ -62,6 +68,28 @@ withDefaults( defineProps<Props>(), {
 		&:hover {
 			background: colors.$primary;
 			color: colors.$white;
+		}
+	}
+
+	&-loading {
+		color: colors.$primary;
+
+		&:hover {
+			color: $hover-color;
+		}
+	}
+
+	.loading-spinner-ring {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		height: 30px;
+		width: 30px;
+		margin-top: -15px;
+		margin-left: -15px;
+		div {
+			border-width: 4px;
+			border-color: colors.$white transparent transparent transparent;
 		}
 	}
 }

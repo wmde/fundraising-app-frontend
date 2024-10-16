@@ -25,15 +25,14 @@
 		<div class="payment-email" v-html="$t( 'donation_confirmation_email', { email: address.email } )"></div>
 		<div>
 			{{ $t( 'donation_confirmation_address_update' ) }}
-			<button
-				class="link-button"
+			<ButtonLink
 				id="update-address-link"
 				aria-controls="address-change-modal"
 				:aria-expanded="modalIsVisible"
 				@click="$emit( 'show-address-modal' )"
 			>
 				{{ $t( 'donation_confirmation_address_update_link' ) }}
-			</button>
+			</ButtonLink>
 		</div>
 	</div>
 </template>
@@ -46,6 +45,7 @@ import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 import { TranslateResult } from 'vue-i18n';
 import { Address } from '@src/view_models/Address';
 import { Salutation } from '@src/view_models/Salutation';
+import ButtonLink from '@src/components/shared/ButtonLink.vue';
 
 interface Props {
 	modalIsVisible: boolean;

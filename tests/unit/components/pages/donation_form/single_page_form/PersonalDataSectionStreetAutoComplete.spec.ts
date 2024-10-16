@@ -13,7 +13,6 @@ import { nextTick } from 'vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Salutation } from '@src/view_models/Salutation';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
-import BankFields from '@src/components/shared/BankFields.vue';
 
 const testCountry = {
 	countryCode: 'de',
@@ -69,41 +68,6 @@ describe( 'PersonalDataSection.vue (With Street Autocomplete)', () => {
 
 		return { wrapper, store };
 	};
-
-	const setPaymentTypeAndInitializeOtherPaymentValues = ( store: Store<any>, paymentType: string ): Promise<any> => {
-		return store.dispatch( action( 'payment', 'initializePayment' ), {
-			allowedIntervals: [ 0 ],
-			allowedPaymentTypes: [ paymentType ],
-			initialValues: {
-				amount: '100',
-				type: paymentType,
-				paymentIntervalInMonths: '0',
-				isCustomAmount: false,
-			},
-		} );
-	};
-
-	it( 'shows bank data fields if payment type is direct debit', async () => {
-		const { wrapper, store } = getWrapper();
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
-
-		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
-	} );
-
-	it( 'hides bank data fields if payment type is not direct debit', async () => {
-		const { wrapper, store } = getWrapper();
-
-		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
-
-		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
-	} );
 
 	it( 'sets address type in store when it receives address-type event', () => {
 		const { wrapper, store } = getWrapper();

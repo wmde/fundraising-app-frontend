@@ -10,22 +10,24 @@
 		<h1 id="membership-form-heading" class="form-title">{{ $t( 'membership_form_headline' ) }}</h1>
 		<h2 id="membership-form-subheading" class="form-subtitle">{{ $t( 'membership_form_payment_subheading' ) }}</h2>
 
-		<FormSection v-if="showMembershipTypeOption" title-margin="x-small">
-			<MembershipTypeField
-				v-model="membershipTypeModel"
-				:disabledMembershipTypes="disabledMembershipTypes"
-			/>
-		</FormSection>
+		<form>
+			<FormSection v-if="showMembershipTypeOption" title-margin="x-small">
+				<MembershipTypeField
+					v-model="membershipTypeModel"
+					:disabledMembershipTypes="disabledMembershipTypes"
+				/>
+			</FormSection>
 
-		<FormSection title-margin="small">
-			<AddressType
-				@field-changed="setAddressType( $event )"
-				:disabledAddressTypes="disabledAddressTypes"
-				:is-direct-debit="isDirectDebitPayment"
-				:initial-address-type="addressType"
-				:address-type-is-invalid="false"
-			/>
-		</FormSection>
+			<FormSection title-margin="small">
+				<AddressType
+					@field-changed="setAddressType( $event )"
+					:disabledAddressTypes="disabledAddressTypes"
+					:is-direct-debit="isDirectDebitPayment"
+					:initial-address-type="addressType"
+					:address-type-is-invalid="false"
+				/>
+			</FormSection>
+		</form>
 
 		<Payment
 			:payment-amounts="props.paymentAmounts"
@@ -52,11 +54,11 @@
 					scrollElement: 'payment-form-amount-scroll-target'
 				},
 				{
-					validity: store.state.bankdata.validity.bankdata,
-					message: $t( 'error_summary_iban' ),
-					focusElement: 'account-number',
-					scrollElement: 'account-number-scroll-target'
-				}
+					validity: store.state.bankdata.validity.iban,
+					message: $t( 'donation_form_payment_iban_error' ),
+					focusElement: 'iban',
+					scrollElement: 'iban-scroll-target'
+				},
 			]"
 		/>
 
@@ -78,7 +80,7 @@ import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { action } from '@src/store/util';
 import { useStore } from 'vuex';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
@@ -88,6 +90,7 @@ import { useMembershipTypeModel } from '@src/components/pages/membership_form/us
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import { Validity } from '@src/view_models/Validity';
 
 interface Props {
 	validateFeeUrl: String,
@@ -113,7 +116,10 @@ const {
 	setAddressType,
 } = useAddressTypeFunctions( store );
 
-const showErrorSummary = ref<boolean>( false );
+const membershipDataIsValid = ref<boolean>( true );
+const paymentDataIsValid = ref<boolean>( true );
+const bankDataIsValid = ref<boolean>( true );
+const showErrorSummary = computed<boolean>( () => !membershipDataIsValid.value || !paymentDataIsValid.value || !bankDataIsValid.value );
 const membershipTypeModel = useMembershipTypeModel( store );
 const disabledMembershipTypes = computed(
 	(): MembershipTypeModel[] => {
@@ -125,23 +131,47 @@ const isDirectDebitPayment = computed( (): boolean => store.state.membership_fee
 
 const next = async (): Promise<any> => {
 	waitForServerValidationToFinish( store ).then( () => {
-		const storeCleanupActions = [ store.dispatch( action( 'membership_fee', 'markEmptyValuesAsInvalid' ) ) ];
+		const validationActions = [ store.dispatch( action( 'membership_fee', 'markEmptyValuesAsInvalid' ) ) ];
+
 		if ( isDirectDebitPayment ) {
-			storeCleanupActions.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
+			validationActions.push( store.dispatch( action( 'bankdata', 'markEmptyIbanAsInvalid' ) ) );
 		}
-		return Promise.all( storeCleanupActions ).then( () => {
-			if ( store.getters.paymentDataIsValid && store.getters[ 'membership_address/membershipTypeIsValid' ] ) {
+
+		return Promise.all( validationActions ).then( () => {
+			if ( !store.getters[ 'membership_address/membershipTypeIsValid' ] ) {
+				membershipDataIsValid.value = false;
+			}
+
+			if ( !store.getters.paymentDataIsValid ) {
+				paymentDataIsValid.value = false;
+			}
+
+			if ( store.state.bankdata.validity.iban !== Validity.VALID ) {
+				bankDataIsValid.value = false;
+			}
+
+			if ( membershipDataIsValid.value && paymentDataIsValid.value && bankDataIsValid.value ) {
 				emit( 'next-page' );
-			} else {
-				showErrorSummary.value = true;
 			}
 		} );
 	} );
 };
 
+store.watch( ( state, getters ) => getters[ 'membership_address/membershipTypeIsValid' ], ( isValid: boolean ) => {
+	if ( !membershipDataIsValid.value && isValid ) {
+		membershipDataIsValid.value = true;
+	}
+} );
+
 store.watch( ( state, getters ) => getters.paymentDataIsValid, ( isValid: boolean ) => {
-	if ( showErrorSummary.value && isValid ) {
-		showErrorSummary.value = false;
+	if ( !paymentDataIsValid.value && isValid ) {
+		paymentDataIsValid.value = true;
+	}
+} );
+
+watch( () => store.state.bankdata.validity.iban, ( validity: Validity ) => {
+	if ( !bankDataIsValid.value && validity === Validity.VALID ) {
+		bankDataIsValid.value = true;
 	}
 } );
 

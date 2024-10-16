@@ -4,17 +4,8 @@
 		id="donation-page-form-section-personal-data-donation-receipt"
 		aria-labelledby="donation-form-subheading donation-form-tagline"
 	>
-
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
-
-		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
-			<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
-			<BankFields/>
-		</form>
-
-		<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
-
 		<form @submit.prevent="submit" id="donation-form" action="/donation/add" method="post">
 			<AutofillHandler @autofill="onAutofill">
 
@@ -172,7 +163,6 @@ import FormSummary from '@src/components/shared/FormSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import SinglePageErrorSummary from '@src/components/pages/donation_form/DonationReceipt/SinglePageErrorSummary.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
-import BankFields from '@src/components/shared/BankFields.vue';
 import AddressFieldsStreetAutocomplete
 	from '@src/components/pages/donation_form/DonationReceipt/AddressFieldsStreetAutocomplete.vue';
 import SinglePageErrorSummaryStreetAutocomplete

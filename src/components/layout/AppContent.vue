@@ -99,6 +99,7 @@ defineProps<Props>();
 
 	&-main {
 		flex: 1 1 auto;
+		min-width: 0;
 		background: colors.$white;
 		padding: map.get( units.$spacing, 'small' );
 

@@ -4,7 +4,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
 import { validateFeeDataRemotely } from '@src/store/axios';
 import { FeeValidity } from '@src/view_models/MembershipFee';
-import { BankAccountData } from '@src/view_models/BankAccount';
+import { InitialBankAccountData } from '@src/view_models/BankAccount';
 
 jest.mock( '@src/store/axios' );
 
@@ -64,17 +64,17 @@ describe( 'Membership Store', () => {
 		} );
 
 		it( 'initializes initial bank account data when available', async () => {
-			const initialData: BankAccountData = {
-				accountNumber: 'fakeAccountID',
-				bankCode: 'IAmBIC',
+			const initialData: InitialBankAccountData = {
+				iban: 'IAmBAN',
+				bic: 'IAmBIC',
 				bankName: 'Bank of fakey fake',
 			};
 
 			const store = createStore();
 			await store.dispatch( action( 'bankdata', 'initializeBankData' ), initialData );
 
-			expect( store.state.bankdata.values.accountNumber ).toBe( initialData.accountNumber );
-			expect( store.state.bankdata.values.bankCode ).toBe( initialData.bankCode );
+			expect( store.state.bankdata.values.iban ).toBe( initialData.iban );
+			expect( store.state.bankdata.values.bic ).toBe( initialData.bic );
 			expect( store.state.bankdata.values.bankName ).toBe( initialData.bankName );
 		} );
 	} );

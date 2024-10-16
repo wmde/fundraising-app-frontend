@@ -6,21 +6,21 @@ $fullhd-enabled: false;
 
 // Used for selectors like ".has-background-primary"
 $custom-colors: (
-		"bright": (colors.$white, colors.$black),
-		"dark": (colors.$black, colors.$white),
-		"dark-lighter": (colors.$dark),
-		"primary": (colors.$primary),
-		"primary-light": (colors.$primary-light),
-		"primary-lighter": (colors.$primary-lighter),
-		"primary-lightest": (colors.$primary-lightest),
-		"footer": (colors.$footer),
-		"error": (colors.$error),
-		"error-light": (colors.$error-light),
-		"gray-dark": (colors.$gray-dark),
-		"gray-mid": (colors.$gray-mid),
-		"gray-light-solid": (colors.$gray-light),
-		"gray-light-transparency": (colors.$transparent-black),
-		"gray-very-light": (colors.$very-transparent-black),
+	"bright": (colors.$white, colors.$black),
+	"dark": (colors.$black, colors.$white),
+	"dark-lighter": (colors.$dark),
+	"primary": (colors.$primary),
+	"primary-light": (colors.$primary-light),
+	"primary-lighter": (colors.$primary-lighter),
+	"primary-lightest": (colors.$primary-lightest),
+	"footer": (colors.$footer),
+	"error": (colors.$error),
+	"error-light": (colors.$error-light),
+	"gray-dark": (colors.$gray-dark),
+	"gray-mid": (colors.$gray-mid),
+	"gray-light-solid": (colors.$gray-light),
+	"gray-light-transparency": (colors.$transparent-black),
+	"gray-very-light": (colors.$very-transparent-black),
 );
 
 // Max and min form item widths

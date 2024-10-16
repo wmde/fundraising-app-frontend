@@ -1,5 +1,5 @@
 <template>
-	<form name="laika-membership" ref="form" :action="`/apply-for-membership?${campaignParams}`" method="post">
+	<div id="laika-membership">
 		<keep-alive>
 			<PaymentPage
 				ref="paymentPage"
@@ -27,11 +27,11 @@
 				:tracking-data="trackingData"
 			/>
 		</keep-alive>
-	</form>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { inject, nextTick, ref, watch } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import { Country } from '@src/view_models/Country';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
@@ -39,7 +39,6 @@ import { TrackingData } from '@src/view_models/TrackingData';
 import { Salutation } from '@src/view_models/Salutation';
 import PaymentPage from '@src/components/pages/membership_form/subpages/PaymentPage.vue';
 import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
-import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
 	validateAddressUrl: string;
@@ -61,7 +60,6 @@ interface Props {
 
 defineProps<Props>();
 const currentPageIndex = ref<0 | 1>( 0 );
-const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 const addressPage = ref<HTMLElement>( null );
 const paymentPage = ref<HTMLElement>( null );
 

@@ -9,7 +9,7 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { GenericValuePayload } from '@src/view_models/MembershipFee';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
-import BankFields from '@src/components/shared/BankFields.vue';
+import IbanFields from '@src/components/shared/IbanFields.vue';
 
 describe( 'Payment.vue', () => {
 	let store: Store<any>;
@@ -51,15 +51,15 @@ describe( 'Payment.vue', () => {
 
 	it( 'shows bank data when payment type is selected and removes it when unselected', async () => {
 		const wrapper = getWrapper();
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( IbanFields ).exists() ).toBeFalsy();
 
 		await wrapper.find( '[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
 
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
+		expect( wrapper.findComponent( IbanFields ).exists() ).toBeTruthy();
 
 		await wrapper.find( '[name="paymentType"][value="UEB"]' ).trigger( 'change' );
 
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
+		expect( wrapper.findComponent( IbanFields ).exists() ).toBeFalsy();
 	} );
 
 	it( 'sends interval to store when interval model updates', async () => {

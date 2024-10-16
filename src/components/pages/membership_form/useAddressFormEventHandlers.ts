@@ -1,7 +1,8 @@
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
-import { computed, ComputedRef, ref, Ref } from 'vue';
+import { computed, ComputedRef, ref, Ref, watch } from 'vue';
+import { Validity } from '@src/view_models/Validity';
 
 type ReturnType = {
 	submit: () => Promise<void>,
@@ -30,7 +31,7 @@ export function useAddressFormEventHandlers(
 		];
 
 		if ( isDirectDebit.value ) {
-			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
+			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyIbanAsInvalid' ) ) );
 		}
 
 		await Promise.all( validationCalls );
@@ -39,14 +40,17 @@ export function useAddressFormEventHandlers(
 
 		if ( !store.getters[ 'membership_address/requiredFieldsAreValid' ] ) {
 			addressDataIsValid.value = false;
-			return;
 		}
-		if ( isDirectDebit.value && !store.getters[ 'bankdata/bankDataIsValid' ] ) {
+
+		if ( isDirectDebit.value && store.state.bankdata.validity.iban !== Validity.VALID ) {
 			bankDataIsValid.value = false;
-			return;
 		}
+
 		if ( !store.getters[ 'membership_address/dateOfBirthIsValid' ] ) {
 			dateOfBirthIsValid.value = false;
+		}
+
+		if ( !addressDataIsValid.value || !bankDataIsValid.value || !dateOfBirthIsValid.value ) {
 			return;
 		}
 
@@ -64,8 +68,8 @@ export function useAddressFormEventHandlers(
 		}
 	} );
 
-	store.watch( ( state, getters ) => getters[ 'bankdata/bankDataIsValid' ], ( isValid: boolean ) => {
-		if ( !bankDataIsValid.value && isValid ) {
+	watch( () => store.state.bankdata.validity.iban, ( validity: Validity ) => {
+		if ( !bankDataIsValid.value && validity === Validity.VALID ) {
 			bankDataIsValid.value = true;
 		}
 	} );

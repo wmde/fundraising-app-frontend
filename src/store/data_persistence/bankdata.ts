@@ -3,18 +3,6 @@ import { mutation } from '@src/store/util';
 
 export default [
 	{
-		storageKey: 'accountNumber',
-		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( 'bankdata', 'SET_ACCOUNT_NUMBER' ),
-		fields: [],
-	},
-	{
-		storageKey: 'bankCode',
-		mutationType: DataPersistenceMutationType.VALUE,
-		mutationKey: mutation( 'bankdata', 'SET_BANK_CODE' ),
-		fields: [],
-	},
-	{
 		storageKey: 'bankName',
 		mutationType: DataPersistenceMutationType.VALUE,
 		mutationKey: mutation( 'bankdata', 'SET_BANK_NAME' ),

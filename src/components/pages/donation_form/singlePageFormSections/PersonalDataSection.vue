@@ -8,11 +8,6 @@
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 
-		<form v-if="isDirectDebitPayment" id="bank-data-details" @submit="evt => evt.preventDefault()">
-			<h2 v-if="isDirectDebitPayment" id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
-			<BankFields/>
-		</form>
-
 		<form id="address-type-selection" @submit="evt => evt.preventDefault()">
 			<ScrollTarget target-id="address-type-scroll-target"/>
 			<AddressTypeBasic
@@ -108,7 +103,6 @@ import SinglePageErrorSummary
 	from '@src/components/pages/donation_form/singlePageFormSections/SinglePageErrorSummary.vue';
 import StreetAutocompleteSinglePageErrorSummaries
 	from '@src/components/pages/donation_form/StreetAutocomplete/SinglePageErrorSummary.vue';
-import BankFields from '@src/components/shared/BankFields.vue';
 
 interface Props {
 	assetsPath: string;

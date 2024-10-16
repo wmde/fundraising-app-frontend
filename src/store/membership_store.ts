@@ -22,7 +22,7 @@ export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) 
 			},
 			paymentDataIsValid: function ( state, getters ): boolean {
 				if ( state.membership_fee.values.type === 'BEZ' ) {
-					return getters[ 'membership_fee/paymentDataIsValid' ] && getters[ 'bankdata/bankDataIsValid' ];
+					return getters[ 'membership_fee/paymentDataIsValid' ] && state.bankdata.validity.iban === Validity.VALID;
 				} else {
 					return getters[ 'membership_fee/paymentDataIsValid' ];
 				}
