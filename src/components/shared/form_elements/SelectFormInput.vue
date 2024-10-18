@@ -46,8 +46,6 @@ const inputModel = useInputModel<string | number>( () => props.modelValue, props
 @use '@src/scss/settings/units';
 @use '@src/scss/settings/forms';
 @use 'sass:map';
-// TODO: Replace this with custom breakpoint mixins in scss/settings/_breakpoints.scss
-@import "~bulma/sass/utilities/mixins";
 
 .select-form-input {
 	.select {

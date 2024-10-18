@@ -41,9 +41,6 @@
 </template>
 
 <style lang="scss">
-@import "../../scss/variables";
-@import "~bulma/sass/utilities/mixins";
-
 .wikimedia-logo-graphic {
 	width: 36px;
 	height: 37px;
