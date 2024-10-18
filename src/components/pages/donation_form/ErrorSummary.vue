@@ -46,10 +46,10 @@
 				scrollElement: 'person-last-name-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.street,
-				message: $t( 'donation_form_street_error' ),
-				focusElement: 'person-street',
-				scrollElement: 'person-street-scroll-target'
+				validity: store.state.address.validity.country,
+				message: $t( 'donation_form_country_error' ),
+				focusElement: 'person-country',
+				scrollElement: 'person-country-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.postcode,
@@ -64,10 +64,10 @@
 				scrollElement: 'person-city-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.country,
-				message: $t( 'donation_form_country_error' ),
-				focusElement: 'person-country',
-				scrollElement: 'person-country-scroll-target'
+				validity: store.state.address.validity.street,
+				message: $t( 'donation_form_street_error' ),
+				focusElement: 'person-street',
+				scrollElement: 'person-street-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.email,
@@ -106,10 +106,10 @@
 				scrollElement: 'company-company-name-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.street,
-				message: $t( 'donation_form_street_error' ),
-				focusElement: 'company-street',
-				scrollElement: 'company-street-scroll-target'
+				validity: store.state.address.validity.country,
+				message: $t( 'donation_form_country_error' ),
+				focusElement: 'company-country',
+				scrollElement: 'company-country-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.postcode,
@@ -124,10 +124,10 @@
 				scrollElement: 'company-city-scroll-target'
 			},
 			{
-				validity: store.state.address.validity.country,
-				message: $t( 'donation_form_country_error' ),
-				focusElement: 'company-country',
-				scrollElement: 'company-country-scroll-target'
+				validity: store.state.address.validity.street,
+				message: $t( 'donation_form_street_error' ),
+				focusElement: 'company-street',
+				scrollElement: 'company-street-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.email,

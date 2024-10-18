@@ -116,13 +116,13 @@ import NameFields from '@src/components/shared/NameFields.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
-import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
-import { useReceiptModel } from '@src/components/pages/donation_form/useReceiptModel';
+import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 import ServerMessage from '@src/components/shared/ServerMessage.vue';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
 import { AddressChangeResource } from '@src/api/AddressChangeResource';
+import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 
 defineOptions( {
 	name: 'UpdateAddress',
