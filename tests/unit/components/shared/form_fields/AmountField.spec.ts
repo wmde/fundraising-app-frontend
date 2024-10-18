@@ -135,6 +135,22 @@ describe( 'AmountField.vue', () => {
 		expect( wrapper.find( '.form-field-amount-custom.active' ).exists() ).toBeFalsy();
 	} );
 
+	it( 'Checks the custom amount radio when value is custom', async () => {
+		const wrapper = getWrapper();
+		const customAmountInput = wrapper.find( '#amount-custom' );
+
+		expect( wrapper.find<HTMLInputElement>( '.form-field-amount-custom-radio' ).element.checked ).toBeFalsy();
+
+		await customAmountInput.setValue( '1998' );
+		await customAmountInput.trigger( 'blur' );
+
+		expect( wrapper.find<HTMLInputElement>( '.form-field-amount-custom-radio' ).element.checked ).toBeTruthy();
+
+		await wrapper.find( 'input[value="29900"]' ).trigger( 'change' );
+
+		expect( wrapper.find<HTMLInputElement>( '.form-field-amount-custom-radio' ).element.checked ).toBeFalsy();
+	} );
+
 	it( 'does not select amounts for choices that are below minimum amount', async () => {
 		const wrapper = getWrapper();
 
