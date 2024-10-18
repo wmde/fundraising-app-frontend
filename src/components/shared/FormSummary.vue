@@ -37,7 +37,6 @@ withDefaults( defineProps<Props>(), {
 
 	@include breakpoints.tablet-up {
 		padding: map.get( units.$spacing, 'small' );
-		margin: 0 ( -( map.get( units.$spacing, 'small' ) ) );
 	}
 
 	&-content {

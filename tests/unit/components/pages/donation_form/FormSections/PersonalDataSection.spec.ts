@@ -1,17 +1,11 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
-import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { createFeatureToggle } from '@src/util/createFeatureToggle';
-import { Store } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
-import { nextTick } from 'vue';
-import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Salutation } from '@src/view_models/Salutation';
 import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSection.vue';
-import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 const testCountry = {
 	countryCode: 'de',
@@ -34,76 +28,50 @@ const salutations: Salutation[] = [
 ];
 
 describe( 'PersonalDataSection.vue', () => {
-	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
-		const wrapper = mount( PersonalDataSection, {
+	const getWrapper = (): VueWrapper<any> => {
+		return mount( PersonalDataSection, {
 			props: {
-				assetsPath: '',
-				validateAddressUrl: 'https://localhost:8082',
-				validateEmailUrl: 'https://localhost:8082',
-				validateBankDataUrl: 'https://localhost:8082',
-				validateLegacyBankDataUrl: 'https://localhost:8082',
 				countries: [ testCountry ],
 				salutations,
 				trackingData: {} as TrackingData,
 				campaignValues: {} as CampaignValues,
 				addressValidationPatterns: { postcode: '', country: null } as AddressValidation,
+				isDirectDebitPayment: false,
+				disabledAddressTypes: [],
+				addressType: AddressTypeModel.UNSET,
+				addressTypeIsInvalid: false,
 			},
 			global: {
-				plugins: [ store ],
-				stubs: {
-					Address: true,
-				},
-				provide: {
-					bankValidationResource: new FakeBankValidationResource(),
-				},
-				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
-				},
+				plugins: [ createStore() ],
 			},
 		} );
-
-		return { wrapper, store };
 	};
 
-	it( 'sets address type in store when it receives address-type event', () => {
-		const { wrapper, store } = getWrapper();
+	it( 'emits when it receives address-type event', async () => {
+		const wrapper = getWrapper();
 
-		store.dispatch = jest.fn();
-		const expectedAction = action( 'address', 'setAddressType' );
-		const expectedPayload = AddressTypeModel.ANON;
+		await wrapper.find( '#addressType-1' ).trigger( 'change' );
+		await wrapper.find( '#addressType-2' ).trigger( 'change' );
 
-		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.ANON );
-
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+		expect( wrapper.emitted( 'set-address-type' ).length ).toStrictEqual( 2 );
+		expect( wrapper.emitted( 'set-address-type' )[ 0 ][ 0 ] ).toStrictEqual( AddressTypeModel.COMPANY );
+		expect( wrapper.emitted( 'set-address-type' )[ 1 ][ 0 ] ).toStrictEqual( AddressTypeModel.ANON );
 	} );
 
-	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
-		const scrollElement = { scrollIntoView: jest.fn() };
-		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+	it( 'Shows the correct form when address type is changed', async () => {
+		const wrapper = getWrapper();
 
-		const { wrapper } = getWrapper();
-
-		await wrapper.find( '#previous-btn' ).trigger( 'click' );
-
-		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
-	} );
-
-	it( 'updates full selected', async () => {
-		const { wrapper } = getWrapper();
-
-		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
-		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'set-full-selected' );
-		await nextTick();
+		await wrapper.setProps( { addressType: AddressTypeModel.PERSON } );
 
 		expect( wrapper.find( '.address-type-person' ).exists() ).toBeTruthy();
-	} );
 
-	it( 'validates the payment section input on page submit', async () => {
-		const { wrapper, store } = getWrapper();
-		store.dispatch = jest.fn().mockResolvedValue( true );
+		await wrapper.setProps( { addressType: AddressTypeModel.COMPANY } );
 
-		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		expect( wrapper.find( '.address-type-company' ).exists() ).toBeTruthy();
 
-		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
+		await wrapper.setProps( { addressType: AddressTypeModel.ANON } );
+
+		expect( wrapper.find( '.address-type-person' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.address-type-company' ).exists() ).toBeFalsy();
 	} );
 } );

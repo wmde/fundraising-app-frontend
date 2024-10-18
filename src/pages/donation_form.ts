@@ -67,6 +67,10 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			action( 'address', 'initializeAddress' ),
 			createInitialDonationAddressValues( dataPersister, pageData.applicationVars.initialFormValues )
 		),
+		store.dispatch(
+			action( 'address', 'adjustSalutationLocale' ),
+			{ salutations: pageData.applicationVars.salutations, salutation: store.state.address.values.salutation }
+		),
 	] ).then( () => {
 		// ignoring result of initializeAddress
 		const app = createVueApp(

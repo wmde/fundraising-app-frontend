@@ -55,7 +55,6 @@ describe( 'AddressForms.vue', () => {
 			countries: countries,
 			addressValidationPatterns: addressValidationPatterns,
 			addressType,
-			isFullSelected: true,
 			trackingData: {
 				bannerImpressionCount: 1,
 				impressionCount: 5,
@@ -88,15 +87,13 @@ describe( 'AddressForms.vue', () => {
 	} );
 
 	each( [
-		[ AddressTypeModel.ANON, false, 'address-type-anonymous' ],
-		[ AddressTypeModel.EMAIL, false, 'address-type-email' ],
-		[ AddressTypeModel.UNSET, false, 'address-type-unset' ],
-		[ AddressTypeModel.UNSET, true, 'address-type-person' ],
-		[ AddressTypeModel.PERSON, true, 'address-type-person' ],
-		[ AddressTypeModel.COMPANY, true, 'address-type-company' ],
-	] ).test( 'adapts the class attribute', ( addressType, isFullSelected, expectedClass ) => {
+		[ AddressTypeModel.ANON, 'address-type-anonymous' ],
+		[ AddressTypeModel.EMAIL, 'address-type-email' ],
+		[ AddressTypeModel.UNSET, 'address-type-person' ],
+		[ AddressTypeModel.PERSON, 'address-type-person' ],
+		[ AddressTypeModel.COMPANY, 'address-type-company' ],
+	] ).test( 'adapts the class attribute', ( addressType, expectedClass ) => {
 		const options = createOptionsForAddressType( addressType );
-		options.props.isFullSelected = isFullSelected;
 		wrapper = mount( AddressForms, options );
 		expect( wrapper.classes() ).toContain( expectedClass );
 	} );

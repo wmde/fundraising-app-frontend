@@ -9,6 +9,8 @@ import {
 import { ValidationResponse } from '@src/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
+import { Salutation } from '@src/view_models/Salutation';
+import { salutationValueTranslations } from '@src/view_models/salutationValueTranslations';
 
 export const actions = {
 	validateAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
@@ -112,5 +114,24 @@ export const actions = {
 		}
 		context.commit( 'INITIALIZE_ADDRESS', initialValues.fields );
 	},
+	/*
+	 * This is used when a user changes language on the address form
+	 * It takes the old salutation and looks to see if there's a locale
+	 * for it. If you're thinking of improving it, please don't. There
+	 * is already a proposal for improving it here:
+	 *
+	 * https://phabricator.wikimedia.org/T317388
+	*/
+	adjustSalutationLocale( context: ActionContext<AddressState, any>, payload: { salutations: Salutation[], salutation: string } ): void {
+		if ( payload.salutation === '' ) {
+			return;
+		}
 
+		const currentSalutation = payload.salutations.find( s => s.value === payload.salutation );
+		if ( currentSalutation !== undefined ) {
+			context.commit( 'SET_SALUTATION', payload.salutation );
+			return;
+		}
+		context.commit( 'SET_SALUTATION', salutationValueTranslations[ payload.salutation ] );
+	},
 };

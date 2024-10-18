@@ -6,7 +6,7 @@
 	>
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
 		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
-		<form @submit.prevent="submit" id="donation-form" action="/donation/add" method="post">
+		<form id="donation-form" action="/donation/add" method="post">
 			<AutofillHandler @autofill="onAutofill">
 
 				<NameFields
@@ -35,14 +35,14 @@
 
 				<ScrollTarget target-id="receipt-scroll-target"/>
 				<RadioField
-					v-model="receiptNeeded"
+					v-model="receiptModel.receiptNeeded"
 					name="donationReceipt"
 					:options="[
 						{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
 						{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
 					]"
 					:label="$t( 'donation_confirmation_cta_title_alt' )"
-					:show-error="showReceiptOptionError"
+					:show-error="receiptModel.showReceiptOptionError"
 					:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
 					alignment="row"
 					aria-describedby="donation-receipt-help-text"
@@ -54,87 +54,25 @@
 					</template>
 				</RadioField>
 
-				<FeatureToggle default-template="campaigns.address_field_order.legacy">
-					<template #campaigns.address_field_order.legacy>
-						<AddressFields
-							v-if="receiptNeeded"
-							:show-error="fieldErrors"
-							:form-data="formData"
-							:countries="countries"
-							:post-code-validation="addressValidationPatterns.postcode"
-							:country-was-restored="countryWasRestored"
-							@field-changed="onFieldChange"
-						/>
-						<ErrorSummary
-							:show-error-summary="showErrorSummary"
-							:address-type="addressType"
-							:show-receipt-option-error="showReceiptOptionError"
-							:receipt-needed="receiptNeeded"
-						/>
-					</template>
-
-					<template #campaigns.address_field_order.new_order>
-						<AddressFieldsStreetAutocomplete
-							v-if="receiptNeeded"
-							:show-error="fieldErrors"
-							:form-data="formData"
-							:countries="countries"
-							:post-code-validation="addressValidationPatterns.postcode"
-							:country-was-restored="countryWasRestored"
-							@field-changed="onFieldChange"
-						/>
-						<ErrorSummaryStreetAutocomplete
-							:show-error-summary="showErrorSummary"
-							:address-type="addressType"
-							:show-receipt-option-error="showReceiptOptionError"
-							:receipt-needed="receiptNeeded"
-						/>
-					</template>
-				</FeatureToggle>
+				<AddressFields
+					v-if="receiptModel.receiptNeeded"
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:countries="countries"
+					:post-code-validation="addressValidationPatterns.postcode"
+					@field-changed="onFieldChange"
+				/>
 
 			</AutofillHandler>
-
-			<FormSummary>
-				<template #summary-content>
-					<DonationSummary
-						:payment="paymentSummary"
-						:address-type="addressTypeName"
-						:address="addressSummary"
-						:countries="countries"
-						:salutations="salutations"
-						:language-item="inlineSummaryLanguageItem"
-					/>
-				</template>
-
-				<template #summary-buttons>
-					<FormButton
-						id="previous-btn"
-						:is-outlined="true"
-						@click="scrollToPaymentSection()"
-					>
-						{{ $t( 'donation_form_section_back' ) }}
-					</FormButton>
-					<PaymentTextFormButton
-						id="submit-btn"
-						:is-loading="store.getters.isValidating"
-						:payment-type="paymentSummary.paymentType"
-					/>
-				</template>
-			</FormSummary>
-		</form>
-		<form id="donation-form-submit-values" ref="submitValuesForm" action="/donation/add" method="post">
-			<submit-values :tracking-data="trackingData" :campaign-values="campaignValues"></submit-values>
 		</form>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onBeforeMount, toRef } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
@@ -144,57 +82,32 @@ import { CampaignValues } from '@src/view_models/CampaignValues';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { TrackingData } from '@src/view_models/TrackingData';
-import { Validity } from '@src/view_models/Validity';
-import { adjustSalutationLocaleIfNeeded } from '@src/components/shared/SalutationLocaleAdjuster';
-import { trackDynamicForm } from '@src/util/tracking';
-import {
-	usePersonalDataSectionEventHandlers,
-} from '@src/components/pages/donation_form/DonationReceipt/usePersonalDataSectionEventHandlers';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
-import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
-import { useAddressType } from '@src/components/pages/donation_form/DonationReceipt/useAddressType';
 import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
-import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
-import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
+import { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
-import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
-import FormSummary from '@src/components/shared/FormSummary.vue';
-import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import ErrorSummary from '@src/components/pages/donation_form/DonationReceipt/ErrorSummary.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
-import AddressFieldsStreetAutocomplete
-	from '@src/components/pages/donation_form/DonationReceipt/AddressFieldsStreetAutocomplete.vue';
-import ErrorSummaryStreetAutocomplete
-	from '@src/components/pages/donation_form/DonationReceipt/ErrorSummaryStreetAutocomplete.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 interface Props {
-	assetsPath: string;
-	validateAddressUrl: string;
-	validateEmailUrl: string;
-	validateBankDataUrl: string;
-	validateLegacyBankDataUrl: string;
 	countries: Country[];
 	salutations: Salutation[];
 	trackingData: TrackingData;
 	campaignValues: CampaignValues;
 	addressValidationPatterns: AddressValidation;
+	isDirectDebitPayment: boolean;
+	disabledAddressTypes: AddressTypeModel[];
+	addressType: AddressTypeModel;
+	receiptModel: ReceiptModel;
+	addressTypeIsInvalid: boolean;
 }
 
 const props = defineProps<Props>();
 const store = useStore();
 
-const { addressType, addressTypeName } = useAddressType( store );
-const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
 const mailingList = useMailingListModel( store );
-const { receiptNeeded, showReceiptOptionError } = useReceiptModel( store );
-const countryWasRestored = ref<boolean>( false );
-const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
-	if ( scrollIntoViewElement ) {
-		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
-	}
-};
+const receiptModel = toRef<ReceiptModel>( props.receiptModel );
 
 const {
 	formData,
@@ -204,35 +117,8 @@ const {
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
-const {
-	isDirectDebitPayment,
-	paymentSummary,
-} = usePaymentFunctions( store );
+useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, toRef( props.addressType ), store );
 
-const { submit, submitValuesForm, showErrorSummary } = usePersonalDataSectionEventHandlers(
-	store,
-	isDirectDebitPayment,
-	props.validateAddressUrl,
-	props.validateEmailUrl,
-	receiptNeeded
-);
-
-useAddressTypeFromReceiptSetter( receiptNeeded, addressType, store );
-
-onBeforeMount( () => {
-	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
-	initializeDataFromStore();
-} );
-
-onMounted( () => {
-	trackDynamicForm();
-
-	// TODO: This should probably be initialised elsewhere maybe in the entry point?
-	const translatedSalutation = adjustSalutationLocaleIfNeeded( props.salutations, formData.salutation.value );
-	if ( translatedSalutation !== '' ) {
-		formData.salutation.value = translatedSalutation;
-		onFieldChange( 'salutation' );
-	}
-} );
+onBeforeMount( initializeDataFromStore );
 
 </script>

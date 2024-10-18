@@ -490,6 +490,44 @@ describe( 'Address', () => {
 		} );
 	} );
 
+	describe( 'Actions/adjustSalutationLocale', () => {
+		it( 'does not adjust when salutation is empty', () => {
+			const commit = jest.fn();
+			const action = actions.adjustSalutationLocale as any;
+			const salutations = [ { value: 'Mr' }, { value: 'Ms' } ];
+
+			action( { commit }, { salutations, salutation: '' } );
+
+			expect( commit ).not.toHaveBeenCalled();
+		} );
+
+		it( 'adjusts the salutation when it finds it in the server salutations array', () => {
+			const commit = jest.fn();
+			const action = actions.adjustSalutationLocale as any;
+			const salutations = [ { value: 'Mr' }, { value: 'Ms' } ];
+
+			action( { commit }, { salutations, salutation: 'Mr' } );
+
+			expect( commit ).toHaveBeenCalledWith(
+				'SET_SALUTATION',
+				'Mr'
+			);
+		} );
+
+		it( 'adjusts the salutation when it finds it in the local translations array', () => {
+			const commit = jest.fn();
+			const action = actions.adjustSalutationLocale as any;
+			const salutations = [ { value: 'Mr' }, { value: 'Ms' } ];
+
+			action( { commit }, { salutations, salutation: 'No Salutation' } );
+
+			expect( commit ).toHaveBeenCalledWith(
+				'SET_SALUTATION',
+				'Keine Anrede'
+			);
+		} );
+	} );
+
 	describe( 'Mutations/VALIDATE_INPUT', () => {
 		it( 'sets validity to valid for optional unfilled fields', () => {
 			const inputField = {
