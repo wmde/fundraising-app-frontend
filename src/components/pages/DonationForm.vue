@@ -56,10 +56,10 @@ import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
-import PaymentSection from '@src/components/pages/donation_form/singlePageFormSections/PaymentSection.vue';
-import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
+import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSection.vue';
 import PersonalDataSectionDonationReceipt
-	from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
+	from '@src/components/pages/donation_form/FormSections/PersonalDataSectionDonationReceipt.vue';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import IbanFields from '@src/components/shared/IbanFields.vue';

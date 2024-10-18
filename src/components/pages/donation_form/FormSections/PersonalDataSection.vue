@@ -32,11 +32,11 @@
 
 		<FeatureToggle default-template="campaigns.address_field_order.legacy">
 			<template #campaigns.address_field_order.legacy>
-				<SinglePageErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
+				<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
 			</template>
 
 			<template #campaigns.address_field_order.new_order>
-				<StreetAutocompleteSinglePageErrorSummaries :show-error-summary="showErrorSummary" :address-type="addressType"/>
+				<StreetAutocompleteErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
 			</template>
 		</FeatureToggle>
 
@@ -91,18 +91,18 @@ import { Salutation } from '@src/view_models/Salutation';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { trackDynamicForm } from '@src/util/tracking';
 import {
-	usePersonalDataSectionEventHandlers,
-} from '@src/components/pages/donation_form/usePersonalDataSectionEventHandlers';
+	useDonationFormSubmitHandler,
+} from '@src/components/pages/donation_form/useDonationFormSubmitHandler';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { AddressValidation } from '@src/view_models/Validation';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { useStore } from 'vuex';
-import SinglePageErrorSummary
-	from '@src/components/pages/donation_form/singlePageFormSections/SinglePageErrorSummary.vue';
-import StreetAutocompleteSinglePageErrorSummaries
-	from '@src/components/pages/donation_form/StreetAutocomplete/SinglePageErrorSummary.vue';
+import ErrorSummary
+	from '@src/components/pages/donation_form/ErrorSummary.vue';
+import StreetAutocompleteErrorSummary
+	from '@src/components/pages/donation_form/StreetAutocomplete/ErrorSummary.vue';
 
 interface Props {
 	assetsPath: string;
@@ -153,7 +153,7 @@ const {
 	inlineSummaryLanguageItem,
 } = useAddressSummary( store );
 
-const { submit, submitValuesForm, showErrorSummary } = usePersonalDataSectionEventHandlers(
+const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHandler(
 	store,
 	addressType,
 	isDirectDebitPayment,

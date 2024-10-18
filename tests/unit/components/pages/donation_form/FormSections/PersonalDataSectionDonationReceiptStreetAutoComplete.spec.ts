@@ -7,7 +7,7 @@ import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
-import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
+import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/FormSections/PersonalDataSectionDonationReceipt.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 const testCountry = {
@@ -30,7 +30,7 @@ const salutations: Salutation[] = [
 	},
 ];
 
-describe( 'PersonalDataSectionDonationReceipt.vue', () => {
+describe( 'PersonalDataSectionDonationReceipt.vue (With Street Autocomplete)', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
 		const wrapper = mount( PersonalDataSectionDonationReceipt, {
 			props: {
@@ -54,7 +54,10 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
+					FeatureToggle: createFeatureToggle( [
+						'campaigns.address_type_steps.preselect',
+						'campaigns.address_field_order.new_order',
+					] ),
 				},
 			},
 		} );

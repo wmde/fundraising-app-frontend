@@ -65,7 +65,7 @@
 							:country-was-restored="countryWasRestored"
 							@field-changed="onFieldChange"
 						/>
-						<SinglePageErrorSummary
+						<ErrorSummary
 							:show-error-summary="showErrorSummary"
 							:address-type="addressType"
 							:show-receipt-option-error="showReceiptOptionError"
@@ -83,7 +83,7 @@
 							:country-was-restored="countryWasRestored"
 							@field-changed="onFieldChange"
 						/>
-						<SinglePageErrorSummaryStreetAutocomplete
+						<ErrorSummaryStreetAutocomplete
 							:show-error-summary="showErrorSummary"
 							:address-type="addressType"
 							:show-receipt-option-error="showReceiptOptionError"
@@ -161,12 +161,12 @@ import { useStore } from 'vuex';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import SinglePageErrorSummary from '@src/components/pages/donation_form/DonationReceipt/SinglePageErrorSummary.vue';
+import ErrorSummary from '@src/components/pages/donation_form/DonationReceipt/ErrorSummary.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import AddressFieldsStreetAutocomplete
 	from '@src/components/pages/donation_form/DonationReceipt/AddressFieldsStreetAutocomplete.vue';
-import SinglePageErrorSummaryStreetAutocomplete
-	from '@src/components/pages/donation_form/DonationReceipt/SinglePageErrorSummaryStreetAutocomplete.vue';
+import ErrorSummaryStreetAutocomplete
+	from '@src/components/pages/donation_form/DonationReceipt/ErrorSummaryStreetAutocomplete.vue';
 
 interface Props {
 	assetsPath: string;
