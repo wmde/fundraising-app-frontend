@@ -41,17 +41,14 @@ describe( 'AddressPage.vue', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
 		const wrapper = mount( AddressPage, {
 			props: {
-				assetsPath: '',
 				validateAddressUrl: '',
 				validateEmailUrl: '',
-				validateBankDataUrl: 'https://localhost:8082',
-				validateLegacyBankDataUrl: 'https://localhost:8082',
 				countries: [ testCountry ],
 				salutations,
-				trackingData: {} as TrackingData,
-				campaignValues: {} as CampaignValues,
 				addressValidationPatterns: { postcode: '' } as AddressValidation,
 				dateOfBirthValidationPattern: dateOfBirthValidationPattern,
+				campaignValues: {} as CampaignValues,
+				trackingData: {} as TrackingData,
 			},
 			global: {
 				plugins: [ store ],

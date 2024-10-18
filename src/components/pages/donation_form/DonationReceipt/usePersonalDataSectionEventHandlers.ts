@@ -38,7 +38,7 @@ export function usePersonalDataSectionEventHandlers(
 		];
 
 		if ( isDirectDebit.value ) {
-			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyFieldsAsInvalid' ) ) );
+			validationCalls.push( store.dispatch( action( 'bankdata', 'markEmptyIbanAsInvalid' ) ) );
 		}
 
 		await Promise.all( validationCalls );
@@ -49,7 +49,7 @@ export function usePersonalDataSectionEventHandlers(
 			addressDataIsValid.value = false;
 		}
 
-		if ( isDirectDebit.value && !store.getters[ 'bankdata/bankDataIsValid' ] ) {
+		if ( isDirectDebit.value && store.state.bankdata.validity.iban !== Validity.VALID ) {
 			bankDataIsValid.value = false;
 		}
 
@@ -70,8 +70,8 @@ export function usePersonalDataSectionEventHandlers(
 		}
 	} );
 
-	store.watch( ( state, getters ) => getters[ 'bankdata/bankDataIsValid' ], ( isValid: boolean ) => {
-		if ( !bankDataIsValid.value && isValid ) {
+	watch( () => store.state.bankdata.validity.iban, ( validity: Validity ) => {
+		if ( !bankDataIsValid.value && validity === Validity.VALID ) {
 			bankDataIsValid.value = true;
 		}
 	} );
@@ -85,7 +85,7 @@ export function usePersonalDataSectionEventHandlers(
 	watch( () => store.state.payment.values.type, ( newType: string ) => {
 		if ( newType !== 'BEZ' ) {
 			bankDataIsValid.value = true;
-			store.dispatch( action( 'bankdata', 'setBankDataValidity' ), Validity.VALID );
+			store.dispatch( action( 'bankdata', 'setIbanValidity' ), Validity.VALID );
 		}
 	} );
 

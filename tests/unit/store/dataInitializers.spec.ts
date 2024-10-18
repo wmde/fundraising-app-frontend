@@ -267,8 +267,6 @@ describe( 'createInitialBankDataValues', () => {
 	it( 'fills data from initial data', () => {
 		const dataPersister = new FakeDataPersister( [] );
 		const initialValues: InitialBankAccountData = {
-			accountNumber: 'fakeAccountID',
-			bankCode: 'IAmBIC',
 			bankName: 'Bank of fakey fake',
 			iban: 'IBANANA',
 			bic: 'BISCUIT',
@@ -276,8 +274,6 @@ describe( 'createInitialBankDataValues', () => {
 
 		const values = createInitialBankDataValues( dataPersister, initialValues );
 
-		expect( values.accountNumber ).toEqual( initialValues.accountNumber );
-		expect( values.bankCode ).toEqual( initialValues.bankCode );
 		expect( values.bankName ).toEqual( initialValues.bankName );
 		expect( values.iban ).toEqual( initialValues.iban );
 		expect( values.bic ).toEqual( initialValues.bic );

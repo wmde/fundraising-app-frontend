@@ -16,10 +16,10 @@
 				scrollElement: 'payment-form-type-scroll-target',
 			},
 			{
-				validity: bankDataValidity,
-				message: $t( 'donation_form_payment_bankdata_error' ),
-				focusElement: 'account-number',
-				scrollElement: 'account-number-scroll-target'
+				validity: store.state.bankdata.validity.iban,
+				message: $t( 'donation_form_payment_iban_error' ),
+				focusElement: 'iban',
+				scrollElement: 'iban-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.salutation,
@@ -70,10 +70,10 @@
 				scrollElement: 'payment-form-type-scroll-target',
 			},
 			{
-				validity: bankDataValidity,
-				message: $t( 'donation_form_payment_bankdata_error' ),
-				focusElement: 'account-number',
-				scrollElement: 'account-number-scroll-target'
+				validity: store.state.bankdata.validity.iban,
+				message: $t( 'donation_form_payment_iban_error' ),
+				focusElement: 'iban',
+				scrollElement: 'iban-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.salutation,
@@ -148,10 +148,10 @@
 				scrollElement: 'payment-form-type-scroll-target',
 			},
 			{
-				validity: bankDataValidity,
-				message: $t( 'donation_form_payment_bankdata_error' ),
-				focusElement: 'account-number',
-				scrollElement: 'account-number-scroll-target'
+				validity: store.state.bankdata.validity.iban,
+				message: $t( 'donation_form_payment_iban_error' ),
+				focusElement: 'iban',
+				scrollElement: 'iban-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.salutation,
@@ -232,10 +232,10 @@
 				scrollElement: 'payment-form-type-scroll-target',
 			},
 			{
-				validity: bankDataValidity,
-				message: $t( 'donation_form_payment_bankdata_error' ),
-				focusElement: 'account-number',
-				scrollElement: 'account-number-scroll-target'
+				validity: store.state.bankdata.validity.iban,
+				message: $t( 'donation_form_payment_iban_error' ),
+				focusElement: 'iban',
+				scrollElement: 'iban-scroll-target'
 			},
 			{
 				validity: store.state.address.validity.salutation,
@@ -271,7 +271,6 @@ import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
-import { computed } from 'vue';
 
 interface Props {
 	showErrorSummary: boolean;
@@ -282,6 +281,5 @@ interface Props {
 
 defineProps<Props>();
 const store = useStore();
-const bankDataValidity = computed<Validity>( () => store.getters[ 'bankdata/bankDataIsInvalid' ] ? Validity.INVALID : Validity.VALID );
 
 </script>

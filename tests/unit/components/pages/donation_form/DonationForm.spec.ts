@@ -4,9 +4,10 @@ import countries from '@test/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { createStore } from '@src/store/donation_store';
-import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 import { nextTick } from 'vue';
 import axios from 'axios';
+import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
+import { IBAN } from '@test/data/bankdata';
 
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -18,8 +19,6 @@ declare global {
 		}
 	}
 }
-
-const IBAN = 'DE12500105170648489890';
 
 const errorSummaryItemIsFunctional = ( wrapper: VueWrapper<any>, formElement: string, scrollElement: string ): boolean => {
 	const errorItemExists = wrapper.find( `.error-summary a[href="#${formElement}"]` ).exists();
@@ -83,7 +82,7 @@ describe( 'DonationForm.vue', () => {
 			global: {
 				plugins: [ store ],
 				provide: {
-					bankValidationResource: new FakeBankValidationResource(),
+					bankValidationResource: newSucceedingBankValidationResource(),
 				},
 				components: {
 					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
@@ -114,7 +113,7 @@ describe( 'DonationForm.vue', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'account-number', 'account-number-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'addressType-0', 'address-type-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'person-salutation-0', 'person-salutation-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'person-first-name', 'person-first-name-scroll-target' ) ).toBeTruthy();
@@ -129,8 +128,8 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( 'input[name="addressType"][value="0"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( '#person-first-name' ).setValue( 'first-name' );
 		await wrapper.find( '#person-first-name' ).trigger( 'blur' );
@@ -180,7 +179,7 @@ describe( 'DonationForm.vue', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'account-number', 'account-number-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'person-salutation-0', 'person-salutation-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'person-first-name', 'person-first-name-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'person-last-name', 'person-last-name-scroll-target' ) ).toBeTruthy();
@@ -193,8 +192,8 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( '#person-first-name' ).setValue( 'first-name' );
 		await wrapper.find( '#person-first-name' ).trigger( 'blur' );
@@ -244,7 +243,7 @@ describe( 'DonationForm.vue', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'account-number', 'account-number-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'company-company-name', 'company-company-name-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'company-street', 'company-street-scroll-target' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'company-post-code', 'company-post-code-scroll-target' ) ).toBeTruthy();
@@ -312,8 +311,8 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( 'input[name="addressType"][value="0"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
@@ -359,8 +358,8 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
 
-		await wrapper.find( '#account-number' ).setValue( IBAN );
-		await wrapper.find( '#account-number' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( 'input[name="addressType"][value="1"]' ).trigger( 'change' );
 

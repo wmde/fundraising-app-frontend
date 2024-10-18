@@ -1,5 +1,5 @@
 <template>
-	<div
+	<form
 		class="address-page"
 		aria-live="assertive"
 		aria-labelledby="membership-form-heading membership-form-subheading"
@@ -105,11 +105,11 @@
 				</FormButton>
 			</template>
 		</FormSummary>
+	</form>
 
-		<form action="/apply-for-membership" method="post" ref="submitValuesForm" id="submit-form">
-			<SubmitValues :campaign-values="campaignValues" :tracking-data="trackingData"/>
-		</form>
-	</div>
+	<form action="/apply-for-membership" method="post" ref="submitValuesForm" id="submit-form">
+		<SubmitValues :campaign-values="campaignValues" :tracking-data="trackingData"/>
+	</form>
 </template>
 
 <script setup lang="ts">

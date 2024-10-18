@@ -2,23 +2,22 @@
 	<div class="loading-spinner-ring"><div/><div/><div/><div/></div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use 'src/scss/settings/colors';
 
 .loading-spinner-ring {
 	display: inline-block;
 	position: relative;
-	width: 80px;
-	height: 80px;
+	width: 72px;
+	height: 72px;
 }
 
 .loading-spinner-ring div {
 	box-sizing: border-box;
 	display: block;
 	position: absolute;
-	width: 64px;
-	height: 64px;
-	margin: 8px;
+	width: 100%;
+	height: 100%;
 	border: 8px solid colors.$gray-mid;
 	border-radius: 50%;
 	animation: loading-spinner-ring 1.2s cubic-bezier( 0.5, 0, 0.5, 1 ) infinite;

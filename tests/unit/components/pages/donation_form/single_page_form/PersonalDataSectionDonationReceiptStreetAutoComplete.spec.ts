@@ -8,7 +8,6 @@ import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
-import BankFields from '@src/components/shared/BankFields.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 const testCountry = {
@@ -65,41 +64,6 @@ describe( 'PersonalDataSectionDonationReceipt.vue (With Street Autocomplete)', (
 
 		return { wrapper, store };
 	};
-
-	const setPaymentTypeAndInitializeOtherPaymentValues = ( store: Store<any>, paymentType: string ): Promise<any> => {
-		return store.dispatch( action( 'payment', 'initializePayment' ), {
-			allowedIntervals: [ 0 ],
-			allowedPaymentTypes: [ paymentType ],
-			initialValues: {
-				amount: '100',
-				type: paymentType,
-				paymentIntervalInMonths: '0',
-				isCustomAmount: false,
-			},
-		} );
-	};
-
-	it( 'shows bank data fields if payment type is direct debit', async () => {
-		const { wrapper, store } = getWrapper();
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
-
-		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
-	} );
-
-	it( 'hides bank data fields if payment type is not direct debit', async () => {
-		const { wrapper, store } = getWrapper();
-
-		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'BEZ' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeTruthy();
-
-		await setPaymentTypeAndInitializeOtherPaymentValues( store, 'UEB' );
-
-		expect( wrapper.findComponent( BankFields ).exists() ).toBeFalsy();
-	} );
 
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
 		const scrollElement = { scrollIntoView: jest.fn() };
