@@ -29,7 +29,11 @@
 
 		<div class="form-field-amount-custom" :class="{ active: isCustomAmount }">
 			<label class="form-field-amount-help-text" for="amount-custom">{{ $t('donation_form_payment_amount_label') }}</label>
-			<div class="form-field-amount-custom-euro-symbol">
+			<div class="form-field-amount-custom-euro-symbol" :class="{ active: isCustomAmount }">
+				<div class="radio radio-form-input">
+					<input type="radio" class="form-field-amount-custom-radio" :checked="isCustomAmount" aria-hidden="true" tabindex="-1"/>
+				</div>
+
 				<TextFormInput
 					v-model="customAmount"
 					input-type="text"
@@ -149,6 +153,7 @@ watch( () => props.modelValue, ( newValue: string ) => {
 @use '@src/scss/settings/colors';
 @use '@src/scss/settings/forms';
 @use '@src/scss/mixins/visibility';
+@use '@src/scss/settings/breakpoints';
 @use 'sass:map';
 
 $max-width: 384px;
@@ -164,13 +169,17 @@ $input-height: 50px;
 	&-radio-container {
 		display: flex;
 		flex-wrap: wrap;
-		margin: 0 ( -( map.get( units.$spacing, 'small' ) ) );
+		margin: 0 ( -( map.get( units.$spacing, 'xx-small' ) ) );
 	}
 
 	&-radio {
-		width: 25%;
-		padding: 0 map.get( units.$spacing, 'small' ) map.get( units.$spacing, 'small' );
+		width: 50%;
+		padding: 0 map.get( units.$spacing, 'xx-small' ) map.get( units.$spacing, 'small' );
 		font-size: 16px;
+
+		@include breakpoints.tablet-up {
+			width: 25%;
+		}
 
 		.radio-form-input {
 			padding: 0;
@@ -179,24 +188,14 @@ $input-height: 50px;
 			min-width: auto;
 			height: $input-height;
 			line-height: $input-height;
-			text-align: center;
+			text-align: left;
 			transition: background 100ms global.$easing, color 100ms global.$easing;
 
-			input {
-				@include visibility.screen-reader-only;
-			}
-
 			label {
-				padding: 0;
+				padding: 0 0 0 36px;
 			}
 
 			&.is-active {
-				label {
-					background: colors.$primary;
-					color: colors.$white;
-					font-weight: bold;
-				}
-
 				label:hover,
 				input:focus + label,
 				input:hover + label {
@@ -231,14 +230,13 @@ $input-height: 50px;
 		}
 
 		input {
-			padding: 0 map.get( units.$spacing, 'medium' );
+			padding: 0 map.get( units.$spacing, 'medium' ) 0 map.get( units.$spacing, 'xx-large' );
 			text-align: right;
 		}
 
 		&.active {
 			input {
 				border-color: colors.$primary;
-				box-shadow: 0 1px 0 0 colors.$primary;
 			}
 		}
 
@@ -254,8 +252,26 @@ $input-height: 50px;
 			}
 			&:after {
 				right: auto;
-				left: 10px;
+				left: 44px;
 			}
+		}
+	}
+
+	&-custom .radio-form-input {
+		position: absolute;
+		z-index: 1;
+		height: 16px;
+		width: 16px;
+		min-width: 16px;
+		top: 50%;
+		transform: translateY( -50% );
+		left: 16px;
+
+		input {
+			padding: 0;
+			top: 0;
+			margin-top: 0;
+			left: 0;
 		}
 	}
 }
