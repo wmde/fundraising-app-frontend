@@ -28,7 +28,7 @@ type ReturnType = {
 	showErrorSummary: Ref<boolean>,
 }
 
-export function usePersonalDataSectionEventHandlers(
+export function useDonationFormSubmitHandler(
 	store: Store<any>,
 	addressType: ComputedRef<AddressTypeModel>,
 	isDirectDebit: ComputedRef<boolean>,

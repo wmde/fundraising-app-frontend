@@ -1,4 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils';
+
+import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSection.vue';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -10,7 +12,6 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { nextTick } from 'vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Salutation } from '@src/view_models/Salutation';
-import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 const testCountry = {
@@ -33,15 +34,15 @@ const salutations: Salutation[] = [
 	},
 ];
 
-describe( 'PersonalDataSection.vue', () => {
+describe( 'PersonalDataSection.vue (With Street Autocomplete)', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
 		const wrapper = mount( PersonalDataSection, {
 			props: {
 				assetsPath: '',
-				validateAddressUrl: 'https://localhost:8082',
-				validateEmailUrl: 'https://localhost:8082',
-				validateBankDataUrl: 'https://localhost:8082',
-				validateLegacyBankDataUrl: 'https://localhost:8082',
+				validateAddressUrl: '',
+				validateEmailUrl: '',
+				validateBankDataUrl: '',
+				validateLegacyBankDataUrl: '',
 				countries: [ testCountry ],
 				salutations,
 				trackingData: {} as TrackingData,
@@ -57,7 +58,10 @@ describe( 'PersonalDataSection.vue', () => {
 					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
+					FeatureToggle: createFeatureToggle( [
+						'campaigns.address_type_steps.preselect',
+						'campaigns.address_field_order.new_order',
+					] ),
 				},
 			},
 		} );
@@ -77,7 +81,7 @@ describe( 'PersonalDataSection.vue', () => {
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
-	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
+	it( 'scrolls to top when the donor clicks the previous button', async () => {
 		const scrollElement = { scrollIntoView: jest.fn() };
 		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
 

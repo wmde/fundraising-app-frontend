@@ -1,13 +1,16 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { Store } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressValidation } from '@src/view_models/Validation';
+import { nextTick } from 'vue';
+import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import { Salutation } from '@src/view_models/Salutation';
-import PersonalDataSectionDonationReceipt from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSection.vue';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 const testCountry = {
@@ -30,20 +33,20 @@ const salutations: Salutation[] = [
 	},
 ];
 
-describe( 'PersonalDataSectionDonationReceipt.vue (With Street Autocomplete)', () => {
+describe( 'PersonalDataSection.vue', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
-		const wrapper = mount( PersonalDataSectionDonationReceipt, {
+		const wrapper = mount( PersonalDataSection, {
 			props: {
 				assetsPath: '',
-				validateAddressUrl: '',
-				validateEmailUrl: '',
+				validateAddressUrl: 'https://localhost:8082',
+				validateEmailUrl: 'https://localhost:8082',
 				validateBankDataUrl: 'https://localhost:8082',
 				validateLegacyBankDataUrl: 'https://localhost:8082',
 				countries: [ testCountry ],
 				salutations,
 				trackingData: {} as TrackingData,
 				campaignValues: {} as CampaignValues,
-				addressValidationPatterns: { postcode: '' } as AddressValidation,
+				addressValidationPatterns: { postcode: '', country: null } as AddressValidation,
 			},
 			global: {
 				plugins: [ store ],
@@ -54,16 +57,25 @@ describe( 'PersonalDataSectionDonationReceipt.vue (With Street Autocomplete)', (
 					bankValidationResource: new FakeBankValidationResource(),
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( [
-						'campaigns.address_type_steps.preselect',
-						'campaigns.address_field_order.new_order',
-					] ),
+					FeatureToggle: createFeatureToggle( [ 'campaigns.address_type_steps.preselect' ] ),
 				},
 			},
 		} );
 
 		return { wrapper, store };
 	};
+
+	it( 'sets address type in store when it receives address-type event', () => {
+		const { wrapper, store } = getWrapper();
+
+		store.dispatch = jest.fn();
+		const expectedAction = action( 'address', 'setAddressType' );
+		const expectedPayload = AddressTypeModel.ANON;
+
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.ANON );
+
+		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+	} );
 
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
 		const scrollElement = { scrollIntoView: jest.fn() };
@@ -76,11 +88,21 @@ describe( 'PersonalDataSectionDonationReceipt.vue (With Street Autocomplete)', (
 		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
 	} );
 
+	it( 'updates full selected', async () => {
+		const { wrapper } = getWrapper();
+
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'address-type', AddressTypeModel.PERSON );
+		wrapper.findComponent( AddressTypeBasic ).vm.$emit( 'set-full-selected' );
+		await nextTick();
+
+		expect( wrapper.find( '.address-type-person' ).exists() ).toBeTruthy();
+	} );
+
 	it( 'validates the payment section input on page submit', async () => {
 		const { wrapper, store } = getWrapper();
 		store.dispatch = jest.fn().mockResolvedValue( true );
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 
 		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'markEmptyValuesAsInvalid' ) );
 	} );
