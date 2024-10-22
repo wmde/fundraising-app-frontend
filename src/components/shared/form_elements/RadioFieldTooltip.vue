@@ -20,17 +20,18 @@ defineProps<Props>();
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use '@src/scss/settings/colors';
 
 .radio-field-tooltip {
 	position: absolute;
 	display: block;
-	right: 10px;
+	left: 14px;
 	top: 50%;
 	margin-top: -8px;
 	height: 16px;
 	width: 17px;
+	background: colors.$white;
 
 	&-text {
 		position: absolute;
@@ -40,7 +41,7 @@ defineProps<Props>();
 		height: 60px;
 		width: 280px;
 		top: -70px;
-		right: -8px;
+		left: -8px;
 		background: colors.$white;
 		padding: 10px;
 		border: 1px solid colors.$gray-dark;
@@ -53,7 +54,7 @@ defineProps<Props>();
 			content: '';
 			position: absolute;
 			bottom: -9px;
-			right: 6px;
+			left: 6px;
 			width: 0;
 			height: 0;
 			border-style: solid;
@@ -65,7 +66,7 @@ defineProps<Props>();
 			content: '';
 			position: absolute;
 			bottom: -7px;
-			right: 8px;
+			left: 8px;
 			width: 0;
 			height: 0;
 			border-style: solid;
