@@ -27,7 +27,7 @@ defineEmits( [ 'click' ] );
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use '@src/scss/settings/colors';
 
 .button-link {
