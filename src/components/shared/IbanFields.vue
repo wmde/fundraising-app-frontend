@@ -17,9 +17,9 @@
 			<ScrollTarget target-id="iban-calculator-scroll-target"/>
 
 			<div class="iban-calculator-content">
-				<h2 class="icon-title">
+				<h3 class="icon-title">
 					<BankIcon/> {{ $t( 'donation_form_iban_calculator_title' ) }}
-				</h2>
+				</h3>
 
 				<button class="iban-calculator-close" @click.prevent="showCalculator = false" aria-controls="iban-calculator">
 					<span class="is-sr-only">{{ $t( 'close' ) }}</span>
@@ -375,17 +375,17 @@ watch( () => store.state.bankdata.values.iban, ( newIban: string ) => {
 			}
 		}
 	}
-}
 
-h2.icon-title {
-	padding: map.get(units.$spacing, 'small') 0 0 1.5rem;
-	margin: 0 map.get(units.$spacing, 'small');
-	font-size: 18px;
-	line-height: 25px;
+	.icon-title {
+		padding: map.get(units.$spacing, 'small') 0 0 1.5rem;
+		margin: 0 map.get(units.$spacing, 'small');
+		font-size: 18px;
+		line-height: 25px;
 
-	svg {
-		float: left;
-		margin: 4px 0 0 -1.5rem;
+		svg {
+			float: left;
+			margin: 4px 0 0 -1.5rem;
+		}
 	}
 }
 
