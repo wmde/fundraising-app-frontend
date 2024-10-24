@@ -156,14 +156,14 @@ watch( () => props.modelValue, ( newValue: string ) => {
 @use '@src/scss/settings/breakpoints';
 @use 'sass:map';
 
-$max-width: 384px;
+$max-width: 414px;
 $input-height: 50px;
 
 .form-field-amount {
-	max-width: $max-width;
+	max-width: map.get( forms.$input, 'max-width' );
 
 	.input {
-		max-width: $max-width;
+		max-width: map.get( forms.$input, 'max-width' );
 	}
 
 	&-radio-container {

@@ -2,7 +2,7 @@ import { createStore } from '@src/store/donation_store';
 import { mount, VueWrapper } from '@vue/test-utils';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import { action } from '@src/store/util';
-import PaymentSection from '@src/components/pages/donation_form/singlePageFormSections/PaymentSection.vue';
+import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
 import Payment from '@src/components/pages/donation_form/Payment.vue';
 
 const getWrapper = ( store: any ): VueWrapper<any> => {

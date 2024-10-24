@@ -1,8 +1,7 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
-import DonationForm from '@src/components/pages/DonationForm.vue';
+import DonationForm from '@src/components/pages/donation_form/SubPages/DonationFormReceipt.vue';
 import countries from '@test/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
-import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { createStore } from '@src/store/donation_store';
 import { nextTick } from 'vue';
 import axios from 'axios';
@@ -28,7 +27,7 @@ const errorSummaryItemIsFunctional = ( wrapper: VueWrapper<any>, formElement: st
 	return errorItemExists && formElementExists && scrollElementExists;
 };
 
-describe( 'DonationForm.vue (with receipt question field)', () => {
+describe( 'DonationFormReciept.vue', () => {
 
 	beforeEach( () => {
 		global.window.scrollTo = jest.fn();
@@ -84,18 +83,24 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
 				},
-				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.test_02' ] ),
-				},
 			},
 			attachTo: document.body,
 		} );
 	};
 
+	it( 'sets the correct default field values', async () => {
+		const wrapper = getWrapper();
+
+		expect( wrapper.find<HTMLInputElement>( '#interval-0' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-0' ).element.checked ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-1' ).element.checked ).toBeFalsy();
+	} );
+
 	it( 'handles the error summary when no receipt option was selected before submitting', async () => {
 		const wrapper = getWrapper();
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
@@ -136,7 +141,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( '#country' ).trigger( 'blur' );
 		await jest.runAllTimersAsync();
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
@@ -144,7 +149,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 
 		// Make the IBAN field appear
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
@@ -204,7 +209,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( '#country' ).trigger( 'blur' );
 		await jest.runAllTimersAsync();
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
@@ -212,7 +217,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 
 		// Make the IBAN field appear
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
@@ -271,7 +276,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( '#country' ).trigger( 'blur' );
 		await jest.runAllTimersAsync();
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
@@ -279,7 +284,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 
 		// Make the IBAN field appear
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 		await nextTick();
 
@@ -335,7 +340,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
 		const wrapper = getWrapper();
 
-		const submitForm = wrapper.find<HTMLFormElement>( '#donation-form-submit-values' );
+		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
 		submitForm.element.submit = jest.fn();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
@@ -372,7 +377,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( '#country' ).setValue( countries[ 0 ].countryFullName );
 		await wrapper.find( '#country' ).trigger( 'blur' );
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 
 		await jest.runAllTimersAsync();
 		await flushPromises();
@@ -384,7 +389,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
 		const wrapper = getWrapper();
 
-		const submitForm = wrapper.find<HTMLFormElement>( '#donation-form-submit-values' );
+		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
 		submitForm.element.submit = jest.fn();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
@@ -424,7 +429,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		await wrapper.find( '#country' ).setValue( countries[ 0 ].countryFullName );
 		await wrapper.find( '#country' ).trigger( 'blur' );
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 
 		await jest.runAllTimersAsync();
 		await flushPromises();
@@ -436,7 +441,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
 		const wrapper = getWrapper();
 
-		const submitForm = wrapper.find<HTMLFormElement>( '#donation-form-submit-values' );
+		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
 		submitForm.element.submit = jest.fn();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
@@ -458,7 +463,7 @@ describe( 'DonationForm.vue (with receipt question field)', () => {
 
 		await wrapper.find( 'input[name="donationReceipt"][value="false"]' ).trigger( 'change' );
 
-		await wrapper.find( '#donation-form' ).trigger( 'submit' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 
 		await jest.runAllTimersAsync();
 		await flushPromises();

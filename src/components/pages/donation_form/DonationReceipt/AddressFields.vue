@@ -29,25 +29,19 @@
 			@field-changed="$emit('field-changed', 'companyName')"
 		/>
 
-		<ScrollTarget target-id="street-scroll-target"/>
-		<TextField
-			name="street"
-			input-id="street"
-			v-model="formData.street.value"
-			:show-error="showError.street"
-			:error-message="$t('donation_form_street_error')"
-			autocomplete="street-address"
-			:label="$t( 'donation_form_street_label' )"
-			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_placeholder' ) } )"
-			@field-changed="$emit('field-changed', 'street')"
-		>
-			<span v-if="showStreetWarning" class="help">{{ $t('donation_form_street_number_warning') }}</span>
-			<ValueEqualsPlaceholderWarning
-				:value="formData.street.value"
-				:placeholder="$t( 'donation_form_street_placeholder' )"
-				:warning="'donation_form_street_placeholder_warning'"
-			/>
-		</TextField>
+		<ScrollTarget target-id="country-scroll-target"/>
+		<CountryAutocompleteField
+			v-model="formData.country.value"
+			input-id="country"
+			scroll-target-id="country-scroll-target"
+			:countries="countries"
+			:was-restored="countryWasRestored"
+			:show-error="showError.country"
+			:error-message="$t('donation_form_country_error')"
+			:label="$t( 'donation_form_country_label' )"
+			:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
+			@field-changed="onCountryFieldChanged"
+		/>
 
 		<ScrollTarget target-id="post-code-scroll-target"/>
 		<TextField
@@ -87,18 +81,16 @@
 			/>
 		</CityAutocompleteField>
 
-		<ScrollTarget target-id="country-scroll-target"/>
-		<CountryAutocompleteField
-			v-model="formData.country.value"
-			input-id="country"
-			scroll-target-id="country-scroll-target"
-			:countries="countries"
-			:was-restored="countryWasRestored"
-			:show-error="showError.country"
-			:error-message="$t('donation_form_country_error')"
-			:label="$t( 'donation_form_country_label' )"
-			:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
-			@field-changed="onCountryFieldChanged"
+		<ScrollTarget target-id="street-scroll-target"/>
+		<StreetAutocompleteField
+			input-id-street-name="street"
+			input-id-building-number="building-number"
+			scroll-target-id="street-scroll-target"
+			v-model="formData.street.value"
+			:postcode="formData.postcode.value"
+			:show-error="showError.street"
+			:error-message="$t( 'donation_form_street_error' )"
+			@field-changed="$emit('field-changed', 'street' )"
 		/>
 
 	</div>
@@ -113,18 +105,19 @@ import { useAddressTypeModel } from '@src/components/pages/donation_form/Donatio
 import { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import { computed } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
+import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 import { Country } from '@src/view_models/Country';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import { Validity } from '@src/view_models/Validity';
 
 interface Props {
 	formData: AddressFormData;
 	showError: AddressValidity;
 	countries: Country[];
 	postCodeValidation: string;
-	countryWasRestored: boolean;
 }
 
 const props = defineProps<Props>();
@@ -133,8 +126,8 @@ const emit = defineEmits( [ 'field-changed' ] );
 const store = useStore();
 const addressType = useAddressTypeModel( store );
 
-const showStreetWarning = computed<boolean>( () => /^\D+$/.test( props.formData.street.value ) );
 const showAddressTypeError = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
+const countryWasRestored = ref<boolean>( false );
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {
@@ -149,5 +142,9 @@ const onCountryFieldChanged = ( country: Country | undefined ) => {
 		emit( 'field-changed', 'postcode' );
 	}
 };
+
+onBeforeMount( () => {
+	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
+} );
 
 </script>

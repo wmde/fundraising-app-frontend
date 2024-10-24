@@ -96,4 +96,7 @@ export const mutations: MutationTree<AddressState> = {
 			state.values[ field.name ] = field.value;
 		} );
 	},
+	SET_SALUTATION( state: AddressState, salutation: string ) {
+		state.values.salutation = salutation;
+	},
 };

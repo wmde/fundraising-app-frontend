@@ -1,68 +1,22 @@
 <template>
-	<div id="laika-donation">
-		<FeatureToggle default-template="campaigns.address_pages.legacy">
-			<template #campaigns.address_pages.legacy>
-				<PaymentSection
-					:payment-amounts="paymentAmounts"
-					:payment-intervals="paymentIntervals"
-					:payment-types="paymentTypes"
-				/>
-				<div class="donation-page-form-section" v-if="isDirectDebit">
-					<IbanFields/>
-				</div>
-				<PersonalDataSection
-					:assets-path="assetsPath"
-					:validate-address-url="validateAddressUrl"
-					:validate-email-url="validateEmailUrl"
-					:validate-bank-data-url="validateBankDataUrl"
-					:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
-					:countries="countries"
-					:salutations="salutations"
-					:tracking-data="trackingData"
-					:campaign-values="campaignValues"
-					:address-validation-patterns="addressValidationPatterns"
-					/>
-			</template>
-			<template #campaigns.address_pages.test_02>
-				<PaymentSection
-					:payment-amounts="paymentAmounts"
-					:payment-intervals="paymentIntervals"
-					:payment-types="paymentTypes"
-				/>
-				<div class="donation-page-form-section" v-if="isDirectDebit">
-					<IbanFields/>
-				</div>
-				<PersonalDataSectionDonationReceipt
-					:assets-path="assetsPath"
-					:validate-address-url="validateAddressUrl"
-					:validate-email-url="validateEmailUrl"
-					:validate-bank-data-url="validateBankDataUrl"
-					:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
-					:countries="countries"
-					:salutations="salutations"
-					:tracking-data="trackingData"
-					:campaign-values="campaignValues"
-					:address-validation-patterns="addressValidationPatterns"
-				/>
-			</template>
-		</FeatureToggle>
-	</div>
+	<FeatureToggle default-template="campaigns.address_pages.legacy">
+		<template #campaigns.address_pages.legacy>
+			<StandardDonationForm v-bind="props"/>
+		</template>
+		<template #campaigns.address_pages.test_02>
+			<ReceiptDonationForm v-bind="props"/>
+		</template>
+	</FeatureToggle>
 </template>
 
 <script setup lang="ts">
 import { TrackingData } from '@src/view_models/TrackingData';
-
 import { Country } from '@src/view_models/Country';
 import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
-import PaymentSection from '@src/components/pages/donation_form/singlePageFormSections/PaymentSection.vue';
-import PersonalDataSection from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSection.vue';
-import PersonalDataSectionDonationReceipt
-	from '@src/components/pages/donation_form/singlePageFormSections/PersonalDataSectionDonationReceipt.vue';
-import { computed } from 'vue';
-import { useStore } from 'vuex';
-import IbanFields from '@src/components/shared/IbanFields.vue';
+import StandardDonationForm from '@src/components/pages/donation_form/SubPages/DonationForm.vue';
+import ReceiptDonationForm from '@src/components/pages/donation_form/SubPages/DonationFormReceipt.vue';
 
 defineOptions( {
 	name: 'DonationForm',
@@ -83,10 +37,7 @@ interface Props {
 	campaignValues: CampaignValues;
 	addressValidationPatterns: AddressValidation;
 }
-defineProps<Props>();
-
-const store = useStore();
-const isDirectDebit = computed<boolean>( (): boolean => store.getters[ 'payment/isDirectDebitPayment' ] );
+const props = defineProps<Props>();
 
 </script>
 

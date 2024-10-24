@@ -1,8 +1,7 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
-import DonationForm from '@src/components/pages/DonationForm.vue';
+import DonationForm from '@src/components/pages/donation_form/SubPages/DonationForm.vue';
 import countries from '@test/data/countries';
 import { AddressValidation } from '@src/view_models/Validation';
-import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { createStore } from '@src/store/donation_store';
 import { nextTick } from 'vue';
 import axios from 'axios';
@@ -84,13 +83,18 @@ describe( 'DonationForm.vue', () => {
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
 				},
-				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_pages.legacy' ] ),
-				},
 			},
 			attachTo: document.body,
 		} );
 	};
+
+	it( 'sets the correct default field values', async () => {
+		const wrapper = getWrapper();
+
+		expect( wrapper.find<HTMLInputElement>( '#interval-0' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '#receipt-option-person' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '#person-newsletter' ).element.checked ).toBeTruthy();
+	} );
 
 	it( 'handles the error summary when no address type was selected before submitting', async () => {
 		const wrapper = getWrapper();
@@ -409,5 +413,16 @@ describe( 'DonationForm.vue', () => {
 		await flushPromises();
 
 		expect( submitForm.element.submit ).toHaveBeenCalled();
+	} );
+
+	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
+		const scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+
+		const wrapper = getWrapper();
+
+		await wrapper.find( '#previous-btn' ).trigger( 'click' );
+
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
 	} );
 } );

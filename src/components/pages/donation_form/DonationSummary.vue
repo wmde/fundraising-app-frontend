@@ -15,11 +15,11 @@
 
 <script setup lang="ts">
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
-import PaymentSummaryAnonymous from '@src/components/pages/donation_form/summary_content/PaymentSummaryAnonymous.vue';
-import PaymentSummaryCompany from '@src/components/pages/donation_form/summary_content/PaymentSummaryCompany.vue';
-import PaymentSummaryCompanyWithContact from '@src/components/pages/donation_form/summary_content/PaymentSummaryCompanyWithContact.vue';
-import PaymentSummaryEmail from '@src/components/pages/donation_form/summary_content/PaymentSummaryEmail.vue';
-import PaymentSummaryPrivate from '@src/components/pages/donation_form/summary_content/PaymentSummaryPrivate.vue';
+import PaymentSummaryAnonymous from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryAnonymous.vue';
+import PaymentSummaryCompany from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryCompany.vue';
+import PaymentSummaryCompanyWithContact from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryCompanyWithContact.vue';
+import PaymentSummaryEmail from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryEmail.vue';
+import PaymentSummaryPrivate from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryPrivate.vue';
 import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { useI18n } from 'vue-i18n';
