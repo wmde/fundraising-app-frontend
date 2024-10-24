@@ -94,53 +94,61 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 		}
 
 		label {
-			padding-left: map.get( units.$spacing, 'small' ) * 3;
+			padding-left: map.get( units.$spacing, 'x-large' );
 		}
 
 	}
 
 	&.row-alignment {
-		@include breakpoints.tablet-up {
-			max-width: none;
-		}
-
 		.form-field-radio-container {
 			flex-direction: column;
+			margin: 0 ( -( map.get( units.$spacing, 'xx-small' ) ) );
 
 			.radio-form-input {
-				margin: 0 0 map.get(units.$spacing, 'small');
+				padding: 0 map.get(units.$spacing, 'xx-small');
+				margin-bottom: map.get(units.$spacing, 'small');
 
 				&:last-child {
 					margin-bottom: 0;
+				}
+
+				input {
+					left: map.get( units.$spacing, 'medium' );
 				}
 			}
 
 			@include breakpoints.tablet-up {
 				flex-direction: row;
+				flex-wrap: wrap;
 
 				.radio-form-input {
-					margin: 0 map.get(units.$spacing, 'large') 0 0;
-				}
-
-				label {
-					padding-left: map.get(units.$spacing, 'x-large');
+					&:last-child {
+						margin-bottom: map.get(units.$spacing, 'small');
+					}
 				}
 			}
 		}
 	}
 
 	&.twocolumnsperrow-alignment {
-		max-width: 430px;
+		max-width: map.get( forms.$input, 'max-width' );
+
 		.form-field-radio-container {
 			flex-direction: column;
 			flex-wrap: wrap;
+			margin: 0 ( -( map.get( units.$spacing, 'xx-small' ) ) );
 
 			.radio-form-input {
 				width: 100%;
-				margin: 0 0 16px 0;
+				padding: 0 map.get(units.$spacing, 'xx-small') 0;
+				margin-bottom: map.get(units.$spacing, 'small');
 
 				&:last-child {
 					margin-bottom: 0;
+				}
+
+				input {
+					left: map.get( units.$spacing, 'medium' );
 				}
 			}
 
@@ -149,11 +157,6 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 
 				.radio-form-input {
 					width: 50%;
-					padding-right: 16px;
-				}
-
-				label {
-					padding-left: map.get(units.$spacing, 'x-large');
 				}
 			}
 		}
