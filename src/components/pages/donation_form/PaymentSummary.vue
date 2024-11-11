@@ -51,7 +51,7 @@ const summaryWithoutPaymentType = computed( () => {
 	margin: 0 0 map.get( units.$spacing, 'large' );
 
 	@include breakpoints.tablet-up {
-		margin: 0 ( -( map.get( units.$spacing, 'xx-small' ) ) ) map.get( units.$spacing, 'large' );
+		margin: 0 0 map.get( units.$spacing, 'large' );
 	}
 
 	&-text {

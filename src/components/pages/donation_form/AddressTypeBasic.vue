@@ -50,11 +50,9 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const emit = defineEmits( [ 'address-type', 'set-full-selected' ] );
+const emit = defineEmits( [ 'address-type' ] );
 
 const addressType = ref<AddressTypeModel>( props.initialAddressType ?? AddressTypeModel.UNSET );
-
-emit( 'set-full-selected', true );
 
 watch( addressType, newAddressType => {
 	emit( 'address-type', newAddressType );

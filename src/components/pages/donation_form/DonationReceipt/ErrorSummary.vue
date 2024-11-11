@@ -1,6 +1,6 @@
 <template>
 	<ErrorSummary
-		v-if="!receiptNeeded && addressType === AddressTypeModel.UNSET"
+		v-if="!receiptModel.receiptNeeded && addressType === AddressTypeModel.UNSET"
 		:is-visible="showErrorSummary"
 		:items="[
 			{
@@ -46,7 +46,7 @@
 				scrollElement: 'email-scroll-target'
 			},
 			{
-				validity: showReceiptOptionError ? Validity.INVALID : Validity.VALID,
+				validity: receiptModel.showReceiptOptionError ? Validity.INVALID : Validity.VALID,
 				message: $t( 'C24_WMDE_Desktop_DE_01_receipt_error' ),
 				focusElement: 'donationReceipt-0',
 				scrollElement: 'receipt-scroll-target'
@@ -54,7 +54,7 @@
 		]"
 	/>
 	<ErrorSummary
-		v-if="( receiptNeeded && addressType === AddressTypeModel.UNSET ) || addressType === AddressTypeModel.PERSON"
+		v-if="( receiptModel.receiptNeeded && addressType === AddressTypeModel.UNSET ) || addressType === AddressTypeModel.PERSON"
 		:is-visible="showErrorSummary"
 		:items="[
 			{
@@ -271,15 +271,17 @@ import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
+import { ReceiptModel } from '@src/components/shared/composables/useReceiptModel';
+import { toRef } from 'vue';
 
 interface Props {
 	showErrorSummary: boolean;
 	addressType: AddressTypeModel;
-	showReceiptOptionError: boolean;
-	receiptNeeded?: boolean;
+	receiptModel: ReceiptModel;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 const store = useStore();
+const receiptModel = toRef<ReceiptModel>( props.receiptModel );
 
 </script>

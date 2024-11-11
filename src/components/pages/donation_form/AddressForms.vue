@@ -15,30 +15,15 @@
 					field-id-namespace="person"
 					v-on:field-changed="onFieldChange"
 				/>
-				<FeatureToggle default-template="campaigns.address_field_order.legacy">
-					<template #campaigns.address_field_order.legacy>
-						<PostalAddressFields
-							:show-error="fieldErrors"
-							:form-data="formData"
-							:countries="countries"
-							:post-code-validation="addressValidationPatterns.postcode"
-							:country-was-restored="countryWasRestored"
-							field-id-namespace="person"
-							v-on:field-changed="onFieldChange"
-						/>
-					</template>
-					<template #campaigns.address_field_order.new_order>
-						<StreetAutocompletePostalAddressFields
-							:show-error="fieldErrors"
-							:form-data="formData"
-							:countries="countries"
-							:post-code-validation="addressValidationPatterns.postcode"
-							:country-was-restored="countryWasRestored"
-							field-id-namespace="person"
-							v-on:field-changed="onFieldChange"
-						/>
-					</template>
-				</FeatureToggle>
+				<PostalAddressFields
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:countries="countries"
+					:post-code-validation="addressValidationPatterns.postcode"
+					:country-was-restored="countryWasRestored"
+					field-id-namespace="person"
+					v-on:field-changed="onFieldChange"
+				/>
 				<div class="form-field form-field-donation-receipt">
 					<CheckboxSingleFormInput
 						input-id="receipt-option-person"
@@ -83,30 +68,15 @@
 					field-id-namespace="company"
 					v-on:field-changed="onFieldChange"
 				/>
-				<FeatureToggle default-template="campaigns.address_field_order.legacy">
-					<template #campaigns.address_field_order.legacy>
-						<PostalAddressFields
-							:show-error="fieldErrors"
-							:form-data="formData"
-							:countries="countries"
-							:post-code-validation="addressValidationPatterns.postcode"
-							:country-was-restored="countryWasRestored"
-							field-id-namespace="company"
-							v-on:field-changed="onFieldChange"
-						/>
-					</template>
-					<template #campaigns.address_field_order.new_order>
-						<StreetAutocompletePostalAddressFields
-							:show-error="fieldErrors"
-							:form-data="formData"
-							:countries="countries"
-							:post-code-validation="addressValidationPatterns.postcode"
-							:country-was-restored="countryWasRestored"
-							field-id-namespace="company"
-							v-on:field-changed="onFieldChange"
-						/>
-					</template>
-				</FeatureToggle>
+				<PostalAddressFields
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:countries="countries"
+					:post-code-validation="addressValidationPatterns.postcode"
+					:country-was-restored="countryWasRestored"
+					field-id-namespace="company"
+					v-on:field-changed="onFieldChange"
+				/>
 				<div class="form-field form-field-donation-receipt">
 					<CheckboxSingleFormInput
 						input-id="receipt-option-company"
@@ -175,8 +145,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref, toRefs } from 'vue';
-import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
-import StreetAutocompletePostalAddressFields from '@src/components/pages/donation_form/StreetAutocomplete/PostalAddressFields.vue';
+import PostalAddressFields from '@src/components/pages/donation_form/PostalAddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -192,27 +161,25 @@ import { CampaignValues } from '@src/view_models/CampaignValues';
 import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { Validity } from '@src/view_models/Validity';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
-import { useReceiptModel } from '@src/components/pages/donation_form/useReceiptModel';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { useStore } from 'vuex';
+import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 
 interface Props {
 	countries: Country[],
 	addressValidationPatterns: AddressValidation,
 	addressType: AddressTypeModel,
-	isFullSelected?: boolean,
 	salutations: Salutation[],
 	trackingData: TrackingData,
 	campaignValues: CampaignValues,
 }
 
 const props = withDefaults( defineProps<Props>(), {
-	isFullSelected: false,
 	addressType: AddressTypeModel.PERSON,
 } );
 
-const { addressType, isFullSelected, addressValidationPatterns } = toRefs( props );
+const { addressType, addressValidationPatterns } = toRefs( props );
 const store = useStore();
 const {
 	formData,
@@ -221,12 +188,13 @@ const {
 	onFieldChange,
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: addressValidationPatterns.value }, store );
+
 const mailingList = useMailingListModel( store );
 
 const { receiptNeeded } = useReceiptModel( store );
 
 const addressTypeId = computed( () => {
-	if ( isFullSelected.value && addressType.value === AddressTypeModel.UNSET ) {
+	if ( addressType.value === AddressTypeModel.UNSET ) {
 		return AddressTypeIds.get( AddressTypeModel.PERSON );
 	}
 	return AddressTypeIds.has( addressType.value ) ? AddressTypeIds.get( addressType.value ) : '';

@@ -116,7 +116,7 @@ import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPla
 import NameFields from '@src/components/shared/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
-import { useAddressTypeFunctions } from '@src/components/pages/donation_form/AddressTypeFunctions';
+import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
 import AddressUpdateFormErrorSummaries
 	from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';

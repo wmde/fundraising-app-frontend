@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, ref, watch } from 'vue';
+import { Ref, ref, watch } from 'vue';
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -33,7 +33,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
  * @param addressType
  * @param store
  */
-export function useAddressTypeFromReceiptSetter( receiptModel: Ref<boolean | null>, addressType: ComputedRef<number>, store: Store<any> ): void {
+export function useAddressTypeFromReceiptSetter( receiptModel: Ref<boolean | null>, addressType: Ref<AddressTypeModel>, store: Store<any> ): void {
 	const lastAddressType = ref<number>( addressType.value );
 
 	if ( receiptModel.value && ![ AddressTypeModel.PERSON, AddressTypeModel.EMAIL, AddressTypeModel.COMPANY_WITH_CONTACT ].includes( addressType.value ) ) {

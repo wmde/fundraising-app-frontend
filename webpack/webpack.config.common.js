@@ -68,8 +68,12 @@ const webpackConfig = {
 				use: [
 					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
 					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
+					// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
+					// We will need to address this in the near future
 					{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
-						loadPaths: [ path.resolve( __dirname, '..' ) ]
+						loadPaths: [ path.resolve( __dirname, '..' ) ],
+						quietDeps: true,
+						silenceDeprecations: [ 'import' ],
 					} } },
 				],
 			},
@@ -78,7 +82,9 @@ const webpackConfig = {
 				use: [
 					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
 					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
-					{ loader: 'sass-loader', options: { sourceMap: isDev } },
+					// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
+					// We will need to address this in the near future
+					{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: { quietDeps: true, silenceDeprecations: [ 'import' ] } } },
 				],
 			},
 			{
