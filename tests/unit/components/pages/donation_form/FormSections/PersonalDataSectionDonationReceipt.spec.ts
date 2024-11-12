@@ -107,4 +107,22 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 
 		expect( wrapper.find( '.address-section' ).exists() ).toBeTruthy();
 	} );
+
+	it( 'disables NO option on question for full address and shows info icon', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.setProps( { isDirectDebitPayment: true } );
+		await nextTick();
+
+		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
+	} );
+
+	it( 'NO option is not disabled when direct debit is not selected', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.setProps( { isDirectDebitPayment: false } );
+		await nextTick();
+
+		expect( wrapper.find( '.radio-field-tooltip' ).exists() ).toBe( false );
+	} );
 } );

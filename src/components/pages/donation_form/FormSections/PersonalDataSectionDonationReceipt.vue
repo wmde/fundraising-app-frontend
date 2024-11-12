@@ -37,20 +37,23 @@
 				<RadioField
 					v-model="receiptModel.receiptNeeded"
 					name="donationReceipt"
-					:options="[
-						{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
-						{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
-					]"
+					:options="receiptNeededOptions"
 					:label="$t( 'donation_confirmation_cta_title_alt' )"
 					:show-error="receiptModel.showReceiptOptionError"
 					:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
 					alignment="row"
 					aria-describedby="donation-receipt-help-text"
+					:disabled="disabledReceiptNeededOptions"
 				>
 					<template #intro-message>
 						<div class="form-field-intro" id="donation-receipt-help-text">
 							{{ $t( 'C24_WMDE_Desktop_DE_01_help_text' ) }}
 						</div>
+					</template>
+					<template #tooltip-false>
+						<RadioFieldHelpText v-if="isDirectDebitPayment">
+							{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
+						</RadioFieldHelpText>
 					</template>
 				</RadioField>
 
@@ -69,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, toRef } from 'vue';
+import { computed, onBeforeMount, toRef } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -89,6 +92,8 @@ import { ReceiptModel } from '@src/components/pages/donation_form/DonationReceip
 import { useStore } from 'vuex';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { useI18n } from 'vue-i18n';
+import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
 
 interface Props {
 	countries: Country[];
@@ -105,9 +110,15 @@ interface Props {
 
 const props = defineProps<Props>();
 const store = useStore();
+const { t } = useI18n();
 
 const mailingList = useMailingListModel( store );
 const receiptModel = toRef<ReceiptModel>( props.receiptModel );
+
+const receiptNeededOptions = [
+	{ value: true, label: t( 'yes' ), id: 'donationReceipt-0' },
+	{ value: false, label: t( 'no' ), id: 'donationReceipt-1' },
+];
 
 const {
 	formData,
@@ -120,5 +131,15 @@ const {
 useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, toRef( props.addressType ), store );
 
 onBeforeMount( initializeDataFromStore );
+
+const disabledReceiptNeededOptions = computed<string[]>( () => {
+	let disabledOptions: string[] = [];
+	if ( props.isDirectDebitPayment ) {
+		disabledOptions = receiptNeededOptions
+			.filter( ( receiptNeededOption: Object ) => receiptNeededOption.value === false )
+			.map( ( receiptNeededOption: Object ) => receiptNeededOption.value );
+	}
+	return disabledOptions;
+} );
 
 </script>

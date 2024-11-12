@@ -106,6 +106,9 @@ const disabledPaymentTypes = computed<string[]>( () => {
 	if ( store.state.address.addressType === AddressTypeModel.ANON ) {
 		disabledTypes.push( 'BEZ' );
 	}
+	if ( store.state.address.addressType === AddressTypeModel.EMAIL ) {
+		disabledTypes.push( 'BEZ' );
+	}
 	if ( store.state.payment.values.interval !== '0' ) {
 		disabledTypes.push( 'SUB' );
 	}

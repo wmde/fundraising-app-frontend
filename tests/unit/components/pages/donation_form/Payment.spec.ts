@@ -85,10 +85,18 @@ describe( 'Payment.vue', () => {
 		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
 	} );
 
-	it( 'does not render tooltip hint if address type is something different than Anonymous', async () => {
+	it( 'renders tooltip hint if address type is Email-Only', async () => {
 		const wrapper = getWrapper();
 
 		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.EMAIL );
+
+		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
+	} );
+
+	it( 'does not render tooltip hint if address type is something different than Anonymous or Email-only', async () => {
+		const wrapper = getWrapper();
+
+		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.COMPANY );
 
 		expect( wrapper.find( '.radio-field-tooltip' ).exists() ).toBe( false );
 	} );

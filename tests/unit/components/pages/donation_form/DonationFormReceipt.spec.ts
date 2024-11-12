@@ -445,10 +445,7 @@ describe( 'DonationFormReciept.vue', () => {
 		submitForm.element.submit = jest.fn();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
-		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
-
-		await wrapper.find( '#iban' ).setValue( IBAN );
-		await wrapper.find( '#iban' ).trigger( 'blur' );
+		await wrapper.find( 'input[name="paymentType"][value="UEB"]' ).trigger( 'change' );
 
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
 

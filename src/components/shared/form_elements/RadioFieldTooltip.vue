@@ -34,6 +34,7 @@ defineProps<Props>();
 	background: colors.$white;
 
 	&-text {
+		z-index: 10;
 		position: absolute;
 		display: block;
 		visibility: hidden;
