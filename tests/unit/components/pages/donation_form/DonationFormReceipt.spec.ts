@@ -437,7 +437,7 @@ describe( 'DonationFormReciept.vue', () => {
 		expect( submitForm.element.submit ).toHaveBeenCalled();
 	} );
 
-	it( 'submits the form for anonymous', async () => {
+	it( 'submits the form for email-only', async () => {
 		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
 		const wrapper = getWrapper();
 
