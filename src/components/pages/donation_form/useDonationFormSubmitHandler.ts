@@ -105,7 +105,7 @@ export function useDonationFormSubmitHandler(
 	watch( () => store.state.payment.values.type, ( newType: string ) => {
 		if ( newType !== 'BEZ' ) {
 			bankDataIsValid.value = true;
-			store.dispatch( action( 'bankdata', 'setIbanValidity' ), Validity.VALID );
+			store.dispatch( action( 'bankdata', 'setIbanValidity' ), Validity.INCOMPLETE );
 		}
 	} );
 
