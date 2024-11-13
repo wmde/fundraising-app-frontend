@@ -415,6 +415,59 @@ describe( 'DonationForm.vue', () => {
 		expect( submitForm.element.submit ).toHaveBeenCalled();
 	} );
 
+	it( 'switching between payment types with empty iban should reset iban validity', async () => {
+		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
+		const wrapper = getWrapper();
+
+		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
+		submitForm.element.submit = jest.fn();
+
+		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
+		await wrapper.find( 'input[name="paymentType"][value="UEB"]' ).trigger( 'change' );
+
+		await wrapper.find( 'input[name="addressType"][value="0"]' ).trigger( 'change' );
+		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
+
+		await wrapper.find( '#person-first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#person-first-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#person-last-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-street' ).setValue( 'street' );
+		await wrapper.find( '#person-street' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-post-code' ).setValue( '12345' );
+		await wrapper.find( '#person-post-code' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-city' ).setValue( 'city' );
+		await wrapper.find( '#person-city' ).trigger( 'blur' );
+
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( '#person-country' ).setValue( countries[ 0 ].countryFullName );
+		await wrapper.find( '#person-country' ).trigger( 'blur' );
+
+		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#person-email' ).trigger( 'blur' );
+
+		// change to BEZ to make the IBAN field appear
+		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		await nextTick();
+
+		await jest.runAllTimersAsync();
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
+
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+	} );
+
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
 		const scrollElement = { scrollIntoView: jest.fn() };
 		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );

@@ -470,4 +470,44 @@ describe( 'DonationFormReciept.vue', () => {
 
 		expect( submitForm.element.submit ).toHaveBeenCalled();
 	} );
+
+	it( 'switching between payment types with empty iban should reset iban validity', async () => {
+		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
+		const wrapper = getWrapper();
+
+		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
+		submitForm.element.submit = jest.fn();
+
+		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
+		await wrapper.find( 'input[name="paymentType"][value="UEB"]' ).trigger( 'change' );
+
+		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
+
+		await wrapper.find( '#first-name' ).setValue( 'first-name' );
+		await wrapper.find( '#first-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#last-name' ).setValue( 'last-name' );
+		await wrapper.find( '#last-name' ).trigger( 'blur' );
+
+		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
+		await wrapper.find( '#email' ).trigger( 'blur' );
+
+		await wrapper.find( 'input[name="donationReceipt"][value="false"]' ).trigger( 'change' );
+
+		// change to BEZ to make the IBAN field appear
+		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
+		await wrapper.find( '#submit-btn' ).trigger( 'click' );
+		await nextTick();
+
+		await jest.runAllTimersAsync();
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
+
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+	} );
 } );
