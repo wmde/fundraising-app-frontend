@@ -18,11 +18,13 @@
 			:disabled-address-types="disabledAddressTypes"
 			:address-type="addressType"
 			:address-type-is-invalid="addressTypeIsInvalid"
+			:address-opt-out="addressOptOut"
 			@set-address-type="setAddressType( $event )"
 		/>
 
 		<div class="donation-page-form-section">
-			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
+			<OptOutErrorSummary :show-error-summary="showErrorSummary" v-if="addressOptOut.addressOptIn.value === null" />
+			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" v-else/>
 
 			<FormSummary>
 				<template #summary-content>
@@ -70,7 +72,7 @@ import { AddressValidation } from '@src/view_models/Validation';
 import { Salutation } from '@src/view_models/Salutation';
 import { CampaignValues } from '@src/view_models/CampaignValues';
 import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
-import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSection.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSectionAnonymousChoice.vue';
 import IbanFields from '@src/components/shared/IbanFields.vue';
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
@@ -78,12 +80,14 @@ import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import ErrorSummary from '@src/components/pages/donation_form/ErrorSummary.vue';
+import { default as OptOutErrorSummary } from '@src/components/pages/donation_form/AddressOptOut/ErrorSummary.vue';
 import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/useDonationFormSubmitHandler';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
+import { useAddressOptOutModel } from '@src/components/pages/donation_form/AddressOptOut/useAddressOptOut';
 
 defineOptions( {
 	name: 'DonationForm',
@@ -116,6 +120,7 @@ const {
 	addressTypeName,
 	setAddressType,
 } = useAddressTypeFunctions( store );
+const addressOptOut = useAddressOptOutModel( store );
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
