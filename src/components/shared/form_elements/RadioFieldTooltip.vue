@@ -32,6 +32,7 @@ defineProps<Props>();
 	height: 16px;
 	width: 17px;
 	background: colors.$white;
+	z-index: 99;
 
 	&-text {
 		position: absolute;
