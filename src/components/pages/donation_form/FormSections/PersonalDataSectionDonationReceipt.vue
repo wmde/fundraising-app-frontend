@@ -47,11 +47,6 @@
 					alignment="row"
 					aria-describedby="donation-receipt-help-text"
 				>
-					<template #intro-message>
-						<div class="form-field-intro" id="donation-receipt-help-text">
-							{{ $t( 'C24_WMDE_Desktop_DE_01_help_text' ) }}
-						</div>
-					</template>
 				</RadioField>
 
 				<AddressFields
