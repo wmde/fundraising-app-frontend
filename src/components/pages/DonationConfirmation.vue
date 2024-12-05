@@ -234,6 +234,7 @@ h2.icon-title {
 }
 
 .mobile-call-to-action {
+	--chevron-stroke: #{colors.$white};
 	position: fixed;
 	bottom: 0;
 	height: 64px;
