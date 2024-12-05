@@ -34,15 +34,15 @@
 					</RadioFormInput>
 				</div>
 				<div class="navigation-locale-button-container">
-					<button
+					<FormButton
 						type="submit"
-						class="form-button navigation-locale-button"
+						class="navigation-locale-button"
 						:lang="locale"
 						@keyup.esc="active = false"
 						@blur="handleLocaleItemBlur"
 					>
 						{{ localeSelectorItem.button }}
-					</button>
+					</FormButton>
 				</div>
 			</fieldset>
 		</form>
@@ -57,6 +57,7 @@ import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
 import LocaleIcon from '@src/components/shared/icons/LocaleIcon.vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useDetectOutsideClick } from '@src/components/shared/composables/useDetectOutsideClick';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 
 const FOCUSABLE_ELEMENTS = [
 	'navigation-locale-toggle',
