@@ -2,7 +2,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
 import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
 import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
-import { Salutation } from '@src/view_models/Salutation';
+import salutations from '@test/data/salutations';
 import countries from '@test/data/countries';
 
 const privateAddress: MembershipAddress = {
@@ -48,29 +48,6 @@ const yearlyApplication: MembershipApplication = {
 	membershipFee: '180.00',
 	paymentIntervalInMonths: 12,
 };
-
-const salutations: Salutation[] = [
-	{
-		label: 'Herr',
-		value: 'Herr',
-		display: 'Herr',
-		greetings: {
-			formal: 'Good day',
-			informal: 'Yo!',
-			lastNameInformal: 'My Herr!',
-		},
-	},
-	{
-		label: 'Frau',
-		value: 'Frau',
-		display: 'Frau',
-		greetings: {
-			formal: 'Good day',
-			informal: 'Yo!',
-			lastNameInformal: 'My Frau!',
-		},
-	},
-];
 
 describe( 'MembershipSummary.vue', () => {
 
