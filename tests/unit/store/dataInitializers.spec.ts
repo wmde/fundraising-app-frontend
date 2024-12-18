@@ -30,7 +30,7 @@ describe( 'createInitialDonationAddressValues', () => {
 		expect( values.addressType ).toEqual( AddressTypeModel.ANON );
 	} );
 
-	it( 'uses initial address type over stored address type over', () => {
+	it( 'uses initial address type over stored address type', () => {
 		const storedAddressType = { key: 'addressType', value: AddressTypeModel.PERSON };
 		const initialAddressType = 'firma';
 
@@ -57,6 +57,15 @@ describe( 'createInitialDonationAddressValues', () => {
 		const values = createInitialDonationAddressValues( dataPersister, { addressType: initialAddressType } );
 
 		expect( values.addressType ).toEqual( AddressTypeModel.PERSON );
+	} );
+
+	it( 'uses stored receipt when initial receipt is missing', () => {
+		const storedReceipt = { key: 'receipt', value: true };
+
+		const dataPersister = new FakeDataPersister( [ storedReceipt ] );
+		const values = createInitialDonationAddressValues( dataPersister, {} );
+
+		expect( values.receipt ).toEqual( true );
 	} );
 } );
 

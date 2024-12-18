@@ -7,6 +7,8 @@ import { nextTick } from 'vue';
 import axios from 'axios';
 import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
 import { IBAN } from '@test/data/bankdata';
+import { Store } from 'vuex';
+import { action } from '@src/store/util';
 
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -39,8 +41,7 @@ describe( 'DonationFormReciept.vue', () => {
 		document.getElementsByTagName( 'html' )[ 0 ].innerHTML = '';
 	} );
 
-	const getWrapper = (): VueWrapper<any> => {
-		const store = createStore();
+	const getWrapper = ( store: Store<any> = null ): VueWrapper<any> => {
 		return mount( DonationForm, {
 			props: {
 				assetsPath: '',
@@ -79,7 +80,7 @@ describe( 'DonationFormReciept.vue', () => {
 				addressValidationPatterns: { postcode: '', country: null } as AddressValidation,
 			},
 			global: {
-				plugins: [ store ],
+				plugins: [ store ?? createStore() ],
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
 				},
@@ -95,6 +96,24 @@ describe( 'DonationFormReciept.vue', () => {
 		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBeTruthy();
 		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-0' ).element.checked ).toBeFalsy();
 		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-1' ).element.checked ).toBeFalsy();
+	} );
+
+	it( 'sets the correct receipt wanted field', async () => {
+		const store = createStore();
+		await store.dispatch( action( 'address', 'initializeAddress' ), { receipt: true, fields: [] } );
+		const wrapper = getWrapper( store );
+
+		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-0' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-1' ).element.checked ).toBeFalsy();
+	} );
+
+	it( 'sets the correct receipt not wanted field', async () => {
+		const store = createStore();
+		await store.dispatch( action( 'address', 'initializeAddress' ), { receipt: false, fields: [] } );
+		const wrapper = getWrapper( store );
+
+		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-0' ).element.checked ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-1' ).element.checked ).toBeTruthy();
 	} );
 
 	it( 'handles the error summary when no receipt option was selected before submitting', async () => {
