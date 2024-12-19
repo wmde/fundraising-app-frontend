@@ -7,6 +7,8 @@ import { nextTick } from 'vue';
 import axios from 'axios';
 import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
 import { IBAN } from '@test/data/bankdata';
+import { action } from '@src/store/util';
+import { Store } from 'vuex';
 
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -39,8 +41,7 @@ describe( 'DonationForm.vue', () => {
 		document.getElementsByTagName( 'html' )[ 0 ].innerHTML = '';
 	} );
 
-	const getWrapper = (): VueWrapper<any> => {
-		const store = createStore();
+	const getWrapper = ( store: Store<any> = null ): VueWrapper<any> => {
 		return mount( DonationForm, {
 			props: {
 				assetsPath: '',
@@ -79,7 +80,7 @@ describe( 'DonationForm.vue', () => {
 				addressValidationPatterns: { postcode: '', country: null } as AddressValidation,
 			},
 			global: {
-				plugins: [ store ],
+				plugins: [ store ?? createStore() ],
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
 				},
@@ -94,6 +95,22 @@ describe( 'DonationForm.vue', () => {
 		expect( wrapper.find<HTMLInputElement>( '#interval-0' ).element.checked ).toBeTruthy();
 		expect( wrapper.find<HTMLInputElement>( '#receipt-option-person' ).element.checked ).toBeTruthy();
 		expect( wrapper.find<HTMLInputElement>( '#person-newsletter' ).element.checked ).toBeTruthy();
+	} );
+
+	it( 'sets the correct receipt wanted field', async () => {
+		const store = createStore();
+		await store.dispatch( action( 'address', 'initializeAddress' ), { receipt: true, fields: [] } );
+		const wrapper = getWrapper( store );
+
+		expect( wrapper.find<HTMLInputElement>( '#receipt-option-person' ).element.checked ).toBeTruthy();
+	} );
+
+	it( 'sets the correct receipt not wanted field', async () => {
+		const store = createStore();
+		await store.dispatch( action( 'address', 'initializeAddress' ), { receipt: false, fields: [] } );
+		const wrapper = getWrapper( store );
+
+		expect( wrapper.find<HTMLInputElement>( '#receipt-option-person' ).element.checked ).toBeFalsy();
 	} );
 
 	it( 'handles the error summary when no address type was selected before submitting', async () => {
