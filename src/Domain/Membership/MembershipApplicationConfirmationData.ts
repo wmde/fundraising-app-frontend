@@ -11,4 +11,5 @@ export interface MembershipApplicationConfirmationData {
 	membershipApplication: MembershipApplication;
 	address: MembershipAddress;
 	countries: Country[];
+	tracking?: string;
 }

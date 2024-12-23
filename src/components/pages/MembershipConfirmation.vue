@@ -23,11 +23,17 @@
 			<p>{{ address.email }}</p>
 		</div>
 
+		<membership-survey
+			v-if="$t( 'membership_confirmation_survey_link') !== ''"
+			:tracking="confirmationData.tracking ?? ''"
+		/>
+
 		<MembershipConfirmationBannerNotifier/>
 	</div>
 </template>
 
 <script setup lang="ts">
+import MembershipSurvey from '@src/components/pages/membership_confirmation/MembershipSurvey.vue';
 import MembershipConfirmationBannerNotifier
 	from '@src/components/pages/membership_confirmation/MembershipConfirmationBannerNotifier.vue';
 import { Salutation } from '@src/view_models/Salutation';
