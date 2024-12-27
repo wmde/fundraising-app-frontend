@@ -1,7 +1,7 @@
 <template>
 	<div class="membership-confirmation">
 		<div class="membership-confirmation-summary membership-confirmation-card">
-			<h1>{{ $t( 'membership_confirmation_thanks_text' ) }}</h1>
+			<h1 class="icon-title"><SuccessIcon/> {{ $t( 'membership_confirmation_thanks_text' ) }}</h1>
 			<p v-html="$t( 'membership_confirmation_payment_data_text', summaryData )"/>
 
 			<p v-if="hasIncentives">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</p>
@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="membership-confirmation-card">
-			<h2>{{ $t( 'membership_confirmation_address_head' ) }}</h2>
+			<h2 class="icon-title"><SuccessIcon/> {{ $t( 'membership_confirmation_address_head' ) }}</h2>
 			<p>
 				<template v-if="address.applicantType === 'person'">{{ salutation }}{{ address.fullName }}</template>
 				<template v-else>{{ address.fullName }}</template>
@@ -36,6 +36,7 @@ import { Country } from '@src/view_models/Country';
 import { computed } from 'vue';
 import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
 import { useI18n } from 'vue-i18n';
+import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 
 interface Props {
 	confirmationData: MembershipApplicationConfirmationData;
@@ -101,6 +102,10 @@ const summaryData = computed( () => {
 @use '@src/scss/settings/colors';
 @use '@src/scss/settings/breakpoints';
 
+.app-content-main.uses-cards {
+	padding-top: 0;
+}
+
 .membership-confirmation {
 	@include breakpoints.tablet-up {
 		display: grid;
@@ -120,9 +125,25 @@ const summaryData = computed( () => {
 	background: #ffffff;
 	border: 1px solid colors.$gray-mid;
 	border-radius: 2px;
-	padding: 32px 16px;
+	padding: 32px;
 	line-height: 1.5;
 	margin-bottom: 12px;
+}
+
+.icon-title {
+	padding-left: 2.5rem;
+	svg {
+		float: left;
+		margin-left: -2.5rem;
+	}
+}
+
+h1.icon-title svg {
+	margin-top: 2px;
+}
+
+h2.icon-title {
+	font-size: 1.3rem;
 }
 
 </style>
