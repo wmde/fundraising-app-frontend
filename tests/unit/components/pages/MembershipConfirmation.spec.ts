@@ -45,7 +45,8 @@ const yearlyApplication: MembershipApplication = {
 };
 
 describe( 'MembershipConfirmation.vue', () => {
-	const getWrapper = ( membershipApplication: MembershipApplication, address: MembershipAddress ) => {
+	const getWrapper = ( membershipApplication: MembershipApplication, address: MembershipAddress, translationMock?: ( key: string, params?: Object ) => string ) => {
+		const translateFn = translationMock === undefined ? ( key: string, params?: Object ) => JSON.stringify( [ key, params ] ) : translationMock;
 		const confirmationData: MembershipApplicationConfirmationData = {
 			piwik: {
 				membershipApplicationConfirmationGoalId: 123,
@@ -63,7 +64,7 @@ describe( 'MembershipConfirmation.vue', () => {
 			},
 			global: {
 				mocks: {
-					$t: ( key: string, params?: Object ) => JSON.stringify( [ key, params ] ),
+					$t: translateFn,
 					$n: ( amount: string ) => amount,
 				},
 			},
@@ -124,6 +125,32 @@ describe( 'MembershipConfirmation.vue', () => {
 		const wrapper = getWrapper( { ...yearlyApplication, paymentType: 'UEB' }, privateAddress );
 
 		expect( wrapper.text() ).toContain( 'membership_confirmation_success_text_bank_transfer' );
+	} );
+
+	test( 'shows the survey tile if survey link language item is not empty', () => {
+		const translateMock = ( key: string ): string => {
+			if ( key === 'membership_confirmation_survey_link' ) {
+				return 'https://example.com/survey';
+			}
+
+			return key;
+		};
+		const wrapper = getWrapper( yearlyApplication, privateAddress, translateMock );
+
+		expect( wrapper.find( '.membership-survey' ).exists() ).toBeTruthy();
+	} );
+
+	test( 'hides the survey tile if survey link language item is blank', () => {
+		const translateMock = ( key: string ): string => {
+			if ( key === 'membership_confirmation_survey_link' ) {
+				return '';
+			}
+
+			return key;
+		};
+		const wrapper = getWrapper( yearlyApplication, privateAddress, translateMock );
+
+		expect( wrapper.find( '.membership-survey' ).exists() ).toBeFalsy();
 	} );
 
 } );
