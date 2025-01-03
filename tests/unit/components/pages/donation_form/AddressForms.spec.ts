@@ -71,7 +71,7 @@ describe( 'AddressForms.vue', () => {
 				[ StoreKey as symbol ]: store,
 			},
 			components: {
-				FeatureToggle: createFeatureToggle( [ 'campaigns.address_field_order.legacy' ] ),
+				FeatureToggle: createFeatureToggle( [] ),
 			},
 		},
 	} );
@@ -169,7 +169,7 @@ describe( 'AddressForms.vue', () => {
 					$t: ( key: string ) => key,
 				},
 				components: {
-					FeatureToggle: createFeatureToggle( [ 'campaigns.address_field_order.legacy' ] ),
+					FeatureToggle: createFeatureToggle( [] ),
 				},
 			},
 		} );
