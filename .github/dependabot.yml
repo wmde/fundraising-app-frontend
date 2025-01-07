@@ -12,8 +12,6 @@ updates:
       # For `bulma`, ignore all Dependabot updates as we are planning to get rid of it
     reviewers:
       - "wmde/funtech-core"
-    # Turn off dependabot until we move CI from Travis to Drone
-    open-pull-requests-limit: 0
     groups:
         patch-updates:
             update-types:
