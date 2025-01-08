@@ -57,7 +57,7 @@ export class SubtleDataEncryptor implements DataEncryptor {
 		return bytes;
 	}
 
-	stringToArrayBuffer( data: string ): ArrayBuffer {
+	stringToArrayBuffer( data: string ): Uint8Array {
 		return new TextEncoder().encode( data );
 	}
 
