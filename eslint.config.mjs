@@ -17,33 +17,10 @@ const compat = new FlatCompat({
 });
 
 export default [
-	{
-		files: ["**/*.vue"],
-		plugins: {
-			vue: pluginVue,
-		},
-		languageOptions: {
-			parser: parser,
-			parserOptions: {
-				parser: '@typescript-eslint/parser',
-				ecmaVersion: 2020,
-				sourceType: 'module',
-			},
-		},
-		rules: {
-			...pluginVue.configs.recommended.base,
-			"vue/no-unused-components": ["error", {
-				ignoreWhenBindingPresent: false,
-			} ],
-			// Turn max len off to allow for long SVG components
-			"max-len": "off",
-		}
-	},
-	...compat.extends("wikimedia", "plugin:vuejs-accessibility/recommended"),
+	...compat.extends("wikimedia"),
 	{
 		plugins: {
 			"@typescript-eslint": typescriptEslint,
-			"vuejs-accessibility": vuejsAccessibility,
 		},
 
 		languageOptions: {
@@ -95,6 +72,32 @@ export default [
 				allowTemplateLiterals: true,
 			}],
 
+		},
+	},
+	{
+		files: ["**/*.vue"],
+		plugins: {
+			vue: pluginVue,
+			"vuejs-accessibility": vuejsAccessibility,
+
+		},
+		languageOptions: {
+			parser: parser,
+			parserOptions: {
+				parser: '@typescript-eslint/parser',
+				ecmaVersion: 2020,
+				sourceType: 'module',
+			},
+		},
+		rules: {
+			...pluginVue.configs.recommended.base,
+			...vuejsAccessibility.configs.recommended.rules,
+			// Turn max len off to allow for long SVG components
+			"max-len": "off",
+
+			"vue/no-unused-components": ["error", {
+				ignoreWhenBindingPresent: false,
+			} ],
 			"vuejs-accessibility/label-has-for": ["error", {
 				required: {
 					some: ["nesting", "id"],
@@ -102,6 +105,6 @@ export default [
 			}],
 
 			"vuejs-accessibility/no-autofocus": "off",
-		},
-	},
+		}
+	}
 ];
