@@ -51,8 +51,9 @@ export default [
 
 			"no-console": "error",
 			"no-debugger": "error",
-			"no-unused-vars": "off",
 
+			// problematic in TypeScript / ES6
+			"no-unused-vars": "off",
 			"@typescript-eslint/no-unused-vars": ["error", {
 				args: "after-used",
 				argsIgnorePattern: "^_",
@@ -65,14 +66,20 @@ export default [
 
 			"one-var": "off",
 			"no-undef": "off",
+
+			// diverging from Wikimedia rule set
+			// We can remove these exceptions and settings when we have our own coding style (based on the Wikimedia one)
 			"max-len": ["error", 170],
 			"comma-dangle": ["error", "always-multiline"],
 			"operator-linebreak": "off",
 			"quote-props": "off",
+
+			// Typescript helps with documentation, don't require params and retuns
 			"jsdoc/require-param": "off",
 			"jsdoc/require-returns": "off",
 			"jsdoc/require-param-type": "off",
 
+			// Allow template literals
 			quotes: ["error", "single", {
 				allowTemplateLiterals: true,
 			}],
@@ -109,6 +116,7 @@ export default [
 				},
 			}],
 
+			// We use autofocus to ensure the first form field in dialog modals is focused on open
 			"vuejs-accessibility/no-autofocus": "off",
 		}
 	}
