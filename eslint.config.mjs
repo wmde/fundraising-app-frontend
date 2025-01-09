@@ -19,6 +19,7 @@ const compat = new FlatCompat({
 export default [
 	...compat.extends("wikimedia"),
 	{
+		files: [ "**/*.vue", "**/*.ts", "**/*.js" ],
 		plugins: {
 			"@typescript-eslint": typescriptEslint,
 		},
@@ -42,6 +43,12 @@ export default [
 		},
 
 		rules: {
+			// TODO ask team if we should enable this, otherwise the typescript plugin is only used for parsing
+			// ...typescriptEslint.configs.recommended.rules,
+			// "@typescript-eslint/no-explicit-any": "off",
+			// "@typescript-eslint/no-wrapper-object-types": "off",
+			// "@typescript-eslint/ban-ts-comment": "off",
+
 			"no-console": "error",
 			"no-debugger": "error",
 			"no-unused-vars": "off",
@@ -58,8 +65,6 @@ export default [
 
 			"one-var": "off",
 			"no-undef": "off",
-			"no-shadow": "off",
-			"@typescript-eslint/no-shadow": ["error"],
 			"max-len": ["error", 170],
 			"comma-dangle": ["error", "always-multiline"],
 			"operator-linebreak": "off",
