@@ -1,5 +1,6 @@
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import vuejsAccessibility from "eslint-plugin-vuejs-accessibility";
+import pluginVue from 'eslint-plugin-vue'
 import globals from "globals";
 import parser from "vue-eslint-parser";
 import path from "node:path";
@@ -16,7 +17,29 @@ const compat = new FlatCompat({
 });
 
 export default [
-	...compat.extends("wikimedia", "plugin:vue/base", "plugin:vuejs-accessibility/recommended"),
+	{
+		files: ["**/*.vue"],
+		plugins: {
+			vue: pluginVue,
+		},
+		languageOptions: {
+			parser: parser,
+			parserOptions: {
+				parser: '@typescript-eslint/parser',
+				ecmaVersion: 2020,
+				sourceType: 'module',
+			},
+		},
+		rules: {
+			...pluginVue.configs.recommended.base,
+			"vue/no-unused-components": ["error", {
+				ignoreWhenBindingPresent: false,
+			} ],
+			// Turn max len off to allow for long SVG components
+			"max-len": "off",
+		}
+	},
+	...compat.extends("wikimedia", "plugin:vuejs-accessibility/recommended"),
 	{
 		plugins: {
 			"@typescript-eslint": typescriptEslint,
@@ -70,10 +93,6 @@ export default [
 
 			quotes: ["error", "single", {
 				allowTemplateLiterals: true,
-			}],
-
-			"vue/no-unused-components": ["error", {
-				ignoreWhenBindingPresent: false,
 			}],
 
 			"vuejs-accessibility/label-has-for": ["error", {
