@@ -8,8 +8,8 @@
     "dev": "cross-env NODE_ENV=development webpack serve --host 0.0.0.0",
     "build": "cross-env NODE_ENV=production webpack",
     "test:unit": "jest --maxWorkers=1",
-    "lint": "eslint --ext .ts,.vue src/ tests/",
-    "fix-cs": "eslint --fix --ext .ts,.vue src/",
+    "lint": "eslint src/ tests/",
+    "fix-cs": "eslint --fix src/",
     "ci": "npm run lint && npm run test:unit",
     "pally": "pa11y http://localhost:8082/"
   },
@@ -32,6 +32,7 @@
     "@babel/eslint-parser": "^7.25.8",
     "@babel/plugin-transform-runtime": "^7.25.7",
     "@babel/preset-env": "^7.25.8",
+    "@eslint/js": "^8.57.1",
     "@testing-library/jest-dom": "6.6.3",
     "@types/jest": "^29.5.13",
     "@types/js-cookie": "^3.0.6",
