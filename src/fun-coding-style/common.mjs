@@ -12,8 +12,10 @@ export default {
 		unicorn: unicorn,
 	},
 	rules: {
-		...js.configs.recommended.rules,
 		...formatting.rules,
+		...js.configs.recommended.rules,
+		...security.configs.recommended.rules,
+
 		'array-callback-return': 'error',
 		'block-scoped-var': 'error',
 		camelcase: [ 'error', { properties: 'always' } ],
