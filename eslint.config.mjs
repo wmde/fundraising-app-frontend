@@ -1,27 +1,30 @@
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import vuejsAccessibility from 'eslint-plugin-vuejs-accessibility';
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
 import parser from 'vue-eslint-parser';
 import commonStyle from './src/fun-coding-style/common.mjs';
+import typescriptStyle from './src/fun-coding-style/typescript.mjs';
+
+// A workaround until our project really uses the fixed "globals" package
+// See https://github.com/sindresorhus/globals/issues/239
+const fixedBrowserGlobals = Object.assign( {}, globals.browser, { AudioWorkletGlobalScope: globals.browser[ 'AudioWorkletGlobalScope ' ] } );
+delete fixedBrowserGlobals[ 'AudioWorkletGlobalScope ' ];
 
 export default [
 	commonStyle,
 	{
-		files: [ '**/*.vue', '**/*.ts', '**/*.js', '*.mjs' ],
+		files: [ '**/*.vue', '**/*.ts' ],
 		plugins: {
-			'@typescript-eslint': typescriptEslint,
+			...typescriptStyle.plugins,
 		},
-
 		languageOptions: {
 			globals: {
 				...globals.node,
+				...fixedBrowserGlobals,
 			},
-
 			parser: parser,
 			ecmaVersion: 7,
 			sourceType: 'module',
-
 			parserOptions: {
 				parser: '@typescript-eslint/parser',
 
@@ -30,31 +33,49 @@ export default [
 				},
 			},
 		},
-
 		rules: {
-			// TODO ask team if we should enable this, otherwise the typescript plugin is only used for parsing
-			// ...typescriptEslint.configs.recommended.rules,
-			// "@typescript-eslint/no-explicit-any": "off",
-			// "@typescript-eslint/no-wrapper-object-types": "off",
-			// "@typescript-eslint/ban-ts-comment": "off",
+			...typescriptStyle.rules,
 
+			// The following rules should be turned on again in the future (using the settings from typescriptStyle)
+			// We placed them here to avoid huge changes in our legacy codebase and to allow for slow migration
+			'@typescript-eslint/array-type': 'off',
+			'@typescript-eslint/ban-ts-comment': 'off',
+			'@typescript-eslint/explicit-function-return-type': 'off',
+			'@typescript-eslint/explicit-module-boundary-types': 'off',
+			'@typescript-eslint/explicit-member-accessibility': 'off',
+			'@typescript-eslint/no-empty-function': 'off',
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-wrapper-object-types': 'off',
+			'@typescript-eslint/no-empty-object-type': 'off',
+
+			// Custom rules to prevent shipping debug code to prod
 			'no-console': 'error',
 			'no-debugger': 'error',
+		},
+	},
+	{
+		files: [ 'tests/**/*.ts' ],
+		languageOptions: {
+			globals: {
+				...globals.node,
+				...fixedBrowserGlobals,
+				...globals.jest,
+			},
+			parser: parser,
+			ecmaVersion: 7,
+			sourceType: 'module',
+			parserOptions: {
+				parser: '@typescript-eslint/parser',
 
-			// problematic in TypeScript / ES6
-			'no-unused-vars': 'off',
-			'@typescript-eslint/no-unused-vars': [ 'error', {
-				args: 'after-used',
-				argsIgnorePattern: '^_',
-				caughtErrors: 'none',
-				caughtErrorsIgnorePattern: '^_',
-				destructuredArrayIgnorePattern: '^_',
-				varsIgnorePattern: '^_',
-				ignoreRestSiblings: true,
-			} ],
-
-			'one-var': 'off',
-			'no-undef': 'off',
+				ecmaFeatures: {
+					modules: true,
+				},
+			},
+		},
+		rules: {
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-empty-function': 'off',
+			'@typescript-eslint/no-namespace': 'off',
 		},
 	},
 	{
