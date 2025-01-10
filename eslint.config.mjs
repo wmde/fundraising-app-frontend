@@ -37,6 +37,7 @@ export default [
 
 			// The following rules should be turned on again in the future (using the settings from typescriptStyle)
 			// We placed them here to avoid huge changes in our legacy codebase and to allow for slow migration
+			// See https://phabricator.wikimedia.org/T383409
 			'@typescript-eslint/array-type': 'off',
 			'@typescript-eslint/ban-ts-comment': 'off',
 			'@typescript-eslint/explicit-function-return-type': 'off',
@@ -96,9 +97,10 @@ export default [
 
 			// The following rules should be turned on again in the future (using the settings from pluginVue.configs.essential)
 			// We placed them here to avoid huge changes in our legacy codebase and to allow for slow migration
-			'vue/no-mutating-props': 'off', // get rid of the `formValues` in donation form
-			'vue/no-multiple-template-root': 'off',
+			// See https://phabricator.wikimedia.org/T383420
 			'vue/multi-word-component-names': 'off',
+			'vue/no-mutating-props': 'off',
+			'vue/no-multiple-template-root': 'off',
 			'vue/no-v-for-template-key': 'off',
 
 			// Allow for dot-separated slot names for our custom FeatureToggle component
