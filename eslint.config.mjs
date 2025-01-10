@@ -75,8 +75,20 @@ export default [
 		rules: {
 			...pluginVue.configs.recommended.base,
 			...vuejsAccessibility.configs.recommended.rules,
-			// Turn max len off to allow for long SVG components
-			'max-len': 'off',
+
+			// Allow for long SVG components by having a ridiculous max-len for the template section of Vue files
+			'@stylistic/max-len': 'off',
+			'vue/max-len': [ 'warn', {
+				code: 170,
+				template: 100_000,
+				tabWidth: 4,
+				ignorePattern: '^[\\s]*(//|<!--) (es|style)lint-.+',
+				ignoreUrls: true,
+				ignoreComments: false,
+				ignoreRegExpLiterals: true,
+				ignoreStrings: true,
+				ignoreTemplateLiterals: true,
+			} ],
 
 			'vue/no-unused-components': [ 'error', {
 				ignoreWhenBindingPresent: false,
