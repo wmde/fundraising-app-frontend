@@ -1,49 +1,27 @@
 import security from 'eslint-plugin-security';
 import unicorn from 'eslint-plugin-unicorn';
 import js from '@eslint/js';
+import formatting from './formatting.mjs';
 
 export default {
 	name: 'WMDE FUN Common Coding Style',
 
 	plugins: {
+		...formatting.plugins,
 		security: security,
-		unicorn: unicorn
+		unicorn: unicorn,
 	},
 	rules: {
 		...js.configs.recommended.rules,
-		'array-bracket-spacing': [ 'error', 'always' ],
+		...formatting.rules,
 		'array-callback-return': 'error',
 		'block-scoped-var': 'error',
-		'block-spacing': 'error',
-		'brace-style': [ 'error', '1tbs' ],
 		camelcase: [ 'error', { properties: 'always' } ],
-		'comma-dangle': [ 'error', 'always-multiline' ],
-		'comma-spacing': [ 'error', { before: false, after: true } ],
-		'comma-style': [ 'error', 'last' ],
-		'computed-property-spacing': [ 'error', 'always' ],
 		curly: [ 'error', 'all' ],
-		'dot-location': [ 'error', 'property' ],
 		'dot-notation': [ 'error' ],
-		'eol-last': 'error',
 		eqeqeq: 'error',
-		'func-call-spacing': 'error',
-		indent: [ 'error', 'tab', { SwitchCase: 1 } ],
 		'key-spacing': [ 'error', { beforeColon: false, afterColon: true } ],
-		'keyword-spacing': 'error',
-		'linebreak-style': [ 'error', 'unix' ],
-		'max-len': [ 'warn', {
-			code: 170,
-			tabWidth: 4,
-			ignorePattern: '^[\\s]*(//|<!--) (es|style)lint-.+',
-			ignoreUrls: true,
-			ignoreComments: false,
-			ignoreRegExpLiterals: true,
-			ignoreStrings: true,
-			ignoreTemplateLiterals: true
-		} ],
-		'max-statements-per-line': [ 'error', { max: 1 } ],
 		'new-cap': [ 'error', { newIsCap: true, capIsNew: false, properties: true } ],
-		'new-parens': 'error',
 		'no-array-constructor': 'error',
 		'no-bitwise': 'error',
 		'no-caller': 'error',
@@ -54,7 +32,6 @@ export default {
 		'no-extend-native': 'error',
 		'no-extra-bind': 'error',
 		'no-extra-label': 'error',
-		'no-floating-decimal': 'error',
 		'no-implicit-coercion': [ 'error', { string: true, boolean: false, number: false } ],
 		'no-implicit-globals': 'error',
 		'no-label-var': 'error',
@@ -76,9 +53,7 @@ export default {
 		'no-sequences': 'error',
 		'no-shadow': [ 'error', { hoist: 'all' } ],
 		'no-shadow-restricted-names': 'error',
-		'no-tabs': [ 'error', { allowIndentationTabs: true } ],
 		'no-throw-literal': 'error',
-		'no-trailing-spaces': 'error',
 		'no-undef-init': 'error',
 		'no-underscore-dangle': 'error',
 		'no-unmodified-loop-condition': 'error',
@@ -89,32 +64,16 @@ export default {
 		'no-useless-call': 'error',
 		'no-useless-concat': 'error',
 		'no-void': 'error',
-		'no-whitespace-before-property': 'error',
 		'no-with': 'error',
-		'object-curly-spacing': [ 'error', 'always' ],
 		'prefer-numeric-literals': 'error',
 		'prefer-regex-literals': 'error',
-		quotes: [ 'error', 'single', { allowTemplateLiterals: true } ],
-		semi: [ 'error', 'always' ],
-		'semi-spacing': [ 'error', { before: false, after: true } ],
-		'semi-style': [ 'error', 'last' ],
-		'space-before-blocks': [ 'error', 'always' ],
-		'space-before-function-paren': [ 'error', { anonymous: 'always', named: 'never' } ],
-		'space-in-parens': [ 'error', 'always', { exceptions: [ 'empty' ] } ],
-		'space-infix-ops': 'error',
-		'space-unary-ops': [ 'error', { words: true, nonwords: false } ],
-		'spaced-comment': [ 'error', 'always', {
-			exceptions: [ '*', '!' ],
-			block: { balanced: true }
-		} ],
-		'switch-colon-spacing': [ 'error', { after: true, before: false } ],
 		'unicode-bom': [ 'error' ],
-		'wrap-iife': 'error',
 		yoda: [ 'error', 'never' ],
+
 		'security/detect-object-injection': 'off',
 		'unicorn/prefer-date-now': 'error',
 		'unicorn/prefer-string-slice': 'error',
-		'unicorn/throw-new-error': 'error'
-	}
+		'unicorn/throw-new-error': 'error',
+	},
 
 };
