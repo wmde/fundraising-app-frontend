@@ -55,24 +55,6 @@ export default [
 
 			'one-var': 'off',
 			'no-undef': 'off',
-
-			// diverging from Wikimedia rule set
-			// We can remove these exceptions and settings when we have our own coding style (based on the Wikimedia one)
-			'max-len': [ 'error', 170 ],
-			'comma-dangle': [ 'error', 'always-multiline' ],
-			'operator-linebreak': 'off',
-			'quote-props': 'off',
-
-			// Typescript helps with documentation, don't require params and retuns
-			'jsdoc/require-param': 'off',
-			'jsdoc/require-returns': 'off',
-			'jsdoc/require-param-type': 'off',
-
-			// Allow template literals
-			quotes: [ 'error', 'single', {
-				allowTemplateLiterals: true,
-			} ],
-
 		},
 	},
 	{
