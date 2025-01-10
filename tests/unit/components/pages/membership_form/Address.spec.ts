@@ -17,7 +17,7 @@ import { InitialMembershipAddressValues } from '@src/view_models/Address';
 
 describe( 'Address.vue', () => {
 
-	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
+	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>; store: Store<any> } => {
 		const wrapper = mount( Address, {
 			props: {
 				validateEmailUrl: 'validate-email',

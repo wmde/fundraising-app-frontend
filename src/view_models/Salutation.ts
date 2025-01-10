@@ -1,10 +1,10 @@
 export interface Salutation {
-	label: string,
-	value: string,
-	display: string,
+	label: string;
+	value: string;
+	display: string;
 	greetings: {
-		formal: string,
-		informal: string,
-		lastNameInformal: string,
-	},
+		formal: string;
+		informal: string;
+		lastNameInformal: string;
+	};
 }

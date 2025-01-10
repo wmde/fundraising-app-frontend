@@ -1,17 +1,17 @@
 export interface QuestionModel {
-	question : string,
-	visibleText : string,
-	topic : string,
+	question: string;
+	visibleText: string;
+	topic: string;
 }
 
 export interface Topic {
-	id : string,
-	name : string,
+	id: string;
+	name: string;
 }
 
 export interface FaqContent {
-	topics : Topic[],
-	questions : QuestionModel[],
+	topics: Topic[];
+	questions: QuestionModel[];
 }
 
 /**

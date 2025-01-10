@@ -3,8 +3,8 @@ import { computed, ComputedRef, Ref, ref, watch } from 'vue';
 import { action } from '@src/store/util';
 
 type ReturnType = {
-	receiptNeeded: Ref<boolean>,
-	showReceiptOptionError: ComputedRef<any>
+	receiptNeeded: Ref<boolean>;
+	showReceiptOptionError: ComputedRef<any>;
 };
 
 export function useReceiptModel( store: Store<any> ): ReturnType {

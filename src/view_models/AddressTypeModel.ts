@@ -1,9 +1,9 @@
 export enum AddressTypeModel {
-    PERSON,
-    COMPANY,
-    COMPANY_WITH_CONTACT,
+	PERSON,
+	COMPANY,
+	COMPANY_WITH_CONTACT,
 	EMAIL,
-    ANON,
+	ANON,
 	UNSET,
 }
 

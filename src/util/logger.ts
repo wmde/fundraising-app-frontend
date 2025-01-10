@@ -3,7 +3,7 @@ import { Notifier } from '@airbrake/browser';
 const LOGGER_ERRBIT: string = 'errbit';
 
 interface Logger {
-	notify( error: object ): void
+	notify( error: object ): void;
 }
 
 class ErrbitLogger implements Logger {

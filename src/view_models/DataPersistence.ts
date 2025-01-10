@@ -12,14 +12,14 @@ export enum DataPersistenceMutationType {
  * The fields array is only used for KEY_VALUE_PAIR mutation types
  */
 export interface DataPersistenceItem {
-	storageKey: string,
-	mutationType: DataPersistenceMutationType,
-	mutationKey: string,
-	fields: string[]
+	storageKey: string;
+	mutationType: DataPersistenceMutationType;
+	mutationKey: string;
+	fields: string[];
 }
 
 export interface DataPersister {
 	getPlugin( items: DataPersistenceItem[] ): any;
 	initialize( items: DataPersistenceItem[] ): Promise<void>;
-	getValue( key: string ): string|null;
+	getValue( key: string ): string | null;
 }

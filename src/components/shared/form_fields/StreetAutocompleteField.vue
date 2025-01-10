@@ -83,7 +83,7 @@ import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/c
 
 enum InteractionState {
 	Typing,
-	Selecting
+	Selecting,
 }
 
 interface Props {
@@ -145,7 +145,7 @@ const onStreetNameKeydown = ( event: KeyboardEvent ) => {
 	updateAutocompleteScrollPosition( scrollElement );
 };
 
-const onStreetNameKeyArrows = async ( direction: 'up'|'down' ) => {
+const onStreetNameKeyArrows = async ( direction: 'up' | 'down' ) => {
 	interactionState.value = InteractionState.Selecting;
 
 	if ( activeStreet.value === undefined ) {

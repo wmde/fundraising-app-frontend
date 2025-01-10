@@ -4,11 +4,11 @@ import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 export interface AddressOptOutModel {
-	addressOptIn: Ref<boolean|null>;
-	previousAddressType: Ref<AddressTypeModel>
+	addressOptIn: Ref<boolean | null>;
+	previousAddressType: Ref<AddressTypeModel>;
 }
 
-function getInitialAddressOptInValue( store: Store<any> ): boolean|null {
+function getInitialAddressOptInValue( store: Store<any> ): boolean | null {
 	if ( store.state.address.addressType === AddressTypeModel.UNSET ) {
 		return null;
 	}
@@ -16,7 +16,7 @@ function getInitialAddressOptInValue( store: Store<any> ): boolean|null {
 }
 
 export function useAddressOptOutModel( store: Store<any> ): AddressOptOutModel {
-	const addressOptIn = ref<boolean|null>( getInitialAddressOptInValue( store ) );
+	const addressOptIn = ref<boolean | null>( getInitialAddressOptInValue( store ) );
 	const previousAddressType = ref<AddressTypeModel>( AddressTypeModel.PERSON );
 
 	watch( addressOptIn, ( newValue: boolean | null ) => {

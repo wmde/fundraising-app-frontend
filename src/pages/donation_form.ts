@@ -24,17 +24,17 @@ import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResour
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 
 interface DonationFormModel {
-	initialFormValues: any,
-	presetAmounts: Array<string>,
-	paymentTypes: Array<string>,
-	paymentIntervals: Array<number>,
-	tracking: TrackingData,
-	countries: Array<Country>,
-	urls: any,
-	userDataKey: string,
-	addressValidationPatterns: AddressValidation,
-	donationMaximumAmount: number,
-	salutations: Array<Salutation>,
+	initialFormValues: any;
+	presetAmounts: Array<string>;
+	paymentTypes: Array<string>;
+	paymentIntervals: Array<number>;
+	tracking: TrackingData;
+	countries: Array<Country>;
+	urls: any;
+	userDataKey: string;
+	addressValidationPatterns: AddressValidation;
+	donationMaximumAmount: number;
+	salutations: Array<Salutation>;
 }
 
 const PAGE_IDENTIFIER = 'donation-form';

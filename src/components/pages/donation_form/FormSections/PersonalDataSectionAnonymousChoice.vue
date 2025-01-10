@@ -80,7 +80,7 @@ interface Props {
 	disabledAddressTypes: AddressTypeModel[];
 	addressType: AddressTypeModel;
 	addressTypeIsInvalid: boolean;
-	addressOptOut: AddressOptOutModel
+	addressOptOut: AddressOptOutModel;
 }
 
 const props = defineProps<Props>();

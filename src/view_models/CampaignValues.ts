@@ -1,4 +1,4 @@
 export interface CampaignValues {
-	campaign: string,
-	keyword: string,
+	campaign: string;
+	keyword: string;
 }

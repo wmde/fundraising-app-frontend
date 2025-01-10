@@ -31,16 +31,16 @@ import { appendCampaignQueryParams } from '@src/util/append_campaign_query_param
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface TraceItem {
-	'class': string,
-	type: string,
-	'function': string,
-	file: string,
-	line: string
+	'class': string;
+	type: string;
+	'function': string;
+	file: string;
+	line: string;
 }
 
 interface Props {
-	errorMessage: string,
-	errorTrace: TraceItem[],
+	errorMessage: string;
+	errorTrace: TraceItem[];
 }
 defineProps<Props>();
 

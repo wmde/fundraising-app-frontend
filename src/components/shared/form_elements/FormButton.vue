@@ -12,9 +12,9 @@
 import LoadingSpinner from '@src/components/shared/LoadingSpinner.vue';
 
 interface Props {
-	buttonType?: 'submit' | 'reset' | 'button',
-	isOutlined?: boolean,
-	isLoading?: boolean,
+	buttonType?: 'submit' | 'reset' | 'button';
+	isOutlined?: boolean;
+	isLoading?: boolean;
 }
 
 withDefaults( defineProps<Props>(), {

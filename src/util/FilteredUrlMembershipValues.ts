@@ -3,7 +3,7 @@ import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
 export default class FilteredUrlMembershipValues implements InitialMembershipFeeValues {
 	private params: URLSearchParams;
 	public validateFeeUrl: string;
-	public paymentType: string|null;
+	public paymentType: string | null;
 
 	constructor( params: URLSearchParams, validateFeeUrl: string ) {
 		this.params = params;

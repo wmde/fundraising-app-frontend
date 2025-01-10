@@ -62,7 +62,7 @@ interface Props {
 	disabled?: boolean;
 	required?: boolean;
 	ariaDescribedby?: string;
-	ariaAutocomplete?: 'none'|'inline'|'list'|'both';
+	ariaAutocomplete?: 'none' | 'inline' | 'list' | 'both';
 }
 
 const props = withDefaults( defineProps<Props>(), {

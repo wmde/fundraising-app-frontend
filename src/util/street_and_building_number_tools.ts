@@ -1,6 +1,6 @@
 export const separator = '|||';
 
-export function splitStreetAndBuildingNumber( street: string ): { street: string, buildingNumber: string } {
+export function splitStreetAndBuildingNumber( street: string ): { street: string; buildingNumber: string } {
 	const values = street.split( separator );
 	return {
 		street: values[ 0 ] ?? '',

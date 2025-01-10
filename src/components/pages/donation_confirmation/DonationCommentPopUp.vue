@@ -95,7 +95,7 @@ import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 enum CommentErrorTypes {
 	Empty,
-	Server
+	Server,
 }
 
 interface Props {

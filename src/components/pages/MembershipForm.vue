@@ -51,9 +51,9 @@ interface Props {
 	paymentTypes: string[];
 	countries: Country[];
 	salutations: Salutation[];
-	showMembershipTypeOption: Boolean,
+	showMembershipTypeOption: Boolean;
 	addressValidationPatterns: AddressValidation;
-	dateOfBirthValidationPattern: String,
+	dateOfBirthValidationPattern: String;
 	campaignValues: CampaignValues;
 	trackingData: TrackingData;
 }

@@ -48,7 +48,7 @@ export default defineComponent( {
 			this.$data.debounceTimeout = setTimeout( this.emitAutofillValues.bind( this ), AUTOFILL_DEBOUNCE_PERIOD );
 		},
 		emitAutofillValues() {
-			let eventData: { [key: string]: string; } = {};
+			let eventData: { [key: string]: string } = {};
 			this.$data.autofillQueue.forEach( ( elem: HTMLInputElement ) => {
 				if ( elem.id ) {
 					eventData[ elem.id ] = elem.value;

@@ -1,10 +1,10 @@
 import { ref, Ref } from 'vue';
 
 type ReturnType = {
-	labelRef: Ref<HTMLLabelElement>,
-	inputRef: Ref<HTMLInputElement>,
-	focus(): void,
-	click(): void,
+	labelRef: Ref<HTMLLabelElement>;
+	inputRef: Ref<HTMLInputElement>;
+	focus(): void;
+	click(): void;
 };
 
 export function useInputFocusing(): ReturnType {

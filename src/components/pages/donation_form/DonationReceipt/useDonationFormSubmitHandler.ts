@@ -6,17 +6,17 @@ import { computed, ComputedRef, ref, Ref, watch } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 
 type ReturnType = {
-	submit: () => Promise<void>,
-	submitValuesForm: Ref<HTMLFormElement>,
-	showErrorSummary: Ref<boolean>,
-}
+	submit: () => Promise<void>;
+	submitValuesForm: Ref<HTMLFormElement>;
+	showErrorSummary: Ref<boolean>;
+};
 
 export function useDonationFormSubmitHandler(
 	store: Store<any>,
 	isDirectDebit: ComputedRef<any>,
 	validateAddressUrl: string,
 	validateEmailUrl: string,
-	receiptNeeded: Ref<boolean|null>
+	receiptNeeded: Ref<boolean | null>
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
 	const bankDataIsValid = ref<boolean>( true );

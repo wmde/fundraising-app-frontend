@@ -7,5 +7,5 @@ export interface MembershipAddress {
 	postalCode: string;
 	city: string;
 	countryCode: string;
-	applicantType: 'person'|'firma';
+	applicantType: 'person' | 'firma';
 }

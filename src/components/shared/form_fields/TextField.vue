@@ -37,14 +37,14 @@ import { computed } from 'vue';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 
 interface Props {
-	inputType?: 'text'|'textarea';
+	inputType?: 'text' | 'textarea';
 	label: String;
 	labelHelpText?: String;
 	helpText?: String;
 	name: string;
 	inputId: string;
 	placeholder: string;
-	modelValue: string|number;
+	modelValue: string | number;
 	errorMessage: String;
 	showError: boolean;
 	disabled?: boolean;
@@ -68,7 +68,7 @@ const ariaDescribedby = useAriaDescribedby(
 	computed<boolean>( () => props.showError )
 );
 
-const onUpdateModel = ( newValue: string|number ): void => {
+const onUpdateModel = ( newValue: string | number ): void => {
 	emit( 'update:modelValue', newValue );
 };
 

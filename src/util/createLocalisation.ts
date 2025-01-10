@@ -15,7 +15,7 @@ export const LOCALES: LocaleSelectorItem[] = [
 export const COOKIE_NAME = 'locale';
 export const DEFAULT_LOCALE = 'de_DE';
 
-export function createLocalisation( messages: { [ key: string ]: string; } ) {
+export function createLocalisation( messages: { [ key: string ]: string } ) {
 	type MessageSchema = typeof messages;
 	const locale = ( Cookies.get( COOKIE_NAME ) ?? DEFAULT_LOCALE ).replace( '_', '-' );
 	type LocaleType = typeof locale;

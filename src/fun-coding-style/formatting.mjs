@@ -65,7 +65,7 @@ export default {
 				},
 				'colon': {
 					'before': false,
-					'after': true
+					'after': true,
 				},
 			},
 		} ],

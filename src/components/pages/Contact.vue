@@ -135,9 +135,9 @@ defineOptions( {
 } );
 
 interface Props {
-	contactCategories: Record<string, string>,
+	contactCategories: Record<string, string>;
 	initialFormData?: ContactInitialFormData;
-	errors?: Record<string, string>,
+	errors?: Record<string, string>;
 	validationPatterns: ContactFormValidation;
 }
 

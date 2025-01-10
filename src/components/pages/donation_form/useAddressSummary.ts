@@ -3,8 +3,8 @@ import { Store } from 'vuex';
 import { computed, ComputedRef } from 'vue';
 
 type ReturnType = {
-	addressSummary: ComputedRef<any>,
-	inlineSummaryLanguageItem: ComputedRef<string>
+	addressSummary: ComputedRef<any>;
+	inlineSummaryLanguageItem: ComputedRef<string>;
 };
 
 export function useAddressSummary( store: Store<any> ): ReturnType {

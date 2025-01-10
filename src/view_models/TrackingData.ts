@@ -1,4 +1,4 @@
 export interface TrackingData {
-    bannerImpressionCount: number,
-    impressionCount: number
+	bannerImpressionCount: number;
+	impressionCount: number;
 }

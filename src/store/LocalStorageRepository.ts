@@ -5,11 +5,11 @@ const BASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567
 
 export default class LocalStorageRepository implements DataPersistenceRepository {
 
-	getItems(): {[key: string]: any} {
+	getItems(): { [key: string]: any } {
 		return localStorage;
 	}
 
-	getItem( key: string ): ArrayBuffer|null {
+	getItem( key: string ): ArrayBuffer | null {
 		const value = localStorage.getItem( key );
 
 		if ( !value ) {

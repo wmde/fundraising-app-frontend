@@ -26,9 +26,9 @@ import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 
 interface Props {
-	address : Record<string, string>;
+	address: Record<string, string>;
 	addressType: String;
-	payment: { interval: any, amount: number, paymentType: any };
+	payment: { interval: any; amount: number; paymentType: any };
 	countries: Array<Country>;
 	languageItem: String;
 	salutations: Array<Salutation>;

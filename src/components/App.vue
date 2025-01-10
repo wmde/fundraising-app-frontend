@@ -35,7 +35,7 @@ interface Props {
 	pageIdentifier: string;
 	page: Component;
 	pageProps?: Record<string, any>;
-	pageTitle: string,
+	pageTitle: string;
 	isFullWidth?: boolean;
 	usesContentCards?: boolean;
 	bucketClasses?: string[];

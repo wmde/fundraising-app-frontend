@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 export interface CityAutocompleteResource {
-	getCitiesInPostcode( postcode: string ): Promise<Array<string>>
+	getCitiesInPostcode( postcode: string ): Promise<Array<string>>;
 }
 
 export const NullCityAutocompleteResource = {

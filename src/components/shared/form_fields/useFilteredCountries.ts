@@ -1,7 +1,7 @@
 import { Country } from '@src/view_models/Country';
 import { computed, ComputedRef, ref, Ref, watch } from 'vue';
 
-type ReturnType = { filteredCountries: ComputedRef<Array<Country>>, groupSeparatorIndex: Ref<Number> };
+type ReturnType = { filteredCountries: ComputedRef<Array<Country>>; groupSeparatorIndex: Ref<Number> };
 
 function getGroupSeparatorIndex( countriesList: Array<Country> ): Number {
 	if ( countriesList.length === 0 ) {

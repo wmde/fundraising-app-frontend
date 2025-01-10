@@ -23,10 +23,10 @@ const trackFormSubmissionForAddressType = ( addressType: AddressTypeModel ) => {
 };
 
 type ReturnType = {
-	submit: () => Promise<void>,
-    submitValuesForm: Ref<HTMLFormElement>,
-	showErrorSummary: Ref<boolean>,
-}
+	submit: () => Promise<void>;
+	submitValuesForm: Ref<HTMLFormElement>;
+	showErrorSummary: Ref<boolean>;
+};
 
 export function useDonationFormSubmitHandler(
 	store: Store<any>,

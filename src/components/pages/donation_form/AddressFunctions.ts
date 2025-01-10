@@ -6,7 +6,7 @@ import { camelizeName } from '@src/util/camlize_name';
 import { AddressValidation } from '@src/view_models/Validation';
 
 interface AddressFunctionParams {
-	addressValidationPatterns: AddressValidation
+	addressValidationPatterns: AddressValidation;
 }
 
 export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) => {
@@ -96,7 +96,7 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
 	}
 
-	function onAutofill( autofilledFields: { [key: string]: string; } ): void {
+	function onAutofill( autofilledFields: { [key: string]: string } ): void {
 		Object.keys( autofilledFields ).forEach( key => {
 			const fieldName = camelizeName( key );
 			if ( formData[ fieldName ] ) {

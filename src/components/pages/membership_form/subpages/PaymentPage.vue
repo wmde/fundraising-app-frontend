@@ -93,13 +93,13 @@ import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary
 import { Validity } from '@src/view_models/Validity';
 
 interface Props {
-	validateFeeUrl: String,
-	paymentAmounts: number[],
-	paymentIntervals: number[],
+	validateFeeUrl: String;
+	paymentAmounts: number[];
+	paymentIntervals: number[];
 	paymentTypes: string[];
-	validateBankDataUrl: String,
-	validateLegacyBankDataUrl: String,
-	showMembershipTypeOption: Boolean,
+	validateBankDataUrl: String;
+	validateLegacyBankDataUrl: String;
+	showMembershipTypeOption: Boolean;
 }
 
 const props = defineProps<Props>();

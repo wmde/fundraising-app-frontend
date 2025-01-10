@@ -61,7 +61,7 @@ export const mutations: MutationTree<MembershipAddressState> = {
 	SET_ADDRESS_FIELD( state: MembershipAddressState, field: InputField ) {
 		state.values[ field.name ] = field.value;
 	},
-	SET_ADDRESS_FIELD_VALIDITY( state: MembershipAddressState, payload: { name: string, validity: Validity } ) {
+	SET_ADDRESS_FIELD_VALIDITY( state: MembershipAddressState, payload: { name: string; validity: Validity } ) {
 		state.validity[ payload.name ] = payload.validity;
 	},
 

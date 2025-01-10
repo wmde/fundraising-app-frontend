@@ -38,7 +38,7 @@ jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe( 'AddressPage.vue', () => {
-	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>, store: Store<any> } => {
+	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>; store: Store<any> } => {
 		const wrapper = mount( AddressPage, {
 			props: {
 				validateAddressUrl: '',

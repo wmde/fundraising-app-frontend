@@ -37,7 +37,7 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 interface Props {
-	showErrorSummary: boolean
+	showErrorSummary: boolean;
 }
 
 defineProps<Props>();

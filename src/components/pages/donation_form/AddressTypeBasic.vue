@@ -43,7 +43,7 @@ import { ref, watch } from 'vue';
 import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
 
 interface Props {
-	disabledAddressTypes: AddressTypeModel[]
+	disabledAddressTypes: AddressTypeModel[];
 	isDirectDebit: boolean;
 	addressTypeIsInvalid: boolean;
 	initialAddressType?: AddressTypeModel;

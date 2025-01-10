@@ -96,7 +96,7 @@ import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptio
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
-	addressType: AddressTypeModel
+	addressType: AddressTypeModel;
 	salutations: Salutation[];
 	formData: AddressFormData;
 	showError: AddressValidity;

@@ -1,11 +1,11 @@
 export interface SupportersData {
-	visibleSupporterId: number | null,
+	visibleSupporterId: number | null;
 }
 
 export interface Supporter {
-	name: string,
-	amount: string,
-	comment: string,
+	name: string;
+	amount: string;
+	comment: string;
 }
 
 export function supportersFromObject( obj: any ): Supporter[] {

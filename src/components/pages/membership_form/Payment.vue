@@ -66,12 +66,12 @@ import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import IbanFields from '@src/components/shared/IbanFields.vue';
 
 interface Props {
-	validateFeeUrl: string,
-	paymentAmounts: number[],
+	validateFeeUrl: string;
+	paymentAmounts: number[];
 	paymentIntervals: number[];
-	paymentTypes: string[],
-	validateBankDataUrl: string,
-	validateLegacyBankDataUrl: string,
+	paymentTypes: string[];
+	validateBankDataUrl: string;
+	validateLegacyBankDataUrl: string;
 }
 
 const props = defineProps<Props>();
@@ -117,7 +117,7 @@ watch( minimumAmount, async ( newMinimumAmount ) => {
 } );
 
 const feeErrorMessage = computed<string>( () => {
-	const messages: { [ key: number ]: string; } = {
+	const messages: { [ key: number ]: string } = {
 		[ FeeValidity.FEE_VALID ]: '',
 		[ FeeValidity.FEE_TOO_LOW ]: t( 'membership_form_payment_amount_error' ),
 		[ FeeValidity.FEE_TOO_HIGH ]: t( 'membership_form_payment_amount_too_high' ),

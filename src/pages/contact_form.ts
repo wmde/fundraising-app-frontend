@@ -9,11 +9,11 @@ import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
 
 interface ContactFormModel {
-	message: string,
-	contactFormValidationPatterns: ContactFormValidation,
-	submitted_form_data: ContactInitialFormData,
-	contact_categories: Record<string, string>,
-	errors: string[],
+	message: string;
+	contactFormValidationPatterns: ContactFormValidation;
+	submitted_form_data: ContactInitialFormData;
+	contact_categories: Record<string, string>;
+	errors: string[];
 }
 
 const PAGE_IDENTIFIER = 'contact-form';

@@ -1,7 +1,7 @@
 import { Ref, ref } from 'vue';
 import { CityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 
-type ReturnType = { cities: Ref<Array<string>>, fetchCitiesForPostcode: ( postcode: string ) => void }
+type ReturnType = { cities: Ref<Array<string>>; fetchCitiesForPostcode: ( postcode: string ) => void };
 const postcodePattern = /^[0-9]{5}$/;
 
 export function useCitiesResource( resource: CityAutocompleteResource ): ReturnType {

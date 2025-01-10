@@ -1,9 +1,9 @@
 export enum MembershipTypeModel {
-    SUSTAINING,
-    ACTIVE,
+	SUSTAINING,
+	ACTIVE,
 }
 
-export type MembershipType = 'sustaining'|'active';
+export type MembershipType = 'sustaining' | 'active';
 
 export const MembershipTypeNames = new Map<number, MembershipType>( [
 	[ MembershipTypeModel.SUSTAINING, 'sustaining' ],

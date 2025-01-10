@@ -74,7 +74,7 @@ import CallToAction from '@src/components/pages/use_of_funds/CallToAction.vue';
 import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
 
 interface Props {
-	content: UseOfFundsContent
+	content: UseOfFundsContent;
 }
 
 const props = defineProps<Props>();

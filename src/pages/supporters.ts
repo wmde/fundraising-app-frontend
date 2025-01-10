@@ -8,8 +8,8 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface ErrorModel {
-	message: string,
-	supporters: string,
+	message: string;
+	supporters: string;
 }
 
 const PAGE_IDENTIFIER = 'supporters';

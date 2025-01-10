@@ -115,16 +115,16 @@ import AddressUpdateForm from '@src/components/pages/donation_confirmation/Addre
 
 interface Props {
 	donation: Donation;
-	address: Address,
-	addressType: string,
-	tracking: string,
-	validateAddressUrl: string,
-	validateEmailUrl: string,
-	postCommentUrl: string,
-	countries: Country[],
-	salutations: Salutation[],
-	addressValidationPatterns: AddressValidation,
-	donorResource: DonorResource,
+	address: Address;
+	addressType: string;
+	tracking: string;
+	validateAddressUrl: string;
+	validateEmailUrl: string;
+	postCommentUrl: string;
+	countries: Country[];
+	salutations: Salutation[];
+	addressValidationPatterns: AddressValidation;
+	donorResource: DonorResource;
 }
 
 const props = defineProps<Props>();
@@ -141,7 +141,7 @@ const showAddressModal = (): void => {
 	isAddressModalOpen.value = true;
 };
 
-const updateAddress = ( submittedAddress: { addressData: Address, addressType: string } ): void => {
+const updateAddress = ( submittedAddress: { addressData: Address; addressType: string } ): void => {
 	currentAddress.value = submittedAddress.addressData;
 	currentAddressType.value = submittedAddress.addressType;
 	isAddressModalOpen.value = false;

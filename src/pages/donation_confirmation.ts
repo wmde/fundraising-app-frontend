@@ -24,15 +24,15 @@ import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { ApiCommentResource } from '@src/api/CommentResource';
 
 interface DonationConfirmationModel {
-	urls: { [ key: string ]: string },
-	countries: Array<Country>,
-	donation: Donation,
-	address: Address,
-	addressType: String,
-	tracking: String,
-	addressValidationPatterns: AddressValidation,
-	salutations: Array<Salutation>,
-	piwik: { donationConfirmationGoalId: number; },
+	urls: { [ key: string ]: string };
+	countries: Array<Country>;
+	donation: Donation;
+	address: Address;
+	addressType: String;
+	tracking: String;
+	addressValidationPatterns: AddressValidation;
+	salutations: Array<Salutation>;
+	piwik: { donationConfirmationGoalId: number };
 }
 
 const PAGE_IDENTIFIER = 'donation-confirmation';

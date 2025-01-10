@@ -123,7 +123,7 @@ const disabledPaymentIntervals = computed<string[]>( () => {
 } );
 
 const amountErrorMessage = computed<String>( () => {
-	const messages: { [ key: number ]: string; } = {
+	const messages: { [ key: number ]: string } = {
 		[ AmountValidity.AMOUNT_VALID ]: '',
 		[ AmountValidity.AMOUNT_TOO_LOW ]: t( 'donation_form_payment_amount_error' ),
 		[ AmountValidity.AMOUNT_TOO_HIGH ]: t( 'donation_form_payment_amount_too_high' ),

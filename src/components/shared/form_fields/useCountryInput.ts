@@ -1,12 +1,12 @@
 import { ref, Ref, watch } from 'vue';
 import { Country } from '@src/view_models/Country';
 
-type ReturnType = { country: Ref<Country|undefined>, countryName: Ref<string> };
+type ReturnType = { country: Ref<Country | undefined>; countryName: Ref<string> };
 
-function getCountryFromCode( countryCode: string, countries: Array<Country> ): Country|undefined {
+function getCountryFromCode( countryCode: string, countries: Array<Country> ): Country | undefined {
 	return countries.find( ( c: Country ) => c.countryCode === countryCode );
 }
-function getCountryFromCountryFullName( countryFullName: string, countries: Array<Country> ): Country|undefined {
+function getCountryFromCountryFullName( countryFullName: string, countries: Array<Country> ): Country | undefined {
 	return countries.find( ( c: Country ) => c.countryFullName === countryFullName );
 }
 

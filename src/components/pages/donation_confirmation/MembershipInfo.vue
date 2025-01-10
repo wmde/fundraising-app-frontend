@@ -28,7 +28,7 @@ import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
-	donation: Donation
+	donation: Donation;
 }
 
 const props = defineProps<Props>();

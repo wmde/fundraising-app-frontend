@@ -2,8 +2,8 @@ import { computed, ComputedRef, Ref } from 'vue';
 import { closest, distance } from '@src/util/fastest-levenshtein';
 
 type ReturnType = {
-	suggestedProvider: ComputedRef<string>,
-	onSuggestionClicked: ( suggestion: string ) => void,
+	suggestedProvider: ComputedRef<string>;
+	onSuggestionClicked: ( suggestion: string ) => void;
 };
 
 export function useSuggestedEmailProvider(

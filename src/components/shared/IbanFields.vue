@@ -137,7 +137,7 @@ const bankName = computed<string>( () => store.state.bankdata.values.bankName );
 const showIbanError = computed<boolean>( () => store.state.bankdata.validity.iban === Validity.INVALID );
 
 const showCalculator = ref<boolean>( false );
-const calculatorPage = ref<1|2>( 1 );
+const calculatorPage = ref<1 | 2>( 1 );
 const calculatorPageTransitionMilliseconds = 300;
 const accountNumber = ref<string>( '' );
 const bankCode = ref<string>( '' );
