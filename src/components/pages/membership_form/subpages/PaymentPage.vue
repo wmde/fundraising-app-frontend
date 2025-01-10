@@ -133,7 +133,7 @@ const next = async (): Promise<any> => {
 	waitForServerValidationToFinish( store ).then( () => {
 		const validationActions = [ store.dispatch( action( 'membership_fee', 'markEmptyValuesAsInvalid' ) ) ];
 
-		if ( isDirectDebitPayment ) {
+		if ( isDirectDebitPayment.value ) {
 			validationActions.push( store.dispatch( action( 'bankdata', 'markEmptyIbanAsInvalid' ) ) );
 		}
 

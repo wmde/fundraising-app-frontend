@@ -27,7 +27,7 @@
 			<transition name="fade">
 				<div class="dropdown-menu" v-show="autocompleteIsActive">
 					<div class="dropdown-content" ref="scrollElement" tabindex="-1">
-						<template v-for="( country, index ) in filteredCountries">
+						<template v-for="( country, index ) in filteredCountries" :key="index">
 							<span v-if="groupSeparatorIndex === index" class="dropdown-divider"/>
 							<a
 								class="dropdown-item"

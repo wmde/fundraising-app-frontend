@@ -91,8 +91,19 @@ export default [
 			},
 		},
 		rules: {
-			...pluginVue.configs.recommended.base,
+			...pluginVue.configs.essential.rules,
 			...vuejsAccessibility.configs.recommended.rules,
+
+			// The following rules should be turned on again in the future (using the settings from pluginVue.configs.essential)
+			// We placed them here to avoid huge changes in our legacy codebase and to allow for slow migration
+			'vue/no-mutating-props': 'off', // get rid of the `formValues` in donation form
+			'vue/no-multiple-template-root': 'off',
+			'vue/multi-word-component-names': 'off',
+			'vue/no-v-for-template-key': 'off',
+
+			// Allow for dot-separated slot names for our custom FeatureToggle component
+			// We should consider renaming the slots to use a different separator
+			'vue/valid-v-slot': 'off',
 
 			// Allow for long SVG components by having a ridiculous max-len for the template section of Vue files
 			'@stylistic/max-len': 'off',

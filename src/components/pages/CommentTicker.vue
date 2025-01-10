@@ -32,6 +32,7 @@
 					v-for="( word, index ) in words"
 					class="comment-ticker-word"
 					:class="{ play: currentState === TickerStates.Displaying }"
+					:key="index"
 					:style="{ '--index': Number( index ) + 1 }"
 				>
 					{{ word }}&nbsp;

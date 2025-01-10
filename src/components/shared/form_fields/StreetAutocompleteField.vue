@@ -26,18 +26,18 @@
 			<transition name="fade">
 				<div class="dropdown-menu" v-show="autocompleteIsActive && filteredStreets.length > 0">
 					<div class="dropdown-content" ref="scrollElement" tabindex="-1">
-						<template v-for="street in filteredStreets">
-							<a
-								class="dropdown-item"
-								:class="{ 'is-active-item': street === activeStreet }"
-								role="button"
-								tabindex="-1"
-								@click.stop="onSelectStreet( street )"
-								@keyup.enter.space="onSelectStreet( street )"
-							>
-								{{ street }}
-							</a>
-						</template>
+						<a
+							v-for="street in filteredStreets"
+							class="dropdown-item"
+							:class="{ 'is-active-item': street === activeStreet }"
+							:key="street"
+							role="button"
+							tabindex="-1"
+							@click.stop="onSelectStreet( street )"
+							@keyup.enter.space="onSelectStreet( street )"
+						>
+							{{ street }}
+						</a>
 					</div>
 				</div>
 			</transition>
