@@ -5,7 +5,7 @@ import parser from 'vue-eslint-parser';
 import commonStyle from './src/fun-coding-style/common.mjs';
 import typescriptStyle from './src/fun-coding-style/typescript.mjs';
 
-// A workaround until our project really uses the fixed "globals" package
+// A workaround until our project really uses the fixed "globals" package (eslint transitive dependency)
 // See https://github.com/sindresorhus/globals/issues/239
 const fixedBrowserGlobals = Object.assign( {}, globals.browser, { AudioWorkletGlobalScope: globals.browser[ 'AudioWorkletGlobalScope ' ] } );
 delete fixedBrowserGlobals[ 'AudioWorkletGlobalScope ' ];
@@ -27,7 +27,6 @@ export default [
 			sourceType: 'module',
 			parserOptions: {
 				parser: '@typescript-eslint/parser',
-
 				ecmaFeatures: {
 					modules: true,
 				},
@@ -46,7 +45,6 @@ export default [
 			'@typescript-eslint/no-empty-function': 'off',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-wrapper-object-types': 'off',
-			'@typescript-eslint/no-empty-object-type': 'off',
 
 			// Custom rules to prevent shipping debug code to prod
 			'no-console': 'error',
@@ -54,6 +52,7 @@ export default [
 		},
 	},
 	{
+		name: 'Additional rules for Jest TypeScript test files',
 		files: [ 'tests/**/*.ts' ],
 		languageOptions: {
 			globals: {
@@ -66,7 +65,6 @@ export default [
 			sourceType: 'module',
 			parserOptions: {
 				parser: '@typescript-eslint/parser',
-
 				ecmaFeatures: {
 					modules: true,
 				},
