@@ -3,6 +3,7 @@
 		<div class="option-checkbox">
 			<CheckboxMultipleFormInput
 				v-for="incentive in incentiveFormFieldOptions"
+				:key="incentive.id"
 				:native-value="incentive.value"
 				name="incentives"
 				v-model="fieldModel"

@@ -29,18 +29,18 @@ import { TrackingData } from '@src/view_models/TrackingData';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 
 interface MembershipAmountModel {
-	presetAmounts: Array<string>,
-	paymentIntervals: Array<string>,
-	paymentTypes: Array<string>,
-	tracking: TrackingData,
-	countries: Array<Country>,
-	salutations: Array<Salutation>,
-	urls: any,
-	showMembershipTypeOption: Boolean,
-	initialFormValues: InitialMembershipData,
-	userDataKey: string,
-	addressValidationPatterns: AddressValidation,
-	dateOfBirthValidationPattern: String,
+	presetAmounts: Array<string>;
+	paymentIntervals: Array<string>;
+	paymentTypes: Array<string>;
+	tracking: TrackingData;
+	countries: Array<Country>;
+	salutations: Array<Salutation>;
+	urls: any;
+	showMembershipTypeOption: Boolean;
+	initialFormValues: InitialMembershipData;
+	userDataKey: string;
+	addressValidationPatterns: AddressValidation;
+	dateOfBirthValidationPattern: String;
 }
 
 const PAGE_IDENTIFIER = 'membership-application';

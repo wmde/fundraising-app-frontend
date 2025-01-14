@@ -1,32 +1,32 @@
 import { Validity } from '@src/view_models/Validity';
 
 export interface MembershipFee {
-	isValidating: boolean,
+	isValidating: boolean;
 	validity: {
-		[key: string]: Validity
-	},
+		[key: string]: Validity;
+	};
 	values: {
-		[key: string]: string
-	}
+		[key: string]: string;
+	};
 }
 
 export interface InitialMembershipFeeValues {
-	validateFeeUrl: string,
-	fee: string|null,
-	type: string|null,
-	interval: string|null,
+	validateFeeUrl: string;
+	fee: string | null;
+	type: string | null;
+	interval: string | null;
 }
 
 export interface GenericValuePayload {
-	selectedValue: string,
-	validateFeeUrl: string,
+	selectedValue: string;
+	validateFeeUrl: string;
 }
 
 export class YearlyMembershipFee {
 	public readonly paymentIntervalInMonths: number;
 	public readonly membershipFeePerInterval: number;
 
-	constructor( paymentIntervalInMonths: string|number, membershipFeePerInterval: string|number ) {
+	constructor( paymentIntervalInMonths: string | number, membershipFeePerInterval: string | number ) {
 		this.paymentIntervalInMonths = typeof paymentIntervalInMonths === 'string' ? parseInt( paymentIntervalInMonths, 10 ) : paymentIntervalInMonths;
 		this.membershipFeePerInterval = typeof membershipFeePerInterval === 'string' ? parseFloat( membershipFeePerInterval ) : membershipFeePerInterval;
 	}

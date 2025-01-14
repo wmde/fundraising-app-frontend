@@ -5,21 +5,21 @@ import { action } from '@src/store/util';
 import { camelizeName } from '@src/util/camlize_name';
 
 interface AddressValidationPatterns {
-	salutation: string,
-	title: string,
-	companyName: string,
-	firstName: string,
-	lastName: string,
-	street: string,
-	city: string,
-	postcode: string,
-	country: string,
-	email: string
+	salutation: string;
+	title: string;
+	companyName: string;
+	firstName: string;
+	lastName: string;
+	street: string;
+	city: string;
+	postcode: string;
+	country: string;
+	email: string;
 }
 
 interface AddressFunctionParams {
-	addressValidationPatterns: AddressValidationPatterns
-	dateOfBirthValidationPattern: string
+	addressValidationPatterns: AddressValidationPatterns;
+	dateOfBirthValidationPattern: string;
 }
 
 export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) => {
@@ -117,7 +117,7 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 		store.dispatch( action( 'membership_address', 'setAddressField' ), formData[ fieldName ] );
 	}
 
-	function onAutofill( autofilledFields: { [key: string]: string; } ): void {
+	function onAutofill( autofilledFields: { [key: string]: string } ): void {
 		Object.keys( autofilledFields ).forEach( key => {
 			const fieldName = camelizeName( key );
 			if ( formData[ fieldName ] ) {

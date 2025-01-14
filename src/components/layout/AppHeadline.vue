@@ -9,7 +9,7 @@
 <script setup lang="ts">
 
 interface Props {
-	isFullWidth: boolean,
+	isFullWidth: boolean;
 }
 
 defineProps<Props>();

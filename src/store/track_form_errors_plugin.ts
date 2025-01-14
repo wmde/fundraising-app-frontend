@@ -4,7 +4,7 @@ import { Validity } from '@src/view_models/Validity';
 
 export const trackFormErrorPlugin = ( store: Store<any>, formName: string ) => {
 
-	const formNameToStoreNameLookUp: { [key: string]: string} = {
+	const formNameToStoreNameLookUp: { [key: string]: string } = {
 		'donation_form': 'address',
 		'update_address': 'address',
 		'membership_application': 'membership_address',

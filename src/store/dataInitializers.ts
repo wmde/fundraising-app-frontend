@@ -17,7 +17,7 @@ const replaceInitialValue = ( defaultValue: any, replacement: any ): any => {
 	return defaultValue;
 };
 
-const nullifyZeroString = ( value: string ): string|null => {
+const nullifyZeroString = ( value: string ): string | null => {
 	if ( value === '0' ) {
 		return null;
 	}

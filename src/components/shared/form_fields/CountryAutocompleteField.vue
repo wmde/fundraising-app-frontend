@@ -27,7 +27,7 @@
 			<transition name="fade">
 				<div class="dropdown-menu" v-show="autocompleteIsActive">
 					<div class="dropdown-content" ref="scrollElement" tabindex="-1">
-						<template v-for="( country, index ) in filteredCountries">
+						<template v-for="( country, index ) in filteredCountries" :key="index">
 							<span v-if="groupSeparatorIndex === index" class="dropdown-divider"/>
 							<a
 								class="dropdown-item"
@@ -62,7 +62,7 @@ import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/c
 
 enum InteractionState {
 	Typing,
-	Selecting
+	Selecting,
 }
 
 interface Props {
@@ -121,7 +121,7 @@ const onKeydown = ( event: KeyboardEvent ) => {
 	activeCountry.value = undefined;
 };
 
-const onKeyArrows = async ( direction: 'up'|'down' ) => {
+const onKeyArrows = async ( direction: 'up' | 'down' ) => {
 	interactionState.value = InteractionState.Selecting;
 
 	if ( activeCountry.value === undefined ) {

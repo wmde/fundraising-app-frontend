@@ -93,13 +93,13 @@ import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary
 import { Validity } from '@src/view_models/Validity';
 
 interface Props {
-	validateFeeUrl: String,
-	paymentAmounts: number[],
-	paymentIntervals: number[],
+	validateFeeUrl: String;
+	paymentAmounts: number[];
+	paymentIntervals: number[];
 	paymentTypes: string[];
-	validateBankDataUrl: String,
-	validateLegacyBankDataUrl: String,
-	showMembershipTypeOption: Boolean,
+	validateBankDataUrl: String;
+	validateLegacyBankDataUrl: String;
+	showMembershipTypeOption: Boolean;
 }
 
 const props = defineProps<Props>();
@@ -133,7 +133,7 @@ const next = async (): Promise<any> => {
 	waitForServerValidationToFinish( store ).then( () => {
 		const validationActions = [ store.dispatch( action( 'membership_fee', 'markEmptyValuesAsInvalid' ) ) ];
 
-		if ( isDirectDebitPayment ) {
+		if ( isDirectDebitPayment.value ) {
 			validationActions.push( store.dispatch( action( 'bankdata', 'markEmptyIbanAsInvalid' ) ) );
 		}
 

@@ -199,7 +199,7 @@ describe( 'MembershipFee', () => {
 						},
 					},
 				},
-				expectedPayload :GenericValuePayload = {
+				expectedPayload: GenericValuePayload = {
 					selectedValue: '2000',
 					validateFeeUrl: '/validate-fee-url',
 				};

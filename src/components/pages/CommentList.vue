@@ -8,7 +8,7 @@
 		</span>
 
 		<div class="comment-list-comments">
-			<div class="comment-list-comment" v-for="comment in pageContent">
+			<div class="comment-list-comment" v-for="comment in pageContent" :key="comment.date">
 				<div><strong>{{ commentHeadline( comment ) }}</strong></div>
 				<div class="comment-list-comment-meta">{{ comment.date }}</div>
 				<div>{{ comment.comment }}</div>

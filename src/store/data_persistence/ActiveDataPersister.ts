@@ -7,7 +7,7 @@ export class ActiveDataPersister implements DataPersister {
 	dataEncryptor: DataEncryptor;
 	repository: DataPersistenceRepository;
 	keyNamespace: string;
-	initialValues: { key: string, value: any }[];
+	initialValues: { key: string; value: any }[];
 
 	constructor( dataEncryptor: DataEncryptor, repository: DataPersistenceRepository, keyNamespace: string ) {
 		this.dataEncryptor = dataEncryptor;

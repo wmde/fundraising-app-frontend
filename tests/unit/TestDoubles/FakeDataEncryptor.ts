@@ -1,5 +1,5 @@
 import { DataEncryptor } from '@src/view_models/DataEncryptor';
-const { TextEncoder, TextDecoder } = require( 'util' );
+import { TextEncoder, TextDecoder } from 'util';
 
 export class FakeDataEncryptor implements DataEncryptor {
 	decrypt( data: ArrayBuffer ): Promise<string> {
@@ -7,7 +7,7 @@ export class FakeDataEncryptor implements DataEncryptor {
 	}
 
 	encrypt( data: string ): Promise<ArrayBuffer> {
-		return Promise.resolve( new TextEncoder().encode( data ) );
+		return Promise.resolve( new TextEncoder().encode( data ) as unknown as ArrayBuffer );
 	}
 }
 
@@ -18,6 +18,6 @@ export class FakeFailingDataEncryptor implements DataEncryptor {
 	}
 
 	encrypt( data: string ): Promise<ArrayBuffer> {
-		return Promise.resolve( new TextEncoder().encode( data ) );
+		return Promise.resolve( new TextEncoder().encode( data ) as unknown as ArrayBuffer );
 	}
 }

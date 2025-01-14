@@ -61,7 +61,7 @@ const country = computed<string>( () => {
 	const countryObject = props.countries.find( c => ( c.countryCode === props.address.country ) );
 	return countryObject ? countryObject.countryFullName : '';
 } );
-const salutation = computed<string|TranslateResult>( () => {
+const salutation = computed<string | TranslateResult>( () => {
 	if ( !props.address.salutation || props.address.salutation === '' ) {
 		return '';
 	}

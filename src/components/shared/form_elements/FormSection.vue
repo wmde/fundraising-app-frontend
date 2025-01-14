@@ -8,8 +8,8 @@
 <script setup lang="ts">
 
 interface Props {
-	title?: String,
-	titleMargin?: 'x-small' | 'small' | 'medium',
+	title?: String;
+	titleMargin?: 'x-small' | 'small' | 'medium';
 }
 
 withDefaults( defineProps<Props>(), {

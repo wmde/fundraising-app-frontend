@@ -7,7 +7,7 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface ErrorModel {
-	error_message: string,
+	error_message: string;
 }
 
 const PAGE_IDENTIFIER = 'subscription-confirmation';

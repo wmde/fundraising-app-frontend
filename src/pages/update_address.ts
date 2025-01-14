@@ -18,11 +18,11 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { ApiAddressChangeResource } from '@src/api/AddressChangeResource';
 
 interface UpdateAddressModel {
-	isCompany: boolean,
-	countries: Array<Country>,
-	salutations: Array<Salutation>,
-	urls: any,
-	addressValidationPatterns: AddressValidation,
+	isCompany: boolean;
+	countries: Array<Country>;
+	salutations: Array<Salutation>;
+	urls: any;
+	addressValidationPatterns: AddressValidation;
 }
 
 const PAGE_IDENTIFIER = 'update-address';

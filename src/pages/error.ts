@@ -7,8 +7,8 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 interface ErrorModel {
-	message: string,
-	trace: string,
+	message: string;
+	trace: string;
 }
 
 const PAGE_IDENTIFIER = 'error-page';

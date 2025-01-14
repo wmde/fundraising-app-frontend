@@ -3,7 +3,7 @@ import { Store } from 'vuex';
 // These constants are mostly for testing
 export enum ValidationState {
 	WAS_VALIDATING,
-	IMMEDIATE
+	IMMEDIATE,
 }
 
 export function waitForServerValidationToFinish( store: Store<any> ): Promise<ValidationState> {

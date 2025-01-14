@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 interface Props {
-	active: boolean
+	active: boolean;
 }
 
 defineProps<Props>();

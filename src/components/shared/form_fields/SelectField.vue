@@ -29,7 +29,7 @@ interface Props {
 	label: String;
 	name: string;
 	inputId: string;
-	modelValue: string|number;
+	modelValue: string | number;
 	options: SelectFormOption[];
 	errorMessage?: String;
 	showError?: boolean;

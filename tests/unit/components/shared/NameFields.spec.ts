@@ -62,7 +62,7 @@ const formData = {
 };
 
 interface Props {
-	addressType: AddressTypeModel
+	addressType: AddressTypeModel;
 	salutations: Salutation[];
 	formData: AddressFormData;
 	showError: AddressValidity;

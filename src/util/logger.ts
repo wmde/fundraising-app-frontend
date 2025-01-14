@@ -3,7 +3,7 @@ import { Notifier } from '@airbrake/browser';
 const LOGGER_ERRBIT: string = 'errbit';
 
 interface Logger {
-	notify( error: object ): void
+	notify( error: object ): void;
 }
 
 class ErrbitLogger implements Logger {
@@ -24,7 +24,7 @@ class ErrbitLogger implements Logger {
 }
 
 class SilentLogger implements Logger {
-	notify( error: object ) {} /* eslint-disable-line @typescript-eslint/no-unused-vars */
+	notify( error: object ) {} /* eslint-disable-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function */
 }
 
 /**

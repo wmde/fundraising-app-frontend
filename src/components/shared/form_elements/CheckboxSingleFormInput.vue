@@ -20,7 +20,7 @@
 import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
 
 interface Props {
-	modelValue: boolean|null;
+	modelValue: boolean | null;
 	name: string;
 	inputId: string;
 	disabled?: boolean;

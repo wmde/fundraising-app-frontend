@@ -2,12 +2,12 @@ import { Store } from 'vuex';
 import { computed, ComputedRef } from 'vue';
 
 type ReturnType = {
-	isBankTransferPayment: ComputedRef<boolean>,
-	isDirectDebitPayment: ComputedRef<boolean>,
-	isExternalPayment: ComputedRef<boolean>,
-	paymentSummary: ComputedRef<{ amount: number, interval: any, paymentType: any }>,
-	paymentWasInitialized: ComputedRef<boolean>
-}
+	isBankTransferPayment: ComputedRef<boolean>;
+	isDirectDebitPayment: ComputedRef<boolean>;
+	isExternalPayment: ComputedRef<boolean>;
+	paymentSummary: ComputedRef<{ amount: number; interval: any; paymentType: any }>;
+	paymentWasInitialized: ComputedRef<boolean>;
+};
 
 export function usePaymentFunctions( store: Store<any> ): ReturnType {
 	const isExternalPayment = computed( (): boolean => store.getters[ 'payment/isExternalPayment' ] );

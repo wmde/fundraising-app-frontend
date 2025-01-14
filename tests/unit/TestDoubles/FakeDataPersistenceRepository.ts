@@ -1,13 +1,13 @@
 import { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
 
 export default class FakeDataPersistenceRepository implements DataPersistenceRepository {
-	public items: {[key: string]: any};
+	public items: Record<string, any>;
 
 	constructor() {
 		this.items = {};
 	}
 
-	getItems(): {[key: string]: number} {
+	getItems(): Record<string, any> {
 		return this.items;
 	}
 

@@ -1,8 +1,8 @@
 export interface Comment {
-	amount: string,
-	donor: string,
-	comment: string,
-	date: string
+	amount: string;
+	donor: string;
+	comment: string;
+	date: string;
 }
 
 export function commentModelsFromObject( obj: any ): Comment[] {

@@ -3,7 +3,7 @@ import { Ref, ref, watch } from 'vue';
 import { action } from '@src/store/util';
 
 type ReturnType = {
-	receiptNeeded: Ref<boolean>,
+	receiptNeeded: Ref<boolean>;
 };
 
 export function useReceiptModel( store: Store<any>, initialValue: boolean ): ReturnType {

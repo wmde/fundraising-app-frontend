@@ -30,7 +30,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { ref, watch } from 'vue';
 
 interface Props {
-	disabledAddressTypes: AddressTypeModel[]
+	disabledAddressTypes: AddressTypeModel[];
 	isDirectDebit: boolean;
 	addressTypeIsInvalid: boolean;
 	initialAddressType?: AddressTypeModel;

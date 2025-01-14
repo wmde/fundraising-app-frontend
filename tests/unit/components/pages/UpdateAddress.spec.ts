@@ -117,7 +117,7 @@ describe( 'UpdateAddress.vue', () => {
 
 		const addressChangeResource: AddressChangeResource = {
 			put(): Promise<UpdateAddressResponse> {
-				return Promise.resolve( { identifier: 'anything' } as {} as UpdateAddressResponse );
+				return Promise.resolve( { identifier: 'anything' } as object as UpdateAddressResponse );
 			},
 		};
 

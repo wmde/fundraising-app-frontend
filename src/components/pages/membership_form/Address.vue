@@ -90,12 +90,12 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
 
 interface Props {
-	validateAddressUrl: string,
-	validateEmailUrl: string,
-	countries: Country[],
-	salutations: Salutation[],
-	addressValidationPatterns: AddressValidation,
-	dateOfBirthValidationPattern: String,
+	validateAddressUrl: string;
+	validateEmailUrl: string;
+	countries: Country[];
+	salutations: Salutation[];
+	addressValidationPatterns: AddressValidation;
+	dateOfBirthValidationPattern: String;
 }
 const props = defineProps<Props>();
 const store = useStore();
@@ -119,7 +119,7 @@ const {
 	dateOfBirthValidationPattern: props.dateOfBirthValidationPattern.toString(),
 }, store );
 
-const incentivesAsOptions : CheckboxFormOption[] = [
+const incentivesAsOptions: CheckboxFormOption[] = [
 	{ value: 'tote_bag', label: t( 'membership_form_incentive' ), id: 'tote_bag' },
 ];
 

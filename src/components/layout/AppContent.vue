@@ -12,8 +12,8 @@
 <script setup lang="ts">
 
 interface Props {
-	isFullWidth: boolean,
-	usesContentCards: boolean,
+	isFullWidth: boolean;
+	usesContentCards: boolean;
 }
 
 defineProps<Props>();

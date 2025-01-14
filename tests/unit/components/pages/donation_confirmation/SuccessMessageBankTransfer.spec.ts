@@ -1,4 +1,4 @@
-import { testBankTransferCode } from '../../../../data/confirmationData';
+import { testBankTransferCode } from '@test/data/confirmationData';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SuccessMessageBankTransfer from '@src/components/pages/donation_confirmation/SuccessMessageBankTransfer.vue';
 import { Donation } from '@src/view_models/Donation';
@@ -12,7 +12,7 @@ describe( 'SuccessMessageBankTransfer.vue', () => {
 			bankTransferCode: testBankTransferCode,
 			amount: 12.35,
 			newsletter: true,
-		} as {} as Donation;
+		} as object as Donation;
 	} );
 
 	const getWrapper = ( donation: Donation ): VueWrapper<any> => {

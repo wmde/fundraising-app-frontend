@@ -237,7 +237,7 @@ const onFieldChange = ( fieldName: string ): void => {
 	store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
 };
 
-const onAutofill = ( autofilledFields: { [key: string]: string; } ) => {
+const onAutofill = ( autofilledFields: { [key: string]: string } ) => {
 	Object.keys( autofilledFields ).forEach( key => {
 		const fieldName = camelizeName( key );
 		if ( formData[ fieldName ] ) {

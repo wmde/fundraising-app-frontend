@@ -45,7 +45,7 @@ export const actions = {
 	 * This is a hacky workaround for test C24_WMDE_Desktop_DE_01 if we move to that style of form we
 	 * need to add proper store fields to handle it, if not then we should delete this
 	 */
-	validateDonationReceiptAddress( context: ActionContext<AddressState, any>, payload: { receiptNeeded: boolean | null, validateAddressUrl: string } ) {
+	validateDonationReceiptAddress( context: ActionContext<AddressState, any>, payload: { receiptNeeded: boolean | null; validateAddressUrl: string } ) {
 		context.commit( 'markEmptyDonationReceiptFieldsAsInvalid', payload.receiptNeeded );
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );
@@ -122,7 +122,7 @@ export const actions = {
 	 *
 	 * https://phabricator.wikimedia.org/T317388
 	*/
-	adjustSalutationLocale( context: ActionContext<AddressState, any>, payload: { salutations: Salutation[], salutation: string } ): void {
+	adjustSalutationLocale( context: ActionContext<AddressState, any>, payload: { salutations: Salutation[]; salutation: string } ): void {
 		if ( payload.salutation === '' ) {
 			return;
 		}

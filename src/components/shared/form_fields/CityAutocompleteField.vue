@@ -26,18 +26,18 @@
 			<transition name="fade">
 				<div class="dropdown-menu" v-show="autocompleteIsActive && cities.length > 0">
 					<div class="dropdown-content" ref="scrollElement" tabindex="-1">
-						<template v-for="city in cities">
-							<a
-								class="dropdown-item"
-								:class="{ 'is-active-item': city === activeCity }"
-								role="button"
-								tabindex="-1"
-								@click.stop="onSelectItem( city )"
-								@keyup.enter.space="onSelectItem( city )"
-							>
-								<strong>{{ postcode }}</strong> {{ city }}
-							</a>
-						</template>
+						<a
+							v-for="city in cities"
+							class="dropdown-item"
+							:class="{ 'is-active-item': city === activeCity }"
+							:key="city"
+							role="button"
+							tabindex="-1"
+							@click.stop="onSelectItem( city )"
+							@keyup.enter.space="onSelectItem( city )"
+						>
+							<strong>{{ postcode }}</strong> {{ city }}
+						</a>
 					</div>
 				</div>
 			</transition>
@@ -58,7 +58,7 @@ import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/c
 
 enum InteractionState {
 	Typing,
-	Selecting
+	Selecting,
 }
 
 interface Props {
@@ -110,7 +110,7 @@ const onKeydown = ( event: KeyboardEvent ) => {
 	activeCity.value = undefined;
 };
 
-const onKeyArrows = async ( direction: 'up'|'down' ) => {
+const onKeyArrows = async ( direction: 'up' | 'down' ) => {
 	interactionState.value = InteractionState.Selecting;
 
 	if ( activeCity.value === undefined ) {

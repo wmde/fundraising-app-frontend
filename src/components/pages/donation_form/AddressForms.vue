@@ -167,12 +167,12 @@ import { useStore } from 'vuex';
 import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 
 interface Props {
-	countries: Country[],
-	addressValidationPatterns: AddressValidation,
-	addressType: AddressTypeModel,
-	salutations: Salutation[],
-	trackingData: TrackingData,
-	campaignValues: CampaignValues,
+	countries: Country[];
+	addressValidationPatterns: AddressValidation;
+	addressType: AddressTypeModel;
+	salutations: Salutation[];
+	trackingData: TrackingData;
+	campaignValues: CampaignValues;
 }
 
 const props = withDefaults( defineProps<Props>(), {

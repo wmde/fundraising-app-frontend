@@ -3,5 +3,5 @@ export enum PaymentType {
 	BANK_TRANSFER = 'UEB',
 	CREDIT_CARD = 'MCP',
 	PAYPAL = 'PPL',
-	SOFORT = 'SUB'
+	SOFORT = 'SUB',
 }

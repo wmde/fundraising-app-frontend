@@ -141,7 +141,7 @@ interface Props {
 	addressValidationPatterns: AddressValidation;
 	dateOfBirthValidationPattern: String;
 	campaignValues: CampaignValues;
-	trackingData: TrackingData
+	trackingData: TrackingData;
 }
 
 const props = defineProps<Props>();

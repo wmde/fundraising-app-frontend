@@ -20,7 +20,7 @@ export function usePaymentFieldModel( store: Store<any>, fieldNameInStore: strin
 	const modelValue = ref<string>( store.state.membership_fee.values[ fieldNameInStore ] ?? '' );
 
 	watch( modelValue, ( newValue: string ): void => {
-		const newValuePayload :GenericValuePayload = {
+		const newValuePayload: GenericValuePayload = {
 			selectedValue: newValue,
 			validateFeeUrl: validateFeeUrl,
 		};

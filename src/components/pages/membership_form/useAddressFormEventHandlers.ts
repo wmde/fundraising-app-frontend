@@ -5,11 +5,11 @@ import { computed, ComputedRef, ref, Ref, watch } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 
 type ReturnType = {
-	submit: () => Promise<void>,
-	previousPage: () => void,
-    submitValuesForm: Ref<HTMLFormElement>,
-	showErrorSummary: Ref<boolean>,
-}
+	submit: () => Promise<void>;
+	previousPage: () => void;
+	submitValuesForm: Ref<HTMLFormElement>;
+	showErrorSummary: Ref<boolean>;
+};
 
 export function useAddressFormEventHandlers(
 	store: Store<any>,

@@ -28,7 +28,7 @@
 interface Props {
 	showMobileNavbar: boolean;
 	pageIdentifier: string;
-	headerMenu: { ids: string[], url: string, localeId: string }[];
+	headerMenu: { ids: string[]; url: string; localeId: string }[];
 }
 
 defineProps<Props>();

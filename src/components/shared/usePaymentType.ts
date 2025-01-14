@@ -8,7 +8,7 @@ import { Ref, ref, watch } from 'vue';
  * This is less than ideal, because it mixes properties and state. But at the moment there doesn't seem a better way
  * to sync with our store while keeping the payment type components independent of the store.
  */
-export function usePaymentType( currentType: Ref<string|undefined>, emit: ( event: string, ...args: any[] ) => void ) {
+export function usePaymentType( currentType: Ref<string | undefined>, emit: ( event: string, ...args: any[] ) => void ) {
 	const selectedType = ref( currentType.value );
 	const setType = () => emit( 'payment-type-selected', selectedType.value );
 

@@ -3,7 +3,7 @@ import TextField from '@src/components/shared/form_fields/TextField.vue';
 
 describe( 'TextField.vue', () => {
 
-	const getWrapper = ():VueWrapper<any> => {
+	const getWrapper = (): VueWrapper<any> => {
 		return mount( TextField, {
 			props: {
 				label: 'textField',
