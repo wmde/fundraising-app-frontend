@@ -25,8 +25,6 @@ const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId, yearlyFee.yearlyFee );
 
-console.log( pageData.applicationVars );
-
 createVueApp( App,
 	pageData.messages,
 	pageData.allowedCampaignParameters,
