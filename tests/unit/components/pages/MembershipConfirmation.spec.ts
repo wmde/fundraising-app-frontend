@@ -36,6 +36,7 @@ const monthlyApplication: MembershipApplication = {
 	paymentIntervalInMonths: 1,
 	paymentType: 'BEZ',
 	incentives: [],
+	isExported: false,
 };
 
 const yearlyApplication: MembershipApplication = {
@@ -125,6 +126,13 @@ describe( 'MembershipConfirmation.vue', () => {
 		const wrapper = getWrapper( { ...yearlyApplication, paymentType: 'UEB' }, privateAddress );
 
 		expect( wrapper.text() ).toContain( 'membership_confirmation_success_text_bank_transfer' );
+	} );
+
+	test( 'tells the member that their address was anonymised', () => {
+		const wrapper = getWrapper( { ...monthlyApplication, isExported: true }, privateAddress );
+
+		expect( wrapper.text() ).toContain( 'membership_confirmation_exported_title' );
+		expect( wrapper.text() ).toContain( 'membership_confirmation_exported_content' );
 	} );
 
 	test( 'shows the survey tile if survey link language item is not empty', () => {
