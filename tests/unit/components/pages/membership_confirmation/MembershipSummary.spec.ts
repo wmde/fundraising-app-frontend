@@ -35,6 +35,7 @@ const monthlyApplication: MembershipApplication = {
 	paymentIntervalInMonths: 1,
 	paymentType: 'BEZ',
 	incentives: [],
+	isExported: false,
 };
 
 const quarterlyApplication: MembershipApplication = {
