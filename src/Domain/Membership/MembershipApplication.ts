@@ -6,4 +6,5 @@ export interface MembershipApplication {
 	membershipType: MembershipType;
 	paymentType: string;
 	incentives: string[];
+	isExported: boolean;
 }
