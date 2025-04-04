@@ -77,4 +77,18 @@ describe( 'TextField.vue', () => {
 		expect( wrapper.find( '#textField' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'textField-help-text textField-error' );
 	} );
 
+	it( 'revalidates on input when invalid', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( 'input' ).trigger( 'input' );
+
+		expect( wrapper.emitted( 'field-changed' ) ).toBeUndefined();
+
+		await wrapper.setProps( { showError: true } );
+		await wrapper.find( 'input' ).trigger( 'input' );
+
+		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+		expect( wrapper.emitted( 'field-changed' )[ 0 ][ 0 ] ).toStrictEqual( 'textField' );
+	} );
+
 } );
