@@ -248,4 +248,17 @@ describe( 'CityAutocompleteField.vue', () => {
 
 		expect( scrollElement.scrollIntoView ).not.toHaveBeenCalled();
 	} );
+
+	it( 'revalidates on input when invalid', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( '#city' ).trigger( 'input' );
+
+		expect( wrapper.emitted( 'field-changed' ) ).toBeUndefined();
+
+		await wrapper.setProps( { showError: true } );
+		await wrapper.find( '#city' ).trigger( 'input' );
+
+		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+	} );
 } );
