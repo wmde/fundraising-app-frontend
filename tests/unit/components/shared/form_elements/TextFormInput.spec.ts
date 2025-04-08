@@ -63,6 +63,7 @@ describe( 'TextFormInput.vue', () => {
 		expect( wrapper.emitted( 'focus' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( 'Chewy' );
+		expect( wrapper.emitted( 'input' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'blur' ).length ).toStrictEqual( 1 );
 	} );
 
