@@ -117,4 +117,18 @@ describe( 'IbanField.vue', () => {
 		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'field-changed' )[ 0 ] ).toStrictEqual( [ 'iban' ] );
 	} );
+
+	it( 'revalidates on input when invalid', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( '#iban' ).trigger( 'input' );
+
+		expect( wrapper.emitted( 'field-changed' ) ).toBeUndefined();
+
+		await wrapper.setProps( { showError: true } );
+		await wrapper.find( '#iban' ).trigger( 'input' );
+
+		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+		expect( wrapper.emitted( 'field-changed' )[ 0 ][ 0 ] ).toStrictEqual( 'iban' );
+	} );
 } );
