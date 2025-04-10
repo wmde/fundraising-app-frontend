@@ -10,7 +10,7 @@
 			<p v-if="showBankTransferContent">{{ $t( 'membership_confirmation_success_text_bank_transfer' ) }}</p>
 		</div>
 
-		<div class="membership-confirmation-card">
+		<div class="membership-confirmation-card" v-if="!confirmationData.membershipApplication.isExported">
 			<h2 class="icon-title"><SuccessIcon/> {{ $t( 'membership_confirmation_address_head' ) }}</h2>
 			<p>
 				<template v-if="address.applicantType === 'person'">{{ salutation }}{{ address.fullName }}</template>
@@ -21,6 +21,14 @@
 				{{ countryName }}
 			</p>
 			<p>{{ address.email }}</p>
+		</div>
+		<div class="membership-confirmation-card" v-else>
+			<h2 class="icon-title">
+				<WarningIcon/> {{ $t( 'membership_confirmation_exported_title' ) }}
+			</h2>
+			<p>
+				{{ $t( 'membership_confirmation_exported_content' ) }}
+			</p>
 		</div>
 
 		<membership-survey
@@ -43,6 +51,7 @@ import { computed } from 'vue';
 import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
 import { useI18n } from 'vue-i18n';
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
+import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 
 interface Props {
 	confirmationData: MembershipApplicationConfirmationData;
