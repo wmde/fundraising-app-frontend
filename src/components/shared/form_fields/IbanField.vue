@@ -99,6 +99,10 @@ const onInput = async (): Promise<void> => {
 	}
 
 	emit( 'update:modelValue', fieldModel.value );
+
+	if ( props.showError ) {
+		emit( 'field-changed', 'iban' );
+	}
 };
 
 const onBlur = (): void => {

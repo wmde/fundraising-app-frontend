@@ -12,6 +12,7 @@
 				:input-id="inputId"
 				@focus="onFocus"
 				@blur="onBlur"
+				@input="onInput"
 				@keydown="onKeydown"
 				@keydown.up.prevent="onKeyArrows( 'up' )"
 				@keydown.down.prevent="onKeyArrows( 'down' )"
@@ -143,6 +144,12 @@ const onKeySubmit = () => {
 };
 
 let itemWasJustSelectedFromList = false;
+
+const onInput = (): void => {
+	if ( props.showError ) {
+		emit( 'field-changed' );
+	}
+};
 
 const onBlur = () => {
 	setTimeout( () => {
