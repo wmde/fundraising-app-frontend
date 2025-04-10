@@ -7,8 +7,9 @@ describe( 'AppFooter.vue', () => {
 		[ 'contact', 1 ],
 		[ 'imprint', 2 ],
 		[ 'data_protection', 3 ],
-		[ 'supporters_list', 4 ],
-		[ 'donor_comments', 5 ],
+		[ 'accessibility_statement', 4 ],
+		[ 'supporters_list', 5 ],
+		[ 'donor_comments', 6 ],
 	] )( 'highlights the correct navigation items', ( pageIdentifier: string, navItemIndex: number ) => {
 		const wrapper = shallowMount( AppFooter, {
 			props: {
