@@ -156,6 +156,10 @@ useDetectOutsideClick( localeSelectorRef, handleLocaleItemBlur );
 		border-radius: 2px;
 		box-shadow: 1px 2px 3px rgba( 0, 0, 0, 0.1);
 		transition: opacity 200ms global.$easing, visibility 200ms global.$easing;
+
+		@media (prefers-reduced-motion) {
+			transition-duration: 0ms;
+		}
 	}
 
 	.radio-form-input {
