@@ -50,6 +50,7 @@ $hover-color: color.adjust( colors.$primary, $lightness: -5% );
 	width: 240px;
 	cursor: pointer;
 	transition: background-color 200ms global.$easing, color 200ms global.$easing;
+	text-decoration: none;
 
 	&:hover,
 	&:focus {

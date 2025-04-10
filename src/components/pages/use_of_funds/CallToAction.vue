@@ -38,6 +38,8 @@ defineProps<Props>();
 		font-weight: bold;
 		cursor: pointer;
 		display: inline-block;
+		text-decoration: none;
+
 		&:hover,
 		&:focus {
 			color: var( --call-to-action-color );
