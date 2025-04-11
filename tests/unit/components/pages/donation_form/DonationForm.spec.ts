@@ -496,6 +496,6 @@ describe( 'DonationForm.vue', () => {
 
 		await wrapper.find( '#previous-btn' ).trigger( 'click' );
 
-		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'auto' } );
 	} );
 } );
