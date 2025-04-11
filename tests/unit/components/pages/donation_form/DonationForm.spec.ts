@@ -29,8 +29,11 @@ const errorSummaryItemIsFunctional = ( wrapper: VueWrapper<any>, formElement: st
 	return errorItemExists && formElementExists && scrollElementExists;
 };
 
-describe( 'DonationForm.vue', () => {
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
 
+describe( 'DonationForm.vue', () => {
 	beforeEach( () => {
 		global.window.scrollTo = jest.fn();
 		jest.useFakeTimers();

@@ -1,5 +1,7 @@
 <template>
 	<form id="address-update-form" name="address-update-form" v-on:submit.prevent="submit" method="post" ref="addressForm">
+		<AddressUpdateFormErrorSummaries :address-type="addressType" :show-error-summary="showErrorSummary"/>
+
 		<AutofillHandler v-on:autofill="onAutofill">
 
 			<RadioField
@@ -65,8 +67,6 @@
 		</AutofillHandler>
 
 		<MailingListField v-model="mailingList" input-id="newsletter"/>
-
-		<AddressUpdateFormErrorSummaries :address-type="addressType" :show-error-summary="showErrorSummary"/>
 
 		<FormSummary :show-border="false">
 			<template #summary-buttons>
@@ -268,6 +268,7 @@ const getAddressData = (): UpdateDonorRequest => {
 const submit = async (): Promise<void> => {
 	isValidating.value = true;
 	serverErrorMessage.value = '';
+	showErrorSummary.value = false;
 
 	const validationResult = await validateForm();
 

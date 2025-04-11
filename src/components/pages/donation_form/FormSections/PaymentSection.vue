@@ -7,6 +7,8 @@
 		<h1 id="donation-form-heading" class="form-title">{{ $t( 'donation_form_heading' ) }}</h1>
 		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_subheading' ) }}</h2>
 
+		<slot name="error-summary"/>
+
 		<PaymentSummary
 			v-if="state === 'showSummary'"
 			@show-payment-form="state='showEntireForm'"
