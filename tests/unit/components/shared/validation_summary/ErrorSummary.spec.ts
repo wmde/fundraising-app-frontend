@@ -66,7 +66,7 @@ describe( 'ErrorSummary.vue', () => {
 		await wrapper.find( '[href="#amount-500"]' ).trigger( 'click' );
 
 		expect( focusElement.focus ).toHaveBeenCalledWith( { preventScroll: true } );
-		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'smooth' } );
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'auto' } );
 	} );
 
 	it( 'Focuses the the invalid field only when a summary item is clicked and no scroll item exists', async () => {

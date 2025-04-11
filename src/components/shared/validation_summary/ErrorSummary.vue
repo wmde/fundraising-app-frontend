@@ -53,7 +53,7 @@ const onClickError = ( focusElementId: string, scrollElementId: string ) => {
 	const focusOptions = { preventScroll: false };
 
 	if ( scrollElement ) {
-		scrollElement.scrollIntoView( { behavior: 'smooth' } );
+		scrollElement.scrollIntoView( { behavior: 'auto' } );
 		focusOptions.preventScroll = true;
 	}
 
