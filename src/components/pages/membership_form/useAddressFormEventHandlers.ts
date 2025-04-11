@@ -25,6 +25,10 @@ export function useAddressFormEventHandlers(
 	const dateOfBirthIsValid = ref<boolean>( true );
 	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value || !dateOfBirthIsValid.value );
 	const submit = async (): Promise<void> => {
+		bankDataIsValid.value = true;
+		addressDataIsValid.value = true;
+		dateOfBirthIsValid.value = true;
+
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( 'membership_address', 'validateAddress' ), validateAddressUrl ),
 			store.dispatch( action( 'membership_address', 'validateEmail' ), validateEmailUrl ),

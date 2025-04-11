@@ -3,6 +3,10 @@ import DonationCommentPopUp from '@src/components/pages/donation_confirmation/Do
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { failureMessage, FakeFailingCommentResource, FakeSucceedingCommentResource, successMessage } from '@test/unit/TestDoubles/FakeCommentResource';
 
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
 describe( 'DonationCommentPopUp.vue', () => {
 	function getDefaultConfirmationData( isAnonymous: boolean ): any {
 		const sampleDonationData = {

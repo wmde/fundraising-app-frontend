@@ -15,8 +15,20 @@
 		</div>
 		<div v-else>
 			<p>{{ $t( 'donation_comment_popup_explanation' ) }}</p>
-
 			<ScrollTarget target-id="comment-scroll-target"/>
+
+			<ErrorSummary
+				:is-visible="commentErrored"
+				:items="[
+					{
+						validity: commentErrored ? Validity.INVALID : Validity.VALID,
+						message: $t( commentError ),
+						focusElement: 'comment',
+						scrollElement: 'comment-scroll-target'
+					},
+				]"
+			/>
+
 			<TextField
 				input-type="textarea"
 				v-model="comment"
@@ -46,18 +58,6 @@
 				{{ $t( 'donation_comment_popup_is_public' ) }}
 			</CheckboxField>
 
-			<ErrorSummary
-				:is-visible="commentErrored"
-				:items="[
-					{
-						validity: commentErrored ? Validity.INVALID : Validity.VALID,
-						message: $t( commentError ),
-						focusElement: 'comment',
-						scrollElement: 'comment-scroll-target'
-					},
-				]"
-			/>
-
 			<FormSummary :show-border="false">
 				<template #summary-buttons>
 					<FormButton
@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Donation } from '@src/view_models/Donation';
@@ -119,11 +119,13 @@ const serverError = ref<string>( '' );
 
 const showPublishAuthor = computed<boolean>( () => addressTypeFromName( props.addressType ) !== AddressTypeModel.ANON );
 
-const postComment = (): Promise<void> => {
+const postComment = async (): Promise<void> => {
 	trackFormSubmission( commentForm.value );
+	commentErrored.value = false;
 
 	if ( comment.value === '' ) {
 		commentErrorType.value = CommentErrorTypes.Empty;
+		await nextTick();
 		commentErrored.value = true;
 		return;
 	}

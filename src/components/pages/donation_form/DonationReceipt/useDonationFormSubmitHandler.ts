@@ -24,6 +24,10 @@ export function useDonationFormSubmitHandler(
 	const paymentDataIsValid = ref<boolean>( true );
 	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value || !paymentDataIsValid.value );
 	const submit = async () => {
+		bankDataIsValid.value = true;
+		addressDataIsValid.value = true;
+		paymentDataIsValid.value = true;
+
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( 'payment', 'markEmptyValuesAsInvalid' ) ),
 			store.dispatch( action( 'address', 'validateAddressType' ), {
