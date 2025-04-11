@@ -10,6 +10,7 @@
 		:aria-labelledby="`${idNamespace}error-summary-heading`"
 		tabindex="-1"
 	>
+		<ScrollTarget :target-id="`${idNamespace}error-summary-scroll-target`"/>
 		<h2 class="error-summary-heading" :id="`${idNamespace}error-summary-heading`">{{ $t( 'error_summary_headline' ) }}</h2>
 		<ul class="error-summary-list">
 			<template v-for="item in items">
@@ -33,6 +34,7 @@
 import { ValidationSummaryItem } from '@src/components/shared/validation_summary/ValidationSummaryItem';
 import { Validity } from '@src/view_models/Validity';
 import { nextTick, ref, watch } from 'vue';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	isVisible: boolean;
@@ -63,7 +65,9 @@ const onClickError = ( focusElementId: string, scrollElementId: string ) => {
 watch( () => props.isVisible, async ( newIsVisible: boolean ) => {
 	if ( props.focusOnSubmit && newIsVisible ) {
 		await nextTick();
-		errorSummary.value.focus();
+		const errorScrollElement = document.getElementById( `${props.idNamespace}error-summary-scroll-target` );
+		errorSummary.value.focus( { preventScroll: true } );
+		errorScrollElement.scrollIntoView( { behavior: 'auto' } );
 	}
 } );
 

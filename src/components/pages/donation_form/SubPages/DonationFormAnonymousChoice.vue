@@ -4,7 +4,12 @@
 			:payment-amounts="paymentAmounts"
 			:payment-intervals="paymentIntervals"
 			:payment-types="paymentTypes"
-		/>
+		>
+			<template #error-summary>
+				<OptOutErrorSummary :show-error-summary="showErrorSummary" v-if="addressOptOut.addressOptIn.value === null" />
+				<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" v-else/>
+			</template>
+		</PaymentSection>
 		<div class="donation-page-form-section" v-if="isDirectDebitPayment">
 			<IbanFields/>
 		</div>
@@ -23,9 +28,6 @@
 		/>
 
 		<div class="donation-page-form-section">
-			<OptOutErrorSummary :show-error-summary="showErrorSummary" v-if="addressOptOut.addressOptIn.value === null" />
-			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" v-else/>
-
 			<FormSummary>
 				<template #summary-content>
 					<DonationSummary

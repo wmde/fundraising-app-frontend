@@ -9,16 +9,6 @@
 		<h1 id="membership-form-heading" class="form-title">{{ $t( 'membership_form_headline' ) }}</h1>
 		<h2 id="membership-form-subheading" class="form-subtitle">{{ $t( 'membership_form_address_subheading' ) }}</h2>
 
-		<AddressFields
-			:validate-address-url="validateAddressUrl.toString()"
-			:validate-email-url="validateEmailUrl.toString()"
-			:countries="countries"
-			:salutations="salutations"
-			:address-validation-patterns="addressValidationPatterns"
-			:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
-			ref="addressFieldsRef">
-		</AddressFields>
-
 		<ErrorSummary
 			:is-visible="showErrorSummary"
 			:items="[
@@ -72,6 +62,16 @@
 				},
 			]"
 		/>
+
+		<AddressFields
+			:validate-address-url="validateAddressUrl.toString()"
+			:validate-email-url="validateEmailUrl.toString()"
+			:countries="countries"
+			:salutations="salutations"
+			:address-validation-patterns="addressValidationPatterns"
+			:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
+			ref="addressFieldsRef">
+		</AddressFields>
 
 		<FormSummary>
 			<template #summary-content>
@@ -160,6 +160,7 @@ const membershipApplication = computed( (): MembershipApplication => {
 		paymentType: payment.type,
 		membershipType: membershipTypeName( store.getters[ 'membership_address/membershipType' ] ),
 		incentives: [],
+		isExported: false,
 	};
 } );
 

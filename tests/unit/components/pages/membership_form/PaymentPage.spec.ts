@@ -10,6 +10,10 @@ import { nextTick } from 'vue';
 import { IBAN } from '@test/data/bankdata';
 import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
 
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
 describe( 'PaymentPage.vue', () => {
 	let wrapper: VueWrapper<any>;
 	let store: Store<any>;

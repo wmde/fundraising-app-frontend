@@ -34,12 +34,16 @@ describe( 'ErrorSummary.vue', () => {
 	};
 
 	it( 'Focuses the summary when it becomes visible', async () => {
+		const scrollElement = { scrollIntoView: jest.fn() };
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
+
 		const wrapper = getWrapper();
 
 		await wrapper.setProps( { isVisible: true } );
 		await nextTick();
 
 		expect( document.activeElement ).toStrictEqual( wrapper.element );
+		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'auto' } );
 	} );
 
 	it( 'Does not focus the summary when it becomes visible and focusOnSubmit is false', async () => {
@@ -55,9 +59,15 @@ describe( 'ErrorSummary.vue', () => {
 	it( 'Focuses and scrolls the invalid field when a summary item is clicked', async () => {
 		const focusElement = { focus: jest.fn() };
 		const scrollElement = { scrollIntoView: jest.fn() };
-		let calls: number = 0;
-		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => {
-			return calls++ === 0 ? focusElement : scrollElement;
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: ( id: string ) => {
+			switch ( id ) {
+				case 'amount-500':
+					return focusElement;
+				case 'payment-form-amount':
+					return scrollElement;
+				default:
+					return { scrollIntoView: () => {} };
+			}
 		} } );
 		const wrapper = getWrapper();
 
@@ -71,9 +81,15 @@ describe( 'ErrorSummary.vue', () => {
 
 	it( 'Focuses the the invalid field only when a summary item is clicked and no scroll item exists', async () => {
 		const element = { focus: jest.fn(), scrollIntoView: jest.fn() };
-		let calls: number = 0;
-		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => {
-			return calls++ === 0 ? element : null;
+		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: ( id: string ) => {
+			switch ( id ) {
+				case 'amount-500':
+					return element;
+				case 'payment-form-amount':
+					return null;
+				default:
+					return { scrollIntoView: () => {} };
+			}
 		} } );
 		const wrapper = getWrapper();
 
