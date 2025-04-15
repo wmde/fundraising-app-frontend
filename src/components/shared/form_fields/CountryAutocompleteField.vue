@@ -12,6 +12,7 @@
 				name="countrySelector"
 				@focus="onFocus"
 				@blur="() => onBlur( country )"
+				@input="onInput"
 				@keydown="onKeydown"
 				@keydown.up.prevent="onKeyArrows('up')"
 				@keydown.down.prevent="onKeyArrows('down')"
@@ -154,6 +155,13 @@ const onKeySubmit = () => {
 };
 
 let itemWasJustSelectedFromList = false;
+
+const onInput = async (): Promise<void> => {
+	if ( props.showError ) {
+		await nextTick();
+		emit( 'field-changed', country.value );
+	}
+};
 
 const onBlur = ( selectedCountry: Country ) => {
 	setTimeout( () => {

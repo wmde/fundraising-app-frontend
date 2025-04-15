@@ -20,6 +20,7 @@
 			:autofocus="autofocus"
 			:aria-describedby="ariaDescribedby"
 			@blur="$emit('field-changed', name )"
+			@input="onInput"
 			@update:modelValue="onUpdateModel"
 		/>
 		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
@@ -67,6 +68,12 @@ const ariaDescribedby = useAriaDescribedby(
 	`${props.inputId}-error`,
 	computed<boolean>( () => props.showError )
 );
+
+const onInput = (): void => {
+	if ( props.showError ) {
+		emit( 'field-changed', props.name );
+	}
+};
 
 const onUpdateModel = ( newValue: string | number ): void => {
 	emit( 'update:modelValue', newValue );
