@@ -9,6 +9,14 @@
 
 @import "bulma";
 
+html {
+	scroll-behavior: smooth;
+
+	@media ( prefers-reduced-motion ) {
+		scroll-behavior: auto;
+	}
+}
+
 .is-form-input-width {
 	width: $fun-min-width !important;
 	@include from($tablet) {

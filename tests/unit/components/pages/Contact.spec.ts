@@ -3,6 +3,10 @@ import Contact from '@src/components/pages/Contact.vue';
 import { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
 import { contactFormValidationPatterns } from '@test/data/validation';
 
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
 describe( 'Contact.vue', () => {
 
 	const getWrapper = ( initialFormData: ContactInitialFormData = null, errors: Record<string, string> = null ): VueWrapper<any> => {

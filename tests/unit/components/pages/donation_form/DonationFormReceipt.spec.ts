@@ -29,6 +29,10 @@ const errorSummaryItemIsFunctional = ( wrapper: VueWrapper<any>, formElement: st
 	return errorItemExists && formElementExists && scrollElementExists;
 };
 
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
 describe( 'DonationFormReciept.vue', () => {
 
 	beforeEach( () => {

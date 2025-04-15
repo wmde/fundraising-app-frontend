@@ -10,6 +10,30 @@
 		<h1 id="membership-form-heading" class="form-title">{{ $t( 'membership_form_headline' ) }}</h1>
 		<h2 id="membership-form-subheading" class="form-subtitle">{{ $t( 'membership_form_payment_subheading' ) }}</h2>
 
+		<ErrorSummary
+			:is-visible="showErrorSummary"
+			:items="[
+				{
+					validity: store.state.membership_fee.validity.interval,
+					message: $t( 'error_summary_interval' ),
+					focusElement: 'interval-0',
+					scrollElement: 'payment-form-interval-scroll-target'
+				},
+				{
+					validity: store.state.membership_fee.validity.fee,
+					message: $t( 'error_summary_amount' ),
+					focusElement: 'amount-500',
+					scrollElement: 'payment-form-amount-scroll-target'
+				},
+				{
+					validity: store.state.bankdata.validity.iban,
+					message: $t( 'donation_form_payment_iban_error' ),
+					focusElement: 'iban',
+					scrollElement: 'iban-scroll-target'
+				},
+			]"
+		/>
+
 		<form>
 			<FormSection v-if="showMembershipTypeOption" title-margin="x-small">
 				<MembershipTypeField
@@ -36,30 +60,6 @@
 			:validate-fee-url="props.validateFeeUrl.toString()"
 			:validate-bank-data-url="props.validateBankDataUrl.toString()"
 			:validate-legacy-bank-data-url="props.validateLegacyBankDataUrl.toString()"
-		/>
-
-		<ErrorSummary
-			:is-visible="showErrorSummary"
-			:items="[
-				{
-					validity: store.state.membership_fee.validity.interval,
-					message: $t( 'error_summary_interval' ),
-					focusElement: 'interval-0',
-					scrollElement: 'payment-form-interval-scroll-target'
-				},
-				{
-					validity: store.state.membership_fee.validity.fee,
-					message: $t( 'error_summary_amount' ),
-					focusElement: 'amount-500',
-					scrollElement: 'payment-form-amount-scroll-target'
-				},
-				{
-					validity: store.state.bankdata.validity.iban,
-					message: $t( 'donation_form_payment_iban_error' ),
-					focusElement: 'iban',
-					scrollElement: 'iban-scroll-target'
-				},
-			]"
 		/>
 
 		<FormSection title="" title-margin="small">
@@ -131,6 +131,10 @@ const isDirectDebitPayment = computed( (): boolean => store.state.membership_fee
 
 const next = async (): Promise<any> => {
 	waitForServerValidationToFinish( store ).then( () => {
+		membershipDataIsValid.value = true;
+		paymentDataIsValid.value = true;
+		bankDataIsValid.value = true;
+
 		const validationActions = [ store.dispatch( action( 'membership_fee', 'markEmptyValuesAsInvalid' ) ) ];
 
 		if ( isDirectDebitPayment.value ) {

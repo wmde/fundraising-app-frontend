@@ -95,6 +95,10 @@ const defaultDonorResource: DonorResource = {
 	},
 };
 
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
 describe( 'AddressUpdateForm.vue', () => {
 	const getWrapper = ( store: Store<any>, confirmationData: any, donorResource: DonorResource = defaultDonorResource ): VueWrapper<any> => {
 		return mount( AddressUpdateForm, {

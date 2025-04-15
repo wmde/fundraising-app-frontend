@@ -4,7 +4,11 @@
 			:payment-amounts="paymentAmounts"
 			:payment-intervals="paymentIntervals"
 			:payment-types="paymentTypes"
-		/>
+		>
+			<template #error-summary>
+				<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" :receipt-model="receiptModel"/>
+			</template>
+		</PaymentSection>
 		<div class="donation-page-form-section" v-if="isDirectDebitPayment">
 			<IbanFields/>
 		</div>
@@ -23,12 +27,6 @@
 		/>
 
 		<div class="donation-page-form-section">
-			<ErrorSummary
-				:show-error-summary="showErrorSummary"
-				:address-type="addressType"
-				:receipt-model="receiptModel"
-			/>
-
 			<FormSummary>
 				<template #summary-content>
 					<DonationSummary
@@ -136,7 +134,7 @@ const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHand
 const scrollToPaymentSection = () => {
 	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
 	if ( scrollIntoViewElement ) {
-		scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
+		scrollIntoViewElement.scrollIntoView( { behavior: 'auto' } );
 	}
 };
 

@@ -37,6 +37,10 @@ const salutations: Salutation[] = [
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
 describe( 'AddressPage.vue', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>; store: Store<any> } => {
 		const wrapper = mount( AddressPage, {

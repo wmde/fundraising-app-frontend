@@ -9,7 +9,7 @@ export function useAutocompleteScrollIntoViewOnFocus( target: string, maxWidth: 
 
 		const scrollIntoViewElement = document.getElementById( target );
 		if ( scrollIntoViewElement ) {
-			scrollIntoViewElement.scrollIntoView( { behavior: 'smooth' } );
+			scrollIntoViewElement.scrollIntoView( { behavior: 'auto' } );
 		}
 	};
 }

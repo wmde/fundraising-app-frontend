@@ -114,8 +114,16 @@ $title-height-large: map.get( units.$spacing, 'xxx-large' );
 	overflow: hidden;
 	animation: fade-out 500ms global.$easing;
 
+	@media (prefers-reduced-motion) {
+		animation-duration: 0ms;
+	}
+
 	&[open] {
 		animation: fade-in 500ms global.$easing;
+
+		@media (prefers-reduced-motion) {
+			animation-duration: 0ms;
+		}
 	}
 
 	&::backdrop {

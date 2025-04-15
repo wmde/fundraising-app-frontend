@@ -9,6 +9,10 @@ import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/Succ
 import { accountNumber, bankCode, bankName, BIC, formattedIBAN, IBAN } from '@test/data/bankdata';
 import { newFailingBankValidationResource } from '@test/unit/TestDoubles/FailingBankValidationResource';
 
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
 describe( 'IbanFields.vue', () => {
 	const getWrapper = ( bankValidationResource: BankValidationResource = null, store: Store<any> = null ): VueWrapper<any> => {
 		return mount( IbanFields, {

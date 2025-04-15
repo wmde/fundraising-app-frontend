@@ -27,6 +27,10 @@ const defaultAddressChangeResource: AddressChangeResource = {
 	},
 };
 
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
 describe( 'UpdateAddress.vue', () => {
 
 	const getWrapper = ( store: Store<any> = createStore(), addressChangeResource: AddressChangeResource = defaultAddressChangeResource ): VueWrapper<any> => {

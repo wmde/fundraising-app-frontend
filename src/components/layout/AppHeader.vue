@@ -122,6 +122,10 @@ $side-width: 80px;
 			}
 		}
 
+		a {
+			text-decoration: none;
+		}
+
 		&.active {
 			display: flex;
 		}
