@@ -50,7 +50,7 @@
 						</span>
 						<span class="use-of-funds-companies-link">
 							<a v-if="company.link !== ''" class="company_budgets__citation_link" :href="company.link" target="_blank">
-								{{ company.linkText }}
+								{{ company.linkText }} <ExternalLink/>
 							</a>
 							<span v-else>&nbsp;</span>
 						</span>
@@ -72,6 +72,7 @@ import BenefitsIcon from '@src/components/pages/use_of_funds/BenefitsIcon.vue';
 import { computed } from 'vue';
 import CallToAction from '@src/components/pages/use_of_funds/CallToAction.vue';
 import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
+import ExternalLink from '@src/components/shared/icons/ExternalLink.vue';
 
 interface Props {
 	content: UseOfFundsContent;
@@ -348,9 +349,10 @@ const highestBudget = computed( () => props.content.revenueComparison.companies.
 			white-space: nowrap;
 		}
 		&-link {
-			flex: 0 0 50px;
+			flex: 0 0 60px;
 			font-size: 14px;
 			text-align: right;
+			white-space: nowrap;
 		}
 		&-budget-line {
 			background: var( --budget-line-background );
