@@ -12,6 +12,7 @@
 				:input-id="inputIdStreetName"
 				@focus="onStreetNameFocus"
 				@blur="onStreetNameBlur"
+				@input="onStreetNameInput"
 				@keydown="onStreetNameKeydown"
 				@keydown.up.prevent="onStreetNameKeyArrows( 'up' )"
 				@keydown.down.prevent="onStreetNameKeyArrows( 'down' )"
@@ -187,6 +188,12 @@ const onStreetNameBlur = () => {
 		}
 		itemWasJustSelectedFromList = false;
 	}, 200 );
+};
+
+const onStreetNameInput = (): void => {
+	if ( props.showError ) {
+		emit( 'field-changed' );
+	}
 };
 
 const onSelectStreet = async ( newStreet: string ) => {
