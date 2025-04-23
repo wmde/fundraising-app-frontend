@@ -167,7 +167,7 @@ const formData = reactive<ContactFormData>( {
 		value: props.initialFormData?.donationNumber ?? '',
 		pattern: props.validationPatterns.donationNumber,
 		optionalField: true,
-		validity: Validity.VALID,
+		validity: props.errors?.donationNumber ? Validity.INVALID : Validity.VALID,
 	},
 	email: {
 		name: 'email',
@@ -201,7 +201,7 @@ const formData = reactive<ContactFormData>( {
 
 const validationItems = computed<ValidationSummaryItem[]>( () => [
 	{
-		validity: formData.email.validity,
+		validity: formData.donationNumber.validity,
 		message: t( 'contact_form_donation_number_error' ),
 		focusElement: 'donationNumber',
 		scrollElement: 'donationNumber-scroll-target',

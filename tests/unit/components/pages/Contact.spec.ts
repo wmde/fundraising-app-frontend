@@ -42,19 +42,24 @@ describe( 'Contact.vue', () => {
 	it( 'Shows and hides field errors', async () => {
 		const wrapper = getWrapper();
 
-		await wrapper.find( '#laika-contact' ).trigger( 'submit' );
-
+		const donationNumber = wrapper.find( '#donationNumber' );
 		const email = wrapper.find( '#email' );
 		const topic = wrapper.find( '#topic' );
 		const subject = wrapper.find( '#subject' );
 		const messageBody = wrapper.find( '#messageBody' );
 
+		await donationNumber.setValue( 'This field is supposed to only contain numbers' );
+		await wrapper.find( '#laika-contact' ).trigger( 'submit' );
+
+		expect( donationNumber.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( email.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( topic.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( subject.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( messageBody.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 
+		await donationNumber.setValue( '424242' );
+		await donationNumber.trigger( 'blur' );
 		await email.setValue( 'joe@dolan.com' );
 		await email.trigger( 'blur' );
 		await topic.setValue( 'category_1' );
@@ -64,6 +69,7 @@ describe( 'Contact.vue', () => {
 		await messageBody.setValue( 'Oh me oh my you make me sigh' );
 		await messageBody.trigger( 'blur' );
 
+		expect( donationNumber.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( email.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( topic.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( subject.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
@@ -73,23 +79,28 @@ describe( 'Contact.vue', () => {
 
 	it( 'Shows and hides field errors when initialised with them', async () => {
 		const wrapper = getWrapper( null, {
+			donationNumber: 'field_numeric',
 			subject: 'field_required',
 			category: 'field_required',
 			messageBody: 'field_required',
 			email: 'email_address_wrong_format',
 		} );
 
+		const donationNumber = wrapper.find( '#donationNumber' );
 		const email = wrapper.find( '#email' );
 		const topic = wrapper.find( '#topic' );
 		const subject = wrapper.find( '#subject' );
 		const messageBody = wrapper.find( '#messageBody' );
 
+		expect( donationNumber.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( email.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( topic.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( subject.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( messageBody.attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( wrapper.find( '#server-error-summary' ).exists() ).toBeTruthy();
 
+		await donationNumber.setValue( '424242' );
+		await donationNumber.trigger( 'blur' );
 		await email.setValue( 'joe@dolan.com' );
 		await email.trigger( 'blur' );
 		await topic.setValue( 'category_1' );
@@ -99,6 +110,7 @@ describe( 'Contact.vue', () => {
 		await messageBody.setValue( 'Oh me oh my you make me sigh' );
 		await messageBody.trigger( 'blur' );
 
+		expect( donationNumber.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( email.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( topic.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( subject.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
