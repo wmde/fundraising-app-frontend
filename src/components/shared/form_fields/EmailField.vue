@@ -13,6 +13,7 @@
 			:aria-describedby="ariaDescribedby"
 			@update:modelValue="onUpdateModel"
 			@blur="$emit('field-changed', 'email')"
+			@input="onInput"
 		/>
 		<span v-if="suggestedProvider"
 				class="help is-clickable"
@@ -56,6 +57,12 @@ const ariaDescribedby = useAriaDescribedby(
 	`${( props.inputId ?? 'email' )}-error`,
 	computed<boolean>( () => props.showError )
 );
+
+const onInput = (): void => {
+	if ( props.showError ) {
+		emit( 'field-changed', 'email' );
+	}
+};
 
 const onUpdateModel = ( newValue: string ): void => {
 	emit( 'update:modelValue', newValue );
