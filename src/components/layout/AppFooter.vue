@@ -113,6 +113,7 @@ const footerMenu = [
 				color: colors.$black;
 				display: block;
 				position: relative;
+				text-decoration: none;
 				top:50%;
 				transform: translateY(-50%);
 
