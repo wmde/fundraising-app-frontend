@@ -10,6 +10,8 @@
 			:focus-on-submit="false"
 		/>
 
+		<ErrorSummary :is-visible="showErrorSummary" :items="validationItems"/>
+
 		<form method="post" action="/contact/get-in-touch" @submit.prevent="submit" id="laika-contact" ref="form">
 			<FormSection>
 				<TextField
@@ -100,8 +102,6 @@
 					@field-changed="() => validateField( 'comment' )"
 				/>
 
-				<ErrorSummary :is-visible="showErrorSummary" :items="validationItems"/>
-
 				<div class="contact-form-button">
 					<FormButton id="submit-btn" button-type="submit">
 						{{ $t('contact_form_submit_button') }}
@@ -113,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, nextTick, reactive, ref, watch } from 'vue';
 import { Helper } from '@src/store/util';
 import { Validity } from '@src/view_models/Validity';
 import { ContactFormValidation } from '@src/view_models/Validation';
@@ -238,8 +238,10 @@ const validateField = ( fieldName: string ): boolean => {
 	return field.validity === Validity.VALID;
 };
 
-const submit = (): void => {
+const submit = async (): Promise<void> => {
 	let isValid = true;
+	showErrorSummary.value = false;
+
 	Object.keys( formData ).forEach( ( fieldName: string ) => {
 		if ( !validateField( fieldName ) ) {
 			isValid = false;
@@ -249,6 +251,7 @@ const submit = (): void => {
 		trackFormSubmission( form.value );
 		form.value.submit();
 	} else {
+		await nextTick();
 		showErrorSummary.value = true;
 	}
 };

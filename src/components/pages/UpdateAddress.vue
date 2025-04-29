@@ -3,6 +3,60 @@
 		<h1>{{ $t( 'address_change_form_title' ) }}</h1>
 		<p>{{ $t( 'address_change_form_label' ) }}</p>
 
+		<ErrorSummary
+			:is-visible="showErrorSummary"
+			:items="[
+				{
+					validity: store.state.address.validity.companyName,
+					message: $t( 'donation_form_companyname_error' ),
+					focusElement: 'company-name',
+					scrollElement: 'company-name-scroll-target'
+				},
+				{
+					validity: store.state.address.validity.salutation,
+					message: $t( 'donation_form_salutation_error' ),
+					focusElement: 'salutation-0',
+					scrollElement: 'salutation-scroll-target'
+				},
+				{
+					validity: store.state.address.validity.firstName,
+					message: $t( 'donation_form_firstname_error' ),
+					focusElement: 'first-name',
+					scrollElement: 'first-name-scroll-target'
+				},
+				{
+					validity: store.state.address.validity.lastName,
+					message: $t( 'donation_form_lastname_error' ),
+					focusElement: 'last-name',
+					scrollElement: 'last-name-scroll-target'
+				},
+				{
+					validity: store.state.address.validity.street,
+					message: $t( 'donation_form_street_error' ),
+					focusElement: 'street',
+					scrollElement: 'street-scroll-target'
+				},
+				{
+					validity: store.state.address.validity.postcode,
+					message: $t( 'donation_form_zip_error' ),
+					focusElement: 'post-code',
+					scrollElement: 'post-code-scroll-target'
+				},
+				{
+					validity: store.state.address.validity.city,
+					message: $t( 'donation_form_city_error' ),
+					focusElement: 'city',
+					scrollElement: 'city-scroll-target'
+				},
+				{
+					validity: store.state.address.validity.country,
+					message: $t( 'donation_form_country_error' ),
+					focusElement: 'country',
+					scrollElement: 'country-scroll-target'
+				},
+			]"
+		/>
+
 		<form name="laika-address-update" ref="form" @submit.prevent="submit">
 			<CheckboxField
 				v-model="receiptNeeded"
@@ -28,60 +82,6 @@
 				:post-code-validation="addressValidationPatterns.postcode"
 				:country-was-restored="false"
 				v-on:field-changed="onFieldChange"
-			/>
-
-			<ErrorSummary
-				:is-visible="showErrorSummary"
-				:items="[
-					{
-						validity: store.state.address.validity.companyName,
-						message: $t( 'donation_form_companyname_error' ),
-						focusElement: 'company-name',
-						scrollElement: 'company-name-scroll-target'
-					},
-					{
-						validity: store.state.address.validity.salutation,
-						message: $t( 'donation_form_salutation_error' ),
-						focusElement: 'salutation-0',
-						scrollElement: 'salutation-scroll-target'
-					},
-					{
-						validity: store.state.address.validity.firstName,
-						message: $t( 'donation_form_firstname_error' ),
-						focusElement: 'first-name',
-						scrollElement: 'first-name-scroll-target'
-					},
-					{
-						validity: store.state.address.validity.lastName,
-						message: $t( 'donation_form_lastname_error' ),
-						focusElement: 'last-name',
-						scrollElement: 'last-name-scroll-target'
-					},
-					{
-						validity: store.state.address.validity.street,
-						message: $t( 'donation_form_street_error' ),
-						focusElement: 'street',
-						scrollElement: 'street-scroll-target'
-					},
-					{
-						validity: store.state.address.validity.postcode,
-						message: $t( 'donation_form_zip_error' ),
-						focusElement: 'post-code',
-						scrollElement: 'post-code-scroll-target'
-					},
-					{
-						validity: store.state.address.validity.city,
-						message: $t( 'donation_form_city_error' ),
-						focusElement: 'city',
-						scrollElement: 'city-scroll-target'
-					},
-					{
-						validity: store.state.address.validity.country,
-						message: $t( 'donation_form_country_error' ),
-						focusElement: 'country',
-						scrollElement: 'country-scroll-target'
-					},
-				]"
 			/>
 
 			<ServerMessage :server-message="serverErrorMessage"/>
@@ -234,6 +234,7 @@ const getAddressData = (): Address => {
 };
 
 const submit = (): void => {
+	showErrorSummary.value = false;
 	serverErrorMessage.value = '';
 
 	if ( userOnlyWantsToDeclineReceipt.value ) {
