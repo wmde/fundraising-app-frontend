@@ -28,7 +28,15 @@ const webpackConfig = merge( commonConfig, {
 		devMiddleware: {
 			stats: { normal: true },
 		},
-		static: 'public',
+		static: [ 'public', {
+			directory: 'src/pattern_library/css',
+			publicPath: '/pattern_library',
+		} ],
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+		},
 	},
 } );
 

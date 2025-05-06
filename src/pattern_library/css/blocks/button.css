@@ -1,0 +1,57 @@
+.button {
+	--button-bg: var(--color-blue-600);
+	--button-border-color: var(--color-blue-600);
+	--button-text: var(--color-white);
+	--button-font-size: var(--size-step-00);
+	--button-x-padding: 2em;
+	--button-y-padding: 1em;
+	--button-gutter: 0.5ch;
+	--focus-color: var(--color-primary);
+
+	display: inline-flex;
+	gap: var(--button-gutter);
+	align-items: center;
+	justify-content: center;
+	line-height: var(--leading-flat);
+	border: 1px solid var(--button-border-color);
+	border-radius: var(--button-radius);
+	background: var(--button-bg);
+	color: var(--button-text);
+	padding: var(--button-y-padding) var(--button-x-padding);
+	text-decoration: none;
+	text-align: center;
+	font-size: var(--size-step-00);
+	font-weight: var(--font-bold);
+}
+
+.button:hover {
+	filter: brightness(105%);
+}
+
+.button:focus {
+	--button-border-color: var(--color-white);
+	box-shadow: 0 0 0 1px var(--color-blue-600);
+}
+
+.button:active {
+	transform: scale(99%);
+}
+
+.button[data-button-style="hollow"] {
+	--button-bg: var(--color-white);
+	--button-text: var(--color-blue-600);
+}
+
+.button[data-button-style="hollow"]:hover,
+.button[data-button-style="hollow"]:focus {
+	--button-bg: var(--color-blue-600);
+	--button-text: var(--color-white);
+}
+
+.button[data-button-size="small"] {
+	--button-y-padding: 0.4em;
+}
+
+.button[data-button-fill] {
+	width: 100%;
+}

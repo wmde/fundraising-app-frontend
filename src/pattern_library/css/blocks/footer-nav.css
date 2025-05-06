@@ -1,0 +1,15 @@
+.footer-nav a {
+	display: block;
+	padding-block: var(--space-2xs);
+	color: var(--color-grey-800);
+	border-bottom: 1px solid var(--color-grey-600);
+}
+
+.footer-nav a:not(:hover):not(:focus) {
+	text-decoration: none;
+}
+
+.footer-nav a:hover,
+.footer-nav a:focus {
+	color: var(--color-blue-600);
+}
