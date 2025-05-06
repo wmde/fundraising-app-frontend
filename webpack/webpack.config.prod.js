@@ -70,6 +70,10 @@ const webpackConfig = merge( commonConfig, {
 			patterns: [ {
 				from: 'public',
 				to: helpers.root( 'dist' ),
+			},
+			{
+				from: 'src/pattern_library/css',
+				to: helpers.root( 'dist' ) + '/pattern_library',
 			} ],
 		} ),
 	],
