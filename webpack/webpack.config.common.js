@@ -28,6 +28,7 @@ const webpackConfig = {
 		'supporters': './src/pages/supporters.ts',
 		'update_address': './src/pages/update_address.ts',
 		'subscription_confirmation': './src/pages/subscription_confirmation.ts',
+		'pattern_library': './src/pattern_library/index.ts',
 	},
 	output: {
 		path: helpers.root( 'dist' ),

@@ -1,0 +1,7 @@
+/* TODO: This will probably become a content pattern where the sidebar breaks at a breakpoint  */
+.sticky {
+	--sticky-top: calc(var(--gutter) + var(--navigation-height));
+
+	position: sticky;
+	top: var(--sticky-top);
+}
