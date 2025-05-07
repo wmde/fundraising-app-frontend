@@ -10,8 +10,6 @@ updates:
     ignore:
       - dependency-name: "bulma"
       # For `bulma`, ignore all Dependabot updates as we are planning to get rid of it
-    reviewers:
-      - "wmde/funtech-core"
     groups:
         patch-updates:
             update-types:
