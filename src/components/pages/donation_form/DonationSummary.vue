@@ -1,15 +1,22 @@
 <template>
-	<div class="form-summary-content">
-		<component
-			:is="addressTypeComponent"
-			:address="address"
-			:interval="interval"
-			:formatted-amount="formattedAmount"
-			:paymentType="paymentType"
-			:country="country"
-			:language-item="languageItem"
-			:salutation="salutation"
-		/>
+	<div class="donation-summary">
+		<h2>{{ $t( 'donation_form_summary_title' ) }}</h2>
+
+		<div class="summary-contact-data">
+			<h3>{{ $t( 'donation_form_summary_contact_data' ) }}</h3>
+			<component
+				:is="addressTypeComponent"
+				:address="address"
+				:interval="interval"
+				:formatted-amount="formattedAmount"
+				:paymentType="paymentType"
+				:country="country"
+				:language-item="languageItem"
+				:salutation="salutation"
+			/>
+		</div>
+
+		<PaymentSummaryBankData v-if="showBankData" />
 	</div>
 </template>
 
@@ -24,6 +31,7 @@ import { Country } from '@src/view_models/Country';
 import { Salutation } from '@src/view_models/Salutation';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
+import PaymentSummaryBankData from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryBankData.vue';
 
 interface Props {
 	address: Record<string, string>;
@@ -56,5 +64,5 @@ const country = computed( () => {
 	return countryObject ? countryObject.countryFullName : '';
 } );
 const salutation = computed( () => props.address.salutation ? props.salutations.find( s => s.value === props.address.salutation )?.display : '' );
-
+const showBankData = computed( () => props.payment.paymentType === 'direct_debit' );
 </script>
