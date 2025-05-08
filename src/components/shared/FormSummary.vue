@@ -1,5 +1,5 @@
 <template>
-	<div class="form-summary" :class="{ 'form-summary-border': showBorder }">
+	<div class="form-summary">
 		<slot name="summary-content"/>
 		<div class="form-summary-buttons">
 			<slot name="summary-buttons"/>
@@ -28,16 +28,8 @@ withDefaults( defineProps<Props>(), {
 @use 'sass:map';
 
 .form-summary {
-	padding: map.get( units.$spacing, 'xx-small' );
+
 	margin: 0;
-
-	&-border {
-		border: 2px solid colors.$gray-light;
-	}
-
-	@include breakpoints.tablet-up {
-		padding: map.get( units.$spacing, 'small' );
-	}
 
 	&-content {
 		margin: 0 0 map.get( units.$spacing, 'small' );

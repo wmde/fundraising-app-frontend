@@ -13,7 +13,7 @@ import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 
 interface Props {
 	isLoading: boolean;
-	paymentType: 'PPL' | 'UEB' | 'MCP' | 'SUB';
+	paymentType: 'PPL' | 'UEB' | 'MCP' | 'SUB' | 'BEZ' | undefined;
 }
 
 const props = defineProps<Props>();
