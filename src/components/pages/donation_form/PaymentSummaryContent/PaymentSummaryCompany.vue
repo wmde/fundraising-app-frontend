@@ -18,11 +18,11 @@ export default {
 	methods: {
 		getSummary: function () {
 			return this.$t(
-				this.$props.languageItem,
+				this.languageItem,
 				{
-					interval: this.$props.interval,
-					formattedAmount: this.$props.formattedAmount,
-					paymentType: this.$props.paymentType,
+					interval: this.interval,
+					formattedAmount: this.formattedAmount,
+					paymentType: this.paymentType,
 					personType: this.$t( 'donation_confirmation_topbox_donor_type_company' ),
 					address: this.addressString(),
 					email: this.email(),
@@ -36,21 +36,25 @@ export default {
 			return this.address.email;
 		},
 		addressString: function () {
-			if ( !this.canRenderAddress() ) {
+			const addressLines = [];
+
+			if ( this.address.fullName ) {
+				addressLines.push( this.address.fullName );
+			}
+			if ( this.address.streetAddress ) {
+				addressLines.push( clearStreetAndBuildingNumberSeparator( this.address.streetAddress ) );
+			}
+			if ( this.address.postalCode || this.address.city ) {
+				addressLines.push( `${ this.address.postalCode || '' } ${ this.address.city || '' }`.trim() );
+			}
+			if ( this.country ) {
+				addressLines.push( this.country );
+			}
+			if ( addressLines.length === 0 ) {
 				return this.$t( 'donation_confirmation_review_address_missing' );
 			}
-			return [
-				this.$props.address.fullName,
-				clearStreetAndBuildingNumberSeparator( this.$props.address.streetAddress ),
-				this.$props.address.postalCode + ' ' + this.$props.address.city,
-				this.$props.country,
-			].join( ', ' );
-		},
-		canRenderAddress: function () {
-			return this.$props.address.fullName
-				&& this.$props.address.streetAddress
-				&& this.$props.address.postalCode
-				&& this.$props.address.city;
+
+			return addressLines.filter( Boolean ).join( '<br/>' );
 		},
 	},
 };

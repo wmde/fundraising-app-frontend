@@ -1,5 +1,5 @@
 <template>
-	<div id="laika-donation">
+	<div id="laika-donation" @input="markInteracted">
 		<PaymentSection
 			:payment-amounts="paymentAmounts"
 			:payment-intervals="paymentIntervals"
@@ -27,7 +27,7 @@
 
 		<div class="donation-page-form-section">
 			<FormSummary>
-				<template #summary-content>
+				<template #summary-content v-if="hasInteracted">
 					<DonationSummary
 						:payment="paymentSummary"
 						:address-type="addressTypeName"
@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { Country } from '@src/view_models/Country';
@@ -134,6 +134,11 @@ const scrollToPaymentSection = () => {
 	if ( scrollIntoViewElement ) {
 		scrollIntoViewElement.scrollIntoView( { behavior: 'auto' } );
 	}
+};
+
+const hasInteracted = ref(false);
+const markInteracted = () => {
+	hasInteracted.value = true;
 };
 
 onMounted( () => {
