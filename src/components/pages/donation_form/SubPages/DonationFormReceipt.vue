@@ -30,12 +30,11 @@
 			<FormSummary>
 				<template #summary-content>
 					<DonationSummary
-						:payment="paymentSummary"
-						:address-type="addressTypeName"
 						:address="addressSummary"
+						:payment="paymentSummary"
+						:bank-data="bankDataSummary"
 						:countries="countries"
 						:salutations="salutations"
-						:language-item="inlineSummaryLanguageItem"
 					/>
 				</template>
 
@@ -112,12 +111,12 @@ const props = defineProps<Props>();
 
 const store = useStore();
 const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
-const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
+const { addressSummary } = useAddressSummary( store );
+const { bankDataSummary } = useAddressSummary( store );
 const {
 	disabledAddressTypes,
 	addressType,
 	addressTypeIsInvalid,
-	addressTypeName,
 } = useAddressTypeFunctions( store );
 const receiptModel = useReceiptModel( store );
 
