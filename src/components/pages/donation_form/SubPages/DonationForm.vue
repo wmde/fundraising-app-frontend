@@ -1,5 +1,5 @@
 <template>
-	<div id="laika-donation">
+	<div id="laika-donation" @input="markInteracted">
 		<PaymentSection
 			:payment-amounts="paymentAmounts"
 			:payment-intervals="paymentIntervals"
@@ -27,14 +27,13 @@
 
 		<div class="donation-page-form-section">
 			<FormSummary>
-				<template #summary-content>
+				<template #summary-content v-if="hasInteracted">
 					<DonationSummary
-						:payment="paymentSummary"
-						:address-type="addressTypeName"
 						:address="addressSummary"
+						:payment="paymentSummary"
+						:bank-data="effectiveBankData"
 						:countries="countries"
 						:salutations="salutations"
-						:language-item="inlineSummaryLanguageItem"
 					/>
 				</template>
 
@@ -64,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { Country } from '@src/view_models/Country';
@@ -86,10 +85,27 @@ import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaym
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
+import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
 
 defineOptions( {
 	name: 'DonationForm',
 } );
+
+const hasInteracted = ref( false );
+
+const markInteracted = () => {
+	hasInteracted.value = true;
+};
+
+const store = useStore();
+const { bankDataSummary } = useBankDataSummary( store );
+const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
+
+const effectiveBankData = computed( () =>
+	isDirectDebitPayment.value
+		? bankDataSummary.value
+		: { iban: '', bic: '', bankName: '' }
+);
 
 interface Props {
 	assetsPath: string;
@@ -108,14 +124,11 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const store = useStore();
-const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
-const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
+const { addressSummary, hasAddressSummary } = useAddressSummary( store );
 const {
 	disabledAddressTypes,
 	addressType,
 	addressTypeIsInvalid,
-	addressTypeName,
 	setAddressType,
 } = useAddressTypeFunctions( store );
 
@@ -138,6 +151,12 @@ const scrollToPaymentSection = () => {
 
 onMounted( () => {
 	trackDynamicForm();
-} );
 
+	const hasPaymentData =
+		paymentSummary.value.amount > 0 || Boolean( paymentSummary.value.paymentType );
+
+	if ( hasAddressSummary.value || hasPaymentData ) {
+		hasInteracted.value = true;
+	}
+} );
 </script>
