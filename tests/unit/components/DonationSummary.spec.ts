@@ -1,7 +1,8 @@
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import { mount, VueWrapper } from '@vue/test-utils';
+import type { Address } from '@src/view_models/Address';
+import type { Country } from '@src/view_models/Country';
 import type { Salutation } from '@src/view_models/Salutation';
-import { nextTick } from 'vue';
 
 describe( 'DonationSummary.vue', () => {
 	const payment = {
@@ -9,20 +10,30 @@ describe( 'DonationSummary.vue', () => {
 		interval: 12,
 		amount: 14.99,
 	};
-	const countries = [
+
+	const emptyBankData = { iban: '', bic: '', bankName: '' };
+
+	const validBankData = {
+		iban: 'DE02120300000000202051',
+		bic: 'BYLADEM1001',
+		bankName: 'Deutsche Kreditbank',
+	};
+
+	const countries: Country[] = [
 		{
-			'countryCode': 'DE',
-			'countryFullName': 'Deutschland',
-			'group': '',
-			'postCodeValidation': '^[0-9]{5}$',
+			countryCode: 'DE',
+			countryFullName: 'Deutschland',
+			group: '',
+			postCodeValidation: '^[0-9]{5}$',
 		},
 		{
-			'countryCode': 'AT',
-			'countryFullName': 'Österreich',
-			'group': '',
-			'postCodeValidation': '^[0-9]{4}$',
+			countryCode: 'AT',
+			countryFullName: 'Österreich',
+			group: '',
+			postCodeValidation: '^[0-9]{4}$',
 		},
 	];
+
 	const salutations: Salutation[] = [
 		{
 			label: 'Herr',
@@ -46,147 +57,136 @@ describe( 'DonationSummary.vue', () => {
 		},
 	];
 
-	const privateAddress = {
+	const fullAddress: Address = {
 		salutation: 'Herr',
 		title: 'Dr.',
 		firstName: 'Vlad',
 		lastName: 'Dracul',
-		fullName: 'Dr. Vlad Dracul',
-		streetAddress: 'Blutgasse 5',
-		postalCode: '80666',
+		fullName: 'Vlad Dracul',
+		companyName: '',
+		street: 'Blutgasse 5',
+		postcode: '80666',
 		city: 'München',
-		countryCode: 'DE',
+		country: 'DE',
+		email: 'vlad@example.com',
 	};
 
-	const findTranslationCallParams = ( messageKey: string, calls: any[] ) => calls.find( call => call[ 0 ] === messageKey )[ 1 ];
+	const emptyAddress: Address = {
+		salutation: '',
+		title: '',
+		firstName: '',
+		lastName: '',
+		fullName: '',
+		companyName: '',
+		street: '',
+		postcode: '',
+		city: '',
+		country: '',
+		email: '',
+	};
 
-	it( 'renders private addresses', () => {
-		const $t = jest.fn();
-		mount( DonationSummary, {
-			props: {
-				address: privateAddress,
-				payment,
-				addressType: 'person',
-				countries,
-				salutations,
-				languageItem: 'language_item',
-			},
-			global: {
-				mocks: {
-					$t,
-					$n: () => {
-					},
-				},
-			},
-		} );
-		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_person' );
-		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
-		const expectedFields = [ 'salutation', 'fullName', 'streetAddress', 'postalCode', 'city' ];
-		expectedFields.map( ( fieldName: string ) => expect( params.address ).toContain( privateAddress[ fieldName ] ) );
-	} );
-
-	it( 'renders company addresses', () => {
-		const $t = jest.fn();
-		const address: { [ index: string ]: string } = {
-			fullName: 'Evil Corp',
-			streetAddress: 'Blutgasse 5',
-			postalCode: '80666',
-			city: 'München',
-			countryCode: 'DE',
-		};
-		mount( DonationSummary, {
-			props: {
-				address,
-				payment,
-				addressType: 'firma',
-				countries,
-				salutations,
-				languageItem: 'language_item',
-			},
-			global: {
-				mocks: {
-					$t,
-					$n: () => {
-					},
-				},
-			},
-		} );
-		expect( $t ).toBeCalledWith( 'donation_confirmation_topbox_donor_type_company' );
-		const params = findTranslationCallParams( 'language_item', $t.mock.calls );
-		const expectedFields = [ 'fullName', 'streetAddress', 'postalCode', 'city' ];
-		expectedFields.map( ( fieldName: string ) => expect( params.address ).toContain( address[ fieldName ] ) );
-	} );
-
-	function getLanguageItemMock(): ( key: string, values?: Record<string, string> ) => string {
-		return ( key: string, values: Record<string, string> = {} ) => {
-			if ( key !== 'language_item' ) {
-				return key;
-			}
-			let translated = '{interval} {formattedAmount} {paymentType} {personType} {address} {email}';
-			for ( const [ recordKey, value ] of Object.entries( values ) ) {
-				translated = translated.replace( `{${ recordKey }}`, `${ recordKey }:${ value }` );
-			}
-			return translated;
-		};
+	interface Props {
+		address: Address;
+		payment: { interval: any; amount: number; paymentType: any };
+		bankData: { iban: string; bic: string; bankName: string };
+		countries: Country[];
+		salutations: Salutation[];
+		hasAddressSummary: boolean;
 	}
 
-	const getWrapper = ( address ): VueWrapper<any> => {
-		const $t = getLanguageItemMock();
-		const $n = jest.fn( x => x );
-
-		return mount( DonationSummary, {
-			props: {
-				payment,
-				address: address,
-				addressType: 'person',
-				countries,
-				salutations,
-				languageItem: 'language_item',
-			},
-			global: {
-				mocks: {
-					$t,
-					$n,
-				},
-			},
-		} );
+	const mocks = {
+		$t: ( key: string ) => key,
 	};
 
-	it( 'translates payment information', () => {
-		const wrapper = getWrapper( {} );
+	function mountWrapper( propsData: Props ): VueWrapper<any> {
+		return mount( DonationSummary, {
+			props: propsData,
+			global: {
+				mocks,
+			},
+		} );
+	}
 
-		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
-			'interval:{"key":"donation_form_payment_interval_12"}',
-			'formattedAmount:{"amount":14.99,"key":"currency","currencyDisplay":"name"}',
-			'paymentType:{"key":"BEZ"}',
-			'personType:donation_confirmation_topbox_donor_type_person',
-			'address:donation_confirmation_review_address_missing',
-			'email:donation_confirmation_review_email_missing',
-		].join( ' ' ) );
+	it( 'renders summary headline, amount, interval, and paymentType', () => {
+		const wrapper = mountWrapper( {
+			address: emptyAddress,
+			payment,
+			bankData: emptyBankData,
+			countries,
+			salutations,
+			hasAddressSummary: false,
+		} );
+		const text = wrapper.text();
+
+		expect( text ).toContain( 'donation_form_summary_headline' );
+		expect( text ).toContain( '{"amount":14.99,"key":"currency","currencyDisplay":"name"}' );
+		expect( text ).toContain( '{"key":"donation_form_payment_interval_12"}' );
+		expect( text ).toContain( 'donation_summary_via {"key":"BEZ"}' );
 	} );
 
-	it( 'updates payment information from private person to anonymous', async () => {
-		const wrapper = getWrapper( privateAddress );
+	it( 'does NOT render paymentType if empty', () => {
+		const wrapper = mountWrapper( {
+			address: fullAddress,
+			payment: { interval: 1, amount: 10.0, paymentType: '' },
+			bankData: emptyBankData,
+			countries,
+			salutations,
+			hasAddressSummary: true,
+		} );
 
-		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
-			'interval:{"key":"donation_form_payment_interval_12"}',
-			'formattedAmount:{"amount":14.99,"key":"currency","currencyDisplay":"name"}',
-			'paymentType:{"key":"BEZ"}',
-			'personType:donation_confirmation_topbox_donor_type_person',
-			'address:Herr Dr. Vlad Dracul, Blutgasse 5, 80666 München, Deutschland',
-			'email:donation_confirmation_review_email_missing',
-		].join( ' ' ) );
+		const text = wrapper.text();
+		expect( text ).toContain( 'donation_form_summary_headline' );
+		expect( text ).toContain( 'donation_form_payment_interval_1' );
+		expect( text ).not.toContain( 'donation_summary_via' );
+	} );
 
-		await wrapper.setProps( { address: {} } );
-		await nextTick();
+	it( 'renders DonorSummary and bank data when present', () => {
+		const wrapper = mountWrapper( {
+			address: fullAddress,
+			payment,
+			bankData: validBankData,
+			countries,
+			salutations,
+			hasAddressSummary: true,
+		} );
 
-		expect( wrapper.find( '.form-summary-content' ).text() ).toStrictEqual( [
-			'interval:{"key":"donation_form_payment_interval_12"}',
-			'formattedAmount:{"amount":14.99,"key":"currency","currencyDisplay":"name"}',
-			'paymentType:{"key":"BEZ"}',
-			'personType:donation_confirmation_topbox_donor_type_person',
-			'address:donation_confirmation_review_address_missing',
-			'email:donation_confirmation_review_email_missing',
-		].join( ' ' ) );
+		const text = wrapper.text();
+		expect( wrapper.findComponent( { name: 'DonorSummary' } ).exists() ).toBe( true );
+		expect( text ).toContain( 'donation_form_summary_bank_details' );
+		expect( text ).toContain( 'donation_form_summary_iban' );
+		expect( text ).toContain( emptyBankData.iban );
+		expect( text ).toContain( 'donation_form_summary_bic' );
+		expect( text ).toContain( emptyBankData.bic );
+		expect( text ).toContain( 'donation_form_summary_bank_name' );
+		expect( text ).toContain( emptyBankData.bankName );
+	} );
+
+	it( 'does NOT render DonorSummary when hasAddressSummary=false', () => {
+		const wrapper = mountWrapper( {
+			address: emptyAddress,
+			payment,
+			bankData: emptyBankData,
+			countries,
+			salutations,
+			hasAddressSummary: false,
+		} );
+		expect( wrapper.findComponent( { name: 'DonorSummary' } ).exists() ).toBe( false );
+	} );
+
+	it( 'does NOT show bank details if iban is missing', () => {
+		const wrapper = mountWrapper( {
+			address: fullAddress,
+			payment,
+			bankData: emptyBankData,
+			countries,
+			salutations,
+			hasAddressSummary: true,
+		} );
+		const text = wrapper.text();
+
+		expect( text ).not.toContain( 'donation_form_summary_bank_details' );
+		expect( text ).not.toContain( 'donation_form_summary_iban' );
+		expect( text ).not.toContain( 'donation_form_summary_bic' );
+		expect( text ).not.toContain( 'donation_form_summary_bank_name' );
 	} );
 } );

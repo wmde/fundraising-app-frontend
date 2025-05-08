@@ -31,12 +31,11 @@
 			<FormSummary>
 				<template #summary-content>
 					<DonationSummary
-						:payment="paymentSummary"
-						:address-type="addressTypeName"
 						:address="addressSummary"
+						:payment="paymentSummary"
+						:bank-data="bankDataSummary"
 						:countries="countries"
 						:salutations="salutations"
-						:language-item="inlineSummaryLanguageItem"
 					/>
 				</template>
 
@@ -90,6 +89,7 @@ import { useAddressSummary } from '@src/components/pages/donation_form/useAddres
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressOptOutModel } from '@src/components/pages/donation_form/AddressOptOut/useAddressOptOut';
+import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
 
 defineOptions( {
 	name: 'DonationForm',
@@ -114,12 +114,12 @@ const props = defineProps<Props>();
 
 const store = useStore();
 const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
-const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
+const { addressSummary } = useAddressSummary( store );
+const { bankDataSummary } = useBankDataSummary( store );
 const {
 	disabledAddressTypes,
 	addressType,
 	addressTypeIsInvalid,
-	addressTypeName,
 	setAddressType,
 } = useAddressTypeFunctions( store );
 const addressOptOut = useAddressOptOutModel( store );
