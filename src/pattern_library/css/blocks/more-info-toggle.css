@@ -1,0 +1,11 @@
+.more-info-toggle[open] summary {
+	margin-block-end: 0;
+}
+
+.more-info-toggle summary::marker {
+	color: var(--color-blue-600);
+}
+
+.button + .more-info-toggle {
+	--flow-space: 0;
+}
