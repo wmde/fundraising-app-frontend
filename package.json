@@ -67,7 +67,7 @@
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.14",
-    "ts-jest": "^29.3.2",
+    "ts-jest": "^29.3.4",
     "ts-loader": "^9.5.2",
     "typescript": "~5.8.3",
     "vue-eslint-parser": "^10.1.3",
