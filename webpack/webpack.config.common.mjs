@@ -4,7 +4,6 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
 import helpers from './helpers.mjs';
-import path from 'path';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -41,7 +40,7 @@ const webpackConfig = {
 	resolve: {
 		extensions: [ '.ts', '.js', '.vue' ],
 		alias: {
-			'@src': path.resolve( import.meta.dirname, '../src' ),
+			'@src': helpers.root( 'src' ),
 		},
 	},
 	module: {
@@ -82,7 +81,7 @@ const webpackConfig = {
 					// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
 					// We will need to address this in the near future
 					{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
-						loadPaths: [ path.resolve( import.meta.dirname, '..' ) ],
+						loadPaths: [ helpers.root( '' ) ],
 						quietDeps: true,
 						silenceDeprecations: [ 'import' ],
 					} } },

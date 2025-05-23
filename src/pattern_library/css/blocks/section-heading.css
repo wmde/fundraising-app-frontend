@@ -3,6 +3,6 @@
 
 }
 
-.section-heading :is(h1, h2, h3, h4) + :is(h1, h2, h3, h4) {
+.section-heading :is(h1, h2, h3, h4, p) + :is(h1, h2, h3, h4, p) {
 	margin-block-start: var(--flow-space, 1em);
 }

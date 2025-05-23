@@ -1,0 +1,39 @@
+<template>
+	<div class="content-card summary flow">
+		<div class="section-heading">
+			<h2>Your Donation Summary</h2>
+			<p>You will donate €42 monthly via Direct Debit</p>
+			<hr/>
+		</div>
+
+		<div class="summary__details switcher">
+			<div class="flow">
+				<h3>Your Contact Data</h3>
+				<p>
+					<strong>Joe Bloggs</strong><br/>
+					Any Street<br/>
+					23456 Some City<br/>
+					Germany<br/>
+					joebloggs@example.com
+				</p>
+			</div>
+			<div class="flow">
+				<h3>Your Bank Details</h3>
+
+				<ul class="bankdata">
+					<li><strong>IBAN:</strong> DE1234 5678 1234 5678</li>
+					<li><strong>BIC:</strong> BS123</li>
+					<li><strong>Bank Name:</strong> Berliner Sparkasse</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="switcher">
+			<button class="button" data-button-style="hollow" data-button-fill>Change my payment details</button>
+			<button class="button" data-button-fill>Donate now</button>
+		</div>
+	</div>
+</template>
+<script setup lang="ts">
+defineOptions( { inheritAttrs: false } );
+</script>

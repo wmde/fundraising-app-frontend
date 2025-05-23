@@ -1,10 +1,12 @@
 .mobile-nav-toggle {
 	--icon-fill: var(--color-grey-800);
+	--button-width: var(--navigation-height);
+	--button-height: var(--navigation-height);
 
 	all: unset;
 	display: flex;
-	height: 100%;
-	width: 100%;
+	height: var(--button-width);
+	width: var(--button-height);
 	justify-content: center;
 	align-items: center;
 }

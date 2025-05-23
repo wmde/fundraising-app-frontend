@@ -2,6 +2,8 @@
 @import "global/reset.css";
 @import "global/fonts.css";
 @import "global/global-styles.css";
+@import "utilities/footer-bottom.css";
+@import "utilities/sticky.css";
 @import "utilities/visually-hidden.css";
 @import "compositions/cluster.css";
 @import "compositions/flow.css";
@@ -25,5 +27,4 @@
 @import "blocks/section-heading.css";
 @import "blocks/site-foot.css";
 @import "blocks/site-head.css";
-@import "blocks/sticky.css";
 @import "blocks/summary.css";

@@ -23,7 +23,7 @@ to change how empty grid tracks are handled */
 /* A split 50/50 layout */
 .grid[data-layout='50-50'] {
 	--grid-placement: auto-fit;
-	--grid-min-item-size: clamp(8rem, 50vw, 33rem);
+	--grid-min-item-size: clamp(8rem, 50vw, 24rem);
 }
 
 /* Three column grid layout */
