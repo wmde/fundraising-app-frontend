@@ -1,17 +1,17 @@
 'use strict';
 
-const webpack = require( 'webpack' );
-const path = require( 'path' );
-const { merge } = require( 'webpack-merge' );
-const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
-const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
-const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const TerserPlugin = require( 'terser-webpack-plugin' );
-const CompressionPlugin = require( 'compression-webpack-plugin' );
-const { WebpackManifestPlugin } = require( 'webpack-manifest-plugin' );
-const helpers = require( './helpers' );
-const commonConfig = require( './webpack.config.common' );
-const environment = require( './env/prod.env' );
+import webpack from 'webpack';
+import path from 'path';
+import { merge } from 'webpack-merge';
+import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import CompressionPlugin from 'compression-webpack-plugin';
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
+import helpers from './helpers.mjs';
+import commonConfig from './webpack.config.common.mjs';
+import environment from './env/prod.env.mjs';
 
 const webpackConfig = merge( commonConfig, {
 	mode: 'production',
@@ -84,4 +84,4 @@ if ( process.env.npm_config_report ) {
 	webpackConfig.plugins.push( new BundleAnalyzerPlugin() );
 }
 
-module.exports = webpackConfig;
+export default webpackConfig;
