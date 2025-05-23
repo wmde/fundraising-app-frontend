@@ -25,5 +25,5 @@
 @import "blocks/section-heading.css";
 @import "blocks/site-foot.css";
 @import "blocks/site-head.css";
-@import "blocks/sticky.css";
+@import "utilities/sticky.css";
 @import "blocks/summary.css";

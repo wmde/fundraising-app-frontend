@@ -1,0 +1,10 @@
+{
+	"patterns": [
+		{
+			"name": "Section Heading",
+			"url": "section-heading",
+			"htmlPath": "@src/pattern_library/patterns/section-heading/markup.html",
+			"cssPath": ""
+		}
+	]
+}
