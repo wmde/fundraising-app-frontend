@@ -1,7 +1,11 @@
 .locale {
 	--chevron-stroke: var(--color-blue-600);
+	--button-width: var(--navigation-height);
+	--button-height: var(--navigation-height);
 
 	position: relative;
+	height: var(--button-height);
+	width: var(--button-width);
 }
 
 .locale__button {

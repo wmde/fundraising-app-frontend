@@ -13,21 +13,19 @@ body {
 	line-height: var(--leading-fine);
 	text-wrap: balance;
 	font-weight: var(--font-normal);
+	max-width: 35ch;
 }
 
 h1 {
 	font-size: var(--type-step-3);
-	max-width: 20ch;
 }
 
 h2 {
 	font-size: var(--type-step-2);
-	max-width: 35ch;
 }
 
 h3 {
 	font-size: var(--type-step-1);
-	max-width: 35ch;
 }
 
 :is(h4, h5, h6) {
@@ -50,7 +48,6 @@ ins {
 	font-family: var(--font-mono);
 	padding: 0.2em 0.2em 0.05em 0.2em;
 	hyphens: none;
-	tab-size: 2;
 	text-align: left;
 	word-spacing: normal;
 	word-break: normal;
@@ -66,7 +63,7 @@ ins {
 }
 
 pre {
-	width: max-content;
+	width: 100%;
 	max-width: 100%;
 	overflow-x: auto;
 	background: var(--color-grey-100);

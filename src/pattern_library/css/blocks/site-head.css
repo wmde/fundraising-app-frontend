@@ -1,5 +1,7 @@
 .site-head {
-	position: fixed;
+	--position: fixed;
+
+	position: var(--position);
 	z-index: 1;
 	top: 0;
 	height: var(--navigation-height);

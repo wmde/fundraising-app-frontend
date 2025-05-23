@@ -1,0 +1,1 @@
+This is used in the various places where we show an icon alongside a heading or some text. 

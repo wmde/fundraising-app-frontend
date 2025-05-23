@@ -1,0 +1,1 @@
+When someone donates they have the option to leave a comment. This pattern is used to display them.

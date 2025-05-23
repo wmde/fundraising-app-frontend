@@ -1,0 +1,1 @@
+All content on the site is contained in these cards. They have 3 variants, the standard card, the blue bordered card, and the sidebar card.

@@ -5,7 +5,7 @@
 	--summary-margin: var(--space-2xs);
 	--summary-padding: var(--space-2xs);
 
-	background: var(--bakground-color, transparent);
+	background: var(--background-color, transparent);
 	padding-inline: var(--padding-inline, 0);
 }
 
@@ -61,21 +61,21 @@
 }
 
 .accordion[data-theme="wikimedia"] details:nth-of-type(1n) {
-	--bakground-color: var(--color-wikimedia-green-light);
+	--background-color: var(--color-wikimedia-green-light);
 	--summary-color: var(--color-wikimedia-green);
 }
 
 .accordion[data-theme="wikimedia"] details:nth-of-type(2n) {
-	--bakground-color: var(--color-wikimedia-red-light);
+	--background-color: var(--color-wikimedia-red-light);
 	--summary-color: var(--color-wikimedia-red);
 }
 
 .accordion[data-theme="wikimedia"] details:nth-of-type(3n) {
-	--bakground-color: var(--color-wikimedia-blue-light);
+	--background-color: var(--color-wikimedia-blue-light);
 	--summary-color: var(--color-wikimedia-blue);
 }
 
 .accordion[data-theme="wikimedia"] details:nth-of-type(4n) {
-	--bakground-color: var(--color-wikimedia-grey-light);
+	--background-color: var(--color-wikimedia-grey-light);
 	--summary-color: var(--color-wikimedia-grey);
 }
