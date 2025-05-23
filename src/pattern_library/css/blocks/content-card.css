@@ -1,0 +1,15 @@
+.content-card {
+	--card-padding: var(--space-l);
+
+	padding: var(--card-padding);
+	background: var(--color-white);
+	border-bottom: 1px solid var(--color-blue-600);
+}
+
+.content-card[data-theme='bordered'] {
+	border: 3px solid var(--color-blue-600);
+}
+
+.content-card[data-sidebar-card] {
+	--card-padding: var(--space-xs);
+}

@@ -1,9 +1,12 @@
 'use strict';
-const ForkTsCheckerWebpackPlugin = require( 'fork-ts-checker-webpack-plugin' );
-const { VueLoaderPlugin } = require( 'vue-loader' );
-const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
-const helpers = require( './helpers' );
-const path = require( 'path' );
+
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import { VueLoaderPlugin } from 'vue-loader';
+import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
+import helpers from './helpers.mjs';
+import path from 'path';
+import RemarkHTML from 'remark-html';
+
 const isDev = process.env.NODE_ENV === 'development';
 
 const webpackConfig = {
@@ -28,6 +31,7 @@ const webpackConfig = {
 		'supporters': './src/pages/supporters.ts',
 		'update_address': './src/pages/update_address.ts',
 		'subscription_confirmation': './src/pages/subscription_confirmation.ts',
+		'pattern_library': './src/pattern_library/index.ts',
 	},
 	output: {
 		path: helpers.root( 'dist' ),
@@ -38,7 +42,7 @@ const webpackConfig = {
 	resolve: {
 		extensions: [ '.ts', '.js', '.vue' ],
 		alias: {
-			'@src': path.resolve( __dirname, '../src' ),
+			'@src': path.resolve( import.meta.dirname, '../src' ),
 		},
 	},
 	module: {
@@ -71,7 +75,7 @@ const webpackConfig = {
 					// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
 					// We will need to address this in the near future
 					{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
-						loadPaths: [ path.resolve( __dirname, '..' ) ],
+						loadPaths: [ path.resolve( import.meta.dirname, '..' ) ],
 						quietDeps: true,
 						silenceDeprecations: [ 'import' ],
 					} } },
@@ -90,6 +94,26 @@ const webpackConfig = {
 			{
 				test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf|ico)$/i,
 				type: 'asset/resource',
+			},
+			{
+				test: /\.html$/,
+				type: 'asset/source',
+			},
+			{
+				test: /\.md$/,
+				use: [
+					{
+						loader: 'html-loader',
+					},
+					{
+						loader: 'remark-loader',
+						options: {
+							remarkOptions: {
+								plugins: [ RemarkHTML ],
+							},
+						},
+					},
+				],
 			},
 		],
 	},
@@ -124,4 +148,4 @@ const webpackConfig = {
 	],
 };
 
-module.exports = webpackConfig;
+export default webpackConfig;
