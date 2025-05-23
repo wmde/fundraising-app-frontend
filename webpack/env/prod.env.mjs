@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	NODE_ENV: 'production',
 	VUE_APP_LOGGER: 'errbit',
 	VUE_APP_ERRBIT_HOST: process.env.VUE_APP_ERRBIT_HOST || 'https://logging.wikimedia.de',

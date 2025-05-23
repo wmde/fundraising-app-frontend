@@ -1,9 +1,11 @@
 'use strict';
-const ForkTsCheckerWebpackPlugin = require( 'fork-ts-checker-webpack-plugin' );
-const { VueLoaderPlugin } = require( 'vue-loader' );
-const MiniCSSExtractPlugin = require( 'mini-css-extract-plugin' );
-const helpers = require( './helpers' );
-const path = require( 'path' );
+
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import { VueLoaderPlugin } from 'vue-loader';
+import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
+import helpers from './helpers.mjs';
+import path from 'path';
+
 const isDev = process.env.NODE_ENV === 'development';
 
 const webpackConfig = {
@@ -39,7 +41,7 @@ const webpackConfig = {
 	resolve: {
 		extensions: [ '.ts', '.js', '.vue' ],
 		alias: {
-			'@src': path.resolve( __dirname, '../src' ),
+			'@src': path.resolve( import.meta.dirname, '../src' ),
 		},
 	},
 	module: {
@@ -59,9 +61,17 @@ const webpackConfig = {
 			},
 			{
 				test: /\.css$/,
-				use: [
-					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
-					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
+				oneOf: [
+					{
+						resourceQuery: /raw/,
+						type: 'asset/source',
+					},
+					{
+						use: [
+							{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
+							{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
+						],
+					},
 				],
 			},
 			{
@@ -72,7 +82,7 @@ const webpackConfig = {
 					// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
 					// We will need to address this in the near future
 					{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
-						loadPaths: [ path.resolve( __dirname, '..' ) ],
+						loadPaths: [ path.resolve( import.meta.dirname, '..' ) ],
 						quietDeps: true,
 						silenceDeprecations: [ 'import' ],
 					} } },
@@ -92,6 +102,14 @@ const webpackConfig = {
 				test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf|ico)$/i,
 				type: 'asset/resource',
 			},
+			{
+				test: /\.html$/,
+				type: 'asset/source',
+			},
+			{
+				test: /\.md$/,
+				use: [ 'html-loader', 'markdown-loader' ],
+			},
 		],
 	},
 	optimization: {
@@ -106,7 +124,7 @@ const webpackConfig = {
 					name: 'styles',
 					test: module =>
 						module.nameForCondition &&
-						/\.(s?css|vue)$/.test( module.nameForCondition() ) && !/^javascript/.test( module.type ),
+						/\.(scss|vue)$/.test( module.nameForCondition() ) && !/^javascript/.test( module.type ),
 					chunks: 'all',
 					enforce: true,
 				},
@@ -125,4 +143,4 @@ const webpackConfig = {
 	],
 };
 
-module.exports = webpackConfig;
+export default webpackConfig;
