@@ -2,12 +2,26 @@ import DonationSummary from '@src/components/pages/donation_form/DonationSummary
 import { mount, VueWrapper } from '@vue/test-utils';
 import { Salutation } from '@src/view_models/Salutation';
 import { nextTick } from 'vue';
+import { createStore } from 'vuex';
+
+const mockStore = createStore( {
+	state: {
+		bankdata: {
+			values: {
+				iban: '',
+				bic: '',
+				bankName: '',
+			},
+		},
+	},
+} );
 
 describe( 'DonationSummary.vue', () => {
 	const payment = {
 		paymentType: 'BEZ',
 		interval: 12,
 		amount: 14.99,
+		iban: 'DE02120300000000202051',
 	};
 	const countries = [
 		{
@@ -72,6 +86,7 @@ describe( 'DonationSummary.vue', () => {
 				languageItem: 'language_item',
 			},
 			global: {
+				plugins: [ mockStore ],
 				mocks: {
 					$t,
 					$n: () => {
@@ -104,6 +119,7 @@ describe( 'DonationSummary.vue', () => {
 				languageItem: 'language_item',
 			},
 			global: {
+				plugins: [ mockStore ],
 				mocks: {
 					$t,
 					$n: () => {
@@ -144,6 +160,7 @@ describe( 'DonationSummary.vue', () => {
 				languageItem: 'language_item',
 			},
 			global: {
+				plugins: [ mockStore ],
 				mocks: {
 					$t,
 					$n,

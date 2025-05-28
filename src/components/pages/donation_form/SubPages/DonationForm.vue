@@ -1,5 +1,5 @@
 <template>
-	<div id="laika-donation">
+	<div id="laika-donation" @input="markInteracted">
 		<PaymentSection
 			:payment-amounts="paymentAmounts"
 			:payment-intervals="paymentIntervals"
@@ -27,14 +27,13 @@
 
 		<div class="donation-page-form-section">
 			<FormSummary>
-				<template #summary-content>
+				<template #summary-content v-if="hasInteracted">
 					<DonationSummary
-						:payment="paymentSummary"
-						:address-type="addressTypeName"
 						:address="addressSummary"
+						:payment="paymentSummary"
+						:bank-data="bankDataSummary"
 						:countries="countries"
 						:salutations="salutations"
-						:language-item="inlineSummaryLanguageItem"
 					/>
 				</template>
 
@@ -64,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { TrackingData } from '@src/view_models/TrackingData';
 import { Country } from '@src/view_models/Country';
@@ -86,10 +85,17 @@ import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaym
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
+import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
 
 defineOptions( {
 	name: 'DonationForm',
 } );
+
+const hasInteracted = ref( false );
+
+const markInteracted = () => {
+	hasInteracted.value = true;
+};
 
 interface Props {
 	assetsPath: string;
@@ -110,12 +116,12 @@ const props = defineProps<Props>();
 
 const store = useStore();
 const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
-const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
+const { addressSummary } = useAddressSummary( store );
+const { bankDataSummary } = useBankDataSummary( store );
 const {
 	disabledAddressTypes,
 	addressType,
 	addressTypeIsInvalid,
-	addressTypeName,
 	setAddressType,
 } = useAddressTypeFunctions( store );
 
@@ -138,6 +144,16 @@ const scrollToPaymentSection = () => {
 
 onMounted( () => {
 	trackDynamicForm();
+
+	const hasAddressData = Object.values( addressSummary ).some(
+		value => typeof value === 'string' ? value.trim() !== '' : value !== null && value !== undefined
+	);
+
+	const hasPaymentData = Boolean( paymentSummary.value.amount > 0 || !!paymentSummary.value.paymentType );
+
+	if ( hasAddressData || hasPaymentData ) {
+		markInteracted();
+	}
 } );
 
 </script>
