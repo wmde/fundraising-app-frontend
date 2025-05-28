@@ -135,6 +135,15 @@ describe( 'AmountField.vue', () => {
 		expect( wrapper.find( '.form-field-amount-custom.active' ).exists() ).toBeFalsy();
 	} );
 
+	it( 'custom amount radio is not activated by click', async () => {
+		const wrapper = getWrapper();
+		const customAmountRadioElement = wrapper.find( 'input[class="form-field-amount-custom-radio"]' );
+
+		await customAmountRadioElement.trigger( 'click' );
+
+		expect( wrapper.find( '.form-field-amount-custom.active' ).exists() ).toBeFalsy();
+	} );
+
 	it( 'Checks the custom amount radio when value is custom', async () => {
 		const wrapper = getWrapper();
 		const customAmountInput = wrapper.find( '#amount-custom' );
