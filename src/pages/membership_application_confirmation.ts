@@ -11,7 +11,7 @@ import App from '@src/components/App.vue';
 import MembershipConfirmation from '@src/components/pages/MembershipConfirmation.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
-import { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
+import type { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
 
 const PAGE_IDENTIFIER = 'membership-application-confirmation';
 const LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_application' ];

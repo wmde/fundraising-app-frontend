@@ -1,4 +1,4 @@
-import { AddressValidation, ContactFormValidation } from '@src/view_models/Validation';
+import type { AddressValidation, ContactFormValidation } from '@src/view_models/Validation';
 
 export const addressValidationPatterns: AddressValidation = {
 	salutation: '^(Herr|Frau)$',

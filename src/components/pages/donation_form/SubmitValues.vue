@@ -38,12 +38,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import { Payment } from '@src/view_models/Payment';
-import { AddressState } from '@src/view_models/Address';
+import type { Payment } from '@src/view_models/Payment';
+import type { AddressState } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
-import { BankAccount } from '@src/view_models/BankAccount';
-import { TrackingData } from '@src/view_models/TrackingData';
-import { CampaignValues } from '@src/view_models/CampaignValues';
+import type { BankAccount } from '@src/view_models/BankAccount';
+import type { TrackingData } from '@src/view_models/TrackingData';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
 import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
 
 export default defineComponent( {

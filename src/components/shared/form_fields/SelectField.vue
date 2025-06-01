@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 
-import { SelectFormOption } from '@src/components/shared/form_fields/FormOptions';
+import type { SelectFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import SelectFormInput from '@src/components/shared/form_elements/SelectFormInput.vue';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';

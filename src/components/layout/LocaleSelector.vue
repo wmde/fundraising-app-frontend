@@ -52,7 +52,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import Cookies from 'js-cookie';
-import { COOKIE_NAME, DEFAULT_LOCALE, LOCALES, LocaleSelectorItem } from '@src/util/createLocalisation';
+import { COOKIE_NAME, DEFAULT_LOCALE, LOCALES } from '@src/util/createLocalisation';
+import type { LocaleSelectorItem } from '@src/util/createLocalisation';
 import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
 import LocaleIcon from '@src/components/shared/icons/LocaleIcon.vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';

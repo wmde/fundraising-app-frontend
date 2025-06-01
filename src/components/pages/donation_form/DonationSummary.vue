@@ -20,8 +20,8 @@ import PaymentSummaryCompany from '@src/components/pages/donation_form/PaymentSu
 import PaymentSummaryCompanyWithContact from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryCompanyWithContact.vue';
 import PaymentSummaryEmail from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryEmail.vue';
 import PaymentSummaryPrivate from '@src/components/pages/donation_form/PaymentSummaryContent/PaymentSummaryPrivate.vue';
-import { Country } from '@src/view_models/Country';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Country } from '@src/view_models/Country';
+import type { Salutation } from '@src/view_models/Salutation';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 

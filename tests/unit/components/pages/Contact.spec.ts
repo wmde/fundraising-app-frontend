@@ -1,6 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import Contact from '@src/components/pages/Contact.vue';
-import { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
+import type { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
 import { contactFormValidationPatterns } from '@test/data/validation';
 
 // This is so the error summary scrollIntoView doesn't throw errors

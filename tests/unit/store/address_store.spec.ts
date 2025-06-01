@@ -2,7 +2,7 @@ import { getters } from '@src/store/address/getters';
 import { actions } from '@src/store/address/actions';
 import { mutations } from '@src/store/address/mutations';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { AddressState } from '@src/view_models/Address';
+import type { AddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { REQUIRED_FIELDS } from '@src/store/address/constants';
 import mockAxios from 'jest-mock-axios';

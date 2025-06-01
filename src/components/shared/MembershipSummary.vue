@@ -10,12 +10,12 @@
 <script setup lang="ts">
 
 import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Salutation } from '@src/view_models/Salutation';
 import { useI18n } from 'vue-i18n';
-import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
-import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
+import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
+import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
 import { computed } from 'vue';
-import { Country } from '@src/view_models/Country';
+import type { Country } from '@src/view_models/Country';
 
 interface Props {
 	address: MembershipAddress;

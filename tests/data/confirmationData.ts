@@ -1,7 +1,7 @@
-import { Address } from '@src/view_models/Address';
-import { Donation } from '@src/view_models/Donation';
-import { Country } from '@src/view_models/Country';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Address } from '@src/view_models/Address';
+import type { Donation } from '@src/view_models/Donation';
+import type { Country } from '@src/view_models/Country';
+import type { Salutation } from '@src/view_models/Salutation';
 
 export const testBankTransferCode = 'XW-XLK-M3F-Z';
 

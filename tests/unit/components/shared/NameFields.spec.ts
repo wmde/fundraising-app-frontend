@@ -1,8 +1,8 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import NameFields from '@src/components/shared/NameFields.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { Salutation } from '@src/view_models/Salutation';
-import { AddressFormData, AddressValidity } from '@src/view_models/Address';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 
 const formData = {
 	salutation: {

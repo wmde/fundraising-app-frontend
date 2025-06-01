@@ -116,19 +116,19 @@
 import { computed, nextTick, reactive, ref, watch } from 'vue';
 import { Helper } from '@src/store/util';
 import { Validity } from '@src/view_models/Validity';
-import { ContactFormValidation } from '@src/view_models/Validation';
+import type { ContactFormValidation } from '@src/view_models/Validation';
 import { trackFormSubmission } from '@src/util/tracking';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
-import { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
-import { ContactFormData } from '@src/components/pages/contact/ContactFormData';
+import type { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
+import type { ContactFormData } from '@src/components/pages/contact/ContactFormData';
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { useI18n } from 'vue-i18n';
-import { ValidationSummaryItem } from '@src/components/shared/validation_summary/ValidationSummaryItem';
+import type { ValidationSummaryItem } from '@src/components/shared/validation_summary/ValidationSummaryItem';
 
 defineOptions( {
 	name: 'Contact',

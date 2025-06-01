@@ -1,6 +1,6 @@
 import { actions } from '@src/store/bankdata/actions';
 import { Validity } from '@src/view_models/Validity';
-import { InitialBankAccountData } from '@src/view_models/BankAccount';
+import type { InitialBankAccountData } from '@src/view_models/BankAccount';
 import { bankName, BIC, IBAN } from '@test/data/bankdata';
 
 describe( 'BankData', () => {

@@ -1,5 +1,6 @@
 import { GetterTree } from 'vuex';
-import { AmountValidity, Payment } from '@src/view_models/Payment';
+import { AmountValidity } from '@src/view_models/Payment';
+import type { Payment } from '@src/view_models/Payment';
 import { Validity } from '@src/view_models/Validity';
 import { validateAmount } from '@src/store/amountValidator';
 

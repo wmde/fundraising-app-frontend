@@ -124,9 +124,9 @@ import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import BankIcon from '@src/components/shared/icons/BankIcon.vue';
 import CloseIcon from '@src/components/shared/icons/CloseIcon.vue';
 import { computed, inject, onMounted, ref, watch } from 'vue';
-import { BankValidationResource } from '@src/api/BankValidationResource';
+import type { BankValidationResource } from '@src/api/BankValidationResource';
 import { useStore } from 'vuex';
-import { BankAccountResponse } from '@src/view_models/BankAccount';
+import type { BankAccountResponse } from '@src/view_models/BankAccount';
 import { action } from '@src/store/util';
 
 const bankValidationResource = inject<BankValidationResource>( 'bankValidationResource' );

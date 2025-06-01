@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Donation } from '@src/view_models/Donation';
+import type { Donation } from '@src/view_models/Donation';
 import BankData from '@src/components/shared/BankData.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { useI18n } from 'vue-i18n';

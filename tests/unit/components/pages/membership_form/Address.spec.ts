@@ -13,7 +13,7 @@ import IncentivesField from '@src/components/shared/form_fields/IncentivesField.
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import { EXAMPLE_SALUTATIONS } from '@test/unit/components/pages/donation_form/AddressForms.spec';
-import { InitialMembershipAddressValues } from '@src/view_models/Address';
+import type { InitialMembershipAddressValues } from '@src/view_models/Address';
 
 describe( 'Address.vue', () => {
 

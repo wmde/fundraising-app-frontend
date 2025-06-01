@@ -96,11 +96,11 @@
 import { computed, ref } from 'vue';
 import MembershipInfo from '@src/components/pages/donation_confirmation/MembershipInfo.vue';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
-import { Country } from '@src/view_models/Country';
-import { Address } from '@src/view_models/Address';
-import { Donation } from '@src/view_models/Donation';
-import { AddressValidation } from '@src/view_models/Validation';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Country } from '@src/view_models/Country';
+import type { Address } from '@src/view_models/Address';
+import type { Donation } from '@src/view_models/Donation';
+import type { AddressValidation } from '@src/view_models/Validation';
+import type { Salutation } from '@src/view_models/Salutation';
 import SuccessMessage from '@src/components/pages/donation_confirmation/SuccessMessage.vue';
 import SuccessMessageBankTransfer from '@src/components/pages/donation_confirmation/SuccessMessageBankTransfer.vue';
 import AddressKnown from '@src/components/pages/donation_confirmation/AddressKnown.vue';
@@ -109,7 +109,7 @@ import DonationSurvey from '@src/components/pages/donation_confirmation/Donation
 import DonationCommentPopUp from '@src/components/pages/donation_confirmation/DonationCommentPopUp.vue';
 import ChevronDownIcon from '@src/components/shared/icons/ChevronDown.vue';
 import DonationExported from '@src/components/pages/donation_confirmation/DonationExported.vue';
-import { DonorResource } from '@src/api/DonorResource';
+import type { DonorResource } from '@src/api/DonorResource';
 import ModalDialogue from '@src/components/shared/ModalDialogue.vue';
 import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 

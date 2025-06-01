@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import { computed } from 'vue';

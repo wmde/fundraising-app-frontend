@@ -65,13 +65,13 @@
 
 <script setup lang="ts">
 
-import { Salutation } from '@src/view_models/Salutation';
-import { AddressFormData, AddressValidity } from '@src/view_models/Address';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {

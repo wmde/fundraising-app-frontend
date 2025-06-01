@@ -3,7 +3,7 @@ import IbanFields from '@src/components/shared/IbanFields.vue';
 import { Store } from 'vuex';
 import { createStore } from '@src/store/donation_store';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
-import { BankValidationResource } from '@src/api/BankValidationResource';
+import type { BankValidationResource } from '@src/api/BankValidationResource';
 import { action } from '@src/store/util';
 import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
 import { accountNumber, bankCode, bankName, BIC, formattedIBAN, IBAN } from '@test/data/bankdata';

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
-import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
-import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
-import { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
+import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
+import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
+import type { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
 import salutations from '@test/data/salutations';
 import countries from '@test/data/countries';
 import MembershipConfirmation from '@src/components/pages/MembershipConfirmation.vue';

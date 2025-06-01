@@ -102,14 +102,14 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
 import { useAddressTypeModel } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeModel';
-import { AddressFormData, AddressValidity } from '@src/view_models/Address';
+import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { computed, onBeforeMount, ref } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
-import { Country } from '@src/view_models/Country';
+import type { Country } from '@src/view_models/Country';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { Validity } from '@src/view_models/Validity';
 

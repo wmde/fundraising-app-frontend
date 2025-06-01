@@ -1,6 +1,6 @@
-import { Address } from '@src/view_models/Address';
+import type { Address } from '@src/view_models/Address';
 import axios, { AxiosResponse } from 'axios';
-import { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
+import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
 
 export interface AddressChangeResource {
 	put: ( data: Address ) => Promise<UpdateAddressResponse>;

@@ -1,4 +1,4 @@
-import { ContactFormItem } from '@src/components/pages/contact/ContactFormItem';
+import type { ContactFormItem } from '@src/components/pages/contact/ContactFormItem';
 
 export interface ContactFormData {
 	firstname: ContactFormItem;

@@ -4,11 +4,11 @@ import AddressUpdateForm from '@src/components/pages/donation_confirmation/Addre
 import { action } from '@src/store/util';
 import { addressValidationPatterns } from '@test/data/validation';
 import { anonymousBankTransferConfirmationData, bankTransferConfirmationData } from '@test/data/confirmationData';
-import { Address } from '@src/view_models/Address';
+import type { Address } from '@src/view_models/Address';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { Store } from 'vuex';
-import { DonorResource } from '@src/api/DonorResource';
+import type { DonorResource } from '@src/api/DonorResource';
 
 const anonAddress = {
 	addressType: 'anonym',

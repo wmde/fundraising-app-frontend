@@ -1,5 +1,5 @@
-import { BankAccountResponse } from '@src/view_models/BankAccount';
-import { BankValidationResource } from '@src/api/BankValidationResource';
+import type { BankAccountResponse } from '@src/view_models/BankAccount';
+import type { BankValidationResource } from '@src/api/BankValidationResource';
 import { accountNumber, bankCode, bankName, BIC, IBAN } from '@test/data/bankdata';
 
 export const newSucceedingBankValidationResource = ( apiReturnValue: BankAccountResponse = null ): BankValidationResource => {

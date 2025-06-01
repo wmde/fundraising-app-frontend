@@ -1,5 +1,5 @@
 import { ActionContext } from 'vuex';
-import { BankAccount, InitialBankAccountData } from '@src/view_models/BankAccount';
+import type { BankAccount, InitialBankAccountData } from '@src/view_models/BankAccount';
 import { Validity } from '@src/view_models/Validity';
 
 export const actions = {

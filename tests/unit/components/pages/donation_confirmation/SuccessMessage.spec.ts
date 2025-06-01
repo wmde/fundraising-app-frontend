@@ -1,7 +1,7 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import SuccessMessage from '@src/components/pages/donation_confirmation/SuccessMessage.vue';
 import { directDebitConfirmationData, payPalConfirmationData } from '../../../../data/confirmationData';
-import { Donation } from '@src/view_models/Donation';
+import type { Donation } from '@src/view_models/Donation';
 
 describe( 'SuccessMessage.vue', () => {
 

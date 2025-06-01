@@ -3,10 +3,10 @@ import { createVueApp } from '@src/createVueApp';
 import { createStore } from '@src/store/update_address_store';
 
 import PageDataInitializer from '@src/util/page_data_initializer';
-import { AddressValidation } from '@src/view_models/Validation';
+import type { AddressValidation } from '@src/view_models/Validation';
 import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
-import { Country } from '@src/view_models/Country';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Country } from '@src/view_models/Country';
+import type { Salutation } from '@src/view_models/Salutation';
 import { createTrackFormErrorsPlugin } from '@src/store/track_form_errors_plugin';
 
 import App from '@src/components/App.vue';

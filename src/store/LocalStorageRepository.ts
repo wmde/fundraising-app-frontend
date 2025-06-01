@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
+import type { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
 
 const BASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 

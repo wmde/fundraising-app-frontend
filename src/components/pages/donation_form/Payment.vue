@@ -61,7 +61,7 @@ import { AmountValidity } from '@src/view_models/Payment';
 import { useI18n } from 'vue-i18n';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePaymentFieldModel';
 import { Validity } from '@src/view_models/Validity';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';

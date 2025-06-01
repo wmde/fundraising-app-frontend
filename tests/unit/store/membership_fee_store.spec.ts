@@ -1,7 +1,7 @@
 import { getters } from '@src/store/membership_fee/getters';
 import { actions } from '@src/store/membership_fee/actions';
 import { mutations } from '@src/store/membership_fee/mutations';
-import { GenericValuePayload, MembershipFee } from '@src/view_models/MembershipFee';
+import type { GenericValuePayload, MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
 import each from 'jest-each';
 import mockAxios from 'jest-mock-axios';

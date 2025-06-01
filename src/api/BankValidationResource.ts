@@ -1,4 +1,4 @@
-import { BankAccountNumberRequest, BankAccountResponse, BankIbanRequest } from '@src/view_models/BankAccount';
+import type { BankAccountNumberRequest, BankAccountResponse, BankIbanRequest } from '@src/view_models/BankAccount';
 import axios from 'axios';
 
 export interface BankValidationResource {

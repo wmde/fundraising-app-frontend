@@ -1,8 +1,8 @@
 import { MutationTree } from 'vuex';
 import { Validity } from '@src/view_models/Validity';
 import { Helper } from '@src/store/util';
-import { AddressState, InputField } from '@src/view_models/Address';
-import { FieldInitialization } from '@src/view_models/FieldInitialization';
+import type { AddressState, InputField } from '@src/view_models/Address';
+import type { FieldInitialization } from '@src/view_models/FieldInitialization';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
 export const mutations: MutationTree<AddressState> = {

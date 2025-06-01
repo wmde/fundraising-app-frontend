@@ -1,4 +1,4 @@
-import { AddressFormData, AddressValidity } from '@src/view_models/Address';
+import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import { computed, reactive } from 'vue';
 import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';

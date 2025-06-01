@@ -3,7 +3,7 @@ import { actions } from '@src/store/membership_address/actions';
 import { mutations } from '@src/store/membership_address/mutations';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
-import { MembershipAddressState } from '@src/view_models/Address';
+import type { MembershipAddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { REQUIRED_FIELDS } from '@src/store/membership_address/constants';
 import mockAxios from 'jest-mock-axios';

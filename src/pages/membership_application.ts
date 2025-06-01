@@ -6,11 +6,11 @@ import FilteredUrlMembershipValues from '@src/util/FilteredUrlMembershipValues';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
 import PageDataInitializer from '@src/util/page_data_initializer';
 import persistenceItems from '@src/store/data_persistence/membership_application';
-import { AddressValidation } from '@src/view_models/Validation';
+import type { AddressValidation } from '@src/view_models/Validation';
 import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
-import { Country } from '@src/view_models/Country';
-import { InitialMembershipData } from '@src/view_models/Address';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Country } from '@src/view_models/Country';
+import type { InitialMembershipData } from '@src/view_models/Address';
+import type { Salutation } from '@src/view_models/Salutation';
 import { action } from '@src/store/util';
 import { createDataPersister } from '@src/store/create_data_persister';
 import {
@@ -25,7 +25,7 @@ import App from '@src/components/App.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import CampaignParameters from '@src/util/CampaignParameters';
-import { TrackingData } from '@src/view_models/TrackingData';
+import type { TrackingData } from '@src/view_models/TrackingData';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 
 interface MembershipAmountModel {

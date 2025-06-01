@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { MembershipFee } from '@src/view_models/MembershipFee';
+import type { MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
 
 export const mutations: MutationTree<MembershipFee> = {

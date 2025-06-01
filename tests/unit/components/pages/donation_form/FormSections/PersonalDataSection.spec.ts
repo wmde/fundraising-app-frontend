@@ -1,10 +1,10 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { TrackingData } from '@src/view_models/TrackingData';
-import { CampaignValues } from '@src/view_models/CampaignValues';
-import { AddressValidation } from '@src/view_models/Validation';
-import { Salutation } from '@src/view_models/Salutation';
+import type { TrackingData } from '@src/view_models/TrackingData';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
+import type { AddressValidation } from '@src/view_models/Validation';
+import type { Salutation } from '@src/view_models/Salutation';
 import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSection.vue';
 
 const testCountry = {

@@ -32,11 +32,11 @@
 
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue';
-import { Country } from '@src/view_models/Country';
-import { CampaignValues } from '@src/view_models/CampaignValues';
-import { AddressValidation } from '@src/view_models/Validation';
-import { TrackingData } from '@src/view_models/TrackingData';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Country } from '@src/view_models/Country';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
+import type { AddressValidation } from '@src/view_models/Validation';
+import type { TrackingData } from '@src/view_models/TrackingData';
+import type { Salutation } from '@src/view_models/Salutation';
 import PaymentPage from '@src/components/pages/membership_form/subpages/PaymentPage.vue';
 import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
 

@@ -1,7 +1,7 @@
 import { testBankTransferCode } from '@test/data/confirmationData';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SuccessMessageBankTransfer from '@src/components/pages/donation_confirmation/SuccessMessageBankTransfer.vue';
-import { Donation } from '@src/view_models/Donation';
+import type { Donation } from '@src/view_models/Donation';
 
 describe( 'SuccessMessageBankTransfer.vue', () => {
 	let testDonation: Donation;

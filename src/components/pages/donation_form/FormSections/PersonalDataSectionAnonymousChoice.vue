@@ -61,13 +61,13 @@ import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import AddressTypeNoAnon from '@src/components/pages/donation_form/AddressTypeNoAnon.vue';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import { CampaignValues } from '@src/view_models/CampaignValues';
-import { Country } from '@src/view_models/Country';
-import { Salutation } from '@src/view_models/Salutation';
-import { TrackingData } from '@src/view_models/TrackingData';
-import { AddressValidation } from '@src/view_models/Validation';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
+import type { Country } from '@src/view_models/Country';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { TrackingData } from '@src/view_models/TrackingData';
+import type { AddressValidation } from '@src/view_models/Validation';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { AddressOptOutModel } from '@src/components/pages/donation_form/AddressOptOut/useAddressOptOut';
+import type { AddressOptOutModel } from '@src/components/pages/donation_form/AddressOptOut/useAddressOptOut';
 import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
 
 interface Props {

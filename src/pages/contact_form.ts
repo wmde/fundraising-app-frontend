@@ -1,12 +1,12 @@
 import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
 import PageDataInitializer from '@src/util/page_data_initializer';
-import { ContactFormValidation } from '@src/view_models/Validation';
+import type { ContactFormValidation } from '@src/view_models/Validation';
 import App from '@src/components/App.vue';
 import Contact from '@src/components/pages/Contact.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
-import { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
+import type { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
 
 interface ContactFormModel {
 	message: string;

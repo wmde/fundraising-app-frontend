@@ -1,6 +1,6 @@
 import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import { mount, VueWrapper } from '@vue/test-utils';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Salutation } from '@src/view_models/Salutation';
 import { nextTick } from 'vue';
 
 describe( 'DonationSummary.vue', () => {

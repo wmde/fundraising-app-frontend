@@ -1,4 +1,4 @@
-import { Salutation } from '@src/view_models/Salutation';
+import type { Salutation } from '@src/view_models/Salutation';
 
 export const salutations: Salutation[] = [
 	{

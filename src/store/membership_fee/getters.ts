@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { MembershipFee } from '@src/view_models/MembershipFee';
+import type { MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MEMBERSHIP_MINIMUM_CENTS_FEE_COMPANY, MEMBERSHIP_MINIMUM_CENTS_FEE_PERSONAL } from '@src/store/membership_fee/constants';
