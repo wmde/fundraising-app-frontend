@@ -1,0 +1,19 @@
+.site-foot {
+	background: var(--color-blue-300);
+	padding-block: var(--space-s-l);
+	margin-block-start: var(--space-2xl);
+}
+
+.site-foot__content {
+	display: flex;
+}
+
+.site-foot__brand {
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: var(--space-3xl);
+}
+
+.site-foot__copy {
+	padding-inline: var(--space-s-xl);
+}

@@ -1,0 +1,1 @@
+This is the main footer for the site. There is no breakpoint, the navigation will fold to the next row when space runs out.
