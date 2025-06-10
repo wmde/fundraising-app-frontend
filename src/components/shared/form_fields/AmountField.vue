@@ -31,7 +31,15 @@
 			<label class="form-field-amount-help-text" for="amount-custom">{{ $t('donation_form_payment_amount_label') }}</label>
 			<div class="form-field-amount-custom-euro-symbol" :class="{ active: isCustomAmount }">
 				<div class="radio radio-form-input">
-					<input type="radio" class="form-field-amount-custom-radio" :checked="isCustomAmount" aria-hidden="true" tabindex="-1"/>
+					<input
+						name="amount"
+						type="radio"
+						class="form-field-amount-custom-radio"
+						@click="setCustomAmount"
+						:checked="isCustomAmount"
+						aria-hidden="true"
+						tabindex="-1"
+					/>
 				</div>
 
 				<TextFormInput
