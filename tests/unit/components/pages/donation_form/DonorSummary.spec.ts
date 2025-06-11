@@ -44,6 +44,7 @@ describe( 'DonorSummary.vue', () => {
 	];
 
 	const personalAddress: Address = {
+		addressType: 'private',
 		salutation: 'Herr',
 		title: 'Dr.',
 		firstName: 'Vlad',
@@ -58,6 +59,7 @@ describe( 'DonorSummary.vue', () => {
 	};
 
 	const companyAddress: Address = {
+		addressType: 'company',
 		salutation: '',
 		title: '',
 		firstName: '',
