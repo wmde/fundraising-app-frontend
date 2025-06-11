@@ -1,0 +1,10 @@
+<button
+	class="mobile-nav-toggle"
+	:class="{ 'mobile-nav-toggle--active': menuActive }"
+	@click="menuActive = !menuActive"
+	aria-label="Toggle Navigation Menu"
+	:aria-expanded="menuActive"
+>
+	<span class="mobile-nav-toggle__open"><Burger/></span>
+	<span class="mobile-nav-toggle__close"><Close/></span>
+</button>

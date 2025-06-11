@@ -1,0 +1,1 @@
+This is used to display the links in the footer.

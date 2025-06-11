@@ -1,0 +1,1 @@
+Buttons come in 2 sizes and 2 types. The button styles can be applied to links and button elements.
