@@ -36,6 +36,8 @@
 						:bank-data="bankDataSummary"
 						:countries="countries"
 						:salutations="salutations"
+						:hasAddressSummary="hasAddressSummary"
+						:hasBankDataSummary="hasBankDataSummary"
 					/>
 				</template>
 
@@ -114,8 +116,8 @@ const props = defineProps<Props>();
 
 const store = useStore();
 const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
-const { addressSummary } = useAddressSummary( store );
-const { bankDataSummary } = useBankDataSummary( store );
+const { hasAddressSummary, addressSummary } = useAddressSummary( store );
+const { hasBankDataSummary, bankDataSummary } = useBankDataSummary( store );
 const {
 	disabledAddressTypes,
 	addressType,

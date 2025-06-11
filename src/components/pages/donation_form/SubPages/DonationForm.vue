@@ -29,13 +29,14 @@
 			<FormSummary>
 				<template #summary-content v-if="hasInteracted">
 					<DonationSummary
+						:hasBankDataSummary="hasBankDataSummary"
 						:hasAddressSummary="hasAddressSummary"
 						:address="addressSummary"
 						:payment="paymentSummary"
 						:bank-data="bankDataSummary"
 						:countries="countries"
 						:salutations="salutations"
-						/>
+					/>
 				</template>
 
 				<template #summary-buttons>
@@ -99,7 +100,7 @@ const markInteracted = () => {
 };
 
 const store = useStore();
-const { bankDataSummary } = useBankDataSummary( store );
+const { hasBankDataSummary, bankDataSummary } = useBankDataSummary( store );
 const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
 
 interface Props {

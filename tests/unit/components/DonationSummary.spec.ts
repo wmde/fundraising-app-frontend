@@ -92,6 +92,7 @@ describe( 'DonationSummary.vue', () => {
 		countries: Country[];
 		salutations: Salutation[];
 		hasAddressSummary: boolean;
+		hasBankDataSummary: boolean;
 	}
 
 	const mocks = {
@@ -115,6 +116,7 @@ describe( 'DonationSummary.vue', () => {
 			countries,
 			salutations,
 			hasAddressSummary: false,
+			hasBankDataSummary: false,
 		} );
 		const text = wrapper.text();
 
@@ -132,6 +134,7 @@ describe( 'DonationSummary.vue', () => {
 			countries,
 			salutations,
 			hasAddressSummary: true,
+			hasBankDataSummary: false,
 		} );
 
 		const text = wrapper.text();
@@ -148,6 +151,7 @@ describe( 'DonationSummary.vue', () => {
 			countries,
 			salutations,
 			hasAddressSummary: true,
+			hasBankDataSummary: true,
 		} );
 
 		const text = wrapper.text();
@@ -169,6 +173,7 @@ describe( 'DonationSummary.vue', () => {
 			countries,
 			salutations,
 			hasAddressSummary: false,
+			hasBankDataSummary: false,
 		} );
 		expect( wrapper.findComponent( { name: 'DonorSummary' } ).exists() ).toBe( false );
 	} );
@@ -181,6 +186,7 @@ describe( 'DonationSummary.vue', () => {
 			countries,
 			salutations,
 			hasAddressSummary: true,
+			hasBankDataSummary: false,
 		} );
 		const text = wrapper.text();
 

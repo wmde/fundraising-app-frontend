@@ -15,7 +15,7 @@
 					:salutations="salutations"
 				/>
 			</div>
-			<div v-if="bankData.iban">
+			<div v-if="hasBankDataSummary">
 				<h3 class="summary-title">{{ $t('donation_form_summary_bank_details') }}</h3>
 				<strong>{{ $t('donation_form_summary_iban') }}</strong> {{ bankData.iban }}<br>
 				<strong>{{ $t('donation_form_summary_bic') }}</strong> {{ bankData.bic }}<br>
@@ -40,6 +40,7 @@ interface Props {
 	countries: Array<Country>;
 	salutations: Array<Salutation>;
 	hasAddressSummary: boolean;
+	hasBankDataSummary: boolean;
 }
 
 const { t, n } = useI18n();
