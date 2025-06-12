@@ -11,7 +11,7 @@ describe( 'DonationSummary.vue', () => {
 		amount: 14.99,
 	};
 
-	const emptyBankData = { iban: '', bic: '', bankName: '' };
+	const emptyBankData = undefined;
 
 	const validBankData = {
 		iban: 'DE02120300000000202051',
@@ -71,19 +71,7 @@ describe( 'DonationSummary.vue', () => {
 		email: 'vlad@example.com',
 	};
 
-	const emptyAddress: Address = {
-		salutation: '',
-		title: '',
-		firstName: '',
-		lastName: '',
-		fullName: '',
-		companyName: '',
-		street: '',
-		postcode: '',
-		city: '',
-		country: '',
-		email: '',
-	};
+	const emptyAddress = undefined;
 
 	interface Props {
 		address: Address;
@@ -91,8 +79,6 @@ describe( 'DonationSummary.vue', () => {
 		bankData: { iban: string; bic: string; bankName: string };
 		countries: Country[];
 		salutations: Salutation[];
-		hasAddressSummary: boolean;
-		hasBankDataSummary: boolean;
 	}
 
 	const mocks = {
@@ -115,8 +101,6 @@ describe( 'DonationSummary.vue', () => {
 			bankData: emptyBankData,
 			countries,
 			salutations,
-			hasAddressSummary: false,
-			hasBankDataSummary: false,
 		} );
 		const text = wrapper.text();
 
@@ -133,8 +117,6 @@ describe( 'DonationSummary.vue', () => {
 			bankData: emptyBankData,
 			countries,
 			salutations,
-			hasAddressSummary: true,
-			hasBankDataSummary: false,
 		} );
 
 		const text = wrapper.text();
@@ -150,19 +132,17 @@ describe( 'DonationSummary.vue', () => {
 			bankData: validBankData,
 			countries,
 			salutations,
-			hasAddressSummary: true,
-			hasBankDataSummary: true,
 		} );
 
 		const text = wrapper.text();
 		expect( wrapper.findComponent( { name: 'DonorSummary' } ).exists() ).toBe( true );
 		expect( text ).toContain( 'donation_form_summary_bank_details' );
 		expect( text ).toContain( 'donation_form_summary_iban' );
-		expect( text ).toContain( emptyBankData.iban );
+		expect( text ).toContain( validBankData.iban );
 		expect( text ).toContain( 'donation_form_summary_bic' );
-		expect( text ).toContain( emptyBankData.bic );
+		expect( text ).toContain( validBankData.bic );
 		expect( text ).toContain( 'donation_form_summary_bank_name' );
-		expect( text ).toContain( emptyBankData.bankName );
+		expect( text ).toContain( validBankData.bankName );
 	} );
 
 	it( 'does NOT render DonorSummary when hasAddressSummary=false', () => {
@@ -172,8 +152,6 @@ describe( 'DonationSummary.vue', () => {
 			bankData: emptyBankData,
 			countries,
 			salutations,
-			hasAddressSummary: false,
-			hasBankDataSummary: false,
 		} );
 		expect( wrapper.findComponent( { name: 'DonorSummary' } ).exists() ).toBe( false );
 	} );
@@ -185,8 +163,6 @@ describe( 'DonationSummary.vue', () => {
 			bankData: emptyBankData,
 			countries,
 			salutations,
-			hasAddressSummary: true,
-			hasBankDataSummary: false,
 		} );
 		const text = wrapper.text();
 
