@@ -29,8 +29,6 @@
 			<FormSummary>
 				<template #summary-content v-if="paymentSummary">
 					<DonationSummary
-						:hasBankDataSummary="hasBankDataSummary"
-						:hasAddressSummary="hasAddressSummary"
 						:address="addressSummary"
 						:payment="paymentSummary"
 						:bank-data="bankDataSummary"
@@ -94,7 +92,7 @@ defineOptions( {
 } );
 
 const store = useStore();
-const { hasBankDataSummary, bankDataSummary } = useBankDataSummary( store );
+const { bankDataSummary } = useBankDataSummary( store );
 const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
 
 interface Props {
@@ -114,7 +112,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const { addressSummary, hasAddressSummary } = useAddressSummary( store );
+const { addressSummary } = useAddressSummary( store );
 const {
 	disabledAddressTypes,
 	addressType,
@@ -145,7 +143,7 @@ onMounted( () => {
 	const hasPaymentData =
 		paymentSummary.value.amount > 0 || Boolean( paymentSummary.value.paymentType );
 
-	if ( hasAddressSummary.value || hasPaymentData ) {
+	if ( addressSummary.value || hasPaymentData ) {
 		hasInteracted.value = true;
 	}
 } );

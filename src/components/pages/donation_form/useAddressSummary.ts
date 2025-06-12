@@ -1,39 +1,26 @@
 import { Store } from 'vuex';
 import { computed, ComputedRef } from 'vue';
+import type { Address } from '@src/view_models/Address';
 
 type ReturnType = {
-	addressSummary: ComputedRef<any>;
-	hasAddressSummary: ComputedRef<boolean>;
+	addressSummary: ComputedRef<Address | undefined>;
 };
 
 export function useAddressSummary( store: Store<any> ): ReturnType {
-	const addressSummary = computed( () => ( {
-		...store.state.address.values,
-		streetAddress: store.state.address.values.street,
-		postalCode: store.state.address.values.postcode,
-		country: store.state.address.values.country,
-	} ) );
-
-		const hasSomeAddressDataFilledOut = addressType !== 'anonym' && (
-			store.state.address.companyName?.trim() ||
-			( addressValues.firstName?.trim() && addressValues.lastName?.trim() ) ||
-			addressValues.street?.trim() ||
-			( addressValues.postcode?.trim() && addressValues.city?.trim() ) ||
-			addressValues.email?.trim()
-		);
-
-		if ( hasSomeAddressDataFilledOut ) {
+	const addressSummary = computed( () => {
+		const hasSomeAddressDataFilledOut = store.state.address.companyName?.trim() ||
+			( store.state.address.firstName?.trim() && store.state.address.lastName?.trim() ) ||
+			store.state.address.street?.trim() ||
+			( store.state.address.postcode?.trim() && store.state.address.city?.trim() ) ||
+			store.state.address.email?.trim();
+		if ( !hasSomeAddressDataFilledOut ) {
 			return {
-				addressType,
-				...addressValues,
+				...store.state.address.values,
 			};
 		}
-
-		return undefined;
 	} );
 
 	return {
 		addressSummary,
-		hasAddressSummary,
 	};
 }
