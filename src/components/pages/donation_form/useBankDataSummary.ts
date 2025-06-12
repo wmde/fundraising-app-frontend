@@ -3,23 +3,16 @@ import { computed, ComputedRef } from 'vue';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 
 type ReturnType = {
-	hasBankDataSummary: ComputedRef<boolean>;
-	bankDataSummary: ComputedRef<{ iban: string; bankName: string; bic: string }>;
+	bankDataSummary: ComputedRef<{ iban: string; bankName: string; bic: string } | undefined>;
 };
 
 export function useBankDataSummary( store: Store<any> ): ReturnType {
 	const { isDirectDebitPayment } = usePaymentFunctions( store );
 	const bankData = store.state.bankdata.values;
 
-	const hasBankDataSummary: ComputedRef<boolean> = computed( () =>
-		Boolean(
-			isDirectDebitPayment.value &&
-			bankData.iban
-		)
-	);
-
 	const bankDataSummary = computed( () => {
-		if ( hasBankDataSummary.value ) {
+		const shouldShowSummary = bankData.iban.trim() && isDirectDebitPayment.value;
+		if ( shouldShowSummary ) {
 			return {
 				iban: bankData.iban,
 				bankName: bankData.bankName,
@@ -30,6 +23,5 @@ export function useBankDataSummary( store: Store<any> ): ReturnType {
 
 	return {
 		bankDataSummary,
-		hasBankDataSummary,
 	};
 }
