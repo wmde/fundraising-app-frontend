@@ -9,13 +9,13 @@
 		<div class="switcher">
 			<div>
 				<DonorSummary
-					v-if="hasAddressSummary"
+					v-if="address"
 					:address="address"
 					:countries="countries"
 					:salutations="salutations"
 				/>
 			</div>
-			<div v-if="hasBankDataSummary">
+			<div v-if="bankData">
 				<h3 class="summary-title">{{ $t('donation_form_summary_bank_details') }}</h3>
 				<strong>{{ $t('donation_form_summary_iban') }}</strong> {{ bankData.iban }}<br>
 				<strong>{{ $t('donation_form_summary_bic') }}</strong> {{ bankData.bic }}<br>
@@ -34,13 +34,11 @@ import type { Country } from '@src/view_models/Country';
 import type { Salutation } from '@src/view_models/Salutation';
 
 interface Props {
-	address: Address;
+	address: Address | undefined;
 	payment: { interval: any; amount: number; paymentType: any };
-	bankData: { iban: string; bic: string; bankName: string };
+	bankData: { iban: string; bic: string; bankName: string } | undefined;
 	countries: Array<Country>;
 	salutations: Array<Salutation>;
-	hasAddressSummary: boolean;
-	hasBankDataSummary: boolean;
 }
 
 const { t, n } = useI18n();
