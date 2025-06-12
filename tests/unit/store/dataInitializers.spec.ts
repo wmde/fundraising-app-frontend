@@ -9,7 +9,7 @@ import {
 	createInitialMembershipAddressValues,
 	createInitialMembershipFeeValues,
 } from '@src/store/dataInitializers';
-import { InitialBankAccountData } from '@src/view_models/BankAccount';
+import type { InitialBankAccountData } from '@src/view_models/BankAccount';
 
 describe( 'createInitialDonationAddressValues', () => {
 	it( 'fills data from storage', () => {

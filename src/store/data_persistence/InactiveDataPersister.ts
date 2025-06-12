@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { DataPersistenceItem, DataPersister } from '@src/view_models/DataPersistence';
+import type { DataPersistenceItem, DataPersister } from '@src/view_models/DataPersistence';
 
 export class InactiveDataPersister implements DataPersister {
 	initialize( items: DataPersistenceItem[] ): Promise<void> {

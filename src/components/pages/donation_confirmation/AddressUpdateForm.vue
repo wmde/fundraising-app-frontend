@@ -95,19 +95,19 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
+import type { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { mergeValidationResults } from '@src/util/merge_validation_results';
 import { camelizeName } from '@src/util/camlize_name';
-import { Country } from '@src/view_models/Country';
-import { AddressValidation } from '@src/view_models/Validation';
-import { Salutation } from '@src/view_models/Salutation';
-import { DonorResource } from '@src/api/DonorResource';
+import type { Country } from '@src/view_models/Country';
+import type { AddressValidation } from '@src/view_models/Validation';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { DonorResource } from '@src/api/DonorResource';
 import { useStore } from 'vuex';
-import { Donation } from '@src/view_models/Donation';
+import type { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
@@ -120,7 +120,7 @@ import { useAddressTypeFunctions } from '@src/components/shared/composables/useA
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
 import AddressUpdateFormErrorSummaries
 	from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
-import { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
+import type { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
 import ServerMessage from '@src/components/shared/ServerMessage.vue';
 
 interface Props {

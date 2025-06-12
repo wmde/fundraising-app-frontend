@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
-import { Donation } from '@src/view_models/Donation';
+import type { Donation } from '@src/view_models/Donation';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 

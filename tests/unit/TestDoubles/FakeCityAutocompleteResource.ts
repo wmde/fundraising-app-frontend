@@ -1,4 +1,4 @@
-import { CityAutocompleteResource } from '@src/api/CityAutocompleteResource';
+import type { CityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 
 export class FakeCityAutocompleteResource implements CityAutocompleteResource {
 	getCitiesInPostcode(): Promise<Array<string>> {

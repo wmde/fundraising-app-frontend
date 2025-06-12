@@ -4,7 +4,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
 import { validateFeeDataRemotely } from '@src/store/axios';
 import { FeeValidity } from '@src/view_models/MembershipFee';
-import { InitialBankAccountData } from '@src/view_models/BankAccount';
+import type { InitialBankAccountData } from '@src/view_models/BankAccount';
 
 jest.mock( '@src/store/axios' );
 

@@ -1,7 +1,7 @@
 import { computed, Ref, ref, watch } from 'vue';
 import { action } from '@src/store/util';
 import { Store } from 'vuex';
-import { GenericValuePayload } from '@src/view_models/MembershipFee';
+import type { GenericValuePayload } from '@src/view_models/MembershipFee';
 
 /**
  * This composable provides a `ref` that can be used as local state for `v-model`

@@ -83,12 +83,12 @@
 import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { Donation } from '@src/view_models/Donation';
+import type { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
-import { CommentResource } from '@src/api/CommentResource';
+import type { CommentResource } from '@src/api/CommentResource';
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 import { Validity } from '@src/view_models/Validity';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';

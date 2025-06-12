@@ -1,8 +1,8 @@
 import { Validity } from './Validity';
 import { AddressTypeModel } from './AddressTypeModel';
 import { MembershipTypeModel } from './MembershipTypeModel';
-import { AddressRequirements } from '@src/store/address/constants';
-import { FieldInitialization } from '@src/view_models/FieldInitialization';
+import type { AddressRequirements } from '@src/store/address/constants';
+import type { FieldInitialization } from '@src/view_models/FieldInitialization';
 
 export interface Address {
 	addressType: string;

@@ -1,4 +1,4 @@
-import { StreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
+import type { StreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 
 export class FakeStreetAutocompleteResource implements StreetAutocompleteResource {
 	getStreetsInPostcode(): Promise<Array<string>> {

@@ -68,11 +68,11 @@
 </template>
 
 <script setup lang="ts">
-import { Salutation } from '@src/view_models/Salutation';
-import { AddressValidation } from '@src/view_models/Validation';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { AddressValidation } from '@src/view_models/Validation';
 import { Validity } from '@src/view_models/Validity';
 import { computed, onBeforeMount, ref, toRefs } from 'vue';
-import { Country } from '@src/view_models/Country';
+import type { Country } from '@src/view_models/Country';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import NameFields from '@src/components/shared/NameFields.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -84,7 +84,7 @@ import CheckboxSingleFormInput from '@src/components/shared/form_elements/Checkb
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { useReceiptModel } from '@src/components/pages/membership_form/useReceiptModel';
 import { useIncentivesModel } from '@src/components/pages/membership_form/useIncentivesModel';
-import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { useI18n } from 'vue-i18n';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';

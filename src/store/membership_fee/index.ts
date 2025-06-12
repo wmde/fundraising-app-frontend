@@ -1,5 +1,5 @@
 import { Module } from 'vuex';
-import { Payment } from '@src/view_models/Payment';
+import type { Payment } from '@src/view_models/Payment';
 import { Validity } from '@src/view_models/Validity';
 import { actions } from '@src/store/membership_fee/actions';
 import { getters } from '@src/store/membership_fee/getters';

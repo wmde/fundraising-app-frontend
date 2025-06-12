@@ -1,4 +1,4 @@
-import { DataEncryptor } from '@src/view_models/DataEncryptor';
+import type { DataEncryptor } from '@src/view_models/DataEncryptor';
 import { TextEncoder, TextDecoder } from 'util';
 
 export class FakeDataEncryptor implements DataEncryptor {

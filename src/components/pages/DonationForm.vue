@@ -17,11 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { TrackingData } from '@src/view_models/TrackingData';
-import { Country } from '@src/view_models/Country';
-import { AddressValidation } from '@src/view_models/Validation';
-import { Salutation } from '@src/view_models/Salutation';
-import { CampaignValues } from '@src/view_models/CampaignValues';
+import type { TrackingData } from '@src/view_models/TrackingData';
+import type { Country } from '@src/view_models/Country';
+import type { AddressValidation } from '@src/view_models/Validation';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
 import StandardDonationForm from '@src/components/pages/donation_form/SubPages/DonationForm.vue';
 import ReceiptDonationForm from '@src/components/pages/donation_form/SubPages/DonationFormReceipt.vue';
 import ChoiceDonationForm from '@src/components/pages/donation_form/SubPages/DonationFormAnonymousChoice.vue';

@@ -1,7 +1,7 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import DonationForm from '@src/components/pages/donation_form/SubPages/DonationFormReceipt.vue';
 import countries from '@test/data/countries';
-import { AddressValidation } from '@src/view_models/Validation';
+import type { AddressValidation } from '@src/view_models/Validation';
 import { createStore } from '@src/store/donation_store';
 import { nextTick } from 'vue';
 import axios from 'axios';

@@ -9,8 +9,8 @@ import { createStore } from '@src/store/update_address_store';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { nextTick } from 'vue';
-import { AddressChangeResource } from '@src/api/AddressChangeResource';
-import { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
+import type { AddressChangeResource } from '@src/api/AddressChangeResource';
+import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
 
 jest.mock( '@src/util/tracking', () => {
 	return {

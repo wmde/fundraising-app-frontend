@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import { FaqContent, QuestionModel, Topic } from '@src/view_models/faq';
+import type { FaqContent, QuestionModel, Topic } from '@src/view_models/faq';
 import AccordionItem from '@src/components/shared/AccordionItem.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';

@@ -73,12 +73,12 @@
 
 <script setup lang="ts">
 
-import { AddressFormData, AddressValidity } from '@src/view_models/Address';
+import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
-import { Country } from '@src/view_models/Country';
+import type { Country } from '@src/view_models/Country';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 

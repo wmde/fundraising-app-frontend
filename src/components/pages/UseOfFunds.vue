@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 
-import { RevenueComparisonItem, UseOfFundsContent } from '@src/components/pages/use_of_funds/UseOfFundsContent';
+import type { RevenueComparisonItem, UseOfFundsContent } from '@src/components/pages/use_of_funds/UseOfFundsContent';
 import BenefitsIcon from '@src/components/pages/use_of_funds/BenefitsIcon.vue';
 import { computed } from 'vue';
 import CallToAction from '@src/components/pages/use_of_funds/CallToAction.vue';

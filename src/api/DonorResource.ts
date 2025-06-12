@@ -1,6 +1,6 @@
-import { Address } from '@src/view_models/Address';
+import type { Address } from '@src/view_models/Address';
 import axios, { AxiosResponse } from 'axios';
-import { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
+import type { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
 
 export interface DonorResource {
 	put: ( data: UpdateDonorRequest ) => Promise<Address>;

@@ -1,6 +1,7 @@
-import { DataEncryptor } from '@src/view_models/DataEncryptor';
-import { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
-import { DataPersistenceItem, DataPersistenceMutationType, DataPersister } from '@src/view_models/DataPersistence';
+import type { DataEncryptor } from '@src/view_models/DataEncryptor';
+import type { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
+import type { DataPersistenceItem, DataPersister } from '@src/view_models/DataPersistence';
+import { DataPersistenceMutationType } from '@src/view_models/DataPersistence';
 import { MutationPayload, Store } from 'vuex';
 
 export class ActiveDataPersister implements DataPersister {

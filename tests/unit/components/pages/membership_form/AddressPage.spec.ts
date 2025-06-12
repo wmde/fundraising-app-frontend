@@ -6,12 +6,12 @@ import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Store } from 'vuex';
-import { TrackingData } from '@src/view_models/TrackingData';
-import { CampaignValues } from '@src/view_models/CampaignValues';
-import { AddressValidation } from '@src/view_models/Validation';
+import type { TrackingData } from '@src/view_models/TrackingData';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
+import type { AddressValidation } from '@src/view_models/Validation';
 import { nextTick } from 'vue';
 import { Validity } from '@src/view_models/Validity';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Salutation } from '@src/view_models/Salutation';
 import { dateOfBirthValidationPattern } from '@test/data/validation';
 
 const testCountry = {

@@ -1,15 +1,15 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
-import {
+import type {
 	AddressState,
 	AddressTypeValidationRequest,
 	InitialAddressValues,
 	InputField,
 } from '@src/view_models/Address';
-import { ValidationResponse } from '@src/store/ValidationResponse';
+import type { ValidationResponse } from '@src/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Salutation } from '@src/view_models/Salutation';
 import { salutationValueTranslations } from '@src/view_models/salutationValueTranslations';
 
 export const actions = {

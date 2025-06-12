@@ -39,12 +39,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Donation } from '@src/view_models/Donation';
-import { Country } from '@src/view_models/Country';
+import type { Donation } from '@src/view_models/Donation';
+import type { Country } from '@src/view_models/Country';
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 import { TranslateResult } from 'vue-i18n';
-import { Address } from '@src/view_models/Address';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Address } from '@src/view_models/Address';
+import type { Salutation } from '@src/view_models/Salutation';
 import ButtonLink from '@src/components/shared/ButtonLink.vue';
 
 interface Props {

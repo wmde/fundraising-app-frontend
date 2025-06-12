@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { Comment } from '@src/view_models/Comment';
+import type { Comment } from '@src/view_models/Comment';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ChevronLeftIcon from '@src/components/shared/icons/ChevronLeftIcon.vue';

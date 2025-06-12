@@ -1,4 +1,4 @@
-import { BankValidationResource } from '@src/api/BankValidationResource';
+import type { BankValidationResource } from '@src/api/BankValidationResource';
 
 export const newFailingBankValidationResource = (): BankValidationResource => {
 	return {

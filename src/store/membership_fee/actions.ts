@@ -1,7 +1,7 @@
 import { ActionContext } from 'vuex';
 
-import { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
-import { ValidationResponse } from '@src/store/ValidationResponse';
+import type { GenericValuePayload, InitialMembershipFeeValues, MembershipFee } from '@src/view_models/MembershipFee';
+import type { ValidationResponse } from '@src/store/ValidationResponse';
 import { Validity } from '@src/view_models/Validity';
 import { Helper } from '@src/store/util';
 import { validateFeeDataRemotely } from '@src/store/axios';

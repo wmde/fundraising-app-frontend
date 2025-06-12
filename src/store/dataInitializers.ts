@@ -1,12 +1,12 @@
-import { FieldInitialization } from '@src/view_models/FieldInitialization';
+import type { FieldInitialization } from '@src/view_models/FieldInitialization';
 import persistenceAddress from '@src/store/data_persistence/address';
 import { Validity } from '@src/view_models/Validity';
-import { DataPersister } from '@src/view_models/DataPersistence';
-import { InitialAddressValues, InitialMembershipAddressValues } from '@src/view_models/Address';
+import type { DataPersister } from '@src/view_models/DataPersistence';
+import type { InitialAddressValues, InitialMembershipAddressValues } from '@src/view_models/Address';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
-import { InitialPaymentValues } from '@src/view_models/Payment';
-import { InitialBankAccountData } from '@src/view_models/BankAccount';
-import { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
+import type { InitialPaymentValues } from '@src/view_models/Payment';
+import type { InitialBankAccountData } from '@src/view_models/BankAccount';
+import type { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
 import { trackFormFieldRestored } from '@src/util/tracking';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
 

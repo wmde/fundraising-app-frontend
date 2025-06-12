@@ -1,5 +1,6 @@
 import { ref } from 'vue';
-import { Comment, commentModelsFromObject } from '@src/view_models/Comment';
+import type { Comment } from '@src/view_models/Comment';
+import { commentModelsFromObject } from '@src/view_models/Comment';
 import axios from 'axios';
 
 export function useCommentResource() {

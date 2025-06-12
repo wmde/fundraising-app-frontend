@@ -1,4 +1,4 @@
-import { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
+import type { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
 
 export default class FakeDataPersistenceRepository implements DataPersistenceRepository {
 	public items: Record<string, any>;

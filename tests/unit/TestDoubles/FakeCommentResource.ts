@@ -1,4 +1,4 @@
-import { CommentResource } from '@src/api/CommentResource';
+import type { CommentResource } from '@src/api/CommentResource';
 
 export const successMessage = 'Success';
 export const failureMessage = 'Fail';

@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Donation } from '@src/view_models/Donation';
+import type { Donation } from '@src/view_models/Donation';
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 
 export default defineComponent( {

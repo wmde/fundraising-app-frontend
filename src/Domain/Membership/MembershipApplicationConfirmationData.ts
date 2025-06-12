@@ -1,7 +1,7 @@
-import { Salutation } from '@src/view_models/Salutation';
-import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
-import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
-import { Country } from '@src/view_models/Country';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
+import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
+import type { Country } from '@src/view_models/Country';
 
 export interface MembershipApplicationConfirmationData {
 	piwik: {

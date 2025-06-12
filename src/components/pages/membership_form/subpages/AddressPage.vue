@@ -117,20 +117,20 @@ import { computed, ref } from 'vue';
 import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
 import AddressFields from '@src/components/pages/membership_form/Address.vue';
 import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
-import { AddressValidation } from '@src/view_models/Validation';
-import { Salutation } from '@src/view_models/Salutation';
+import type { AddressValidation } from '@src/view_models/Validation';
+import type { Salutation } from '@src/view_models/Salutation';
 import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
-import { Country } from '@src/view_models/Country';
-import { CampaignValues } from '@src/view_models/CampaignValues';
-import { TrackingData } from '@src/view_models/TrackingData';
+import type { Country } from '@src/view_models/Country';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
+import type { TrackingData } from '@src/view_models/TrackingData';
 import { useStore } from 'vuex';
 import { useAddressFormEventHandlers } from '@src/components/pages/membership_form/useAddressFormEventHandlers';
 import { trackFormSubmission } from '@src/util/tracking';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import FormSummary from '@src/components/shared/FormSummary.vue';
-import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
-import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
+import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
+import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 
 interface Props {

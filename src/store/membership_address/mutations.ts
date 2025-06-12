@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex';
 import { Helper } from '@src/store/util';
 import { REQUIRED_FIELDS } from '@src/store/membership_address/constants';
 import { Validity } from '@src/view_models/Validity';
-import { InputField, MembershipAddressState } from '@src/view_models/Address';
+import type { InputField, MembershipAddressState } from '@src/view_models/Address';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 

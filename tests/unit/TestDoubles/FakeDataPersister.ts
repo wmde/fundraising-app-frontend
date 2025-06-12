@@ -1,7 +1,7 @@
 import { Store } from 'vuex';
-import { DataEncryptor } from '@src/view_models/DataEncryptor';
-import { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
-import { DataPersister } from '@src/view_models/DataPersistence';
+import type { DataEncryptor } from '@src/view_models/DataEncryptor';
+import type { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
+import type { DataPersister } from '@src/view_models/DataPersistence';
 import { FakeDataEncryptor } from './FakeDataEncryptor';
 import FakeDataPersistenceRepository from './FakeDataPersistenceRepository';
 

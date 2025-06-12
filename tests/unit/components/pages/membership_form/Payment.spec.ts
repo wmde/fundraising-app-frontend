@@ -6,7 +6,7 @@ import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
 import { Store } from 'vuex';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import { GenericValuePayload } from '@src/view_models/MembershipFee';
+import type { GenericValuePayload } from '@src/view_models/MembershipFee';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 import IbanFields from '@src/components/shared/IbanFields.vue';

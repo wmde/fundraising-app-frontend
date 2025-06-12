@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 
-import { Comment } from '@src/view_models/Comment';
+import type { Comment } from '@src/view_models/Comment';
 import { computed, onMounted, ref } from 'vue';
 import { useCommentResource } from '@src/components/pages/useCommentResource';
 import Logo from '@src/components/layout/Logo.vue';

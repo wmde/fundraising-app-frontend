@@ -44,9 +44,9 @@
 import MembershipSurvey from '@src/components/pages/membership_confirmation/MembershipSurvey.vue';
 import MembershipConfirmationBannerNotifier
 	from '@src/components/pages/membership_confirmation/MembershipConfirmationBannerNotifier.vue';
-import { Salutation } from '@src/view_models/Salutation';
-import { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
-import { Country } from '@src/view_models/Country';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
+import type { Country } from '@src/view_models/Country';
 import { computed } from 'vue';
 import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
 import { useI18n } from 'vue-i18n';

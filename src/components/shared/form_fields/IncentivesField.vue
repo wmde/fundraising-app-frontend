@@ -20,7 +20,7 @@
 
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import CheckboxMultipleFormInput from '@src/components/shared/form_elements/CheckboxMultipleFormInput.vue';
-import { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 
 interface Props {
 	incentiveFormFieldOptions: CheckboxFormOption[];

@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ValidationSummaryItem } from '@src/components/shared/validation_summary/ValidationSummaryItem';
+import type { ValidationSummaryItem } from '@src/components/shared/validation_summary/ValidationSummaryItem';
 import { Validity } from '@src/view_models/Validity';
 import { nextTick, ref, watch } from 'vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';

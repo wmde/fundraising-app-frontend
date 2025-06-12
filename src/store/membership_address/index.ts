@@ -1,5 +1,5 @@
 import { Module } from 'vuex';
-import { MembershipAddressState } from '@src/view_models/Address';
+import type { MembershipAddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { actions } from '@src/store/membership_address/actions';
 import { getters } from '@src/store/membership_address/getters';

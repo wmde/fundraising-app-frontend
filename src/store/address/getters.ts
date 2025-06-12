@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { AddressState } from '@src/view_models/Address';
+import type { AddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 

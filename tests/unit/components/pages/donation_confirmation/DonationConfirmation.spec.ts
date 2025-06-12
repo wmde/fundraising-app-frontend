@@ -2,7 +2,6 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
 import { createStore } from '@src/store/donation_store';
 import {
-	ConfirmationData,
 	anonymousBankTransferConfirmationData,
 	anonymousExportedPayPalConfirmationData,
 	bankTransferConfirmationData,
@@ -12,8 +11,9 @@ import {
 	emailExportedPayPalConfirmationData,
 	payPalConfirmationData,
 } from '@test/data/confirmationData';
+import type { ConfirmationData } from '@test/data/confirmationData';
 import { addressValidationPatterns } from '@test/data/validation';
-import { DonorResource } from '@src/api/DonorResource';
+import type { DonorResource } from '@src/api/DonorResource';
 import { FakeSucceedingCommentResource } from '@test/unit/TestDoubles/FakeCommentResource';
 
 describe( 'DonationConfirmation.vue', () => {

@@ -1,11 +1,11 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
-import { InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
-import { ValidationResponse } from '@src/store/ValidationResponse';
+import type { InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
+import type { ValidationResponse } from '@src/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import { Validity } from '@src/view_models/Validity';
-import { FieldInitialization } from '@src/view_models/FieldInitialization';
+import type { FieldInitialization } from '@src/view_models/FieldInitialization';
 import { action } from '@src/store/util';
 
 export const actions = {

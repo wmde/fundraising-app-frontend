@@ -68,11 +68,11 @@
 <script setup lang="ts">
 import { inject, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import { TrackingData } from '@src/view_models/TrackingData';
-import { Country } from '@src/view_models/Country';
-import { AddressValidation } from '@src/view_models/Validation';
-import { Salutation } from '@src/view_models/Salutation';
-import { CampaignValues } from '@src/view_models/CampaignValues';
+import type { TrackingData } from '@src/view_models/TrackingData';
+import type { Country } from '@src/view_models/Country';
+import type { AddressValidation } from '@src/view_models/Validation';
+import type { Salutation } from '@src/view_models/Salutation';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
 import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
 import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSectionAnonymousChoice.vue';
 import IbanFields from '@src/components/shared/IbanFields.vue';

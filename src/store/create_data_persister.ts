@@ -1,6 +1,6 @@
-import { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
+import type { DataPersistenceRepository } from '@src/view_models/DataPersistenceRepository';
 import { SubtleDataEncryptor } from '@src/store/SubtleDataEncryptor';
-import { DataPersister } from '@src/view_models/DataPersistence';
+import type { DataPersister } from '@src/view_models/DataPersistence';
 import { ActiveDataPersister } from '@src/store/data_persistence/ActiveDataPersister';
 import { InactiveDataPersister } from '@src/store/data_persistence/InactiveDataPersister';
 

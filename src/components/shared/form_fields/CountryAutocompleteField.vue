@@ -54,7 +54,7 @@
 
 import { useCountryInput } from '@src/components/shared/form_fields/useCountryInput';
 import { useFilteredCountries } from '@src/components/shared/form_fields/useFilteredCountries';
-import { Country } from '@src/view_models/Country';
+import type { Country } from '@src/view_models/Country';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { computed, nextTick, ref } from 'vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';

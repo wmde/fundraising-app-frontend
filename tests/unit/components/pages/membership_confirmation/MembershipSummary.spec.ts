@@ -1,7 +1,7 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
-import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
-import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
+import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
+import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
 import salutations from '@test/data/salutations';
 import countries from '@test/data/countries';
 

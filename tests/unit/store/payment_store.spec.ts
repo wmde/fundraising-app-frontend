@@ -7,7 +7,7 @@ import each from 'jest-each';
 import { DonationPayment } from '@src/store/payment/types';
 import { ActionContext } from 'vuex';
 import { PaymentType } from '@src/view_models/PaymentType';
-import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
+import type { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
 
 function newMinimalStore( overrides: Object ): DonationPayment {
 	return Object.assign(

@@ -1,7 +1,7 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import { InitialAddressValues } from '@src/view_models/Address';
+import type { InitialAddressValues } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { Store } from 'vuex';
 import { createStore } from '@src/store/donation_store';

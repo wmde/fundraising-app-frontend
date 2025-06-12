@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Supporter as SupporterInfo } from '@src/view_models/supporters';
+import type { Supporter as SupporterInfo } from '@src/view_models/supporters';
 import AccordionItem from '@src/components/shared/AccordionItem.vue';
 
 interface Props {

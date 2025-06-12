@@ -104,14 +104,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import SubmitValues from '@src/components/pages/update_address/SubmitValues.vue';
-import { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
+import type { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
-import { Country } from '@src/view_models/Country';
+import type { Country } from '@src/view_models/Country';
 import { action } from '@src/store/util';
-import { AddressValidation } from '@src/view_models/Validation';
+import type { AddressValidation } from '@src/view_models/Validation';
 import { useStore } from 'vuex';
 import { trackFormSubmission } from '@src/util/tracking';
-import { Salutation } from '@src/view_models/Salutation';
+import type { Salutation } from '@src/view_models/Salutation';
 import NameFields from '@src/components/shared/NameFields.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
@@ -120,8 +120,8 @@ import { useAddressTypeFunctions } from '@src/components/shared/composables/useA
 import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 import ServerMessage from '@src/components/shared/ServerMessage.vue';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
-import { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
-import { AddressChangeResource } from '@src/api/AddressChangeResource';
+import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
+import type { AddressChangeResource } from '@src/api/AddressChangeResource';
 import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 
 defineOptions( {

@@ -1,9 +1,9 @@
 import { ActionContext } from 'vuex';
-import { IntervalData, TypeData } from '@src/view_models/Payment';
+import type { IntervalData, TypeData } from '@src/view_models/Payment';
 import { DonationPayment } from '@src/store/payment/types';
 import { Validity } from '@src/view_models/Validity';
 import { isValidAmount } from '@src/store/amountValidator';
-import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
+import type { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
 import { isValidPaymentType } from '@src/store/paymentTypeValidator';
 import { isValidInterval } from '@src/store/intervalValidator';
 

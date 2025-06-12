@@ -2,7 +2,7 @@ import { createStore } from '@src/store/donation_store';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { action } from '@src/store/util';
-import { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
+import type { PaymentInitialisationPayload } from '@src/view_models/PaymentInitialisationPayload';
 
 describe( 'Donation Store', () => {
 
