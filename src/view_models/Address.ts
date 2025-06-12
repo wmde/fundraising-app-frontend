@@ -5,7 +5,6 @@ import type { AddressRequirements } from '@src/store/address/constants';
 import type { FieldInitialization } from '@src/view_models/FieldInitialization';
 
 export interface Address {
-	addressType: string;
 	salutation: string;
 	title: string;
 	firstName: string;
