@@ -1,0 +1,14 @@
+/* GLOBAL
+This defines some global variables that are used across the library
+*/
+:root {
+	--wrapper-max-width: 1360px;
+	--sidebar-content-min-width: 60%;
+	--navigation-height: var(--space-2xl);
+	--gutter: var(--space-xs-s);
+	--stroke-width: 1px;
+	--stroke-color: var(--color-grey-300);
+	--stroke: var(--stroke-width) solid var(--stroke-color);
+	--easing: cubic-bezier(0.885, 0.09, 0.49, 0.85);
+	--button-radius: 8px;
+}

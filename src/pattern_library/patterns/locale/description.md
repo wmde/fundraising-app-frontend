@@ -1,0 +1,1 @@
+The locale changer is used in the header and allows a donor to select the language the site is displayed in.

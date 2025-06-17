@@ -1,0 +1,38 @@
+<header class="site-head">
+	<div class="site-head__brand">
+		<a href="/">
+			<span class="visually-hidden">Wikimedia Deutschland e V.</span>
+			<Logo/>
+		</a>
+	</div>
+	<div class="site-head__mobile-nav-toggle">
+		<button class="mobile-nav-toggle" :class="{ 'mobile-nav-toggle--active': menuActive }" @click="menuActive = !menuActive" aria-label="Hide Navigation Menu" :aria-expanded="menuActive">
+				<span class="mobile-nav-toggle__open">
+					<Burger/>
+				</span>
+			<span class="mobile-nav-toggle__close">
+					<Close/>
+				</span>
+		</button>
+	</div>
+	<div class="site-head__menu">
+		<nav class="nav" :class="{ 'nav--active': menuActive }" aria-label="Main">
+			<ul class="nav__list">
+				<li><a href="#" aria-current="page">Donate</a></li>
+				<li><a href="#">Become a Member</a></li>
+				<li><a href="#">Allocation of Funds</a></li>
+				<li><a href="#">FAQ</a></li>
+			</ul>
+		</nav>
+	</div>
+	<div class="site-head__locale locale" :class="{ 'locale--active': localeActive }">
+		<button class="locale__button" @click="localeActive = !localeActive">
+			<LocaleIcon/><span>en</span><ChevronDown/>
+		</button>
+		<form action="/" class="locale__form">
+			<label><input type="radio" name="locale" value="de"> Deutsch</label>
+			<label><input type="radio" name="locale" value="en" checked> English</label>
+			<button class="button" type="submit" data-button-size="small">Set Language</button>
+		</form>
+	</div>
+</header>
