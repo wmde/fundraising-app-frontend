@@ -39,7 +39,7 @@
 			</div>
 		</header>
 
-		<div class="wrapper flow footer-bottom__stretch">
+		<div class="content-wrapper flow footer-bottom__stretch">
 
 			<div class="sidebar" data-direction="rtl">
 
@@ -59,7 +59,7 @@
 		</div>
 
 		<footer class="site-foot">
-			<div class="wrapper">
+			<div class="content-wrapper">
 				<div class="sidebar" data-direction="rtl">
 					<div class="site-foot__content">
 						<figure class="site-foot__brand">

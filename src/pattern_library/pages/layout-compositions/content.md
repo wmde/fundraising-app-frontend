@@ -200,5 +200,6 @@ This should be used in all contexts where the content needs to be in the center 
 ### Examples
 
 ```html
-<div class="wrapper">I am centered and have a nice, consistent gutter.</div>
+
+<div class="content-wrapper">I am centered and have a nice, consistent gutter.</div>
 ```
