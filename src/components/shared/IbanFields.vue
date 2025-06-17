@@ -52,7 +52,7 @@
 								@field-changed="validateBankCode"
 							/>
 
-							<ErrorSummary :is-visible="showCalculatorErrorSummary" :items="[
+							<ErrorSummary :is-visible="showCalculatorErrorSummary" :focus-on-submit="false" :items="[
 								{
 									validity: accountNumberError ? Validity.INVALID : Validity.VALID,
 									message: $t( 'donation_form_account_number_error' ),
