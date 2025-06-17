@@ -1,4 +1,7 @@
-@import "variables.css";
+@import "variables/type.css";
+@import "variables/spacing.css";
+@import "variables/color.css";
+@import "variables/global.css";
 @import "global/reset.css";
 @import "global/fonts.css";
 @import "global/global-styles.css";

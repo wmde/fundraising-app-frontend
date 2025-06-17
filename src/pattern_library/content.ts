@@ -1,6 +1,7 @@
 import { Page } from '@src/pattern_library/pages/Page';
 import { Pattern } from '@src/pattern_library/patterns/Pattern';
 
+import cssVariables from '@src/pattern_library/pages/css-variables';
 import layoutCompositions from '@src/pattern_library/pages/layout-compositions';
 import utilityClasses from '@src/pattern_library/pages/utility-classes';
 
@@ -22,6 +23,7 @@ import siteHead from '@src/pattern_library/patterns/site-head';
 import summary from '@src/pattern_library/patterns/summary';
 
 const pages: Page[] = [
+	cssVariables,
 	layoutCompositions,
 	utilityClasses,
 ];

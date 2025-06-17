@@ -1,0 +1,41 @@
+/* TYPE
+This contains variables related to type
+
+Type Scaling: https://utopia.fyi/type/calculator?c=320,16,1.2,2720,18,1.25,5,2,&s=0.75%7C0.5%7C0.25,1.5%7C2%7C3%7C4%7C6,s-l%7Cs-xl&g=s,l,xl,12
+Our font sizes are scaled in steps by 1.2 (and by 1.25 on a large viewport) eg:
+
+Step 00: 1rem / 1.2 (small)
+Step 0:  1rem (base, this is 1em)
+Step 1:  1rem × 1.2 (bigger)
+Step 2:  1rem × 1.2 × 1.2 (bigger)
+Step 3:  1rem × 1.2 × 1.2 × 1.2 (bigger)
+
+This provides a consistent scaling which also dynamically resizes the text sizes based on viewport width.
+You can read more about it and see the math here: https://noahliebman.net/2024/01/the-math-and-css-of-responsive-type-scales/
+
+Type Leading: This defines a set of consistent line heights that can be used when needed
+*/
+
+:root {
+	--font-base: "Source Sans Pro", "Open Sans", Helvetica, Arial, sans-serif;
+	--font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+	--font-normal: 400;
+	--font-bold: 700;
+
+	/* Type Scaling */
+	--type-step-000: clamp(0.6944rem, 0.691rem + 0.017vw, 0.72rem);
+	--type-step-00: clamp(0.8333rem, 0.8244rem + 0.0444vw, 0.9rem);
+	--type-step-0: clamp(1rem, 0.9833rem + 0.0833vw, 1.125rem);
+	--type-step-1: clamp(1.2rem, 1.1725rem + 0.1375vw, 1.4063rem);
+	--type-step-2: clamp(1.44rem, 1.3976rem + 0.2119vw, 1.7578rem);
+	--type-step-3: clamp(1.728rem, 1.6654rem + 0.3128vw, 2.1973rem);
+	--type-step-4: clamp(2.0736rem, 1.9839rem + 0.4487vw, 2.7466rem);
+	--type-step-5: clamp(2.4883rem, 2.3623rem + 0.6299vw, 3.4332rem);
+
+	/* Type Leading */
+	--leading-micro: 0.85;
+	--leading-flat: 1;
+	--leading-fine: 1.2;
+	--leading-standard: 1.4;
+	--leading-loose: 1.7;
+}

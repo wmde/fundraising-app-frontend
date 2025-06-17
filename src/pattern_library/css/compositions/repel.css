@@ -1,7 +1,7 @@
 /*
 REPEL
-A little layout that pushes items away from each other where
-there is space in the viewport and stacks on small viewports
+Repel is used when you need 2 elements in a row that align to the left and right
+edges but will stack once there is not enough space for them.
 
 CUSTOM PROPERTIES AND CONFIGURATION
 --gutter (var(--space-m)): This defines the space
