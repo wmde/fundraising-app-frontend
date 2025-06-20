@@ -39,30 +39,30 @@ const name = computed( () => {
 		return props.address.companyName || '';
 	} else if ( props.address.addressType === 'person' || props.address.addressType === 'email' ) {
 
-	if ( !props.address.firstName?.trim() || !props.address.lastName?.trim() ) {
-		return '';
-	}
-
-	const nameParts: string[] = [];
-
-	if ( props.address.salutation || props.address.title ) {
-		const localisationKey = props.address.title
-			? 'address_salutation_academic_title'
-			: 'address_salutation_no_academic_title';
-
-		const renderedSalutationOrTitle = t( localisationKey, {
-			salutation: props.address.salutation || '',
-			title: props.address.title || '',
-		} );
-
-		if ( renderedSalutationOrTitle.trim() ) {
-			nameParts.push( renderedSalutationOrTitle.trim() );
+		if ( !props.address.firstName?.trim() || !props.address.lastName?.trim() ) {
+			return '';
 		}
+		const nameParts: string[] = [];
+
+		if ( props.address.salutation || props.address.title ) {
+			const localisationKey = props.address.title
+				? 'address_salutation_academic_title'
+				: 'address_salutation_no_academic_title';
+			const renderedSalutationOrTitle = t( localisationKey, {
+				salutation: props.address.salutation || '',
+				title: props.address.title || '',
+			} );
+
+			if ( renderedSalutationOrTitle.trim() ) {
+				nameParts.push( renderedSalutationOrTitle.trim() );
+			}
+		}
+		nameParts.push( props.address.firstName, props.address.lastName );
+
+		return nameParts.join( ' ' );
 	}
 
-	nameParts.push( props.address.firstName, props.address.lastName );
-
-	return nameParts.join( ' ' );
+	return '';
 } );
 
 const cleanedStreetAddress = computed( () =>
