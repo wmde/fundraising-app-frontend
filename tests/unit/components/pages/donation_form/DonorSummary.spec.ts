@@ -44,7 +44,7 @@ describe( 'DonorSummary.vue', () => {
 	];
 
 	const personalAddress: Address = {
-		addressType: 'private',
+		addressType: 'person',
 		salutation: 'Herr',
 		title: 'Dr.',
 		firstName: 'Vlad',
@@ -59,7 +59,7 @@ describe( 'DonorSummary.vue', () => {
 	};
 
 	const companyAddress: Address = {
-		addressType: 'company',
+		addressType: 'firma',
 		salutation: '',
 		title: '',
 		firstName: '',
@@ -71,6 +71,51 @@ describe( 'DonorSummary.vue', () => {
 		country: 'DE',
 		email: 'vlad-company@gmail.com',
 		companyName: 'Vlad Company',
+	};
+
+	const companyAddressWithAllFieldsFilledOut: Address = {
+		addressType: 'firma',
+		salutation: 'Herr',
+		title: 'Dr.',
+		firstName: 'Vlad',
+		lastName: 'Dracul',
+		fullName: 'Vlad Dracul',
+		companyName: 'Vlad Company',
+		street: 'Company Straße 2',
+		postcode: '12345',
+		city: 'Berlin',
+		country: 'DE',
+		email: 'vlad-company@gmail.com',
+	};
+
+	const personalAddressWithAllFieldsFilledOut: Address = {
+		addressType: 'person',
+		salutation: 'Herr',
+		title: 'Dr.',
+		firstName: 'Vlad',
+		lastName: 'Dracul',
+		fullName: 'Vlad Dracul',
+		companyName: 'Some Company',
+		street: 'Company Straße 2',
+		postcode: '12345',
+		city: 'Berlin',
+		country: 'DE',
+		email: 'vlad-company@gmail.com',
+	};
+
+	const anonymousAddress: Address = {
+		addressType: 'anonym',
+		salutation: 'Herr',
+		title: 'Dr.',
+		firstName: 'Vlad',
+		lastName: 'Dracul',
+		fullName: 'Vlad Dracul',
+		companyName: 'Vlad Company',
+		street: 'Blutgasse 5',
+		postcode: '80666',
+		city: 'München',
+		country: 'DE',
+		email: 'vlad@gmail.com',
 	};
 
 	const mocks = {
@@ -95,15 +140,13 @@ describe( 'DonorSummary.vue', () => {
 		expect( wrapper.find( 'h3.summary-title' ).text() ).toBe( 'donation_summary_contact_data_header' );
 	} );
 
-	it( 'renders companyName in bold when provided', () => {
+	it( 'renders companyName in bold when provided for firma address', () => {
 		const wrapper = mountWrapper( companyAddress );
 		const strong = wrapper.find( 'strong' );
 		const text = strong.text();
-
 		expect( strong.exists() ).toBe( true );
 		expect( text ).toBe( 'Vlad Company' );
-		expect( text ).not.toContain( 'Herr' );
-		expect( text ).not.toContain( 'Dr.' );
+		expect( text ).not.toBe( 'Dr. Dracul' );
 	} );
 
 	it( 'renders first name and last name in bold when neither salutation nor title is provided', () => {
@@ -118,14 +161,14 @@ describe( 'DonorSummary.vue', () => {
 		expect( text ).not.toContain( '"key":"address_salutation_academic_title"' );
 	} );
 
-	it( 'does NOT render salutation/title if firstName is missing', () => {
+	it( 'does NOT render salutation/title/name if firstName is missing', () => {
 		const firstNameMissingAddress = { ...personalAddress, firstName: '' };
 		const firstNameMissingWrapper = mountWrapper( firstNameMissingAddress );
 
 		expect( firstNameMissingWrapper.find( 'strong' ).exists() ).toBe( false );
 	} );
 
-	it( 'does NOT render salutation/title if lastName is missing', () => {
+	it( 'does NOT render salutation/title/name if lastName is missing', () => {
 		const lastNameMissingAddress = { ...personalAddress, lastName: '' };
 		const lastNameMissingWrapper = mountWrapper( lastNameMissingAddress );
 
@@ -268,5 +311,68 @@ describe( 'DonorSummary.vue', () => {
 		expect( text ).toContain( '80666 München' );
 		expect( text ).toContain( 'Deutschland' );
 		expect( text ).toContain( 'vlad@gmail.com' );
+	} );
+
+	it( 'does not render personal details for FIRMA address even if provided', () => {
+		const wrapper = mountWrapper( companyAddressWithAllFieldsFilledOut );
+		const strong = wrapper.find( 'strong' );
+		const text = strong.text();
+		expect( strong.exists() ).toBe( true );
+		expect( text ).toBe( 'Vlad Company' );
+		expect( text ).not.toContain( 'Dracul' );
+		expect( text ).not.toContain( 'Herr' );
+		expect( text ).not.toContain( 'Dr.' );
+	} );
+
+	it( 'does not render companyName for PERSON address even if provided', () => {
+		const wrapper = mountWrapper( personalAddressWithAllFieldsFilledOut );
+		const strong = wrapper.find( 'strong' );
+		const text = strong.text();
+		expect( strong.exists() ).toBe( true );
+		expect( text ).toContain( 'Vlad Dracul' );
+		expect( text ).not.toContain( 'Some Company' );
+	} );
+
+	it( 'does not render name for ANONYM address', () => {
+		const wrapper = mountWrapper( anonymousAddress );
+		expect( wrapper.find( 'strong' ).exists() ).toBe( false );
+	} );
+
+	it( 'does not render name for UNSET address type', () => {
+		const unsetAddress: Address = {
+			addressType: 'unset',
+			salutation: 'Herr',
+			title: 'Dr.',
+			firstName: 'Vlad',
+			lastName: 'Dracul',
+			fullName: 'Vlad Dracul',
+			companyName: 'Vlad Company',
+			street: 'Blutgasse 5',
+			postcode: '80666',
+			city: 'München',
+			country: 'DE',
+			email: 'vlad@gmail.com',
+		};
+		const wrapper = mountWrapper( unsetAddress );
+		expect( wrapper.find( 'strong' ).exists() ).toBe( false );
+	} );
+
+	it( 'does not render name for EMPTY address type', () => {
+		const unsetAddress: Address = {
+			addressType: '',
+			salutation: 'Herr',
+			title: 'Dr.',
+			firstName: 'Vlad',
+			lastName: 'Dracul',
+			fullName: 'Vlad Dracul',
+			companyName: 'Vlad Company',
+			street: 'Blutgasse 5',
+			postcode: '80666',
+			city: 'München',
+			country: 'DE',
+			email: 'vlad@gmail.com',
+		};
+		const wrapper = mountWrapper( unsetAddress );
+		expect( wrapper.find( 'strong' ).exists() ).toBe( false );
 	} );
 } );
