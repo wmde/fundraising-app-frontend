@@ -122,10 +122,6 @@ const {
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
-const hasPaymentData = computed( () =>
-	paymentSummary.value.amount > 0 || Boolean( paymentSummary.value.paymentType )
-);
-
 const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHandler(
 	store,
 	addressType,
