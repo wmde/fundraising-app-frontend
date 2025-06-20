@@ -44,7 +44,7 @@ describe( 'DonorSummary.vue', () => {
 	];
 
 	const personalAddress: Address = {
-		addressType: 'private',
+		addressType: 'person',
 		salutation: 'Herr',
 		title: 'Dr.',
 		firstName: 'Vlad',
@@ -59,7 +59,7 @@ describe( 'DonorSummary.vue', () => {
 	};
 
 	const companyAddress: Address = {
-		addressType: 'company',
+		addressType: 'firma',
 		salutation: '',
 		title: '',
 		firstName: '',
@@ -103,6 +103,7 @@ describe( 'DonorSummary.vue', () => {
 		email: 'vlad-company@gmail.com',
 	};
 
+	// This can happen when a user fills out all the fields and switches to '(donate as ) anonymous'
 	const anonymousAddressWithAllFieldsFilledOut: Address = {
 		addressType: 'anonym',
 		salutation: 'Herr',
@@ -155,15 +156,13 @@ describe( 'DonorSummary.vue', () => {
 		expect( wrapper.find( 'h3.summary-title' ).text() ).toBe( 'donation_summary_contact_data_header' );
 	} );
 
-	it( 'renders companyName in bold when provided', () => {
+	it( 'renders companyName in bold when provided for firma address', () => {
 		const wrapper = mountWrapper( companyAddress );
 		const strong = wrapper.find( 'strong' );
 		const text = strong.text();
-
 		expect( strong.exists() ).toBe( true );
 		expect( text ).toBe( 'Vlad Company' );
-		expect( text ).not.toContain( 'Herr' );
-		expect( text ).not.toContain( 'Dr.' );
+		expect( text ).not.toBe( 'Dr. Dracul' );
 	} );
 
 	it( 'renders first name and last name in bold when neither salutation nor title is provided', () => {
@@ -178,14 +177,14 @@ describe( 'DonorSummary.vue', () => {
 		expect( text ).not.toContain( '"key":"address_salutation_academic_title"' );
 	} );
 
-	it( 'does NOT render salutation/title if firstName is missing', () => {
+	it( 'does NOT render salutation/title/name if firstName is missing', () => {
 		const firstNameMissingAddress = { ...personalAddress, firstName: '' };
 		const firstNameMissingWrapper = mountWrapper( firstNameMissingAddress );
 
 		expect( firstNameMissingWrapper.find( 'strong' ).exists() ).toBe( false );
 	} );
 
-	it( 'does NOT render salutation/title if lastName is missing', () => {
+	it( 'does NOT render salutation/title/name if lastName is missing', () => {
 		const lastNameMissingAddress = { ...personalAddress, lastName: '' };
 		const lastNameMissingWrapper = mountWrapper( lastNameMissingAddress );
 
