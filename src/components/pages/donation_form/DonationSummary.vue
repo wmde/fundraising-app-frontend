@@ -18,8 +18,8 @@
 			<div v-if="bankData">
 				<h3 class="summary-title">{{ $t('donation_form_summary_bank_details') }}</h3>
 				<strong>{{ $t('donation_form_summary_iban') }}</strong> {{ bankData.iban }}<br>
-				<strong>{{ $t('donation_form_summary_bic') }}</strong> {{ bankData.bic }}<br>
-				<strong>{{ $t('donation_form_summary_bank_name') }}</strong> {{ bankData.bankName }}
+				<strong v-if="bankData.bic">{{ $t('donation_form_summary_bic') }}</strong> {{ bankData.bic }}<br>
+				<strong v-if="bankData.bankName">{{ $t('donation_form_summary_bank_name') }}</strong> {{ bankData.bankName }}
 			</div>
 		</div>
 	</div>
