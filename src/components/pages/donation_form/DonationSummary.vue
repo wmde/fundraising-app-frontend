@@ -6,7 +6,7 @@
 			<template v-if="interval"> {{ interval }}</template>
 			<template v-if="paymentType"> {{ $t('donation_summary_via') }} {{ paymentType }}</template>
 		</p>
-		<div class="switcher">
+		<div class="switcher" :class="{ 'no-contact': !address }">
 			<div>
 				<DonorSummary
 					v-if="address"
@@ -15,7 +15,7 @@
 					:salutations="salutations"
 				/>
 			</div>
-			<div v-if="bankData">
+			<div v-if="bankData" class="bank">
 				<h3 class="summary-title">{{ $t('donation_form_summary_bank_details') }}</h3>
 				<strong>{{ $t('donation_form_summary_iban') }}</strong> {{ bankData.iban }}<br>
 				<strong v-if="bankData.bic">{{ $t('donation_form_summary_bic') }}</strong> {{ bankData.bic }}<br>
@@ -64,5 +64,9 @@ const paymentType = computed( () => props.payment.paymentType ? t( props.payment
 .switcher > * {
 	flex-grow: 1;
 	flex-basis: calc((26rem - 100%) * 999);
+}
+
+.switcher.no-contact > div.bank {
+	flex-basis: 100%;
 }
 </style>
