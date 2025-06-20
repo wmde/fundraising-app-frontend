@@ -1,5 +1,5 @@
 <template>
-	<div id="laika-donation" @input="markInteracted">
+	<div id="laika-donation">
 		<PaymentSection
 			:payment-amounts="paymentAmounts"
 			:payment-intervals="paymentIntervals"
@@ -122,6 +122,10 @@ const {
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
+const hasPaymentData = computed( () =>
+	paymentSummary.value.amount > 0 || Boolean( paymentSummary.value.paymentType )
+);
+
 const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHandler(
 	store,
 	addressType,
@@ -139,12 +143,5 @@ const scrollToPaymentSection = () => {
 
 onMounted( () => {
 	trackDynamicForm();
-
-	const hasPaymentData =
-		paymentSummary.value.amount > 0 || Boolean( paymentSummary.value.paymentType );
-
-	if ( addressSummary.value || hasPaymentData ) {
-		hasInteracted.value = true;
-	}
 } );
 </script>
