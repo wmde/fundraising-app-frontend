@@ -40,6 +40,7 @@ const footerMenu = [
 	{ id: 'contact', url: `/contact/get-in-touch?${ campaignParams }` },
 	{ id: 'imprint', url: `/page/Impressum?${ campaignParams }` },
 	{ id: 'data_protection', url: `/page/Datenschutz?${ campaignParams }` },
+	{ id: 'accessibility_statement', url: `/page/accessibility-statement?${ campaignParams }` },
 	{ id: 'supporters_list', url: `/page/hall-of-fame?${ campaignParams }` },
 	{ id: 'donor_comments', url: `/list-comments.html?${ campaignParams }` },
 ];
