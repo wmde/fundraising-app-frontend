@@ -261,4 +261,14 @@ describe( 'CityAutocompleteField.vue', () => {
 
 		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
 	} );
+
+	it( 'updates value on model change', async () => {
+		const wrapper = getWrapper();
+
+		expect( wrapper.find<HTMLInputElement>( '#city' ).element.value ).toBe( '' );
+
+		await wrapper.setProps( { modelValue: 'Berlin' } );
+
+		expect( wrapper.find<HTMLInputElement>( '#city' ).element.value ).toBe( 'Berlin' );
+	} );
 } );
