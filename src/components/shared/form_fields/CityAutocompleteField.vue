@@ -181,6 +181,10 @@ watch( city, ( newCity: string ) => {
 	emit( 'update:modelValue', newCity );
 } );
 
+watch( () => props.modelValue, ( newValue: string ) => {
+	city.value = newValue;
+} );
+
 </script>
 
 <style lang="scss">
