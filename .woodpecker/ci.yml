@@ -6,7 +6,13 @@
 steps:
     -   name: build
         when: 
-          - event: [ push, pull_request_closed, cron, manual ]
+          # Note that for pull request events (`pull_request`, `pull_request_closed`) the 
+          # variable $CI_COMMIT_BRANCH (i.e. "branch name") is the 
+          # *target* branch of the pull request (e.g. "main" for a PR to main from a feature branch)
+          # This is why we don't included the events in the `when` clause above.
+          # The build step would override `main` with a random feature branch
+          # When we merge a feature branch into `main`, this will trigger a `push` event on `main`
+          - event: [ push, cron, manual ]
             branch:
               exclude: [ dependabot/* ]
         image: node:20-alpine
@@ -24,8 +30,6 @@ steps:
             - echo "$CI_PIPELINE_STARTED" >> dist/DEPLOY_ID
             - cd dist/
             # Replace slashes with underscores, add suffix
-            # Note that for pull request events (which are not included in the when clause above),
-            # the branch name is the *target* branch (e.g. "main" for a PR to main from a feature branch)
             - ARCHIVE_NAME="${CI_COMMIT_BRANCH//\//_}.tar.gz"
             - tar -czvf /build/$ARCHIVE_NAME .
             # 1008 is the hardcoded user ID of the deploy user
