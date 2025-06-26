@@ -19,7 +19,7 @@ export default {
 		'@stylistic/computed-property-spacing': [ 'error', 'always' ],
 		'@stylistic/dot-location': [ 'error', 'property' ],
 		'@stylistic/eol-last': 'error',
-		'@stylistic/func-call-spacing': 'error',
+		'@stylistic/function-call-spacing': 'error',
 		'@stylistic/indent': [ 'error', 'tab', { SwitchCase: 1 } ],
 		'@stylistic/keyword-spacing': 'error',
 		'@stylistic/linebreak-style': [ 'error', 'unix' ],
