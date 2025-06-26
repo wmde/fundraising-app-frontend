@@ -1,0 +1,1 @@
+This is used at the end of the donation comments page. There will never be more than 10 pages of comments.

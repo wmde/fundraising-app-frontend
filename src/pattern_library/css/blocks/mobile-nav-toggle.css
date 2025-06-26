@@ -1,0 +1,38 @@
+.mobile-nav-toggle {
+	--icon-fill: var(--color-grey-800);
+	--button-width: var(--navigation-height);
+	--button-height: var(--navigation-height);
+
+	all: unset;
+	display: flex;
+	height: var(--button-width);
+	width: var(--button-height);
+	justify-content: center;
+	align-items: center;
+}
+
+.mobile-nav-toggle:hover,
+.mobile-nav-toggle:focus {
+	background-color: var(--color-grey-100);
+}
+
+.mobile-nav-toggle__open,
+.mobile-nav-toggle__close {
+	justify-content: center;
+}
+
+.mobile-nav-toggle__open {
+	display: flex;
+}
+
+.mobile-nav-toggle__close {
+	display: none;
+}
+
+.mobile-nav-toggle--active .mobile-nav-toggle__close {
+	display: flex;
+}
+
+.mobile-nav-toggle--active .mobile-nav-toggle__open {
+	display: none;
+}

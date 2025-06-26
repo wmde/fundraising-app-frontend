@@ -1,0 +1,1 @@
+This is the button that is used to display the navigation on smaller screens.

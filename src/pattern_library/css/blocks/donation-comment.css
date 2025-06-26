@@ -1,0 +1,15 @@
+.donation-comment {
+	--flow-space: var(--space-l);
+}
+
+.donation-comment > * + * {
+	margin-block-start: var(--space-2xs);
+}
+
+.donation-comment__meta {
+	line-height: var(--leading-flat);
+}
+
+.donation-comment em {
+	color: var(--color-grey-600);
+}

@@ -1,0 +1,81 @@
+.accordion details {
+	--chevron-stroke: var(--summary-color, var(--color-grey-800));
+	--details-gutter: var(--gutter);
+	--summary-border: var(--stroke);
+	--summary-margin: var(--space-2xs);
+	--summary-padding: var(--space-2xs);
+
+	background: var(--background-color, transparent);
+	padding-inline: var(--padding-inline, 0);
+}
+
+.accordion details + details {
+	margin-block-start: var(--details-gutter);
+}
+
+.accordion summary {
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	color: var(--summary-color, currentColor);
+	padding-block: var(--summary-padding);
+	border-block-end: var(--summary-border);
+}
+
+.accordion summary::-webkit-details-marker {
+	display: none;
+}
+
+.accordion summary svg {
+	margin-inline-start: var(--gutter);
+}
+
+.accordion__summary-meta {
+	padding-inline-start: 1ch;
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.accordion details[open] {
+	padding-block-end: var(--gutter);
+}
+
+.accordion details[open] summary {
+	margin-block-end: var(--summary-margin);
+	color: var(--summary-color, var(--color-blue-600));
+}
+
+.accordion details[open] summary svg {
+	transform: scaleY(-1);
+}
+
+.accordion[data-theme="wikimedia"] details {
+	--padding-inline: var(--gutter);
+	--summary-border: 0;
+	--summary-margin: 0;
+	--summary-padding: var(--space-xs);
+}
+
+.accordion[data-theme="wikimedia"] details + details {
+	--details-gutter: 1px;
+}
+
+.accordion[data-theme="wikimedia"] details:nth-of-type(1n) {
+	--background-color: var(--color-wikimedia-green-light);
+	--summary-color: var(--color-wikimedia-green);
+}
+
+.accordion[data-theme="wikimedia"] details:nth-of-type(2n) {
+	--background-color: var(--color-wikimedia-red-light);
+	--summary-color: var(--color-wikimedia-red);
+}
+
+.accordion[data-theme="wikimedia"] details:nth-of-type(3n) {
+	--background-color: var(--color-wikimedia-blue-light);
+	--summary-color: var(--color-wikimedia-blue);
+}
+
+.accordion[data-theme="wikimedia"] details:nth-of-type(4n) {
+	--background-color: var(--color-wikimedia-grey-light);
+	--summary-color: var(--color-wikimedia-grey);
+}

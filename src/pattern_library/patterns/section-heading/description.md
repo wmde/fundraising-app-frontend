@@ -1,0 +1,1 @@
+A section heading is intended to be used on the top of content cards.

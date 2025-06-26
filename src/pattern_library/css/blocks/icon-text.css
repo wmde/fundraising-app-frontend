@@ -1,0 +1,27 @@
+.icon-text {
+	display: flex;
+}
+
+.icon-text:not(:has(h1, h2, h3)) {
+	--icon-height: calc(var(--type-step-0) * var(--leading-standard));
+	--icon-gutter: 1ch;
+}
+
+.icon-text:has(h1) {
+	--icon-height: calc(var(--type-step-3) * var(--leading-fine));
+}
+
+.icon-text:has(h2) {
+	--icon-height: calc(var(--type-step-2) * var(--leading-fine));
+}
+
+.icon-text:has(h3) {
+	--icon-height: calc(var(--type-step-1) * var(--leading-fine));
+}
+
+.icon-text__icon {
+	margin-inline-end: var(--icon-gutter, var(--gutter));
+	height: var(--icon-height);
+	display: flex;
+	align-items: center;
+}

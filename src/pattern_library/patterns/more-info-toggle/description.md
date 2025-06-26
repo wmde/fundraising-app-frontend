@@ -1,0 +1,1 @@
+This is used to display some extra information to a donor. If it follows a button it will snuggle up against it.

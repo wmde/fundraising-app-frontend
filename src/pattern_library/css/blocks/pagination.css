@@ -1,0 +1,31 @@
+.pagination {
+	--cluster-horizontal-alignment: center;
+	--gutter: var(--space-xs);
+	--chevron-fill: var(--color-grey-800);
+	--flow-space: var(--space-xl);
+}
+
+.pagination button {
+	height: var(--space-l);
+	width: var(--space-m);
+	background: transparent;
+	border: var(--stroke);
+	border-radius: var(--button-radius);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.pagination button[aria-current],
+.pagination button:hover,
+.pagination button:focus {
+	border-color: var(--color-blue-600);
+}
+
+.pagination button[aria-current] {
+	color: var(--color-blue-600);
+}
+
+.pagination button:disabled {
+	opacity: 0.5;
+}
