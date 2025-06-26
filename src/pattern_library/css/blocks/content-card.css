@@ -1,5 +1,5 @@
 .content-card {
-	--card-padding: var(--space-l);
+	--card-padding: var(--space-xs-l);
 
 	padding: var(--card-padding);
 	background: var(--color-white);
