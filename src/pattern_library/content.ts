@@ -4,6 +4,7 @@ import { Pattern } from '@src/pattern_library/patterns/Pattern';
 import cssVariables from '@src/pattern_library/pages/css-variables';
 import layoutCompositions from '@src/pattern_library/pages/layout-compositions';
 import utilityClasses from '@src/pattern_library/pages/utility-classes';
+import fontScaling from '@src/pattern_library/pages/font-scaling';
 import spacing from '@src/pattern_library/pages/spacing';
 
 import accordion from '@src/pattern_library/patterns/accordion';
@@ -27,6 +28,7 @@ const pages: Page[] = [
 	cssVariables,
 	layoutCompositions,
 	utilityClasses,
+	fontScaling,
 	spacing,
 ];
 
