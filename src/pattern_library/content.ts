@@ -4,6 +4,7 @@ import { Pattern } from '@src/pattern_library/patterns/Pattern';
 import cssVariables from '@src/pattern_library/pages/css-variables';
 import layoutCompositions from '@src/pattern_library/pages/layout-compositions';
 import utilityClasses from '@src/pattern_library/pages/utility-classes';
+import spacing from '@src/pattern_library/pages/spacing';
 
 import accordion from '@src/pattern_library/patterns/accordion';
 import button from '@src/pattern_library/patterns/button';
@@ -26,6 +27,7 @@ const pages: Page[] = [
 	cssVariables,
 	layoutCompositions,
 	utilityClasses,
+	spacing,
 ];
 
 const patterns: Pattern[] = [
