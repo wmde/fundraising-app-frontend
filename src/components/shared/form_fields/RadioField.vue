@@ -143,7 +143,9 @@ const onFieldChange = ( newValue: string | number | boolean | null ): void => {
 				padding: 0 map.get(units.$spacing, 'xx-small') 0;
 				margin-bottom: map.get(units.$spacing, 'small');
 
-				&:last-child {
+				/* We remove the margin from all items on the last row */
+				&:last-child,
+				&:nth-child( odd ):nth-last-of-type( 2 ) {
 					margin-bottom: 0;
 				}
 
