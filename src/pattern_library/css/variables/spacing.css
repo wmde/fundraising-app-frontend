@@ -30,5 +30,6 @@ The one up pairs give us spacing that uses the next step up as it's larger value
 	/* Custom pairs */
 	--space-s-l: clamp(1rem, 0.8333rem + 0.8333vw, 2.25rem);
 	--space-s-xl: clamp(1rem, 0.6833rem + 1.5833vw, 3.375rem);
+	--space-xs-l: clamp(0.75rem, 0.55rem + 1vw, 2.25rem);
 	--space-0-s: clamp(0rem, -0.15rem + 0.75vw, 1.125rem);
 }
