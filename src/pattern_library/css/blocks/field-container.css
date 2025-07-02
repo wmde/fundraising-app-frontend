@@ -1,0 +1,16 @@
+.field-container > * {
+	--flow-space: var(--space-2xs);
+}
+
+.field-container__error-text {
+	color: var(--color-red-700);
+	display: none;
+}
+
+.field-container[data-error] {
+	--form-field-border-color: var(--color-red-700);
+}
+
+.field-container[data-error] .field-container__error-text {
+	display: block;
+}
