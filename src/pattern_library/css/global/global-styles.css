@@ -39,8 +39,8 @@ small {
 
 ins {
 	text-decoration: none;
-	background: var(--color-primary);
-	color: var(--color-dark);
+	background: var(--color-blue-600);
+	color: var(--color-black);
 	padding-inline: 0.3em;
 }
 
@@ -135,7 +135,7 @@ dd {
 
 blockquote {
 	margin-inline: 0;
-	color: var(--color-light);
+	color: var(--color-grey-600);
 }
 
 blockquote footer {
@@ -178,7 +178,7 @@ figure {
 
 figcaption {
 	padding-block-start: 0.5em;
-	font-size: var(--size-step-0);
+	font-size: var(--type-step-0);
 	font-family: monospace;
 }
 
@@ -245,13 +245,9 @@ a:not([class]):hover {
 	outline: none;
 }
 
-:focus-visible {
-	outline: 2px solid var(--focus-color, currentColor);
-	outline-offset: var(--focus-offset, 0.2lh);
-}
-
-/* Firefox is the only browser that doesn't outline the whole element unless you make it display: inline-block. That in itself causes multiple flow issues so we can detect it, using its own vendor prefix and reduce focus offset
-*/
+/* Firefox is the only browser that doesn't outline the whole element unless you make it display: inline-block.
+ * That in itself causes multiple flow issues so we can detect it, using its own vendor prefix and reduce focus offset
+ */
 @supports (-moz-appearance: none) {
 	:root {
 		--focus-offset: 0.08em;
@@ -281,36 +277,118 @@ svg {
 svg[role='img'][width][height] {
 	width: revert;
 	height: revert;
-	background: var(--color-light);
+	background: var(--color-white);
 	padding: var(--space-xs);
 }
 
-/* There's a .flow composition, but this prevents forms from having to have that applied where markup is harder to control in certain systems. It still uses the --flow-space variables though to make managing space easier */
+/* There's a .flow composition, but this prevents forms from having to have that applied where markup is harder to
+ * control in certain systems. It still uses the --flow-space variables though to make managing space easier
+ */
 form > * + * {
-	margin-top: var(--flow-space, 1rem);
+	margin-top: var(--flow-space, var(--space-l));
 }
 
 :is(input, select, textarea) {
-	accent-color: var(--color-primary);
+	accent-color: var(--color-blue-600);
 }
 
-:is(input:not([type='checkbox'], [type='radio'], [type='color']), select, textarea) {
-	padding: 0.5em 0.8em;
-	border-radius: var(--radius-s);
-	border: var(--stroke-solid);
-	background: var(--color-dark-glare);
-	color: var(--color-light);
-	width: 100%;
+/* We hide the focus styles on radios and checkboxes because the enclosing label with be the visual indicator
+ */
+:is(:not([type='checkbox'], [type='radio'])):focus-visible {
+	--form-field-border-color: var(--color-blue-600);
+	outline: 2px solid var(--color-blue-600, currentColor);
+}
 
-	&::placeholder {
-		color: var(--color-mid);
-		opacity: 1;
-	}
+:is(input:not([type='checkbox'], [type='radio'], [type='color']), select, textarea),
+label:has([type='radio']) {
+	padding: 0.5em;
+	border: 1px solid var(--form-field-border-color, var(--color-grey-300));
+	border-radius: var(--border-radius);
+	background-color: var(--color-white);
+	color: var(--color-black);
+	width: 100%;
+	font-family: var(--font-base);
+	max-width: var(--form-field-max-width);
+	line-height: var(--leading-standard);
+}
+
+label:has([type='checkbox']) {
+	max-width: var(--form-field-max-width);
+}
+
+select {
+	appearance: none;
+	background: url("data:image/svg+xml,%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2022%2014%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xml%3Aspace%3D%22preserve%22%20xmlns%3Aserif%3D%22http%3A%2F%2Fwww.serif.com%2F%22%20style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A2%3B%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M9.939%2C12.657L0.747%2C3.464C0.162%2C2.879%200.162%2C1.929%200.747%2C1.343C1.332%2C0.758%202.283%2C0.758%202.868%2C1.343L11%2C9.475L19.132%2C1.343C19.717%2C0.758%2020.668%2C0.758%2021.253%2C1.343C21.838%2C1.929%2021.838%2C2.879%2021.253%2C3.464L12.061%2C12.657C11.475%2C13.242%2010.525%2C13.242%209.939%2C12.657Z%22%2F%3E%0A%3C%2Fsvg%3E") no-repeat 96% 55%;
+	background-size: 1em;
+}
+
+:is([type='checkbox'], [type='radio']) {
+	--radio-size: var(--space-s);
+
+	flex-shrink: 0;
+	appearance: none;
+	width: var(--radio-size);
+	height: var(--radio-size);
+	border: 1px solid var(--form-field-border-color, var(--color-grey-300));
+	position: relative;
+	background: var(--color-white);
+}
+
+:is([type='checkbox'], [type='radio']):checked {
+	background: var(--color-blue-600);
+}
+
+:is([type='checkbox'], [type='radio']):before {
+	content: '';
+	position: absolute;
+}
+
+[type='radio'] {
+	margin: 0.4ex 0 0;
+}
+
+[type='radio'],
+[type='radio']:before {
+	border-radius: 50%;
+}
+
+[type='radio']:before {
+	background: var(--color-white);
+	height: 40%;
+	width: 40%;
+	top: 30%;
+	left: 30%;
+	border-radius: 50%;
+}
+
+[type='checkbox'] {
+	margin: 0.2ex 0 0;
+	border-radius: 2px;
+}
+
+[type='checkbox']:before {
+	height: 80%;
+	width: 40%;
+	top: 2%;
+	left: 30%;
+	transform: rotateZ(45deg);
+	border-color: var(--color-white);
+	border-width: 0 3px 3px 0;
+	border-style: solid;
+}
+
+label:has([type='checkbox'], [type='radio'])::placeholder {
+	color: var(--color-grey-500);
+	opacity: 1;
+}
+
+label:has([type='checkbox'], [type='radio']):hover {
+	cursor: pointer;
 }
 
 label {
 	line-height: var(--leading-fine);
-	font-weight: var(--font-normal);
+	font-weight: var(--font-bold);
 }
 
 label::after {
@@ -321,18 +399,21 @@ label::after {
 /* Usually label wraps checkbox and radio buttons, so we give ourselves more layout and text-flow control with flex */
 label:has(input) {
 	display: flex;
-	align-items: baseline;
-	gap: var(--space-s);
+	gap: 0.5em;
 	font-weight: var(--font-normal);
 }
 
-/* Slightly adjusts the vertical position of the check/radio */
-label:has(input) input {
-	transform: translateY(-0.1ex);
+label:has([type='checkbox']:focus-visible, [type='radio']:focus-visible) {
+	--form-field-border-color: var(--color-blue-600);
+	outline: 2px solid var(--color-blue-600, currentColor);
+}
+
+label:has([type='checkbox']:checked, [type='radio']:checked) {
+	--form-field-border-color: var(--color-blue-600);
 }
 
 input:disabled {
-	background: var(--color-mid);
+	background: var(--color-grey-500);
 }
 
 input:disabled,
@@ -341,8 +422,8 @@ label input:disabled + * {
 }
 
 fieldset {
-	border: var(--stroke);
-	padding: var(--space-s);
+	border: 0;
+	padding: 0;
 }
 
 button:not([disabled]) {
@@ -350,8 +431,7 @@ button:not([disabled]) {
 }
 
 legend {
-	font-weight: var(--font-normal);
-	padding-inline: var(--space-xs);
+	font-weight: var(--font-bold);
 }
 
 summary {

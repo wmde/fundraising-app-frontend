@@ -10,9 +10,11 @@ import accordion from '@src/pattern_library/patterns/accordion';
 import button from '@src/pattern_library/patterns/button';
 import contentCard from '@src/pattern_library/patterns/content-card';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
+import fieldContainer from '@src/pattern_library/patterns/mailing-list-checkbox';
 import footerNav from '@src/pattern_library/patterns/footer-nav';
 import iconText from '@src/pattern_library/patterns/icon-text';
 import locale from '@src/pattern_library/patterns/locale';
+import mailingListCheckbox from '@src/pattern_library/patterns/field-container';
 import mobileNavToggle from '@src/pattern_library/patterns/mobile-nav-toggle';
 import modalDialogue from '@src/pattern_library/patterns/modal-dialogue';
 import moreInfoToggle from '@src/pattern_library/patterns/more-info-toggle';
@@ -35,9 +37,11 @@ const patterns: Pattern[] = [
 	button,
 	contentCard,
 	donationComment,
+	fieldContainer,
 	footerNav,
 	iconText,
 	locale,
+	mailingListCheckbox,
 	mobileNavToggle,
 	modalDialogue,
 	moreInfoToggle,
