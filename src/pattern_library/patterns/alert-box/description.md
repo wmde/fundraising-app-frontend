@@ -1,0 +1,1 @@
+Alert boxes are used for displaying messages to the donors, this is mostly used for displaying error summaries.
