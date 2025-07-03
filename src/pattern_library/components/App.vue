@@ -41,7 +41,9 @@
 
 		<div class="content-wrapper flow footer-bottom__stretch">
 
-			<div class="sidebar" data-direction="rtl">
+			<component v-if="sample" :is="sample.component" :content="content"/>
+
+			<div v-else class="sidebar" data-direction="rtl">
 
 				<main class="flow">
 					<PageDetail v-if="page" :page="page"/>
@@ -101,6 +103,7 @@ import { Pattern } from '@src/pattern_library/patterns/Pattern';
 import PatternDetail from '@src/pattern_library/components/PatternDetail.vue';
 import { Page } from '@src/pattern_library/pages/Page';
 import PageDetail from '@src/pattern_library/components/PageDetail.vue';
+import { Sample } from '@src/pattern_library/samples/Sample';
 
 interface Props {
 	patternID: string;
@@ -113,6 +116,7 @@ const menuActive = ref<boolean>( false );
 const localeActive = ref<boolean>( false );
 const page = computed<Page | undefined>( () => props.content.pages.find( x => x.url === props.patternID ) );
 const pattern = computed<Pattern | undefined>( () => props.content.patterns.find( x => x.url === props.patternID ) );
+const sample = computed<Sample | undefined>( () => props.content.samples.find( x => x.url === props.patternID ) );
 
 const dialog = ref<HTMLDialogElement>( null );
 const modalIsVisible = ref<boolean>( false );

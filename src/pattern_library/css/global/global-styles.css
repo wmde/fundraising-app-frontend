@@ -426,6 +426,11 @@ fieldset {
 	padding: 0;
 }
 
+/* We consider the legend element to be the main "label" in fieldsets so actual labels should not be bold */
+fieldset:has(legend) label {
+	font-weight: var(--font-normal);
+}
+
 button:not([disabled]) {
 	cursor: pointer;
 }

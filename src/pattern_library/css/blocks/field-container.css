@@ -14,3 +14,7 @@
 .field-container[data-error] .field-container__error-text {
 	display: block;
 }
+
+.field-container__radio-grid {
+	max-width: var(--form-field-max-width);
+}

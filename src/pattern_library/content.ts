@@ -1,5 +1,6 @@
 import { Page } from '@src/pattern_library/pages/Page';
 import { Pattern } from '@src/pattern_library/patterns/Pattern';
+import { Sample } from '@src/pattern_library/samples/Sample';
 
 import cssVariables from '@src/pattern_library/pages/css-variables';
 import layoutCompositions from '@src/pattern_library/pages/layout-compositions';
@@ -24,6 +25,8 @@ import sectionHeading from '@src/pattern_library/patterns/section-heading';
 import siteFoot from '@src/pattern_library/patterns/site-foot';
 import siteHead from '@src/pattern_library/patterns/site-head';
 import summary from '@src/pattern_library/patterns/summary';
+
+import donationForm from '@src/pattern_library/samples/donation-form';
 
 const pages: Page[] = [
 	cssVariables,
@@ -53,12 +56,18 @@ const patterns: Pattern[] = [
 	summary,
 ];
 
+const samples: Sample[] = [
+	donationForm,
+];
+
 export interface Content {
 	pages: Page[];
 	patterns: Pattern[];
+	samples: Sample[];
 }
 
 export const content: Content = {
 	pages,
 	patterns: patterns.sort( ( x, y ) => x.name.localeCompare( y.name ) ),
+	samples,
 };
