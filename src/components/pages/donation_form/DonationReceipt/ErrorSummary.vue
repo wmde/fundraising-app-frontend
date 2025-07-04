@@ -267,12 +267,12 @@
 
 <script setup lang="ts">
 
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import { toRef } from 'vue';
 import { useStore } from 'vuex';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
-import { ReceiptModel } from '@src/components/shared/composables/useReceiptModel';
-import { toRef } from 'vue';
+import type { ReturnType as ReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 
 interface Props {
 	showErrorSummary: boolean;

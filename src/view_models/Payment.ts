@@ -1,13 +1,17 @@
 import { Validity } from './Validity';
 
+export interface PaymentValues {
+	amount: string;
+	type: string;
+	interval: string;
+}
+
 export interface Payment {
 	isValidating: boolean;
 	validity: {
 		[key: string]: Validity;
 	};
-	values: {
-		[key: string]: string;
-	};
+	values: PaymentValues;
 }
 
 export interface AmountData {

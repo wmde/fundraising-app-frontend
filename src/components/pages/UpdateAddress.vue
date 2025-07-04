@@ -86,7 +86,7 @@
 
 			<ServerMessage :server-message="serverErrorMessage"/>
 
-			<SubmitValues :tracking-data="{}"/>
+			<SubmitValues />
 
 			<div class="update-address-form-button">
 				<FormButton

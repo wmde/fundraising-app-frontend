@@ -447,7 +447,11 @@ describe( 'Payment', () => {
 				initialized: true,
 				isValidating: false,
 				validity: {},
-				values: {},
+				values: {
+					amount: '',
+					interval: '',
+					type: '',
+				},
 			},
 		} );
 

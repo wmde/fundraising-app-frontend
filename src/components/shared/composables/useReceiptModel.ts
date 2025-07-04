@@ -2,7 +2,7 @@ import { Store } from 'vuex';
 import { computed, ComputedRef, Ref, ref, watch } from 'vue';
 import { action } from '@src/store/util';
 
-type ReturnType = {
+export type ReturnType = {
 	receiptNeeded: Ref<boolean>;
 	showReceiptOptionError: ComputedRef<any>;
 };

@@ -1,12 +1,12 @@
 import { Module } from 'vuex';
-import type { Payment } from '@src/view_models/Payment';
 import { Validity } from '@src/view_models/Validity';
 import { actions } from '@src/store/membership_fee/actions';
 import { getters } from '@src/store/membership_fee/getters';
 import { mutations } from '@src/store/membership_fee/mutations';
+import type { MembershipFee } from '@src/view_models/MembershipFee';
 
-export default function (): Module<Payment, any> {
-	const state: Payment = {
+export default function (): Module<MembershipFee, any> {
+	const state: MembershipFee = {
 		isValidating: false,
 		validity: {
 			fee: Validity.INCOMPLETE,

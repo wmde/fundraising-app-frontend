@@ -35,51 +35,49 @@
 	</span>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
-import type { Payment } from '@src/view_models/Payment';
-import type { AddressState } from '@src/view_models/Address';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import type { PaymentValues } from '@src/view_models/Payment';
+import type { Address } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
-import type { BankAccount } from '@src/view_models/BankAccount';
+import type { BankAccountValues } from '@src/view_models/BankAccount';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
 
-export default defineComponent( {
-	name: 'SubmitValues',
-	props: {
-		trackingData: Object as () => TrackingData,
-		campaignValues: Object as () => CampaignValues,
-	},
-	computed: {
-		...mapState<Payment>( 'payment', {
-			payment: ( state: Payment ) => state.values,
-		} ),
-		...mapState<AddressState>( 'address', {
-			address: ( state: AddressState ) => state.values,
-			addressType: ( state: AddressState ) => {
-				return addressTypeName( state.addressType );
-			},
-		} ),
-		...mapState<BankAccount>( 'bankdata', {
-			bankdata: ( state: BankAccount ) => state.values,
-		} ),
-		sendPostalAddress(): boolean {
-			return this.addressType !== 'anonym' && this.addressType !== 'email';
-		},
-		sendNameAndEmail(): boolean {
-			return this.addressType !== 'anonym';
-		},
-		newsletter(): string {
-			return this.$store.getters[ 'address/willGetNewsletter' ] ? '1' : '0';
-		},
-		receipt(): string {
-			return this.$store.getters[ 'address/willGetReceipt' ] ? '1' : '0';
-		},
-		street(): string {
-			return clearStreetAndBuildingNumberSeparator( this.$store.state.address.values.street );
-		},
-	},
+// Define component props
+interface Props {
+	trackingData?: TrackingData;
+	campaignValues?: CampaignValues;
+}
+
+defineProps<Props>();
+
+const store = useStore();
+
+const payment = computed( () => store.state.payment.values as PaymentValues );
+const address = computed( () => store.state.address.values as Address );
+const addressType = computed( () => addressTypeName( store.state.address.addressType ) );
+const bankdata = computed( () => store.state.bankdata.values as BankAccountValues );
+
+const sendPostalAddress = computed( (): boolean => {
+	return addressType.value !== 'anonym' && addressType.value !== 'email';
+} );
+
+const sendNameAndEmail = computed( (): boolean => {
+	return addressType.value !== 'anonym';
+} );
+
+const newsletter = computed( (): string => {
+	return store.getters[ 'address/willGetNewsletter' ] ? '1' : '0';
+} );
+
+const receipt = computed( (): string => {
+	return store.getters[ 'address/willGetReceipt' ] ? '1' : '0';
+} );
+
+const street = computed( (): string => {
+	return clearStreetAndBuildingNumberSeparator( store.state.address.values.street );
 } );
 </script>
