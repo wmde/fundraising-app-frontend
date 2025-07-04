@@ -1,0 +1,1 @@
+When a donor selects direct debit we give them the option to generate their IBAN using their bank account number and their Bank Code.
