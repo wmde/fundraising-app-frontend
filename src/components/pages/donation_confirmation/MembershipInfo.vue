@@ -23,18 +23,20 @@
 
 <script setup lang="ts">
 import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
-import type { Donation } from '@src/view_models/Donation';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 interface Props {
-	donation: Donation;
+	donation: {
+		id: number;
+		accessToken: string;
+	};
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'membership-cta-button-shown', 'membership-cta-button-hidden' ] );
 
-let buttonVisibilityObserver;
+let buttonVisibilityObserver: IntersectionObserver;
 const buttonIsVisible = ref( false );
 const buttonRef = ref<HTMLElement>( null );
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
