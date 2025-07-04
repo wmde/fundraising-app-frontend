@@ -22,16 +22,25 @@ to change how empty grid tracks are handled */
 	gap: var(--gutter, var(--space-l));
 }
 
-/* A split 50/50 layout */
+/* A split 50/50 layout that sizes */
 .grid[data-layout='50-50'] {
 	--grid-placement: auto-fit;
 	--grid-min-item-size: clamp(8rem, 50vw, 24rem);
+}
+
+.grid[data-layout='halves'] {
+	--grid-placement: auto-fit;
+	--grid-min-item-size: clamp(10rem, 40%, 24rem);
 }
 
 /* Three column grid layout */
 .grid[data-layout='thirds'] {
 	--grid-placement: auto-fit;
 	--grid-min-item-size: clamp(16rem, 33%, 20rem);
+}
+
+.grid[data-layout='quarters'] {
+	--grid-min-item-size: clamp(5rem, 20%, 18rem);
 }
 
 .grid__item-full-width {
