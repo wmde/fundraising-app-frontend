@@ -52,12 +52,6 @@ describe( 'SubmitValues.vue', () => {
 		} );
 
 		wrapper = mount( SubmitValues, {
-			props: {
-				trackingData: {
-					bannerImpressionCount: 1,
-					impressionCount: 5,
-				},
-			},
 			global: {
 				plugins: [ store ],
 			},
