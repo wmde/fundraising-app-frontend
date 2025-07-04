@@ -1,15 +1,17 @@
 import { Validity } from './Validity';
 
+export interface BankAccountValues {
+	bankName: string;
+	iban: string;
+	bic: string;
+}
+
 export interface BankAccount {
 	isValidating: boolean;
 	validity: {
 		iban: Validity;
 	};
-	values: {
-		bankName: string;
-		iban: string;
-		bic: string;
-	};
+	values: BankAccountValues;
 }
 
 export interface InitialBankAccountData {

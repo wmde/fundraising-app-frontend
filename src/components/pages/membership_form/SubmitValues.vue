@@ -35,13 +35,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapState } from 'vuex';
-import type { Payment } from '@src/view_models/Payment';
 import type { MembershipAddressState } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import type { BankAccount } from '@src/view_models/BankAccount';
 import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
+import type { MembershipFee } from '@src/view_models/MembershipFee';
 
 export default defineComponent( {
 	name: 'SubmitValues',
@@ -50,8 +50,8 @@ export default defineComponent( {
 		campaignValues: Object as () => CampaignValues,
 	},
 	computed: {
-		...mapState<Payment>( 'membership_fee', {
-			fee: ( state: Payment ) => state.values,
+		...mapState<MembershipFee>( 'membership_fee', {
+			fee: ( state: MembershipFee ) => state.values,
 		} ),
 		...mapState<MembershipAddressState>( 'membership_address', {
 			address: ( state: MembershipAddressState ) => state.values,
