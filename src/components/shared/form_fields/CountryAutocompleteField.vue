@@ -70,11 +70,11 @@ interface Props {
 	modelValue: string;
 	inputId: string;
 	scrollTargetId: string;
-	label: String;
-	placeholder: String;
+	label: string;
+	placeholder: string;
 	countries?: Array<Country>;
 	showError: boolean;
-	errorMessage: String;
+	errorMessage: string;
 	wasRestored: boolean;
 }
 
