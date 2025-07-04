@@ -13,6 +13,14 @@ We want the footer to always be displayed on the bottom of the page, even when t
 </div>
 ```
 
+## Link Button
+
+Sometimes we want a button to look like a link.
+
+```html
+<button class="link-button">Calculate your IBAN</button>
+```
+
 ## Sticky
 
 We use this to make the sidebar content stay on screen when a donor scrolls the page. We set the top property to `calc(var(--gutter) + var(--navigation-height))` (again the fixed navigation height).

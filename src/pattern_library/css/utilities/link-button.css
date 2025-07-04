@@ -1,0 +1,13 @@
+/*
+ * This is for styling a button that looks like a link
+ */
+.link-button {
+	all: unset;
+	color: var(--color-blue-600);
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.link-button:hover {
+	color: var(--color-grey-800);
+}
