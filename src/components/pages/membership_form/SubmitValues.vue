@@ -32,42 +32,33 @@
 	</span>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
-import type { MembershipAddressState } from '@src/view_models/Address';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import type { Address } from '@src/view_models/Address';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
-import type { BankAccount } from '@src/view_models/BankAccount';
-import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
+import type { BankAccountValues } from '@src/view_models/BankAccount';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
-import type { MembershipFee } from '@src/view_models/MembershipFee';
+import type { MembershipFeeValues } from '@src/view_models/MembershipFee';
+import { membershipTypeName } from '@src/view_models/MembershipTypeModel';
 
-export default defineComponent( {
-	name: 'SubmitValues',
-	props: {
-		trackingData: Object as () => TrackingData,
-		campaignValues: Object as () => CampaignValues,
-	},
-	computed: {
-		...mapState<MembershipFee>( 'membership_fee', {
-			fee: ( state: MembershipFee ) => state.values,
-		} ),
-		...mapState<MembershipAddressState>( 'membership_address', {
-			address: ( state: MembershipAddressState ) => state.values,
-			addressType: ( state: MembershipAddressState ) => {
-				return addressTypeName( state.addressType );
-			},
-			receipt: ( state: MembershipAddressState ) => state.receipt ? '1' : '0',
-			incentives: ( state: MembershipAddressState ) => state.incentives,
-			membershipType: ( state: MembershipAddressState ) => membershipTypeName( state.membershipType ),
-			formattedDateOfBirth: ( state: MembershipAddressState ) => {
-				return state.values.date.replaceAll( '/', '-' );
-			},
-		} ),
-		...mapState( 'bankdata', {
-			bankdata: ( state: any ) => ( state as BankAccount ).values,
-		} ),
-	},
-} );
+interface Props {
+	trackingData: TrackingData;
+	campaignValues: CampaignValues;
+}
+
+defineProps<Props>();
+
+const store = useStore();
+
+const fee = computed( () => store.state.membership_fee.values as MembershipFeeValues );
+const address = computed( () => store.state.membership_address.values as Address );
+const addressType = computed( () => addressTypeName( store.state.membership_address.addressType ) );
+const membershipType = computed( () => membershipTypeName( store.state.membership_address.membershipType ) );
+const receipt = computed( () => store.state.membership_address.receipt ? '1' : '0' );
+const incentives = computed( () => store.state.membership_address.incentives );
+const formattedDateOfBirth = computed( () => ( store.state.membership_address.values.date ?? '' ).replaceAll( '/', '.' ) );
+const bankdata = computed( () => store.state.bankdata.values as BankAccountValues );
+
 </script>

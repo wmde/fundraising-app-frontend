@@ -1,13 +1,17 @@
 import { Validity } from '@src/view_models/Validity';
 
+export interface MembershipFeeValues {
+	fee: string;
+	type: string;
+	interval: string;
+}
+
 export interface MembershipFee {
 	isValidating: boolean;
 	validity: {
 		[key: string]: Validity;
 	};
-	values: {
-		[key: string]: string;
-	};
+	values: MembershipFeeValues;
 }
 
 export interface InitialMembershipFeeValues {
