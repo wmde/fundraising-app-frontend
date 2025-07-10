@@ -14,25 +14,15 @@
 	</span>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
-import type { AddressState } from '@src/view_models/Address';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
+import type { Address } from '@src/view_models/Address';
 
-export default defineComponent( {
-	name: 'SubmitValues',
-	props: [
-		'trackingData',
-	],
-	computed: {
-		...mapState<AddressState>( 'address', {
-			address: ( state: AddressState ) => state.values,
-			addressType: ( state: AddressState ) => {
-				return addressTypeName( state.addressType );
-			},
-			receipt: ( state: AddressState ) => state.receipt ? '1' : '0',
-		} ),
-	},
-} );
+const store = useStore();
+
+const address = computed( () => store.state.address.values as Address );
+const addressType = computed( () => addressTypeName( store.state.address.addressType ) );
+const receipt = computed( (): string => store.state.address.receipt ? '1' : '0' );
 </script>
