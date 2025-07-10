@@ -7,8 +7,8 @@ import typescriptStyle from './src/fun-coding-style/typescript.mjs';
 
 // A workaround until our project really uses the fixed "globals" package (eslint transitive dependency)
 // See https://github.com/sindresorhus/globals/issues/239
-const fixedBrowserGlobals = Object.assign( {}, globals.browser, { AudioWorkletGlobalScope: globals.browser[ 'AudioWorkletGlobalScope ' ] } );
-delete fixedBrowserGlobals[ 'AudioWorkletGlobalScope ' ];
+const fixedBrowserGlobals = Object.assign( {}, globals.browser, { AudioWorkletGlobalScope: globals.browser.AudioWorkletGlobalScope } );
+delete fixedBrowserGlobals.AudioWorkletGlobalScope;
 
 export default [
 	commonStyle,
