@@ -4,7 +4,7 @@
 			<h1>{{ pattern.name }}</h1>
 			<hr/>
 		</div>
-		<div v-html="pattern.description"></div>
+		<div class="flow" v-html="pattern.description"></div>
 	</div>
 
 	<component :is="pattern.examples" :assets-path="assetsPath"/>
