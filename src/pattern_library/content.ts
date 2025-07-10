@@ -9,6 +9,7 @@ import spacing from '@src/pattern_library/pages/spacing';
 
 import accordion from '@src/pattern_library/patterns/accordion';
 import button from '@src/pattern_library/patterns/button';
+import combobox from '@src/pattern_library/patterns/combobox';
 import contentCard from '@src/pattern_library/patterns/content-card';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
 import fieldContainer from '@src/pattern_library/patterns/mailing-list-checkbox';
@@ -38,6 +39,7 @@ const pages: Page[] = [
 const patterns: Pattern[] = [
 	accordion,
 	button,
+	combobox,
 	contentCard,
 	donationComment,
 	fieldContainer,

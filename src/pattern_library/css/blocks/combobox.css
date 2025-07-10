@@ -1,0 +1,39 @@
+.combobox {
+	position: relative;
+}
+
+ul.combobox__dropdown {
+	position: absolute;
+	top: 100%;
+	width: 100%;
+	max-width: var(--form-field-max-width);
+	height: 200px;
+	overflow-y: scroll;
+	background: var(--color-white);
+	box-shadow: 0 0.5em 1em -0.125em rgba(10.2, 10.2, 10.2, 0.1), 0 0 0 1px rgba(10.2, 10.2, 10.2, 0.02);
+	padding: var(--space-xs);
+	transition: opacity 200ms ease-in-out;
+}
+
+.combobox:not(:focus-within) .combobox__dropdown {
+	opacity: 0;
+	visibility: hidden;
+}
+
+ul.combobox__dropdown li {
+	display: flex;
+}
+
+ul.combobox__dropdown label {
+	border-radius: 0;
+	border: 0;
+	background: transparent;
+}
+
+ul.combobox__dropdown label:has(input:checked) {
+	background: var(--color-grey-100);
+}
+
+ul.combobox__dropdown hr {
+	flex-grow: 1;
+}

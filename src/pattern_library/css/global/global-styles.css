@@ -403,7 +403,7 @@ label:has(input) {
 	font-weight: var(--font-normal);
 }
 
-label:has([type='checkbox']:focus-visible, [type='radio']:focus-visible) {
+label:has([type='checkbox']:focus, [type='radio']:focus) {
 	--form-field-border-color: var(--color-blue-600);
 	outline: 2px solid var(--color-blue-600, currentColor);
 }
