@@ -10,5 +10,6 @@ This defines some global variables that are used across the library
 	--stroke-color: var(--color-grey-300);
 	--stroke: var(--stroke-width) solid var(--stroke-color);
 	--easing: cubic-bezier(0.885, 0.09, 0.49, 0.85);
-	--button-radius: 8px;
+	--border-radius: 8px;
+	--form-field-max-width: 520px;
 }

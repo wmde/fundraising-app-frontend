@@ -1,0 +1,1 @@
+The combobox is used to provide suggestions in a list alongside a text field that the donor can click on to fill the field.
