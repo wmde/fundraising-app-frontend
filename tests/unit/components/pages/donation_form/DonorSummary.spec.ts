@@ -232,6 +232,42 @@ describe( 'DonorSummary.vue', () => {
 		expect( text ).toContain( 'Vlad Dracul' );
 	} );
 
+	it( 'does not render any salutation key when the user picks "No Specification"', () => {
+		const noSpecificationAddress: Address = {
+			...personalAddress,
+			salutation: 'No Title',
+			title: '',
+			firstName: 'Vlad',
+			lastName: 'Dracul',
+		};
+
+		const wrapper = mountWrapper( noSpecificationAddress );
+		const text = wrapper.find( 'strong' ).text();
+
+		expect( text ).not.toContain( '"key":"address_salutation_academic_title"' );
+		expect( text ).not.toContain( '"key":"address_salutation_no_academic_title"' );
+		expect( text ).toBe( 'Vlad Dracul' );
+	} );
+
+	it( 'renders only the academic title (no salutation) when salutation="No Title" but title is set', () => {
+		const profAddress: Address = {
+			...personalAddress,
+			salutation: 'No Title',
+			title: 'Prof.',
+			firstName: 'Vlad',
+			lastName: 'Dracul',
+		};
+
+		const wrapper = mountWrapper( profAddress );
+		const text = wrapper.find( 'strong' ).text();
+
+		expect( text ).toContain(
+			'{"key":"address_salutation_academic_title","salutation":"","title":"Prof."}'
+		);
+		expect( text ).not.toContain( '"key":"address_salutation_no_academic_title"' );
+		expect( text ).toContain( 'Vlad Dracul' );
+	} );
+
 	it( 'renders street even when postcode is missing', () => {
 		const missingPostcodeAddress = { ...personalAddress, postcode: '' };
 		const wrapperMissingPostcodeAddress = mountWrapper( missingPostcodeAddress );
@@ -319,9 +355,7 @@ describe( 'DonorSummary.vue', () => {
 		expect( text ).toContain(
 			'{"key":"address_salutation_academic_title","salutation":"Herr","title":"Dr."}'
 		);
-		expect( text ).not.toContain(
-			'{"key":"address_salutation_no_academic_title","salutation":"Herr","title":"Dr."}'
-		);
+		expect( text ).not.toContain( '"key":"address_salutation_no_academic_title"' );
 		expect( text ).toContain( 'Vlad Dracul' );
 		expect( text ).toContain( 'Blutgasse 5' );
 		expect( text ).toContain( '80666 München' );
