@@ -1,16 +1,6 @@
 <template>
 	<div class="sticky flow">
-		<div v-if="false" class="content-card flow" data-sidebar-card>
-			<div class="section-heading">
-				<h2>Design Tokens</h2>
-				<hr>
-			</div>
-			<ul class="sidebar-links">
-				<li><a href="/colour">Colour</a></li>
-				<li><a href="/typography">Typography</a></li>
-				<li><a href="/spacing">Spacing</a></li>
-			</ul>
-		</div>
+		<slot/>
 		<div class="content-card flow" data-sidebar-card>
 			<div class="section-heading">
 				<h2>CSS</h2>
@@ -31,6 +21,17 @@
 				<li><a href="/pattern-library">All Patterns</a></li>
 				<li v-for="pattern in content.patterns" :key="pattern.url">
 					<a :href="'/pattern-library/' + pattern.url">{{ pattern.name }}</a>
+				</li>
+			</ul>
+		</div>
+		<div class="content-card flow" data-sidebar-card>
+			<div class="section-heading">
+				<h2>Samples</h2>
+				<hr>
+			</div>
+			<ul class="sidebar-links">
+				<li v-for="sample in content.samples" :key="sample.url">
+					<a :href="'/pattern-library/' + sample.url">{{ sample.name }}</a>
 				</li>
 			</ul>
 		</div>
