@@ -1,0 +1,70 @@
+.iban-calculator {
+	background: var(--color-blue-200);
+	position: relative;
+	transition: opacity 400ms ease-in-out;
+}
+
+.iban-calculator:not([data-visible]) {
+	height: 0;
+	visibility: hidden;
+	opacity: 0;
+	margin-block-start: 0;
+}
+
+.iban-calculator::before {
+	content: "";
+	position: absolute;
+	/* This is the distance the right side of the arrow is from the right.
+	 * Calculation: padding + ( close icon width / 2 ) - ( arrow width / 2 )
+	 */
+	right: calc(var(--space-xs) + 1.5ch - 8px);
+	top: -10px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 8px 10px 8px;
+	border-color: transparent transparent var(--color-blue-200) transparent;
+	transform: rotate(0deg);
+}
+
+.iban-calculator__heading {
+	padding: var(--space-xs);
+}
+
+.iban-calculator__close {
+	all: unset;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 5ch;
+	aspect-ratio: 1/1;
+	margin: -1ch;
+}
+
+.iban-calculator__scroller {
+	display: flex;
+	overflow-x: hidden;
+}
+
+.iban-calculator__scroller > [role='form'] {
+	--flow-space: var(--space-s);
+}
+
+.iban-calculator__scroller > div {
+	flex-shrink: 0;
+	width: 100%;
+	padding-inline: var(--space-xs);
+	padding-block-end: var(--space-xs);
+
+	transition: transform 500ms var(--easing);
+}
+
+.iban-calculator__result {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.iban-calculator[data-submitted] .iban-calculator__scroller > div {
+	transform: translateX(-100%);
+}
