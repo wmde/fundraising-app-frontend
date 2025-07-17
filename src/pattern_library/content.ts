@@ -7,6 +7,7 @@ import utilityClasses from '@src/pattern_library/pages/utility-classes';
 import spacing from '@src/pattern_library/pages/spacing';
 
 import accordion from '@src/pattern_library/patterns/accordion';
+import alertBox from '@src/pattern_library/patterns/alert-box';
 import button from '@src/pattern_library/patterns/button';
 import contentCard from '@src/pattern_library/patterns/content-card';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
@@ -32,6 +33,7 @@ const pages: Page[] = [
 
 const patterns: Pattern[] = [
 	accordion,
+	alertBox,
 	button,
 	contentCard,
 	donationComment,

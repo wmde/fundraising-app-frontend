@@ -16,6 +16,7 @@
 @import "compositions/switcher.css";
 @import "compositions/wrapper.css";
 @import "blocks/accordion.css";
+@import "blocks/alert-box.css";
 @import "blocks/button.css";
 @import "blocks/content-card.css";
 @import "blocks/donation-comment.css";
