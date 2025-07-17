@@ -42,26 +42,28 @@ const name = computed( () => {
 		if ( !props.address.firstName?.trim() || !props.address.lastName?.trim() ) {
 			return '';
 		}
+
 		const nameParts: string[] = [];
 
-		if ( props.address.salutation || props.address.title ) {
-			const localisationKey = props.address.title
+		const salutationObject = props.salutations.find( s => s.value === props.address.salutation );
+		const salutation = salutationObject?.display?.trim() || '';
+		const title = props.address.title?.trim() || '';
+
+		if ( title || salutation ) {
+			const key = title
 				? 'address_salutation_academic_title'
 				: 'address_salutation_no_academic_title';
-			const renderedSalutationOrTitle = t( localisationKey, {
-				salutation: props.address.salutation || '',
-				title: props.address.title || '',
-			} );
 
+			const renderedSalutationOrTitle = t( key, { salutation, title } );
 			if ( renderedSalutationOrTitle.trim() ) {
 				nameParts.push( renderedSalutationOrTitle.trim() );
 			}
 		}
+
 		nameParts.push( props.address.firstName, props.address.lastName );
 
 		return nameParts.join( ' ' );
 	}
-
 	return '';
 } );
 
