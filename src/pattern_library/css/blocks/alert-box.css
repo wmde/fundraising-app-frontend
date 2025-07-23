@@ -1,0 +1,27 @@
+.alert-box {
+	--border-color: var(--color-blue-600);
+	--background-color: var(--color-blue-200);
+
+	border: 1px solid var(--border-color);
+	background: var(--background-color);
+	padding: var(--space-xs-l);
+}
+
+.content-card .alert-box {
+	padding: var(--space-xs);
+}
+
+.alert-box[data-success] {
+	--border-color: var(--color-green-500);
+	--background-color: var(--color-green-100);
+}
+
+.alert-box[data-warning] {
+	--border-color: var(--color-yellow-300);
+	--background-color: var(--color-yellow-50);
+}
+
+.alert-box[data-error] {
+	--border-color: var(--color-red-700);
+	--background-color: var(--color-red-100);
+}

@@ -13,7 +13,7 @@ body {
 	line-height: var(--leading-fine);
 	text-wrap: balance;
 	font-weight: var(--font-normal);
-	max-width: 35ch;
+	max-width: 50ch;
 }
 
 h1 {
@@ -105,7 +105,7 @@ ol:not([class]) > li {
 }
 
 :is(ol, ul):not([class]) li + * {
-	margin-block-start: var(--flow-space, var(--space-2xs));
+	margin-block-start: var(--flow-space, var(--space-3xs));
 }
 
 ul ::marker {
