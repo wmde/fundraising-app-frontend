@@ -243,7 +243,7 @@
 					</div>
 
 					<div class="field-container flow">
-						<div class="mailing-list-checkbox flow">
+						<div class="verbose-checkbox flow">
 							<label>
 								<input type="checkbox" name="mailing-list" id="mailing-list" aria-describedby="mailing-list-hint">
 								<strong>Yes, I would like to be notified if Wikipedia needs my help in the future. I understand I can revoke my consent at any time by sending an email to spenden@wikimedia.de.</strong>

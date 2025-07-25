@@ -4,15 +4,14 @@
 
 .field-container__error-text {
 	color: var(--color-red-700);
-	display: none;
 }
 
 .field-container[data-error] {
 	--form-field-border-color: var(--color-red-700);
 }
 
-.field-container[data-error] .field-container__error-text {
-	display: block;
+.field-container:not([data-error]) .field-container__error-text {
+	display: none;
 }
 
 .field-container__radio-grid {

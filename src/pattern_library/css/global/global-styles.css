@@ -53,6 +53,7 @@ ins {
 	word-break: normal;
 	word-wrap: normal;
 	box-decoration-break: clone;
+	background: var(--color-grey-100);
 }
 
 /* This is quite a new property, so we want code styles to at least, not be huge or tiny */

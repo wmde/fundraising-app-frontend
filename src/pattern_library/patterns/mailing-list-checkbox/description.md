@@ -1,1 +1,0 @@
-The mailing list field is a special checkbox in that it has a long info paragraph that follows it that needs to line up with the label text.

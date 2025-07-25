@@ -77,7 +77,7 @@
 			</div>
 
 			<div class="field-container flow">
-				<div class="mailing-list-checkbox flow">
+				<div class="verbose-checkbox flow">
 					<label>
 						<input type="checkbox" name="mailing-list" id="mailing-list" aria-describedby="mailing-list-hint">
 						<strong>Yes, I would like to be notified if Wikipedia needs my help in the future. I understand I can revoke my consent at any time by sending an email to spenden@wikimedia.de.</strong>
@@ -85,6 +85,34 @@
 					<p id="mailing-list-hint">If you do not want to receive emails, please uncheck the box. You can also unsubscribe at any time in the future, for example, via the unsubscribe link at the bottom of each email or by sending an email to spenden@wikimedia.de. You can find further information in our <a href="#">privacy policy</a>.</p>
 				</div>
 			</div>
+
+			<fieldset class="field-container flow">
+				<legend>How often would you like to donate?</legend>
+				<div class="field-container__radio-grid">
+					<div class="grid" data-layout="halves">
+						<label>
+							<input type="radio" name="interval" id="interval-0">
+							<span>Single Payment</span>
+						</label>
+						<label>
+							<input type="radio" name="interval" id="interval-1">
+							<span>Monthly</span>
+						</label>
+						<label>
+							<input type="radio" name="interval" id="interval-3">
+							<span>Quarterly</span>
+						</label>
+						<label>
+							<input type="radio" name="interval" id="interval-6">
+							<span>Twice Yearly</span>
+						</label>
+						<label>
+							<input type="radio" name="interval" id="interval-12">
+							<span>Annually</span>
+						</label>
+					</div>
+				</div>
+			</fieldset>
 		</form>
 	</div>
 </template>

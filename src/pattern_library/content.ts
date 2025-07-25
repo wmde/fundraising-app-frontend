@@ -11,11 +11,10 @@ import accordion from '@src/pattern_library/patterns/accordion';
 import button from '@src/pattern_library/patterns/button';
 import contentCard from '@src/pattern_library/patterns/content-card';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
-import fieldContainer from '@src/pattern_library/patterns/mailing-list-checkbox';
+import fieldContainer from '@src/pattern_library/patterns/field-container';
 import footerNav from '@src/pattern_library/patterns/footer-nav';
 import iconText from '@src/pattern_library/patterns/icon-text';
 import locale from '@src/pattern_library/patterns/locale';
-import mailingListCheckbox from '@src/pattern_library/patterns/field-container';
 import mobileNavToggle from '@src/pattern_library/patterns/mobile-nav-toggle';
 import modalDialogue from '@src/pattern_library/patterns/modal-dialogue';
 import moreInfoToggle from '@src/pattern_library/patterns/more-info-toggle';
@@ -25,6 +24,7 @@ import sectionHeading from '@src/pattern_library/patterns/section-heading';
 import siteFoot from '@src/pattern_library/patterns/site-foot';
 import siteHead from '@src/pattern_library/patterns/site-head';
 import summary from '@src/pattern_library/patterns/summary';
+import verboseCheckbox from '@src/pattern_library/patterns/verbose-checkbox';
 
 import donationForm from '@src/pattern_library/samples/donation-form';
 
@@ -44,7 +44,6 @@ const patterns: Pattern[] = [
 	footerNav,
 	iconText,
 	locale,
-	mailingListCheckbox,
 	mobileNavToggle,
 	modalDialogue,
 	moreInfoToggle,
@@ -54,6 +53,7 @@ const patterns: Pattern[] = [
 	siteFoot,
 	siteHead,
 	summary,
+	verboseCheckbox,
 ];
 
 const samples: Sample[] = [
