@@ -1,0 +1,19 @@
+.field-container > * {
+	--flow-space: var(--space-2xs);
+}
+
+.field-container__error-text {
+	color: var(--color-red-700);
+}
+
+.field-container[data-error] {
+	--form-field-border-color: var(--color-red-700);
+}
+
+.field-container:not([data-error]) .field-container__error-text {
+	display: none;
+}
+
+.field-container__radio-grid {
+	max-width: var(--form-field-max-width);
+}

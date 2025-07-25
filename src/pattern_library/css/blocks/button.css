@@ -14,7 +14,7 @@
 	justify-content: center;
 	line-height: var(--leading-flat);
 	border: 1px solid var(--button-border-color);
-	border-radius: var(--button-radius);
+	border-radius: var(--border-radius);
 	background: var(--button-bg);
 	color: var(--button-text);
 	padding: var(--button-y-padding) var(--button-x-padding);
