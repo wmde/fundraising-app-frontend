@@ -1,0 +1,38 @@
+<div class="field-container flow">
+	<label for="country">Country</label>
+	<div class="combobox">
+		<input
+			ref="inputField"
+			type="text"
+			name="country"
+			id="country"
+			v-model="country"
+			role="combobox"
+			aria-controls="countries"
+			:aria-expanded="expanded"
+			:aria-activedescendant="selectedCountry ? `option-${selectedCountry}` : null"
+			@focus="expanded = true"
+			@blur="expanded = false"
+			@keydown="onKeydown"
+			@keydown.up.prevent="onArrowKeys( 'up' )"
+			@keydown.down.prevent="onArrowKeys( 'down' )"
+			@keydown.tab="onKeySubmit"
+			@keydown.enter="onKeySubmit"
+		>
+		<div ref="scroller" id="countries" tabindex="-1" role="listbox" aria-label="countries">
+			<template v-for="(countryOption, index) in filteredCountries" :key="index">
+				<hr v-if="index === 3"/><!-- This is hardcoded, you'll need a programmatic way of adding them in in production if needed -->
+				<button
+					role="option"
+					tabindex="-1"
+					:id="`option-${countryOption}`"
+					:aria-selected="selectedCountry == countryOption"
+					@click="onSelectOption( countryOption )"
+				>
+					{{ countryOption }}
+				</button>
+			</template>
+		</div>
+	</div>
+	<p class="field-container__error-text">Please enter a country.</p>
+</div>

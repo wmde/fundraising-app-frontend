@@ -10,6 +10,7 @@ import spacing from '@src/pattern_library/pages/spacing';
 import accordion from '@src/pattern_library/patterns/accordion';
 import alertBox from '@src/pattern_library/patterns/alert-box';
 import button from '@src/pattern_library/patterns/button';
+import combobox from '@src/pattern_library/patterns/combobox';
 import contentCard from '@src/pattern_library/patterns/content-card';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
 import fieldContainer from '@src/pattern_library/patterns/field-container';
@@ -41,6 +42,7 @@ const patterns: Pattern[] = [
 	accordion,
 	alertBox,
 	button,
+	combobox,
 	contentCard,
 	donationComment,
 	fieldContainer,
