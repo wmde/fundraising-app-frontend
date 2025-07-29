@@ -106,7 +106,7 @@ ol:not([class]) > li {
 }
 
 :is(ol, ul):not([class]) li + * {
-	margin-block-start: var(--flow-space, var(--space-3xs));
+	margin-block-start: var(--space-3xs);
 }
 
 ul ::marker {
@@ -260,8 +260,8 @@ a:not([class]):hover {
 }
 
 ::selection {
-	color: var(--color-black);
-	background: var(--color-blue-200);
+	color: var(--color-white);
+	background: var(--color-wikimedia-green);
 }
 
 /* TODO: Think about how to handle margin bottom in a flow element */
@@ -285,7 +285,7 @@ svg[role='img'][width][height] {
 /* There's a .flow composition, but this prevents forms from having to have that applied where markup is harder to
  * control in certain systems. It still uses the --flow-space variables though to make managing space easier
  */
-form > * + * {
+:is(form, [role='form']) > * + * {
 	margin-top: var(--flow-space, var(--space-l));
 }
 

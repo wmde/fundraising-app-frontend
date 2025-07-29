@@ -14,6 +14,7 @@ import contentCard from '@src/pattern_library/patterns/content-card';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
 import fieldContainer from '@src/pattern_library/patterns/field-container';
 import footerNav from '@src/pattern_library/patterns/footer-nav';
+import ibanCalculator from '@src/pattern_library/patterns/iban-calculator';
 import iconText from '@src/pattern_library/patterns/icon-text';
 import locale from '@src/pattern_library/patterns/locale';
 import mobileNavToggle from '@src/pattern_library/patterns/mobile-nav-toggle';
@@ -44,6 +45,7 @@ const patterns: Pattern[] = [
 	donationComment,
 	fieldContainer,
 	footerNav,
+	ibanCalculator,
 	iconText,
 	locale,
 	mobileNavToggle,
