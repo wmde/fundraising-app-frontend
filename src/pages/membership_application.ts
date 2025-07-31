@@ -93,6 +93,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 				pageIdentifier: PAGE_IDENTIFIER,
 				page: MembershipForm,
+				usesContentCards: true,
 				pageTitle: 'membership_application_page_title',
 				pageProps: {
 					validateAddressUrl: pageData.applicationVars.urls.validateAddress,

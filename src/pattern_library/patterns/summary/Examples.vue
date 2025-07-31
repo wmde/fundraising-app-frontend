@@ -1,12 +1,12 @@
 <template>
-	<div class="content-card summary flow">
+	<div class="content-card flow">
 		<div class="section-heading">
 			<h2>Your Donation Summary</h2>
 			<p>You will donate €42 monthly via Direct Debit</p>
 			<hr/>
 		</div>
 
-		<div class="summary__details switcher">
+		<div class="summary switcher">
 			<div class="flow">
 				<h3>Your Contact Data</h3>
 				<p>
