@@ -5,17 +5,23 @@
 	</div>
 </template>
 
-<script setup lang="ts">
-
-interface Props {
-	title?: String;
-	titleMargin?: 'x-small' | 'small' | 'medium';
-}
-
-withDefaults( defineProps<Props>(), {
-	titleMargin: 'small',
-} );
-
+<script lang="ts">
+/**
+ * @deprecated Please don't use this component, you should use the ContentCard pattern component instead
+ */
+export default {
+	name: 'FormSection',
+	props: {
+		'title': {
+			type: String,
+			default: '',
+		},
+		'titleMargin': {
+			type: String,
+			default: 'small',
+		},
+	},
+};
 </script>
 
 <style lang="scss">

@@ -1,7 +1,7 @@
 <template>
 	<div
 		id="donation-page-form-section-personal-data"
-		class="donation-page-form-section"
+		class="content-card"
 		aria-live="assertive"
 		aria-labelledby="donation-form-subheading donation-form-tagline"
 	>
