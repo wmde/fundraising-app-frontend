@@ -1,6 +1,6 @@
 <template>
 	<div class="content-card flow" :data-sidebar-card="isSidebarCard" :data-theme="theme">
-		<SectionHeading>
+		<SectionHeading v-if="$slots.heading">
 			<slot name="heading"/>
 		</SectionHeading>
 		<slot name="content"/>
