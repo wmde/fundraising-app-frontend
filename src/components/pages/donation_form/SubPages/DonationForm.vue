@@ -59,6 +59,18 @@
 				<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
 			</form>
 		</div>
+		<content-card>
+			<template #heading>This is Pattern library headline</template>
+			<template #content>
+				<Summary
+					:address="addressSummary"
+					:payment="paymentSummary"
+					:bank-data="bankDataSummary"
+					:countries="countries"
+					:salutations="salutations"
+				/>
+			</template>
+		</content-card>
 	</div>
 </template>
 
@@ -86,6 +98,8 @@ import { useAddressSummary } from '@src/components/pages/donation_form/useAddres
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
 import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
+import Summary from '@src/components/patterns/Summary.vue';
 
 defineOptions( {
 	name: 'DonationForm',
