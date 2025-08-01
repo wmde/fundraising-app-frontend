@@ -25,19 +25,29 @@
 			@set-address-type="setAddressType( $event )"
 		/>
 
-		<div class="content-card">
-			<FormSummary>
-				<template #summary-content v-if="paymentSummary">
-					<DonationSummary
-						:address="addressSummary"
-						:payment="paymentSummary"
-						:bank-data="bankDataSummary"
-						:countries="countries"
-						:salutations="salutations"
-					/>
-				</template>
-
-				<template #summary-buttons>
+		<ContentCard>
+			<template #heading v-if="paymentSummary">
+				<h2>{{ $t( 'donation_form_summary_title' ) }}</h2>
+				<DonationSummaryHeadline/>
+			</template>
+			<template #content>
+				<Summary>
+					<template #left>
+						<DonorSummarySection
+							v-if="addressSummary"
+							:address="addressSummary"
+							:countries="countries"
+							:salutations="salutations"
+						/>
+					</template>
+					<template #right>
+						<PaymentSummarySection
+							v-if="bankDataSummary"
+							:bank-data="bankDataSummary"
+						/>
+					</template>
+				</Summary>
+				<div class="switcher">
 					<FormButton
 						id="previous-btn"
 						:is-outlined="true"
@@ -51,14 +61,14 @@
 						:payment-type="paymentSummary?.paymentType"
 						@click="submit"
 					/>
-				</template>
+				</div>
+			</template>
+		</ContentCard>
 
-			</FormSummary>
+		<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
+			<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
+		</form>
 
-			<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
-				<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
-			</form>
-		</div>
 	</div>
 </template>
 
@@ -73,10 +83,8 @@ import type { CampaignValues } from '@src/view_models/CampaignValues';
 import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
 import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSection.vue';
 import IbanFields from '@src/components/shared/IbanFields.vue';
-import DonationSummary from '@src/components/pages/donation_form/DonationSummary.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import FormSummary from '@src/components/shared/FormSummary.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import ErrorSummary from '@src/components/pages/donation_form/ErrorSummary.vue';
 import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/useDonationFormSubmitHandler';
@@ -86,6 +94,11 @@ import { useAddressSummary } from '@src/components/pages/donation_form/useAddres
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
 import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
+import Summary from '@src/components/patterns/Summary.vue';
+import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';
+import DonorSummarySection from '@src/components/pages/donation_form/DonorSummarySection.vue';
+import PaymentSummarySection from '@src/components/pages/donation_form/PaymentSummarySection.vue';
 
 defineOptions( {
 	name: 'DonationForm',
