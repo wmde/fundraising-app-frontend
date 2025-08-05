@@ -15,7 +15,7 @@ steps:
           - event: [ push, cron, manual ]
             branch:
               exclude: [ dependabot/* ]
-        image: node:20-alpine
+        image: node:22-alpine
         volumes:
           - /home/deploy/fundraising-app-frontend-builds:/build
           - /tmp/woodpeckerci/cache/npm:/npmcache
