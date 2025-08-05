@@ -47,7 +47,7 @@ export class SubtleDataEncryptor implements DataEncryptor {
 		return this.cryptoKey;
 	}
 
-	base64StringToArrayBuffer( data: string ): Uint8Array {
+	base64StringToArrayBuffer( data: string ): Uint8Array<ArrayBuffer> {
 		const binaryString = window.atob( data );
 		const length = binaryString.length;
 		const bytes = new Uint8Array( length );
@@ -57,7 +57,7 @@ export class SubtleDataEncryptor implements DataEncryptor {
 		return bytes;
 	}
 
-	stringToArrayBuffer( data: string ): Uint8Array {
+	stringToArrayBuffer( data: string ): Uint8Array<ArrayBuffer> {
 		return new TextEncoder().encode( data );
 	}
 
