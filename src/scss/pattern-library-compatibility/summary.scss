@@ -7,6 +7,10 @@
 	h3 {
 		line-height: 26px;
 		font-weight:var(--font-normal);
-		margin-bottom: -7px;
+		margin-block-end: 0;
+	}
+
+	> div {
+		--flow-space: 0.5em;
 	}
 }

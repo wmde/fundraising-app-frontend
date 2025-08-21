@@ -31,18 +31,16 @@
 				<DonationSummaryHeadline/>
 			</template>
 			<template #content>
-				<Summary>
-					<template #left>
+				<Summary v-if="addressSummary || bankDataSummary">
+					<template #left v-if="addressSummary">
 						<DonorSummarySection
-							v-if="addressSummary"
 							:address="addressSummary"
 							:countries="countries"
 							:salutations="salutations"
 						/>
 					</template>
-					<template #right>
+					<template #right v-if="bankDataSummary">
 						<PaymentSummarySection
-							v-if="bankDataSummary"
 							:bank-data="bankDataSummary"
 						/>
 					</template>
