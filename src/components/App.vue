@@ -77,6 +77,10 @@ watch( modalState, ( newModalState: ModalStates ) => {
 	min-height: 100vh;
 }
 
+.app-content-main.uses-cards {
+	padding-top: 0;
+}
+
 .skip-link {
 	background-color: #FFCC33;
 	color: #000000;

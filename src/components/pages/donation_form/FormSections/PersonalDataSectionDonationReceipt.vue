@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="donation-page-form-section"
+		class="content-card"
 		id="donation-page-form-section-personal-data-donation-receipt"
 		aria-labelledby="donation-form-subheading donation-form-tagline"
 	>

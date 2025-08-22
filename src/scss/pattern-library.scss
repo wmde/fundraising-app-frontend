@@ -1,0 +1,36 @@
+@use "settings/units";
+@use "sass:map";
+@use "pattern-library-compatibility/content-card";
+@use "pattern-library-compatibility/section-heading";
+
+@import "../pattern_library/css/variables/global.css";
+@import "../pattern_library/css/compositions/flow.css";
+@import "../pattern_library/css/compositions/switcher.css";
+
+:root {
+	--space-3xs: #{map.get( units.$spacing, 'xx-small' )};
+	--space-2xs: #{map.get( units.$spacing, 'xx-small' )};
+	--space-xs: #{map.get( units.$spacing, 'x-small' )};
+	--space-s: #{map.get( units.$spacing, 'small' )};
+	--space-m: #{map.get( units.$spacing, 'medium' )};
+	--space-l: #{map.get( units.$spacing, 'large' )};
+	--space-xl: #{map.get( units.$spacing, 'x-large' )};
+	--space-2xl: #{map.get( units.$spacing, 'xx-large' )};
+	--space-3xl: #{map.get( units.$spacing, 'xxx-large' )};
+
+	/* One-up pairs */
+	--space-3xs-2xs: #{map.get( units.$spacing, 'xx-small' )};
+	--space-2xs-xs: #{map.get( units.$spacing, 'x-small' )};
+	--space-xs-s: #{map.get( units.$spacing, 'small' )};
+	--space-s-m: #{map.get( units.$spacing, 'medium' )};
+	--space-m-l: #{map.get( units.$spacing, 'large' )};
+	--space-l-xl: #{map.get( units.$spacing, 'x-large' )};
+	--space-xl-2xl: #{map.get( units.$spacing, 'xx-large' )};
+	--space-2xl-3xl: #{map.get( units.$spacing, 'xxx-large' )};
+
+	/* Custom pairs */
+	--space-s-l: #{map.get( units.$spacing, 'medium' )};
+	--space-s-xl: #{map.get( units.$spacing, 'large' )};
+	--space-xs-l: #{map.get( units.$spacing, 'medium' )};
+	--space-0-s: #{map.get( units.$spacing, 'x-small' )};
+}

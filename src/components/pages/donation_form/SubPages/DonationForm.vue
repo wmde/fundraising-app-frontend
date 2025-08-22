@@ -9,7 +9,7 @@
 				<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
 			</template>
 		</PaymentSection>
-		<div class="donation-page-form-section" v-if="isDirectDebitPayment">
+		<div class="content-card" v-if="isDirectDebitPayment">
 			<IbanFields/>
 		</div>
 		<PersonalDataSection
@@ -25,7 +25,7 @@
 			@set-address-type="setAddressType( $event )"
 		/>
 
-		<div class="donation-page-form-section">
+		<div class="content-card">
 			<FormSummary>
 				<template #summary-content v-if="paymentSummary">
 					<DonationSummary
