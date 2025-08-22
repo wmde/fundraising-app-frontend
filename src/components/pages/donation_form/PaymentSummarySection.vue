@@ -16,7 +16,7 @@
 <script setup lang="ts">
 
 interface Props {
-	bankData: { iban: string; bic: string; bankName: string } | undefined;
+	bankData: { iban: string; bic?: string; bankName?: string };
 }
 defineProps<Props>();
 </script>

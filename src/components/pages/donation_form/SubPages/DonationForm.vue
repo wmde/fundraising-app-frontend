@@ -28,7 +28,9 @@
 		<ContentCard>
 			<template #heading v-if="paymentSummary">
 				<h2>{{ $t( 'donation_form_summary_title' ) }}</h2>
-				<DonationSummaryHeadline/>
+				<DonationSummaryHeadline
+					:payment="paymentSummary"
+				/>
 			</template>
 			<template #content>
 				<Summary v-if="addressSummary || bankDataSummary">

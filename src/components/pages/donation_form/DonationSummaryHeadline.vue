@@ -1,23 +1,23 @@
 <template>
-	<p v-if="paymentSummary"> {{ $t( 'donation_form_summary_headline' ) }}
+	<p> {{ $t( 'donation_form_summary_headline' ) }}
 		{{ formattedAmount }}
 		<template v-if="interval"> {{ interval }}</template>
 		<template v-if="paymentType"> {{ $t('donation_summary_via') }} {{ paymentType }}</template>
 	</p>
 </template>
 <script setup lang="ts">
-import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { computed } from 'vue';
-import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 
+interface Props {
+	payment: { amount: number; interval: any; paymentType: any };
+}
+const props = defineProps<Props>();
 const { t, n } = useI18n();
-const store = useStore();
-const { paymentSummary } = usePaymentFunctions( store );
 
-const formattedAmount = computed( () => n( paymentSummary.value.amount, { key: 'currency', currencyDisplay: 'name' } ) );
+const formattedAmount = computed( () => n( props.payment.amount, { key: 'currency', currencyDisplay: 'name' } ) );
 
-const interval = computed( () => paymentSummary.value.interval ? t( 'donation_form_payment_interval_' + paymentSummary.value.interval ) : '' );
+const interval = computed( () => props.payment.interval ? t( 'donation_form_payment_interval_' + props.payment.interval ) : '' );
 
-const paymentType = computed( () => paymentSummary.value.paymentType ? t( paymentSummary.value.paymentType ) : '' );
+const paymentType = computed( () => props.payment.paymentType ? t( props.payment.paymentType ) : '' );
 </script>
