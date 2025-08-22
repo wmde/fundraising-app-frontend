@@ -1,44 +1,202 @@
 <template>
 	<div id="laika-membership">
-		<keep-alive>
-			<PaymentPage
-				ref="paymentPage"
-				v-if="currentPageIndex === 0"
-				@next-page="goToAddressPage"
-				:validate-fee-url="validateFeeUrl"
-				:payment-amounts="paymentAmounts"
-				:validate-legacy-bank-data-url="validateLegacyBankDataUrl"
-				:payment-intervals="paymentIntervals"
-				:payment-types="paymentTypes"
-				:validate-bank-data-url="validateBankDataUrl"
-				:show-membership-type-option="showMembershipTypeOption"
-			/>
-			<AddressPage
-				v-else
-				ref="addressPage"
-				@previous-page="goToPaymentPage"
-				:campaign-values="campaignValues"
-				:validate-email-url="validateEmailUrl"
-				:validate-address-url="validateAddressUrl"
-				:address-validation-patterns="addressValidationPatterns"
-				:countries="countries"
-				:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
-				:salutations="salutations"
-				:tracking-data="trackingData"
-			/>
-		</keep-alive>
+		<form action="">
+			<ContentCard>
+				<template #heading>
+					<h1 id="membership-form-heading">{{ $t( 'membership_form_headline' ) }}</h1>
+					<h2 id="membership-form-subheading">{{ $t( 'membership_form_payment_subheading' ) }}</h2>
+				</template>
+
+				<template #content>
+					<ScrollTarget target-id="payment-section-top-scroll-target"/>
+					<ErrorSummary
+						:is-visible="showErrorSummary"
+						:items="[
+							{
+								validity: store.state.membership_fee.validity.interval,
+								message: $t( 'error_summary_interval' ),
+								focusElement: 'interval-0',
+								scrollElement: 'payment-form-interval-scroll-target'
+							},
+							{
+								validity: store.state.membership_fee.validity.fee,
+								message: $t( 'error_summary_amount' ),
+								focusElement: 'amount-500',
+								scrollElement: 'payment-form-amount-scroll-target'
+							},
+							{
+								validity: store.state.bankdata.validity.iban,
+								message: $t( 'donation_form_payment_iban_error' ),
+								focusElement: 'iban',
+								scrollElement: 'iban-scroll-target'
+							},
+							{
+								validity: store.state.membership_address.validity.salutation,
+								message: $t( 'donation_form_salutation_error' ),
+								focusElement: 'salutation-0',
+								scrollElement: 'salutation-scroll-target'
+							},
+							{
+								validity: store.state.membership_address.validity.firstName,
+								message: $t( 'donation_form_firstname_error' ),
+								focusElement: 'first-name',
+								scrollElement: 'first-name-scroll-target'
+							},
+							{
+								validity: store.state.membership_address.validity.lastName,
+								message: $t( 'donation_form_lastname_error' ),
+								focusElement: 'last-name',
+								scrollElement: 'last-name-scroll-target'
+							},
+							{
+								validity: store.state.membership_address.validity.street,
+								message: $t( 'donation_form_street_error' ),
+								focusElement: 'street',
+								scrollElement: 'street-scroll-target'
+							},
+							{
+								validity: store.state.membership_address.validity.postcode,
+								message: $t( 'donation_form_zip_error' ),
+								focusElement: 'post-code',
+								scrollElement: 'post-code-scroll-target'
+							},
+							{
+								validity: store.state.membership_address.validity.city,
+								message: $t( 'donation_form_city_error' ),
+								focusElement: 'city',
+								scrollElement: 'city-scroll-target'
+							},
+							{
+								validity: store.state.membership_address.validity.country,
+								message: $t( 'donation_form_country_error' ),
+								focusElement: 'country',
+								scrollElement: 'country-scroll-target'
+							},
+							{
+								validity: store.state.membership_address.validity.email,
+								message: $t( 'donation_form_email_error' ),
+								focusElement: 'email',
+								scrollElement: 'email-scroll-target'
+							},
+						]"
+					/>
+
+					<MembershipTypeField
+						v-if="showMembershipTypeOption"
+						v-model="membershipTypeModel"
+						:disabledMembershipTypes="disabledMembershipTypes"
+					/>
+
+					<AddressType
+						@field-changed="setAddressType( $event )"
+						:disabledAddressTypes="disabledAddressTypes"
+						:is-direct-debit="isDirectDebitPayment"
+						:initial-address-type="addressType"
+						:address-type-is-invalid="false"
+					/>
+
+					<Payment
+						:payment-amounts="paymentAmounts"
+						:payment-intervals="paymentIntervals"
+						:payment-types="paymentTypes"
+						:validate-fee-url="validateFeeUrl.toString()"
+						:validate-bank-data-url="validateBankDataUrl.toString()"
+						:validate-legacy-bank-data-url="validateLegacyBankDataUrl.toString()"
+					/>
+				</template>
+			</ContentCard>
+
+			<ContentCard>
+				<template #heading>
+					<h2 id="membership-form-subheading">{{ $t( 'membership_form_address_subheading' ) }}</h2>
+				</template>
+
+				<template #content>
+					<AddressFields
+						:validate-address-url="validateAddressUrl.toString()"
+						:validate-email-url="validateEmailUrl.toString()"
+						:countries="countries"
+						:salutations="salutations"
+						:address-validation-patterns="addressValidationPatterns"
+						:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
+						ref="addressFieldsRef">
+					</AddressFields>
+				</template>
+			</ContentCard>
+
+			<ContentCard>
+
+				<template #heading>
+					<h3>{{ $t( 'membership_confirmation_thanks_text' ) }}</h3>
+				</template>
+
+				<template #content>
+					<FormSummary>
+						<template #summary-content>
+							<MembershipSummary
+								:membership-application="membershipApplication"
+								:address="addressSummary"
+								:salutations="salutations"
+								:address-is-invalid="addressIsInvalid"
+								:countries="countries"
+							/>
+						</template>
+
+						<template #summary-buttons>
+							<FormButton
+								id="previous-btn"
+								:is-outlined="true"
+								@click="scrollToPaymentSection"
+							>
+								{{ $t('membership_form_section_back') }}
+							</FormButton>
+							<FormButton
+								id="submit-btn"
+								:is-loading="store.getters.isValidating"
+								@click="submit"
+							>
+								{{ $t('membership_form_finalize') }}
+							</FormButton>
+						</template>
+					</FormSummary>
+				</template>
+
+			</ContentCard>
+		</form>
+
+		<form action="/apply-for-membership" method="post" ref="submitValuesForm" id="submit-form">
+			<SubmitValues :campaign-values="campaignValues" :tracking-data="trackingData"/>
+		</form>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import type { Country } from '@src/view_models/Country';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import type { Salutation } from '@src/view_models/Salutation';
-import PaymentPage from '@src/components/pages/membership_form/subpages/PaymentPage.vue';
-import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
+import Payment from '@src/components/pages/membership_form/Payment.vue';
+import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
+import AddressType from '@src/components/pages/membership_form/AddressType.vue';
+import { useStore } from 'vuex';
+import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
+import { useMembershipTypeModel } from '@src/components/pages/membership_form/useMembershipTypeModel';
+import { MembershipTypeModel, membershipTypeName } from '@src/view_models/MembershipTypeModel';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { useMembershipFormSubmitHandler } from '@src/components/pages/membership_form/useMembershipFormSubmitHandler';
+import { trackFormSubmission } from '@src/util/tracking';
+import FormSummary from '@src/components/shared/FormSummary.vue';
+import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
+import AddressFields from '@src/components/pages/membership_form/Address.vue';
+import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
+import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
+import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
+import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	validateAddressUrl: string;
@@ -58,32 +216,57 @@ interface Props {
 	trackingData: TrackingData;
 }
 
-defineProps<Props>();
-const currentPageIndex = ref<0 | 1>( 0 );
-const addressPage = ref<HTMLElement>( null );
-const paymentPage = ref<HTMLElement>( null );
+const props = defineProps<Props>();
+const store = useStore();
 
-const goToAddressPage = () => {
-	currentPageIndex.value = 1;
+const addressFieldsRef = ref<HTMLFormElement>();
+const { disabledAddressTypes, addressType, setAddressType } = useAddressTypeFunctions( store );
+const membershipTypeModel = useMembershipTypeModel( store );
+const disabledMembershipTypes = computed(
+	(): MembershipTypeModel[] => {
+		return store.state.membership_address.addressType === AddressTypeModel.COMPANY ? [ MembershipTypeModel.ACTIVE ] : [];
+	}
+);
+const trackAddressForm = () => {
+	trackFormSubmission( addressFieldsRef.value );
 };
-const goToPaymentPage = () => {
-	currentPageIndex.value = 0;
-};
+const isDirectDebitPayment = computed( (): boolean => store.state.membership_fee.values.type === 'BEZ' );
+const addressIsInvalid = computed( (): boolean => !store.getters[ 'membership_address/requiredFieldsAreValid' ] );
 
-const focusFormPage = ( newPageIndex: 0 | 1 ): void => {
-	if ( newPageIndex === 0 ) {
-		paymentPage.value.focus();
-	} else {
-		addressPage.value.focus();
+const membershipApplication = computed( (): MembershipApplication => {
+	const payment = store.state.membership_fee.values;
+	return {
+		paymentIntervalInMonths: payment.interval,
+		membershipFee: payment.fee / 100,
+		paymentType: payment.type,
+		membershipType: membershipTypeName( store.getters[ 'membership_address/membershipType' ] ),
+		incentives: [],
+		isExported: false,
+	};
+} );
+
+const addressSummary = computed( (): MembershipAddress => {
+	return {
+		...store.state.membership_address.values,
+		fullName: store.getters[ 'membership_address/fullName' ],
+		streetAddress: store.state.membership_address.values.street,
+		postalCode: store.state.membership_address.values.postcode,
+		countryCode: store.state.membership_address.values.country,
+		applicantType: addressTypeName( store.getters[ 'membership_address/addressType' ] ),
+	};
+} );
+
+const {
+	submit,
+	submitValuesForm,
+	showErrorSummary,
+} = useMembershipFormSubmitHandler( store, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl, trackAddressForm );
+
+const scrollToPaymentSection = () => {
+	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
+	if ( scrollIntoViewElement ) {
+		scrollIntoViewElement.scrollIntoView( { behavior: 'auto' } );
 	}
 };
-
-watch( currentPageIndex, async ( newPageIndex: 0 | 1 ) => {
-	window.scrollTo( 0, 0 );
-
-	await nextTick();
-
-	focusFormPage( newPageIndex );
-} );
 
 </script>

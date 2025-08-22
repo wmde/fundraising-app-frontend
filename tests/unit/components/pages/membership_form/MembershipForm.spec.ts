@@ -1,18 +1,28 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
-
-import axios from 'axios';
-import AddressPage from '@src/components/pages/membership_form/subpages/AddressPage.vue';
+import MembershipForm from '@src/components/pages/MembershipForm.vue';
+import AddressType from '@src/components/pages/membership_form/AddressType.vue';
+import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
 import { createStore } from '@src/store/membership_store';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Store } from 'vuex';
-import type { TrackingData } from '@src/view_models/TrackingData';
-import type { CampaignValues } from '@src/view_models/CampaignValues';
-import type { AddressValidation } from '@src/view_models/Validation';
 import { nextTick } from 'vue';
-import { Validity } from '@src/view_models/Validity';
+import { IBAN } from '@test/data/bankdata';
+import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
 import type { Salutation } from '@src/view_models/Salutation';
+import type { AddressValidation } from '@src/view_models/Validation';
 import { dateOfBirthValidationPattern } from '@test/data/validation';
+import type { CampaignValues } from '@src/view_models/CampaignValues';
+import type { TrackingData } from '@src/view_models/TrackingData';
+import { Validity } from '@src/view_models/Validity';
+import axios from 'axios';
+
+// This is so the error summary scrollIntoView doesn't throw errors
+const errorSummaryScrollElement = { scrollIntoView: () => {} };
+Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
+
+jest.mock( 'axios' );
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 const testCountry = {
 	countryCode: 'de',
@@ -34,21 +44,21 @@ const salutations: Salutation[] = [
 	},
 ];
 
-jest.mock( 'axios' );
-const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-// This is so the error summary scrollIntoView doesn't throw errors
-const errorSummaryScrollElement = { scrollIntoView: () => {} };
-Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
-
-describe( 'AddressPage.vue', () => {
+describe( 'MembershipForm.vue', () => {
 	const getWrapper = ( store: Store<any> = createStore() ): { wrapper: VueWrapper<any>; store: Store<any> } => {
-		const wrapper = mount( AddressPage, {
+		const wrapper = mount( MembershipForm, {
 			props: {
 				validateAddressUrl: '',
 				validateEmailUrl: '',
+				validateBankDataUrl: 'https://example.com/amount-check',
+				validateLegacyBankDataUrl: 'https://example.com/amount-check',
+				validateFeeUrl: 'https://example.com/amount-check',
+				paymentAmounts: [ 500 ],
+				paymentIntervals: [ 0, 1, 3, 6, 12 ],
+				paymentTypes: [ 'BEZ', 'UEB' ],
 				countries: [ testCountry ],
 				salutations,
+				showMembershipTypeOption: true,
 				addressValidationPatterns: { postcode: '' } as AddressValidation,
 				dateOfBirthValidationPattern: dateOfBirthValidationPattern,
 				campaignValues: {} as CampaignValues,
@@ -56,8 +66,8 @@ describe( 'AddressPage.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
-				stubs: {
-					Address: true,
+				provide: {
+					bankValidationResource: newSucceedingBankValidationResource(),
 				},
 			},
 		} );
@@ -65,17 +75,30 @@ describe( 'AddressPage.vue', () => {
 		return { wrapper, store };
 	};
 
-	it( 'emits previous event', async () => {
+	it( 'sets address type in store when it receives address-type event', () => {
+		const { wrapper, store } = getWrapper();
+
+		store.dispatch = jest.fn( () => Promise.resolve() );
+		const expectedAction = action( 'membership_address', 'setAddressType' );
+		const expectedPayload = AddressTypeModel.PERSON;
+
+		wrapper.findComponent( AddressType ).vm.$emit( 'field-changed', AddressTypeModel.PERSON );
+
+		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+	} );
+
+	it( 'toggle membership type visibility', async () => {
 		const { wrapper } = getWrapper();
 
-		await wrapper.find( '#previous-btn' ).trigger( 'click' );
+		wrapper.findComponent( MembershipTypeField );
+		expect( wrapper.findComponent( MembershipTypeField ).exists() ).toBe( true );
 
-		expect( wrapper.emitted( 'previous-page' ).length ).toStrictEqual( 1 );
+		await wrapper.setProps( { showMembershipTypeOption: false } );
+
+		expect( wrapper.findComponent( MembershipTypeField ).exists() ).toBe( false );
 	} );
 
 	it( 'shows and hides the error summary', async () => {
-		jest.useFakeTimers();
-
 		const { wrapper } = getWrapper();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
@@ -83,6 +106,13 @@ describe( 'AddressPage.vue', () => {
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+
+		await wrapper.find( '#amount-500' ).trigger( 'change' );
+		await wrapper.find( '#interval-0' ).trigger( 'change' );
+		await wrapper.find( '#paymentType-0' ).trigger( 'change' );
+
+		await wrapper.find( '#iban' ).setValue( IBAN );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		await wrapper.find( '#salutation-0' ).trigger( 'change' );
 
@@ -107,15 +137,26 @@ describe( 'AddressPage.vue', () => {
 		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#email' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
-
-		jest.restoreAllMocks();
 	} );
 
 	it( 'submits the form', async () => {
+		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
 		const store = createStore();
+
+		await store.dispatch( action( 'membership_fee', 'initializeMembershipFee' ), {
+			validateFeeUrl: '',
+			fee: '500',
+			type: 'BEZ',
+			interval: '12',
+		} );
+		await store.dispatch( action( 'bankdata', 'initializeBankData' ), {
+			bankName: 'ING-DiBa',
+			iban: IBAN,
+			bic: 'INGDDEFFXXX',
+		} );
 		await store.dispatch( action( 'membership_address', 'initializeAddress' ), {
 			addressType: AddressTypeModel.PERSON,
 			receipt: true,
@@ -134,7 +175,6 @@ describe( 'AddressPage.vue', () => {
 			incentives: [ 'tote_bag' ],
 		} );
 
-		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
 		const { wrapper } = getWrapper( store );
 
 		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );

@@ -6,30 +6,35 @@ import { Validity } from '@src/view_models/Validity';
 
 type ReturnType = {
 	submit: () => Promise<void>;
-	previousPage: () => void;
 	submitValuesForm: Ref<HTMLFormElement>;
 	showErrorSummary: Ref<boolean>;
 };
 
-export function useAddressFormEventHandlers(
+export function useMembershipFormSubmitHandler(
 	store: Store<any>,
-	emit: ( eventName: string ) => void,
 	isDirectDebit: ComputedRef<boolean>,
 	validateAddressUrl: string,
 	validateEmailUrl: string,
 	trackAddressForm: () => void,
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
+	const membershipTypeIsValid = ref<boolean>( true );
+	const paymentDataIsValid = ref<boolean>( true );
 	const bankDataIsValid = ref<boolean>( true );
 	const addressDataIsValid = ref<boolean>( true );
 	const dateOfBirthIsValid = ref<boolean>( true );
-	const showErrorSummary = computed<boolean>( () => !bankDataIsValid.value || !addressDataIsValid.value || !dateOfBirthIsValid.value );
+	const showErrorSummary = computed<boolean>(
+		() => !membershipTypeIsValid.value || !paymentDataIsValid.value || !bankDataIsValid.value || !addressDataIsValid.value || !dateOfBirthIsValid.value
+	);
+
 	const submit = async (): Promise<void> => {
+		membershipTypeIsValid.value = true;
 		bankDataIsValid.value = true;
 		addressDataIsValid.value = true;
 		dateOfBirthIsValid.value = true;
 
 		const validationCalls: Promise<any>[] = [
+			store.dispatch( action( 'membership_fee', 'markEmptyValuesAsInvalid' ) ),
 			store.dispatch( action( 'membership_address', 'validateAddress' ), validateAddressUrl ),
 			store.dispatch( action( 'membership_address', 'validateEmail' ), validateEmailUrl ),
 		];
@@ -41,6 +46,14 @@ export function useAddressFormEventHandlers(
 		await Promise.all( validationCalls );
 		// We need to wait for the asynchronous bank data validation, that might still be going on
 		await waitForServerValidationToFinish( store );
+
+		if ( !store.getters[ 'membership_address/membershipTypeIsValid' ] ) {
+			membershipTypeIsValid.value = false;
+		}
+
+		if ( !store.getters.paymentDataIsValid ) {
+			paymentDataIsValid.value = false;
+		}
 
 		if ( !store.getters[ 'membership_address/requiredFieldsAreValid' ] ) {
 			addressDataIsValid.value = false;
@@ -54,7 +67,7 @@ export function useAddressFormEventHandlers(
 			dateOfBirthIsValid.value = false;
 		}
 
-		if ( !addressDataIsValid.value || !bankDataIsValid.value || !dateOfBirthIsValid.value ) {
+		if ( !membershipTypeIsValid.value || !paymentDataIsValid.value || !addressDataIsValid.value || !bankDataIsValid.value || !dateOfBirthIsValid.value ) {
 			return;
 		}
 
@@ -62,9 +75,23 @@ export function useAddressFormEventHandlers(
 		submitValuesForm.value.submit();
 	};
 
-	const previousPage = async () => {
-		emit( 'previous-page' );
-	};
+	store.watch( ( state, getters ) => getters[ 'membership_address/membershipTypeIsValid' ], ( isValid: boolean ) => {
+		if ( !membershipTypeIsValid.value && isValid ) {
+			membershipTypeIsValid.value = true;
+		}
+	} );
+
+	store.watch( ( state, getters ) => getters.paymentDataIsValid, ( isValid: boolean ) => {
+		if ( !paymentDataIsValid.value && isValid ) {
+			paymentDataIsValid.value = true;
+		}
+	} );
+
+	watch( () => store.state.bankdata.validity.iban, ( validity: Validity ) => {
+		if ( !bankDataIsValid.value && validity === Validity.VALID ) {
+			bankDataIsValid.value = true;
+		}
+	} );
 
 	store.watch( ( state, getters ) => getters[ 'membership_address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 		if ( !addressDataIsValid.value && isValid ) {
@@ -86,7 +113,6 @@ export function useAddressFormEventHandlers(
 
 	return {
 		submit,
-		previousPage,
 		submitValuesForm,
 		showErrorSummary,
 	};
