@@ -7,7 +7,7 @@
 		ref="pageRef"
 	>
 		<form>
-			<ContentCard v-if="showMembershipTypeOption">
+			<ContentCard>
 
 				<template #heading>
 					<h1 id="membership-form-heading">{{ $t( 'membership_form_headline' ) }}</h1>
@@ -40,6 +40,7 @@
 					/>
 
 					<MembershipTypeField
+						v-if="showMembershipTypeOption"
 						v-model="membershipTypeModel"
 						:disabledMembershipTypes="disabledMembershipTypes"
 					/>
