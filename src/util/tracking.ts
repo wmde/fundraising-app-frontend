@@ -1,6 +1,6 @@
 // This file encapsulates the tracking interactions with Matomo
 
-declare var _paq: MatomoLoggable; /* eslint-disable-line no-underscore-dangle,no-use-before-define */
+declare var _paq: MatomoLoggable; /* eslint-disable-line no-underscore-dangle */
 
 interface MatomoLoggable {
 	push( eventData: Array<any> ): void;
