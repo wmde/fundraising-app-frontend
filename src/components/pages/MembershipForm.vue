@@ -125,9 +125,10 @@
 
 		<ContentCard>
 
-			<template #heading>
-				<h3>{{ $t( 'membership_confirmation_thanks_text' ) }}</h3>
-			</template>
+				<template #heading v-if="membershipApplication">
+					<h2>{{ $t( 'membership_form_summary_title' ) }}</h2>
+					<MembershipSummaryHeadline :payment="membershipApplication"/>
+				</template>
 
 			<template #content>
 				<FormSummary>
@@ -195,6 +196,7 @@ import type { MembershipApplication } from '@src/Domain/Membership/MembershipApp
 import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
 import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import MembershipSummaryHeadline from '@src/components/pages/membership_form/MembershipSummaryHeadline.vue';
 
 interface Props {
 	validateAddressUrl: string;
