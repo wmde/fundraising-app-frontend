@@ -48,27 +48,3 @@ interface Props {
 const props = defineProps<Props>();
 
 </script>
-
-<style lang="scss">
-@use '@src/scss/settings/units';
-@use '@src/scss/settings/colors';
-@use '@src/scss/settings/breakpoints';
-@use 'sass:map';
-
-.app-content-main.uses-cards {
-	padding-top: 0;
-}
-
-.donation-page-form-section {
-	background: colors.$white;
-	border: 0;
-	border-bottom: 1px solid colors.$primary;
-	margin-bottom: 32px;
-	padding: map.get( units.$spacing, 'small' );
-
-	@include breakpoints.tablet-up {
-		padding: map.get( units.$spacing, 'large' );
-	}
-}
-
-</style>
