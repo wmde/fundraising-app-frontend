@@ -27,14 +27,13 @@
 
 		<div class="donation-page-form-section">
 			<FormSummary>
-				<template #summary-content>
+				<template #summary-content v-if="paymentSummary">
 					<DonationSummary
-						:payment="paymentSummary"
-						:address-type="addressTypeName"
 						:address="addressSummary"
+						:payment="paymentSummary"
+						:bank-data="bankDataSummary"
 						:countries="countries"
 						:salutations="salutations"
-						:language-item="inlineSummaryLanguageItem"
 					/>
 				</template>
 
@@ -49,7 +48,7 @@
 					<PaymentTextFormButton
 						id="submit-btn"
 						:is-loading="store.getters.isValidating"
-						:payment-type="paymentSummary.paymentType"
+						:payment-type="paymentSummary?.paymentType"
 						@click="submit"
 					/>
 				</template>
@@ -86,10 +85,15 @@ import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaym
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
+import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
 
 defineOptions( {
 	name: 'DonationForm',
 } );
+
+const store = useStore();
+const { bankDataSummary } = useBankDataSummary( store );
+const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
 
 interface Props {
 	assetsPath: string;
@@ -108,14 +112,11 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const store = useStore();
-const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
-const { addressSummary, inlineSummaryLanguageItem } = useAddressSummary( store );
+const { addressSummary } = useAddressSummary( store );
 const {
 	disabledAddressTypes,
 	addressType,
 	addressTypeIsInvalid,
-	addressTypeName,
 	setAddressType,
 } = useAddressTypeFunctions( store );
 
@@ -139,5 +140,4 @@ const scrollToPaymentSection = () => {
 onMounted( () => {
 	trackDynamicForm();
 } );
-
 </script>

@@ -101,6 +101,27 @@ h2.form-subtitle {
 	border-bottom: 1px solid colors.$gray-light;
 }
 
+h2.summary-title {
+	margin: 0 0 map.get(units.$spacing, 'small');
+	padding: 0 0 map.get(units.$spacing, 'xx-small');
+	font-size: 24px;
+	color: colors.$black;
+	border-bottom: 1px solid colors.$gray-light;
+}
+
+h3.summary-title {
+	margin: 0 0 0.125rem;
+	padding: 0 0 0.125rem;
+	font-size: 20px;
+	font-weight: 500;
+}
+
+.summary-text {
+	font-size: 1.05rem;
+	line-height: 1.5;
+	margin: 0 0 map.get(units.$spacing, "small");
+}
+
 .form-caption {
 	line-height: 130%;
 	max-width: 415px;
