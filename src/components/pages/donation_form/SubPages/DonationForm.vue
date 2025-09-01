@@ -100,7 +100,7 @@ import ContentCard from '@src/components/patterns/ContentCard.vue';
 import Summary from '@src/components/patterns/Summary.vue';
 import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';
 import DonorSummarySection from '@src/components/pages/donation_form/DonorSummarySection.vue';
-import PaymentSummarySection from '@src/components/pages/donation_form/PaymentSummarySection.vue';
+import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 
 defineOptions( {
 	name: 'DonationForm',

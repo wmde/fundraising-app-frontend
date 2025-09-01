@@ -100,7 +100,7 @@ import { useAddressTypeFunctions } from '@src/components/shared/composables/useA
 import { trackDynamicForm } from '@src/util/tracking';
 import { useAddressOptOutModel } from '@src/components/pages/donation_form/AddressOptOut/useAddressOptOut';
 import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
-import PaymentSummarySection from '@src/components/pages/donation_form/PaymentSummarySection.vue';
+import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import DonorSummarySection from '@src/components/pages/donation_form/DonorSummarySection.vue';
 import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';

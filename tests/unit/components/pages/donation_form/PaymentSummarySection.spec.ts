@@ -1,4 +1,4 @@
-import PaymentSummarySection from '@src/components/pages/donation_form/PaymentSummarySection.vue';
+import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import { mount, VueWrapper } from '@vue/test-utils';
 
 describe( 'PaymentSummarySection.vue', () => {
