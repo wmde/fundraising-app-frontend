@@ -1,5 +1,5 @@
 <template>
-	<h3>{{ $t('form_summary_bank_details') }}</h3>
+	<h3>{{ $t('form_summary_bank_details_header') }}</h3>
 	<ul class="bankdata">
 		<li>
 			<strong>{{ $t('form_summary_iban') }}</strong> {{ bankData.iban }}

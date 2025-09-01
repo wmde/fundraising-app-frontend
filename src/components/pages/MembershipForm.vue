@@ -199,8 +199,6 @@ import Summary from '@src/components/patterns/Summary.vue';
 import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
 import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import { useMembershipBankDataSummary } from '@src/components/pages/membership_form/useMembershipBankDataSummary';
-import { Address } from '@src/view_models/Address';
-import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
 
 interface Props {
 	validateAddressUrl: string;
