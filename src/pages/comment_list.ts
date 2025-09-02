@@ -5,6 +5,7 @@ import App from '@src/components/App.vue';
 import CommentList from '@src/components/pages/CommentList.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 const PAGE_IDENTIFIER = 'comment-list';
 const pageData = new PageDataInitializer<any>( '#appdata' );
@@ -21,6 +22,7 @@ createVueApp(
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: CommentList,
 		pageTitle: 'comment_list_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 		},
 	} ).mount( '#app' );

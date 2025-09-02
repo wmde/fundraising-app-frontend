@@ -242,11 +242,11 @@ describe( 'MembershipAddress', () => {
 					optionalField: false,
 				};
 			action( { commit }, field );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_ADDRESS_FIELD',
 				field
 			);
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'VALIDATE_INPUT',
 				field
 			);
@@ -268,11 +268,11 @@ describe( 'MembershipAddress', () => {
 					optionalField: false,
 				};
 			action( { commit }, field );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_ADDRESS_FIELD',
 				trimmedField
 			);
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'VALIDATE_INPUT',
 				trimmedField
 			);
@@ -308,10 +308,10 @@ describe( 'MembershipAddress', () => {
 				validationUrl = '/check-address',
 				action = actions.validateAddress as any;
 			action( context, validationUrl );
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'MARK_EMPTY_FIELDS_INVALID'
 			);
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'BEGIN_ADDRESS_VALIDATION'
 			);
 		} );
@@ -427,7 +427,7 @@ describe( 'MembershipAddress', () => {
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
 			action( { commit, dispatch, getters, rootGetters: { allPaymentValuesAreSet: false } }, type );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_ADDRESS_TYPE',
 				type
 			);
@@ -449,7 +449,7 @@ describe( 'MembershipAddress', () => {
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
 			action( context, type );
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'SET_MEMBERSHIP_TYPE_VALIDITY',
 				Validity.INVALID
 			);
@@ -461,7 +461,7 @@ describe( 'MembershipAddress', () => {
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
 			action( { commit, dispatch, getters, rootGetters: { allPaymentValuesAreSet: false } }, type );
-			expect( dispatch ).toBeCalledWith(
+			expect( dispatch ).toHaveBeenCalledWith(
 				'membership_fee/resetFeeForAddressType',
 				type,
 				{ root: true }
@@ -502,7 +502,7 @@ describe( 'MembershipAddress', () => {
 				action = actions.setReceiptChoice as any,
 				choice = true;
 			action( { commit }, choice );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_RECEIPT',
 				choice
 			);
@@ -515,7 +515,7 @@ describe( 'MembershipAddress', () => {
 				action = actions.setIncentives as any,
 				choice = [ 'Playstation 5' ];
 			action( { commit }, choice );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_INCENTIVES',
 				choice
 			);
@@ -528,11 +528,11 @@ describe( 'MembershipAddress', () => {
 				action = actions.setMembershipType as any,
 				choice = MembershipTypeModel.ACTIVE;
 			action( { commit }, choice );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_MEMBERSHIP_TYPE',
 				choice
 			);
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_MEMBERSHIP_TYPE_VALIDITY',
 				Validity.VALID
 			);

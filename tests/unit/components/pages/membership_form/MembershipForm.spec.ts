@@ -84,7 +84,7 @@ describe( 'MembershipForm.vue', () => {
 
 		wrapper.findComponent( AddressType ).vm.$emit( 'field-changed', AddressTypeModel.PERSON );
 
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, expectedPayload );
 	} );
 
 	it( 'toggle membership type visibility', async () => {

@@ -59,6 +59,7 @@ import LocaleIcon from '@src/components/shared/icons/LocaleIcon.vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useDetectOutsideClick } from '@src/components/shared/composables/useDetectOutsideClick';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import { PageTools } from '@src/util/PageTools';
 
 const FOCUSABLE_ELEMENTS = [
 	'navigation-locale-toggle',
@@ -67,6 +68,11 @@ const FOCUSABLE_ELEMENTS = [
 	'navigation-locale-button',
 ];
 
+interface Props {
+	pageTools: PageTools;
+}
+
+const props = defineProps<Props>();
 const localeSelectorRef = ref<HTMLElement>();
 const locale = ref<string>( Cookies.get( COOKIE_NAME ) ?? DEFAULT_LOCALE );
 const localeSelectorItem = computed<LocaleSelectorItem>( () => LOCALES.find( x => x.value === locale.value ) );
@@ -75,7 +81,7 @@ const active = ref<boolean>( false );
 
 const updateCookie = (): void => {
 	Cookies.set( COOKIE_NAME, locale.value );
-	window.location.reload();
+	props.pageTools.reload();
 };
 
 const handleLocaleItemBlur = () => {

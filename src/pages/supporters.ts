@@ -6,6 +6,7 @@ import App from '@src/components/App.vue';
 import Supporters from '@src/components/pages/Supporters.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface ErrorModel {
 	message: string;
@@ -27,6 +28,7 @@ createVueApp( App,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: Supporters,
 		pageTitle: staticPage.getAttribute( 'data-page-title' ),
+		pageTools: windowPageTools,
 		pageProps: {
 			pageTitle: staticPage.getAttribute( 'data-page-title' ),
 			supporters: supportersFromObject( JSON.parse( pageData.applicationVars.supporters ) ),

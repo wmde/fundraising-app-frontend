@@ -5,6 +5,7 @@ import App from '@src/components/App.vue';
 import StaticPage from '@src/components/pages/StaticPage.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 const staticPage: any = document.getElementById( 'appdata' );
 const PAGE_IDENTIFIER = staticPage.getAttribute( 'data-page-id' );
@@ -21,6 +22,7 @@ createVueApp( App,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: StaticPage,
 		pageTitle: staticPage.getAttribute( 'data-page-id' ),
+		pageTools: windowPageTools,
 		pageProps: {
 			pageId: staticPage.getAttribute( 'data-page-id' ),
 			pageTitle: staticPage.getAttribute( 'data-page-title' ),

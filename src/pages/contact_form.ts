@@ -7,6 +7,7 @@ import Contact from '@src/components/pages/Contact.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import type { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface ContactFormModel {
 	message: string;
@@ -31,6 +32,7 @@ createVueApp(
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: Contact,
 		pageTitle: 'contact_form_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 			contactCategories: pageData.applicationVars.contact_categories,
 			errors: pageData.applicationVars.errors,

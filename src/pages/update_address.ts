@@ -16,6 +16,7 @@ import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { action } from '@src/store/util';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { ApiAddressChangeResource } from '@src/api/AddressChangeResource';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface UpdateAddressModel {
 	isCompany: boolean;
@@ -49,12 +50,14 @@ store.dispatch(
 			pageIdentifier: PAGE_IDENTIFIER,
 			page: UpdateAddress,
 			pageTitle: 'update_address_page_title',
+			pageTools: windowPageTools,
 			pageProps: {
 				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 				countries: pageData.applicationVars.countries,
 				salutations: pageData.applicationVars.salutations,
 				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
 				addressChangeResource: new ApiAddressChangeResource( pageData.applicationVars.urls.updateAddress ),
+				pageTools: windowPageTools,
 			},
 		}
 	);

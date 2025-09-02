@@ -5,6 +5,7 @@ import App from '@src/components/App.vue';
 import UpdateAddressSuccess from '@src/components/pages/UpdateAddressSuccess.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 const PAGE_IDENTIFIER = 'address-update-success';
 const pageData = new PageDataInitializer<any>( '#appdata' );
@@ -21,6 +22,7 @@ createVueApp(
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: UpdateAddressSuccess,
 		pageTitle: 'address_update_success_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 			donationReceipt: pageData.applicationVars.receipt ? '1' : '0',
 		},

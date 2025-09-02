@@ -41,6 +41,13 @@ describe( 'UpdateAddress.vue', () => {
 				salutations: EXAMPLE_SALUTATIONS,
 				addressValidationPatterns,
 				addressChangeResource,
+				pageTools: {
+					scrollTo: jest.fn(),
+					setLocation: jest.fn(),
+					reload: jest.fn(),
+					setModalOpened: jest.fn(),
+					setModalClosed: jest.fn(),
+				},
 			},
 			global: {
 				plugins: [ store ],
@@ -115,10 +122,7 @@ describe( 'UpdateAddress.vue', () => {
 
 	it( 'redirects to the success page on successful submit', async () => {
 		jest.useFakeTimers();
-
 		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
-		Object.defineProperty( window, 'location', { value: { href: '' }, writable: true } );
-
 		const addressChangeResource: AddressChangeResource = {
 			put(): Promise<UpdateAddressResponse> {
 				return Promise.resolve( { identifier: 'anything' } as object as UpdateAddressResponse );
@@ -145,7 +149,7 @@ describe( 'UpdateAddress.vue', () => {
 		await wrapper.find( 'form' ).trigger( 'submit' );
 		await nextTick();
 
-		expect( window.location.href ).toStrictEqual( '/update-address/success?addressToken=anything' );
+		expect( wrapper.props().pageTools.setLocation ).toHaveBeenCalledWith( '/update-address/success?addressToken=anything' );
 
 		jest.restoreAllMocks();
 	} );

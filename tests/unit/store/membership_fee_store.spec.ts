@@ -131,7 +131,7 @@ describe( 'MembershipFee', () => {
 			const commit = jest.fn();
 			const action = actions.markEmptyFeeAsInvalid as any;
 			action( { commit } );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'MARK_EMPTY_FEE_INVALID'
 			);
 		} );
@@ -147,7 +147,7 @@ describe( 'MembershipFee', () => {
 			};
 			const action = actions.markEmptyValuesAsInvalid as any;
 			action( context );
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'MARK_EMPTY_FIELDS_INVALID'
 			);
 		} );
@@ -297,7 +297,7 @@ describe( 'MembershipFee', () => {
 					'SET_FEE_VALIDITY',
 					Validity.INVALID
 				);
-				expect( context.dispatch ).not.toBeCalled();
+				expect( context.dispatch ).not.toHaveBeenCalled();
 			} );
 		} );
 
@@ -329,7 +329,7 @@ describe( 'MembershipFee', () => {
 					'SET_FEE',
 					''
 				);
-				expect( context.dispatch ).not.toBeCalled();
+				expect( context.dispatch ).not.toHaveBeenCalled();
 			} );
 		} );
 

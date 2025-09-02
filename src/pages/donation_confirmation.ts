@@ -22,6 +22,7 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { ApiCommentResource } from '@src/api/CommentResource';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface DonationConfirmationModel {
 	urls: { [ key: string ]: string };
@@ -77,6 +78,7 @@ store.dispatch(
 			pageIdentifier: PAGE_IDENTIFIER,
 			page: DonationConfirmation,
 			pageTitle: 'donation_confirmation_page_title',
+			pageTools: windowPageTools,
 			pageProps: {
 				donation: pageData.applicationVars.donation,
 				address: address,
