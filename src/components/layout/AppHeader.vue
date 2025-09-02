@@ -14,7 +14,7 @@
 			@esc="showMobileNavbar = false"
 		/>
 		<div class="navigation-right">
-			<LocaleSelector :assets-path="assetsPath"/>
+			<LocaleSelector :assets-path="assetsPath" :page-tools="pageTools"/>
 			<NavigationBurger
 				:active="showMobileNavbar"
 				@click="showMobileNavbar = !showMobileNavbar"
@@ -43,10 +43,12 @@ import NavigationBurger from '@src/components/layout/NavigationBurger.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { useDisplaySwitch } from '@src/components/shared/composables/useDisplaySwitch';
 import NavigationItems from '@src/components/layout/NavigationItems.vue';
+import { PageTools } from '@src/util/PageTools';
 
 interface Props {
 	assetsPath: string;
 	pageIdentifier: string;
+	pageTools: PageTools;
 }
 
 defineProps<Props>();

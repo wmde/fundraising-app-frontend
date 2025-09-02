@@ -9,6 +9,13 @@ describe( 'AppHeader.vue', () => {
 			props: {
 				assetsPath: '',
 				pageIdentifier,
+				pageTools: {
+					scrollTo: jest.fn(),
+					setLocation: jest.fn(),
+					reload: jest.fn(),
+					setModalOpened: jest.fn(),
+					setModalClosed: jest.fn(),
+				},
 			},
 			global: {
 				provide: {

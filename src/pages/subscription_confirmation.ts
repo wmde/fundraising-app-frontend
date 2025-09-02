@@ -5,6 +5,7 @@ import App from '@src/components/App.vue';
 import SubscriptionConfirmation from '@src/components/pages/SubscriptionConfirmation.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface ErrorModel {
 	error_message: string;
@@ -24,6 +25,7 @@ createVueApp( App,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: SubscriptionConfirmation,
 		pageTitle: 'subscription_confirmation_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 			errorMessage: pageData.applicationVars.error_message,
 		},

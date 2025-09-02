@@ -2,6 +2,7 @@ import { shallowMount, VueWrapper } from '@vue/test-utils';
 import App from '@src/components/App.vue';
 import { ModalStates, useModalState } from '@src/components/shared/composables/useModalState';
 import { nextTick } from 'vue';
+import { PageTools } from '@src/util/PageTools';
 
 const modalState = useModalState();
 
@@ -17,6 +18,13 @@ describe( 'App.vue', () => {
 				isFullWidth: false,
 				bucketClasses: [],
 				usesContentCards: false,
+				pageTools: {
+					scrollTo: jest.fn(),
+					setLocation: jest.fn(),
+					reload: jest.fn(),
+					setModalOpened: jest.fn(),
+					setModalClosed: jest.fn(),
+				},
 			},
 		} );
 	};
@@ -32,22 +40,19 @@ describe( 'App.vue', () => {
 	} );
 
 	it( 'freezes the page when a modal is opened', async () => {
-		const scrollTo = jest.fn();
-		Object.defineProperty( window, 'scrollTo', { writable: true, configurable: true, value: scrollTo } );
 		modalState.value = ModalStates.Closed;
-		getWrapper();
+		const wrapper = getWrapper();
 
 		modalState.value = ModalStates.Open;
 		await nextTick();
 
-		expect( document.body.style.position ).toStrictEqual( 'fixed' );
-		expect( document.body.style.top ).toStrictEqual( '-0px' );
+		const pageTools: PageTools = wrapper.props().pageTools;
+
+		expect( pageTools.setModalOpened ).toHaveBeenCalled();
 
 		modalState.value = ModalStates.Closed;
 		await nextTick();
 
-		expect( document.body.style.position ).toStrictEqual( '' );
-		expect( document.body.style.top ).toStrictEqual( '' );
-		expect( scrollTo ).toHaveBeenCalledWith( 0, 0 );
+		expect( pageTools.setModalClosed ).toHaveBeenCalled();
 	} );
 } );

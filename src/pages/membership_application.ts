@@ -27,6 +27,7 @@ import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import CampaignParameters from '@src/util/CampaignParameters';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface MembershipAmountModel {
 	presetAmounts: Array<string>;
@@ -95,6 +96,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				page: MembershipForm,
 				usesContentCards: true,
 				pageTitle: 'membership_application_page_title',
+				pageTools: windowPageTools,
 				pageProps: {
 					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
 					validateEmailUrl: pageData.applicationVars.urls.validateEmail,

@@ -5,6 +5,7 @@ import App from '@src/components/App.vue';
 import PageNotFound from '@src/components/pages/PageNotFound.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface ErrorModel {
 	message: string;
@@ -25,6 +26,7 @@ createVueApp( App,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: PageNotFound,
 		pageTitle: 'page_not_found_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 			errorData: pageData.applicationVars,
 		},

@@ -5,6 +5,7 @@ import App from '@src/components/App.vue';
 import UseOfFunds from '@src/components/pages/UseOfFunds.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 const PAGE_IDENTIFIER = 'use-of-funds';
 const pageData = new PageDataInitializer<any>( '#appdata' );
@@ -22,6 +23,7 @@ createVueApp(
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: UseOfFunds,
 		pageTitle: 'use_of_funds_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 			content: JSON.parse( pageData.applicationVars.use_of_funds_content ),
 			assetsPath: pageData.assetsPath,

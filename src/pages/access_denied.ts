@@ -5,6 +5,7 @@ import App from '@src/components/App.vue';
 import AccessDenied from '@src/components/pages/AccessDenied.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface ErrorModel {
 	message: string;
@@ -24,8 +25,9 @@ createVueApp( App,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: AccessDenied,
 		pageTitle: 'access_denied_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 			errorData: pageData.applicationVars,
 		},
-	}
+	},
 ).mount( '#app' );

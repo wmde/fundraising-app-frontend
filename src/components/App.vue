@@ -2,7 +2,7 @@
 	<div class="app-container" :class="bucketClasses">
 		<header>
 			<a href="#content" class="skip-link">{{ $t( 'skip_link_text' ) }}</a>
-			<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
+			<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath" :page-tools="pageTools"/>
 		</header>
 		<main class="main-wrapper" id="content">
 			<div class="container">
@@ -28,7 +28,7 @@ import AppFooter from '@src/components/layout/AppFooter.vue';
 import { useI18n } from 'vue-i18n';
 import { Component, onMounted, watch } from 'vue';
 import { ModalStates, useModalState } from '@src/components/shared/composables/useModalState';
-import { setModalClosed, setModalOpened } from '@src/util/modalPageFreezer';
+import { PageTools } from '@src/util/PageTools';
 
 interface Props {
 	assetsPath: string;
@@ -39,6 +39,7 @@ interface Props {
 	isFullWidth?: boolean;
 	usesContentCards?: boolean;
 	bucketClasses?: string[];
+	pageTools: PageTools;
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -57,10 +58,10 @@ onMounted( () => {
 watch( modalState, ( newModalState: ModalStates ) => {
 	switch ( newModalState ) {
 		case ModalStates.Open:
-			setModalOpened();
+			props.pageTools.setModalOpened();
 			break;
 		case ModalStates.Closed:
-			setModalClosed();
+			props.pageTools.setModalClosed();
 			break;
 	}
 } );

@@ -123,6 +123,7 @@ import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
 import type { AddressChangeResource } from '@src/api/AddressChangeResource';
 import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
+import { PageTools } from '@src/util/PageTools';
 
 defineOptions( {
 	name: 'UpdateAddress',
@@ -134,6 +135,7 @@ interface Props {
 	salutations: Salutation[];
 	addressValidationPatterns: AddressValidation;
 	addressChangeResource: AddressChangeResource;
+	pageTools: PageTools;
 }
 
 const props = defineProps<Props>();
@@ -245,7 +247,7 @@ const submit = (): void => {
 		if ( validationResult.status === 'OK' ) {
 			trackFormSubmission( form.value );
 			props.addressChangeResource.put( getAddressData() ).then( ( addressData: UpdateAddressResponse ) => {
-				window.location.href = '/update-address/success?addressToken=' + addressData.identifier;
+				props.pageTools.setLocation( '/update-address/success?addressToken=' + addressData.identifier );
 			} ).catch( ( error: string ) => {
 				serverErrorMessage.value = error;
 			} );

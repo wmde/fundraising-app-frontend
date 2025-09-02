@@ -5,6 +5,7 @@ import App from '@src/components/App.vue';
 import SystemMessage from '@src/components/pages/SystemMessage.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface ErrorModel {
 	message: string;
@@ -26,6 +27,7 @@ createVueApp(
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: SystemMessage,
 		pageTitle: 'system_message_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 			errorData: pageData.applicationVars,
 		},

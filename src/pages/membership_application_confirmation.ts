@@ -12,6 +12,7 @@ import MembershipConfirmation from '@src/components/pages/MembershipConfirmation
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import type { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
+import { windowPageTools } from '@src/util/PageTools';
 
 const PAGE_IDENTIFIER = 'membership-application-confirmation';
 const LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_application' ];
@@ -37,6 +38,7 @@ createVueApp( App,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: MembershipConfirmation,
 		pageTitle: 'membership_application_confirmation_page_title',
+		pageTools: windowPageTools,
 		pageProps: {
 			confirmationData: pageData.applicationVars,
 			salutations: pageData.applicationVars.salutations,

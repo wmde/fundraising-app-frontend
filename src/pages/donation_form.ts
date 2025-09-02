@@ -22,6 +22,7 @@ import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
+import { windowPageTools } from '@src/util/PageTools';
 
 interface DonationFormModel {
 	initialFormValues: any;
@@ -85,6 +86,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				page: DonationForm,
 				usesContentCards: true,
 				pageTitle: 'donation_form_page_title',
+				pageTools: windowPageTools,
 				pageProps: {
 					assetsPath: pageData.assetsPath,
 					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
