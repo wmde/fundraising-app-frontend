@@ -105,7 +105,7 @@ describe( 'AddressForms.vue', () => {
 		await wrapper.find( '#person-first-name' ).setValue( firstNameValue );
 
 		wrapper.findComponent( NameFields ).vm.$emit( 'field-changed', 'firstName' );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, {
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, {
 			'name': 'firstName',
 			'optionalField': false,
 			'pattern': addressValidationPatterns.firstName,
@@ -118,7 +118,7 @@ describe( 'AddressForms.vue', () => {
 		const expectedAction = action( 'address', 'setReceiptChoice' );
 		const expectedPayload = false;
 		await wrapper.find( '#receipt-option-company' ).setValue( false );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, expectedPayload );
 	} );
 
 	it( 'sets email in store when it receives email event', async () => {
@@ -128,7 +128,7 @@ describe( 'AddressForms.vue', () => {
 
 		const expectedAction = action( 'address', 'setAddressField' );
 		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, {
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, {
 			'name': 'email',
 			'optionalField': false,
 			'pattern': addressValidationPatterns.email,

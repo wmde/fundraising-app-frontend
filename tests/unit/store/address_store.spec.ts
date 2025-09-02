@@ -303,11 +303,11 @@ describe( 'Address', () => {
 					optionalField: false,
 				};
 			action( { commit }, field );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_ADDRESS_FIELD',
 				field
 			);
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'VALIDATE_INPUT',
 				field
 			);
@@ -329,11 +329,11 @@ describe( 'Address', () => {
 					optionalField: false,
 				};
 			action( { commit }, field );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_ADDRESS_FIELD',
 				trimmedField
 			);
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'VALIDATE_INPUT',
 				trimmedField
 			);
@@ -370,10 +370,10 @@ describe( 'Address', () => {
 				validationUrl = '/check-address',
 				action = actions.validateAddress as any;
 			action( context, validationUrl );
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'MARK_EMPTY_FIELDS_INVALID'
 			);
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'BEGIN_ADDRESS_VALIDATION'
 			);
 		} );
@@ -457,7 +457,7 @@ describe( 'Address', () => {
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
 			action( { commit, getters }, type );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_ADDRESS_TYPE',
 				type
 			);
@@ -470,7 +470,7 @@ describe( 'Address', () => {
 				action = actions.setReceiptChoice as any,
 				choice = true;
 			action( { commit }, choice );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_RECEIPT',
 				choice
 			);
@@ -483,7 +483,7 @@ describe( 'Address', () => {
 				action = actions.setNewsletterChoice as any,
 				choice = true;
 			action( { commit }, choice );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'SET_NEWSLETTER',
 				choice
 			);

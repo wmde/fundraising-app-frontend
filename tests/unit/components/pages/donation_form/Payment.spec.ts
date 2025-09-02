@@ -36,7 +36,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findComponent( AmountField ).vm.$emit( 'update:modelValue', payload );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( 'payment', 'setAmount' ), payload );
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'setAmount' ), payload );
 	} );
 
 	it( 'sends interval to store when interval model updates', async () => {
@@ -46,7 +46,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 0 ].vm.$emit( 'update:modelValue', 6 );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( 'payment', 'setInterval' ), 6 );
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'setInterval' ), 6 );
 	} );
 
 	it( 'sends payment type to store when payment model updates', async () => {
@@ -56,7 +56,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 1 ].vm.$emit( 'update:modelValue', 'PPL' );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( 'payment', 'setType' ), 'PPL' );
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'payment', 'setType' ), 'PPL' );
 	} );
 
 	it( 'renders tooltip hint if SUB payment method is disabled', async () => {

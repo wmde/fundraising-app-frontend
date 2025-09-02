@@ -46,7 +46,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findComponent( AmountField ).vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( 'membership_fee', 'setFee' ), expectedPayload );
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'membership_fee', 'setFee' ), expectedPayload );
 	} );
 
 	it( 'shows bank data when payment type is selected and removes it when unselected', async () => {
@@ -73,7 +73,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 0 ].vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( 'membership_fee', 'setInterval' ), expectedPayload );
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'membership_fee', 'setInterval' ), expectedPayload );
 	} );
 
 	it( 'sends payment type to store when payment model updates', async () => {
@@ -87,7 +87,7 @@ describe( 'Payment.vue', () => {
 		wrapper.findAllComponents( RadioField )[ 1 ].vm.$emit( 'update:modelValue', expectedPayload.selectedValue );
 		await nextTick();
 
-		expect( store.dispatch ).toBeCalledWith( action( 'membership_fee', 'setType' ), expectedPayload );
+		expect( store.dispatch ).toHaveBeenCalledWith( action( 'membership_fee', 'setType' ), expectedPayload );
 	} );
 
 	it( 'unsets selected fee when it is below the allowed minimum amount', async () => {

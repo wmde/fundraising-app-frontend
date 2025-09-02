@@ -174,7 +174,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( 'SET_AMOUNT', '0' );
+			expect( commit ).not.toHaveBeenCalledWith( 'SET_AMOUNT', '0' );
 		} );
 
 		it( 'commits amount and sets it to valid when amount is set', () => {
@@ -192,8 +192,8 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( 'SET_AMOUNT', '2399' );
-			expect( commit ).toBeCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
+			expect( commit ).toHaveBeenCalledWith( 'SET_AMOUNT', '2399' );
+			expect( commit ).toHaveBeenCalledWith( 'SET_AMOUNT_VALIDITY', Validity.VALID );
 		} );
 
 		it( 'does not commit empty payment type', () => {
@@ -211,7 +211,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( 'SET_TYPE' );
+			expect( commit ).not.toHaveBeenCalledWith( 'SET_TYPE' );
 		} );
 
 		it( 'commits payment type and set it to valid when payment type is set', () => {
@@ -229,8 +229,8 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( 'SET_TYPE', 'BEZ' );
-			expect( commit ).toBeCalledWith( 'SET_TYPE_VALIDITY', Validity.VALID );
+			expect( commit ).toHaveBeenCalledWith( 'SET_TYPE', 'BEZ' );
+			expect( commit ).toHaveBeenCalledWith( 'SET_TYPE_VALIDITY', Validity.VALID );
 		} );
 
 		it( 'commits interval', () => {
@@ -248,7 +248,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( 'SET_INTERVAL', '12' );
+			expect( commit ).toHaveBeenCalledWith( 'SET_INTERVAL', '12' );
 		} );
 
 		const paymentAndAmountCases = [
@@ -294,7 +294,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( 'SET_TYPE' );
+			expect( commit ).not.toHaveBeenCalledWith( 'SET_TYPE' );
 		} );
 
 		it( 'initialises Sofort payment type if interval is 0', () => {
@@ -312,7 +312,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( 'SET_TYPE', PaymentType.SOFORT );
+			expect( commit ).toHaveBeenCalledWith( 'SET_TYPE', PaymentType.SOFORT );
 		} );
 
 		it( 'initialises Sofort payment type if interval is emtpy', () => {
@@ -330,7 +330,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).toBeCalledWith( 'SET_TYPE', PaymentType.SOFORT );
+			expect( commit ).toHaveBeenCalledWith( 'SET_TYPE', PaymentType.SOFORT );
 		} );
 
 		it( 'does not initialise payment type if it is not in allowed list', () => {
@@ -348,7 +348,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( 'SET_TYPE', PaymentType.DIRECT_DEBIT );
+			expect( commit ).not.toHaveBeenCalledWith( 'SET_TYPE', PaymentType.DIRECT_DEBIT );
 		} );
 
 		it( 'does not initialise interval if it is not in allowed list', () => {
@@ -366,7 +366,7 @@ describe( 'Payment', () => {
 			};
 
 			action( { commit }, payload );
-			expect( commit ).not.toBeCalledWith( 'SET_INTERVAL', PaymentType.DIRECT_DEBIT );
+			expect( commit ).not.toHaveBeenCalledWith( 'SET_INTERVAL', PaymentType.DIRECT_DEBIT );
 		} );
 	} );
 
@@ -375,7 +375,7 @@ describe( 'Payment', () => {
 			const commit = jest.fn();
 			const action = actions.markEmptyAmountAsInvalid as any;
 			action( { commit } );
-			expect( commit ).toBeCalledWith(
+			expect( commit ).toHaveBeenCalledWith(
 				'MARK_EMPTY_AMOUNT_INVALID'
 			);
 		} );
@@ -391,7 +391,7 @@ describe( 'Payment', () => {
 			};
 			const action = actions.markEmptyValuesAsInvalid as any;
 			action( context );
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'MARK_EMPTY_FIELDS_INVALID'
 			);
 		} );
@@ -404,7 +404,7 @@ describe( 'Payment', () => {
 			};
 			const action = actions.setInterval as any;
 			action( context, 3 );
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'SET_INTERVAL',
 				3
 			);
@@ -418,7 +418,7 @@ describe( 'Payment', () => {
 			};
 			const action = actions.setType as any;
 			action( context, 'BEZ' );
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'SET_TYPE',
 				'BEZ'
 			);
@@ -429,7 +429,7 @@ describe( 'Payment', () => {
 			};
 			const action = actions.setType as any;
 			action( context );
-			expect( context.commit ).toBeCalledWith(
+			expect( context.commit ).toHaveBeenCalledWith(
 				'SET_TYPE_VALIDITY'
 			);
 		} );

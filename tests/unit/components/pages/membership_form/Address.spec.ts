@@ -64,7 +64,7 @@ describe( 'Address.vue', () => {
 		await wrapper.find( '#first-name' ).setValue( firstNameValue );
 
 		wrapper.findComponent( NameFields ).vm.$emit( 'field-changed', 'firstName' );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, {
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, {
 			'name': 'firstName',
 			'optionalField': false,
 			'pattern': addressValidationPatterns.firstName,
@@ -82,7 +82,7 @@ describe( 'Address.vue', () => {
 		expect( wrapper.findComponent( CheckboxSingleFormInput ).exists() ).toBe( true );
 		await wrapper.findComponent( CheckboxSingleFormInput ).setValue( false );
 
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, expectedPayload );
 	} );
 
 	it( 'sets incentive preference in store when it receives field-change event', async () => {
@@ -94,7 +94,7 @@ describe( 'Address.vue', () => {
 		const inputElement = wrapper.findComponent( IncentivesField ).find<HTMLInputElement>( 'input' );
 		await inputElement.setValue( true );
 
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, expectedPayload );
 
 	} );
 
@@ -106,7 +106,7 @@ describe( 'Address.vue', () => {
 
 		const expectedAction = action( 'membership_address', 'setAddressField' );
 		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, {
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, {
 			'name': 'email',
 			'optionalField': false,
 			'pattern': addressValidationPatterns.email,
