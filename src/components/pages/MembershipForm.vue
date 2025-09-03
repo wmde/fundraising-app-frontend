@@ -186,7 +186,7 @@ import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { useStore } from 'vuex';
 import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
 import { useMembershipTypeModel } from '@src/components/pages/membership_form/useMembershipTypeModel';
-import { MembershipTypeModel, membershipTypeName } from '@src/view_models/MembershipTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useMembershipFormSubmitHandler } from '@src/components/pages/membership_form/useMembershipFormSubmitHandler';
 import { trackFormSubmission } from '@src/util/tracking';
@@ -199,6 +199,7 @@ import Summary from '@src/components/patterns/Summary.vue';
 import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
 import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import { useMembershipBankDataSummary } from '@src/components/pages/membership_form/useMembershipBankDataSummary';
+import { useMembershipPaymentFunctions } from '@src/components/pages/membership_form/useMembershipPaymentFunctions';
 
 interface Props {
 	validateAddressUrl: string;
@@ -224,6 +225,7 @@ const store = useStore();
 const addressFieldsRef = ref<HTMLFormElement>();
 const { disabledAddressTypes, addressType, setAddressType, addressSummary } = useAddressTypeFunctions( store );
 const { bankDataSummary } = useMembershipBankDataSummary( store );
+const { paymentSummary } = useMembershipPaymentFunctions( store );
 const membershipTypeModel = useMembershipTypeModel( store );
 const disabledMembershipTypes = computed(
 	(): MembershipTypeModel[] => {
@@ -234,20 +236,6 @@ const trackAddressForm = () => {
 	trackFormSubmission( addressFieldsRef.value );
 };
 const isDirectDebitPayment = computed( (): boolean => store.state.membership_fee.values.type === 'BEZ' );
-
-const paymentSummary = computed( () => {
-	const payment = store.state.membership_fee.values;
-	const hasPaymentData = payment.fee > 0 || Boolean( payment.paymentType );
-	if ( hasPaymentData ) {
-		return {
-			paymentIntervalInMonths: payment.interval,
-			membershipFee: payment.fee / 100,
-			paymentType: payment.type,
-			membershipType: membershipTypeName( store.getters[ 'membership_address/membershipType' ] ),
-		};
-	}
-	return undefined;
-} );
 
 const {
 	submit,
