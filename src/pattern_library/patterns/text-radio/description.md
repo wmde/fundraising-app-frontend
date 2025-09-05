@@ -1,0 +1,1 @@
+This is used for a text field that adjoins a radio group to allow a donor to enter a custom value.

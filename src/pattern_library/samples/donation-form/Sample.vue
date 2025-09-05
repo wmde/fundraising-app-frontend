@@ -68,7 +68,10 @@
 						</div>
 						<div class="flow">
 							<label for="custom-amount">Custom Amount</label>
-							<input type="text" name="custom-amount" id="custom-amount" placeholder="€ e.g., 30">
+							<div class="text-radio">
+								<input type="radio" class="text-radio__radio" name="custom-amount-radio" id="custom-amount-radio">
+								<input type="text" class="text-radio__text" name="custom-amount" id="custom-amount" placeholder="€ e.g., 30">
+							</div>
 							<p class="field-container__error-text">Unfortunately, due to applicable fees, you have to state a minimum amount of EUR 1. If you would like to donate less, please transfer the amount directly to the donation account stated below.</p>
 						</div>
 					</fieldset>
