@@ -1,0 +1,15 @@
+.text-radio {
+	position: relative;
+}
+
+.text-radio__radio {
+	position: absolute;
+	top: 50%;
+	transform: translateY( calc( var(--space-s) / 2 * -1 ) );
+	left: 0.5rem;
+	margin: 0;
+}
+
+.text-radio .text-radio__text {
+	padding-inline-start: 2rem;
+}
