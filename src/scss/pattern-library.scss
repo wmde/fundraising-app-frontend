@@ -7,6 +7,7 @@
 @use "../pattern_library/css/compositions/switcher.css" as switcherBase;
 @use "../pattern_library/css/compositions/wrapper.css" as wrapperBase;
 @use "../pattern_library/css/blocks/alert-box.css";
+@use "../pattern_library/css/blocks/button.css";
 @use "pattern-library-compatibility/content-card";
 @use "pattern-library-compatibility/icon-text";
 @use "pattern-library-compatibility/section-heading";
@@ -14,6 +15,7 @@
 @use "pattern-library-compatibility/summary";
 @use "pattern-library-compatibility/switcher";
 @use "pattern-library-compatibility/wrapper";
+@use "pattern-library-compatibility/button";
 
 :root {
 	--wrapper-max-width: calc(960px + var(--gutter) + var(--gutter));
@@ -58,4 +60,5 @@
 	/* Colours */
 	--color-blue-600: #{colors.$primary};
 	--color-blue-200: #{colors.$primary-pale};
+	--color-white: #{colors.$white};
 }
