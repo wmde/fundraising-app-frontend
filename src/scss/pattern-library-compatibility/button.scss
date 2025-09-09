@@ -1,0 +1,41 @@
+@use "../variables";
+
+@use '../settings/forms';
+@use '../settings/colors';
+@use '../settings/global';
+@use 'sass:color';
+@use 'sass:map';
+
+$hover-color: color.adjust( colors.$primary, $lightness: -5% );
+
+.button {
+	font-weight: bold;
+	font-family: variables.$family-primary;
+	font-size: 16px;
+
+	position: relative;
+	display: inline-block;
+	background: colors.$primary;
+	color: colors.$white;
+	border: 0;
+	border-radius: map.get( forms.$input, 'border-radius' );
+	padding: 0;
+	margin: 0;
+	font-size: 1em;
+	font-weight: 700;
+	text-align: center;
+	height: 54px;
+	width: 240px;
+	cursor: pointer;
+	transition: background-color 200ms global.$easing, color 200ms global.$easing;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		color: colors.$white;
+		text-decoration: none;
+		background: $hover-color;
+		border: 1px solid colors.$white;
+		box-shadow: 0 0 0 2px colors.$primary;
+	}
+}
