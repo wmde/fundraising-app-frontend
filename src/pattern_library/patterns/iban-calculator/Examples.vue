@@ -51,7 +51,7 @@
 					</div>
 					<div class="cluster">
 						<button class="button" @click="() => { visible1 = false; IBANField1.focus(); }">Yes</button>
-						<button class="button" data-button-style="hollow" @click="hideResult1">No</button>
+						<button class="button" data-style-hollow @click="hideResult1">No</button>
 					</div>
 				</div>
 

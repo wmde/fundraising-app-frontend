@@ -10,7 +10,7 @@
 			<p><small>This is all the more info. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque laudantium nisi possimus, quas repudiandae veritatis? Architecto blanditiis, et impedit in incidunt inventore laborum molestiae molestias odio pariatur rem sit veniam.</small></p>
 		</details>
 
-		<button class="button" data-button-style="hollow">Enter Postal Address</button>
+		<button class="button" data-style-hollow>Enter Postal Address</button>
 
 		<details class="more-info-toggle">
 			<summary><small>More Information</small></summary>
