@@ -32,6 +32,7 @@ import textRadio from '@src/pattern_library/patterns/text-radio';
 import verboseCheckbox from '@src/pattern_library/patterns/verbose-checkbox';
 
 import donationForm from '@src/pattern_library/samples/donation-form';
+import membershipFeeChange from '@src/pattern_library/samples/membership-fee-change';
 
 const pages: Page[] = [
 	cssVariables,
@@ -68,6 +69,7 @@ const patterns: Pattern[] = [
 
 const samples: Sample[] = [
 	donationForm,
+	membershipFeeChange,
 ];
 
 export interface Content {
