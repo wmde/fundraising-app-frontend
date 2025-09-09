@@ -1,6 +1,9 @@
 <template>
 	<div class="donation-confirmation-card success-message">
-		<h1 class="icon-title"><SuccessIcon/> {{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1>
+		<IconText>
+			<template #icon><SuccessIcon/></template>
+			<template #content><h1>{{ $t( 'donation_confirmation_topbox_payment_title_alt' ) }}</h1></template>
+		</IconText>
 		<p>
 			<span v-html="donationSummaryMessage"/> <span v-html="paymentNotice"/>
 		</p>
@@ -28,10 +31,12 @@
 import { defineComponent } from 'vue';
 import type { Donation } from '@src/view_models/Donation';
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
+import IconText from '@src/components/patterns/IconText.vue';
 
 export default defineComponent( {
 	name: 'SuccessMessage',
 	components: {
+		IconText,
 		SuccessIcon,
 	},
 	props: {

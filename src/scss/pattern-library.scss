@@ -1,9 +1,11 @@
 @use "settings/units";
 @use "sass:map";
-@use "pattern-library-compatibility/content-card";
-@use "pattern-library-compatibility/section-heading";
-@use "pattern-library-compatibility/summary";
-@use "pattern-library-compatibility/switcher";
+
+@import "pattern-library-compatibility/content-card";
+@import "pattern-library-compatibility/icon-text";
+@import "pattern-library-compatibility/section-heading";
+@import "pattern-library-compatibility/summary";
+@import "pattern-library-compatibility/switcher";
 
 @import "../pattern_library/css/variables/global.css";
 @import "../pattern_library/css/compositions/flow.css";

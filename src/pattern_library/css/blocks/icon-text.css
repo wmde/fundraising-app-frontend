@@ -1,21 +1,25 @@
 .icon-text {
+	--icon-height: calc(var(--type-step-0) * var(--leading-standard));
+	--icon-gutter: 1ch;
+
 	display: flex;
 }
 
-.icon-text:not(:has(h1, h2, h3)) {
-	--icon-height: calc(var(--type-step-0) * var(--leading-standard));
-	--icon-gutter: 1ch;
+.icon-text[data-small-heading] :is(h1, h2, h3) {
+	font-size: var(--type-step-0);
+	line-height: var(--leading-standard);
+	font-weight: bold;
 }
 
-.icon-text:has(h1) {
+.icon-text:not([data-small-heading]):has(h1) {
 	--icon-height: calc(var(--type-step-3) * var(--leading-fine));
 }
 
-.icon-text:has(h2) {
+.icon-text:not([data-small-heading]):has(h2) {
 	--icon-height: calc(var(--type-step-2) * var(--leading-fine));
 }
 
-.icon-text:has(h3) {
+.icon-text:not([data-small-heading]):has(h3) {
 	--icon-height: calc(var(--type-step-1) * var(--leading-fine));
 }
 
