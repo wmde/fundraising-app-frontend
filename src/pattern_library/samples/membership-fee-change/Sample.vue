@@ -1,7 +1,7 @@
 <template>
 	<div class="sidebar" data-direction="rtl">
 
-		<main>
+		<main class="flow">
 			<form action="" class="flow">
 				<div class="content-card flow">
 					<div class="section-heading">
@@ -47,6 +47,26 @@
 
 			</form>
 
+			<div class="content-card flow">
+				<div class="icon-text">
+					<div class="icon-text__icon" aria-hidden="true"><SuccessIcon/></div>
+					<div class="flow">
+						<h1>Herzlichen Dank für Ihre Erhöhung.</h1>
+						<p class="alert-box" data-neutral>Ab sofort stärken Sie uns mit: monatlich 36,00 Euro</p>
+						<p>Ihre Bestätigung ist auf dem Weg zu Ihnen. In 1–2 Tagen sollte sie bei Ihnen im Briefkasten liegen.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="content-card flow">
+				<div class="icon-text">
+					<div class="icon-text__icon" aria-hidden="true"><SuccessIcon/></div>
+					<div class="flow">
+						<h1>Sie haben bereits einen großartigen Beitrag geleistet – vielen Dank!</h1>
+						<p>Eine weitere Erhöhung ist aktuell nicht möglich.</p>
+					</div>
+				</div>
+			</div>
 		</main>
 
 		<aside>
@@ -70,7 +90,7 @@
 				</div>
 
 				<div class="content-card" data-sidebar-card>
-					<button class="button" data-button-size="small" @click="error = !error">Toggle Error State</button>
+					<button class="button" data-size-small @click="error = !error">Toggle Error State</button>
 				</div>
 			</SidebarLinks>
 		</aside>
@@ -82,6 +102,7 @@ import { Content } from '@src/pattern_library/content';
 import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
 import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
 import { ref } from 'vue';
+import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 
 interface Props {
 	content: Content;
