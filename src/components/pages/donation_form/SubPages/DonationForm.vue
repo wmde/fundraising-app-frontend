@@ -35,7 +35,7 @@
 			<template #content>
 				<Summary v-if="addressSummary || bankDataSummary">
 					<template #left v-if="addressSummary">
-						<DonorSummarySection
+						<AddressSummarySection
 							:address="addressSummary"
 							:countries="countries"
 							:salutations="salutations"
@@ -97,7 +97,7 @@ import { useBankDataSummary } from '@src/components/pages/donation_form/useBankD
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import Summary from '@src/components/patterns/Summary.vue';
 import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';
-import DonorSummarySection from '@src/components/pages/donation_form/DonorSummarySection.vue';
+import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
 import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 
 defineOptions( {
