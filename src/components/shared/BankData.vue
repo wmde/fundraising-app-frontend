@@ -40,4 +40,7 @@ const ibanParts = computed( () => t( 'bank_data_operator_account_iban' ).split( 
 .bank-transfer-code {
 	white-space: nowrap;
 }
+.spacer {
+	margin-left: 3px;
+}
 </style>

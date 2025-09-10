@@ -93,16 +93,13 @@ $navbar-breakpoint: 600px;
 $side-width: 80px;
 
 .navigation {
-	position: fixed;
 	background: colors.$white;
-	width: 100%;
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: space-between;
 	align-items: stretch;
 	box-shadow: 1px 2px 3px rgba( 0, 0, 0, 0.1);
 	min-height: global.$navbar-height;
-	z-index: 30;
 
 	&-items {
 		position: absolute;
@@ -117,6 +114,8 @@ $side-width: 80px;
 		ul {
 			display: flex;
 			flex-direction: column;
+			list-style-type: none;
+			padding: 0;
 			@include breakpoints.tablet-up {
 				flex-direction: row;
 			}

@@ -7,7 +7,7 @@ Note: This is called `.content-wrapper` only because some ad-blockers target the
 	margin-inline: auto;
 	width: 100%;
 	max-width: var(--wrapper-max-width, 1360px);
-	padding-left: var(--gutter);
-	padding-right: var(--gutter);
+	padding-left: var(--wrapper-padding, var(--gutter));
+	padding-right: var(--wrapper-padding, var(--gutter));
 	position: relative;
 }

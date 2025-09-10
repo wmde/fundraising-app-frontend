@@ -7,19 +7,11 @@
 	background: colors.$white;
 	border: 0;
 	border-bottom: 1px solid colors.$primary;
-	margin-bottom: 32px;
 	padding: map.get( units.$spacing, 'small' );
 
 	@include breakpoints.tablet-up {
 		padding: map.get( units.$spacing, 'large' );
 	}
-}
-
-.content-card[data-sidebar-card] {
-	--flow-space: 0;
-	padding: 16px;
-	margin-bottom: 16px;
-	line-height: 1.5;
 
 	.bank-data-list {
 		list-style-type: none;
@@ -27,3 +19,20 @@
 	}
 }
 
+.content-card:not(:last-child) {
+	margin-bottom: 32px;
+}
+
+.content-card[data-sidebar-card] {
+	--flow-space: 0;
+	padding: 16px;
+	line-height: 1.5;
+}
+
+.content-card[data-sidebar-card]:not(:last-child) {
+	margin-bottom: 16px;
+}
+
+.content-card[data-theme='bordered'] {
+	border: 3px solid var(--color-blue-600);
+}

@@ -18,7 +18,7 @@ createVueApp(
 	{
 		assetsPath: pageData.assetsPath,
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
-		isFullWidth: true,
+		hasSidebar: false,
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: UseOfFunds,
 		pageTitle: 'use_of_funds_page_title',

@@ -7,18 +7,17 @@
 			<ChevronDownIcon/>
 		</a>
 
-		<div class="columns is-multiline is-variable is-2">
-			<div class="column is-full pt-0 pb-0">
-				<SuccessMessageBankTransfer v-if="showBankTransferContent" :donation="donation"/>
-				<SuccessMessage
-					v-else
-					:donation="donation"
-					:comment-link-is-disabled="commentLinkIsDisabled"
-					@show-comment-modal="showCommentModal()"
-				/>
-			</div>
-			<div class="column is-half pt-0 pb-0">
-				<div v-if="!donation.isExported">
+		<SuccessMessageBankTransfer v-if="showBankTransferContent" :donation="donation"/>
+		<SuccessMessage
+			v-else
+			:donation="donation"
+			:comment-link-is-disabled="commentLinkIsDisabled"
+			@show-comment-modal="showCommentModal()"
+		/>
+
+		<div class="switcher">
+			<div class="flow">
+				<template v-if="!donation.isExported">
 					<AddressKnown
 						v-if="showAddress"
 						:modal-is-visible="isAddressModalOpen"
@@ -30,20 +29,22 @@
 						@show-address-modal="showAddressModal()"
 					/>
 					<AddressAnonymous v-else :modal-is-visible="isAddressModalOpen" @show-address-modal="showAddressModal()"/>
-				</div>
+				</template>
 				<DonationExported
 					v-else-if="addressType === 'person' || addressType === 'firma'"
 					:address-type="currentAddressType"
 				/>
 				<DonationSurvey v-if="$t( 'donation_confirmation_survey_link' ) !== ''" :tracking="tracking"/>
 			</div>
-			<div class="column is-half pt-0 pb-0" id="become-a-member" ref="becomeAMember">
+
+			<div id="become-a-member" class="flow" ref="becomeAMember">
 				<MembershipInfo
 					:donation="donation"
 					@membership-cta-button-shown="isMobileCallToActionButtonVisible = false"
 					@membership-cta-button-hidden="isMobileCallToActionButtonVisible = true"
 				/>
 			</div>
+
 		</div>
 
 		<ModalDialogue
@@ -177,45 +178,6 @@ const showAddress = computed<boolean>( () => {
 @use 'src/scss/settings/units';
 @use 'src/scss/settings/colors';
 @use 'sass:map';
-
-.donation-confirmation {
-	&-card {
-		background: colors.$white;
-		border: 1px solid colors.$gray-mid;
-		border-radius: 2px;
-		padding: map.get( units.$spacing, 'large' ) map.get( units.$spacing, 'small' );
-		margin-bottom: map.get( units.$spacing, 'x-small' );
-		line-height: 1.5;
-
-		@media ( min-width: 400px ) {
-			padding: map.get( units.$spacing, 'large' );
-		}
-	}
-
-	h2 {
-		line-height: 25px;
-	}
-}
-
-.donation {
-	&-summary {
-		&-wrapper {
-			border: 1px solid colors.$gray-mid;
-			border-radius: 2px;
-
-			.address-change-button {
-				width: 100%;
-				white-space: normal;
-			}
-		}
-
-		.bank-data-content {
-			p {
-				line-height: 2em;
-			}
-		}
-	}
-}
 
 .mobile-call-to-action {
 	--chevron-stroke: #{colors.$white};

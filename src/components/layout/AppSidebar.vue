@@ -1,25 +1,23 @@
 <template>
-	<div class="sidebar-cards">
-		<ContentCard :is-sidebar-card="true">
-			<template #content>
-				<IconText :is-small-heading="true">
-					<template #icon><InfoIcon/></template>
-					<template #content><h2>{{ $t('sidebar_getintouch_headline') }}</h2></template>
-				</IconText>
-				<p v-html="appendCampaignQueryParams( $t('sidebar_getintouch_mixed'), campaignParams )"></p>
-				<slot name="default"/>
-			</template>
-		</ContentCard>
-		<ContentCard :is-sidebar-card="true">
-			<template #content>
-				<IconText :is-small-heading="true">
-					<template #icon><BankIcon/></template>
-					<template #content><h2>{{ $t('bank_data_title') }}</h2></template>
-				</IconText>
-				<BankData/>
-			</template>
-		</ContentCard>
-	</div>
+	<ContentCard :is-sidebar-card="true">
+		<template #content>
+			<IconText :is-small-heading="true">
+				<template #icon><InfoIcon/></template>
+				<template #content><h2>{{ $t('sidebar_getintouch_headline') }}</h2></template>
+			</IconText>
+			<p v-html="appendCampaignQueryParams( $t('sidebar_getintouch_mixed'), campaignParams )"></p>
+			<slot name="default"/>
+		</template>
+	</ContentCard>
+	<ContentCard :is-sidebar-card="true">
+		<template #content>
+			<IconText :is-small-heading="true">
+				<template #icon><BankIcon/></template>
+				<template #content><h2>{{ $t('bank_data_title') }}</h2></template>
+			</IconText>
+			<BankData/>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -35,52 +33,3 @@ import IconText from '@src/components/patterns/IconText.vue';
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
 </script>
-
-<style lang="scss">
-@use "@src/scss/settings/units";
-@use "@src/scss/settings/colors";
-@use '@src/scss/settings/breakpoints';
-@use 'sass:map';
-
-.sidebar-cards {
-	@include breakpoints.tablet-up {
-		padding: 0 0 0 map.get( units.$spacing, 'small' );
-	}
-}
-
-.sidebar-card {
-	background: colors.$white;
-	padding: map.get( units.$spacing, 'small' );
-	border-bottom: 1px solid colors.$primary;
-	margin-bottom: map.get( units.$spacing, 'small' );
-	line-height: 1.5;
-
-	p {
-		margin-bottom: 0;
-	}
-
-	ul {
-		padding-left: 0;
-		list-style-type: none;
-	}
-
-	&:last-child {
-		margin-bottom: 0;
-	}
-
-	.sidebar-card-title {
-		position: relative;
-		padding-left: 24px;
-		font-weight: bold;
-		font-size: 1em;
-		line-height: 1.5;
-		margin: 0;
-
-		svg {
-			position: absolute;
-			left: 0;
-			top: 5px;
-		}
-	}
-}
-</style>

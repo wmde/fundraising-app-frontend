@@ -1,66 +1,67 @@
 <template>
-	<div
-		class="content-card"
-		id="donation-page-form-section-personal-data-donation-receipt"
-		aria-labelledby="donation-form-subheading donation-form-tagline"
-	>
-		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_address_subheading' ) }}</h2>
-		<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
-		<form id="donation-form" action="/donation/add" method="post">
-			<AutofillHandler @autofill="onAutofill">
+	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
+		<template #heading>
+			<h2 id="donation-form-subheading">{{ $t( 'donation_form_address_subheading' ) }}</h2>
+			<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
+		</template>
 
-				<NameFields
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:salutations="salutations"
-					@field-changed="onFieldChange"
-				/>
+		<template #content>
+			<form id="donation-form" action="/donation/add" method="post">
+				<AutofillHandler @autofill="onAutofill">
 
-				<ScrollTarget target-id="email-scroll-target"/>
-				<EmailField
-					:show-error="fieldErrors.email"
-					v-model="formData.email.value"
-					@field-changed="onFieldChange"
-				>
-					<template #message>
-						<ValueEqualsPlaceholderWarning
-							:value="formData.email.value"
-							:placeholder="$t( 'donation_form_email_placeholder' )"
-							warning="donation_form_email_placeholder_warning"
-						/>
-					</template>
-				</EmailField>
+					<NameFields
+						:show-error="fieldErrors"
+						:form-data="formData"
+						:salutations="salutations"
+						@field-changed="onFieldChange"
+					/>
 
-				<MailingListField v-model="mailingList" input-id="newsletter"/>
+					<ScrollTarget target-id="email-scroll-target"/>
+					<EmailField
+						:show-error="fieldErrors.email"
+						v-model="formData.email.value"
+						@field-changed="onFieldChange"
+					>
+						<template #message>
+							<ValueEqualsPlaceholderWarning
+								:value="formData.email.value"
+								:placeholder="$t( 'donation_form_email_placeholder' )"
+								warning="donation_form_email_placeholder_warning"
+							/>
+						</template>
+					</EmailField>
 
-				<ScrollTarget target-id="receipt-scroll-target"/>
-				<RadioField
-					v-model="receiptModel.receiptNeeded"
-					name="donationReceipt"
-					:options="[
+					<MailingListField v-model="mailingList" input-id="newsletter"/>
+
+					<ScrollTarget target-id="receipt-scroll-target"/>
+					<RadioField
+						v-model="receiptModel.receiptNeeded"
+						name="donationReceipt"
+						:options="[
 						{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
 						{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
 					]"
-					:label="$t( 'donation_confirmation_cta_title_alt' )"
-					:show-error="receiptModel.showReceiptOptionError"
-					:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
-					alignment="row"
-					aria-describedby="donation-receipt-help-text"
-				>
-				</RadioField>
+						:label="$t( 'donation_confirmation_cta_title_alt' )"
+						:show-error="receiptModel.showReceiptOptionError"
+						:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
+						alignment="row"
+						aria-describedby="donation-receipt-help-text"
+					>
+					</RadioField>
 
-				<AddressFields
-					v-if="receiptModel.receiptNeeded"
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:countries="countries"
-					:post-code-validation="addressValidationPatterns.postcode"
-					@field-changed="onFieldChange"
-				/>
+					<AddressFields
+						v-if="receiptModel.receiptNeeded"
+						:show-error="fieldErrors"
+						:form-data="formData"
+						:countries="countries"
+						:post-code-validation="addressValidationPatterns.postcode"
+						@field-changed="onFieldChange"
+					/>
 
-			</AutofillHandler>
-		</form>
-	</div>
+				</AutofillHandler>
+			</form>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -84,6 +85,7 @@ import type { ReceiptModel } from '@src/components/pages/donation_form/DonationR
 import { useStore } from 'vuex';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 interface Props {
 	countries: Country[];

@@ -1,51 +1,51 @@
 <template>
 	<ScrollTarget target-id="payment-section-top-scroll-target"/>
-	<div
-		id="donation-page-form-section-payment"
-		class="content-card"
-	>
-		<h1 id="donation-form-heading" class="form-title">{{ $t( 'donation_form_heading' ) }}</h1>
-		<h2 id="donation-form-subheading" class="form-subtitle">{{ $t( 'donation_form_payment_subheading' ) }}</h2>
+	<ContentCard>
+		<template #heading>
+			<h1 id="donation-form-heading">{{ $t( 'donation_form_heading' ) }}</h1>
+			<h2 id="donation-form-subheading">{{ $t( 'donation_form_payment_subheading' ) }}</h2>
+		</template>
+		<template #content>
+			<slot name="error-summary"/>
 
-		<slot name="error-summary"/>
-
-		<PaymentSummary
-			v-if="state === 'showSummary'"
-			@show-payment-form="state='showEntireForm'"
-			:amount="paymentSummary.amount"
-			:interval="paymentSummary.interval"
-			:payment-type="paymentSummary.paymentType"
-		/>
-
-		<div v-if="state === 'showSummaryAndPaymentType'" class="show-summary-and-payment-type">
 			<PaymentSummary
+				v-if="state === 'showSummary'"
 				@show-payment-form="state='showEntireForm'"
 				:amount="paymentSummary.amount"
 				:interval="paymentSummary.interval"
 				:payment-type="paymentSummary.paymentType"
 			/>
-			<Payment
-				:payment-amounts="paymentAmounts"
-				:payment-intervals="paymentIntervals"
-				:payment-types="paymentTypes"
-				:display-sections="[ 'paymentType' ]"
-			/>
 
-		</div>
+			<div v-if="state === 'showSummaryAndPaymentType'" class="show-summary-and-payment-type">
+				<PaymentSummary
+					@show-payment-form="state='showEntireForm'"
+					:amount="paymentSummary.amount"
+					:interval="paymentSummary.interval"
+					:payment-type="paymentSummary.paymentType"
+				/>
+				<Payment
+					:payment-amounts="paymentAmounts"
+					:payment-intervals="paymentIntervals"
+					:payment-types="paymentTypes"
+					:display-sections="[ 'paymentType' ]"
+				/>
 
-		<form
-			v-if="state === 'showEntireForm'"
-			name="laika-donation-payment"
-			class="payment-page"
-			ref="paymentForm"
-		>
-			<Payment
-				:payment-amounts="paymentAmounts"
-				:payment-intervals="paymentIntervals"
-				:payment-types="paymentTypes"
-			/>
-		</form>
-	</div>
+			</div>
+
+			<form
+				v-if="state === 'showEntireForm'"
+				name="laika-donation-payment"
+				class="payment-page"
+				ref="paymentForm"
+			>
+				<Payment
+					:payment-amounts="paymentAmounts"
+					:payment-intervals="paymentIntervals"
+					:payment-types="paymentTypes"
+				/>
+			</form>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -56,6 +56,7 @@ import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.v
 import { useStore } from 'vuex';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { Validity } from '@src/view_models/Validity';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 interface Props {
 	paymentAmounts: number[];

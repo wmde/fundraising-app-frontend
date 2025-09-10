@@ -70,8 +70,7 @@ store.dispatch(
 		pageData.allowedCampaignParameters,
 		featureFetcher,
 		{
-			isFullWidth: true,
-			usesContentCards: true,
+			hasSidebar: false,
 			assetsPath: pageData.assetsPath,
 			bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 			pageIdentifier: PAGE_IDENTIFIER,

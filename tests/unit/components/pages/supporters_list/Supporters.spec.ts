@@ -26,22 +26,22 @@ describe( 'Supporters.vue', () => {
 	it( 'reacts to click events by showing and hiding supporter content', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.accordion-item:nth-of-type(1)' ).classes() ).not.toContain( 'accordion-item-open' );
-		expect( wrapper.find( '.accordion-item:nth-of-type(2)' ).classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.findAll( '.accordion-item' )[ 0 ].classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.findAll( '.accordion-item' )[ 1 ].classes() ).not.toContain( 'accordion-item-open' );
 
-		await wrapper.find( '.accordion-item:nth-of-type(1) button' ).trigger( 'click' );
+		await wrapper.findAll( '.accordion-item button' )[ 0 ].trigger( 'click' );
 
-		expect( wrapper.find( '.accordion-item:nth-of-type(1)' ).classes() ).toContain( 'accordion-item-open' );
-		expect( wrapper.find( '.accordion-item:nth-of-type(2)' ).classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.findAll( '.accordion-item' )[ 0 ].classes() ).toContain( 'accordion-item-open' );
+		expect( wrapper.findAll( '.accordion-item' )[ 1 ].classes() ).not.toContain( 'accordion-item-open' );
 
-		await wrapper.find( '.accordion-item:nth-of-type(2) button' ).trigger( 'click' );
+		await wrapper.findAll( '.accordion-item button' )[ 1 ].trigger( 'click' );
 
-		expect( wrapper.find( '.accordion-item:nth-of-type(1)' ).classes() ).not.toContain( 'accordion-item-open' );
-		expect( wrapper.find( '.accordion-item:nth-of-type(2)' ).classes() ).toContain( 'accordion-item-open' );
+		expect( wrapper.findAll( '.accordion-item' )[ 0 ].classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.findAll( '.accordion-item' )[ 1 ].classes() ).toContain( 'accordion-item-open' );
 
-		await wrapper.find( '.accordion-item:nth-of-type(2) button' ).trigger( 'click' );
+		await wrapper.findAll( '.accordion-item button' )[ 1 ].trigger( 'click' );
 
-		expect( wrapper.find( '.accordion-item:nth-of-type(1)' ).classes() ).not.toContain( 'accordion-item-open' );
-		expect( wrapper.find( '.accordion-item:nth-of-type(2)' ).classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.findAll( '.accordion-item' )[ 0 ].classes() ).not.toContain( 'accordion-item-open' );
+		expect( wrapper.findAll( '.accordion-item' )[ 1 ].classes() ).not.toContain( 'accordion-item-open' );
 	} );
 } );
