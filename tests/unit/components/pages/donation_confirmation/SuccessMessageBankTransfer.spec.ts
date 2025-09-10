@@ -39,7 +39,7 @@ describe( 'SuccessMessageBankTransfer.vue', () => {
 	it( 'displays bank data', () => {
 		const wrapper = getWrapper( testDonation );
 
-		expect( wrapper.find( '.success-message-bank-transfer .bank-data-content' ).html() ).toContain( testBankTransferCode );
+		expect( wrapper.find( '.bank-data-list' ).html() ).toContain( testBankTransferCode );
 	} );
 
 	it( 'does not render newsletter confirmation message when opted out', () => {

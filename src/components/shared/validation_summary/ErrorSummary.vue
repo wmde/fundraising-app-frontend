@@ -79,7 +79,7 @@ watch( () => props.isVisible, async ( newIsVisible: boolean ) => {
 @use '@src/scss/settings/breakpoints';
 @use 'sass:map';
 
-.app-content .error-summary {
+.error-summary {
 	background: colors.$red100;
 	border: 1px solid colors.$red700;
 	padding: map.get( units.$spacing, 'small' );
@@ -96,6 +96,7 @@ watch( () => props.isVisible, async ( newIsVisible: boolean ) => {
 	&-heading {
 		font-size: 16px;
 		font-weight: bold;
+		margin-bottom: 16px;
 	}
 
 	&-list {

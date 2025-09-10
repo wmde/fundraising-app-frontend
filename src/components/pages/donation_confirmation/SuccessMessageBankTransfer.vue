@@ -1,27 +1,25 @@
 <template>
-	<div class="donation-confirmation-card success-message-bank-transfer">
-		<div class="columns is-multiline pt-0 pb-0 mt-0 mb-0">
-			<div class="column is-full pt-0 pb-0 mt-0 mb-0">
-				<IconText>
-					<template #icon><WarningIcon/></template>
-					<template #content><h1>{{ $t( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' ) }}</h1></template>
-				</IconText>
-			</div>
-			<div class="column is-half pt-0 pb-0">
-				<div class="bank-data-content">
+	<ContentCard>
+		<template #content>
+			<IconText>
+				<template #icon><WarningIcon/></template>
+				<template #content><h1>{{ $t( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' ) }}</h1></template>
+			</IconText>
+			<div class="switcher">
+				<AlertBox :is-borderless="true">
 					<h2> {{ $t( 'donation_confirmation_payment_bank_transfer_details' ) }} </h2>
 					<BankData :bank-transfer-code="donation.bankTransferCode" :bank-transfer-amount="formattedAmount" />
+				</AlertBox>
+				<div class="flow">
+					<p>{{ donationSummaryMessage }}</p>
+					<p v-html="$t( 'donation_confirmation_reminder_bank_transfer', { bankTransferCode: donation.bankTransferCode } )"></p>
+					<p id="newsletter-box" v-if="donation.newsletter">
+						{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
+					</p>
 				</div>
 			</div>
-			<div class="column is-half pt-0 pb-0 mt-0 mb-0">
-				<p>{{ donationSummaryMessage }}</p>
-				<p v-html="$t( 'donation_confirmation_reminder_bank_transfer', { bankTransferCode: donation.bankTransferCode } )"></p>
-				<p id="newsletter-box" v-if="donation.newsletter">
-					{{ $t( 'donation_confirmation_newsletter_confirmation' ) }}
-				</p>
-			</div>
-		</div>
-	</div>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +29,8 @@ import BankData from '@src/components/shared/BankData.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { useI18n } from 'vue-i18n';
 import IconText from '@src/components/patterns/IconText.vue';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
+import AlertBox from '@src/components/patterns/AlertBox.vue';
 
 interface Props {
 	donation: Donation;

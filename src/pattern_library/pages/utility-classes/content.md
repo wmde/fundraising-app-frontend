@@ -33,9 +33,21 @@ We use this to make the sidebar content stay on screen when a donor scrolls the 
 </div>
 ```
 
+## Stretch Single Content Card
+
+When we have short pages, like a 404 or an error the main content is shorter than the sidebar and looks weird. This makes a content card that's an only child stretch vertically and fill the space.
+
+```html
+<div class="stretch-single-content-card">
+    <div class="content-card">
+        I will fill the available vertical space
+    </div>
+</div>
+```
+
 ## Visually hidden
 
-If you hide an element with `display: none`, it will also hide it from assistive  technology, such as screen readers. This utility allows you to get the effect of `display: none`, without the screen reader issues.
+If you hide an element with `display: none`, it will also hide it from assistive technology, such as screen readers. This utility allows you to get the effect of `display: none`, without the screen reader issues.
 
 ```html
 <p class="visually-hidden">

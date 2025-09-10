@@ -83,7 +83,6 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 				pageIdentifier: PAGE_IDENTIFIER,
 				page: DonationForm,
-				usesContentCards: true,
 				pageTitle: 'donation_form_page_title',
 				pageProps: {
 					assetsPath: pageData.assetsPath,

@@ -50,23 +50,3 @@ const interval = computed( () => props.payment.interval ? t( 'donation_form_paym
 
 const paymentType = computed( () => props.payment.paymentType ? t( props.payment.paymentType ) : '' );
 </script>
-
-<style lang="scss">
-@use '@src/scss/settings/units';
-@use 'sass:map';
-
-.switcher {
-	display: flex;
-	flex-wrap: wrap;
-	gap: map.get( units.$spacing, 'small' );
-}
-
-.switcher > * {
-	flex-grow: 1;
-	flex-basis: calc((26rem - 100%) * 999);
-}
-
-.switcher.no-contact > div.bank {
-	flex-basis: 100%;
-}
-</style>

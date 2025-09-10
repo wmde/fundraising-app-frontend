@@ -74,7 +74,7 @@ describe( 'MembershipConfirmation.vue', () => {
 
 	test( 'displays the correct membership fee', () => {
 		const wrapper = getWrapper( yearlyApplication, privateAddress );
-		const summaryElement = wrapper.find( '.membership-confirmation-summary' );
+		const summaryElement = wrapper.find( '.content-card:first-child' );
 
 		expect( summaryElement.text() ).toContain( '199' );
 		expect( summaryElement.text() ).toContain( 'donation_form_payment_interval_12' );
@@ -84,7 +84,7 @@ describe( 'MembershipConfirmation.vue', () => {
 
 	test( 'displays the calculated yearly membership fee', () => {
 		const wrapper = getWrapper( monthlyApplication, privateAddress );
-		const summaryElement = wrapper.find( '.membership-confirmation-summary' );
+		const summaryElement = wrapper.find( '.content-card:first-child' );
 
 		expect( summaryElement.text() ).toContain( '15' );
 		expect( summaryElement.text() ).toContain( '180' );
@@ -94,7 +94,7 @@ describe( 'MembershipConfirmation.vue', () => {
 
 	test( 'displays the correct address for a private person', () => {
 		const wrapper = getWrapper( yearlyApplication, privateAddress );
-		const addressElement = wrapper.find( '.membership-confirmation-card:nth-child(2)' );
+		const addressElement = wrapper.find( '.switcher > .flow:first-child > .content-card' );
 
 		expect( addressElement.text() ).toContain( 'Prof. Dr. Testy MacTest' );
 		expect( addressElement.text() ).toContain( 'Tempelhofer Ufer 26' );
@@ -105,7 +105,7 @@ describe( 'MembershipConfirmation.vue', () => {
 
 	test( 'displays the correct address for a company', () => {
 		const wrapper = getWrapper( yearlyApplication, companyAddress );
-		const addressElement = wrapper.find( '.membership-confirmation-card:nth-child(2)' );
+		const addressElement = wrapper.find( '.switcher > .flow:first-child > .content-card' );
 
 		expect( addressElement.text() ).toContain( 'Test Company' );
 		expect( addressElement.text() ).toContain( 'Teststreet 123' );
@@ -145,7 +145,7 @@ describe( 'MembershipConfirmation.vue', () => {
 		};
 		const wrapper = getWrapper( yearlyApplication, privateAddress, translateMock );
 
-		expect( wrapper.find( '.membership-survey' ).exists() ).toBeTruthy();
+		expect( wrapper.text() ).toContain( 'membership_confirmation_survey_title' );
 	} );
 
 	test( 'hides the survey tile if survey link language item is blank', () => {
@@ -158,7 +158,7 @@ describe( 'MembershipConfirmation.vue', () => {
 		};
 		const wrapper = getWrapper( yearlyApplication, privateAddress, translateMock );
 
-		expect( wrapper.find( '.membership-survey' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).not.toContain( 'membership_confirmation_survey_title' );
 	} );
 
 } );

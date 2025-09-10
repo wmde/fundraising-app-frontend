@@ -1,17 +1,23 @@
 <template>
-	<div id="faq" class="faq">
-		<h1>{{ $t('faq_headline') }}</h1>
-		<section v-for="(topic, index) in content.topics" :key="index">
-			<h2>{{ topic.name }}</h2>
-			<AccordionItem
-				v-for="( content, itemIndex ) in getQuestionsByTopic( topic )"
-				:key="topic.id + itemIndex"
-				:id="`faq-item-${topic.id}-${itemIndex}`"
-				:title="content.question"
-				:content="appendCampaignQueryParams( content.visibleText, campaignParams )"
-			/>
-		</section>
-	</div>
+	<ContentCard>
+		<template #heading>
+			<h1>{{ $t('faq_headline') }}</h1>
+		</template>
+		<template #content>
+			<section v-for="(topic, index) in content.topics" :key="index" class="flow">
+				<h2>{{ topic.name }}</h2>
+				<div>
+					<AccordionItem
+						v-for="( content, itemIndex ) in getQuestionsByTopic( topic )"
+						:key="topic.id + itemIndex"
+						:id="`faq-item-${topic.id}-${itemIndex}`"
+						:title="content.question"
+						:content="appendCampaignQueryParams( content.visibleText, campaignParams )"
+					/>
+				</div>
+			</section>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +26,7 @@ import type { FaqContent, QuestionModel, Topic } from '@src/view_models/faq';
 import AccordionItem from '@src/components/shared/AccordionItem.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 interface Props {
 	content: FaqContent;

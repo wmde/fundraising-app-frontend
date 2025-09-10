@@ -1,0 +1,8 @@
+/**
+ * When we have short pages, like a 404 or an error the main content is shorter than
+ * the sidebar and looks weird. This makes a content card that's an only child stretch
+ * vertically and fill the space.
+ */
+.stretch-single-content-card > .content-card:only-child {
+	min-height: 100%;
+}

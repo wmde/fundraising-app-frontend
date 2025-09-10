@@ -1,25 +1,27 @@
 <template>
 	<footer class="footer-wrapper is-hidden-print">
-		<div class="container footer">
-			<div class="footer-left">
-				<div class="footer-logo">
-					<a href="https://www.wikimedia.de/">
-						<img :src="assetsPath + '/images/logo-vertical-wikimedia.svg'" alt="Wikimedia Deutschland">
-					</a>
-				</div>
-				<div class="footer-text">
-					<p v-html="$t( 'footer_text' )"/>
-				</div>
-			</div>
-			<nav class="footer-right" :aria-label="$t( 'aria_footer_navigation_label' )">
-				<ul class="footer-list">
-					<li v-for="( link, index ) in footerMenu" :key="index">
-						<a :href="link.url" :key="link.id" :aria-current="link.id === pageIdentifier ? 'page' : null">
-							{{ $t( 'footer_menu_' + link.id ) }}
+		<div class="content-wrapper footer">
+			<div class="sidebar" data-direction="rtl">
+				<div class="footer-left">
+					<div class="footer-logo">
+						<a href="https://www.wikimedia.de/">
+							<img :src="assetsPath + '/images/logo-vertical-wikimedia.svg'" alt="Wikimedia Deutschland">
 						</a>
-					</li>
-				</ul>
-			</nav>
+					</div>
+					<div class="footer-text">
+						<p v-html="$t( 'footer_text' )"/>
+					</div>
+				</div>
+				<nav class="footer-right" :aria-label="$t( 'aria_footer_navigation_label' )">
+					<ul class="footer-list">
+						<li v-for="( link, index ) in footerMenu" :key="index">
+							<a :href="link.url" :key="link.id" :aria-current="link.id === pageIdentifier ? 'page' : null">
+								{{ $t( 'footer_menu_' + link.id ) }}
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
 		</div>
 	</footer>
 </template>
@@ -54,14 +56,10 @@ const footerMenu = [
 @use 'sass:map';
 
 .footer {
-	display: flex;
-	flex-direction: column;
-	padding: map.get(units.$spacing, 'small') 0 88px;
+	padding: 16px 0 88px;
 
 	@include breakpoints.tablet-up {
-		flex-direction: row;
-		flex-wrap: nowrap;
-		padding: map.get( units.$spacing, 'large' ) 0 88px;
+		padding: 32px 0 88px;
 	}
 
 	&-wrapper {
@@ -70,7 +68,6 @@ const footerMenu = [
 	}
 
 	&-left {
-		flex: 1 1 auto;
 		display: flex;
 	}
 
@@ -88,17 +85,10 @@ const footerMenu = [
 		}
 	}
 
-	&-right {
-		padding: 0 map.get( units.$spacing, 'small' );
-
-		@include breakpoints.tablet-up {
-			flex: 0 0 33.3333%;
-			width: 33.3333%;
-		}
-	}
-
 	&-list {
 		width: 100%;
+		list-style-type: none;
+		padding-left: 0;
 		li {
 			height: 54px;
 			position: relative;
@@ -124,28 +114,6 @@ const footerMenu = [
 				}
 			}
 		}
-	}
-}
-
-.footer .bank-data-content {
-	padding-top: 10px;
-	word-wrap: break-word;
-
-	p {
-		line-height: 2.5em;
-	}
-}
-
-.spacer {
-	margin-left: 3px;
-}
-
-.logo-footer {
-	text-align: center;
-
-	img {
-		width: 124px;
-		height: 106px;
 	}
 }
 </style>

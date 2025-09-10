@@ -1,6 +1,6 @@
 <template>
-	<div class="membership-confirmation">
-		<div class="membership-confirmation-summary membership-confirmation-card">
+	<ContentCard>
+		<template #content>
 			<IconText>
 				<template #icon><SuccessIcon/></template>
 				<template #content><h1>{{ $t( 'membership_confirmation_thanks_text' ) }}</h1></template>
@@ -12,40 +12,46 @@
 			<p v-else>{{ $t( 'membership_confirmation_success_text' ) }}</p>
 
 			<p v-if="showBankTransferContent">{{ $t( 'membership_confirmation_success_text_bank_transfer' ) }}</p>
-		</div>
+		</template>
+	</ContentCard>
 
-		<div class="membership-confirmation-card" v-if="!confirmationData.membershipApplication.isExported">
-			<IconText>
-				<template #icon><SuccessIcon/></template>
-				<template #content><h2>{{ $t( 'membership_confirmation_address_head' ) }}</h2></template>
-			</IconText>
-			<p>
-				<template v-if="address.applicantType === 'person'">{{ salutation }}{{ address.fullName }}</template>
-				<template v-else>{{ address.fullName }}</template>
-				<br />
-				{{ address.streetAddress }}<br />
-				{{ address.postalCode }} {{ address.city }}<br />
-				{{ countryName }}
-			</p>
-			<p>{{ address.email }}</p>
+	<div class="switcher">
+		<div class="flow">
+			<ContentCard>
+				<template #content v-if="!confirmationData.membershipApplication.isExported">
+					<IconText>
+						<template #icon><SuccessIcon/></template>
+						<template #content><h2>{{ $t( 'membership_confirmation_address_head' ) }}</h2></template>
+					</IconText>
+					<p>
+						<template v-if="address.applicantType === 'person'">{{ salutation }}{{ address.fullName }}</template>
+						<template v-else>{{ address.fullName }}</template>
+						<br />
+						{{ address.streetAddress }}<br />
+						{{ address.postalCode }} {{ address.city }}<br />
+						{{ countryName }}
+					</p>
+					<p>{{ address.email }}</p>
+				</template>
+				<template #content v-else>
+					<IconText>
+						<template #icon><WarningIcon/></template>
+						<template #content><h2>{{ $t( 'membership_confirmation_exported_title' ) }}</h2></template>
+					</IconText>
+					<p>
+						{{ $t( 'membership_confirmation_exported_content' ) }}
+					</p>
+				</template>
+			</ContentCard>
 		</div>
-		<div class="membership-confirmation-card" v-else>
-			<IconText>
-				<template #icon><WarningIcon/></template>
-				<template #content><h2>{{ $t( 'membership_confirmation_exported_title' ) }}</h2></template>
-			</IconText>
-			<p>
-				{{ $t( 'membership_confirmation_exported_content' ) }}
-			</p>
+		<div class="flow">
+			<MembershipSurvey
+				v-if="$t( 'membership_confirmation_survey_link') !== ''"
+				:tracking="confirmationData.tracking ?? ''"
+			/>
 		</div>
-
-		<MembershipSurvey
-			v-if="$t( 'membership_confirmation_survey_link') !== ''"
-			:tracking="confirmationData.tracking ?? ''"
-		/>
-
-		<MembershipConfirmationBannerNotifier/>
 	</div>
+	<MembershipConfirmationBannerNotifier/>
 </template>
 
 <script setup lang="ts">
@@ -61,6 +67,7 @@ import { useI18n } from 'vue-i18n';
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import IconText from '@src/components/patterns/IconText.vue';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 interface Props {
 	confirmationData: MembershipApplicationConfirmationData;
@@ -121,37 +128,3 @@ const summaryData = computed( () => {
 } );
 
 </script>
-
-<style lang="scss">
-@use '@src/scss/settings/colors';
-@use '@src/scss/settings/breakpoints';
-
-.app-content-main.uses-cards {
-	padding-top: 0;
-}
-
-.membership-confirmation {
-	@include breakpoints.tablet-up {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-column-gap: 12px;
-	}
-}
-
-.membership-confirmation-summary {
-	@include breakpoints.tablet-up {
-		grid-column-start: 1;
-		grid-column-end: span 2;
-	}
-}
-
-.membership-confirmation-card {
-	background: #ffffff;
-	border: 1px solid colors.$gray-mid;
-	border-radius: 2px;
-	padding: 32px;
-	line-height: 1.5;
-	margin-bottom: 12px;
-}
-
-</style>

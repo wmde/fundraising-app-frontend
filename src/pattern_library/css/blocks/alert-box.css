@@ -2,9 +2,12 @@
 	--border-color: var(--color-blue-600);
 	--background-color: var(--color-blue-200);
 
-	border: 2px solid var(--border-color);
 	background: var(--background-color);
 	padding: var(--space-xs-l);
+}
+
+.alert-box:not([data-borderless]) {
+	border: 2px solid var(--border-color);
 }
 
 .content-card .alert-box {

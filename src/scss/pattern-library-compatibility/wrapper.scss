@@ -1,0 +1,14 @@
+@use "../../scss/settings/breakpoints";
+
+body {
+	padding-top: 104px;
+	line-height: 1.5;
+}
+
+.content-wrapper {
+	--wrapper-padding: 6px;
+
+	@include breakpoints.tablet-up {
+		--wrapper-padding: 18px;
+	}
+}
