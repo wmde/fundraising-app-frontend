@@ -1,68 +1,166 @@
 <template>
-	<div v-if="showErrorPageInstead">
-		<span>Die angeforderte Seite kann nicht angezeigt werden.</span>
+	<div v-if=" feeChangeFrontendFlag === 'SHOW_ERROR_PAGE' ">
+		<ContentCard>
+			<template #content>
+				<IconText>
+					<template #icon><WarningIcon/></template>
+					<template #content><h2>{{ t('membership_fee_upgrade_error_page_headline') }}</h2></template>
+				</IconText>
+				{{ t('membership_fee_upgrade_error_page_text') }}
+			</template>
+		</ContentCard>
 	</div>
-	<div v-else>
-		<h1>Ich erhöhe meinen {{ $t( 'donation_form_payment_interval_' + currentInterval )}}en Mitgliedsbeitrag </h1>
+	<div v-if=" feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE' ">
+		<ContentCard>
+			<template #content>
+				<IconText>
+					<template #icon><SuccessIcon/></template>
+					<template #content><h2>{{ t('membership_fee_upgrade_returning_page_headline') }}</h2></template>
+				</IconText>
+				{{ t('membership_fee_upgrade_returning_page_text') }}
 
-		<FormSection>
-			<RadioField
-				name="newFeeAmount"
-				model-value=""
-				:options="suggestedFeeAmountFormOptions"
-				alignment="twocolumnsperrow"
-				label="Empfehlung:"
-			/>
-			<div class="form-field-amount-custom" :class="{ active: isCustomAmount }">
-				<label class="form-field-amount-help-text" for="amount-custom">Anderer Betrag:</label>
-				<div class="form-field-amount-custom-euro-symbol" :class="{ active: isCustomAmount }">
-					<div class="radio radio-form-input">
-						<input
-							name="amount"
-							type="radio"
-							class="form-field-amount-custom-radio"
-							@click="setCustomAmount"
-							:checked="isCustomAmount"
-							aria-hidden="true"
-							tabindex="-1"
+			</template>
+		</ContentCard>
+	</div>
+	<div v-if=" feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM' ">
+
+		<div v-if="showSuccessPage">
+			<ContentCard>
+				<template #content>
+
+					<IconText>
+						<template #icon><SuccessIcon/></template>
+						<template #content><h2>{{ t('membership_fee_upgrade_confirmation_headline') }}</h2></template>
+					</IconText>
+
+					<AlertBox data-theme="neutral">
+						{{ t('membership_fee_upgrade_confirmation_summary_box' ) }}
+						{{ t( 'donation_form_payment_interval_' + currentInterval ) }}
+						{{ t('amountInEuro') }}
+					</AlertBox>
+
+					{{ t('membership_fee_upgrade_confirmation_text') }}
+				</template>
+			</ContentCard>
+		</div>
+		<div v-else>
+			<ContentCard>
+				<template #content>
+					<h1>
+						{{ t('membership_fee_upgrade_page_headline', {
+								currentInterval: $t( 'donation_form_payment_interval_' + currentInterval )
+							} )
+						}}
+					</h1>
+
+					<FormSection>
+						<RadioField
+							name="suggestedFeeAmount"
+							v-model="suggestedAmountModel"
+							:value="suggestedAmountInCents"
+							:options="suggestedFeeAmountFormOptions"
+							alignment="twocolumnsperrow"
+							:label="t('membership_fee_upgrade_amount_suggestion_label')"
+							@click="setNewFeeToSuggestedAmount( suggestedAmountInCents )"
 						/>
-					</div>
 
-					<TextFormInput
-						v-model="customAmount"
-						input-type="text"
-						input-id="amount-custom"
-						:has-message="false"
-						name="custom-amount"
-						:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_custom_placeholder' ) } )"
-						@keydown.enter="setCustomAmount"
-						@blur="setCustomAmount"
-						@focus.prevent="resetErrorInput"
-						@update:model-value="updateAmountFromCustom"
-						:aria-invalid="showError"
-					/>
+						<label for="customAmount"> {{ t('membership_fee_upgrade_custom_amount_label') }} </label>
+						<TextRadioFormInput
+							name="customFeeAmount"
+							v-model="customAmount"
+							input-id="customAmount"
+							:placeholder="t('membership_fee_upgrade_custom_amount_placeholder')"
+							:has-message="false"
+							class="form-field-amount-custom-euro-symbol"
+							alignment="twocolumnsperrow"
+							:show-error="feeErrorMessage !== ''"
+							:error-message="feeErrorMessage"
+							@keydown.enter="setCustomAmount"
+							@blur="setCustomAmount"
+							@update:model-value="updateAmountFromCustom"
+							:radio-clicked="setCustomAmount"
+							:radio-checked="isCustomAmount"
+						>
+						</TextRadioFormInput>
+
+						TODO: move this somewhere else:
+						<div>{{ feeErrorMessage }}</div>
+
+						<TextField
+							:disabled="false"
+							:label="t('membership_fee_upgrade_member_name_label')"
+							label-help-text=""
+							help-text=""
+							name="memberName"
+							input-id="memberName"
+							input-type="text"
+							v-model="memberName"
+							:error-message="t('membership_fee_upgrade_member_name_error_message')"
+							:show-error="showMemberNameError"
+							:placeholder="$t( 'form_for_example', {
+								example: $t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')
+							} )"
+							:required="true"
+						/>
+
+					</FormSection>
+				</template>
+			</ContentCard>
+
+			<ContentCard>
+				<template #content>
+					<details>
+						<summary tabindex="0">
+							{{ $t('membership_fee_upgrade_iban_changed_headline') }}
+							<span class="accordion__summary-meta"><ChevronDown/></span>
+						</summary>
+						{{ $t('membership_fee_upgrade_iban_changed_label') }}
+						<IbanField
+							v-model="iban"
+							:show-error="!ibanIsValid"
+							bank-name=""
+							bic=""
+						/>
+					</details>
+				</template>
+			</ContentCard>
+
+			<div class="content-card" data-sidebar-card>
+				<div class="icon-text">
+					<div class="icon-text__icon" aria-hidden="true"><InfoIcon/></div>
+					<p><strong>{{ $t( 'membership_fee_upgrade_sidebar_headline' ) }}</strong></p>
 				</div>
+				<p>
+					[{{ externalMemberId }}]
+				</p>
 			</div>
-		</FormSection>
 
-		TODO show iban fields<br/>
+			<button class="button" @click="validateAndSubmit">{{ $t('membership_fee_upgrade_submit_button') }}</button>
+		</div>
 
-		TODO show side bar info (external Member ID): {{ externalMemberId }}<br/>
-
-		<button class="button" @click="validate">{{ $t('membership_fee_upgrade_submit_button') }}</button>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useStore } from 'vuex';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { useI18n } from 'vue-i18n';
-import { usePaymentFieldModel } from '@src/components/pages/membership_form/usePaymentFieldModel';
-import { computed, ref, watch } from 'vue';
-import { FeeValidity } from '@src/view_models/MembershipFee';
-import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
+import { computed, ref } from 'vue';
 import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import TextRadioFormInput from '@src/components/shared/form_elements/TextRadioFormInput.vue';
+import TextField from '@src/components/shared/form_fields/TextField.vue';
+import axios, { AxiosResponse } from 'axios';
+import {
+	MEMBERSHIP_MINIMUM_CENTS_FEE_PERSONAL,
+} from '@src/store/membership_fee/constants';
+import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
+import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
+import IconText from '@src/components/patterns/IconText.vue';
+import IbanField from '@src/components/shared/form_fields/IbanField.vue';
+import AlertBox from '@src/components/patterns/AlertBox.vue';
+import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
+import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
 
 interface Props {
 	uuid: string;
@@ -70,94 +168,199 @@ interface Props {
 	currentAmountInCents: number;
 	suggestedAmountInCents: number;
 	currentInterval: number;
-	showErrorPageInstead: boolean;
-	validateFeeUrl: string;
+	feeChangeFrontendFlag: 'SHOW_FEE_CHANGE_FORM' | 'SHOW_FEE_ALREADY_CHANGED_PAGE' | 'SHOW_ERROR_PAGE';
 }
 const props = defineProps<Props>();
-const store = useStore();
 const { t } = useI18n();
 
-const fee = usePaymentFieldModel( store, 'fee', 'setFee', props.validateFeeUrl );
+const newFee = ref<number>( 0 );
+const suggestedAmountModel = ref<number>( 0 );
 
-const feeIsValid = computed( () => store.getters[ 'membership_fee/feeIsValid' ] );
-
-const amount = ref<number>( Number( props.currentAmountInCents ) );
-
-const showError = ref<boolean>( false );
-
-
-
-//TODO isCustomAmount should be set to true if checkbox is ticked
 const isCustomAmount = ref<boolean>( false );
+
 
 const getFormattedCustomAmount = (): string => {
 	if ( !isCustomAmount.value ) {
 		return '';
 	}
-	return t( amount.value / 100, 'decimal' );
+	return t( customAmount.value / 100, 'decimal' );
 };
-
 const customAmount = ref<string>( getFormattedCustomAmount() );
 
-const minimumAmount = computed(
-	() => store.getters[ 'membership_fee/minimumAmount' ]( store.state.membership_address.addressType )
-);
 
-const validate = (): void => {
-	alert("validating");
-};
 
-const feeErrorMessage = computed<string>( () => {
-	const messages: { [ key: number ]: string } = {
-		[ FeeValidity.FEE_VALID ]: '',
-		[ FeeValidity.FEE_TOO_LOW ]: t( 'membership_form_payment_amount_error' ),
-		[ FeeValidity.FEE_TOO_HIGH ]: t( 'membership_form_payment_amount_too_high' ),
-	};
-	return messages[ store.getters.feeValidity ].toString();
-} );
-
-watch( minimumAmount, async ( newMinimumAmount ) => {
-	if ( fee.value < newMinimumAmount ) {
-		fee.value = '';
-	}
-} );
-
-const setCustomAmount = ( e: Event ): void => {
-	e.preventDefault();
-
-	customAmount.value = getFormattedCustomAmount();
-	if ( amount.value > 0 ) {
-		emit( 'update:modelValue', String( amount.value ) );
-	} else {
-		emit( 'update:modelValue', '' );
-		emit( 'field-changed' );
-	}
+const setNewFeeToSuggestedAmount = ( newAmountInCents: number ): void => {
+	newFee.value = newAmountInCents;
+	isCustomAmount.value = false;
+	console.log( newFee.value );
 };
 
 const updateAmountFromCustom = ( newAmount: string ) => {
 	newAmount = newAmount.trim();
 	if ( newAmount === '' ) {
-		amount.value = 0;
+		newFee.value = 0;
 		return;
 	}
 
 	const numericalAmount = Number( newAmount.replace( /,/, '.' ) );
 	if ( isNaN( numericalAmount ) ) {
-		amount.value = 0;
+		newFee.value = 0;
 		return;
 	}
 
-	amount.value = Math.trunc( numericalAmount * 100 );
+	newFee.value = Math.trunc( numericalAmount * 100 );
+	suggestedAmountModel.value = false;
+	console.log( newFee.value );
 };
 
-const resetErrorInput = (): void => {
-	if ( showError.value ) {
-		customAmount.value = '';
+const minimumAmount = computed( () => {
+	const interval = props.currentInterval;
+	if ( isNaN( interval ) ) {
+		return 0;
 	}
+	const yearlyIntervalMultiplier = interval / 12;
+	return MEMBERSHIP_MINIMUM_CENTS_FEE_PERSONAL * yearlyIntervalMultiplier;
+} );
+
+const feeIsBelowMinimumAmount = computed( () => {
+	return newFee.value < minimumAmount.value;
+} );
+
+const maxCentAmount = 100_000_00;
+const feeIsTooHigh = computed( () => newFee.value > maxCentAmount );
+
+const memberName = ref<string>( '' );
+
+const iban = ref<string>( '' );
+const ibanIsValid = computed( () => iban.value === '' || iban.value.length > 0 );
+const bic = ref<string>( '' );
+
+const showSuccessPage = ref<boolean>( false );
+
+const feeErrorMessage = computed<string>( (): string => {
+	if ( feeIsBelowMinimumAmount.value ) {
+		return t( 'membership_form_payment_amount_error' );
+	} else if ( feeIsTooHigh.value ) {
+		return t( 'membership_form_payment_amount_too_high' );
+	} else {
+		return '';
+	}
+} );
+
+const showMemberNameError = ref<boolean>( false );
+
+export interface FeeChangeRequest {
+	uuid: string;
+	memberName: string;
+	amountInEuroCents: number;
+	paymentType: string;
+	iban?: string;
+	bic?: string;
+}
+
+const getFeeChangRequest = (): FeeChangeRequest => {
+	const feeChangeRequest = {
+		uuid: props.uuid,
+		memberName: memberName.value,
+		amountInEuroCents: 10000,
+		paymentType: 'FCH',
+	};
+
+	if ( iban.value !== '' && ibanIsValid ) {
+		return {
+			...feeChangeRequest,
+			iban: iban.value,
+			// TODO what about the BIC?
+		};
+	}
+	return feeChangeRequest;
+};
+
+const validateAndSubmit = (): void => {
+
+	console.log( isCustomAmount.value );
+
+
+	if ( memberName.value === '' ) {
+		console.log( 'member name invalid' );
+		showMemberNameError.value = true;
+		return;
+	}
+	showMemberNameError.value = false;
+
+	if ( feeIsBelowMinimumAmount.value || feeIsTooHigh.value ) {
+		console.log( 'new fee invalid:' );
+		console.log( newFee.value );
+		return;
+	}
+
+	axios.post(
+		'/api/v1/membership/change-fee',
+		getFeeChangRequest(),
+		{ headers: { 'Content-Type': 'application/json' } }
+	).then( ( response: AxiosResponse<any> ) => {
+		console.log( response.data );
+		showSuccessPage.value = true;
+		// return Promise.resolve( response.data );
+	} ).catch( ( error: any ) => {
+		console.log( error.data.status );
+		console.log( error.data.errors );
+		// return Promise.reject( error.response.data.errors[ 0 ] );
+	} );
+
+	// TODO 3. evaluate if the JSONResponse was "status": "OK" or "status":"ERR"
+	// depending on the output, show success content or show error content?
+};
+
+const setCustomAmount = ( e: Event ): void => {
+	e.preventDefault();
+	customAmount.value = getFormattedCustomAmount();
+	//TODO unselect suggested amount
+	suggestedAmountModel.value = false;
+};
+
+const formatAmountInCentsToEuroString = ( amountInCents ): string => {
+	const amountInEuroFloat = amountInCents / 100;
+	// TODO format in a localized way
+	return amountInEuroFloat + ' €';
 };
 
 const suggestedFeeAmountFormOptions: CheckboxFormOption[] = [
-	{ value: props.suggestedAmountInCents, label: props.suggestedAmountInCents.toString(), id: 'suggestedAmount' },
+	{
+		value: props.suggestedAmountInCents,
+		label: formatAmountInCentsToEuroString( props.suggestedAmountInCents ),
+		id: 'suggestedAmount',
+	},
 ];
 
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/colors';
+$input-height: 50px;
+
+.membership-fee-change {
+
+	&-custom-euro-symbol {
+		&:after {
+			color: colors.$dark;
+			content: "€";
+			font-size: 1.1em;
+			position: absolute;
+			right: 10px;
+			top: 50%;
+			transform: translateY( -50% );
+		}
+
+		&.active {
+			input {
+				border-color: colors.$primary;
+			}
+		}
+
+		.text-form-input .input {
+			height: $input-height;
+		}
+	}
+}
+</style>
