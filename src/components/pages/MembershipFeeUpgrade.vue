@@ -1,8 +1,12 @@
 <template>
-	<div v-if="showErrorPageInstead">
-		<span>Die angeforderte Seite kann nicht angezeigt werden.</span>
+	<div v-if=" feeChangeFrontendFlag === 'SHOW_ERROR_PAGE' ">
+		<span>Die angeforderte Seite kann nicht angezeigt werden. Bitte überprüfen Sie die URL oder kontaktieren Sie uns.</span>
 	</div>
-	<div v-else>
+	<div v-if=" feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE' ">
+		<span>Sie haben bereits einen großartigen Beitrag geleistet - vielen Dank!</span>
+		<span>Eine weitere Erhöhung ist aktuell nicht möglich.</span>
+	</div>
+	<div v-if=" feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM' ">
 		<h1>Ich erhöhe meinen {{ $t( 'donation_form_payment_interval_' + currentInterval )}}en Mitgliedsbeitrag </h1>
 
 		<FormSection>
@@ -13,36 +17,20 @@
 				alignment="twocolumnsperrow"
 				label="Empfehlung:"
 			/>
-			<div class="form-field-amount-custom" :class="{ active: isCustomAmount }">
-				<label class="form-field-amount-help-text" for="amount-custom">Anderer Betrag:</label>
-				<div class="form-field-amount-custom-euro-symbol" :class="{ active: isCustomAmount }">
-					<div class="radio radio-form-input">
-						<input
-							name="amount"
-							type="radio"
-							class="form-field-amount-custom-radio"
-							@click="setCustomAmount"
-							:checked="isCustomAmount"
-							aria-hidden="true"
-							tabindex="-1"
-						/>
-					</div>
 
-					<TextFormInput
-						v-model="customAmount"
-						input-type="text"
-						input-id="amount-custom"
-						:has-message="false"
-						name="custom-amount"
-						:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_custom_placeholder' ) } )"
-						@keydown.enter="setCustomAmount"
-						@blur="setCustomAmount"
-						@focus.prevent="resetErrorInput"
-						@update:model-value="updateAmountFromCustom"
-						:aria-invalid="showError"
-					/>
-				</div>
-			</div>
+			<TextRadioFormInput
+				name=""
+				v-model="customAmount"
+				input-id=""
+				placeholder=""
+				has-message=""
+				radio-checked=""
+				class="form-field-amount-custom-euro-symbol"
+				label="Anderer Betrag:"
+			 >
+			</TextRadioFormInput>
+
+			<div>{{ feeErrorMessage }}</div>
 		</FormSection>
 
 		TODO show iban fields<br/>
@@ -61,8 +49,8 @@ import { useI18n } from 'vue-i18n';
 import { usePaymentFieldModel } from '@src/components/pages/membership_form/usePaymentFieldModel';
 import { computed, ref, watch } from 'vue';
 import { FeeValidity } from '@src/view_models/MembershipFee';
-import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import TextRadioFormInput from '@src/components/shared/form_elements/TextRadioFormInput.vue';
 
 interface Props {
 	uuid: string;
@@ -70,7 +58,7 @@ interface Props {
 	currentAmountInCents: number;
 	suggestedAmountInCents: number;
 	currentInterval: number;
-	showErrorPageInstead: boolean;
+	feeChangeFrontendFlag: 'SHOW_FEE_CHANGE_FORM' | 'SHOW_FEE_ALREADY_CHANGED_PAGE' | 'SHOW_ERROR_PAGE';
 	validateFeeUrl: string;
 }
 const props = defineProps<Props>();
@@ -79,7 +67,9 @@ const { t } = useI18n();
 
 const fee = usePaymentFieldModel( store, 'fee', 'setFee', props.validateFeeUrl );
 
-const feeIsValid = computed( () => store.getters[ 'membership_fee/feeIsValid' ] );
+// TODO implement ...  inputAmount >= minimumAmount
+const feeIsValid = false;
+
 
 const amount = ref<number>( Number( props.currentAmountInCents ) );
 
@@ -105,8 +95,14 @@ const minimumAmount = computed(
 
 const validate = (): void => {
 	alert("validating");
+	//TODO 1. do frontend validation (on the spot?)
+
+	//TODO 2. send request to /api/v1/membership/change-fee
+	// TODO 3. evaluate if the JSONResponse was "status": "OK" or "status":"ERR"
+		// depending on the output, show success content or show error content?
 };
 
+//TODO implement proper checking of current values without store
 const feeErrorMessage = computed<string>( () => {
 	const messages: { [ key: number ]: string } = {
 		[ FeeValidity.FEE_VALID ]: '',
@@ -161,3 +157,33 @@ const suggestedFeeAmountFormOptions: CheckboxFormOption[] = [
 ];
 
 </script>
+
+<style lang="scss">
+@use '@src/scss/settings/colors';
+$input-height: 50px;
+
+.membership-fee-change {
+
+	&-custom-euro-symbol {
+		&:after {
+			color: colors.$dark;
+			content: "€";
+			font-size: 1.1em;
+			position: absolute;
+			right: 10px;
+			top: 50%;
+			transform: translateY( -50% );
+		}
+
+		&.active {
+			input {
+				border-color: colors.$primary;
+			}
+		}
+
+		.text-form-input .input {
+			height: $input-height;
+		}
+	}
+}
+</style>
