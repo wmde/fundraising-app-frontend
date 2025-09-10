@@ -1,8 +1,9 @@
 import { Store } from 'vuex';
 import { computed, ComputedRef } from 'vue';
+import type { InitialBankAccountData } from '@src/view_models/BankAccount';
 
 type ReturnType = {
-	bankDataSummary: ComputedRef<{ iban: string; bankName: string; bic: string } | undefined>;
+	bankDataSummary: ComputedRef<InitialBankAccountData | undefined>;
 };
 
 export function useMembershipBankDataSummary( store: Store<any> ): ReturnType {

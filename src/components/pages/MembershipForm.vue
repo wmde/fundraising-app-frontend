@@ -126,8 +126,8 @@
 		<ContentCard>
 
 				<template #heading v-if="paymentSummary">
-					<h2>{{ $t( 'form_summary_title' ) }}</h2>
-					<MembershipSummaryHeadline :payment="paymentSummary"/>
+					<h2 aria-live="polite">{{ $t( 'form_summary_title' ) }}</h2>
+					<MembershipSummaryHeadline :paymentSummary="paymentSummary"/>
 				</template>
 
 				<template #content>

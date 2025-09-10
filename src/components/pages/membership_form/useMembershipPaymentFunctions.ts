@@ -5,9 +5,9 @@ import { MembershipType, membershipTypeName } from '@src/view_models/MembershipT
 type ReturnType = {
 	paymentSummary: ComputedRef<
 		{
-			paymentIntervalInMonths: any;
-			membershipFee: any;
-			paymentType: any;
+			paymentIntervalInMonths: string;
+			membershipFee: number;
+			paymentType: string;
 			membershipType: MembershipType;
 		}
 		|
@@ -18,7 +18,7 @@ type ReturnType = {
 export function useMembershipPaymentFunctions( store: Store<any> ): ReturnType {
 	const paymentSummary = computed( () => {
 		const payment = store.state.membership_fee.values;
-		const hasPaymentData = payment.fee > 0 || Boolean( payment.paymentType );
+		const hasPaymentData = payment.fee > 0 && Boolean( payment.interval );
 		if ( hasPaymentData ) {
 			return {
 				paymentIntervalInMonths: payment.interval,
