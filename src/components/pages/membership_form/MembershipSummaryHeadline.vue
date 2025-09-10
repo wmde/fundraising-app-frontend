@@ -1,5 +1,5 @@
 <template>
-	<p>
+	<p aria-live="polite">
 		{{ $t( 'membership_form_summary_thanks_headline' ) }} <br/>
 		<span v-html="$t( 'membership_form_summary_headline', summaryData )"></span>
 	</p>
@@ -8,15 +8,10 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
-import { MembershipType } from '@src/view_models/MembershipTypeModel';
+import type { MembershipPaymentSummary } from '@src/Domain/Membership/MembershipPaymentSummary';
 
 interface Props {
-	payment: {
-		paymentIntervalInMonths: any;
-		membershipFee: any;
-		paymentType: any;
-		membershipType: MembershipType;
-	};
+	paymentSummary: MembershipPaymentSummary;
 }
 
 const props = defineProps<Props>();
@@ -31,17 +26,17 @@ const renderAmount = ( amount: number, interval: number, intervalTranslation: St
 };
 
 const summaryData = computed( () => {
-	const yearlyFee = new YearlyMembershipFee( props.payment.paymentIntervalInMonths, props.payment.membershipFee );
+	const yearlyFee = new YearlyMembershipFee( props.paymentSummary.paymentIntervalInMonths, props.paymentSummary.membershipFee );
 	return {
-		paymentInterval: t( 'form_payment_interval_' + props.payment.paymentIntervalInMonths ),
-		membershipType: t( props.payment.membershipType === 'active' ? 'membership_type_active' : 'membership_type_sustaining' ),
+		paymentInterval: t( 'form_payment_interval_' + props.paymentSummary.paymentIntervalInMonths ),
+		membershipType: t( props.paymentSummary.membershipType === 'active' ? 'membership_type_active' : 'membership_type_sustaining' ),
 		membershipFeeFormatted: n( yearlyFee.membershipFeePerInterval, { key: 'currency', currencyDisplay: 'name' } ),
 		membershipFeeYearlyFormatted: renderAmount(
 			yearlyFee.yearlyFee,
 			yearlyFee.paymentIntervalInMonths,
 			t( 'form_payment_interval_12' )
 		),
-		paymentType: t( props.payment.paymentType ),
+		paymentType: t( props.paymentSummary.paymentType ),
 	};
 } );
 </script>
