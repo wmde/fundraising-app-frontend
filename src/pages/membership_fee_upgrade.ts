@@ -12,7 +12,7 @@ interface MembershipFeeUpgradeModel {
 	currentAmountInCents: number;
 	suggestedAmountInCents: number;
 	currentInterval: string;
-	showErrorPageInstead: boolean;
+	feeChangeFrontendFlag: string;
 }
 
 const PAGE_IDENTIFIER = 'membership-fee-upgrade';
@@ -34,11 +34,10 @@ const app = createVueApp(
 		pageProps: {
 			uuid: pageData.applicationVars.uuid,
 			externalMemberId: pageData.applicationVars.externalMemberId,
-			//TODO check if the following values need a "* 100" added
 			currentAmountInCents: pageData.applicationVars.currentAmountInCents,
 			suggestedAmountInCents: pageData.applicationVars.suggestedAmountInCents,
 			currentInterval: pageData.applicationVars.currentInterval,
-			showErrorPageInstead: pageData.applicationVars.showErrorPageInstead
+			feeChangeFrontendFlag: pageData.applicationVars.feeChangeFrontendFlag,
 		},
 	} );
 app.use( store );
