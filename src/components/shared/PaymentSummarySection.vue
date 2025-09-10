@@ -15,8 +15,10 @@
 
 <script setup lang="ts">
 
+import type { InitialBankAccountData } from '@src/view_models/BankAccount';
+
 interface Props {
-	bankData: { iban: string; bic?: string; bankName?: string };
+	bankData: InitialBankAccountData;
 }
 defineProps<Props>();
 </script>

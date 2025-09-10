@@ -5,9 +5,9 @@ import { MembershipType, membershipTypeName } from '@src/view_models/MembershipT
 type ReturnType = {
 	paymentSummary: ComputedRef<
 		{
-			paymentIntervalInMonths: any;
-			membershipFee: any;
-			paymentType: any;
+			paymentIntervalInMonths: string;
+			membershipFee: number;
+			paymentType: string;
 			membershipType: MembershipType;
 		}
 		|
