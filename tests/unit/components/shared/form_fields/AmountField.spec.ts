@@ -137,7 +137,7 @@ describe( 'AmountField.vue', () => {
 
 	it( 'custom amount radio is not activated by click', async () => {
 		const wrapper = getWrapper();
-		const customAmountRadioElement = wrapper.find( 'input[class="form-field-amount-custom-radio"]' );
+		const customAmountRadioElement = wrapper.find( '.text-radio-form-input-radio' );
 
 		await customAmountRadioElement.trigger( 'click' );
 
@@ -148,16 +148,16 @@ describe( 'AmountField.vue', () => {
 		const wrapper = getWrapper();
 		const customAmountInput = wrapper.find( '#amount-custom' );
 
-		expect( wrapper.find<HTMLInputElement>( '.form-field-amount-custom-radio' ).element.checked ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( '.text-radio-form-input-radio' ).element.checked ).toBeFalsy();
 
 		await customAmountInput.setValue( '1998' );
 		await customAmountInput.trigger( 'blur' );
 
-		expect( wrapper.find<HTMLInputElement>( '.form-field-amount-custom-radio' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '.text-radio-form-input-radio' ).element.checked ).toBeTruthy();
 
 		await wrapper.find( 'input[value="29900"]' ).trigger( 'change' );
 
-		expect( wrapper.find<HTMLInputElement>( '.form-field-amount-custom-radio' ).element.checked ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( '.text-radio-form-input-radio' ).element.checked ).toBeFalsy();
 	} );
 
 	it( 'does not select amounts for choices that are below minimum amount', async () => {

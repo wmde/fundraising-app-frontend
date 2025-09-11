@@ -29,34 +29,24 @@
 
 		<div class="form-field-amount-custom" :class="{ active: isCustomAmount }">
 			<label class="form-field-amount-help-text" for="amount-custom">{{ $t('donation_form_payment_amount_label') }}</label>
-			<div class="form-field-amount-custom-euro-symbol" :class="{ active: isCustomAmount }">
-				<div class="radio radio-form-input">
-					<input
-						name="amount"
-						type="radio"
-						class="form-field-amount-custom-radio"
-						@click="setCustomAmount"
-						:checked="isCustomAmount"
-						aria-hidden="true"
-						tabindex="-1"
-					/>
-				</div>
-
-				<TextFormInput
-					v-model="customAmount"
-					input-type="text"
-					input-id="amount-custom"
-					:has-message="false"
-					name="custom-amount"
-					:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_custom_placeholder' ) } )"
-					@keydown.enter="setCustomAmount"
-					@blur="setCustomAmount"
-					@focus.prevent="resetErrorInput"
-					@update:model-value="updateAmountFromCustom"
-					:aria-invalid="showError"
-					:aria-describedby="ariaDescribedby"
-				/>
-			</div>
+			<TextRadioFormInput
+				v-model="customAmount"
+				input-type="text"
+				input-id="amount-custom"
+				class="form-field-amount-custom-euro-symbol"
+				:has-message="false"
+				:has-error="showError"
+				name="custom-amount"
+				:radio-clicked="setCustomAmount"
+				:radio-checked="isCustomAmount"
+				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_custom_placeholder' ) } )"
+				@keydown.enter="setCustomAmount"
+				@blur="setCustomAmount"
+				@focus.prevent="resetErrorInput"
+				@update:model-value="updateAmountFromCustom"
+				:aria-invalid="showError"
+				:aria-describedby="ariaDescribedby"
+			/>
 		</div>
 		<span v-if="showError" class="help is-danger" id="amount-error">{{ errorMessage }}</span>
 		<slot name="info-message"/>
@@ -67,9 +57,9 @@
 
 import { computed, ref, watch } from 'vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
-import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { useI18n } from 'vue-i18n';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import TextRadioFormInput from '@src/components/shared/form_elements/TextRadioFormInput.vue';
 
 interface Props {
 	modelValue: string;
@@ -130,9 +120,7 @@ const updateAmountFromCustom = ( newAmount: string ) => {
 	amount.value = Math.trunc( numericalAmount * 100 );
 };
 
-const setCustomAmount = ( e: Event ): void => {
-	e.preventDefault();
-
+const setCustomAmount = (): void => {
 	customAmount.value = getFormattedCustomAmount();
 	if ( amount.value > 0 ) {
 		emit( 'update:modelValue', String( amount.value ) );
@@ -225,8 +213,6 @@ $input-height: 50px;
 	}
 
 	&-custom-euro-symbol {
-		position: relative;
-
 		&:after {
 			color: colors.$dark;
 			content: "€";
@@ -237,11 +223,6 @@ $input-height: 50px;
 			transform: translateY( -50% );
 		}
 
-		input {
-			padding: 0 map.get( units.$spacing, 'medium' ) 0 map.get( units.$spacing, 'xx-large' );
-			text-align: right;
-		}
-
 		&.active {
 			input {
 				border-color: colors.$primary;
@@ -250,36 +231,6 @@ $input-height: 50px;
 
 		.text-form-input .input {
 			height: $input-height;
-		}
-	}
-
-	&.locale-en-GB {
-		.form-field-amount-custom-euro-symbol {
-			input {
-				text-align: left;
-			}
-			&:after {
-				right: auto;
-				left: 44px;
-			}
-		}
-	}
-
-	&-custom .radio-form-input {
-		position: absolute;
-		z-index: 1;
-		height: 16px;
-		width: 16px;
-		min-width: 16px;
-		top: 50%;
-		transform: translateY( -50% );
-		left: 16px;
-
-		input {
-			padding: 0;
-			top: 0;
-			margin-top: 0;
-			left: 0;
 		}
 	}
 }
