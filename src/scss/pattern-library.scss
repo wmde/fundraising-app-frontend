@@ -1,13 +1,16 @@
 @use "settings/units";
+@use "settings/colors";
 @use "sass:map";
 @use "pattern-library-compatibility/content-card";
 @use "pattern-library-compatibility/section-heading";
 @use "pattern-library-compatibility/summary";
 @use "pattern-library-compatibility/switcher";
+@use "pattern-library-compatibility/button";
 
 @import "../pattern_library/css/variables/global.css";
 @import "../pattern_library/css/compositions/flow.css";
 @import "../pattern_library/css/compositions/switcher.css";
+@import "../pattern_library/css/blocks/button.css";
 
 :root {
 	--space-3xs: #{map.get( units.$spacing, 'xx-small' )};
@@ -35,4 +38,8 @@
 	--space-s-xl: #{map.get( units.$spacing, 'large' )};
 	--space-xs-l: #{map.get( units.$spacing, 'medium' )};
 	--space-0-s: #{map.get( units.$spacing, 'x-small' )};
+
+	/* Colors */
+	--color-blue-600: #{colors.$primary};
+	--color-white: #{colors.$white};
 }
