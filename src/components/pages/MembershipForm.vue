@@ -1,173 +1,171 @@
 <template>
-	<div id="laika-membership">
-		<form action="">
-			<ContentCard>
-				<template #heading>
-					<h1 id="membership-form-heading">{{ $t( 'membership_form_headline' ) }}</h1>
-					<h2 id="membership-form-subheading">{{ $t( 'membership_form_payment_subheading' ) }}</h2>
-				</template>
+	<form action="">
+		<ContentCard>
+			<template #heading>
+				<h1 id="membership-form-heading">{{ $t( 'membership_form_headline' ) }}</h1>
+				<h2 id="membership-form-subheading">{{ $t( 'membership_form_payment_subheading' ) }}</h2>
+			</template>
 
-				<template #content>
-					<ScrollTarget target-id="payment-section-top-scroll-target"/>
-					<ErrorSummary
-						:is-visible="showErrorSummary"
-						:items="[
-							{
-								validity: store.state.membership_fee.validity.interval,
-								message: $t( 'error_summary_interval' ),
-								focusElement: 'interval-0',
-								scrollElement: 'payment-form-interval-scroll-target'
-							},
-							{
-								validity: store.state.membership_fee.validity.fee,
-								message: $t( 'error_summary_amount' ),
-								focusElement: 'amount-500',
-								scrollElement: 'payment-form-amount-scroll-target'
-							},
-							{
-								validity: store.state.bankdata.validity.iban,
-								message: $t( 'donation_form_payment_iban_error' ),
-								focusElement: 'iban',
-								scrollElement: 'iban-scroll-target'
-							},
-							{
-								validity: store.state.membership_address.validity.salutation,
-								message: $t( 'donation_form_salutation_error' ),
-								focusElement: 'salutation-0',
-								scrollElement: 'salutation-scroll-target'
-							},
-							{
-								validity: store.state.membership_address.validity.firstName,
-								message: $t( 'donation_form_firstname_error' ),
-								focusElement: 'first-name',
-								scrollElement: 'first-name-scroll-target'
-							},
-							{
-								validity: store.state.membership_address.validity.lastName,
-								message: $t( 'donation_form_lastname_error' ),
-								focusElement: 'last-name',
-								scrollElement: 'last-name-scroll-target'
-							},
-							{
-								validity: store.state.membership_address.validity.street,
-								message: $t( 'donation_form_street_error' ),
-								focusElement: 'street',
-								scrollElement: 'street-scroll-target'
-							},
-							{
-								validity: store.state.membership_address.validity.postcode,
-								message: $t( 'donation_form_zip_error' ),
-								focusElement: 'post-code',
-								scrollElement: 'post-code-scroll-target'
-							},
-							{
-								validity: store.state.membership_address.validity.city,
-								message: $t( 'donation_form_city_error' ),
-								focusElement: 'city',
-								scrollElement: 'city-scroll-target'
-							},
-							{
-								validity: store.state.membership_address.validity.country,
-								message: $t( 'donation_form_country_error' ),
-								focusElement: 'country',
-								scrollElement: 'country-scroll-target'
-							},
-							{
-								validity: store.state.membership_address.validity.email,
-								message: $t( 'donation_form_email_error' ),
-								focusElement: 'email',
-								scrollElement: 'email-scroll-target'
-							},
-						]"
-					/>
+			<template #content>
+				<ScrollTarget target-id="payment-section-top-scroll-target"/>
+				<ErrorSummary
+					:is-visible="showErrorSummary"
+					:items="[
+						{
+							validity: store.state.membership_fee.validity.interval,
+							message: $t( 'error_summary_interval' ),
+							focusElement: 'interval-0',
+							scrollElement: 'payment-form-interval-scroll-target'
+						},
+						{
+							validity: store.state.membership_fee.validity.fee,
+							message: $t( 'error_summary_amount' ),
+							focusElement: 'amount-500',
+							scrollElement: 'payment-form-amount-scroll-target'
+						},
+						{
+							validity: store.state.bankdata.validity.iban,
+							message: $t( 'donation_form_payment_iban_error' ),
+							focusElement: 'iban',
+							scrollElement: 'iban-scroll-target'
+						},
+						{
+							validity: store.state.membership_address.validity.salutation,
+							message: $t( 'donation_form_salutation_error' ),
+							focusElement: 'salutation-0',
+							scrollElement: 'salutation-scroll-target'
+						},
+						{
+							validity: store.state.membership_address.validity.firstName,
+							message: $t( 'donation_form_firstname_error' ),
+							focusElement: 'first-name',
+							scrollElement: 'first-name-scroll-target'
+						},
+						{
+							validity: store.state.membership_address.validity.lastName,
+							message: $t( 'donation_form_lastname_error' ),
+							focusElement: 'last-name',
+							scrollElement: 'last-name-scroll-target'
+						},
+						{
+							validity: store.state.membership_address.validity.street,
+							message: $t( 'donation_form_street_error' ),
+							focusElement: 'street',
+							scrollElement: 'street-scroll-target'
+						},
+						{
+							validity: store.state.membership_address.validity.postcode,
+							message: $t( 'donation_form_zip_error' ),
+							focusElement: 'post-code',
+							scrollElement: 'post-code-scroll-target'
+						},
+						{
+							validity: store.state.membership_address.validity.city,
+							message: $t( 'donation_form_city_error' ),
+							focusElement: 'city',
+							scrollElement: 'city-scroll-target'
+						},
+						{
+							validity: store.state.membership_address.validity.country,
+							message: $t( 'donation_form_country_error' ),
+							focusElement: 'country',
+							scrollElement: 'country-scroll-target'
+						},
+						{
+							validity: store.state.membership_address.validity.email,
+							message: $t( 'donation_form_email_error' ),
+							focusElement: 'email',
+							scrollElement: 'email-scroll-target'
+						},
+					]"
+				/>
 
-					<MembershipTypeField
-						v-if="showMembershipTypeOption"
-						v-model="membershipTypeModel"
-						:disabledMembershipTypes="disabledMembershipTypes"
-					/>
+				<MembershipTypeField
+					v-if="showMembershipTypeOption"
+					v-model="membershipTypeModel"
+					:disabledMembershipTypes="disabledMembershipTypes"
+				/>
 
-					<AddressType
-						@field-changed="setAddressType( $event )"
-						:disabledAddressTypes="disabledAddressTypes"
-						:is-direct-debit="isDirectDebitPayment"
-						:initial-address-type="addressType"
-						:address-type-is-invalid="false"
-					/>
+				<AddressType
+					@field-changed="setAddressType( $event )"
+					:disabledAddressTypes="disabledAddressTypes"
+					:is-direct-debit="isDirectDebitPayment"
+					:initial-address-type="addressType"
+					:address-type-is-invalid="false"
+				/>
 
-					<Payment
-						:payment-amounts="paymentAmounts"
-						:payment-intervals="paymentIntervals"
-						:payment-types="paymentTypes"
-						:validate-fee-url="validateFeeUrl.toString()"
-						:validate-bank-data-url="validateBankDataUrl.toString()"
-						:validate-legacy-bank-data-url="validateLegacyBankDataUrl.toString()"
-					/>
-				</template>
-			</ContentCard>
+				<Payment
+					:payment-amounts="paymentAmounts"
+					:payment-intervals="paymentIntervals"
+					:payment-types="paymentTypes"
+					:validate-fee-url="validateFeeUrl.toString()"
+					:validate-bank-data-url="validateBankDataUrl.toString()"
+					:validate-legacy-bank-data-url="validateLegacyBankDataUrl.toString()"
+				/>
+			</template>
+		</ContentCard>
 
-			<ContentCard>
-				<template #heading>
-					<h2 id="membership-form-subheading">{{ $t( 'membership_form_address_subheading' ) }}</h2>
-				</template>
+		<ContentCard>
+			<template #heading>
+				<h2 id="membership-form-subheading">{{ $t( 'membership_form_address_subheading' ) }}</h2>
+			</template>
 
-				<template #content>
-					<AddressFields
-						:validate-address-url="validateAddressUrl.toString()"
-						:validate-email-url="validateEmailUrl.toString()"
-						:countries="countries"
-						:salutations="salutations"
-						:address-validation-patterns="addressValidationPatterns"
-						:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
-						ref="addressFieldsRef">
-					</AddressFields>
-				</template>
-			</ContentCard>
+			<template #content>
+				<AddressFields
+					:validate-address-url="validateAddressUrl.toString()"
+					:validate-email-url="validateEmailUrl.toString()"
+					:countries="countries"
+					:salutations="salutations"
+					:address-validation-patterns="addressValidationPatterns"
+					:date-of-birth-validation-pattern="dateOfBirthValidationPattern"
+					ref="addressFieldsRef">
+				</AddressFields>
+			</template>
+		</ContentCard>
 
-			<ContentCard>
+		<ContentCard>
 
-				<template #heading>
-					<h3>{{ $t( 'membership_confirmation_thanks_text' ) }}</h3>
-				</template>
+			<template #heading>
+				<h3>{{ $t( 'membership_confirmation_thanks_text' ) }}</h3>
+			</template>
 
-				<template #content>
-					<FormSummary>
-						<template #summary-content>
-							<MembershipSummary
-								:membership-application="membershipApplication"
-								:address="addressSummary"
-								:salutations="salutations"
-								:address-is-invalid="addressIsInvalid"
-								:countries="countries"
-							/>
-						</template>
+			<template #content>
+				<FormSummary>
+					<template #summary-content>
+						<MembershipSummary
+							:membership-application="membershipApplication"
+							:address="addressSummary"
+							:salutations="salutations"
+							:address-is-invalid="addressIsInvalid"
+							:countries="countries"
+						/>
+					</template>
 
-						<template #summary-buttons>
-							<FormButton
-								id="previous-btn"
-								:is-outlined="true"
-								@click="scrollToPaymentSection"
-							>
-								{{ $t('membership_form_section_back') }}
-							</FormButton>
-							<FormButton
-								id="submit-btn"
-								:is-loading="store.getters.isValidating"
-								@click="submit"
-							>
-								{{ $t('membership_form_finalize') }}
-							</FormButton>
-						</template>
-					</FormSummary>
-				</template>
+					<template #summary-buttons>
+						<FormButton
+							id="previous-btn"
+							:is-outlined="true"
+							@click="scrollToPaymentSection"
+						>
+							{{ $t('membership_form_section_back') }}
+						</FormButton>
+						<FormButton
+							id="submit-btn"
+							:is-loading="store.getters.isValidating"
+							@click="submit"
+						>
+							{{ $t('membership_form_finalize') }}
+						</FormButton>
+					</template>
+				</FormSummary>
+			</template>
 
-			</ContentCard>
-		</form>
+		</ContentCard>
+	</form>
 
-		<form action="/apply-for-membership" method="post" ref="submitValuesForm" id="submit-form">
-			<SubmitValues :campaign-values="campaignValues" :tracking-data="trackingData"/>
-		</form>
-	</div>
+	<form action="/apply-for-membership" method="post" ref="submitValuesForm" id="submit-form">
+		<SubmitValues :campaign-values="campaignValues" :tracking-data="trackingData"/>
+	</form>
 </template>
 
 <script setup lang="ts">

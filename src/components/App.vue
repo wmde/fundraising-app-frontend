@@ -1,21 +1,21 @@
 <template>
 	<div class="app-container" :class="bucketClasses">
-		<header>
+		<header class="site-head">
 			<a href="#content" class="skip-link">{{ $t( 'skip_link_text' ) }}</a>
 			<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
 		</header>
-		<main class="main-wrapper" id="content">
-			<div class="container">
-				<AppContent :is-full-width="isFullWidth" :uses-content-cards="usesContentCards">
-					<template #content>
-						<component :is="page" v-bind="pageProps"/>
-					</template>
-					<template #sidebar>
-						<AppSidebar/>
-					</template>
-				</AppContent>
-			</div>
-		</main>
+
+		<div class="content-wrapper main-content">
+			<AppContent>
+				<template #content>
+					<component :is="page" v-bind="pageProps"/>
+				</template>
+				<template #sidebar v-if="hasSidebar">
+					<AppSidebar/>
+				</template>
+			</AppContent>
+		</div>
+
 		<AppFooter :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
 	</div>
 </template>
@@ -36,15 +36,13 @@ interface Props {
 	page: Component;
 	pageProps?: Record<string, any>;
 	pageTitle: string;
-	isFullWidth?: boolean;
-	usesContentCards?: boolean;
+	hasSidebar?: boolean;
 	bucketClasses?: string[];
 }
 
 const props = withDefaults( defineProps<Props>(), {
-	isFullWidth: false,
 	bucketClasses: () => [],
-	usesContentCards: false,
+	hasSidebar: true,
 } );
 
 const modalState = useModalState();
@@ -68,8 +66,10 @@ watch( modalState, ( newModalState: ModalStates ) => {
 </script>
 
 <style lang="scss">
+@use '@src/scss/settings/units';
 @use '@src/scss/settings/global';
 @use '@src/scss/settings/breakpoints';
+@use 'sass:map';
 @import "../scss/custom";
 
 #app {
@@ -77,8 +77,59 @@ watch( modalState, ( newModalState: ModalStates ) => {
 	min-height: 100vh;
 }
 
-.app-content-main.uses-cards {
-	padding-top: 0;
+h1,
+h2,
+h3,
+h4 {
+	color: #000000;
+	font-weight: 400;
+	line-height: 1.125;
+}
+
+h1 {
+	font-size: 24px;
+	line-height: 26px;
+}
+
+h2 {
+	font-size: 20px;
+	line-height: 22px;
+}
+
+h3 {
+	font-size: 18px;
+}
+
+h4 {
+	font-size: 16px;
+}
+
+p {
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+ul,
+ol {
+	padding-left: map.get( units.$spacing, 'medium' );
+	margin-bottom: map.get( units.$spacing, 'small' );
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+ul {
+	list-style-type: disc;
+}
+
+ol {
+	list-style-type: upper-roman;
+
+	li {
+		padding-left: 2px;
+	}
 }
 
 .skip-link {
@@ -102,11 +153,4 @@ watch( modalState, ( newModalState: ModalStates ) => {
 	width: 1px;
 }
 
-.main-wrapper {
-	padding: global.$navbar-height 6px 0;
-
-	@include breakpoints.tablet-up {
-		padding: global.$navbar-height 18px 0;
-	}
-}
 </style>

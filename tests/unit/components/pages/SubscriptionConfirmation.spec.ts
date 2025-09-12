@@ -1,14 +1,14 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import SubscriptionConfirmation from '@src/components/pages/SubscriptionConfirmation.vue';
 
 describe( 'SubscriptionConfirmation.vue', () => {
 	it( 'renders success message by default (when there is no error)', () => {
-		const wrapper = shallowMount( SubscriptionConfirmation );
+		const wrapper = mount( SubscriptionConfirmation );
 		expect( wrapper.find( '.success-message' ).exists() ).toBe( true );
 	} );
 
 	it( 'renders success message when the error is "subscription was already confirmed.")', () => {
-		const wrapper = shallowMount( SubscriptionConfirmation, {
+		const wrapper = mount( SubscriptionConfirmation, {
 			props: {
 				errorMessage: 'subscription_already_confirmed',
 			},
@@ -17,7 +17,7 @@ describe( 'SubscriptionConfirmation.vue', () => {
 	} );
 
 	it( 'renders error message', () => {
-		const wrapper = shallowMount( SubscriptionConfirmation, {
+		const wrapper = mount( SubscriptionConfirmation, {
 			props: {
 				errorMessage: 'any error',
 			},

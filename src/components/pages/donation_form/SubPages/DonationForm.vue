@@ -1,75 +1,77 @@
 <template>
-	<div id="laika-donation">
-		<PaymentSection
-			:payment-amounts="paymentAmounts"
-			:payment-intervals="paymentIntervals"
-			:payment-types="paymentTypes"
-		>
-			<template #error-summary>
-				<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
-			</template>
-		</PaymentSection>
-		<div class="content-card" v-if="isDirectDebitPayment">
+	<PaymentSection
+		:payment-amounts="paymentAmounts"
+		:payment-intervals="paymentIntervals"
+		:payment-types="paymentTypes"
+	>
+		<template #error-summary>
+			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType"/>
+		</template>
+	</PaymentSection>
+
+	<ContentCard v-if="isDirectDebitPayment">
+		<template #content>
 			<IbanFields/>
-		</div>
-		<PersonalDataSection
-			:countries="countries"
-			:salutations="salutations"
-			:tracking-data="trackingData"
-			:campaign-values="campaignValues"
-			:address-validation-patterns="addressValidationPatterns"
-			:is-direct-debit-payment="isDirectDebitPayment"
-			:disabled-address-types="disabledAddressTypes"
-			:address-type="addressType"
-			:address-type-is-invalid="addressTypeIsInvalid"
-			@set-address-type="setAddressType( $event )"
-		/>
+		</template>
+	</ContentCard>
 
-		<ContentCard>
-			<template #heading v-if="paymentSummary">
-				<h2>{{ $t( 'donation_form_summary_title' ) }}</h2>
-				<DonationSummaryHeadline
-					:payment="paymentSummary"
-				/>
-			</template>
-			<template #content>
-				<Summary v-if="addressSummary || bankDataSummary">
-					<template #left v-if="addressSummary">
-						<DonorSummarySection
-							:address="addressSummary"
-							:countries="countries"
-							:salutations="salutations"
-						/>
-					</template>
-					<template #right v-if="bankDataSummary">
-						<PaymentSummarySection
-							:bank-data="bankDataSummary"
-						/>
-					</template>
-				</Summary>
-				<div class="switcher">
-					<FormButton
-						id="previous-btn"
-						:is-outlined="true"
-						@click="scrollToPaymentSection"
-					>
-						{{ $t( 'donation_form_section_back' ) }}
-					</FormButton>
-					<PaymentTextFormButton
-						id="submit-btn"
-						:is-loading="store.getters.isValidating"
-						:payment-type="paymentSummary?.paymentType"
-						@click="submit"
+	<PersonalDataSection
+		:countries="countries"
+		:salutations="salutations"
+		:tracking-data="trackingData"
+		:campaign-values="campaignValues"
+		:address-validation-patterns="addressValidationPatterns"
+		:is-direct-debit-payment="isDirectDebitPayment"
+		:disabled-address-types="disabledAddressTypes"
+		:address-type="addressType"
+		:address-type-is-invalid="addressTypeIsInvalid"
+		@set-address-type="setAddressType( $event )"
+	/>
+
+	<ContentCard>
+		<template #heading v-if="paymentSummary">
+			<h2>{{ $t( 'donation_form_summary_title' ) }}</h2>
+			<DonationSummaryHeadline
+				:payment="paymentSummary"
+			/>
+		</template>
+		<template #content>
+			<Summary v-if="addressSummary || bankDataSummary">
+				<template #left v-if="addressSummary">
+					<DonorSummarySection
+						:address="addressSummary"
+						:countries="countries"
+						:salutations="salutations"
 					/>
-				</div>
-			</template>
-		</ContentCard>
+				</template>
+				<template #right v-if="bankDataSummary">
+					<PaymentSummarySection
+						:bank-data="bankDataSummary"
+					/>
+				</template>
+			</Summary>
+			<div class="switcher">
+				<FormButton
+					id="previous-btn"
+					:is-outlined="true"
+					@click="scrollToPaymentSection"
+				>
+					{{ $t( 'donation_form_section_back' ) }}
+				</FormButton>
+				<PaymentTextFormButton
+					id="submit-btn"
+					:is-loading="store.getters.isValidating"
+					:payment-type="paymentSummary?.paymentType"
+					@click="submit"
+				/>
+			</div>
+		</template>
+	</ContentCard>
 
-		<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
-			<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
-		</form>
+	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
+		<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
+	</form>
 
-	</div>
 </template>
 
 <script setup lang="ts">

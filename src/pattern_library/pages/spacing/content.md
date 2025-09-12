@@ -40,3 +40,15 @@ The custom pairs move between manually picked sizes.
 | <div class="spacing-view" style="--size: var(--space-0-s);"></div>  | --space-0-s  |
 | <div class="spacing-view" style="--size: var(--space-s-l);"></div>  | --space-s-l  |
 | <div class="spacing-view" style="--size: var(--space-s-xl);"></div> | --space-s-xl |
+
+<style>
+
+    .spacing-view {
+        --size: var(--space-3xs);
+
+        background: #cccccc;
+        height: var(--size);
+        width: var(--size);
+    }
+
+</style>

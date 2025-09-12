@@ -1,11 +1,11 @@
 <template>
-	<div class="supporters">
-		<div class="supporters-blurb">
+	<ContentCard>
+		<template #heading>
 			<h1>{{ $t( 'hall_of_fame_title' ) }}</h1>
+		</template>
+		<template #content>
 			<p v-html="$t( 'hall_of_fame_header_paragraph1' )"/>
 			<p v-html="$t( 'hall_of_fame_header_paragraph2' )"/>
-		</div>
-		<section class="supporters-list">
 			<h2>{{ $t( 'hall_of_fame_list_title' ) }}</h2>
 			<AccordionItem
 				v-for="( supporter, index ) in supporters"
@@ -20,14 +20,15 @@
 					<span class="accordion-title-amount">{{ supporter.amount }}</span>
 				</template>
 			</AccordionItem>
-		</section>
-	</div>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { Supporter as SupporterInfo } from '@src/view_models/supporters';
 import AccordionItem from '@src/components/shared/AccordionItem.vue';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 interface Props {
 	pageTitle: String;

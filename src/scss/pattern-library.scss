@@ -1,17 +1,34 @@
 @use "settings/units";
+@use "settings/colors";
 @use "sass:map";
-
-@import "pattern-library-compatibility/content-card";
-@import "pattern-library-compatibility/icon-text";
-@import "pattern-library-compatibility/section-heading";
-@import "pattern-library-compatibility/summary";
-@import "pattern-library-compatibility/switcher";
-
-@import "../pattern_library/css/variables/global.css";
-@import "../pattern_library/css/compositions/flow.css";
-@import "../pattern_library/css/compositions/switcher.css";
+@use "../pattern_library/css/utilities/stretch-single-content-card.css";
+@use "../pattern_library/css/compositions/flow.css";
+@use "../pattern_library/css/compositions/sidebar.css";
+@use "../pattern_library/css/compositions/switcher.css" as switcherBase;
+@use "../pattern_library/css/compositions/wrapper.css" as wrapperBase;
+@use "../pattern_library/css/blocks/alert-box.css";
+@use "pattern-library-compatibility/content-card";
+@use "pattern-library-compatibility/icon-text";
+@use "pattern-library-compatibility/section-heading";
+@use "pattern-library-compatibility/site-head";
+@use "pattern-library-compatibility/summary";
+@use "pattern-library-compatibility/switcher";
+@use "pattern-library-compatibility/wrapper";
 
 :root {
+	--wrapper-max-width: calc(960px + var(--gutter) + var(--gutter));
+	--sidebar-content-min-width: 55%;
+	--sidebar-target-width: 300px;
+	--navigation-height: var(--space-2xl);
+	--gutter: var(--space-xs-s);
+	--stroke-width: 1px;
+	--stroke-color: var(--color-grey-300);
+	--stroke: var(--stroke-width) solid var(--stroke-color);
+	--easing: cubic-bezier(0.885, 0.09, 0.49, 0.85);
+	--border-radius: 8px;
+	--form-field-max-width: 520px;
+	--select-input-chevron: url("data:image/svg+xml,%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2022%2014%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xml%3Aspace%3D%22preserve%22%20xmlns%3Aserif%3D%22http%3A%2F%2Fwww.serif.com%2F%22%20style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A2%3B%22%3E%0A%20%20%20%20%3Cpath%20d%3D%22M9.939%2C12.657L0.747%2C3.464C0.162%2C2.879%200.162%2C1.929%200.747%2C1.343C1.332%2C0.758%202.283%2C0.758%202.868%2C1.343L11%2C9.475L19.132%2C1.343C19.717%2C0.758%2020.668%2C0.758%2021.253%2C1.343C21.838%2C1.929%2021.838%2C2.879%2021.253%2C3.464L12.061%2C12.657C11.475%2C13.242%2010.525%2C13.242%209.939%2C12.657Z%22%2F%3E%0A%3C%2Fsvg%3E") no-repeat 96% 55%;
+
 	--space-3xs: #{map.get( units.$spacing, 'xx-small' )};
 	--space-2xs: #{map.get( units.$spacing, 'xx-small' )};
 	--space-xs: #{map.get( units.$spacing, 'x-small' )};
@@ -37,4 +54,8 @@
 	--space-s-xl: #{map.get( units.$spacing, 'large' )};
 	--space-xs-l: #{map.get( units.$spacing, 'medium' )};
 	--space-0-s: #{map.get( units.$spacing, 'x-small' )};
+
+	/* Colours */
+	--color-blue-600: #{colors.$primary};
+	--color-blue-200: #{colors.$primary-pale};
 }

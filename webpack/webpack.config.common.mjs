@@ -23,7 +23,6 @@ const webpackConfig = {
 		'membership_application': './src/pages/membership_application.ts',
 		'membership_application_confirmation': './src/pages/membership_application_confirmation.ts',
 		'page_not_found': './src/pages/page_not_found.ts',
-		'privacy_protection': './src/pages/privacy_protection.ts',
 		'static_page': './src/pages/static_page.ts',
 		'system_message': './src/pages/system_message.ts',
 		'supporters': './src/pages/supporters.ts',
@@ -59,7 +58,7 @@ const webpackConfig = {
 				use: [ 'babel-loader', { loader: 'ts-loader', options: { appendTsSuffixTo: [ /\.vue$/ ] } } ],
 			},
 			{
-				test: /\.css$/,
+				test: /\.(scss|css)$/,
 				oneOf: [
 					{
 						resourceQuery: /raw/,
@@ -69,22 +68,15 @@ const webpackConfig = {
 						use: [
 							{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
 							{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
+							// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
+							// We will need to address this in the near future
+							{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
+								loadPaths: [ helpers.root( '' ) ],
+								quietDeps: true,
+								silenceDeprecations: [ 'import' ],
+							} } },
 						],
 					},
-				],
-			},
-			{
-				test: /\.scss$/,
-				use: [
-					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
-					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
-					// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
-					// We will need to address this in the near future
-					{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
-						loadPaths: [ helpers.root( '' ) ],
-						quietDeps: true,
-						silenceDeprecations: [ 'import' ],
-					} } },
 				],
 			},
 			{
