@@ -1,5 +1,5 @@
 <template>
-	<div class="content-card flow" :data-sidebar-card="isSidebarCard" :data-theme="theme">
+	<div class="content-card flow" :data-sidebar-card="isSidebarCard ? true : null" :data-theme="theme">
 		<SectionHeading v-if="$slots.heading">
 			<slot name="heading"/>
 		</SectionHeading>

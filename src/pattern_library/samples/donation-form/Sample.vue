@@ -358,8 +358,8 @@
 		<aside>
 			<SidebarLinks :content="content">
 				<div class="content-card" data-sidebar-card>
-					<div class="icon-text">
-						<div class="icon-text__icon" aria-hidden="true"><InfoIcon/></div><p><strong>Any questions about making a donation?</strong></p>
+					<div class="icon-text" data-small-heading>
+						<div class="icon-text__icon" aria-hidden="true"><InfoIcon/></div><h2>Any questions about making a donation?</h2>
 					</div>
 					<p>
 						Please contact us using the <a href="#">contact form</a> or by calling: <a href="#">(030) 577 11 62-19</a>
@@ -367,8 +367,8 @@
 				</div>
 
 				<div class="content-card" data-sidebar-card>
-					<div class="icon-text">
-						<div class="icon-text__icon" aria-hidden="true"><BankIcon/></div><p><strong>Donation Account</strong></p>
+					<div class="icon-text" data-small-heading>
+						<div class="icon-text__icon" aria-hidden="true"><BankIcon/></div><h2>Donation Account</h2>
 					</div>
 					<ul class="sidebar-links">
 						<li><strong>Account holder:</strong> Wikimedia e. V.</li>

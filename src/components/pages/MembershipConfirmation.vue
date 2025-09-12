@@ -1,7 +1,11 @@
 <template>
 	<div class="membership-confirmation">
 		<div class="membership-confirmation-summary membership-confirmation-card">
-			<h1 class="icon-title"><SuccessIcon/> {{ $t( 'membership_confirmation_thanks_text' ) }}</h1>
+			<IconText>
+				<template #icon><SuccessIcon/></template>
+				<template #content><h1>{{ $t( 'membership_confirmation_thanks_text' ) }}</h1></template>
+			</IconText>
+
 			<p v-html="$t( 'membership_confirmation_payment_data_text', summaryData )"/>
 
 			<p v-if="hasIncentives">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</p>
@@ -11,7 +15,10 @@
 		</div>
 
 		<div class="membership-confirmation-card" v-if="!confirmationData.membershipApplication.isExported">
-			<h2 class="icon-title"><SuccessIcon/> {{ $t( 'membership_confirmation_address_head' ) }}</h2>
+			<IconText>
+				<template #icon><SuccessIcon/></template>
+				<template #content><h2>{{ $t( 'membership_confirmation_address_head' ) }}</h2></template>
+			</IconText>
 			<p>
 				<template v-if="address.applicantType === 'person'">{{ salutation }}{{ address.fullName }}</template>
 				<template v-else>{{ address.fullName }}</template>
@@ -23,15 +30,16 @@
 			<p>{{ address.email }}</p>
 		</div>
 		<div class="membership-confirmation-card" v-else>
-			<h2 class="icon-title">
-				<WarningIcon/> {{ $t( 'membership_confirmation_exported_title' ) }}
-			</h2>
+			<IconText>
+				<template #icon><WarningIcon/></template>
+				<template #content><h2>{{ $t( 'membership_confirmation_exported_title' ) }}</h2></template>
+			</IconText>
 			<p>
 				{{ $t( 'membership_confirmation_exported_content' ) }}
 			</p>
 		</div>
 
-		<membership-survey
+		<MembershipSurvey
 			v-if="$t( 'membership_confirmation_survey_link') !== ''"
 			:tracking="confirmationData.tracking ?? ''"
 		/>
@@ -52,6 +60,7 @@ import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
 import { useI18n } from 'vue-i18n';
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
+import IconText from '@src/components/patterns/IconText.vue';
 
 interface Props {
 	confirmationData: MembershipApplicationConfirmationData;
@@ -143,22 +152,6 @@ const summaryData = computed( () => {
 	padding: 32px;
 	line-height: 1.5;
 	margin-bottom: 12px;
-}
-
-.icon-title {
-	padding-left: 2.5rem;
-	svg {
-		float: left;
-		margin-left: -2.5rem;
-	}
-}
-
-h1.icon-title svg {
-	margin-top: 2px;
-}
-
-h2.icon-title {
-	font-size: 1.3rem;
 }
 
 </style>

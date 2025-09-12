@@ -1,8 +1,9 @@
 <template>
 	<div class="donation-confirmation-card exported-donation">
-		<h2 class="icon-title">
-			<WarningIcon/> {{ $t( 'donation_confirmation_exported_title' ) }}
-		</h2>
+		<IconText>
+			<template #icon><WarningIcon/></template>
+			<template #content><h2>{{ $t( 'donation_confirmation_exported_title' ) }}</h2></template>
+		</IconText>
 		<p>
 			{{ $t( 'donation_confirmation_exported_content' ) }}
 		</p>
@@ -12,10 +13,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
+import IconText from '@src/components/patterns/IconText.vue';
 
 export default defineComponent( {
 	name: 'DonationExported',
-	components: { WarningIcon },
+	components: { IconText, WarningIcon },
 	props: {
 		addressType: String,
 	},

@@ -1,6 +1,9 @@
 <template>
 	<div class="donation-confirmation-card membership-benefits-wrapper">
-		<h2 class="icon-title"><warning-icon/> {{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2>
+		<IconText>
+			<template #icon><WarningIcon/></template>
+			<template #content><h2>{{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2></template>
+		</IconText>
 		<p>{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
 		<p>
 			<a ref="buttonRef" class="form-button" id="membership-application-url" :href="membershipApplicationUrl">
@@ -25,6 +28,7 @@
 import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+import IconText from '@src/components/patterns/IconText.vue';
 
 interface Props {
 	donation: {

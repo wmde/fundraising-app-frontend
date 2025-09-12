@@ -14,3 +14,16 @@
 		padding: map.get( units.$spacing, 'large' );
 	}
 }
+
+.content-card[data-sidebar-card] {
+	--flow-space: 0;
+	padding: 16px;
+	margin-bottom: 16px;
+	line-height: 1.5;
+
+	.bank-data-list {
+		list-style-type: none;
+		padding-left: 0;
+	}
+}
+
