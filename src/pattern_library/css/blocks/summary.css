@@ -1,8 +1,11 @@
 .summary {
-	--flow-space: 0.5em;
 	margin-block-end: var(--space-xs);
 }
 
 .summary div {
 	margin-block-end: var(--space-xs);
+}
+
+.summary__details {
+	--flow-space: 0.5em;
 }

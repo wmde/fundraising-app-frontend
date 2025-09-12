@@ -34,21 +34,21 @@
 	transform: scale(99%);
 }
 
-.button[data-button-style="hollow"] {
+.button[data-style-hollow] {
 	--button-bg: var(--color-white);
 	--button-text: var(--color-blue-600);
 }
 
-.button[data-button-style="hollow"]:hover,
-.button[data-button-style="hollow"]:focus {
+.button[data-style-hollow]:hover,
+.button[data-style-hollow]:focus {
 	--button-bg: var(--color-blue-600);
 	--button-text: var(--color-white);
 }
 
-.button[data-button-size="small"] {
+.button[data-size-small] {
 	--button-padding-block: 0.4em;
 }
 
-.button[data-button-fill] {
+.button[data-size-fill-width] {
 	width: 100%;
 }

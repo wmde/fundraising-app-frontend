@@ -34,7 +34,7 @@
 				<form action="/" class="locale__form">
 					<label><input type="radio" name="locale" value="de"> Deutsch</label>
 					<label><input type="radio" name="locale" value="en" checked> English</label>
-					<button class="button" type="submit" data-button-size="small">Set Language</button>
+					<button class="button" type="submit" data-size-small>Set Language</button>
 				</form>
 			</div>
 		</header>

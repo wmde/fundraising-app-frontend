@@ -5,7 +5,7 @@
 			<hr/>
 		</div>
 
-		<button class="button" data-button-size="small" @click="menuActive = !menuActive">Toggle Mobile Nav</button>
+		<button class="button" data-size-small @click="menuActive = !menuActive">Toggle Mobile Nav</button>
 
 		<div style="position: relative;">
 			<nav class="nav" :class="{ 'nav--active': menuActive }" aria-label="Main">

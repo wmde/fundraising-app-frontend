@@ -27,7 +27,6 @@
 @import "blocks/iban-calculator.css";
 @import "blocks/icon-text.css";
 @import "blocks/locale.css";
-@import "blocks/verbose-checkbox.css";
 @import "blocks/mobile-nav-toggle.css";
 @import "blocks/modal-dialogue.css";
 @import "blocks/more-info-toggle.css";
@@ -37,3 +36,5 @@
 @import "blocks/site-foot.css";
 @import "blocks/site-head.css";
 @import "blocks/summary.css";
+@import "blocks/text-radio.css";
+@import "blocks/verbose-checkbox.css";

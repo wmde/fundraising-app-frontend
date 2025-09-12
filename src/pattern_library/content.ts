@@ -28,9 +28,11 @@ import sectionHeading from '@src/pattern_library/patterns/section-heading';
 import siteFoot from '@src/pattern_library/patterns/site-foot';
 import siteHead from '@src/pattern_library/patterns/site-head';
 import summary from '@src/pattern_library/patterns/summary';
+import textRadio from '@src/pattern_library/patterns/text-radio';
 import verboseCheckbox from '@src/pattern_library/patterns/verbose-checkbox';
 
 import donationForm from '@src/pattern_library/samples/donation-form';
+import membershipFeeChange from '@src/pattern_library/samples/membership-fee-change';
 
 const pages: Page[] = [
 	cssVariables,
@@ -61,11 +63,13 @@ const patterns: Pattern[] = [
 	siteFoot,
 	siteHead,
 	summary,
+	textRadio,
 	verboseCheckbox,
 ];
 
 const samples: Sample[] = [
 	donationForm,
+	membershipFeeChange,
 ];
 
 export interface Content {
