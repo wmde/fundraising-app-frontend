@@ -1,6 +1,12 @@
 @use "settings/units";
 @use "settings/colors";
 @use "sass:map";
+@use "../pattern_library/css/utilities/stretch-single-content-card.css";
+@use "../pattern_library/css/compositions/flow.css";
+@use "../pattern_library/css/compositions/sidebar.css";
+@use "../pattern_library/css/compositions/switcher.css" as switcherBase;
+@use "../pattern_library/css/compositions/wrapper.css" as wrapperBase;
+@use "../pattern_library/css/blocks/alert-box.css";
 @use "pattern-library-compatibility/content-card";
 @use "pattern-library-compatibility/icon-text";
 @use "pattern-library-compatibility/section-heading";
@@ -8,15 +14,6 @@
 @use "pattern-library-compatibility/summary";
 @use "pattern-library-compatibility/switcher";
 @use "pattern-library-compatibility/wrapper";
-
-@import "../pattern_library/css/utilities/stretch-single-content-card.css";
-
-@import "../pattern_library/css/compositions/flow.css";
-@import "../pattern_library/css/compositions/sidebar.css";
-@import "../pattern_library/css/compositions/switcher.css";
-@import "../pattern_library/css/compositions/wrapper.css";
-
-@import "../pattern_library/css/blocks/alert-box.css";
 
 :root {
 	--wrapper-max-width: calc(960px + var(--gutter) + var(--gutter));

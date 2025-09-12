@@ -29,15 +29,3 @@ interface Props {
 
 defineProps<Props>();
 </script>
-
-<style lang="css">
-
-.spacing-view {
-	--size: var(--space-3xs);
-
-	background: #cccccc;
-	height: var(--size);
-	width: var(--size);
-}
-
-</style>
