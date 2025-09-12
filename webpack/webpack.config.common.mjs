@@ -58,7 +58,7 @@ const webpackConfig = {
 				use: [ 'babel-loader', { loader: 'ts-loader', options: { appendTsSuffixTo: [ /\.vue$/ ] } } ],
 			},
 			{
-				test: /\.css$/,
+				test: /\.(scss|css)$/,
 				oneOf: [
 					{
 						resourceQuery: /raw/,
@@ -68,22 +68,15 @@ const webpackConfig = {
 						use: [
 							{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
 							{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
+							// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
+							// We will need to address this in the near future
+							{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
+								loadPaths: [ helpers.root( '' ) ],
+								quietDeps: true,
+								silenceDeprecations: [ 'import' ],
+							} } },
 						],
 					},
-				],
-			},
-			{
-				test: /\.scss$/,
-				use: [
-					{ loader: isDev ? 'style-loader' : MiniCSSExtractPlugin.loader },
-					{ loader: 'css-loader', options: { sourceMap: isDev, url: false } },
-					// Deprecations are silenced because our version of Bulma won't be compatible with Dart Sass 3
-					// We will need to address this in the near future
-					{ loader: 'sass-loader', options: { sourceMap: isDev, sassOptions: {
-						loadPaths: [ helpers.root( '' ) ],
-						quietDeps: true,
-						silenceDeprecations: [ 'import' ],
-					} } },
 				],
 			},
 			{
