@@ -1,115 +1,118 @@
 <template>
-	<div class="contact-form">
-		<h1>{{ $t( 'contact_form_title' ) }}</h1>
+	<ContentCard>
+		<template #heading>
+			<h1>{{ $t( 'contact_form_title' ) }}</h1>
+		</template>
+		<template #content>
+			<ErrorSummary
+				id="server-error-summary"
+				:is-visible="showServerErrorSummary"
+				:items="validationItems"
+				id-namespace="server-"
+				:focus-on-submit="false"
+			/>
 
-		<ErrorSummary
-			id="server-error-summary"
-			:is-visible="showServerErrorSummary"
-			:items="validationItems"
-			id-namespace="server-"
-			:focus-on-submit="false"
-		/>
+			<ErrorSummary :is-visible="showErrorSummary" :items="validationItems"/>
 
-		<ErrorSummary :is-visible="showErrorSummary" :items="validationItems"/>
+			<form method="post" action="/contact/get-in-touch" @submit.prevent="submit" id="laika-contact" ref="form">
+				<FormSection>
+					<TextField
+						name="firstname"
+						input-id="firstname"
+						v-model="formData.firstname.value"
+						:label="$t( 'contact_form_firstname_label' )"
+						:label-help-text="$t('contact_form_optional')"
+						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
+						:show-error="formData.firstname.validity === Validity.INVALID"
+						:error-message="$t( 'contact_form_firstname_error' )"
+						@field-changed="() => validateField( 'firstname' )"
+					/>
 
-		<form method="post" action="/contact/get-in-touch" @submit.prevent="submit" id="laika-contact" ref="form">
-			<FormSection>
-				<TextField
-					name="firstname"
-					input-id="firstname"
-					v-model="formData.firstname.value"
-					:label="$t( 'contact_form_firstname_label' )"
-					:label-help-text="$t('contact_form_optional')"
-					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
-					:show-error="formData.firstname.validity === Validity.INVALID"
-					:error-message="$t( 'contact_form_firstname_error' )"
-					@field-changed="() => validateField( 'firstname' )"
-				/>
+					<TextField
+						name="lastname"
+						input-id="lastname"
+						v-model="formData.lastname.value"
+						:label="$t( 'contact_form_lastname_label' )"
+						:label-help-text="$t('contact_form_optional')"
+						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
+						:show-error="formData.lastname.validity === Validity.INVALID"
+						:error-message="$t( 'contact_form_lastname_error' )"
+						@field-changed="() => validateField( 'lastname' )"
+					/>
 
-				<TextField
-					name="lastname"
-					input-id="lastname"
-					v-model="formData.lastname.value"
-					:label="$t( 'contact_form_lastname_label' )"
-					:label-help-text="$t('contact_form_optional')"
-					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
-					:show-error="formData.lastname.validity === Validity.INVALID"
-					:error-message="$t( 'contact_form_lastname_error' )"
-					@field-changed="() => validateField( 'lastname' )"
-				/>
+					<ScrollTarget target-id="donationNumber-scroll-target"/>
+					<TextField
+						name="donationNumber"
+						input-id="donationNumber"
+						v-model="formData.donationNumber.value"
+						:label="$t( 'contact_form_donation_number_label' )"
+						:label-help-text="$t('contact_form_optional' )"
+						:help-text="$t( 'contact_form_donation_number_help_text' )"
+						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
+						:show-error="formData.donationNumber.validity === Validity.INVALID"
+						:error-message="$t( 'contact_form_donation_number_error' )"
+						@field-changed="() => validateField( 'donationNumber' )"
+					/>
+				</FormSection>
 
-				<ScrollTarget target-id="donationNumber-scroll-target"/>
-				<TextField
-					name="donationNumber"
-					input-id="donationNumber"
-					v-model="formData.donationNumber.value"
-					:label="$t( 'contact_form_donation_number_label' )"
-					:label-help-text="$t('contact_form_optional' )"
-					:help-text="$t( 'contact_form_donation_number_help_text' )"
-					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
-					:show-error="formData.donationNumber.validity === Validity.INVALID"
-					:error-message="$t( 'contact_form_donation_number_error' )"
-					@field-changed="() => validateField( 'donationNumber' )"
-				/>
-			</FormSection>
+				<FormSection>
 
-			<FormSection>
+					<ScrollTarget target-id="email-scroll-target"/>
+					<EmailField
+						v-model="formData.email.value"
+						:show-error="formData.email.validity === Validity.INVALID"
+						@field-changed="() => validateField( 'email' )"
+					/>
 
-				<ScrollTarget target-id="email-scroll-target"/>
-				<EmailField
-					v-model="formData.email.value"
-					:show-error="formData.email.validity === Validity.INVALID"
-					@field-changed="() => validateField( 'email' )"
-				/>
-
-				<ScrollTarget target-id="topic-scroll-target"/>
-				<SelectField
-					v-model="formData.topic.value"
-					input-id="topic"
-					name="category"
-					:label="$t( 'contact_form_topic_placeholder' )"
-					:options="[
+					<ScrollTarget target-id="topic-scroll-target"/>
+					<SelectField
+						v-model="formData.topic.value"
+						input-id="topic"
+						name="category"
+						:label="$t( 'contact_form_topic_placeholder' )"
+						:options="[
 						{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
 						...Object.values( contactCategories ).map( ( value: string ) => ( { label: value, value: value } ) )
 					]"
-					:show-error="formData.topic.validity === Validity.INVALID"
-					:error-message="$t( 'contact_form_topic_error' )"
-					@field-changed="() => validateField( 'topic' )"
-				/>
+						:show-error="formData.topic.validity === Validity.INVALID"
+						:error-message="$t( 'contact_form_topic_error' )"
+						@field-changed="() => validateField( 'topic' )"
+					/>
 
-				<ScrollTarget target-id="subject-scroll-target"/>
-				<TextField
-					name="subject"
-					input-id="subject"
-					v-model="formData.subject.value"
-					:label="$t( 'contact_form_subject_label' )"
-					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
-					:show-error="formData.subject.validity === Validity.INVALID"
-					:error-message="$t( 'contact_form_subject_error' )"
-					@field-changed="() => validateField( 'subject' )"
-				/>
+					<ScrollTarget target-id="subject-scroll-target"/>
+					<TextField
+						name="subject"
+						input-id="subject"
+						v-model="formData.subject.value"
+						:label="$t( 'contact_form_subject_label' )"
+						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
+						:show-error="formData.subject.validity === Validity.INVALID"
+						:error-message="$t( 'contact_form_subject_error' )"
+						@field-changed="() => validateField( 'subject' )"
+					/>
 
-				<ScrollTarget target-id="messageBody-scroll-target"/>
-				<TextField
-					name="messageBody"
-					input-type="textarea"
-					input-id="messageBody"
-					v-model="formData.comment.value"
-					:label="$t( 'contact_form_body_label' )"
-					placeholder=""
-					:show-error="formData.comment.validity === Validity.INVALID"
-					:error-message="$t( 'contact_form_body_error' )"
-					@field-changed="() => validateField( 'comment' )"
-				/>
+					<ScrollTarget target-id="messageBody-scroll-target"/>
+					<TextField
+						name="messageBody"
+						input-type="textarea"
+						input-id="messageBody"
+						v-model="formData.comment.value"
+						:label="$t( 'contact_form_body_label' )"
+						placeholder=""
+						:show-error="formData.comment.validity === Validity.INVALID"
+						:error-message="$t( 'contact_form_body_error' )"
+						@field-changed="() => validateField( 'comment' )"
+					/>
 
-				<div class="contact-form-button">
-					<FormButton id="submit-btn" button-type="submit">
-						{{ $t('contact_form_submit_button') }}
-					</FormButton>
-				</div>
-			</FormSection>
-		</form>
-	</div>
+					<div class="contact-form-button">
+						<FormButton id="submit-btn" button-type="submit">
+							{{ $t('contact_form_submit_button') }}
+						</FormButton>
+					</div>
+				</FormSection>
+			</form>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -129,6 +132,7 @@ import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { useI18n } from 'vue-i18n';
 import type { ValidationSummaryItem } from '@src/components/shared/validation_summary/ValidationSummaryItem';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 defineOptions( {
 	name: 'Contact',

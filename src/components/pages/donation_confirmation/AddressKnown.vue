@@ -1,40 +1,42 @@
 <template>
-	<div class="donation-confirmation-card known-address">
-		<IconText>
-			<template #icon><SuccessIcon/></template>
-			<template #content><h2>{{ $t( donation.receipt ? 'donation_confirmation_summary_title' : 'donation_confirmation_summary_title_no_receipt_wanted' ) }}</h2></template>
-		</IconText>
+	<ContentCard>
+		<template #content>
+			<IconText>
+				<template #icon><SuccessIcon/></template>
+				<template #content><h2>{{ $t( donation.receipt ? 'donation_confirmation_summary_title' : 'donation_confirmation_summary_title_no_receipt_wanted' ) }}</h2></template>
+			</IconText>
 
-		<div class="address-summary">
-			<p v-if="addressType === 'person'" v-html="$t( 'donation_confirmation_address_person', {
-				salutation: salutation,
-				fullName: address.fullName,
-				streetAddress: address.street,
-				postalCode: address.postcode,
-				city: address.city,
-				country: country
-			} )"></p>
-			<p v-else v-html="$t( 'donation_confirmation_address_company', {
-				fullName: address.fullName,
-				streetAddress: address.street,
-				postalCode: address.postcode,
-				city: address.city,
-				country: country
-			} )"></p>
-		</div>
-		<div class="payment-email" v-html="$t( 'donation_confirmation_email', { email: address.email } )"></div>
-		<div>
-			{{ $t( 'donation_confirmation_address_update' ) }}
-			<ButtonLink
-				id="update-address-link"
-				aria-controls="address-change-modal"
-				:aria-expanded="modalIsVisible"
-				@click="$emit( 'show-address-modal' )"
-			>
-				{{ $t( 'donation_confirmation_address_update_link' ) }}
-			</ButtonLink>
-		</div>
-	</div>
+			<div class="address-summary">
+				<p v-if="addressType === 'person'" v-html="$t( 'donation_confirmation_address_person', {
+					salutation: salutation,
+					fullName: address.fullName,
+					streetAddress: address.street,
+					postalCode: address.postcode,
+					city: address.city,
+					country: country
+				} )"></p>
+				<p v-else v-html="$t( 'donation_confirmation_address_company', {
+					fullName: address.fullName,
+					streetAddress: address.street,
+					postalCode: address.postcode,
+					city: address.city,
+					country: country
+				} )"></p>
+			</div>
+			<div class="payment-email" v-html="$t( 'donation_confirmation_email', { email: address.email } )"></div>
+			<div>
+				{{ $t( 'donation_confirmation_address_update' ) }}
+				<ButtonLink
+					id="update-address-link"
+					aria-controls="address-change-modal"
+					:aria-expanded="modalIsVisible"
+					@click="$emit( 'show-address-modal' )"
+				>
+					{{ $t( 'donation_confirmation_address_update_link' ) }}
+				</ButtonLink>
+			</div>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -47,6 +49,7 @@ import type { Address } from '@src/view_models/Address';
 import type { Salutation } from '@src/view_models/Salutation';
 import ButtonLink from '@src/components/shared/ButtonLink.vue';
 import IconText from '@src/components/patterns/IconText.vue';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 interface Props {
 	modalIsVisible: boolean;

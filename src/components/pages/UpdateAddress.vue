@@ -1,105 +1,107 @@
 <template>
-	<div class="address-update-form">
-		<h1>{{ $t( 'address_change_form_title' ) }}</h1>
-		<p>{{ $t( 'address_change_form_label' ) }}</p>
-
-		<ErrorSummary
-			:is-visible="showErrorSummary"
-			:items="[
-				{
-					validity: store.state.address.validity.companyName,
-					message: $t( 'donation_form_companyname_error' ),
-					focusElement: 'company-name',
-					scrollElement: 'company-name-scroll-target'
-				},
-				{
-					validity: store.state.address.validity.salutation,
-					message: $t( 'donation_form_salutation_error' ),
-					focusElement: 'salutation-0',
-					scrollElement: 'salutation-scroll-target'
-				},
-				{
-					validity: store.state.address.validity.firstName,
-					message: $t( 'donation_form_firstname_error' ),
-					focusElement: 'first-name',
-					scrollElement: 'first-name-scroll-target'
-				},
-				{
-					validity: store.state.address.validity.lastName,
-					message: $t( 'donation_form_lastname_error' ),
-					focusElement: 'last-name',
-					scrollElement: 'last-name-scroll-target'
-				},
-				{
-					validity: store.state.address.validity.street,
-					message: $t( 'donation_form_street_error' ),
-					focusElement: 'street',
-					scrollElement: 'street-scroll-target'
-				},
-				{
-					validity: store.state.address.validity.postcode,
-					message: $t( 'donation_form_zip_error' ),
-					focusElement: 'post-code',
-					scrollElement: 'post-code-scroll-target'
-				},
-				{
-					validity: store.state.address.validity.city,
-					message: $t( 'donation_form_city_error' ),
-					focusElement: 'city',
-					scrollElement: 'city-scroll-target'
-				},
-				{
-					validity: store.state.address.validity.country,
-					message: $t( 'donation_form_country_error' ),
-					focusElement: 'country',
-					scrollElement: 'country-scroll-target'
-				},
-			]"
-		/>
-
-		<form name="laika-address-update" ref="form" @submit.prevent="submit">
-			<CheckboxField
-				v-model="receiptNeeded"
-				input-id="receipt-option-person"
-				name="receipt-option"
-			>
-				{{ $t( 'receipt_needed_donation_page' ) }}<br/><br/>
-				<em>{{ $t( 'address_change_opt_out_hint') }}</em>
-			</CheckboxField>
-
-			<NameFields
-				:show-error="fieldErrors"
-				:form-data="formData"
-				:salutations="salutations"
-				:address-type="addressType"
-				@field-changed="onFieldChange"
+	<ContentCard>
+		<template #heading>
+			<h1>{{ $t( 'address_change_form_title' ) }}</h1>
+			<p>{{ $t( 'address_change_form_label' ) }}</p>
+		</template>
+		<template #content>
+			<ErrorSummary
+				:is-visible="showErrorSummary"
+				:items="[
+					{
+						validity: store.state.address.validity.companyName,
+						message: $t( 'donation_form_companyname_error' ),
+						focusElement: 'company-name',
+						scrollElement: 'company-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.salutation,
+						message: $t( 'donation_form_salutation_error' ),
+						focusElement: 'salutation-0',
+						scrollElement: 'salutation-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.firstName,
+						message: $t( 'donation_form_firstname_error' ),
+						focusElement: 'first-name',
+						scrollElement: 'first-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.lastName,
+						message: $t( 'donation_form_lastname_error' ),
+						focusElement: 'last-name',
+						scrollElement: 'last-name-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.street,
+						message: $t( 'donation_form_street_error' ),
+						focusElement: 'street',
+						scrollElement: 'street-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.postcode,
+						message: $t( 'donation_form_zip_error' ),
+						focusElement: 'post-code',
+						scrollElement: 'post-code-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.city,
+						message: $t( 'donation_form_city_error' ),
+						focusElement: 'city',
+						scrollElement: 'city-scroll-target'
+					},
+					{
+						validity: store.state.address.validity.country,
+						message: $t( 'donation_form_country_error' ),
+						focusElement: 'country',
+						scrollElement: 'country-scroll-target'
+					},
+				]"
 			/>
 
-			<PostalAddressFields
-				:show-error="fieldErrors"
-				:form-data="formData"
-				:countries="countries"
-				:post-code-validation="addressValidationPatterns.postcode"
-				:country-was-restored="false"
-				v-on:field-changed="onFieldChange"
-			/>
-
-			<ServerMessage :server-message="serverErrorMessage"/>
-
-			<SubmitValues />
-
-			<div class="update-address-form-button">
-				<FormButton
-					id="next"
-					button-type="submit"
-					:is-loading="store.getters.isValidating"
+			<form name="laika-address-update" ref="form" @submit.prevent="submit">
+				<CheckboxField
+					v-model="receiptNeeded"
+					input-id="receipt-option-person"
+					name="receipt-option"
 				>
-					{{ $t('address_change_form_submit') }}
-				</FormButton>
-			</div>
-		</form>
+					{{ $t( 'receipt_needed_donation_page' ) }}<br/><br/>
+					<em>{{ $t( 'address_change_opt_out_hint') }}</em>
+				</CheckboxField>
 
-	</div>
+				<NameFields
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:salutations="salutations"
+					:address-type="addressType"
+					@field-changed="onFieldChange"
+				/>
+
+				<PostalAddressFields
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:countries="countries"
+					:post-code-validation="addressValidationPatterns.postcode"
+					:country-was-restored="false"
+					v-on:field-changed="onFieldChange"
+				/>
+
+				<ServerMessage :server-message="serverErrorMessage"/>
+
+				<SubmitValues />
+
+				<div class="update-address-form-button">
+					<FormButton
+						id="next"
+						button-type="submit"
+						:is-loading="store.getters.isValidating"
+					>
+						{{ $t('address_change_form_submit') }}
+					</FormButton>
+				</div>
+			</form>
+		</template>
+	</ContentCard>
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
@@ -123,6 +125,7 @@ import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
 import type { AddressChangeResource } from '@src/api/AddressChangeResource';
 import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 defineOptions( {
 	name: 'UpdateAddress',

@@ -1,16 +1,22 @@
 <template>
-	<div class="system-message">
-		<h1 class="title">{{ $t( 'subscription_confirmation_page_header' ) }}</h1>
-		<p class="error-message" v-if="hasErrors">{{ $t( errorMessage ) }}</p>
-		<p class="success-message" v-else>{{ $t('subscription_confirmation_success') }}</p>
-	</div>
+	<ContentCard>
+		<template #heading>
+			<h1>{{ $t( 'subscription_confirmation_page_header' ) }}</h1>
+		</template>
+		<template #content>
+			<p class="error-message" v-if="hasErrors">{{ $t( errorMessage ) }}</p>
+			<p class="success-message" v-else>{{ $t('subscription_confirmation_success') }}</p>
+		</template>
+	</ContentCard>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 export default defineComponent( {
 	name: 'SubscriptionConfirmation',
+	components: { ContentCard },
 	props: {
 		'errorMessage': {
 			type: String,

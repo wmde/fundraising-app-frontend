@@ -50,75 +50,79 @@ describe( 'DonationConfirmation.vue', () => {
 	it( 'displays bank data success message for bank transfer payments', () => {
 		const wrapper = getWrapper( bankTransferConfirmationData );
 
-		expect( wrapper.find( '.success-message-bank-transfer' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.success-message' ).exists() ).toBeFalsy();
+		expect( wrapper.find( 'h1' ).text() ).toStrictEqual( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' );
 	} );
 
 	it( 'displays standard success message for non-bank transfer payments', () => {
 		const wrapper = getWrapper( payPalConfirmationData );
 
-		expect( wrapper.find( '.success-message-bank-transfer' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.success-message' ).exists() ).toBeTruthy();
+		expect( wrapper.find( 'h1' ).text() ).toStrictEqual( 'donation_confirmation_topbox_payment_title_alt' );
 	} );
 
 	it( 'displays anonymous address card for anonymous address type', () => {
 		const wrapper = getWrapper( anonymousBankTransferConfirmationData );
 
-		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).toContain( 'donation_confirmation_cta_title_alt' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title_no_receipt_wanted' );
 	} );
 
 	it( 'displays anonymous address card for email address type', () => {
 		const wrapper = getWrapper( emailBankTransferConfirmationData );
 
-		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).toContain( 'donation_confirmation_cta_title_alt' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title_no_receipt_wanted' );
 	} );
 
 	it( 'displays known address card for known address types', () => {
 		const wrapper = getWrapper( payPalConfirmationData );
 
-		expect( wrapper.find( '.known-address' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).toContain( 'donation_confirmation_summary_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_cta_title_alt' );
 	} );
 
 	it( 'displays donation exported card when donation is exported and person', () => {
 		const wrapper = getWrapper( donationExportedConfirmationData );
 
-		expect( wrapper.find( '.exported-donation' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).toContain( 'donation_confirmation_exported_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_cta_title_alt' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title_no_receipt_wanted' );
 	} );
 
 	it( 'displays donation exported card when donation is exported and company', () => {
 		const wrapper = getWrapper( companyExportedPayPalConfirmationData );
 
-		expect( wrapper.find( '.exported-donation' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).toContain( 'donation_confirmation_exported_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_cta_title_alt' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title_no_receipt_wanted' );
 	} );
 
 	it( 'does not display donation exported card when donation is anonymous', () => {
 		const wrapper = getWrapper( anonymousExportedPayPalConfirmationData );
 
-		expect( wrapper.find( '.exported-donation' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_exported_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_cta_title_alt' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title_no_receipt_wanted' );
 	} );
 
 	it( 'does not display donation exported card when donation is email', () => {
 		const wrapper = getWrapper( emailExportedPayPalConfirmationData );
 
-		expect( wrapper.find( '.exported-donation' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.known-address' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.anonymous-address' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_exported_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_cta_title_alt' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title' );
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_summary_title_no_receipt_wanted' );
 	} );
 
 	it( 'shows the survey tile if survey link language item is not blank', () => {
 		const translateMock = ( key: string ): string => key;
 		const wrapper = getWrapper( bankTransferConfirmationData, translateMock );
 
-		expect( wrapper.find( '.donation-survey' ).exists() ).toBeTruthy();
+		expect( wrapper.text() ).toContain( 'donation_confirmation_survey_title' );
 	} );
 
 	it( 'hides the survey tile if survey link language item is blank', () => {
@@ -131,7 +135,7 @@ describe( 'DonationConfirmation.vue', () => {
 		};
 		const wrapper = getWrapper( bankTransferConfirmationData, translateMock );
 
-		expect( wrapper.find( '.donation-survey' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).not.toContain( 'donation_confirmation_survey_title' );
 	} );
 
 } );

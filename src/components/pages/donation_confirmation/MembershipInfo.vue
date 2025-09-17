@@ -1,27 +1,29 @@
 <template>
-	<div class="donation-confirmation-card membership-benefits-wrapper">
-		<IconText>
-			<template #icon><WarningIcon/></template>
-			<template #content><h2>{{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2></template>
-		</IconText>
-		<p>{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
-		<p>
-			<a ref="buttonRef" class="form-button" id="membership-application-url" :href="membershipApplicationUrl">
-				{{ $t('donation_confirmation_membership_button') }}
-			</a>
-		</p>
-		<ul class="membership-benefits">
-			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_1' ) }}</li>
-			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_2' ) }}</li>
-			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_3' ) }}</li>
-			<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_4' ) }}</li>
-			<li>
-				<a href="https://www.wikimedia.de/wikipedia-unterstuetzen/spenden/mitglieder/">
-					{{ $t( 'donation_confirmation_bottombox_membership_link' ) }}
+	<ContentCard theme="bordered">
+		<template #content>
+			<IconText>
+				<template #icon><WarningIcon/></template>
+				<template #content><h2>{{ $t( 'donation_confirmation_membership_call_to_action_title' ) }}</h2></template>
+			</IconText>
+			<p>{{ $t( 'donation_confirmation_membership_call_to_action_text' ) }}</p>
+			<p>
+				<a ref="buttonRef" class="form-button" id="membership-application-url" :href="membershipApplicationUrl">
+					{{ $t('donation_confirmation_membership_button') }}
 				</a>
-			</li>
-		</ul>
-	</div>
+			</p>
+			<ul class="membership-benefits">
+				<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_1' ) }}</li>
+				<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_2' ) }}</li>
+				<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_3' ) }}</li>
+				<li>{{ $t( 'donation_confirmation_bottombox_membership_benefit_4' ) }}</li>
+				<li>
+					<a href="https://www.wikimedia.de/wikipedia-unterstuetzen/spenden/mitglieder/">
+						{{ $t( 'donation_confirmation_bottombox_membership_link' ) }}
+					</a>
+				</li>
+			</ul>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -29,6 +31,7 @@ import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import IconText from '@src/components/patterns/IconText.vue';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 interface Props {
 	donation: {

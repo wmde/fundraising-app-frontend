@@ -1,38 +1,44 @@
 <template>
-	<div class="comment-list">
-		<h1>{{ $t( 'donation_comments_title' ) }}</h1>
-		<p>{{ $t( 'donation_comments_text' ) }}</p>
+	<ContentCard>
+		<template #heading>
+			<h1>{{ $t( 'donation_comments_title' ) }}</h1>
+		</template>
+		<template #content>
+			<p>{{ $t( 'donation_comments_text' ) }}</p>
 
-		<span v-if="isLoading" class="comment-list-loading">
-			<LoadingSpinner/>
-		</span>
+			<div class="comment-list">
+				<span v-if="isLoading" class="comment-list-loading">
+					<LoadingSpinner/>
+				</span>
 
-		<div class="comment-list-comments">
-			<div class="comment-list-comment" v-for="comment in pageContent" :key="comment.date">
-				<div><strong>{{ commentHeadline( comment ) }}</strong></div>
-				<div class="comment-list-comment-meta">{{ comment.date }}</div>
-				<div>{{ comment.comment }}</div>
+				<div class="comment-list-comments">
+					<div class="comment-list-comment" v-for="comment in pageContent" :key="comment.date">
+						<div><strong>{{ commentHeadline( comment ) }}</strong></div>
+						<div class="comment-list-comment-meta">{{ comment.date }}</div>
+						<div>{{ comment.comment }}</div>
+					</div>
+				</div>
+
+				<div v-if="!isLoading" class="comment-list-pagination">
+					<button class="comment-list-previous" :class="{ 'inactive': isFirstPage }" @click="previousPage">
+						<ChevronLeftIcon/>
+					</button>
+					<button
+						class="comment-list-number"
+						:class="{ 'current': currentPage === page }"
+						v-for="page in pageCount"
+						:key="page"
+						@click="() => goToPage( page )"
+					>
+						{{ page }}
+					</button>
+					<button class="comment-list-next" :class="{ 'inactive': isLastPage }" @click="nextPage">
+						<ChevronRightIcon/>
+					</button>
+				</div>
 			</div>
-		</div>
-
-		<div v-if="!isLoading" class="comment-list-pagination">
-			<button class="comment-list-previous" :class="{ 'inactive': isFirstPage }" @click="previousPage">
-				<ChevronLeftIcon/>
-			</button>
-			<button
-				class="comment-list-number"
-				:class="{ 'current': currentPage === page }"
-				v-for="page in pageCount"
-				:key="page"
-				@click="() => goToPage( page )"
-			>
-				{{ page }}
-			</button>
-			<button class="comment-list-next" :class="{ 'inactive': isLastPage }" @click="nextPage">
-				<ChevronRightIcon/>
-			</button>
-		</div>
-	</div>
+		</template>
+	</ContentCard>
 </template>
 
 <script setup lang="ts">
@@ -43,6 +49,7 @@ import ChevronLeftIcon from '@src/components/shared/icons/ChevronLeftIcon.vue';
 import ChevronRightIcon from '@src/components/shared/icons/ChevronRightIcon.vue';
 import LoadingSpinner from '@src/components/shared/LoadingSpinner.vue';
 import { useCommentResource } from '@src/components/pages/useCommentResource';
+import ContentCard from '@src/components/patterns/ContentCard.vue';
 
 const { t, n } = useI18n();
 
