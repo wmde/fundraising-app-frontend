@@ -2,7 +2,10 @@
 	<div class="donation-confirmation-card success-message-bank-transfer">
 		<div class="columns is-multiline pt-0 pb-0 mt-0 mb-0">
 			<div class="column is-full pt-0 pb-0 mt-0 mb-0">
-				<h1 class="icon-title"><WarningIcon /> {{ $t( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' ) }}</h1>
+				<IconText>
+					<template #icon><WarningIcon/></template>
+					<template #content><h1>{{ $t( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' ) }}</h1></template>
+				</IconText>
 			</div>
 			<div class="column is-half pt-0 pb-0">
 				<div class="bank-data-content">
@@ -27,6 +30,7 @@ import type { Donation } from '@src/view_models/Donation';
 import BankData from '@src/components/shared/BankData.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { useI18n } from 'vue-i18n';
+import IconText from '@src/components/patterns/IconText.vue';
 
 interface Props {
 	donation: Donation;

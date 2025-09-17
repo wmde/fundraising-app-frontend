@@ -197,22 +197,6 @@ const showAddress = computed<boolean>( () => {
 	}
 }
 
-.icon-title {
-	padding-left: 2.5rem;
-	svg {
-		float: left;
-		margin-left: -2.5rem;
-	}
-}
-
-h1.icon-title svg {
-	margin-top: 2px;
-}
-
-h2.icon-title {
-	font-size: 1.3rem;
-}
-
 .donation {
 	&-summary {
 		&-wrapper {

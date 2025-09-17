@@ -1,6 +1,9 @@
 <template>
 	<div class="donation-confirmation-card anonymous-address">
-		<h2 class="icon-title"><warning-icon/>{{ $t( 'donation_confirmation_cta_title_alt' ) }}</h2>
+		<IconText>
+			<template #icon><WarningIcon/></template>
+			<template #content><h2>{{ $t( 'donation_confirmation_cta_title_alt' ) }}</h2></template>
+		</IconText>
 		<p>{{ $t( 'donation_confirmation_cta_summary_alt' ) }}</p>
 		<FormButton
 			id="address-change-button"
@@ -19,6 +22,7 @@
 import AddressUsageToggle from '@src/components/pages/donation_confirmation/AddressUsageToggle.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
+import IconText from '@src/components/patterns/IconText.vue';
 
 interface Props {
 	modalIsVisible: boolean;

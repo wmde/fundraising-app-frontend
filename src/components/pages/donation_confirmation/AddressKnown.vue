@@ -1,9 +1,9 @@
 <template>
 	<div class="donation-confirmation-card known-address">
-		<h2 class="icon-title">
-			<SuccessIcon/>
-			{{ $t( donation.receipt ? 'donation_confirmation_summary_title' : 'donation_confirmation_summary_title_no_receipt_wanted' ) }}
-		</h2>
+		<IconText>
+			<template #icon><SuccessIcon/></template>
+			<template #content><h2>{{ $t( donation.receipt ? 'donation_confirmation_summary_title' : 'donation_confirmation_summary_title_no_receipt_wanted' ) }}</h2></template>
+		</IconText>
 
 		<div class="address-summary">
 			<p v-if="addressType === 'person'" v-html="$t( 'donation_confirmation_address_person', {
@@ -46,6 +46,7 @@ import { TranslateResult } from 'vue-i18n';
 import type { Address } from '@src/view_models/Address';
 import type { Salutation } from '@src/view_models/Salutation';
 import ButtonLink from '@src/components/shared/ButtonLink.vue';
+import IconText from '@src/components/patterns/IconText.vue';
 
 interface Props {
 	modalIsVisible: boolean;

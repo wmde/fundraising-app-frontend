@@ -24,6 +24,18 @@
 		<div class="icon-text">
 			<div class="icon-text__icon" aria-hidden="true"><BankIcon/></div><p>Long text. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet, consectetur culpa doloremque ex, exercitationem harum illum in ipsa ipsum, modi natus nemo odio perferendis quaerat quis similique sint tempore.</p>
 		</div>
+
+		<div class="icon-text" data-small-heading>
+			<div class="icon-text__icon" aria-hidden="true"><InfoIcon/></div><h1>Icon heading 1 small</h1>
+		</div>
+
+		<div class="icon-text" data-small-heading>
+			<div class="icon-text__icon" aria-hidden="true"><InfoIcon/></div><h2>Icon heading 2 small</h2>
+		</div>
+
+		<div class="icon-text" data-small-heading>
+			<div class="icon-text__icon" aria-hidden="true"><BankIcon/></div><h3>Icon heading 3 small</h3>
+		</div>
 	</div>
 </template>
 <script setup lang="ts">
