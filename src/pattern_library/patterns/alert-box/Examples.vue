@@ -45,6 +45,12 @@
 			</ul>
 		</div>
 	</div>
+
+	<div class="content-card">
+		<div class="alert-box flow" data-neutral>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi consequatur doloremque, fugiat nisi optio quos rerum voluptatem voluptatibus. Aliquid beatae explicabo necessitatibus nostrum odio quaerat sunt veniam! Accusamus, ad?</p>
+		</div>
+	</div>
 </template>
 <script setup lang="ts">
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';

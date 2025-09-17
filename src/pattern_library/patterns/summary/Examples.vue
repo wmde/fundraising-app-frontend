@@ -29,8 +29,8 @@
 		</div>
 
 		<div class="switcher">
-			<button class="button" data-button-style="hollow" data-button-fill>Change my payment details</button>
-			<button class="button" data-button-fill>Donate now</button>
+			<button class="button" data-style-hollow data-size-fill-width>Change my payment details</button>
+			<button class="button" data-size-fill-width>Donate now</button>
 		</div>
 	</div>
 </template>

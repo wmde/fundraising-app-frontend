@@ -68,7 +68,10 @@
 						</div>
 						<div class="flow">
 							<label for="custom-amount">Custom Amount</label>
-							<input type="text" name="custom-amount" id="custom-amount" placeholder="€ e.g., 30">
+							<div class="text-radio">
+								<input type="radio" class="text-radio__radio" name="custom-amount-radio" id="custom-amount-radio">
+								<input type="text" class="text-radio__text" name="custom-amount" id="custom-amount" placeholder="€ e.g., 30">
+							</div>
 							<p class="field-container__error-text">Unfortunately, due to applicable fees, you have to state a minimum amount of EUR 1. If you would like to donate less, please transfer the amount directly to the donation account stated below.</p>
 						</div>
 					</fieldset>
@@ -178,7 +181,7 @@
 							</div>
 							<div class="cluster">
 								<button class="button" @click="ibanVisible = false">Yes</button>
-								<button class="button" data-button-style="hollow" @click="ibanSubmitted = false">No</button>
+								<button class="button" data-style-hollow @click="ibanSubmitted = false">No</button>
 							</div>
 						</div>
 					</div>
@@ -348,8 +351,8 @@
 				</div>
 
 				<div class="switcher">
-					<button class="button" data-button-style="hollow" data-button-fill>Change my payment details</button>
-					<button class="button" data-button-fill>Donate now</button>
+					<button class="button" data-style-hollow data-size-fill-width>Change my payment details</button>
+					<button class="button" data-size-fill-width>Donate now</button>
 				</div>
 			</div>
 

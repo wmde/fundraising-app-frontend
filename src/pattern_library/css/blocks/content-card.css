@@ -13,3 +13,19 @@
 .content-card[data-sidebar-card] {
 	--card-padding: var(--space-xs);
 }
+
+.content-card[data-collapsable] {
+	--card-padding: 0;
+	--summary-color: var(--color-blue-600);
+}
+
+.content-card[data-collapsable] summary {
+	--summary-margin: 0;
+	--summary-padding: var(--space-xs-l);
+	--summary-border: 0;
+}
+
+.content-card[data-collapsable] details > div {
+	padding-inline: var(--space-xs-l);
+	padding-block-end: var(--space-xs-l);
+}
