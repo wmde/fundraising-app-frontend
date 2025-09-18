@@ -68,10 +68,14 @@
 						<div class="grid" data-layout="halves">
 							<div class="flow">
 								<label for="suggested-amount">{{ $t('membership_fee_upgrade_amount_suggestion_label') }}</label>
-								<RadioFormInput id="suggested-amount" v-model="suggestedAmountModel" :native-value="suggestedAmountInCents" name="suggestedFeeAmount">
+								<RadioFormInput
+									id="suggested-amount"
+									v-model="suggestedAmountModel"
+									:native-value="suggestedAmountInCents"
+									name="suggestedFeeAmount"
+								>
 									<template #label>
-										<!-- This should be moved into the script section -->
-										{{ formatAmountInCentsToEuroString( props.suggestedAmountInCents ) }}
+										{{ $n( suggestedAmountInCents / 100, 'euros' ) }}
 									</template>
 								</RadioFormInput>
 							</div>
@@ -96,7 +100,7 @@
 						<p class="field-container__error-text">{{ feeErrorMessage }}</p>
 					</div>
 
-					<div class="field-container flow" :data-error="true ? true : null">
+					<div class="field-container flow" :data-error="showMemberNameError ? true : null">
 						<TextField
 							:disabled="false"
 							:label="$t('membership_fee_upgrade_member_name_label')"
@@ -113,7 +117,6 @@
 							} )"
 							:required="true"
 						/>
-						<p class="field-container__error-text">Name error text</p>
 					</div>
 				</template>
 			</ContentCard>
@@ -175,7 +178,7 @@ interface Props {
 	feeChangeFrontendFlag: 'SHOW_FEE_CHANGE_FORM' | 'SHOW_FEE_ALREADY_CHANGED_PAGE' | 'SHOW_ERROR_PAGE';
 }
 const props = defineProps<Props>();
-const { t } = useI18n();
+const { t, n } = useI18n();
 
 const newFee = ref<number>( 0 );
 const suggestedAmountModel = ref<number>( 0 );
@@ -322,20 +325,6 @@ const setCustomAmount = ( e: Event ): void => {
 	//TODO unselect suggested amount
 	suggestedAmountModel.value = false;
 };
-
-const formatAmountInCentsToEuroString = ( amountInCents ): string => {
-	const amountInEuroFloat = amountInCents / 100;
-	// TODO format in a localized way
-	return amountInEuroFloat + ' €';
-};
-
-const suggestedFeeAmountFormOptions: CheckboxFormOption[] = [
-	{
-		value: props.suggestedAmountInCents,
-		label: formatAmountInCentsToEuroString( props.suggestedAmountInCents ),
-		id: 'suggestedAmount',
-	},
-];
 
 </script>
 

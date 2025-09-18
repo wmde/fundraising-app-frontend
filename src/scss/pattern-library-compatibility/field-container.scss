@@ -17,6 +17,9 @@
 
 	.radio-form-input {
 		margin-block-start: var(--flow-space, 1em);
+		label {
+			padding-left: 40px;
+		}
 	}
 }
 

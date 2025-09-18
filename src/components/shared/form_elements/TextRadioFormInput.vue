@@ -28,12 +28,6 @@
 			@focus="onFocus"
 			@input="onInput"
 		/>
-		<span v-if="hasError" class="icon is-right has-text-danger">
-			<i class="mdi mdi-alert-circle mdi-24px"></i>
-		</span>
-		<span v-if="hasMessage" class="icon is-right has-text-warning">
-			<i class="mdi mdi-alert mdi-24px"></i>
-		</span>
 	</div>
 </template>
 
