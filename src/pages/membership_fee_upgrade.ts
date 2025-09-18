@@ -5,6 +5,7 @@ import PageDataInitializer from '@src/util/page_data_initializer';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import MembershipFeeUpgrade from '@src/components/pages/MembershipFeeUpgrade.vue';
 import { createStore } from '@src/store/membership_store';
+import SideBar from '@src/components/pages/membership_fee_change/SideBar.vue';
 
 interface MembershipFeeUpgradeModel {
 	uuid: string;
@@ -30,14 +31,17 @@ const app = createVueApp(
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: MembershipFeeUpgrade,
+		sidebar: SideBar,
 		pageTitle: 'membership_fee_upgrade_page_title',
 		pageProps: {
 			uuid: pageData.applicationVars.uuid,
-			externalMemberId: pageData.applicationVars.externalMemberId,
 			currentAmountInCents: pageData.applicationVars.currentAmountInCents,
 			suggestedAmountInCents: pageData.applicationVars.suggestedAmountInCents,
 			currentInterval: pageData.applicationVars.currentInterval,
 			feeChangeFrontendFlag: pageData.applicationVars.feeChangeFrontendFlag,
+		},
+		sidebarProps: {
+			externalMemberId: pageData.applicationVars.externalMemberId,
 		},
 	} );
 app.use( store );

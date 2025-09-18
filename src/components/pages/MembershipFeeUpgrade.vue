@@ -139,16 +139,6 @@
 				</template>
 			</ContentCard>
 
-			<div class="content-card" data-sidebar-card>
-				<div class="icon-text">
-					<div class="icon-text__icon" aria-hidden="true"><InfoIcon/></div>
-					<p><strong>{{ $t( 'membership_fee_upgrade_sidebar_headline' ) }}</strong></p>
-				</div>
-				<p>
-					[{{ externalMemberId }}]
-				</p>
-			</div>
-
 			<button class="button" @click="validateAndSubmit">{{ $t('membership_fee_upgrade_submit_button') }}</button>
 		</div>
 
@@ -156,8 +146,6 @@
 </template>
 
 <script setup lang="ts">
-import FormSection from '@src/components/shared/form_elements/FormSection.vue';
-import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { useI18n } from 'vue-i18n';
 import { computed, ref } from 'vue';
 import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
@@ -181,7 +169,6 @@ import AccordionItem from '@src/components/patterns/AccordionItem.vue';
 
 interface Props {
 	uuid: string;
-	externalMemberId: number;
 	currentAmountInCents: number;
 	suggestedAmountInCents: number;
 	currentInterval: number;
