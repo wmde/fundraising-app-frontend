@@ -1,5 +1,5 @@
 <template>
-	<ContentCard :is-sidebar-card="true">
+	<ContentCard :is-sidebar-card="true" v-if="externalMemberId">
 		<template #content>
 			<IconText :is-small-heading="true">
 				<template #icon><InfoIcon/></template>
@@ -18,6 +18,15 @@
 			<slot name="default"/>
 		</template>
 	</ContentCard>
+	<ContentCard :is-sidebar-card="true" v-if="!externalMemberId">
+		<template #content>
+			<IconText :is-small-heading="true">
+				<template #icon><BankIcon/></template>
+				<template #content><h2>{{ $t('bank_data_title') }}</h2></template>
+			</IconText>
+			<BankData/>
+		</template>
+	</ContentCard>
 
 </template>
 
@@ -28,6 +37,8 @@ import { appendCampaignQueryParams } from '@src/util/append_campaign_query_param
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import IconText from '@src/components/patterns/IconText.vue';
+import BankIcon from '@src/components/shared/icons/BankIcon.vue';
+import BankData from '@src/components/shared/BankData.vue';
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
