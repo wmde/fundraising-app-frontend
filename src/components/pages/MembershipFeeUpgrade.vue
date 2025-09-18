@@ -64,14 +64,14 @@
 				</template>
 				<template #content>
 					<p>We should have some text here, right?</p>
-					<div class="field-container field-container__radio-grid flow" :data-error="feeErrorMessage !== '' ? true : null">
+					<div class="field-container field-container__radio-grid flow" :data-error="isFeeValid ? null : true">
 						<div class="grid" data-layout="halves">
 							<div class="flow">
 								<label for="suggested-amount">{{ $t('membership_fee_upgrade_amount_suggestion_label') }}</label>
 								<RadioFormInput
 									id="suggested-amount"
-									v-model="suggestedAmountModel"
-									:native-value="suggestedAmountInCents"
+									v-model="isSuggestedAmount"
+									:native-value="true"
 									name="suggestedFeeAmount"
 								>
 									<template #label>
@@ -87,13 +87,11 @@
 									input-id="custom-amount"
 									:placeholder="$t('membership_fee_upgrade_custom_amount_placeholder')"
 									:has-message="false"
-									class="form-field-amount-custom-euro-symbol"
+									class="membership-fee-change-custom-euro-symbol"
 									:show-error="feeErrorMessage !== ''"
-									@focus="setCustomAmount"
-									@input="setCustomAmount"
-									@blur="setCustomAmount"
+									@blur="formatCustomAmount"
 									@update:model-value="updateAmountFromCustom"
-									:radio-checked="isCustomAmount"
+									:radio-checked="!isSuggestedAmount"
 								/>
 							</div>
 						</div>
@@ -150,8 +148,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { computed, ref } from 'vue';
-import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import { computed, ref, watch } from 'vue';
 import TextRadioFormInput from '@src/components/shared/form_elements/TextRadioFormInput.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import axios, { AxiosResponse } from 'axios';
@@ -164,8 +161,6 @@ import ContentCard from '@src/components/patterns/ContentCard.vue';
 import IconText from '@src/components/patterns/IconText.vue';
 import IbanField from '@src/components/shared/form_fields/IbanField.vue';
 import AlertBox from '@src/components/patterns/AlertBox.vue';
-import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
-import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import Accordion from '@src/components/patterns/Accordion.vue';
 import AccordionItem from '@src/components/patterns/AccordionItem.vue';
@@ -180,26 +175,29 @@ interface Props {
 const props = defineProps<Props>();
 const { t, n } = useI18n();
 
-const newFee = ref<number>( 0 );
-const suggestedAmountModel = ref<number>( 0 );
-
+const newFee = ref<number>( props.suggestedAmountInCents );
+const isSuggestedAmount = ref<boolean>( true );
+const customAmount = ref<string>( '' );
 const isCustomAmount = ref<boolean>( false );
 
+const isFeeValid = ref<boolean>( true );
+
+watch( isSuggestedAmount, ( newValue: boolean ) => {
+	if ( newValue ) {
+		customAmount.value = '';
+	}
+} );
 
 const getFormattedCustomAmount = (): string => {
-	if ( !isCustomAmount.value ) {
-		return '';
-	}
-	return t( customAmount.value / 100, 'decimal' );
+	return n( newFee.value / 100, 'decimal' );
 };
-const customAmount = ref<string>( getFormattedCustomAmount() );
 
-
-
-const setNewFeeToSuggestedAmount = ( newAmountInCents: number ): void => {
-	newFee.value = newAmountInCents;
-	isCustomAmount.value = false;
-	console.log( newFee.value );
+const formatCustomAmount = ( e: Event ): void => {
+	e.preventDefault();
+	if ( isSuggestedAmount.value ) {
+		return;
+	}
+	customAmount.value = getFormattedCustomAmount();
 };
 
 const updateAmountFromCustom = ( newAmount: string ) => {
@@ -216,7 +214,7 @@ const updateAmountFromCustom = ( newAmount: string ) => {
 	}
 
 	newFee.value = Math.trunc( numericalAmount * 100 );
-	suggestedAmountModel.value = false;
+	isSuggestedAmount.value = false;
 	console.log( newFee.value );
 };
 
@@ -319,12 +317,7 @@ const validateAndSubmit = (): void => {
 	// depending on the output, show success content or show error content?
 };
 
-const setCustomAmount = ( e: Event ): void => {
-	e.preventDefault();
-	customAmount.value = getFormattedCustomAmount();
-	//TODO unselect suggested amount
-	suggestedAmountModel.value = false;
-};
+
 
 </script>
 
@@ -338,7 +331,7 @@ $input-height: 50px;
 		&:after {
 			color: colors.$dark;
 			content: "€";
-			font-size: 1.1em;
+			font-size: 16px;
 			position: absolute;
 			right: 10px;
 			top: 50%;
