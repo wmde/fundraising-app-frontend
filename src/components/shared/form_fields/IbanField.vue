@@ -1,7 +1,7 @@
 <template>
 	<div class="form-field form-field-iban" :class="[ 'form-field-text', { 'is-invalid': showError } ]">
 		<label for="iban" class="form-field-label">
-			{{ $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
+			{{ label ?? $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
 		</label>
 		<div class="control text-form-input" :class="{ 'has-icons-right': showError }">
 			<input
@@ -37,6 +37,7 @@ interface Props {
 	showError: boolean;
 	bankName: string;
 	bic: string;
+	label?: String;
 	ariaDescribedby?: string;
 }
 

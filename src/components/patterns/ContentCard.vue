@@ -1,5 +1,5 @@
 <template>
-	<div class="content-card flow" :data-sidebar-card="isSidebarCard ? true : null" :data-theme="theme">
+	<div class="content-card flow" :data-sidebar-card="isSidebarCard ? true : null" :data-theme="theme" :data-collapsable="isCollapsable ? true : null">
 		<SectionHeading v-if="$slots.heading">
 			<slot name="heading"/>
 		</SectionHeading>
@@ -13,6 +13,7 @@ import SectionHeading from '@src/components/patterns/SectionHeading.vue';
 interface Props {
 	theme?: string;
 	isSidebarCard?: boolean;
+	isCollapsable?: boolean;
 }
 
 defineProps<Props>();

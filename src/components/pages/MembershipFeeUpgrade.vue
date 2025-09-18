@@ -1,127 +1,141 @@
 <template>
-	<div v-if=" feeChangeFrontendFlag === 'SHOW_ERROR_PAGE' ">
+	<div v-if="feeChangeFrontendFlag === 'SHOW_ERROR_PAGE'">
 		<ContentCard>
 			<template #content>
 				<IconText>
 					<template #icon><WarningIcon/></template>
-					<template #content><h2>{{ t('membership_fee_upgrade_error_page_headline') }}</h2></template>
+					<template #content>
+						<div class="flow">
+							<h2>{{ $t('membership_fee_upgrade_error_page_headline') }}</h2>
+							<p>{{ $t('membership_fee_upgrade_error_page_text') }}</p>
+						</div>
+					</template>
 				</IconText>
-				{{ t('membership_fee_upgrade_error_page_text') }}
 			</template>
 		</ContentCard>
 	</div>
-	<div v-if=" feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE' ">
+	<div v-if="feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE'">
 		<ContentCard>
 			<template #content>
 				<IconText>
 					<template #icon><SuccessIcon/></template>
-					<template #content><h2>{{ t('membership_fee_upgrade_returning_page_headline') }}</h2></template>
+					<template #content>
+						<div class="flow">
+							<h2>{{ $t('membership_fee_upgrade_returning_page_headline') }}</h2>
+							<p>{{ $t('membership_fee_upgrade_returning_page_text') }}</p>
+						</div>
+					</template>
 				</IconText>
-				{{ t('membership_fee_upgrade_returning_page_text') }}
 
 			</template>
 		</ContentCard>
 	</div>
-	<div v-if=" feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM' ">
-
+	<div v-if="feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM'">
 		<div v-if="showSuccessPage">
 			<ContentCard>
 				<template #content>
-
 					<IconText>
 						<template #icon><SuccessIcon/></template>
-						<template #content><h2>{{ t('membership_fee_upgrade_confirmation_headline') }}</h2></template>
+						<template #content>
+							<div class="flow">
+								<h2>{{ $t('membership_fee_upgrade_confirmation_headline') }}</h2>
+								<AlertBox data-neutral>
+									<p>
+										{{ $t('membership_fee_upgrade_confirmation_summary_box' ) }}
+										{{ $t( 'donation_form_payment_interval_' + currentInterval ) }}
+										<strong>{{ t('amountInEuro') }}</strong>
+									</p>
+								</AlertBox>
+								<p>{{ $t('membership_fee_upgrade_confirmation_text') }}</p>
+							</div>
+						</template>
 					</IconText>
-
-					<AlertBox data-theme="neutral">
-						{{ t('membership_fee_upgrade_confirmation_summary_box' ) }}
-						{{ t( 'donation_form_payment_interval_' + currentInterval ) }}
-						{{ t('amountInEuro') }}
-					</AlertBox>
-
-					{{ t('membership_fee_upgrade_confirmation_text') }}
 				</template>
 			</ContentCard>
 		</div>
 		<div v-else>
 			<ContentCard>
-				<template #content>
+				<template #heading>
 					<h1>
-						{{ t('membership_fee_upgrade_page_headline', {
-								currentInterval: $t( 'donation_form_payment_interval_' + currentInterval )
-							} )
-						}}
+						{{ $t('membership_fee_upgrade_page_headline', {
+	 						currentInterval: $t( 'donation_form_payment_interval_' + currentInterval )
+ 						} ) }}
 					</h1>
+				</template>
+				<template #content>
+					<p>We should have some text here, right?</p>
+					<div class="field-container field-container__radio-grid flow" :data-error="feeErrorMessage !== '' ? true : null">
+						<div class="grid" data-layout="halves">
+							<div class="flow">
+								<label for="suggested-amount">{{ $t('membership_fee_upgrade_amount_suggestion_label') }}</label>
+								<RadioFormInput id="suggested-amount" v-model="suggestedAmountModel" :native-value="suggestedAmountInCents" name="suggestedFeeAmount">
+									<template #label>
+										<!-- This should be moved into the script section -->
+										{{ formatAmountInCentsToEuroString( props.suggestedAmountInCents ) }}
+									</template>
+								</RadioFormInput>
+							</div>
+							<div class="flow">
+								<label for="custom-amount">{{ $t('membership_fee_upgrade_custom_amount_label') }}</label>
+								<TextRadioFormInput
+									name="customFeeAmount"
+									v-model="customAmount"
+									input-id="custom-amount"
+									:placeholder="$t('membership_fee_upgrade_custom_amount_placeholder')"
+									:has-message="false"
+									class="form-field-amount-custom-euro-symbol"
+									:show-error="feeErrorMessage !== ''"
+									@focus="setCustomAmount"
+									@input="setCustomAmount"
+									@blur="setCustomAmount"
+									@update:model-value="updateAmountFromCustom"
+									:radio-checked="isCustomAmount"
+								/>
+							</div>
+						</div>
+						<p class="field-container__error-text">{{ feeErrorMessage }}</p>
+					</div>
 
-					<FormSection>
-						<RadioField
-							name="suggestedFeeAmount"
-							v-model="suggestedAmountModel"
-							:value="suggestedAmountInCents"
-							:options="suggestedFeeAmountFormOptions"
-							alignment="twocolumnsperrow"
-							:label="t('membership_fee_upgrade_amount_suggestion_label')"
-							@click="setNewFeeToSuggestedAmount( suggestedAmountInCents )"
-						/>
-
-						<label for="customAmount"> {{ t('membership_fee_upgrade_custom_amount_label') }} </label>
-						<TextRadioFormInput
-							name="customFeeAmount"
-							v-model="customAmount"
-							input-id="customAmount"
-							:placeholder="t('membership_fee_upgrade_custom_amount_placeholder')"
-							:has-message="false"
-							class="form-field-amount-custom-euro-symbol"
-							alignment="twocolumnsperrow"
-							:show-error="feeErrorMessage !== ''"
-							:error-message="feeErrorMessage"
-							@keydown.enter="setCustomAmount"
-							@blur="setCustomAmount"
-							@update:model-value="updateAmountFromCustom"
-							:radio-clicked="setCustomAmount"
-							:radio-checked="isCustomAmount"
-						>
-						</TextRadioFormInput>
-
-						TODO: move this somewhere else:
-						<div>{{ feeErrorMessage }}</div>
-
+					<div class="field-container flow" :data-error="true ? true : null">
 						<TextField
 							:disabled="false"
-							:label="t('membership_fee_upgrade_member_name_label')"
+							:label="$t('membership_fee_upgrade_member_name_label')"
 							label-help-text=""
 							help-text=""
 							name="memberName"
 							input-id="memberName"
 							input-type="text"
 							v-model="memberName"
-							:error-message="t('membership_fee_upgrade_member_name_error_message')"
+							:error-message="$t('membership_fee_upgrade_member_name_error_message')"
 							:show-error="showMemberNameError"
 							:placeholder="$t( 'form_for_example', {
 								example: $t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')
 							} )"
 							:required="true"
 						/>
-
-					</FormSection>
+						<p class="field-container__error-text">Name error text</p>
+					</div>
 				</template>
 			</ContentCard>
 
-			<ContentCard>
+			<ContentCard :is-collapsable="true" class="accordion">
 				<template #content>
-					<details>
-						<summary tabindex="0">
-							{{ $t('membership_fee_upgrade_iban_changed_headline') }}
-							<span class="accordion__summary-meta"><ChevronDown/></span>
-						</summary>
-						{{ $t('membership_fee_upgrade_iban_changed_label') }}
-						<IbanField
-							v-model="iban"
-							:show-error="!ibanIsValid"
-							bank-name=""
-							bic=""
-						/>
-					</details>
+					<Accordion>
+						<AccordionItem>
+							<template #title>{{ $t('membership_fee_upgrade_iban_changed_headline') }}</template>
+							<template #content>
+								<div class="field-container">
+									<IbanField
+										v-model="iban"
+										:label="$t('membership_fee_upgrade_iban_changed_label')"
+										:show-error="!ibanIsValid"
+										bank-name=""
+										bic=""
+									/>
+								</div>
+							</template>
+						</AccordionItem>
+					</Accordion>
 				</template>
 			</ContentCard>
 
@@ -161,6 +175,9 @@ import IbanField from '@src/components/shared/form_fields/IbanField.vue';
 import AlertBox from '@src/components/patterns/AlertBox.vue';
 import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
 import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
+import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
+import Accordion from '@src/components/patterns/Accordion.vue';
+import AccordionItem from '@src/components/patterns/AccordionItem.vue';
 
 interface Props {
 	uuid: string;
