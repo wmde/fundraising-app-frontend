@@ -43,7 +43,7 @@
 									<p>
 										{{ $t('membership_fee_upgrade_confirmation_summary_box' ) }}
 										{{ $t( 'donation_form_payment_interval_' + currentInterval ) }}
-										<strong>{{ t('amountInEuro') }}</strong>
+										<strong>{{ $n( newFee / 100, { key: 'currency', currencyDisplay: 'name' }  ) }}</strong>
 									</p>
 								</AlertBox>
 								<p>{{ $t('membership_fee_upgrade_confirmation_text') }}</p>
@@ -63,7 +63,6 @@
 					</h1>
 				</template>
 				<template #content>
-					<p>We should have some text here, right?</p>
 					<div class="field-container field-container__radio-grid flow" :data-error="isFeeValid ? null : true">
 						<div class="grid" data-layout="halves">
 							<div class="flow">
@@ -89,7 +88,7 @@
 									:has-message="false"
 									class="membership-fee-change-custom-euro-symbol"
 									:show-error="feeErrorMessage !== ''"
-									@blur="formatCustomAmount"
+									@blur.prevent="onBlurCustomAmount"
 									@update:model-value="updateAmountFromCustom"
 									:radio-checked="!isSuggestedAmount"
 								/>
@@ -129,9 +128,10 @@
 									<IbanField
 										v-model="iban"
 										:label="$t('membership_fee_upgrade_iban_changed_label')"
-										:show-error="!ibanIsValid"
-										bank-name=""
-										bic=""
+										:show-error="!ibanFieldIsValid"
+										:bank-name="bankName"
+										:bic="bic"
+										@blur="validateIban"
 									/>
 								</div>
 							</template>
@@ -140,7 +140,9 @@
 				</template>
 			</ContentCard>
 
-			<button class="button" @click="validateAndSubmit">{{ $t('membership_fee_upgrade_submit_button') }}</button>
+			<div class="button-outside-content">
+				<button class="button" @click="validateAndSubmit">{{ $t('membership_fee_upgrade_submit_button') }}</button>
+			</div>
 		</div>
 
 	</div>
@@ -148,7 +150,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { computed, ref, watch } from 'vue';
+import { computed, inject, nextTick, ref, watch } from 'vue';
 import TextRadioFormInput from '@src/components/shared/form_elements/TextRadioFormInput.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import axios, { AxiosResponse } from 'axios';
@@ -164,6 +166,8 @@ import AlertBox from '@src/components/patterns/AlertBox.vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import Accordion from '@src/components/patterns/Accordion.vue';
 import AccordionItem from '@src/components/patterns/AccordionItem.vue';
+import type { BankValidationResource } from '@src/api/BankValidationResource';
+import type { BankAccountResponse } from '@src/view_models/BankAccount';
 
 interface Props {
 	uuid: string;
@@ -174,6 +178,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 const { t, n } = useI18n();
+const bankValidationResource = inject<BankValidationResource>( 'bankValidationResource' );
 
 const newFee = ref<number>( props.suggestedAmountInCents );
 const isSuggestedAmount = ref<boolean>( true );
@@ -185,6 +190,7 @@ const isFeeValid = ref<boolean>( true );
 watch( isSuggestedAmount, ( newValue: boolean ) => {
 	if ( newValue ) {
 		customAmount.value = '';
+		isFeeValid.value = true;
 	}
 } );
 
@@ -192,12 +198,44 @@ const getFormattedCustomAmount = (): string => {
 	return n( newFee.value / 100, 'decimal' );
 };
 
-const formatCustomAmount = ( e: Event ): void => {
-	e.preventDefault();
+const minimumAmount = computed( () => {
+	const interval = props.currentInterval;
+	if ( isNaN( interval ) ) {
+		return 0;
+	}
+	const yearlyIntervalMultiplier = interval / 12;
+	return MEMBERSHIP_MINIMUM_CENTS_FEE_PERSONAL * yearlyIntervalMultiplier;
+} );
+
+const feeIsBelowMinimumAmount = computed( () => {
+	return newFee.value < minimumAmount.value;
+} );
+
+const maxCentAmount = 100_000_00;
+const feeIsTooHigh = computed( () => newFee.value > maxCentAmount );
+
+const feeErrorMessage = computed<string>( (): string => {
+	if ( feeIsBelowMinimumAmount.value ) {
+		return t( 'membership_form_payment_amount_error' );
+	} else if ( feeIsTooHigh.value ) {
+		return t( 'membership_form_payment_amount_too_high' );
+	} else {
+		return '';
+	}
+} );
+
+const validateCustomAmount = (): void => {
+	if ( feeErrorMessage.value !== '' ) {
+		isFeeValid.value = false;
+	}
+};
+
+const onBlurCustomAmount = (): void => {
 	if ( isSuggestedAmount.value ) {
 		return;
 	}
 	customAmount.value = getFormattedCustomAmount();
+	validateCustomAmount();
 };
 
 const updateAmountFromCustom = ( newAmount: string ) => {
@@ -218,39 +256,33 @@ const updateAmountFromCustom = ( newAmount: string ) => {
 	console.log( newFee.value );
 };
 
-const minimumAmount = computed( () => {
-	const interval = props.currentInterval;
-	if ( isNaN( interval ) ) {
-		return 0;
-	}
-	const yearlyIntervalMultiplier = interval / 12;
-	return MEMBERSHIP_MINIMUM_CENTS_FEE_PERSONAL * yearlyIntervalMultiplier;
-} );
-
-const feeIsBelowMinimumAmount = computed( () => {
-	return newFee.value < minimumAmount.value;
-} );
-
-const maxCentAmount = 100_000_00;
-const feeIsTooHigh = computed( () => newFee.value > maxCentAmount );
-
 const memberName = ref<string>( '' );
 
 const iban = ref<string>( '' );
-const ibanIsValid = computed( () => iban.value === '' || iban.value.length > 0 );
+const ibanWasEntered = computed( () => iban.value.length > 0 );
+const ibanFieldIsValid = ref<boolean>( true );
 const bic = ref<string>( '' );
+const bankName = ref<string>( '' );
+const isSearchingForIban = ref<boolean>( false );
+const showCalculatorErrorSummary = ref<boolean>( false );
+
+const validateIban = async () => {
+	isSearchingForIban.value = true;
+	bankValidationResource.validateIban( {
+		iban: iban.value,
+	} ).then( ( response: BankAccountResponse ) => {
+		ibanFieldIsValid.value = true;
+		isSearchingForIban.value = false;
+		bic.value = response.bic;
+		bankName.value = response.bankName;
+	} ).catch( () => {
+		ibanFieldIsValid.value = false;
+		isSearchingForIban.value = false;
+		showCalculatorErrorSummary.value = true;
+	} );
+};
 
 const showSuccessPage = ref<boolean>( false );
-
-const feeErrorMessage = computed<string>( (): string => {
-	if ( feeIsBelowMinimumAmount.value ) {
-		return t( 'membership_form_payment_amount_error' );
-	} else if ( feeIsTooHigh.value ) {
-		return t( 'membership_form_payment_amount_too_high' );
-	} else {
-		return '';
-	}
-} );
 
 const showMemberNameError = ref<boolean>( false );
 
@@ -267,24 +299,28 @@ const getFeeChangRequest = (): FeeChangeRequest => {
 	const feeChangeRequest = {
 		uuid: props.uuid,
 		memberName: memberName.value,
-		amountInEuroCents: 10000,
+		amountInEuroCents: newFee.value,
 		paymentType: 'FCH',
 	};
 
-	if ( iban.value !== '' && ibanIsValid ) {
+	if ( ibanWasEntered.value ) {
 		return {
 			...feeChangeRequest,
 			iban: iban.value,
-			// TODO what about the BIC?
+			bic: bic.value,
 		};
 	}
 	return feeChangeRequest;
 };
 
-const validateAndSubmit = (): void => {
+const validateAndSubmit = async (): void => {
 
 	console.log( isCustomAmount.value );
 
+	validateCustomAmount();
+	if ( !isFeeValid.value ) {
+		return;
+	}
 
 	if ( memberName.value === '' ) {
 		console.log( 'member name invalid' );
@@ -297,6 +333,18 @@ const validateAndSubmit = (): void => {
 		console.log( 'new fee invalid:' );
 		console.log( newFee.value );
 		return;
+	}
+
+	if ( ibanWasEntered.value ) {
+		console.log("iban had been entered ");
+
+		//TODO await validateIban result before continuing
+		await validateIban();
+		await nextTick();
+		if ( !ibanFieldIsValid.value ) {
+			console.log( "iban is invalid, stopping " );
+			return;
+		}
 	}
 
 	axios.post(
@@ -316,8 +364,6 @@ const validateAndSubmit = (): void => {
 	// TODO 3. evaluate if the JSONResponse was "status": "OK" or "status":"ERR"
 	// depending on the output, show success content or show error content?
 };
-
-
 
 </script>
 
@@ -348,5 +394,9 @@ $input-height: 50px;
 			height: $input-height;
 		}
 	}
+}
+
+.button-outside-content {
+	margin-bottom: 18px;
 }
 </style>

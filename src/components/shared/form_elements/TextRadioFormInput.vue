@@ -8,6 +8,7 @@
 			:checked="radioChecked"
 			aria-hidden="true"
 			tabindex="-1"
+			disabled
 		/>
 		<input
 			:name="name"

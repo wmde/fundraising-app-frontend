@@ -6,6 +6,7 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import MembershipFeeUpgrade from '@src/components/pages/MembershipFeeUpgrade.vue';
 import { createStore } from '@src/store/membership_store';
 import SideBar from '@src/components/pages/membership_fee_change/SideBar.vue';
+import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 
 interface MembershipFeeUpgradeModel {
 	uuid: string;
@@ -14,6 +15,7 @@ interface MembershipFeeUpgradeModel {
 	suggestedAmountInCents: number;
 	currentInterval: string;
 	feeChangeFrontendFlag: string;
+	urls: any;
 }
 
 const PAGE_IDENTIFIER = 'membership-fee-upgrade';
@@ -45,4 +47,8 @@ const app = createVueApp(
 		},
 	} );
 app.use( store );
+app.provide( 'bankValidationResource', new ApiBankValidationResource(
+	pageData.applicationVars.urls.validateIban,
+	pageData.applicationVars.urls.convertBankData
+) );
 app.mount( '#app' );
