@@ -11,7 +11,7 @@
 					<component :is="page" v-bind="pageProps"/>
 				</template>
 				<template #sidebar v-if="hasSidebar">
-					<AppSidebar/>
+					<component :is="sidebar ?? AppSidebar" v-bind="sidebarProps"/>
 				</template>
 			</AppContent>
 		</div>
@@ -35,8 +35,10 @@ interface Props {
 	pageIdentifier: string;
 	page: Component;
 	pageProps?: Record<string, any>;
-	pageTitle: string;
 	hasSidebar?: boolean;
+	sidebar?: Component;
+	sidebarProps?: Record<string, any>;
+	pageTitle: string;
 	bucketClasses?: string[];
 }
 
