@@ -1,6 +1,6 @@
 <template>
 	<template v-if="feeChangeFrontendFlag === 'SHOW_ERROR_PAGE'">
-		<ContentCard>
+		<ContentCard class="membership-fee-error-page">
 			<template #content>
 				<IconText>
 					<template #icon><WarningIcon/></template>
@@ -15,7 +15,7 @@
 		</ContentCard>
 	</template>
 	<template v-if="feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE'">
-		<ContentCard>
+		<ContentCard class="membership-fee-return-page">
 			<template #content>
 				<IconText>
 					<template #icon><SuccessIcon/></template>
@@ -32,7 +32,7 @@
 	</template>
 	<template v-if="feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM'">
 		<template v-if="showSuccessPage">
-			<ContentCard>
+			<ContentCard class="membership-fee-success-page">
 				<template #content>
 					<IconText>
 						<template #icon><SuccessIcon/></template>
@@ -54,7 +54,7 @@
 			</ContentCard>
 		</template>
 		<form v-else action="#" @submit.prevent="validateAndSubmit" class="flow">
-			<ContentCard>
+			<ContentCard class="membership-fee-form-page">
 				<template #heading>
 					<h1>
 						{{ $t('membership_fee_upgrade_page_headline', {
@@ -170,6 +170,7 @@
 				<FormButton
 					:is-loading="isValidating"
 					button-type="submit"
+					id="fee-change-submit-button"
 				>
 					{{ $t( 'membership_fee_upgrade_submit_button' ) }}
 				</FormButton>
