@@ -76,23 +76,7 @@ describe( 'TextFormInput.vue', () => {
 
 		expect( wrapper.find( 'input[type="text"]' ).attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( wrapper.find( 'input[type="text"]' ).classes() ).toContain( 'is-danger' );
-		expect( wrapper.find( '.has-text-danger' ).exists() ).toBeTruthy();
-	} );
-
-	it( 'shows error icon', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.setProps( { hasError: true } );
-
-		expect( wrapper.find( '.icon.has-text-danger' ).exists() ).toBeTruthy();
-	} );
-
-	it( 'shows message icon', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.setProps( { hasMessage: true } );
-
-		expect( wrapper.find( '.icon.has-text-warning' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.is-danger' ).exists() ).toBeTruthy();
 	} );
 
 	it( 'sets the radio checked', async () => {

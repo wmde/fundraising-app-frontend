@@ -1,14 +1,14 @@
 <template>
-	<ContentCard :is-sidebar-card="true" v-if="externalMemberId">
+	<ContentCard :is-sidebar-card="true" v-if="externalMemberId" id="membership-id-sidebar-card">
 		<template #content>
 			<IconText :is-small-heading="true">
 				<template #icon><InfoIcon/></template>
 				<template #content><h2>{{ $t( 'membership_fee_upgrade_sidebar_headline' )}}</h2></template>
 			</IconText>
-			<p>[{{ externalMemberId }}]</p>
+			<p class="membership-id-output">[{{ externalMemberId }}]</p>
 		</template>
 	</ContentCard>
-	<ContentCard :is-sidebar-card="true">
+	<ContentCard :is-sidebar-card="true" id="get-in-touch-sidebar-card">
 		<template #content>
 			<IconText :is-small-heading="true">
 				<template #icon><InfoIcon/></template>
@@ -18,7 +18,7 @@
 			<slot name="default"/>
 		</template>
 	</ContentCard>
-	<ContentCard :is-sidebar-card="true" v-if="!externalMemberId">
+	<ContentCard :is-sidebar-card="true" v-if="!externalMemberId" id="bank-info-sidebar-card">
 		<template #content>
 			<IconText :is-small-heading="true">
 				<template #icon><BankIcon/></template>

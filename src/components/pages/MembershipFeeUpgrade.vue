@@ -1,6 +1,6 @@
 <template>
 	<template v-if="feeChangeFrontendFlag === 'SHOW_ERROR_PAGE'">
-		<ContentCard>
+		<ContentCard class="membership-fee-error-page">
 			<template #content>
 				<IconText>
 					<template #icon><WarningIcon/></template>
@@ -15,7 +15,7 @@
 		</ContentCard>
 	</template>
 	<template v-if="feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE'">
-		<ContentCard>
+		<ContentCard class="membership-fee-return-page">
 			<template #content>
 				<IconText>
 					<template #icon><SuccessIcon/></template>
@@ -32,7 +32,7 @@
 	</template>
 	<template v-if="feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM'">
 		<template v-if="showSuccessPage">
-			<ContentCard>
+			<ContentCard class="membership-fee-success-page">
 				<template #content>
 					<IconText>
 						<template #icon><SuccessIcon/></template>
@@ -54,7 +54,7 @@
 			</ContentCard>
 		</template>
 		<form v-else action="#" @submit.prevent="validateAndSubmit" class="flow">
-			<ContentCard>
+			<ContentCard class="membership-fee-form-page">
 				<template #heading>
 					<h1>
 						{{ $t('membership_fee_upgrade_page_headline', {
@@ -143,7 +143,7 @@
 				</template>
 			</ContentCard>
 
-			<ContentCard :is-collapsable="true" class="accordion">
+			<ContentCard :is-collapsable="true">
 				<template #content>
 					<Accordion>
 						<AccordionItem>
@@ -170,6 +170,7 @@
 				<FormButton
 					:is-loading="isValidating"
 					button-type="submit"
+					id="fee-change-submit-button"
 				>
 					{{ $t( 'membership_fee_upgrade_submit_button' ) }}
 				</FormButton>
@@ -331,7 +332,7 @@ const validateIban = async (): Promise<void> => {
 	} );
 };
 
-const newFeeChangRequest = (): FeeChangeRequest => {
+const newFeeChangeRequest = (): FeeChangeRequest => {
 	const feeChangeRequest = {
 		uuid: props.uuid,
 		memberName: memberName.value,
@@ -370,7 +371,7 @@ const validateAndSubmit = async (): Promise<void> => {
 		return;
 	}
 
-	membershipFeeChangeResource.put( newFeeChangRequest() ).then( ( response: FeeChangeResponse ) => {
+	membershipFeeChangeResource.put( newFeeChangeRequest() ).then( ( response: FeeChangeResponse ) => {
 		isValidating.value = false;
 		if ( response.status === 'OK' ) {
 			showSuccessPage.value = true;
