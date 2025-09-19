@@ -7,6 +7,7 @@ body {
 
 .content-wrapper {
 	--wrapper-padding: 6px;
+	flex-grow: 1;
 
 	@include breakpoints.tablet-up {
 		--wrapper-padding: 18px;
