@@ -7,6 +7,7 @@ import MembershipFeeUpgrade from '@src/components/pages/MembershipFeeUpgrade.vue
 import { createStore } from '@src/store/membership_store';
 import SideBar from '@src/components/pages/membership_fee_change/SideBar.vue';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
+import { ApiMembershipFeeChangeResource } from '@src/api/MembershipFeeChangeResource';
 
 interface MembershipFeeUpgradeModel {
 	uuid: string;
@@ -51,4 +52,5 @@ app.provide( 'bankValidationResource', new ApiBankValidationResource(
 	pageData.applicationVars.urls.validateIban,
 	pageData.applicationVars.urls.convertBankData
 ) );
+app.provide( 'membershipFeeChangeResource', new ApiMembershipFeeChangeResource( pageData.applicationVars.urls.putMembershipFeeChange ) );
 app.mount( '#app' );
