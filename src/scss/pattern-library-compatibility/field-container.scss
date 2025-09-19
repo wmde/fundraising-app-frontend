@@ -1,0 +1,32 @@
+.field-container {
+	.form-field {
+		margin-bottom: 0;
+	}
+
+	label {
+		font-weight: bold;
+	}
+
+	input + label {
+		font-weight: normal;
+	}
+
+	.radio {
+		display: block;
+	}
+
+	.radio-form-input {
+		margin-block-start: var(--flow-space, 1em);
+		label {
+			padding-left: 40px;
+		}
+	}
+}
+
+.field-container[data-error] {
+	input[type="text"],
+	input[type="radio"]:not(:checked),
+	.radio-form-input label:not(:focus) {
+		border-color: var(--color-red-700);
+	}
+}

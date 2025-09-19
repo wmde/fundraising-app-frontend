@@ -7,11 +7,6 @@
 	background: colors.$white;
 	border: 0;
 	border-bottom: 1px solid colors.$primary;
-	padding: map.get( units.$spacing, 'small' );
-
-	@include breakpoints.tablet-up {
-		padding: map.get( units.$spacing, 'large' );
-	}
 
 	.bank-data-list {
 		list-style-type: none;
@@ -35,4 +30,28 @@
 
 .content-card[data-theme='bordered'] {
 	border: 3px solid var(--color-blue-600);
+}
+
+.content-card:not([data-collapsable], [data-sidebar-card]) {
+	padding: map.get( units.$spacing, 'small' );
+
+	@include breakpoints.tablet-up {
+		padding: map.get( units.$spacing, 'large' );
+	}
+}
+
+.content-card[data-collapsable] {
+	--card-padding: 0;
+	--summary-color: var(--color-blue-600);
+}
+
+.content-card[data-collapsable] summary {
+	--summary-margin: 0;
+	--summary-padding: var(--space-xs-l);
+	--summary-border: 0;
+}
+
+.content-card[data-collapsable] details > div {
+	padding-inline: var(--space-xs-l);
+	padding-block-end: var(--space-xs-l);
 }

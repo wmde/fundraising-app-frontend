@@ -1,7 +1,7 @@
 <template>
 	<div class="form-field form-field-iban" :class="[ 'form-field-text', { 'is-invalid': showError } ]">
 		<label for="iban" class="form-field-label">
-			{{ $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
+			{{ label ?? $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
 		</label>
 		<div class="control text-form-input" :class="{ 'has-icons-right': showError }">
 			<input
@@ -37,13 +37,14 @@ interface Props {
 	showError: boolean;
 	bankName: string;
 	bic: string;
+	label?: String;
 	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	ariaDescribedby: '',
 } );
-const emit = defineEmits( [ 'field-changed', 'update:modelValue' ] );
+const emit = defineEmits( [ 'field-changed', 'input', 'blur', 'update:modelValue' ] );
 
 const fieldModel = ref<string>( props.modelValue );
 const field = ref<HTMLInputElement>( null );
@@ -99,6 +100,7 @@ const onInput = async (): Promise<void> => {
 	}
 
 	emit( 'update:modelValue', fieldModel.value );
+	emit( 'input' );
 
 	if ( props.showError ) {
 		emit( 'field-changed', 'iban' );
@@ -108,6 +110,7 @@ const onInput = async (): Promise<void> => {
 const onBlur = (): void => {
 	setFieldValueFromModel();
 	emit( 'field-changed', 'iban' );
+	emit( 'blur' );
 };
 
 onMounted( () => {
