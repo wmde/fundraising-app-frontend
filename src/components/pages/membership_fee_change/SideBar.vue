@@ -43,7 +43,7 @@ import BankData from '@src/components/shared/BankData.vue';
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
 interface Props {
-	externalMemberId: string;
+	externalMemberId?: number;
 }
 defineProps<Props>();
 
