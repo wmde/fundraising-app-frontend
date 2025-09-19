@@ -1,6 +1,7 @@
 <template>
 	<div class="control text-form-input text-radio-form-input" :class="[ `locale-${ $i18n.locale }`, { 'has-icons-right': hasError || hasMessage, 'is-disabled': disabled } ]">
 		<input
+			:id="inputId+'-radio-button'"
 			name="amount"
 			type="radio"
 			class="text-radio-form-input-radio"
