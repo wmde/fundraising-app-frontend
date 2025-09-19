@@ -125,23 +125,28 @@
 
 		<ContentCard>
 
-			<template #heading>
-				<h3>{{ $t( 'membership_confirmation_thanks_text' ) }}</h3>
-			</template>
+				<template #heading v-if="paymentSummary">
+					<h2 aria-live="polite">{{ $t( 'form_summary_title' ) }}</h2>
+					<MembershipSummaryHeadline :paymentSummary="paymentSummary"/>
+				</template>
 
-			<template #content>
-				<FormSummary>
-					<template #summary-content>
-						<MembershipSummary
-							:membership-application="membershipApplication"
-							:address="addressSummary"
-							:salutations="salutations"
-							:address-is-invalid="addressIsInvalid"
-							:countries="countries"
-						/>
-					</template>
+				<template #content>
+					<Summary v-if="addressSummary || bankDataSummary">
+						<template #left v-if="addressSummary">
+							<AddressSummarySection
+								:address="addressSummary"
+								:countries="countries"
+								:salutations="salutations"
+							/>
+						</template>
+						<template #right v-if="bankDataSummary">
+							<PaymentSummarySection
+								:bank-data="bankDataSummary"
+							/>
+						</template>
+					</Summary>
 
-					<template #summary-buttons>
+					<div class="switcher">
 						<FormButton
 							id="previous-btn"
 							:is-outlined="true"
@@ -156,12 +161,10 @@
 						>
 							{{ $t('membership_form_finalize') }}
 						</FormButton>
-					</template>
-				</FormSummary>
-			</template>
-
-		</ContentCard>
-	</form>
+					</div>
+				</template>
+			</ContentCard>
+		</form>
 
 	<form action="/apply-for-membership" method="post" ref="submitValuesForm" id="submit-form">
 		<SubmitValues :campaign-values="campaignValues" :tracking-data="trackingData"/>
@@ -183,18 +186,20 @@ import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { useStore } from 'vuex';
 import { useAddressTypeFunctions } from '@src/components/pages/membership_form/AddressTypeFunctions';
 import { useMembershipTypeModel } from '@src/components/pages/membership_form/useMembershipTypeModel';
-import { MembershipTypeModel, membershipTypeName } from '@src/view_models/MembershipTypeModel';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useMembershipFormSubmitHandler } from '@src/components/pages/membership_form/useMembershipFormSubmitHandler';
 import { trackFormSubmission } from '@src/util/tracking';
-import FormSummary from '@src/components/shared/FormSummary.vue';
-import MembershipSummary from '@src/components/shared/MembershipSummary.vue';
 import AddressFields from '@src/components/pages/membership_form/Address.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
-import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
 import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
+import MembershipSummaryHeadline from '@src/components/pages/membership_form/MembershipSummaryHeadline.vue';
+import Summary from '@src/components/patterns/Summary.vue';
+import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
+import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
+import { useMembershipBankDataSummary } from '@src/components/pages/membership_form/useMembershipBankDataSummary';
+import { useMembershipPaymentFunctions } from '@src/components/pages/membership_form/useMembershipPaymentFunctions';
 
 interface Props {
 	validateAddressUrl: string;
@@ -218,7 +223,9 @@ const props = defineProps<Props>();
 const store = useStore();
 
 const addressFieldsRef = ref<HTMLFormElement>();
-const { disabledAddressTypes, addressType, setAddressType } = useAddressTypeFunctions( store );
+const { disabledAddressTypes, addressType, setAddressType, addressSummary } = useAddressTypeFunctions( store );
+const { bankDataSummary } = useMembershipBankDataSummary( store );
+const { paymentSummary } = useMembershipPaymentFunctions( store );
 const membershipTypeModel = useMembershipTypeModel( store );
 const disabledMembershipTypes = computed(
 	(): MembershipTypeModel[] => {
@@ -229,30 +236,6 @@ const trackAddressForm = () => {
 	trackFormSubmission( addressFieldsRef.value );
 };
 const isDirectDebitPayment = computed( (): boolean => store.state.membership_fee.values.type === 'BEZ' );
-const addressIsInvalid = computed( (): boolean => !store.getters[ 'membership_address/requiredFieldsAreValid' ] );
-
-const membershipApplication = computed( (): MembershipApplication => {
-	const payment = store.state.membership_fee.values;
-	return {
-		paymentIntervalInMonths: payment.interval,
-		membershipFee: payment.fee / 100,
-		paymentType: payment.type,
-		membershipType: membershipTypeName( store.getters[ 'membership_address/membershipType' ] ),
-		incentives: [],
-		isExported: false,
-	};
-} );
-
-const addressSummary = computed( (): MembershipAddress => {
-	return {
-		...store.state.membership_address.values,
-		fullName: store.getters[ 'membership_address/fullName' ],
-		streetAddress: store.state.membership_address.values.street,
-		postalCode: store.state.membership_address.values.postcode,
-		countryCode: store.state.membership_address.values.country,
-		applicantType: addressTypeName( store.getters[ 'membership_address/addressType' ] ),
-	};
-} );
 
 const {
 	submit,
