@@ -63,8 +63,12 @@ const footerMenu = [
 	}
 
 	&-wrapper {
-		margin-top: auto;
 		background: colors.$footer;
+		margin-top: 16px;
+
+		@include breakpoints.tablet-up {
+			margin-top: 32px;
+		}
 	}
 
 	&-left {
