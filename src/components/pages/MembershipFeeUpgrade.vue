@@ -1,5 +1,5 @@
 <template>
-	<div v-if="feeChangeFrontendFlag === 'SHOW_ERROR_PAGE'">
+	<template v-if="feeChangeFrontendFlag === 'SHOW_ERROR_PAGE'">
 		<ContentCard>
 			<template #content>
 				<IconText>
@@ -13,8 +13,8 @@
 				</IconText>
 			</template>
 		</ContentCard>
-	</div>
-	<div v-if="feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE'">
+	</template>
+	<template v-if="feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE'">
 		<ContentCard>
 			<template #content>
 				<IconText>
@@ -29,9 +29,9 @@
 
 			</template>
 		</ContentCard>
-	</div>
-	<div v-if="feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM'">
-		<div v-if="showSuccessPage">
+	</template>
+	<template v-if="feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM'">
+		<template v-if="showSuccessPage">
 			<ContentCard>
 				<template #content>
 					<IconText>
@@ -52,8 +52,8 @@
 					</IconText>
 				</template>
 			</ContentCard>
-		</div>
-		<form v-else action="#" @submit.prevent="validateAndSubmit">
+		</template>
+		<form v-else action="#" @submit.prevent="validateAndSubmit" class="flow">
 			<ContentCard>
 				<template #heading>
 					<h1>
@@ -176,7 +176,7 @@
 			</div>
 		</form>
 
-	</div>
+	</template>
 </template>
 
 <script setup lang="ts">
