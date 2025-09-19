@@ -44,7 +44,7 @@ interface Props {
 const props = withDefaults( defineProps<Props>(), {
 	ariaDescribedby: '',
 } );
-const emit = defineEmits( [ 'field-changed', 'update:modelValue' ] );
+const emit = defineEmits( [ 'field-changed', 'input', 'blur', 'update:modelValue' ] );
 
 const fieldModel = ref<string>( props.modelValue );
 const field = ref<HTMLInputElement>( null );
@@ -100,6 +100,7 @@ const onInput = async (): Promise<void> => {
 	}
 
 	emit( 'update:modelValue', fieldModel.value );
+	emit( 'input' );
 
 	if ( props.showError ) {
 		emit( 'field-changed', 'iban' );
@@ -109,6 +110,7 @@ const onInput = async (): Promise<void> => {
 const onBlur = (): void => {
 	setFieldValueFromModel();
 	emit( 'field-changed', 'iban' );
+	emit( 'blur' );
 };
 
 onMounted( () => {
