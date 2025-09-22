@@ -2,14 +2,13 @@
 	<div class="control text-form-input text-radio-form-input" :class="[ `locale-${ $i18n.locale }`, { 'has-icons-right': hasError || hasMessage, 'is-disabled': disabled } ]">
 		<input
 			:id="inputId+'-radio-button'"
-			name="amount"
+			:name="radioName ? radioName : 'amount'"
 			type="radio"
 			class="text-radio-form-input-radio"
 			@click="$emit( 'radioClicked' )"
 			:checked="radioChecked"
 			aria-hidden="true"
 			tabindex="-1"
-			disabled
 		/>
 		<input
 			:name="name"
@@ -39,6 +38,7 @@ import { useInputModel } from '@src/components/shared/form_elements/useInputMode
 
 interface Props {
 	name: string;
+	radioName?: string;
 	modelValue: string | number;
 	autocomplete?: string;
 	autofocus?: boolean;
