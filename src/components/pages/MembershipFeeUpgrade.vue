@@ -94,7 +94,7 @@
 									id="suggested-amount"
 									v-model="isSuggestedAmount"
 									:native-value="true"
-									name="suggestedFeeAmount"
+									name="amount"
 								>
 									<template #label>
 										{{ $n( suggestedAmountInCents / 100, 'euros' ) }}
@@ -105,6 +105,7 @@
 								<label for="custom-amount">{{ $t('membership_fee_upgrade_custom_amount_label') }}</label>
 								<TextRadioFormInput
 									name="customFeeAmount"
+									radioName = "amount"
 									v-model="customAmount"
 									input-id="custom-amount"
 									:placeholder="$t('membership_fee_upgrade_custom_amount_placeholder')"
@@ -114,6 +115,7 @@
 									@blur.prevent="onBlurCustomAmount"
 									@input.prevent="onCustomAmountInput"
 									@update:model-value="updateAmountFromCustom"
+									@radio-clicked="() => updateAmountFromCustom( '0' )"
 									:radio-checked="!isSuggestedAmount"
 								/>
 							</div>

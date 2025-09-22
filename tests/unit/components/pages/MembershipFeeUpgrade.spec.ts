@@ -33,12 +33,6 @@ describe( 'MembershipFeeUpgrade.vue', () => {
 		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
 	} );
 
-	test( 'customAmountRadioButtonIsNotClickable', () => {
-		const wrapper = getWrapper();
-
-		expect( wrapper.find<HTMLInputElement>( '#custom-amount-radio-button' ).attributes().disabled ).toBeDefined();
-	} );
-
 	test( 'justClickingIntoCustomAmountInputFieldDoesNotSelectTheRadioField', () => {
 		const wrapper = getWrapper();
 
