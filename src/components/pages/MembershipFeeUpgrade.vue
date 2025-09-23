@@ -108,7 +108,9 @@
 									radioName = "amount"
 									v-model="customAmount"
 									input-id="custom-amount"
-									:placeholder="$t('membership_fee_upgrade_custom_amount_placeholder')"
+									:placeholder="$t( 'form_for_example', {
+										example: $n( suggestedAmountInCents / 100 * 1.25, 'integer' )
+									} )"
 									:has-message="false"
 									class="membership-fee-change-custom-euro-symbol"
 									:show-error="feeErrorMessage !== ''"

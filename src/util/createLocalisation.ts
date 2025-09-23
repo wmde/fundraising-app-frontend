@@ -47,6 +47,11 @@ export function createLocalisation( messages: { [ key: string ]: string } ) {
 					minimumFractionDigits: 2,
 					maximumFractionDigits: 2,
 				},
+				integer: {
+					style: 'decimal',
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0,
+				},
 				percent: {
 					style: 'percent',
 					useGrouping: false,
@@ -71,6 +76,11 @@ export function createLocalisation( messages: { [ key: string ]: string } ) {
 					style: 'decimal',
 					minimumFractionDigits: 2,
 					maximumFractionDigits: 2,
+				},
+				integer: {
+					style: 'decimal',
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0,
 				},
 				percent: {
 					style: 'percent',
