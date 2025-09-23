@@ -19,18 +19,14 @@
 	}
 }
 
-.content-card:not(:last-child) {
-	margin-bottom: 32px;
+.content-card + .content-card {
+	margin-top: 16px;
 }
 
 .content-card[data-sidebar-card] {
 	--flow-space: 0;
 	padding: 16px;
 	line-height: 1.5;
-}
-
-.content-card[data-sidebar-card]:not(:last-child) {
-	margin-bottom: 16px;
 }
 
 .content-card[data-theme='bordered'] {
