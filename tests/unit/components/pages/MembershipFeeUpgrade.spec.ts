@@ -42,7 +42,7 @@ describe( 'MembershipFeeUpgrade.vue', () => {
 		wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
 
 		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
-		expect( wrapper.find<HTMLInputElement>( '#custom-amount-radio-button' ).element.checked ).toBeFalsy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
 	} );
 
 	test( 'entering valid custom amounts deselects suggested amount', async () => {
@@ -52,7 +52,7 @@ describe( 'MembershipFeeUpgrade.vue', () => {
 		await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '5500' );
 
 		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeFalsy();
-		expect( wrapper.find<HTMLInputElement>( '#custom-amount-radio-button' ).element.checked ).toBeTruthy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).toContain( 'checked' );
 	} );
 
 	test( 're-selecting custom amount deselects suggested amount', async () => {
@@ -62,12 +62,12 @@ describe( 'MembershipFeeUpgrade.vue', () => {
 		await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '5500' );
 
 		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeFalsy();
-		expect( wrapper.find<HTMLInputElement>( '#custom-amount-radio-button' ).element.checked ).toBeTruthy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).toContain( 'checked' );
 
 		await wrapper.find<HTMLInputElement>( '#suggested-amount' ).setValue( true );
 
 		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
-		expect( wrapper.find<HTMLInputElement>( '#custom-amount-radio-button' ).element.checked ).toBeFalsy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
 	} );
 
 	test( 'custom amount gets cleared when suggested amount is re-selected', async () => {

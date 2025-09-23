@@ -48,7 +48,7 @@ describe( 'TextFormInput.vue', () => {
 		await wrapper.find( 'input[type="text"]' ).trigger( 'focus' );
 		await wrapper.find( 'input[type="text"]' ).setValue( 'Chewy' );
 		await wrapper.find( 'input[type="text"]' ).trigger( 'blur' );
-		await wrapper.find( 'input[type="radio"]' ).trigger( 'click' );
+		await wrapper.find( '.text-radio-form-input-radio' ).trigger( 'click' );
 
 		expect( wrapper.emitted( 'focus' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
@@ -82,10 +82,10 @@ describe( 'TextFormInput.vue', () => {
 	it( 'sets the radio checked', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find<HTMLInputElement>( 'input[type="radio"]' ).element.checked ).toBeFalsy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
 
 		await wrapper.setProps( { radioChecked: true } );
 
-		expect( wrapper.find<HTMLInputElement>( 'input[type="radio"]' ).element.checked ).toBeTruthy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).toContain( 'checked' );
 	} );
 } );
