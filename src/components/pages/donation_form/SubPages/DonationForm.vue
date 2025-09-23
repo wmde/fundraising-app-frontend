@@ -28,45 +28,45 @@
 		@set-address-type="setAddressType( $event )"
 	/>
 
-	<ContentCard>
-		<template #heading v-if="paymentSummary">
-			<h2>{{ $t( 'donation_form_summary_title' ) }}</h2>
-			<DonationSummaryHeadline
-				:payment="paymentSummary"
-			/>
-		</template>
-		<template #content>
-			<Summary v-if="addressSummary || bankDataSummary">
-				<template #left v-if="addressSummary">
-					<DonorSummarySection
-						:address="addressSummary"
-						:countries="countries"
-						:salutations="salutations"
-					/>
-				</template>
-				<template #right v-if="bankDataSummary">
-					<PaymentSummarySection
-						:bank-data="bankDataSummary"
-					/>
-				</template>
-			</Summary>
-			<div class="switcher">
-				<FormButton
-					id="previous-btn"
-					:is-outlined="true"
-					@click="scrollToPaymentSection"
-				>
-					{{ $t( 'donation_form_section_back' ) }}
-				</FormButton>
-				<PaymentTextFormButton
-					id="submit-btn"
-					:is-loading="store.getters.isValidating"
-					:payment-type="paymentSummary?.paymentType"
-					@click="submit"
+		<ContentCard>
+			<template #heading v-if="paymentSummary">
+				<h2>{{ $t( 'form_summary_title' ) }}</h2>
+				<DonationSummaryHeadline
+					:payment="paymentSummary"
 				/>
-			</div>
-		</template>
-	</ContentCard>
+			</template>
+			<template #content>
+				<Summary v-if="addressSummary || bankDataSummary">
+					<template #left v-if="addressSummary">
+						<AddressSummarySection
+							:address="addressSummary"
+							:countries="countries"
+							:salutations="salutations"
+						/>
+					</template>
+					<template #right v-if="bankDataSummary">
+						<PaymentSummarySection
+							:bank-data="bankDataSummary"
+						/>
+					</template>
+				</Summary>
+				<div class="switcher">
+					<FormButton
+						id="previous-btn"
+						:is-outlined="true"
+						@click="scrollToPaymentSection"
+					>
+						{{ $t( 'donation_form_section_back' ) }}
+					</FormButton>
+					<PaymentTextFormButton
+						id="submit-btn"
+						:is-loading="store.getters.isValidating"
+						:payment-type="paymentSummary?.paymentType"
+						@click="submit"
+					/>
+				</div>
+			</template>
+		</ContentCard>
 
 	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form" class="visually-hidden" aria-hidden="true">
 		<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
@@ -99,8 +99,8 @@ import { useBankDataSummary } from '@src/components/pages/donation_form/useBankD
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import Summary from '@src/components/patterns/Summary.vue';
 import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';
-import DonorSummarySection from '@src/components/pages/donation_form/DonorSummarySection.vue';
-import PaymentSummarySection from '@src/components/pages/donation_form/PaymentSummarySection.vue';
+import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
+import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 
 defineOptions( {
 	name: 'DonationForm',

@@ -1,4 +1,4 @@
-import PaymentSummarySection from '@src/components/pages/donation_form/PaymentSummarySection.vue';
+import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import { mount, VueWrapper } from '@vue/test-utils';
 
 describe( 'PaymentSummarySection.vue', () => {
@@ -38,12 +38,12 @@ describe( 'PaymentSummarySection.vue', () => {
 		} );
 
 		const text = wrapper.text();
-		expect( text ).toContain( 'donation_form_summary_bank_details' );
-		expect( text ).toContain( 'donation_form_summary_iban' );
+		expect( text ).toContain( 'form_summary_bank_details_header' );
+		expect( text ).toContain( 'form_summary_iban' );
 		expect( text ).toContain( validBankData.iban );
-		expect( text ).toContain( 'donation_form_summary_bic' );
+		expect( text ).toContain( 'form_summary_bic' );
 		expect( text ).toContain( validBankData.bic );
-		expect( text ).toContain( 'donation_form_summary_bank_name' );
+		expect( text ).toContain( 'form_summary_bank_name' );
 		expect( text ).toContain( validBankData.bankName );
 	} );
 
@@ -53,10 +53,10 @@ describe( 'PaymentSummarySection.vue', () => {
 		} );
 		const text = wrapper.text();
 
-		expect( text ).toContain( 'donation_form_summary_bank_details' );
-		expect( text ).toContain( 'donation_form_summary_iban' );
+		expect( text ).toContain( 'form_summary_bank_details_header' );
+		expect( text ).toContain( 'form_summary_iban' );
 		expect( text ).toContain( validBankData.iban );
-		expect( text ).not.toContain( 'donation_form_summary_bic' );
-		expect( text ).not.toContain( 'donation_form_summary_bank_name' );
+		expect( text ).not.toContain( 'form_summary_bic' );
+		expect( text ).not.toContain( 'form_summary_bank_name' );
 	} );
 } );

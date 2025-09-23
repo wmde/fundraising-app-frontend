@@ -1,5 +1,5 @@
 <template>
-	<h3>{{ $t('donation_summary_contact_data_header') }}</h3>
+	<h3>{{ $t('form_summary_contact_details_header') }}</h3>
 	<p>
 		<template v-if="name"><strong>{{ name }}</strong><br/></template>
 		<template v-if="cleanedStreetAddress">{{ cleanedStreetAddress }}<br/></template>
@@ -11,10 +11,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
+import type { Address } from '@src/view_models/Address';
 import type { Country } from '@src/view_models/Country';
 import type { Salutation } from '@src/view_models/Salutation';
-import type { Address } from '@src/view_models/Address';
+import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
 import { useI18n } from 'vue-i18n';
 
 interface Props {

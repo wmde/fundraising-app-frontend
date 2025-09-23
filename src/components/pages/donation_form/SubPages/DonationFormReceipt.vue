@@ -38,7 +38,7 @@
 		<template #content>
 			<Summary v-if="addressSummary || bankDataSummary">
 				<template #left v-if="addressSummary">
-					<DonorSummarySection
+					<AddressSummarySection
 						:address="addressSummary"
 						:countries="countries"
 						:salutations="salutations"
@@ -96,9 +96,9 @@ import { useAddressTypeFunctions } from '@src/components/shared/composables/useA
 import { trackDynamicForm } from '@src/util/tracking';
 import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
-import PaymentSummarySection from '@src/components/pages/donation_form/PaymentSummarySection.vue';
+import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
-import DonorSummarySection from '@src/components/pages/donation_form/DonorSummarySection.vue';
+import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
 import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';
 import Summary from '@src/components/patterns/Summary.vue';
 
