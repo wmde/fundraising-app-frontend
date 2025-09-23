@@ -1,5 +1,5 @@
 <template>
-	<div class="donation-confirmation">
+	<div class="donation-confirmation flow">
 		<a class="mobile-call-to-action is-primary button" href="#membership-application-url"
 			v-if="isMobileCallToActionButtonVisible && !isAddressModalOpen"
 			@click.prevent="scrollToCallToAction">
