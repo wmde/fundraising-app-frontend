@@ -1,54 +1,56 @@
 <template>
-	<ContentCard>
-		<template #content>
-			<IconText>
-				<template #icon><SuccessIcon/></template>
-				<template #content><h1>{{ $t( 'membership_confirmation_thanks_text' ) }}</h1></template>
-			</IconText>
+	<div class="flow">
+		<ContentCard>
+			<template #content>
+				<IconText>
+					<template #icon><SuccessIcon/></template>
+					<template #content><h1>{{ $t( 'membership_confirmation_thanks_text' ) }}</h1></template>
+				</IconText>
 
-			<p v-html="$t( 'membership_confirmation_payment_data_text', summaryData )"/>
+				<p v-html="$t( 'membership_confirmation_payment_data_text', summaryData )"/>
 
-			<p v-if="hasIncentives">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</p>
-			<p v-else>{{ $t( 'membership_confirmation_success_text' ) }}</p>
+				<p v-if="hasIncentives">{{ $t( 'membership_confirmation_success_text_incentive' ) }}</p>
+				<p v-else>{{ $t( 'membership_confirmation_success_text' ) }}</p>
 
-			<p v-if="showBankTransferContent">{{ $t( 'membership_confirmation_success_text_bank_transfer' ) }}</p>
-		</template>
-	</ContentCard>
+				<p v-if="showBankTransferContent">{{ $t( 'membership_confirmation_success_text_bank_transfer' ) }}</p>
+			</template>
+		</ContentCard>
 
-	<div class="switcher">
-		<div class="flow">
-			<ContentCard>
-				<template #content v-if="!confirmationData.membershipApplication.isExported">
-					<IconText>
-						<template #icon><SuccessIcon/></template>
-						<template #content><h2>{{ $t( 'membership_confirmation_address_head' ) }}</h2></template>
-					</IconText>
-					<p>
-						<template v-if="address.applicantType === 'person'">{{ salutation }}{{ address.fullName }}</template>
-						<template v-else>{{ address.fullName }}</template>
-						<br />
-						{{ address.streetAddress }}<br />
-						{{ address.postalCode }} {{ address.city }}<br />
-						{{ countryName }}
-					</p>
-					<p>{{ address.email }}</p>
-				</template>
-				<template #content v-else>
-					<IconText>
-						<template #icon><WarningIcon/></template>
-						<template #content><h2>{{ $t( 'membership_confirmation_exported_title' ) }}</h2></template>
-					</IconText>
-					<p>
-						{{ $t( 'membership_confirmation_exported_content' ) }}
-					</p>
-				</template>
-			</ContentCard>
-		</div>
-		<div class="flow">
-			<MembershipSurvey
-				v-if="$t( 'membership_confirmation_survey_link') !== ''"
-				:tracking="confirmationData.tracking ?? ''"
-			/>
+		<div class="switcher">
+			<div class="flow">
+				<ContentCard>
+					<template #content v-if="!confirmationData.membershipApplication.isExported">
+						<IconText>
+							<template #icon><SuccessIcon/></template>
+							<template #content><h2>{{ $t( 'membership_confirmation_address_head' ) }}</h2></template>
+						</IconText>
+						<p>
+							<template v-if="address.applicantType === 'person'">{{ salutation }}{{ address.fullName }}</template>
+							<template v-else>{{ address.fullName }}</template>
+							<br />
+							{{ address.streetAddress }}<br />
+							{{ address.postalCode }} {{ address.city }}<br />
+							{{ countryName }}
+						</p>
+						<p>{{ address.email }}</p>
+					</template>
+					<template #content v-else>
+						<IconText>
+							<template #icon><WarningIcon/></template>
+							<template #content><h2>{{ $t( 'membership_confirmation_exported_title' ) }}</h2></template>
+						</IconText>
+						<p>
+							{{ $t( 'membership_confirmation_exported_content' ) }}
+						</p>
+					</template>
+				</ContentCard>
+			</div>
+			<div class="flow">
+				<MembershipSurvey
+					v-if="$t( 'membership_confirmation_survey_link') !== ''"
+					:tracking="confirmationData.tracking ?? ''"
+				/>
+			</div>
 		</div>
 	</div>
 	<MembershipConfirmationBannerNotifier/>
