@@ -148,16 +148,16 @@ describe( 'AmountField.vue', () => {
 		const wrapper = getWrapper();
 		const customAmountInput = wrapper.find( '#amount-custom' );
 
-		expect( wrapper.find<HTMLInputElement>( '.text-radio-form-input-radio' ).element.checked ).toBeFalsy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
 
 		await customAmountInput.setValue( '1998' );
 		await customAmountInput.trigger( 'blur' );
 
-		expect( wrapper.find<HTMLInputElement>( '.text-radio-form-input-radio' ).element.checked ).toBeTruthy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).toContain( 'checked' );
 
 		await wrapper.find( 'input[value="29900"]' ).trigger( 'change' );
 
-		expect( wrapper.find<HTMLInputElement>( '.text-radio-form-input-radio' ).element.checked ).toBeFalsy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
 	} );
 
 	it( 'does not select amounts for choices that are below minimum amount', async () => {
