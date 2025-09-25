@@ -3,13 +3,13 @@ import App from '@src/components/App.vue';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import PageDataInitializer from '@src/util/page_data_initializer';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
-import MembershipFeeUpgrade from '@src/components/pages/MembershipFeeUpgrade.vue';
+import MembershipFeeChange from '@src/components/pages/MembershipFeeChange.vue';
 import { createStore } from '@src/store/membership_store';
-import SideBar from '@src/components/pages/membership_fee_change/SideBar.vue';
+import SideBar from '@src/components/pages/membership_fee_change/Sidebar.vue';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 import { ApiMembershipFeeChangeResource } from '@src/api/MembershipFeeChangeResource';
 
-interface MembershipFeeUpgradeModel {
+interface MembershipFeeChangeModel {
 	uuid: string;
 	externalMemberId: number;
 	currentAmountInCents: number;
@@ -20,7 +20,7 @@ interface MembershipFeeUpgradeModel {
 }
 
 const PAGE_IDENTIFIER = 'membership-fee-upgrade';
-const pageData = new PageDataInitializer<MembershipFeeUpgradeModel>( '#appdata' );
+const pageData = new PageDataInitializer<MembershipFeeChangeModel>( '#appdata' );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 const store = createStore();
 
@@ -33,7 +33,7 @@ const app = createVueApp(
 		assetsPath: pageData.assetsPath,
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
-		page: MembershipFeeUpgrade,
+		page: MembershipFeeChange,
 		sidebar: SideBar,
 		pageTitle: 'membership_fee_upgrade_page_title',
 		pageProps: {

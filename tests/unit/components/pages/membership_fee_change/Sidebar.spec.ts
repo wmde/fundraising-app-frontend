@@ -1,9 +1,9 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import SideBar from '@src/components/pages/membership_fee_change/SideBar.vue';
+import Sidebar from '@src/components/pages/membership_fee_change/Sidebar.vue';
 
-describe( 'SideBar.vue', () => {
+describe( 'Sidebar.vue', () => {
 	const getWrapper = ( externalMemberId: number ): VueWrapper<any> => {
-		return mount( SideBar, {
+		return mount( Sidebar, {
 			props: {
 				externalMemberId,
 			},
