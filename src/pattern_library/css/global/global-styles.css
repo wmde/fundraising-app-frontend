@@ -261,7 +261,7 @@ a:not([class]):hover {
 
 ::selection {
 	color: var(--color-white);
-	background: var(--color-wikimedia-green);
+	background: var(--color-blue-600);
 }
 
 /* TODO: Think about how to handle margin bottom in a flow element */
@@ -337,6 +337,7 @@ input[role='combobox'] {
 	border: 1px solid var(--form-field-border-color, var(--color-grey-300));
 	position: relative;
 	background: var(--color-white);
+	cursor: pointer;
 }
 
 :is([type='checkbox'], [type='radio']):checked {
@@ -408,7 +409,7 @@ label:has(input) {
 	font-weight: var(--font-normal);
 }
 
-label:has([type='checkbox']:focus, [type='radio']:focus) {
+label:has([type='checkbox']:not([class]):focus, [type='radio']:not([class]):focus) {
 	--form-field-border-color: var(--color-blue-600);
 	outline: 2px solid var(--color-blue-600, currentColor);
 }
