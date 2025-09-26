@@ -5,6 +5,8 @@
 	align-items: center;
 	height: var(--toggle-size);
 	width: calc(var(--toggle-size) * 1.7);
+	margin-block: 0;
+	margin-inline: 0;
 	background-color: var(--color-grey-100);
 	border-radius: calc(var(--toggle-size) / 2);
 	transition: background-color 200ms var(--easing);
@@ -38,4 +40,5 @@
 label:not([class]):has(.toggle) {
 	display: flex;
 	align-items: center;
+	gap: var(--gutter);
 }

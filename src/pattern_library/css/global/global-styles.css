@@ -367,7 +367,7 @@ input[role='combobox'] {
 	border-radius: 50%;
 }
 
-[type='checkbox'] {
+[type='checkbox']:not([class]) {
 	margin: 0.2ex 0 0;
 	border-radius: 2px;
 }
