@@ -5,8 +5,7 @@
 		:payment-types="paymentTypes"
 	>
 		<template #error-summary>
-			<OptOutErrorSummary :show-error-summary="showErrorSummary" v-if="addressOptOut.addressOptIn.value === null" />
-			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" v-else/>
+			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" :receipt-model="receiptModel"/>
 		</template>
 	</PaymentSection>
 
@@ -26,8 +25,7 @@
 		:disabled-address-types="disabledAddressTypes"
 		:address-type="addressType"
 		:address-type-is-invalid="addressTypeIsInvalid"
-		:address-opt-out="addressOptOut"
-		@set-address-type="setAddressType( $event )"
+		:receipt-model="receiptModel"
 	/>
 
 	<ContentCard>
@@ -73,7 +71,6 @@
 	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
 		<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
 	</form>
-
 </template>
 
 <script setup lang="ts">
@@ -85,20 +82,19 @@ import type { AddressValidation } from '@src/view_models/Validation';
 import type { Salutation } from '@src/view_models/Salutation';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
-import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSectionAnonymousChoice.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSectionDonationReceiptCompact.vue';
 import IbanFields from '@src/components/shared/IbanFields.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import ErrorSummary from '@src/components/pages/donation_form/ErrorSummary.vue';
-import { default as OptOutErrorSummary } from '@src/components/pages/donation_form/AddressOptOut/ErrorSummary.vue';
-import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/useDonationFormSubmitHandler';
+import ErrorSummary from '@src/components/pages/donation_form/DonationReceipt/ErrorSummary.vue';
+import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/DonationReceipt/useDonationFormSubmitHandler';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
-import { useAddressOptOutModel } from '@src/components/pages/donation_form/AddressOptOut/useAddressOptOut';
+import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
 import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
@@ -135,18 +131,17 @@ const {
 	disabledAddressTypes,
 	addressType,
 	addressTypeIsInvalid,
-	setAddressType,
 } = useAddressTypeFunctions( store );
-const addressOptOut = useAddressOptOutModel( store );
+const receiptModel = useReceiptModel( store );
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
 const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHandler(
 	store,
-	addressType,
 	isDirectDebitPayment,
 	props.validateAddressUrl,
-	props.validateEmailUrl
+	props.validateEmailUrl,
+	receiptModel.receiptNeeded
 );
 
 const scrollToPaymentSection = () => {
