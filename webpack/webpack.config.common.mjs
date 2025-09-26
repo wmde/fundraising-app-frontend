@@ -22,6 +22,7 @@ const webpackConfig = {
 		'funds_usage': './src/pages/funds_usage.ts',
 		'membership_application': './src/pages/membership_application.ts',
 		'membership_application_confirmation': './src/pages/membership_application_confirmation.ts',
+		'membership_fee_change': './src/pages/membership_fee_change.ts',
 		'page_not_found': './src/pages/page_not_found.ts',
 		'static_page': './src/pages/static_page.ts',
 		'system_message': './src/pages/system_message.ts',

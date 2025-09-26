@@ -1,6 +1,5 @@
 import { FeeValidity } from '@src/view_models/MembershipFee';
-
-const maxCentAmount = 100_000_00;
+import { MEMBERSHIP_MAXIMUM_CENTS } from '@src/store/membership_fee/constants';
 
 export function validateFee( amount: number, minimumAmount: number ): FeeValidity {
 
@@ -8,7 +7,7 @@ export function validateFee( amount: number, minimumAmount: number ): FeeValidit
 		return FeeValidity.FEE_TOO_LOW;
 	}
 
-	if ( amount > maxCentAmount ) {
+	if ( amount > MEMBERSHIP_MAXIMUM_CENTS ) {
 		return FeeValidity.FEE_TOO_HIGH;
 	}
 

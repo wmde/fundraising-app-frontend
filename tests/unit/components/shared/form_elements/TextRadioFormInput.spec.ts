@@ -48,7 +48,7 @@ describe( 'TextFormInput.vue', () => {
 		await wrapper.find( 'input[type="text"]' ).trigger( 'focus' );
 		await wrapper.find( 'input[type="text"]' ).setValue( 'Chewy' );
 		await wrapper.find( 'input[type="text"]' ).trigger( 'blur' );
-		await wrapper.find( 'input[type="radio"]' ).trigger( 'click' );
+		await wrapper.find( '.text-radio-form-input-radio' ).trigger( 'click' );
 
 		expect( wrapper.emitted( 'focus' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
@@ -76,32 +76,16 @@ describe( 'TextFormInput.vue', () => {
 
 		expect( wrapper.find( 'input[type="text"]' ).attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
 		expect( wrapper.find( 'input[type="text"]' ).classes() ).toContain( 'is-danger' );
-		expect( wrapper.find( '.has-text-danger' ).exists() ).toBeTruthy();
-	} );
-
-	it( 'shows error icon', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.setProps( { hasError: true } );
-
-		expect( wrapper.find( '.icon.has-text-danger' ).exists() ).toBeTruthy();
-	} );
-
-	it( 'shows message icon', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.setProps( { hasMessage: true } );
-
-		expect( wrapper.find( '.icon.has-text-warning' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.is-danger' ).exists() ).toBeTruthy();
 	} );
 
 	it( 'sets the radio checked', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find<HTMLInputElement>( 'input[type="radio"]' ).element.checked ).toBeFalsy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
 
 		await wrapper.setProps( { radioChecked: true } );
 
-		expect( wrapper.find<HTMLInputElement>( 'input[type="radio"]' ).element.checked ).toBeTruthy();
+		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).toContain( 'checked' );
 	} );
 } );

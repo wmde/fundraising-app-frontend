@@ -15,7 +15,13 @@ jest.mock( 'vue-i18n', () => {
 		...jest.requireActual( 'vue-i18n' ),
 		useI18n: jest.fn().mockReturnValue( {
 			t: ( key: string, params?: Object ) => JSON.stringify( { key, ...params } ),
-			n: ( amount: string, params?: Object ) => JSON.stringify( { amount, ...params } ),
+			n: ( amount: string, keyOrOptions?: string | object ) => {
+				if ( typeof keyOrOptions === 'string' ) {
+					return `${amount}-${keyOrOptions}`;
+				}
+
+				return JSON.stringify( { amount, ...keyOrOptions } );
+			},
 		} ),
 	};
 } );
