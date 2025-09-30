@@ -25,7 +25,7 @@
 
 	<div class="content-card accordion" data-collapsable>
 		<details>
-			<summary tabindex="0">I am a details summary <span class="accordion__summary-meta"><ChevronDown/></span></summary>
+			<summary tabindex="0"><h2>I am a details summary</h2> <span class="accordion__summary-meta"><ChevronDown/></span></summary>
 			<div class="flow">
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores, autem beatae consectetur corporis distinctio earum eveniet fugit illum impedit molestias
 				   obcaecati officiis optio pariatur rerum sequi similique soluta sunt.</p>
