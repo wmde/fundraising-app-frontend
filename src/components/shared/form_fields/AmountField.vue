@@ -1,5 +1,5 @@
 <template>
-	<fieldset class="form-field form-field-amount" :class="[ `locale-${ $i18n.locale }`, { 'is-invalid': showError } ]">
+	<fieldset class="form-field form-field-amount" :class="[ `locale-${ $i18n.locale }`, { 'is-invalid': showError } ]" id="payment-form-amount">
 		<legend v-if="label" class="form-field-label">{{ label }}</legend>
 		<div class="form-field-help-text">
 			{{ $t( 'donation_form_payment_amount_help_text' ) }}

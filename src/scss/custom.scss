@@ -19,6 +19,10 @@ html {
 	}
 }
 
+* {
+	scroll-margin-top: 80px;
+}
+
 .is-form-input-width {
 	width: $fun-min-width !important;
 	@include from($tablet) {

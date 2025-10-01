@@ -1,5 +1,5 @@
 <template>
-	<div class="form-field form-field-iban" :class="[ 'form-field-text', { 'is-invalid': showError } ]">
+	<div class="form-field form-field-iban" :class="[ 'form-field-text', { 'is-invalid': showError } ]" id="payment-form-iban">
 		<label for="iban" class="form-field-label">
 			{{ label ?? $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
 		</label>

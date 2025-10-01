@@ -1,7 +1,6 @@
 <template>
 	<div class="payment-form">
-		<FormSection v-if="displaySections.includes( 'amount' )" id="payment-form-amount">
-			<ScrollTarget target-id="payment-form-amount-scroll-target"/>
+		<FormSection v-if="displaySections.includes( 'amount' )">
 			<AmountField
 				v-model="amount"
 				:label="$t('donation_form_payment_amount_title')"
@@ -14,7 +13,6 @@
 		<FormSection v-if="displaySections.includes( 'interval' )" id="payment-form-interval">
 			<RadioField
 				name="interval"
-				input-id="interval"
 				v-model="interval"
 				:label="$t('donation_form_payment_interval_title')"
 				:options="paymentIntervalsAsOptions"
@@ -25,7 +23,6 @@
 		</FormSection>
 
 		<FormSection v-if="displaySections.includes( 'paymentType' )" id="payment-form-type">
-			<ScrollTarget target-id="payment-form-type-scroll-target"/>
 			<RadioField
 				name="paymentType"
 				input-id="paymentType"
@@ -65,7 +62,6 @@ import type { CheckboxFormOption } from '@src/components/shared/form_fields/Form
 import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePaymentFieldModel';
 import { Validity } from '@src/view_models/Validity';
 import FormSection from '@src/components/shared/form_elements/FormSection.vue';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
 import { DisplaySectionCollection } from '@src/components/pages/donation_form/Payment';
 

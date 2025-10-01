@@ -1,9 +1,9 @@
 <template>
 	<div class="address-section">
 
-		<ScrollTarget target-id="address-type-scroll-target"/>
 		<RadioField
 			v-model="addressType"
+			id="address-form-type"
 			name="addressTypeSelector"
 			:options="[
 				{ value: AddressTypeModel.PERSON, label: $t( 'C24_WMDE_Desktop_DE_01_contact_details_private' ), id: 'addressType-0' },
@@ -15,10 +15,10 @@
 			alignment="row"
 		/>
 
-		<ScrollTarget target-id="company-name-scroll-target"/>
 		<TextField
 			v-if="addressType === AddressTypeModel.COMPANY_WITH_CONTACT"
 			name="companyName"
+			id="address-form-company-name"
 			input-id="company-name"
 			v-model="formData.companyName.value"
 			:show-error="showError.companyName"
@@ -29,11 +29,11 @@
 			@field-changed="$emit('field-changed', 'companyName')"
 		/>
 
-		<ScrollTarget target-id="country-scroll-target"/>
 		<CountryAutocompleteField
 			v-model="formData.country.value"
+			id="address-form-country"
 			input-id="country"
-			scroll-target-id="country-scroll-target"
+			scroll-target-id="address-form-country"
 			:countries="countries"
 			:was-restored="countryWasRestored"
 			:show-error="showError.country"
@@ -43,9 +43,9 @@
 			@field-changed="onCountryFieldChanged"
 		/>
 
-		<ScrollTarget target-id="post-code-scroll-target"/>
 		<TextField
 			name="postcode"
+			id="address-form-post-code"
 			input-id="post-code"
 			v-model="formData.postcode.value"
 			:show-error="showError.postcode"
@@ -62,11 +62,11 @@
 			/>
 		</TextField>
 
-		<ScrollTarget target-id="city-scroll-target"/>
 		<CityAutocompleteField
 			v-model="formData.city.value"
+			id="address-form-city"
 			input-id="city"
-			scroll-target-id="city-scroll-target"
+			scroll-target-id="address-form-city"
 			:show-error="showError.city"
 			:label="$t( 'donation_form_city_label' )"
 			:error-message="$t( 'donation_form_city_error' )"
@@ -81,11 +81,11 @@
 			/>
 		</CityAutocompleteField>
 
-		<ScrollTarget target-id="street-scroll-target"/>
 		<StreetAutocompleteField
+			id="address-form-street"
 			input-id-street-name="street"
 			input-id-building-number="building-number"
-			scroll-target-id="street-scroll-target"
+			scroll-target-id="address-form-street"
 			v-model="formData.street.value"
 			:postcode="formData.postcode.value"
 			:show-error="showError.street"
@@ -110,7 +110,6 @@ import CityAutocompleteField from '@src/components/shared/form_fields/CityAutoco
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 import type { Country } from '@src/view_models/Country';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { Validity } from '@src/view_models/Validity';
 
 interface Props {
