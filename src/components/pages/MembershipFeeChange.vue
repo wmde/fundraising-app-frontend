@@ -119,7 +119,7 @@ import type { BankAccountResponse } from '@src/view_models/BankAccount';
 import { FeeChangeRequest } from '@src/Domain/MembershipFeeChange/FeeChangeRequest';
 import { MembershipFeeChangeResource } from '@src/api/MembershipFeeChangeResource';
 import { FeeChangeResponse } from '@src/Domain/MembershipFeeChange/FeeChangeResponse';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import { Validity } from '@src/view_models/Validity';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import ErrorMessage from '@src/components/pages/membership_fee_change/ErrorMessage.vue';

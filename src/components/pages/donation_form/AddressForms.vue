@@ -34,10 +34,10 @@
 					</CheckboxSingleFormInput>
 				</div>
 
-				<ScrollTarget target-id="person-email-scroll-target"/>
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
+					id="person-address-form-email"
 					input-id="person-email"
 					@field-changed="onFieldChange"
 				>
@@ -86,10 +86,10 @@
 					</CheckboxSingleFormInput>
 				</div>
 
-				<ScrollTarget target-id="company-email-scroll-target"/>
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
+					id="company-address-form-email"
 					input-id="company-email"
 					@field-changed="onFieldChange"
 				>
@@ -121,10 +121,10 @@
 					v-on:field-changed="onFieldChange"
 				/>
 
-				<ScrollTarget target-id="email-email-scroll-target"/>
 				<EmailField
 					:show-error="fieldErrors.email"
 					v-model="formData.email.value"
+					id="email-address-form-email"
 					input-id="email-email"
 					@field-changed="onFieldChange"
 				>
@@ -162,7 +162,6 @@ import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeI
 import { Validity } from '@src/view_models/Validity';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { useStore } from 'vuex';
 import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 

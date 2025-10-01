@@ -1,4 +1,4 @@
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import { shallowMount, VueWrapper } from '@vue/test-utils';
 import { Validity } from '@src/view_models/Validity';
 import { nextTick } from 'vue';
@@ -77,26 +77,5 @@ describe( 'ErrorSummary.vue', () => {
 
 		expect( focusElement.focus ).toHaveBeenCalledWith( { preventScroll: true } );
 		expect( scrollElement.scrollIntoView ).toHaveBeenCalledWith( { behavior: 'auto' } );
-	} );
-
-	it( 'Focuses the the invalid field only when a summary item is clicked and no scroll item exists', async () => {
-		const element = { focus: jest.fn(), scrollIntoView: jest.fn() };
-		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: ( id: string ) => {
-			switch ( id ) {
-				case 'amount-500':
-					return element;
-				case 'payment-form-amount':
-					return null;
-				default:
-					return { scrollIntoView: () => {} };
-			}
-		} } );
-		const wrapper = getWrapper();
-
-		await wrapper.setProps( { isVisible: true } );
-		await nextTick();
-		await wrapper.find( '[href="#amount-500"]' ).trigger( 'click' );
-
-		expect( element.focus ).toHaveBeenCalledWith( { preventScroll: false } );
 	} );
 } );

@@ -1,8 +1,7 @@
 <template>
 	<div class="payment-section">
 		<form>
-			<FormSection>
-				<ScrollTarget target-id="payment-form-interval-scroll-target"/>
+			<FormSection id="payment-form-interval">
 				<RadioField
 					name="interval"
 					:label="$t('membership_form_payment_interval_title')"
@@ -33,7 +32,7 @@
 				</AmountField>
 			</FormSection>
 
-			<FormSection v-if="paymentTypes.length > 1">
+			<FormSection v-if="paymentTypes.length > 1" id="payment-form-type">
 				<RadioField
 					name="paymentType"
 					:label="$t('donation_form_payment_type_title')"
@@ -62,7 +61,6 @@ import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { FeeValidity } from '@src/view_models/MembershipFee';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import IbanFields from '@src/components/shared/IbanFields.vue';
 
 interface Props {

@@ -1,5 +1,5 @@
 <template>
-	<div class="form-field form-field-email" :class="{ 'is-invalid': showError }">
+	<div class="form-field form-field-email" :class="{ 'is-invalid': showError }" :id="id">
 		<label :for="inputId ?? 'email'" class="form-field-label">{{ $t( 'donation_form_email_label' ) }}</label>
 		<TextFormInput
 			input-type="text"
@@ -40,11 +40,13 @@ import { computed } from 'vue';
 interface Props {
 	modelValue: string;
 	showError: boolean;
+	id?: string;
 	inputId?: string;
 	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
+	id: 'address-form-email',
 	ariaDescribedby: '',
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
