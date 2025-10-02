@@ -307,18 +307,17 @@ label:has([type='radio']) {
 	border-radius: var(--border-radius);
 	background-color: var(--color-white);
 	color: var(--color-black);
-	width: 100%;
 	font-family: var(--font-base);
-	max-width: var(--form-field-max-width);
 	line-height: var(--leading-standard);
 }
 
-label:has([type='checkbox']) {
-	max-width: var(--form-field-max-width);
+label:has([type='radio']) {
+	inline-size: 100%;
 }
 
 select {
 	appearance: none;
+	min-width: 20ch;
 }
 
 select,
