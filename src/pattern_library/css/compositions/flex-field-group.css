@@ -1,0 +1,29 @@
+/*
+FLEX FIELD GROUP
+This composition allows fields to be laid out horizontally, break to
+new lines when needed, and then fill the available space.
+
+CUSTOM PROPERTIES AND CONFIGURATION
+[data-nowrap]: Use this when you want to prevent a field group from wrapping.
+*/
+.flex-field-group {
+	display: flex;
+	flex-wrap: var(--flex-field-group-wrap, wrap);
+	gap: var(--gutter, var(--space-l));
+}
+
+.flex-field-group > * {
+	flex-grow: 1;
+}
+
+.flex-field-group__mini-field {
+	flex-basis: min-content;
+}
+
+.flex-field-group__mini-fixed-width-field {
+	max-width: clamp(3rem, 6rem, 6rem);
+}
+
+.flex-field-group[data-nowrap] {
+	--flex-field-group-wrap: nowrap;
+}

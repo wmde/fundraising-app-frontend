@@ -2,20 +2,25 @@
 @import "variables/spacing.css";
 @import "variables/color.css";
 @import "variables/global.css";
+
 @import "global/reset.css";
 @import "global/fonts.css";
 @import "global/global-styles.css";
+
 @import "utilities/footer-bottom.css";
 @import "utilities/link-button.css";
 @import "utilities/sticky.css";
 @import "utilities/visually-hidden.css";
+
 @import "compositions/cluster.css";
 @import "compositions/flow.css";
+@import "compositions/flex-field-group.css";
 @import "compositions/grid.css";
 @import "compositions/repel.css";
 @import "compositions/sidebar.css";
 @import "compositions/switcher.css";
 @import "compositions/wrapper.css";
+
 @import "blocks/accordion.css";
 @import "blocks/alert-box.css";
 @import "blocks/button.css";
