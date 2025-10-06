@@ -69,7 +69,7 @@
 						v-model="formData.topic.value"
 						input-id="topic"
 						name="category"
-						:label="$t( 'contact_form_topic_placeholder' )"
+						:label="$t( 'contact_form_topic_label' )"
 						:options="[
 						{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
 						...Object.values( contactCategories ).map( ( value: string ) => ( { label: value, value: value } ) )
