@@ -5,11 +5,20 @@
 			<div class="content-card flow">
 				<div class="section-heading">
 					<h1>Donation Form</h1>
-					<h2>Your Payment Information</h2>
+					<h2>01. Your Payment Information</h2>
 					<hr>
 				</div>
 
-				<form action="" class="flow">
+				<template v-if="!changePayment">
+					<p>Your donation helps keep free knowledge accessible to everyone. Thank you!</p>
+
+					<div class="alert-box repel" data-neutral>
+						<p>You will donate: <strong>€5 yearly</strong> with <strong>Direct Debit</strong></p>
+						<button class="link-button" @click="changePayment = true">Change Payment</button>
+					</div>
+				</template>
+
+				<form v-else action="" class="flow">
 					<fieldset class="field-container flow" data-max-width data-error>
 						<legend>How much would you like to donate?</legend>
 						<p>Please choose an amount from the list or enter a custom amount below.</p>
@@ -109,19 +118,19 @@
 						<div class="field-container__radio-grid">
 							<div class="grid" data-layout="halves">
 								<label>
-									<input type="radio" name="payment-type" id="payment-type-dd">
+									<input type="radio" name="payment-type" id="payment-type-dd" value="dd" v-model="paymentType">
 									<span>Direct Debit</span>
 								</label>
 								<label>
-									<input type="radio" name="payment-type" id="payment-type-bt">
+									<input type="radio" name="payment-type" id="payment-type-bt" value="bt" v-model="paymentType">
 									<span>Bank Transfer</span>
 								</label>
 								<label>
-									<input type="radio" name="payment-type" id="payment-type-cc">
+									<input type="radio" name="payment-type" id="payment-type-cc" value="cc" v-model="paymentType">
 									<span>Credit Card</span>
 								</label>
 								<label>
-									<input type="radio" name="payment-type" id="payment-type-pp">
+									<input type="radio" name="payment-type" id="payment-type-pp" value="pp" v-model="paymentType">
 									<span>Paypal</span>
 								</label>
 							</div>
@@ -131,7 +140,7 @@
 				</form>
 			</div>
 
-			<div class="content-card flow">
+			<div class="content-card flow" v-if="paymentType == 'dd'">
 				<div class="section-heading">
 					<div class="repel" data-nowrap="">
 						<h2>Your Bank Details</h2>
@@ -196,7 +205,7 @@
 
 			<div class="content-card flow">
 				<div class="section-heading">
-					<h2>Your Personal Information</h2>
+					<h2>02. Your Personal Information</h2>
 					<hr>
 				</div>
 
@@ -272,95 +281,114 @@
 
 			<div class="content-card">
 				<div class="section-heading">
-					<h2>Your Address Information</h2>
+					<h2>03. Your Address Information</h2>
 					<p>Thank you for your support. You're almost there.</p>
 					<hr>
 				</div>
 				<form action="#" class="flow">
 
-					<div class="flex-field-group">
+					<div class="repel">
+						<p>One last step – then everything is complete.</p>
 						<div class="field-container flow">
-							<label for="country">Country</label>
-							<select name="country" id="country">
-								<option value="ie">Ireland</option>
-								<option value="de">Germany</option>
-								<option value="fr">France</option>
-								<option value="be">Belgium</option>
-								<option value="sw">Sweden</option>
-							</select>
-							<p class="field-container__error-text">You must select a number no larger than 3 and no smaller than 3</p>
-						</div>
-
-						<div class="field-container flow flex-field-group__mini-field">
-							<label for="postcode">Postcode</label>
-							<input type="text" name="postcode" id="postcode" placeholder="e.g., 25950">
-							<p class="field-container__error-text">Please enter a valid postcode.</p>
-						</div>
-
-						<div class="field-container flow">
-							<label for="city">City</label>
-							<input type="text" name="city" id="city" placeholder="e.g., Berlin">
-							<p class="field-container__error-text">Please enter a valid city.</p>
+							<label>
+								Spendenquittung
+								<input type="checkbox" name="receipt" class="toggle" id="receipt" v-model="showAddress">
+							</label>
 						</div>
 					</div>
 
-					<div class="flex-field-group" data-nowrap>
+					<template v-if="showAddress">
 						<div class="field-container flow">
-							<label for="street">Street Name</label>
-							<input type="text" name="street" id="street" placeholder="e.g., Sesame">
-							<p class="field-container__error-text">Please enter a valid street name.</p>
+							<label>
+								<input type="checkbox" name="is-company" id="is-company" v-model="isCompany">
+								<span>I'm donating on behalf of a company</span>
+							</label>
 						</div>
 
-						<div class="field-container flow flex-field-group__mini-fixed-width-field">
-							<label for="building-number">No</label>
-							<input type="text" name="building-number" id="building-number" placeholder="e.g., 42">
-							<p class="field-container__error-text">Please enter a valid building number.</p>
+						<div class="field-container flow" v-if="isCompany">
+							<label for="company">Company Name</label>
+							<input type="text" name="company" id="company" placeholder="e.g., ACME Inc">
+							<p class="field-container__error-text">Please enter a valid company name.</p>
 						</div>
-					</div>
 
-					<div class="field-container flow">
-						<label>
-							<input type="checkbox" name="receipt" id="receipt">
-							<span>I would like a donation receipt</span>
-						</label>
-					</div>
+						<div class="flex-field-group">
+							<div class="field-container flow">
+								<label for="country">Country</label>
+								<select name="country" id="country">
+									<option value="ie">Ireland</option>
+									<option value="de">Germany</option>
+									<option value="fr">France</option>
+									<option value="be">Belgium</option>
+									<option value="sw">Sweden</option>
+								</select>
+								<p class="field-container__error-text">You must select a number no larger than 3 and no smaller than 3</p>
+							</div>
+
+							<div class="field-container flow flex-field-group__mini-field">
+								<label for="postcode">Postcode</label>
+								<input type="text" name="postcode" id="postcode" placeholder="e.g., 25950">
+								<p class="field-container__error-text">Please enter a valid postcode.</p>
+							</div>
+
+							<div class="field-container flow">
+								<label for="city">City</label>
+								<input type="text" name="city" id="city" placeholder="e.g., Berlin">
+								<p class="field-container__error-text">Please enter a valid city.</p>
+							</div>
+						</div>
+
+						<div class="flex-field-group" data-nowrap>
+							<div class="field-container flow">
+								<label for="street">Street Name</label>
+								<input type="text" name="street" id="street" placeholder="e.g., Sesame">
+								<p class="field-container__error-text">Please enter a valid street name.</p>
+							</div>
+
+							<div class="field-container flow flex-field-group__mini-fixed-width-field">
+								<label for="building-number">No</label>
+								<input type="text" name="building-number" id="building-number" placeholder="e.g., 42">
+								<p class="field-container__error-text">Please enter a valid building number.</p>
+							</div>
+						</div>
+					</template>
 				</form>
 
 			</div>
 
-			<div class="content-card summary flow">
-				<div class="section-heading">
-					<h2>Your Donation Summary</h2>
-					<p>You will donate €42 monthly via Direct Debit</p>
-					<hr/>
-				</div>
-
-				<div class="summary__details switcher">
+			<div class="content-card flow accordion" data-collapsable>
+				<details>
+					<summary tabindex="0"><h2>Your Donation Summary</h2> <span class="accordion__summary-meta"><ChevronDown/></span></summary>
 					<div class="flow">
-						<h3>Your Contact Data</h3>
-						<p>
-							<strong>Joe Bloggs</strong><br/>
-							Any Street<br/>
-							23456 Some City<br/>
-							Germany<br/>
-							joebloggs@example.com
-						</p>
-					</div>
-					<div class="flow">
-						<h3>Your Bank Details</h3>
+						<p>You will donate €42 monthly via Direct Debit</p>
+						<div class="summary">
+							<div class="summary__details switcher">
+								<div class="flow">
+									<h3>Your Contact Data</h3>
+									<p>
+										<strong>Joe Bloggs</strong><br/>
+										Any Street<br/>
+										23456 Some City<br/>
+										Germany<br/>
+										joebloggs@example.com
+									</p>
+								</div>
+								<div class="flow">
+									<h3>Your Bank Details</h3>
 
-						<ul class="bankdata">
-							<li><strong>IBAN:</strong> DE1234 5678 1234 5678</li>
-							<li><strong>BIC:</strong> BS123</li>
-							<li><strong>Bank Name:</strong> Berliner Sparkasse</li>
-						</ul>
+									<ul class="bankdata">
+										<li><strong>IBAN:</strong> DE1234 5678 1234 5678</li>
+										<li><strong>BIC:</strong> BS123</li>
+										<li><strong>Bank Name:</strong> Berliner Sparkasse</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
+				</details>
+			</div>
 
-				<div class="switcher">
-					<button class="button" data-style-hollow data-size-fill-width>Change my payment details</button>
-					<button class="button" data-size-fill-width>Donate now</button>
-				</div>
+			<div>
+				<button class="button">Donate now</button>
 			</div>
 
 		</main>
@@ -398,6 +426,7 @@ import InfoIcon from '@src/components/shared/icons/InfoIcon.vue';
 import BankIcon from '@src/components/shared/icons/BankIcon.vue';
 import Close from '@src/pattern_library/components/icons/Close.vue';
 import { ref } from 'vue';
+import ChevronDown from '@src/components/shared/icons/ChevronDown.vue';
 
 interface Props {
 	content: Content;
@@ -405,7 +434,12 @@ interface Props {
 
 defineProps<Props>();
 
+const paymentType = ref<string>( '' );
 const ibanVisible = ref<boolean>( false );
 const ibanSubmitted = ref<boolean>( false );
+
+const changePayment = ref<boolean>( false );
+const showAddress = ref<boolean>( true );
+const isCompany = ref<boolean>( false );
 
 </script>
