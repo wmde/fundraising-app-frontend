@@ -1,0 +1,15 @@
+@use "../settings/colors";
+
+.toggle {
+	appearance: none;
+	cursor: pointer;
+	border: 1px solid colors.$gray-mid;
+}
+
+.toggle:checked {
+	background: colors.$primary;
+}
+
+.toggle:checked:not(:focus-visible) {
+	border-color: colors.$primary;
+}

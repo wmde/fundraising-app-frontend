@@ -37,4 +37,5 @@
 @import "blocks/site-head.css";
 @import "blocks/summary.css";
 @import "blocks/text-radio.css";
+@import "blocks/toggle.css";
 @import "blocks/verbose-checkbox.css";

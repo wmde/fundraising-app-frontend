@@ -40,6 +40,15 @@
 
 	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
 		<template #content>
+
+			<CheckboxToggle
+				v-model="receiptModel.receiptNeeded"
+				name="donation-receipt"
+				input-id="donation-receipt"
+			>
+				{{ $t( 'donation_confirmation_cta_title_alt' ) }}
+			</CheckboxToggle>
+
 			<ScrollTarget target-id="receipt-scroll-target"/>
 			<RadioField
 				v-model="receiptModel.receiptNeeded"
@@ -90,6 +99,7 @@ import { useStore } from 'vuex';
 import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
+import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
 
 interface Props {
 	countries: Country[];
