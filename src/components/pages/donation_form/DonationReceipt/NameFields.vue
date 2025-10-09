@@ -1,8 +1,8 @@
 <template>
 	<div class="name-section">
-		<ScrollTarget target-id="salutation-scroll-target"/>
 		<RadioField
 			name="salutation"
+			id="address-form-salutation"
 			v-model="formData.salutation.value"
 			:label="$t( 'donation_form_salutation_label' )"
 			:options="salutationFormOptions"
@@ -12,10 +12,10 @@
 			alignment="row"
 		/>
 
-		<ScrollTarget target-id="title-scroll-target"/>
 		<SelectField
 			name="title"
 			v-model="formData.title.value"
+			id="address-form-title"
 			input-id="title"
 			:label="$t( 'donation_form_academic_title_label' )"
 			:options="[
@@ -27,9 +27,9 @@
 			@field-changed="$emit('field-changed', 'title')"
 		/>
 
-		<ScrollTarget target-id="first-name-scroll-target"/>
 		<TextField
 			name="firstName"
+			id="address-form-first-name"
 			input-id="first-name"
 			v-model="formData.firstName.value"
 			:show-error="showError.firstName"
@@ -40,9 +40,9 @@
 			@field-changed="$emit('field-changed', 'firstName')"
 		/>
 
-		<ScrollTarget target-id="last-name-scroll-target"/>
 		<TextField
 			name="lastName"
+			id="address-form-last-name"
 			input-id="last-name"
 			v-model="formData.lastName.value"
 			:show-error="showError.lastName"
@@ -72,7 +72,6 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	salutations: Salutation[];

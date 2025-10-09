@@ -1,5 +1,4 @@
 <template>
-	<ScrollTarget target-id="payment-section-top-scroll-target"/>
 	<ContentCard>
 		<template #heading>
 			<h1 id="donation-form-heading">{{ $t( 'donation_form_heading' ) }}</h1>
@@ -50,7 +49,6 @@
 
 <script setup lang="ts">
 import Payment from '@src/components/pages/donation_form/Payment.vue';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { ref } from 'vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import { useStore } from 'vuex';

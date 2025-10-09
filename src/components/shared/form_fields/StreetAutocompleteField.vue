@@ -1,5 +1,5 @@
 <template>
-	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
+	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }" :id="id">
 		<label :for="inputIdStreetName" class="form-field-label">{{ $t( 'donation_form_street_name_label' ) }}</label>
 		<div class="form-field-autocomplete-container">
 			<TextFormInput
@@ -89,6 +89,7 @@ enum InteractionState {
 }
 
 interface Props {
+	id?: string;
 	inputIdStreetName: string;
 	inputIdBuildingNumber: string;
 	scrollTargetId: string;

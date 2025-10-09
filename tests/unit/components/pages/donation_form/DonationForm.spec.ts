@@ -9,6 +9,7 @@ import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/Succ
 import { IBAN } from '@test/data/bankdata';
 import { action } from '@src/store/util';
 import { Store } from 'vuex';
+import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
 
 jest.mock( 'axios' );
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -20,14 +21,6 @@ declare global {
 		}
 	}
 }
-
-const errorSummaryItemIsFunctional = ( wrapper: VueWrapper<any>, formElement: string, scrollElement: string ): boolean => {
-	const errorItemExists = wrapper.find( `.error-summary a[href="#${formElement}"]` ).exists();
-	const formElementExists = wrapper.find( `#${formElement}` ).exists();
-	const scrollElementExists = wrapper.find( `#${scrollElement}` ).exists();
-
-	return errorItemExists && formElementExists && scrollElementExists;
-};
 
 // This is so the error summary scrollIntoView doesn't throw errors
 const errorSummaryScrollElement = { scrollIntoView: () => {} };
@@ -127,7 +120,7 @@ describe( 'DonationForm.vue', () => {
 		await nextTick();
 		await nextTick();
 
-		expect( errorSummaryItemIsFunctional( wrapper, 'paymentType-0', 'payment-form-type-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'paymentType-0', 'payment-form-type' ) ).toBeTruthy();
 
 		// Make the IBAN field appear
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
@@ -136,17 +129,18 @@ describe( 'DonationForm.vue', () => {
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'addressType-0', 'address-type-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-salutation-0', 'person-salutation-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-first-name', 'person-first-name-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-last-name', 'person-last-name-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-street', 'person-street-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-post-code', 'person-post-code-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-city', 'person-city-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-country', 'person-country-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-email', 'person-email-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'addressType-0', 'address-form-type' ) ).toBeTruthy();
+
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-salutation-0', 'person-address-form-salutation' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-first-name', 'person-address-form-first-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-last-name', 'person-address-form-last-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-street', 'person-address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-post-code', 'person-address-form-post-code' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-city', 'person-address-form-city' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-country', 'person-address-form-country' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-email', 'person-address-form-email' ) ).toBeTruthy();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="addressType"][value="0"]' ).trigger( 'change' );
@@ -193,7 +187,7 @@ describe( 'DonationForm.vue', () => {
 		await nextTick();
 		await nextTick();
 
-		expect( errorSummaryItemIsFunctional( wrapper, 'paymentType-0', 'payment-form-type-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'paymentType-0', 'payment-form-type' ) ).toBeTruthy();
 
 		// Make the IBAN field appear
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
@@ -202,16 +196,16 @@ describe( 'DonationForm.vue', () => {
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-salutation-0', 'person-salutation-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-first-name', 'person-first-name-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-last-name', 'person-last-name-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-street', 'person-street-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-post-code', 'person-post-code-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-city', 'person-city-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-country', 'person-country-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'person-email', 'person-email-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-salutation-0', 'person-address-form-salutation' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-first-name', 'person-address-form-first-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-last-name', 'person-address-form-last-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-street', 'person-address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-post-code', 'person-address-form-post-code' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-city', 'person-address-form-city' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-country', 'person-address-form-country' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'person-email', 'person-address-form-email' ) ).toBeTruthy();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="salutation"][value="Mr"]' ).trigger( 'change' );
@@ -257,7 +251,7 @@ describe( 'DonationForm.vue', () => {
 		await nextTick();
 		await nextTick();
 
-		expect( errorSummaryItemIsFunctional( wrapper, 'paymentType-0', 'payment-form-type-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'paymentType-0', 'payment-form-type' ) ).toBeTruthy();
 
 		// Make the IBAN field appear
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
@@ -266,14 +260,14 @@ describe( 'DonationForm.vue', () => {
 		await nextTick();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'company-company-name', 'company-company-name-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'company-street', 'company-street-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'company-post-code', 'company-post-code-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'company-city', 'company-city-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'company-country', 'company-country-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'company-email', 'company-email-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'company-company-name', 'company-address-form-company-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'company-street', 'company-address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'company-post-code', 'company-address-form-post-code' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'company-city', 'company-address-form-city' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'company-country', 'company-address-form-country' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'company-email', 'company-address-form-email' ) ).toBeTruthy();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="PPL"]' ).trigger( 'change' );
@@ -314,8 +308,8 @@ describe( 'DonationForm.vue', () => {
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount-scroll-target' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'paymentType-0', 'payment-form-type-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'paymentType-0', 'payment-form-type' ) ).toBeTruthy();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="PPL"]' ).trigger( 'change' );
@@ -480,7 +474,7 @@ describe( 'DonationForm.vue', () => {
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'iban-scroll-target' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban' ) ).toBeTruthy();
 
 		await wrapper.find( '#iban' ).setValue( IBAN );
 		await wrapper.find( '#iban' ).trigger( 'blur' );

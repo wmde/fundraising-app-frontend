@@ -32,33 +32,46 @@
 
 					<MailingListField v-model="mailingList" input-id="newsletter"/>
 
-					<RadioField
-						id="address-form-receipt"
-						v-model="receiptModel.receiptNeeded"
-						name="donationReceipt"
-						:options="[
-							{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
-							{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
-						]"
-						:label="$t( 'donation_confirmation_cta_title_alt' )"
-						:show-error="receiptModel.showReceiptOptionError"
-						:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
-						alignment="row"
-						aria-describedby="donation-receipt-help-text"
-					>
-					</RadioField>
-
-					<AddressFields
-						v-if="receiptModel.receiptNeeded"
-						:show-error="fieldErrors"
-						:form-data="formData"
-						:countries="countries"
-						:post-code-validation="addressValidationPatterns.postcode"
-						@field-changed="onFieldChange"
-					/>
-
 				</AutofillHandler>
 			</form>
+		</template>
+	</ContentCard>
+
+	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
+		<template #content>
+
+			<CheckboxToggle
+				v-model="receiptModel.receiptNeeded"
+				name="donation-receipt"
+				input-id="donation-receipt"
+			>
+				{{ $t( 'donation_confirmation_cta_title_alt' ) }}
+			</CheckboxToggle>
+
+			<ScrollTarget target-id="receipt-scroll-target"/>
+			<RadioField
+				v-model="receiptModel.receiptNeeded"
+				name="donationReceipt"
+				:options="[
+					{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
+					{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
+				]"
+				:label="$t( 'donation_confirmation_cta_title_alt' )"
+				:show-error="receiptModel.showReceiptOptionError"
+				:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
+				alignment="row"
+				aria-describedby="donation-receipt-help-text"
+			>
+			</RadioField>
+
+			<AddressFields
+				v-if="receiptModel.receiptNeeded"
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:countries="countries"
+				:post-code-validation="addressValidationPatterns.postcode"
+				@field-changed="onFieldChange"
+			/>
 		</template>
 	</ContentCard>
 </template>
@@ -84,6 +97,7 @@ import type { ReceiptModel } from '@src/components/pages/donation_form/DonationR
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
+import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
 
 interface Props {
 	countries: Country[];

@@ -14,8 +14,6 @@
 			:class="{ 'visible': showCalculator }"
 			:style="{ '--iban-calculator-page-transition' : calculatorPageTransitionMilliseconds + 'ms' }"
 		>
-			<ScrollTarget target-id="iban-calculator-scroll-target"/>
-
 			<div class="iban-calculator-content">
 				<div class="title">
 					<IconText :is-small-heading="true">
@@ -60,13 +58,13 @@
 									validity: accountNumberError ? Validity.INVALID : Validity.VALID,
 									message: $t( 'donation_form_account_number_error' ),
 									focusElement: 'account-number',
-									scrollElement: 'iban-calculator-scroll-target'
+									scrollElement: 'iban-calculator'
 								},
 								{
 									validity: bankCodeError ? Validity.INVALID : Validity.VALID,
 									message: $t( 'donation_form_bank_code_error' ),
 									focusElement: 'bank-code',
-									scrollElement: 'iban-calculator-scroll-target'
+									scrollElement: 'iban-calculator'
 								}
 							]"/>
 
@@ -103,7 +101,6 @@
 		</form>
 
 		<form class="iban-form" @submit.prevent="() => {}">
-			<ScrollTarget target-id="iban-scroll-target"/>
 			<IbanField
 				v-model="iban"
 				:bank-name="bankName"
@@ -118,11 +115,10 @@
 <script setup lang="ts">
 
 import { Validity } from '@src/view_models/Validity';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import IbanField from '@src/components/shared/form_fields/IbanField.vue';
 import ButtonLink from '@src/components/shared/ButtonLink.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import BankIcon from '@src/components/shared/icons/BankIcon.vue';
 import CloseIcon from '@src/components/shared/icons/CloseIcon.vue';

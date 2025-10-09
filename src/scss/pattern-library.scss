@@ -11,6 +11,7 @@
 @use "../pattern_library/css/blocks/accordion.css";
 @use "../pattern_library/css/blocks/alert-box.css";
 @use "../pattern_library/css/blocks/field-container.css" as fieldContainerBase;
+@use "../pattern_library/css/blocks/toggle.css" as toggleBase;
 @use "pattern-library-compatibility/content-card";
 @use "pattern-library-compatibility/field-container";
 @use "pattern-library-compatibility/icon-text";
@@ -18,10 +19,21 @@
 @use "pattern-library-compatibility/site-head";
 @use "pattern-library-compatibility/summary";
 @use "pattern-library-compatibility/switcher";
+@use "pattern-library-compatibility/toggle";
 @use "pattern-library-compatibility/wrapper";
 @use "pattern-library-compatibility/button";
 
 :root {
+	/* Colours */
+	--color-white: #{colors.$white};
+	--color-black: #{colors.$black};
+	--color-grey-100: #{colors.$gray-lighter};
+	--color-grey-200: #e5e5e5;
+	--color-grey-300: #{colors.$gray-mid};
+	--color-blue-600: #{colors.$primary};
+	--color-blue-200: #{colors.$primary-pale};
+	--color-red-700: #{colors.$error};
+
 	--wrapper-max-width: calc(960px + var(--gutter) + var(--gutter));
 	--sidebar-content-min-width: 55%;
 	--sidebar-target-width: 300px;
@@ -60,11 +72,4 @@
 	--space-s-xl: #{map.get( units.$spacing, 'large' )};
 	--space-xs-l: #{map.get( units.$spacing, 'medium' )};
 	--space-0-s: #{map.get( units.$spacing, 'x-small' )};
-
-	/* Colours */
-	--color-blue-600: #{colors.$primary};
-	--color-blue-200: #{colors.$primary-pale};
-	--color-white: #{colors.$white};
-	--color-grey-200: #e5e5e5;
-	--color-red-700: #{colors.$error};
 }

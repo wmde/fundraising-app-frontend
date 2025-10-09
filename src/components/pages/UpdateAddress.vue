@@ -12,49 +12,49 @@
 						validity: store.state.address.validity.companyName,
 						message: $t( 'donation_form_companyname_error' ),
 						focusElement: 'company-name',
-						scrollElement: 'company-name-scroll-target'
+						scrollElement: 'address-form-company-name',
 					},
 					{
 						validity: store.state.address.validity.salutation,
 						message: $t( 'donation_form_salutation_error' ),
 						focusElement: 'salutation-0',
-						scrollElement: 'salutation-scroll-target'
+						scrollElement: 'address-form-salutation',
 					},
 					{
 						validity: store.state.address.validity.firstName,
 						message: $t( 'donation_form_firstname_error' ),
 						focusElement: 'first-name',
-						scrollElement: 'first-name-scroll-target'
+						scrollElement: 'address-form-first-name',
 					},
 					{
 						validity: store.state.address.validity.lastName,
 						message: $t( 'donation_form_lastname_error' ),
 						focusElement: 'last-name',
-						scrollElement: 'last-name-scroll-target'
+						scrollElement: 'address-form-last-name',
 					},
 					{
 						validity: store.state.address.validity.street,
 						message: $t( 'donation_form_street_error' ),
 						focusElement: 'street',
-						scrollElement: 'street-scroll-target'
+						scrollElement: 'address-form-street',
 					},
 					{
 						validity: store.state.address.validity.postcode,
 						message: $t( 'donation_form_zip_error' ),
 						focusElement: 'post-code',
-						scrollElement: 'post-code-scroll-target'
+						scrollElement: 'address-form-post-code',
 					},
 					{
 						validity: store.state.address.validity.city,
 						message: $t( 'donation_form_city_error' ),
 						focusElement: 'city',
-						scrollElement: 'city-scroll-target'
+						scrollElement: 'address-form-city',
 					},
 					{
 						validity: store.state.address.validity.country,
 						message: $t( 'donation_form_country_error' ),
 						focusElement: 'country',
-						scrollElement: 'country-scroll-target'
+						scrollElement: 'address-form-country',
 					},
 				]"
 			/>
@@ -119,7 +119,7 @@ import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue'
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import ServerMessage from '@src/components/shared/ServerMessage.vue';
 import { addressTypeName } from '@src/view_models/AddressTypeModel';
 import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';

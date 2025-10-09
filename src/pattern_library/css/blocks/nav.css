@@ -5,6 +5,7 @@
 	top: 100%;
 	left: 0;
 	width: 100%;
+	background-color: var(--color-white);
 	box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -18,7 +19,6 @@
 	display: block;
 	border-bottom: 2px solid transparent;
 	padding-inline: var(--space-xs-s);
-	background-color: var(--color-white);
 }
 
 .nav a:hover,
