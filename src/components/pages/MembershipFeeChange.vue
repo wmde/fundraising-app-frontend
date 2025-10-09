@@ -46,6 +46,7 @@
 					:error-message="feeErrorMessage"
 					@custom-amount-changed="validateAmount"
 					@suggested-selected="isFeeValid = true"
+					data-max-width
 				/>
 
 				<div class="field-container flow" :data-error="isMemberNameValid ? null : true">
@@ -65,6 +66,7 @@
 						} )"
 						@field-changed="validateMemberName"
 						@blur="validateMemberName"
+						data-max-width
 					/>
 				</div>
 			</template>
@@ -85,6 +87,7 @@
 									:bic="bic"
 									@blur="validateIban"
 									@input="onIbanInput"
+									data-max-width
 								/>
 							</div>
 						</template>

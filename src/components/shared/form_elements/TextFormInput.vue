@@ -1,50 +1,38 @@
 <template>
-	<div class="control text-form-input" :class="{ 'has-icons-right': hasError || hasMessage, 'is-disabled': disabled }">
-		<input
-			v-if="inputType === 'text'"
-			:name="name"
-			v-model="inputModel"
-			class="input"
-			:id="inputId"
-			:class="{ 'is-danger': hasError }"
-			type="text"
-			:autocomplete="autocomplete"
-			:autofocus="autofocus"
-			:placeholder="placeholder"
-			:disabled="disabled"
-			:required="required"
-			:aria-invalid="hasError"
-			:aria-describedby="ariaDescribedby"
-			:aria-autocomplete="ariaAutocomplete"
-			@blur="onBlur"
-			@focus="onFocus"
-			@input="onInput"
-		/>
-		<textarea
-			v-if="inputType === 'textarea'"
-			:name="name"
-			v-model="inputModel"
-			class="textarea"
-			:id="inputId"
-			:class="{ 'is-danger': hasError }"
-			:autocomplete="autocomplete"
-			:autofocus="autofocus"
-			:placeholder="placeholder"
-			:disabled="disabled"
-			:required="required"
-			:aria-invalid="hasError"
-			:aria-describedby="ariaDescribedby"
-			@blur="onBlur"
-			@focus="onFocus"
-			@input="onInput"
-		/>
-		<span v-if="hasError" class="icon is-right has-text-danger">
-			<i class="mdi mdi-alert-circle mdi-24px"></i>
-		</span>
-		<span v-if="hasMessage" class="icon is-right has-text-warning">
-			<i class="mdi mdi-alert mdi-24px"></i>
-		</span>
-	</div>
+	<input
+		v-if="inputType === 'text'"
+		:name="name"
+		v-model="inputModel"
+		:id="inputId"
+		type="text"
+		:autocomplete="autocomplete"
+		:autofocus="autofocus"
+		:placeholder="placeholder"
+		:disabled="disabled"
+		:required="required"
+		:aria-invalid="hasError"
+		:aria-describedby="ariaDescribedby"
+		:aria-autocomplete="ariaAutocomplete"
+		@blur="onBlur"
+		@focus="onFocus"
+		@input="onInput"
+	/>
+	<textarea
+		v-if="inputType === 'textarea'"
+		:name="name"
+		v-model="inputModel"
+		:id="inputId"
+		:autocomplete="autocomplete"
+		:autofocus="autofocus"
+		:placeholder="placeholder"
+		:disabled="disabled"
+		:required="required"
+		:aria-invalid="hasError"
+		:aria-describedby="ariaDescribedby"
+		@blur="onBlur"
+		@focus="onFocus"
+		@input="onInput"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -73,7 +61,7 @@ const props = withDefaults( defineProps<Props>(), {
 	disabled: false,
 	required: false,
 } );
-const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur', 'input' ] );
+const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur', 'input', 'keyup', 'keydown' ] );
 
 const inputModel = useInputModel<string | number>( () => props.modelValue, props.modelValue, emit );
 

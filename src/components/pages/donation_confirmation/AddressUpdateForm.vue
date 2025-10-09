@@ -1,5 +1,5 @@
 <template>
-	<form id="address-update-form" name="address-update-form" v-on:submit.prevent="submit" method="post" ref="addressForm">
+	<form id="address-update-form" class="flow" name="address-update-form" v-on:submit.prevent="submit" method="post" ref="addressForm">
 		<AddressUpdateFormErrorSummaries :address-type="addressType" :show-error-summary="showErrorSummary"/>
 
 		<AutofillHandler v-on:autofill="onAutofill">
@@ -68,24 +68,22 @@
 
 		<MailingListField v-model="mailingList" input-id="newsletter"/>
 
-		<FormSummary :show-border="false">
-			<template #summary-buttons>
-				<FormButton
-					id="previous-btn"
-					:is-outlined="true"
-					@click="$emit( 'close' )"
-				>
-					{{ $t( 'donation_confirmation_address_update_cancel' ) }}
-				</FormButton>
-				<FormButton
-					id="submit-btn"
-					:is-loading="isValidating"
-					button-type="submit"
-				>
-					{{ $t( 'donation_confirmation_address_update_confirm' ) }}
-				</FormButton>
-			</template>
-		</FormSummary>
+		<div class="switcher">
+			<FormButton
+				id="previous-btn"
+				:is-outlined="true"
+				@click="$emit( 'close' )"
+			>
+				{{ $t( 'donation_confirmation_address_update_cancel' ) }}
+			</FormButton>
+			<FormButton
+				id="submit-btn"
+				:is-loading="isValidating"
+				button-type="submit"
+			>
+				{{ $t( 'donation_confirmation_address_update_confirm' ) }}
+			</FormButton>
+		</div>
 
 		<ServerMessage :server-message="serverErrorMessage"/>
 
@@ -109,7 +107,6 @@ import type { DonorResource } from '@src/api/DonorResource';
 import { useStore } from 'vuex';
 import type { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import FormSummary from '@src/components/shared/FormSummary.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';

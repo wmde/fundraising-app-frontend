@@ -7,7 +7,7 @@
 
 		<p>Please bear in mind that this is as simple an example as possible. You will have different requirements when implementing one of these for production so this is not an entire solution but will only be your starting point.</p>
 
-		<div class="field-container flow">
+		<div class="field-container flow" data-max-width>
 			<label for="country">Country</label>
 			<div class="combobox">
 				<input
@@ -26,7 +26,7 @@
 					@keydown.up.prevent="onArrowKeys( 'up' )"
 					@keydown.down.prevent="onArrowKeys( 'down' )"
 					@keydown.tab="onKeySubmit"
-					@keydown.enter="onKeySubmit"
+					@keydown.enter.prevent="onKeySubmit"
 				>
 				<div ref="scroller" id="countries" tabindex="-1" role="listbox" aria-label="countries">
 					<template v-for="(countryOption, index) in filteredCountries" :key="index">
