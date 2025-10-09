@@ -1,36 +1,38 @@
 <template>
-	<fieldset class="form-field form-field-radio" :class="[ alignment + '-alignment', { 'is-invalid': showError } ]" >
-		<legend v-if="label" class="form-field-label">{{ label }}</legend>
-		<slot name="intro-message"></slot>
-		<div class="control form-field-radio-container">
-			<RadioFormInput
-				v-for="( option, index ) in options"
-				:key="index"
-				input-type="radio"
-				:id="option.id"
-				:name="name"
-				:disabled="disabled.includes( option.value )"
-				:required="required"
-				:native-value="option.value"
-				:aria-describedby="ariaDescribedby"
-				:aria-invalid="showError"
-				v-model="fieldModel"
-				:autofocus="autofocus"
-				@update:modelValue="onFieldChange"
-			>
-				<template #label>
-					{{ option.label }}
-				</template>
-				<template #help-text>
-					<slot :name="`message-${option.value}`"/>
-				</template>
-				<template #tooltip>
-					<slot :name="`tooltip-${option.value}`"/>
-				</template>
-			</RadioFormInput>
-		</div>
-		<span v-if="showError" class="help is-danger" :id="`${name}-error-message`">{{ errorMessage }}</span>
-	</fieldset>
+	<FieldContainer :input-id="name" :show-error="showError" type="fieldset">
+		<template #label>{{ label }}</template>
+		<template #help-text><slot name="intro-message"/></template>
+		<template #field>
+			<div :class="layoutType" :data-layout="gridLayout">
+				<RadioFormInput
+					v-for="( option, index ) in options"
+					:key="index"
+					:id="option.id"
+					:name="name"
+					:disabled="disabled.includes( option.value )"
+					:native-value="option.value"
+					:aria-describedby="ariaDescribedby"
+					:aria-invalid="showError"
+					v-model="fieldModel"
+					:autofocus="autofocus"
+					@update:modelValue="onFieldChange"
+				>
+					<template #label>
+						{{ option.label }}
+					</template>
+					<template #help-text>
+						<slot :name="`message-${option.value}`"/>
+					</template>
+					<template #tooltip>
+						<slot :name="`tooltip-${option.value}`"/>
+					</template>
+				</RadioFormInput>
+			</div>
+		</template>
+		<template #error>
+			{{ errorMessage }}
+		</template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
@@ -39,6 +41,7 @@ import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import { computed } from 'vue';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 interface Props {
 	label?: String;
@@ -46,17 +49,18 @@ interface Props {
 	modelValue: string | number | boolean | null;
 	options: CheckboxFormOption[];
 	disabled?: Array<string | number | boolean>;
-	required?: boolean;
 	showError?: boolean;
 	errorMessage?: String;
-	alignment: 'row' | 'column' | 'twocolumnsperrow';
+	layoutType?: 'cluster' | 'grid';
+	gridLayout?: 'full' | '50-50' | 'halves' | 'thirds' | 'quarters';
 	autofocus?: boolean;
 	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	disabled: () => [],
-	required: false,
+	layoutType: 'grid',
+	gridLayout: 'full',
 	showError: false,
 	ariaDescribedby: '',
 } );
@@ -64,7 +68,7 @@ const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const ariaDescribedby = useAriaDescribedby(
 	computed<string>( () => props.ariaDescribedby ),
-	`${props.name}-error-message`,
+	`${props.name}-error`,
 	computed<boolean>( () => props.showError )
 );
 const fieldModel = useFieldModel<string | number | boolean | null>( () => props.modelValue, props.modelValue );

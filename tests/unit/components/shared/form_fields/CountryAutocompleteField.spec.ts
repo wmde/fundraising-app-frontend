@@ -68,7 +68,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 
 		await field.trigger( 'focus' );
 
-		expect( wrapper.find( '.dropdown-menu' ).isVisible() ).toBeTruthy();
+		expect( wrapper.find( '[role="listbox"]' ).isVisible() ).toBeTruthy();
 	} );
 
 	it( 'hides the autocomplete when the input field is blurred', async () => {
@@ -80,7 +80,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 
 		await jest.runAllTimersAsync();
 
-		expect( wrapper.find( '.dropdown-menu' ).isVisible() ).toBeFalsy();
+		expect( wrapper.find( '[role="listbox"]' ).isVisible() ).toBeFalsy();
 	} );
 
 	it( 'emits the field changed event when the input field is blurred', async () => {
@@ -118,7 +118,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.trigger( 'focus' );
-		await wrapper.find( '.dropdown-item:nth-of-type(3)' ).trigger( 'click' );
+		await wrapper.find( '[role="listbox"] button:nth-of-type(3)' ).trigger( 'click' );
 
 		expect( field.element.value ).toBe( countries[ 2 ].countryFullName );
 	} );
@@ -130,7 +130,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.trigger( 'focus' );
-		await wrapper.find( '.dropdown-item:nth-of-type(3)' ).trigger( 'click' );
+		await wrapper.find( '[role="listbox"] button:nth-of-type(3)' ).trigger( 'click' );
 
 		await jest.runAllTimersAsync();
 
@@ -160,7 +160,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 		const field = wrapper.find<HTMLInputElement>( '#country' );
 
 		await field.trigger( 'focus' );
-		await wrapper.find( '.dropdown-item:nth-of-type(3)' ).trigger( 'click' );
+		await wrapper.find( '[role="listbox"] button:nth-of-type(3)' ).trigger( 'click' );
 		await field.trigger( 'blur' );
 		await field.trigger( 'focus' );
 
@@ -173,11 +173,11 @@ describe( 'CountryAutocompleteField.vue', () => {
 
 		await field.trigger( 'focus' );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(3)' ).classes() ).toContain( 'dropdown-divider' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(3)' ).element.nodeName ).toStrictEqual( 'HR' );
 
 		await field.setValue( 'Aus' );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(2)' ).classes() ).toContain( 'dropdown-divider' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(2)' ).element.nodeName ).toStrictEqual( 'HR' );
 	} );
 
 	it( 'hides the list divider when there are only frequent countries in the list', async () => {
@@ -186,7 +186,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 
 		await field.setValue( 'Austria' );
 
-		expect( wrapper.find( '.dropdown-content > .dropdown-divider' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '[role="listbox"] > hr' ).exists() ).toBeFalsy();
 	} );
 
 	it( 'hides the list divider when there are only infrequent countries in the list', async () => {
@@ -195,7 +195,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 
 		await field.setValue( 'Ireland' );
 
-		expect( wrapper.find( '.dropdown-content > .dropdown-divider' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '[role="listbox"] > hr' ).exists() ).toBeFalsy();
 	} );
 
 	it( 'highlights countries on the list on keyboard up and down', async () => {
@@ -205,21 +205,25 @@ describe( 'CountryAutocompleteField.vue', () => {
 		await field.trigger( 'focus' );
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(1)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'country-DE' );
 
 		await field.trigger( 'keydown', { key: 'ArrowUp' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(1)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'country-DE' );
 
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(5)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(5)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'country-AUS' );
 
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(5)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(5)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'country-AUS' );
 	} );
 
 	it( 'sets the field value when the donor presses submit while navigating the list', async () => {

@@ -1,54 +1,46 @@
 <template>
-	<div class="payment-section">
-		<form>
-			<FormSection id="payment-form-interval">
-				<RadioField
-					name="interval"
-					:label="$t('membership_form_payment_interval_title')"
-					v-model="interval"
-					:options="paymentIntervalsAsOptions"
-					:required="true"
-					:disabled="[]"
-					:show-error="!intervalIsValid"
-					:error-message="$t('membership_form_interval_error')"
-					alignment="column"
-				/>
-			</FormSection>
+	<RadioField
+		name="interval"
+		id="payment-form-interval"
+		:label="$t('membership_form_payment_interval_title')"
+		v-model="interval"
+		:options="paymentIntervalsAsOptions"
+		:disabled="[]"
+		:show-error="!intervalIsValid"
+		:error-message="$t('membership_form_interval_error')"
+		data-max-width
+	/>
 
-			<FormSection>
-				<AmountField
-					v-model="fee"
-					:label="getAmountTitle"
-					:payment-amounts="paymentAmounts"
-					:error-message="feeErrorMessage"
-					:show-error="!feeIsValid"
-					:minimum-amount="minimumAmount"
-					:minimum-amount-message="$t('membership_form_payment_amount_description')"
-					aria-describedby="cap-notice"
-				>
-					<template #info-message>
-						<span id="cap-notice">{{ $t('membership_form_payment_amount_cap_notice') }}</span>
-					</template>
-				</AmountField>
-			</FormSection>
+	<AmountField
+		v-model="fee"
+		:label="getAmountTitle"
+		:payment-amounts="paymentAmounts"
+		:error-message="feeErrorMessage"
+		:show-error="!feeIsValid"
+		:minimum-amount="minimumAmount"
+		:minimum-amount-message="$t('membership_form_payment_amount_description')"
+		aria-describedby="cap-notice"
+	>
+		<template #message>
+			<span id="cap-notice">{{ $t('membership_form_payment_amount_cap_notice') }}</span>
+		</template>
+	</AmountField>
 
-			<FormSection v-if="paymentTypes.length > 1" id="payment-form-type">
-				<RadioField
-					name="paymentType"
-					:label="$t('donation_form_payment_type_title')"
-					v-model="paymentType"
-					:options="paymentTypesAsOptions"
-					:required="true"
-					:disabled="[]"
-					alignment="column"
-					:show-error="!paymentTypeIsValid"
-					:error-message="$t('membership_form_payment_type_error')"
-				/>
-			</FormSection>
-		</form>
+	<template v-if="paymentTypes.length > 1">
+		<RadioField
+			name="paymentType"
+			id="payment-form-type"
+			:label="$t('donation_form_payment_type_title')"
+			v-model="paymentType"
+			:options="paymentTypesAsOptions"
+			:disabled="[]"
+			:show-error="!paymentTypeIsValid"
+			:error-message="$t('membership_form_payment_type_error')"
+			data-max-width
+		/>
+	</template>
 
-		<IbanFields v-if="paymentType === 'BEZ'"/>
-	</div>
+	<IbanFields v-if="paymentType === 'BEZ'"/>
 </template>
 
 <script setup lang="ts">
@@ -57,7 +49,6 @@ import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { usePaymentFieldModel } from '@src/components/pages/membership_form/usePaymentFieldModel';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { FeeValidity } from '@src/view_models/MembershipFee';

@@ -1,28 +1,26 @@
 <template>
-	<div
-		class="radio radio-form-input"
-		:class="{ 'is-disabled': disabled, 'is-active': inputModel === nativeValue }"
-	>
-		<input
-			v-model="inputModel"
-			type="radio"
-			:name="name"
-			:id="id"
-			:class="inputClass"
-			:value="nativeValue"
-			:disabled="disabled"
-			:required="required"
-			:readonly="disabled"
-			:aria-readonly="disabled"
-			:aria-describedby="ariaDescribedby"
-			:aria-invalid="ariaInvalid"
-			:aria-disabled="disabled"
-			:autofocus="autofocus"
-			@blur="$emit( 'blur' )"
-		/>
-		<label class="control-label" :for="id" :class="labelClass" @blur="$emit( 'blur' )">
+	<div>
+		<label @blur="$emit( 'blur' )">
+			<input
+				v-model="inputModel"
+				type="radio"
+				:name="name"
+				:id="id"
+				:class="inputClass"
+				:value="nativeValue"
+				:disabled="disabled ? true : null"
+				:readonly="disabled"
+				:aria-readonly="disabled"
+				:aria-describedby="ariaDescribedby"
+				:aria-invalid="ariaInvalid"
+				:aria-disabled="disabled"
+				:autofocus="autofocus"
+				@blur="$emit( 'blur' )"
+			/>
+			<span>
 			<slot name="label"/>
 			<slot name="help-text"/>
+		</span>
 			<slot name="tooltip"/>
 		</label>
 	</div>
@@ -38,9 +36,7 @@ interface Props {
 	name: string;
 	id: string;
 	inputClass?: string;
-	labelClass?: string;
 	disabled?: boolean;
-	required?: boolean;
 	ariaDescribedby?: string;
 	ariaInvalid?: boolean;
 	autofocus?: boolean;

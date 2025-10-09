@@ -1,19 +1,16 @@
 <template>
-	<fieldset class="form-field form-field-amount" :class="[ `locale-${ $i18n.locale }`, { 'is-invalid': showError } ]" id="payment-form-amount">
-		<legend v-if="label" class="form-field-label">{{ label }}</legend>
-		<div class="form-field-help-text">
-			{{ $t( 'donation_form_payment_amount_help_text' ) }}
-		</div>
-		<div v-if="minimumAmountMessage!=''" class="form-field-help-text">
-			{{ minimumAmountMessage }}
-		</div>
-		<div class="control form-field-amount-radio-container">
-			<div class="form-field-amount-radio" v-for="( paymentAmount, index ) in paymentAmounts" :key="index">
+	<fieldset class="field-container flow" id="payment-form-amount" :class="[ `locale-${ $i18n.locale }` ]" :data-error="showError ? true : null" data-max-width>
+		<legend v-if="label">{{ label }}</legend>
+		<p>{{ $t( 'donation_form_payment_amount_help_text' ) }}</p>
+		<p v-if="minimumAmountMessage!=''">{{ minimumAmountMessage }}</p>
+
+		<div class="field-container__radio-grid">
+			<div class="grid" data-layout="quarters">
 				<RadioFormInput
+					v-for="( paymentAmount, index ) in paymentAmounts" :key="index"
 					:native-value="paymentAmount"
 					name="amount"
 					v-model="amount"
-					:class="{ 'inactive': paymentAmount < minimumAmount }"
 					:disabled="paymentAmount < minimumAmount"
 					:id="`amount-${paymentAmount}`"
 					@update:model-value="updateAmountFromRadio"
@@ -27,13 +24,12 @@
 			</div>
 		</div>
 
-		<div class="form-field-amount-custom" :class="{ active: isCustomAmount }">
-			<label class="form-field-amount-help-text" for="amount-custom">{{ $t('donation_form_payment_amount_label') }}</label>
+		<div class="flow" :class="{ active: isCustomAmount }">
+			<label for="amount-custom">{{ $t('donation_form_payment_amount_label') }}</label>
 			<TextRadioFormInput
 				v-model="customAmount"
 				input-type="text"
 				input-id="amount-custom"
-				class="form-field-amount-custom-euro-symbol"
 				:has-message="false"
 				:has-error="showError"
 				name="custom-amount"
@@ -48,8 +44,8 @@
 				:aria-describedby="ariaDescribedby"
 			/>
 		</div>
-		<span v-if="showError" class="help is-danger" id="amount-error">{{ errorMessage }}</span>
-		<slot name="info-message"/>
+		<p v-if="showError" class="field-container__error-text" id="amount-error">{{ errorMessage }}</p>
+		<p v-if="!showError && $slots.message && $slots.message.toString() !== ''" class="field-container__message"><em><slot name="message"/></em></p>
 	</fieldset>
 </template>
 

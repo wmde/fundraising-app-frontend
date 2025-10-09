@@ -1,53 +1,55 @@
 <template>
-	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
-		<label :for="inputId" class="form-field-label">{{ label }}</label>
-		<div class="form-field-autocomplete-container">
-			<TextFormInput
-				v-model="countryName"
-				input-type="text"
-				:placeholder="placeholder"
-				:has-error="showError"
-				:has-message="false"
-				:input-id="inputId"
-				name="countrySelector"
-				@focus="onFocus"
-				@blur="() => onBlur( country )"
-				@input="onInput"
-				@keydown="onKeydown"
-				@keydown.up.prevent="onKeyArrows('up')"
-				@keydown.down.prevent="onKeyArrows('down')"
-				@keydown.tab="onKeySubmit"
-				@keydown.enter="onKeySubmit"
-				:aria-describedby="ariaDescribedby"
-				aria-autocomplete="list"
-			/>
-			<span class="is-sr-only" :id="`${inputId}-selected`" aria-live="assertive">
-				{{ activeCountryName }}
-			</span>
-			<input type="hidden" name="country" :value="country?.countryCode">
-			<transition name="fade">
-				<div class="dropdown-menu" v-show="autocompleteIsActive">
-					<div class="dropdown-content" ref="scrollElement" tabindex="-1">
+	<FieldContainer :input-id="inputId" :show-error="showError">
+		<template #label>{{ label }}</template>
+		<template #field>
+			<div class="combobox">
+				<input
+					type="text"
+					name="countrySelector"
+					v-model="countryName"
+					:id="inputId"
+					autocomplete="country"
+					:placeholder="placeholder"
+					aria-controls="countries"
+					:aria-invalid="showError"
+					:aria-describedby="ariaDescribedby"
+					aria-autocomplete="list"
+					:aria-activedescendant="activeCountry ? `country-${activeCountry}` : null"
+					@focus="onFocus"
+					@blur="() => onBlur( country )"
+					@input="onInput"
+					@keydown="onKeydown"
+					@keydown.up.prevent="onKeyArrows('up')"
+					@keydown.down.prevent="onKeyArrows('down')"
+					@keydown.tab="onKeySubmit"
+					@keydown.enter="onKeySubmit"
+				/>
+				<span class="is-sr-only" :id="`${inputId}-selected`" aria-live="assertive">
+					{{ activeCountryName }}
+				</span>
+				<input type="hidden" name="country" :value="country?.countryCode">
+				<transition name="fade">
+					<div id="countries" ref="scrollElement" tabindex="-1" role="listbox" :aria-label="$t( 'donation_form_country_list_label' )" v-show="autocompleteIsActive">
 						<template v-for="( country, index ) in filteredCountries" :key="index">
-							<span v-if="groupSeparatorIndex === index" class="dropdown-divider"/>
-							<a
-								class="dropdown-item"
-								:class="{ 'is-active-item': country.countryCode === activeCountry }"
-								role="button"
+							<hr v-if="groupSeparatorIndex === index">
+							<button
 								tabindex="-1"
-								@click.stop="() => onSelectItem( country )"
+								role="option"
+								:id="`country-${country.countryCode}`"
+								:aria-selected="country.countryCode === activeCountry"
+								@click="() => onSelectItem( country )"
 								@keyup.enter.space="onSelectItem(country)"
 							>
 								{{ country.countryFullName }}
-							</a>
+							</button>
 						</template>
 					</div>
-				</div>
-			</transition>
-		</div>
-		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
-		<slot name="message"/>
-	</div>
+				</transition>
+			</div>
+		</template>
+		<template #error>{{ errorMessage }}</template>
+		<template #message><slot name="message"/></template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
@@ -55,11 +57,11 @@
 import { useCountryInput } from '@src/components/shared/form_fields/useCountryInput';
 import { useFilteredCountries } from '@src/components/shared/form_fields/useFilteredCountries';
 import type { Country } from '@src/view_models/Country';
-import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { computed, nextTick, ref } from 'vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 enum InteractionState {
 	Typing,

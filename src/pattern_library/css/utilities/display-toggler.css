@@ -1,0 +1,3 @@
+.display-toggler:not(.display-toggler--visible) {
+	display: none;
+}

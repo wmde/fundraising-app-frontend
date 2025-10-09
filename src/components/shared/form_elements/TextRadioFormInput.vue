@@ -1,19 +1,18 @@
 <template>
-	<div class="control text-form-input text-radio-form-input" :class="[ `locale-${ $i18n.locale }`, { 'has-icons-right': hasError || hasMessage, 'is-disabled': disabled } ]">
-		<span class="text-radio-form-input-radio" :class="{ checked: radioChecked }" @click="onClickRadio" aria-hidden="true"></span>
+	<div class="text-radio" :data-direction="$i18n.locale === 'de-DE' ? 'rtl' : null">
+		<span class="text-radio__radio" :class="{ 'text-radio__radio--checked': radioChecked }" @click="onClickRadio" aria-hidden="true"></span>
 		<input
 			:name="name"
 			v-model="inputModel"
 			ref="customInput"
-			class="input"
+			class="text-radio__text"
 			:id="inputId"
 			:class="{ 'is-danger': hasError }"
 			type="text"
 			:autocomplete="autocomplete"
 			:autofocus="autofocus"
 			:placeholder="placeholder"
-			:disabled="disabled"
-			:required="required"
+			:disabled="disabled ? true : null"
 			:aria-invalid="hasError"
 			:aria-describedby="ariaDescribedby"
 			:aria-autocomplete="ariaAutocomplete"
@@ -21,6 +20,7 @@
 			@focus="onFocus"
 			@input="onInput"
 		/>
+		<span class="text-radio__currency">€</span>
 	</div>
 </template>
 

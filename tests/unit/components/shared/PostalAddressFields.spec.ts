@@ -1,8 +1,7 @@
 import { mount } from '@vue/test-utils';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import countries from '@src/../tests/data/countries';
-import { addressValidationPatterns } from '../../../data/validation';
+import countries from '@test/data/countries';
+import { addressValidationPatterns } from '@test/data/validation';
 
 function newTestProperties( overrides: Object ) {
 	return Object.assign(
@@ -74,7 +73,6 @@ function newTestProperties( overrides: Object ) {
 				},
 			},
 			countries: countries,
-			addressType: AddressTypeModel.PERSON,
 			postCodeValidation: addressValidationPatterns.postcode,
 			countryWasRestored: false,
 		},

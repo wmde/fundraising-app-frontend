@@ -1,19 +1,16 @@
 <template>
-	<div class="control checkbox-multiple-form-input">
-		<div class="checkbox" :class="{ 'is-disabled': disabled }">
-			<input
-				v-model="inputModel"
-				:value="nativeValue"
-				type="checkbox"
-				:name="name"
-				:id="inputId"
-				:disabled="disabled"
-				:required="required"
-				:aria-describedby="describedBy"
-			/>
-			<label class="control-label" :for="inputId"><slot/></label>
-		</div>
-	</div>
+	<label>
+		<input
+			v-model="inputModel"
+			:value="nativeValue"
+			type="checkbox"
+			:name="name"
+			:id="inputId"
+			:disabled="disabled ? true : null"
+			:aria-describedby="describedBy"
+		/>
+		<span><slot/></span>
+	</label>
 </template>
 
 <script setup lang="ts">
@@ -25,13 +22,11 @@ interface Props {
 	name: string;
 	inputId: string;
 	disabled?: boolean;
-	required?: boolean;
 	describedBy?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	disabled: false,
-	required: false,
 } );
 const emit = defineEmits( [ 'update:modelValue' ] );
 

@@ -17,7 +17,6 @@
 		v-model="fieldModel"
 		@update:modelValue="onUpdateModel"
 		alignment="column"
-		:required="true"
 		:disabled="disabledMembershipTypes"
 		:show-error="activeTypeSelectedAndDisabled"
 		:error-message="$t('membership_form_membershiptype_error')"

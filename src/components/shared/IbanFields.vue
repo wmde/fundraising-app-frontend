@@ -1,7 +1,7 @@
 <template>
 	<div class="form-section-iban">
 		<div class="form-section-iban-title">
-			<h2 class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
+			<h2 class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }} {{ showCalculator }}</h2>
 
 			<ButtonLink class="calculate-iban-button" aria-controls="iban-calculator" :aria-expanded="showCalculator" @click="showCalculator = !showCalculator">
 				{{ $t( 'donation_form_iban_calculator_button' ) }}
@@ -29,7 +29,7 @@
 
 				<div class="iban-calculator-pages" :class="{ 'page-2': calculatorPage === 2 }">
 					<div class="iban-calculator-scroller" tabindex="-1">
-						<div class="iban-calculator-page" :inert="calculatorPage === 2" tabindex="-1">
+						<div class="iban-calculator-page flow" :inert="calculatorPage === 2" tabindex="-1">
 							<p>{{ $t( 'donation_form_iban_calculator_help_text' ) }}</p>
 							<TextField
 								v-model="accountNumber"
@@ -40,6 +40,7 @@
 								:show-error="accountNumberError"
 								:error-message="$t( 'donation_form_account_number_error' )"
 								@field-changed="validateAccountNumber"
+								data-max-width
 							/>
 
 							<TextField
@@ -51,6 +52,7 @@
 								:show-error="bankCodeError"
 								:error-message="$t( 'donation_form_bank_code_error' )"
 								@field-changed="validateBankCode"
+								data-max-width
 							/>
 
 							<ErrorSummary :is-visible="showCalculatorErrorSummary" :focus-on-submit="false" :items="[
@@ -107,6 +109,7 @@
 				:bic="bic"
 				:show-error="showIbanError"
 				@field-changed="validateIban"
+				data-max-width
 			/>
 		</form>
 	</div>
@@ -329,6 +332,7 @@ watch( () => store.state.bankdata.values.iban, ( newIban: string ) => {
 	}
 
 	&-page {
+		--flow-space: var(--space-xs);
 		flex: 0 0 50%;
 		padding: map.get(units.$spacing, 'small');
 	}

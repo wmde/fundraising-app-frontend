@@ -1,20 +1,15 @@
 <template>
-	<div class="control select-form-input" :class="{ 'is-disabled': disabled }">
-		<span class="select">
-			<select
-				v-model="inputModel"
-				:name="name"
-				:id="selectId"
-				:disabled="disabled"
-				:required="required"
-				:class="{ 'is-danger': hasError }"
-				:aria-invalid="hasError"
-				:aria-describedby="ariaDescribedby"
-			>
-                <slot/>
-			</select>
-		</span>
-	</div>
+	<select
+		v-model="inputModel"
+		:name="name"
+		:id="selectId"
+		:disabled="disabled"
+		:class="{ 'is-danger': hasError }"
+		:aria-invalid="hasError"
+		:aria-describedby="ariaDescribedby"
+	>
+		<slot/>
+	</select>
 </template>
 
 <script setup lang="ts">

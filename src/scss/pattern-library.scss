@@ -1,8 +1,11 @@
 @use "settings/units";
 @use "settings/colors";
 @use "sass:map";
+@use "../pattern_library/css/utilities/display-toggler.css";
+@use "../pattern_library/css/utilities/link-button.css";
 @use "../pattern_library/css/utilities/stretch-single-content-card.css";
 @use "../pattern_library/css/utilities/visually-hidden.css";
+@use "../pattern_library/css/compositions/cluster.css";
 @use "../pattern_library/css/compositions/flow.css";
 @use "../pattern_library/css/compositions/grid.css" as gridBase;
 @use "../pattern_library/css/compositions/sidebar.css";
@@ -10,8 +13,13 @@
 @use "../pattern_library/css/compositions/wrapper.css" as wrapperBase;
 @use "../pattern_library/css/blocks/accordion.css";
 @use "../pattern_library/css/blocks/alert-box.css";
+@use "../pattern_library/css/blocks/combobox.css" as comboboxBase;
 @use "../pattern_library/css/blocks/field-container.css" as fieldContainerBase;
+@use "../pattern_library/css/blocks/text-radio.css" as textRadioBase;
 @use "../pattern_library/css/blocks/toggle.css" as toggleBase;
+@use "../pattern_library/css/blocks/tooltip.css";
+@use "../pattern_library/css/blocks/verbose-checkbox.css";
+@use "pattern-library-compatibility/combobox";
 @use "pattern-library-compatibility/content-card";
 @use "pattern-library-compatibility/field-container";
 @use "pattern-library-compatibility/icon-text";
@@ -19,6 +27,7 @@
 @use "pattern-library-compatibility/site-head";
 @use "pattern-library-compatibility/summary";
 @use "pattern-library-compatibility/switcher";
+@use "pattern-library-compatibility/text-radio";
 @use "pattern-library-compatibility/toggle";
 @use "pattern-library-compatibility/wrapper";
 @use "pattern-library-compatibility/button";
@@ -30,10 +39,16 @@
 	--color-grey-100: #{colors.$gray-lighter};
 	--color-grey-200: #e5e5e5;
 	--color-grey-300: #{colors.$gray-mid};
+	--color-grey-500: #{colors.$gray-dark};
+	--color-grey-800: #{colors.$black};
 	--color-blue-600: #{colors.$primary};
 	--color-blue-200: #{colors.$primary-pale};
 	--color-red-700: #{colors.$error};
 
+	--font-base: "Source Sans Pro", "Open Sans", Helvetica, Arial, sans-serif;
+	--font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+	--font-normal: 400;
+	--font-bold: 700;
 	--wrapper-max-width: calc(960px + var(--gutter) + var(--gutter));
 	--sidebar-content-min-width: 55%;
 	--sidebar-target-width: 300px;
@@ -70,6 +85,15 @@
 	/* Custom pairs */
 	--space-s-l: #{map.get( units.$spacing, 'medium' )};
 	--space-s-xl: #{map.get( units.$spacing, 'large' )};
-	--space-xs-l: #{map.get( units.$spacing, 'medium' )};
+	--space-xs-l: #{map.get( units.$spacing, 'large' )};
 	--space-0-s: #{map.get( units.$spacing, 'x-small' )};
+
+	--type-step-00: 13px;
+
+	/* Type Leading */
+	--leading-micro: 0.85;
+	--leading-flat: 1;
+	--leading-fine: 1.2;
+	--leading-standard: 1.4;
+	--leading-loose: 1.7;
 }

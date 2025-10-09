@@ -1,0 +1,61 @@
+label:has(.tooltip) {
+	position: relative;
+}
+
+.tooltip {
+	position: absolute;
+	z-index: 2;
+	width: var(--space-s);
+	height: var(--space-s);
+	margin: 0.2ex 0 0;
+	border: 1px solid var(--color-grey-800);
+	background: var(--color-white);
+	color: var(--color-grey-800);
+	font-size: var(--type-step-00);
+	border-radius: 50%;
+}
+
+.tooltip:before {
+	position: absolute;
+	z-index: 2;
+	content: 'i';
+	font-family: var(--font-mono);
+	inset: 0;
+	text-align: center;
+	line-height: var(--space-s);
+}
+
+.tooltip__popup {
+	position: absolute;
+	display: block;
+	z-index: 3;
+	bottom: calc(100% + 2ex);
+	left: -1rem;
+	background: var(--color-white);
+	box-shadow: 0 0 4px rgba(0,0,0,.1);
+	border: 3px solid var(--color-blue-600);
+	/* padding + 2 lines of text + padding - border */
+	height: calc(var(--space-2xs) + (var(--type-step-00) * var(--leading-standard) * 2) + var(--space-2xs) - 2px);
+	width: 18rem;
+	padding: var(--space-2xs);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 200ms var(--easing), visibility 200ms var(--easing);
+}
+
+.tooltip__popup:before {
+	border-color: var(--color-blue-600) transparent transparent;
+	border-style: solid;
+	border-width: 9px 10px 0 9px;
+	bottom: -9px;
+	content: "";
+	height: 0;
+	left: 0.9rem;
+	position: absolute;
+	width: 0;
+}
+
+label:has(.tooltip):hover .tooltip__popup {
+	opacity: 1;
+	visibility: visible;
+}

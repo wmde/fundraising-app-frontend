@@ -7,6 +7,7 @@
 @import "global/fonts.css";
 @import "global/global-styles.css";
 
+@import "utilities/display-toggler.css";
 @import "utilities/footer-bottom.css";
 @import "utilities/link-button.css";
 @import "utilities/sticky.css";
@@ -43,4 +44,5 @@
 @import "blocks/summary.css";
 @import "blocks/text-radio.css";
 @import "blocks/toggle.css";
+@import "blocks/tooltip.css";
 @import "blocks/verbose-checkbox.css";
