@@ -32,6 +32,7 @@ import textRadio from '@src/pattern_library/patterns/text-radio';
 import toggle from '@src/pattern_library/patterns/toggle';
 import verboseCheckbox from '@src/pattern_library/patterns/verbose-checkbox';
 
+import compactDonationForm from '@src/pattern_library/samples/compact-donation-form';
 import donationForm from '@src/pattern_library/samples/donation-form';
 import membershipFeeChange from '@src/pattern_library/samples/membership-fee-change';
 
@@ -70,6 +71,7 @@ const patterns: Pattern[] = [
 ];
 
 const samples: Sample[] = [
+	compactDonationForm,
 	donationForm,
 	membershipFeeChange,
 ];
