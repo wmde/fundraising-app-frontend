@@ -16,7 +16,6 @@
 						@field-changed="onFieldChange"
 					/>
 
-					<ScrollTarget target-id="email-scroll-target"/>
 					<EmailField
 						:show-error="fieldErrors.email"
 						v-model="formData.email.value"
@@ -33,14 +32,14 @@
 
 					<MailingListField v-model="mailingList" input-id="newsletter"/>
 
-					<ScrollTarget target-id="receipt-scroll-target"/>
 					<RadioField
+						id="address-form-receipt"
 						v-model="receiptModel.receiptNeeded"
 						name="donationReceipt"
 						:options="[
-						{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
-						{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
-					]"
+							{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
+							{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
+						]"
 						:label="$t( 'donation_confirmation_cta_title_alt' )"
 						:show-error="receiptModel.showReceiptOptionError"
 						:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
@@ -83,7 +82,6 @@ import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import type { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 

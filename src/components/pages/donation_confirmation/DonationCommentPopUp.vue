@@ -15,7 +15,6 @@
 		</div>
 		<div v-else>
 			<p>{{ $t( 'donation_comment_popup_explanation' ) }}</p>
-			<ScrollTarget target-id="comment-scroll-target"/>
 
 			<ErrorSummary
 				:is-visible="commentErrored"
@@ -24,7 +23,7 @@
 						validity: commentErrored ? Validity.INVALID : Validity.VALID,
 						message: $t( commentError ),
 						focusElement: 'comment',
-						scrollElement: 'comment-scroll-target'
+						scrollElement: 'comment',
 					},
 				]"
 			/>
@@ -89,9 +88,8 @@ import FormSummary from '@src/components/shared/FormSummary.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 import type { CommentResource } from '@src/api/CommentResource';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import { Validity } from '@src/view_models/Validity';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 enum CommentErrorTypes {
 	Empty,

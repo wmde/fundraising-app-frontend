@@ -16,7 +16,6 @@
 						@field-changed="onFieldChange"
 					/>
 
-					<ScrollTarget target-id="email-scroll-target"/>
 					<EmailField
 						:show-error="fieldErrors.email"
 						v-model="formData.email.value"
@@ -96,7 +95,6 @@ import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import type { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';

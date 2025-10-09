@@ -6,7 +6,7 @@
 
 			<RadioField
 				name="addressType"
-				input-id="addressType"
+				id="address-form-type"
 				class="address-type-field"
 				:options="[
 					{
