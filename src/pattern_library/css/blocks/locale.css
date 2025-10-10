@@ -63,8 +63,9 @@
 }
 
 .locale__form label {
-	padding-block: var(--space-2xs);
-	padding-inline: var(--space-2xs);
+	padding-block: var(--space-xs);
+	border: unset;
+	border-radius: unset;
 }
 
 .locale__form label:hover,

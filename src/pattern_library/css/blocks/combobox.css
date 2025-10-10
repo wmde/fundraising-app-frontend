@@ -15,11 +15,6 @@
 	cursor: pointer;
 }
 
-.combobox:not(:focus-within) [role='listbox'] {
-	opacity: 0;
-	visibility: hidden;
-}
-
 .combobox [role='option'] {
 	width: 100%;
 	text-align: left;

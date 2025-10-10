@@ -13,7 +13,7 @@
 				{{ $t( 'back_to_donation_summary' ) }}
 			</FormButton>
 		</div>
-		<div v-else>
+		<div v-else class="flow">
 			<p>{{ $t( 'donation_comment_popup_explanation' ) }}</p>
 
 			<ErrorSummary
@@ -57,23 +57,21 @@
 				{{ $t( 'donation_comment_popup_is_public' ) }}
 			</CheckboxField>
 
-			<FormSummary :show-border="false">
-				<template #summary-buttons>
-					<FormButton
-						id="previous-btn"
-						:is-outlined="true"
-						@click="$emit( 'close' )"
-					>
-						{{ $t( 'donation_comment_popup_cancel' ) }}
-					</FormButton>
-					<FormButton
-						id="submit-btn"
-						button-type="submit"
-					>
-						{{ $t( 'donation_comment_popup_submit' ) }}
-					</FormButton>
-				</template>
-			</FormSummary>
+			<div class="switcher">
+				<FormButton
+					id="previous-btn"
+					:is-outlined="true"
+					@click="$emit( 'close' )"
+				>
+					{{ $t( 'donation_comment_popup_cancel' ) }}
+				</FormButton>
+				<FormButton
+					id="submit-btn"
+					button-type="submit"
+				>
+					{{ $t( 'donation_comment_popup_submit' ) }}
+				</FormButton>
+			</div>
 		</div>
 	</form>
 </template>
@@ -84,7 +82,6 @@ import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import type { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import FormSummary from '@src/components/shared/FormSummary.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 import type { CommentResource } from '@src/api/CommentResource';
@@ -168,6 +165,8 @@ watch( comment, ( newComment: string ) => {
 @use 'sass:map';
 
 .donation-comment {
+	--flow-space: var(--space-xs);
+
 	p {
 		margin-bottom: map.get( units.$spacing, 'small' );
 	}

@@ -9,6 +9,7 @@
 				<label for="first-name">First Name</label>
 				<input type="text" name="first-name" id="first-name" placeholder="It's a doggy dog world">
 				<p class="field-container__error-text">It's like a bowl in a china shop</p>
+				<p class="field-container__message"><em>Are you sure your first name is Bloggs?</em></p>
 			</div>
 
 			<div class="field-container flow" data-max-width data-error>

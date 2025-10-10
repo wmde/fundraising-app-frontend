@@ -1,74 +1,75 @@
 <template>
-	<div class="address-section">
+	<CountryAutocompleteField
+		v-model="formData.country.value"
+		:id="`${fieldIdNamespace}address-form-country`"
+		:input-id="`${fieldIdNamespace}country`"
+		:scroll-target-id="`${fieldIdNamespace}address-form-country`"
+		:countries="countries"
+		:was-restored="countryWasRestored"
+		:show-error="showError.country"
+		:error-message="$t('donation_form_country_error')"
+		:label="$t( 'donation_form_country_label' )"
+		:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
+		@field-changed="onCountryFieldChanged"
+		data-max-width
+	/>
 
-		<CountryAutocompleteField
-			v-model="formData.country.value"
-			:id="`${fieldIdNamespace}address-form-country`"
-			:input-id="`${fieldIdNamespace}country`"
-			:scroll-target-id="`${fieldIdNamespace}address-form-country`"
-			:countries="countries"
-			:was-restored="countryWasRestored"
-			:show-error="showError.country"
-			:error-message="$t('donation_form_country_error')"
-			:label="$t( 'donation_form_country_label' )"
-			:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
-			@field-changed="onCountryFieldChanged"
-		/>
+	<TextField
+		name="postcode"
+		:id="`${fieldIdNamespace}address-form-post-code`"
+		:input-id="`${fieldIdNamespace}post-code`"
+		v-model="formData.postcode.value"
+		:show-error="showError.postcode"
+		:error-message="$t('donation_form_zip_error')"
+		autocomplete="postal-code"
+		:label="$t( 'donation_form_zip_label' )"
+		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_zip_placeholder' ) } )"
+		@field-changed="$emit('field-changed', 'postcode')"
+		data-max-width
+	>
+		<template #message>
+			<ValueEqualsPlaceholderWarning
+				:value="formData.postcode.value"
+				:placeholder="$t( 'donation_form_zip_placeholder' )"
+				:warning="'donation_form_zip_placeholder_warning'"
+			/>
+		</template>
+	</TextField>
 
-		<TextField
-			name="postcode"
-			:id="`${fieldIdNamespace}address-form-post-code`"
-			:input-id="`${fieldIdNamespace}post-code`"
-			v-model="formData.postcode.value"
-			:show-error="showError.postcode"
-			:error-message="$t('donation_form_zip_error')"
-			autocomplete="postal-code"
-			:label="$t( 'donation_form_zip_label' )"
-			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_zip_placeholder' ) } )"
-			@field-changed="$emit('field-changed', 'postcode')"
-		>
-			<template #message>
-				<ValueEqualsPlaceholderWarning
-					:value="formData.postcode.value"
-					:placeholder="$t( 'donation_form_zip_placeholder' )"
-					:warning="'donation_form_zip_placeholder_warning'"
-				/>
-			</template>
-		</TextField>
+	<CityAutocompleteField
+		v-model="formData.city.value"
+		:id="`${fieldIdNamespace}address-form-city`"
+		:input-id="`${fieldIdNamespace}city`"
+		:scroll-target-id="`${fieldIdNamespace}address-form-city`"
+		:show-error="showError.city"
+		:label="$t( 'donation_form_city_label' )"
+		:error-message="$t( 'donation_form_city_error' )"
+		:postcode="formData.postcode.value"
+		example-placeholder="donation_form_city_placeholder"
+		@field-changed="$emit('field-changed', 'city' )"
+		data-max-width
+	>
+		<template #message>
+			<ValueEqualsPlaceholderWarning
+				:value="formData.city.value"
+				:placeholder="$t( 'donation_form_city_placeholder' )"
+				warning="donation_form_city_placeholder_warning"
+			/>
+		</template>
+	</CityAutocompleteField>
 
-		<CityAutocompleteField
-			v-model="formData.city.value"
-			:id="`${fieldIdNamespace}address-form-city`"
-			:input-id="`${fieldIdNamespace}city`"
-			:scroll-target-id="`${fieldIdNamespace}address-form-city`"
-			:show-error="showError.city"
-			:label="$t( 'donation_form_city_label' )"
-			:error-message="$t( 'donation_form_city_error' )"
-			:postcode="formData.postcode.value"
-			example-placeholder="donation_form_city_placeholder"
-			@field-changed="$emit('field-changed', 'city' )"
-		>
-			<template #message>
-				<ValueEqualsPlaceholderWarning
-					:value="formData.city.value"
-					:placeholder="$t( 'donation_form_city_placeholder' )"
-					warning="donation_form_city_placeholder_warning"
-				/>
-			</template>
-		</CityAutocompleteField>
-
-		<StreetAutocompleteField
-			:id="`${fieldIdNamespace}address-form-street`"
-			:input-id-street-name="`${fieldIdNamespace}street`"
-			:input-id-building-number="`${fieldIdNamespace}building-number`"
-			:scroll-target-id="`${fieldIdNamespace}address-form-street`"
-			v-model="formData.street.value"
-			:postcode="formData.postcode.value"
-			:show-error="showError.street"
-			:error-message="$t( 'donation_form_street_error' )"
-			@field-changed="$emit('field-changed', 'street' )"
-		/>
-	</div>
+	<StreetAutocompleteField
+		:id="`${fieldIdNamespace}address-form-street`"
+		:input-id-street-name="`${fieldIdNamespace}street`"
+		:input-id-building-number="`${fieldIdNamespace}building-number`"
+		:scroll-target-id="`${fieldIdNamespace}address-form-street`"
+		v-model="formData.street.value"
+		:postcode="formData.postcode.value"
+		:show-error="showError.street"
+		:error-message="$t( 'donation_form_street_error' )"
+		@field-changed="$emit('field-changed', 'street' )"
+		data-max-width="true"
+	/>
 </template>
 
 <script setup lang="ts">
