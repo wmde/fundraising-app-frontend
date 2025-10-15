@@ -11,7 +11,7 @@
 		<p v-if="$slots.error" class="field-container__error-text" :id="`${inputId}-error`">
 			<slot name="error"/>
 		</p>
-		<p v-if="!showError && $slots.message && $slots.message.toString() !== ''" class="field-container__message"><em><slot name="message"/></em></p>
+		<p v-if="!showError && $slots.message" class="field-container__message" :id="`${inputId}-message`"><slot name="message"/></p>
 	</component>
 </template>
 
