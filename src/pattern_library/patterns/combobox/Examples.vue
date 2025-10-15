@@ -7,7 +7,7 @@
 
 		<p>Please bear in mind that this is as simple an example as possible. You will have different requirements when implementing one of these for production so this is not an entire solution but will only be your starting point.</p>
 
-		<div class="field-container flow">
+		<div class="field-container flow" data-max-width>
 			<label for="country">Country</label>
 			<div class="combobox">
 				<input
@@ -21,14 +21,14 @@
 					:aria-expanded="expanded"
 					:aria-activedescendant="selectedCountry ? `option-${selectedCountry}` : null"
 					@focus="expanded = true"
-					@blur="expanded = false"
+					@blur.prevent="onBlurTextField"
 					@keydown="onKeydown"
 					@keydown.up.prevent="onArrowKeys( 'up' )"
 					@keydown.down.prevent="onArrowKeys( 'down' )"
 					@keydown.tab="onKeySubmit"
-					@keydown.enter="onKeySubmit"
+					@keydown.enter.prevent="onKeySubmit"
 				>
-				<div ref="scroller" id="countries" tabindex="-1" role="listbox" aria-label="countries">
+				<div ref="scroller" id="countries" tabindex="-1" role="listbox" aria-label="Countries" v-show="expanded">
 					<template v-for="(countryOption, index) in filteredCountries" :key="index">
 						<hr v-if="index === 3"/><!-- This is hardcoded, you'll need a programmatic way of adding them in in production if needed -->
 						<button
@@ -86,6 +86,13 @@ const filteredCountries = computed<string[]>( () => {
 
 	return countryList.length > 0 ? countryList : countries;
 } );
+
+const onBlurTextField = () => {
+	/* Add a timeout to allow the click handler to fire before the blur handler */
+	setTimeout( () => {
+		expanded.value = false;
+	}, 100 );
+};
 
 /**
  * This makes sure that the selected item in the combobox scroller is always in view, it should usually live

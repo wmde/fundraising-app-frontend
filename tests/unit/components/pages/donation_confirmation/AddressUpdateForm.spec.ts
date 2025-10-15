@@ -148,7 +148,8 @@ describe( 'AddressUpdateForm.vue', () => {
 		const wrapper = getWrapper( store, anonymousBankTransferConfirmationData );
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
-		expect( wrapper.find( '.address-type-field .is-danger' ).exists() ).toBe( true );
+
+		expect( wrapper.find( '#address-form-type' ).attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'marks empty address fields invalid if submitted after selecting address type', async () => {
@@ -165,18 +166,12 @@ describe( 'AddressUpdateForm.vue', () => {
 
 		await wrapper.vm.$nextTick();
 
-		const nameSectionText = wrapper.find( '.name-section' ).text();
-		expect( nameSectionText ).toContain( 'donation_form_salutation_error' );
-		expect( nameSectionText ).toContain( 'donation_form_firstname_error' );
-		expect( nameSectionText ).toContain( 'donation_form_lastname_error' );
-		expect( nameSectionText ).toContain( 'donation_form_lastname_error' );
-
-		const addressSectionText = wrapper.find( '.address-section' ).text();
-		expect( addressSectionText ).toContain( 'donation_form_street_error' );
-		expect( addressSectionText ).toContain( 'donation_form_zip_error' );
-		expect( addressSectionText ).toContain( 'donation_form_city_error' );
-
-		expect( wrapper.find( '.form-field-email .is-danger' ).exists() ).toBe( true );
+		expect( wrapper.find( '#address-form-first-name' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-last-name' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-street' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-post-code' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-city' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-email' ).attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'shows error summary when there are validation errors', async () => {

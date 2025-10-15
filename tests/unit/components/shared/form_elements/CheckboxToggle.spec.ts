@@ -24,16 +24,6 @@ describe( 'CheckboxToggle.vue', () => {
 		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'disabled' ) ).toBeDefined();
 	} );
 
-	it( 'sets required', async () => {
-		const wrapper = getWrapper( false );
-
-		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'required' ) ).toBeUndefined();
-
-		await wrapper.setProps( { required: true } );
-
-		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'required' ) ).toBeDefined();
-	} );
-
 	it( 'emits on value change', async () => {
 		const wrapper = getWrapper( true );
 

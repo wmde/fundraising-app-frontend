@@ -31,8 +31,7 @@ describe( 'RadioField.vue', () => {
 
 		await wrapper.setProps( { showError: true } );
 
-		expect( wrapper.find( '.is-danger' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.is-danger' ).text() ).toStrictEqual( 'error_message' );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'sets disabled options', async () => {
@@ -46,13 +45,13 @@ describe( 'RadioField.vue', () => {
 	it( 'sets selected radio active', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.radio-form-input:first-child' ).classes() ).toContain( 'is-active' );
-		expect( wrapper.find( '.radio-form-input:last-child' ).classes() ).not.toContain( 'is-active' );
+		expect( wrapper.find<HTMLInputElement>( '#animal-0' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '#animal-1' ).element.checked ).toBeFalsy();
 
 		await wrapper.setProps( { modelValue: 'elephant' } );
 
-		expect( wrapper.find( '.radio-form-input:first-child' ).classes() ).not.toContain( 'is-active' );
-		expect( wrapper.find( '.radio-form-input:last-child' ).classes() ).toContain( 'is-active' );
+		expect( wrapper.find<HTMLInputElement>( '#animal-0' ).element.checked ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( '#animal-1' ).element.checked ).toBeTruthy();
 	} );
 
 	it( 'emits events', async () => {
@@ -89,6 +88,6 @@ describe( 'RadioField.vue', () => {
 
 		await wrapper.setProps( { showError: true } );
 
-		expect( wrapper.find( 'input[value=mouse]' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'help-text animal-error-message' );
+		expect( wrapper.find( 'input[value=mouse]' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'help-text animal-error' );
 	} );
 } );

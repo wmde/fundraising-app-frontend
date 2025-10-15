@@ -14,103 +14,105 @@
 
 			<ErrorSummary :is-visible="showErrorSummary" :items="validationItems"/>
 
-			<form method="post" action="/contact/get-in-touch" @submit.prevent="submit" id="laika-contact" ref="form">
-				<FormSection>
-					<TextField
-						name="firstname"
-						id="contact-form-firstname"
-						input-id="firstname"
-						v-model="formData.firstname.value"
-						:label="$t( 'contact_form_firstname_label' )"
-						:label-help-text="$t('contact_form_optional')"
-						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
-						:show-error="formData.firstname.validity === Validity.INVALID"
-						:error-message="$t( 'contact_form_firstname_error' )"
-						@field-changed="() => validateField( 'firstname' )"
-					/>
+			<form method="post" action="/contact/get-in-touch" @submit.prevent="submit" id="laika-contact" class="flow" ref="form">
+				<TextField
+					name="firstname"
+					id="contact-form-firstname"
+					input-id="firstname"
+					v-model="formData.firstname.value"
+					:label="$t( 'contact_form_firstname_label' )"
+					:label-help-text="$t('contact_form_optional')"
+					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
+					:show-error="formData.firstname.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_firstname_error' )"
+					@field-changed="() => validateField( 'firstname' )"
+					data-max-width
+				/>
 
-					<TextField
-						name="lastname"
-						id="contact-form-lastname"
-						input-id="lastname"
-						v-model="formData.lastname.value"
-						:label="$t( 'contact_form_lastname_label' )"
-						:label-help-text="$t('contact_form_optional')"
-						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
-						:show-error="formData.lastname.validity === Validity.INVALID"
-						:error-message="$t( 'contact_form_lastname_error' )"
-						@field-changed="() => validateField( 'lastname' )"
-					/>
+				<TextField
+					name="lastname"
+					id="contact-form-lastname"
+					input-id="lastname"
+					v-model="formData.lastname.value"
+					:label="$t( 'contact_form_lastname_label' )"
+					:label-help-text="$t('contact_form_optional')"
+					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
+					:show-error="formData.lastname.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_lastname_error' )"
+					@field-changed="() => validateField( 'lastname' )"
+					data-max-width
+				/>
 
-					<TextField
-						name="donationNumber"
-						id="contact-form-donationNumber"
-						input-id="donationNumber"
-						v-model="formData.donationNumber.value"
-						:label="$t( 'contact_form_donation_number_label' )"
-						:label-help-text="$t('contact_form_optional' )"
-						:help-text="$t( 'contact_form_donation_number_help_text' )"
-						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
-						:show-error="formData.donationNumber.validity === Validity.INVALID"
-						:error-message="$t( 'contact_form_donation_number_error' )"
-						@field-changed="() => validateField( 'donationNumber' )"
-					/>
-				</FormSection>
+				<TextField
+					name="donationNumber"
+					id="contact-form-donationNumber"
+					input-id="donationNumber"
+					v-model="formData.donationNumber.value"
+					:label="$t( 'contact_form_donation_number_label' )"
+					:label-help-text="$t('contact_form_optional' )"
+					:help-text="$t( 'contact_form_donation_number_help_text' )"
+					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
+					:show-error="formData.donationNumber.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_donation_number_error' )"
+					@field-changed="() => validateField( 'donationNumber' )"
+					data-max-width
+				/>
 
-				<FormSection>
+				<EmailField
+					v-model="formData.email.value"
+					:show-error="formData.email.validity === Validity.INVALID"
+					@field-changed="() => validateField( 'email' )"
+					data-max-width
+				/>
 
-					<EmailField
-						v-model="formData.email.value"
-						:show-error="formData.email.validity === Validity.INVALID"
-						@field-changed="() => validateField( 'email' )"
-					/>
+				<SelectField
+					v-model="formData.topic.value"
+					id="contact-form-topic"
+					input-id="topic"
+					name="category"
+					:label="$t( 'contact_form_topic_label' )"
+					:options="[
+					{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
+					...Object.values( contactCategories ).map( ( value: string ) => ( { label: value, value: value } ) )
+				]"
+					:show-error="formData.topic.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_topic_error' )"
+					@field-changed="() => validateField( 'topic' )"
+					data-max-width
+				/>
 
-					<SelectField
-						v-model="formData.topic.value"
-						id="contact-form-topic"
-						input-id="topic"
-						name="category"
-						:label="$t( 'contact_form_topic_label' )"
-						:options="[
-						{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
-						...Object.values( contactCategories ).map( ( value: string ) => ( { label: value, value: value } ) )
-					]"
-						:show-error="formData.topic.validity === Validity.INVALID"
-						:error-message="$t( 'contact_form_topic_error' )"
-						@field-changed="() => validateField( 'topic' )"
-					/>
+				<TextField
+					name="subject"
+					id="contact-form-subject"
+					input-id="subject"
+					v-model="formData.subject.value"
+					:label="$t( 'contact_form_subject_label' )"
+					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
+					:show-error="formData.subject.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_subject_error' )"
+					@field-changed="() => validateField( 'subject' )"
+					data-max-width
+				/>
 
-					<TextField
-						name="subject"
-						id="contact-form-subject"
-						input-id="subject"
-						v-model="formData.subject.value"
-						:label="$t( 'contact_form_subject_label' )"
-						:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
-						:show-error="formData.subject.validity === Validity.INVALID"
-						:error-message="$t( 'contact_form_subject_error' )"
-						@field-changed="() => validateField( 'subject' )"
-					/>
+				<TextField
+					name="messageBody"
+					input-type="textarea"
+					id="contact-form-messageBody"
+					input-id="messageBody"
+					v-model="formData.comment.value"
+					:label="$t( 'contact_form_body_label' )"
+					placeholder=""
+					:show-error="formData.comment.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_body_error' )"
+					@field-changed="() => validateField( 'comment' )"
+					data-max-width
+				/>
 
-					<TextField
-						name="messageBody"
-						input-type="textarea"
-						id="contact-form-messageBody"
-						input-id="messageBody"
-						v-model="formData.comment.value"
-						:label="$t( 'contact_form_body_label' )"
-						placeholder=""
-						:show-error="formData.comment.validity === Validity.INVALID"
-						:error-message="$t( 'contact_form_body_error' )"
-						@field-changed="() => validateField( 'comment' )"
-					/>
-
-					<div class="contact-form-button">
-						<FormButton id="submit-btn" button-type="submit">
-							{{ $t('contact_form_submit_button') }}
-						</FormButton>
-					</div>
-				</FormSection>
+				<div class="contact-form-button">
+					<FormButton id="submit-btn" button-type="submit">
+						{{ $t('contact_form_submit_button') }}
+					</FormButton>
+				</div>
 			</form>
 		</template>
 	</ContentCard>
@@ -126,7 +128,6 @@ import TextField from '@src/components/shared/form_fields/TextField.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import FormSection from '@src/components/shared/form_elements/FormSection.vue';
 import type { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
 import type { ContactFormData } from '@src/components/pages/contact/ContactFormData';
 import ErrorSummary from '@src/components/shared/ErrorSummary.vue';

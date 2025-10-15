@@ -300,8 +300,12 @@ svg[role='img'][width][height] {
 	outline: 2px solid var(--color-blue-600, currentColor);
 }
 
-:is(input:not([type='checkbox'], [type='radio'], [type='color']), select, textarea),
-label:has([type='radio']) {
+:where(
+	input:not([type='checkbox'], [type='radio'], [type='color']),
+	select,
+	textarea,
+	label:has([type='radio'])
+) {
 	padding: 0.5em;
 	border: 1px solid var(--form-field-border-color, var(--color-grey-300));
 	border-radius: var(--border-radius);
@@ -349,7 +353,7 @@ input[role='combobox'] {
 }
 
 [type='radio'] {
-	margin: 0.4ex 0 0;
+	margin: 0.2ex 0 0;
 }
 
 [type='radio'],
@@ -418,12 +422,18 @@ label:has([type='checkbox']:checked, [type='radio']:checked) {
 }
 
 input:disabled {
-	background: var(--color-grey-500);
+	background: var(--color-grey-300);
 }
 
 input:disabled,
-label input:disabled + * {
+label input:disabled + *,
+label:has(input:disabled) {
 	cursor: not-allowed;
+}
+
+label:has(input:disabled) {
+	--form-field-border-color: var(--color-grey-200);
+	color: var(--color-grey-200);
 }
 
 fieldset {

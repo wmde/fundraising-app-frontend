@@ -11,7 +11,7 @@ describe( 'EmailField.vue', () => {
 				showError: false,
 			},
 			slots: {
-				message: `<span class="test-message">This could have been a meeting</span>`,
+				message: 'This could have been a meeting',
 			},
 		} );
 	};
@@ -23,20 +23,19 @@ describe( 'EmailField.vue', () => {
 	it( 'shows the error message', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( 'span.help.is-danger' ).exists() ).toBeFalsy();
+		expect( wrapper.attributes( 'data-error' ) ).toBeFalsy();
 
 		await wrapper.setProps( { showError: true } );
 
-		expect( wrapper.find( 'span.help.is-danger' ).exists() ).toBeTruthy();
-		expect( wrapper.find( 'span.help.is-danger' ).text() ).toStrictEqual( 'donation_form_email_error' );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '.field-container__error-text' ).text() ).toStrictEqual( 'donation_form_email_error' );
 		expect( wrapper.find( 'input' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'email-error' );
 	} );
 
-	it( 'shows the message slot', async () => {
+	it( 'shows the message the message slot', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.test-message' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.test-message' ).text() ).toStrictEqual( 'This could have been a meeting' );
+		expect( wrapper.find( '.field-container__message' ).text() ).toStrictEqual( 'This could have been a meeting' );
 	} );
 
 	it( 'updates value on model change', async () => {
@@ -72,8 +71,8 @@ describe( 'EmailField.vue', () => {
 
 		await wrapper.find( 'input' ).setValue( 'space@gmaiil.com' );
 
-		expect( wrapper.find( '.help.is-clickable' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.help.is-clickable' ).text() ).toStrictEqual( 'donation_form_email_suggestion gmail.com?' );
+		expect( wrapper.find( '.field-container__message' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.field-container__message' ).text() ).toStrictEqual( 'donation_form_email_suggestion gmail.com?' );
 	} );
 
 	it( 'updates model on suggested provider click', async () => {
@@ -86,7 +85,7 @@ describe( 'EmailField.vue', () => {
 
 		await wrapper.find( 'input' ).setValue( 'space@gmaiil.com' );
 		await wrapper.find( 'input' ).trigger( 'blur' );
-		await wrapper.find( '.help.is-clickable' ).trigger( 'click' );
+		await wrapper.find( '.field-container__message button' ).trigger( 'click' );
 
 		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 2 );
 		expect( wrapper.emitted( 'update:modelValue' )[ 1 ][ 0 ] ).toStrictEqual( 'space@gmail.com' );

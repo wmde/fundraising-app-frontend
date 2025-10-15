@@ -19,19 +19,19 @@
 							validity: isFeeValid ? Validity.VALID : Validity.INVALID,
 							message: $t( 'error_summary_amount' ),
 							focusElement: 'custom-amount',
-							scrollElement: 'custom-amount',
+							scrollElement: 'upgrade-form-custom-amount',
 						},
 						{
 							validity: isMemberNameValid ? Validity.VALID : Validity.INVALID,
 							message: $t('membership_fee_upgrade_member_name_error_message'),
 							focusElement: 'member-name',
-							scrollElement: 'member-name',
+							scrollElement: 'upgrade-form-member-name',
 						},
 						{
 							validity: isIbanValid ? Validity.VALID : Validity.INVALID,
 							message: $t('donation_form_payment_iban_error'),
 							focusElement: 'iban',
-							scrollElement: 'iban',
+							scrollElement: 'payment-form-iban',
 						},
 					]"
 				/>
@@ -44,29 +44,31 @@
 					:custom-amount-label="$t('membership_fee_upgrade_custom_amount_label')"
 					:custom-amount-placeholder="$t( 'form_for_example', { example: $n( suggestedAmountInCents / 100 * 1.25, 'integer' ) } )"
 					:error-message="feeErrorMessage"
+					id="upgrade-form-custom-amount"
 					@custom-amount-changed="validateAmount"
 					@suggested-selected="isFeeValid = true"
+					data-max-width
 				/>
 
-				<div class="field-container flow" :data-error="isMemberNameValid ? null : true">
-					<TextField
-						:disabled="false"
-						:label="$t('membership_fee_upgrade_member_name_label')"
-						label-help-text=""
-						help-text=""
-						name="member-name"
-						input-id="member-name"
-						input-type="text"
-						v-model="memberName"
-						:error-message="$t('membership_fee_upgrade_member_name_error_message')"
-						:show-error="!isMemberNameValid"
-						:placeholder="$t( 'form_for_example', {
-							example: $t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')
-						} )"
-						@field-changed="validateMemberName"
-						@blur="validateMemberName"
-					/>
-				</div>
+				<TextField
+					:disabled="false"
+					:label="$t('membership_fee_upgrade_member_name_label')"
+					label-help-text=""
+					help-text=""
+					name="member-name"
+					id="upgrade-form-member-name"
+					input-id="member-name"
+					input-type="text"
+					v-model="memberName"
+					:error-message="$t('membership_fee_upgrade_member_name_error_message')"
+					:show-error="!isMemberNameValid"
+					:placeholder="$t( 'form_for_example', {
+						example: $t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')
+					} )"
+					@field-changed="validateMemberName"
+					@blur="validateMemberName"
+					data-max-width
+				/>
 			</template>
 		</ContentCard>
 
@@ -85,6 +87,7 @@
 									:bic="bic"
 									@blur="validateIban"
 									@input="onIbanInput"
+									data-max-width
 								/>
 							</div>
 						</template>

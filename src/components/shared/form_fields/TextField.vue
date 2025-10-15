@@ -1,33 +1,32 @@
 <template>
-	<div class="form-field" :class="[ `form-field-${inputType}`, { 'is-invalid': showError } ]">
-		<label :for="inputId" class="form-field-label">
+	<FieldContainer :input-id="inputId" :show-error="showError">
+		<template #label>
 			{{ label }} <em v-if="labelHelpText">{{ labelHelpText }}</em>
-		</label>
-		<div v-if="helpText" class="form-field-help-text" :id="`${inputId}-help-text`">
+		</template>
+		<template v-if="helpText" #help-text>
 			{{ helpText }}
-		</div>
-		<TextFormInput
-			:name="name"
-			:input-type="inputType"
-			v-model="fieldModel"
-			:input-id="inputId"
-			:has-error="showError"
-			:has-message="false"
-			:placeholder="placeholder"
-			:autocomplete="autocomplete"
-			:disabled="disabled"
-			:required="required"
-			:autofocus="autofocus"
-			:aria-describedby="ariaDescribedby"
-			@blur="$emit('field-changed', name )"
-			@input="onInput"
-			@update:modelValue="onUpdateModel"
-		/>
-		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
-		<span class="field-info-message">
-			<slot name="message"/>
-		</span>
-	</div>
+		</template>
+		<template #field>
+			<TextFormInput
+				:name="name"
+				:input-type="inputType"
+				v-model="fieldModel"
+				:input-id="inputId"
+				:has-error="showError"
+				:has-message="false"
+				:placeholder="placeholder"
+				:autocomplete="autocomplete"
+				:disabled="disabled"
+				:autofocus="autofocus"
+				:aria-describedby="ariaDescribedby"
+				@blur="$emit('field-changed', name )"
+				@input="onInput"
+				@update:modelValue="onUpdateModel"
+			/>
+		</template>
+		<template #error>{{ errorMessage }}</template>
+		<template #message><slot name="message"/></template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
@@ -36,6 +35,7 @@ import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel'
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { computed } from 'vue';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 interface Props {
 	inputType?: 'text' | 'textarea';
@@ -80,12 +80,3 @@ const onUpdateModel = ( newValue: string | number ): void => {
 };
 
 </script>
-
-<style lang="scss">
-@use '@src/scss/settings/colors';
-
-.field-info-message {
-	color: colors.$gray-dark;
-}
-
-</style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="autofill-handler" v-on:animationstart="onAutofillAnimationStart"><slot/></div>
+	<div class="autofill-handler flow" v-on:animationstart="onAutofillAnimationStart"><slot/></div>
 </template>
 
 <script lang="ts">

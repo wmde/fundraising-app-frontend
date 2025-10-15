@@ -41,22 +41,22 @@ describe( 'MembershipFeeChange.vue', () => {
 
 		await wrapper.find( 'form' ).trigger( 'submit' );
 
-		expect( wrapper.find<HTMLElement>( '.error-summary' ).exists() ).toBeTruthy();
-		expect( wrapper.find<HTMLElement>( '#member-name-error' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#upgrade-form-member-name' ).attributes( 'data-error' ) ).toBeTruthy();
 
-		await wrapper.find<HTMLInputElement>( '#member-name' ).trigger( 'click' );
-		await wrapper.find<HTMLInputElement>( '#member-name' ).setValue( 'valid example name' );
+		await wrapper.find( '#member-name' ).trigger( 'click' );
+		await wrapper.find( '#member-name' ).setValue( 'valid example name' );
 
-		expect( wrapper.find<HTMLElement>( '.error-summary' ).exists() ).toBeFalsy();
-		expect( wrapper.find<HTMLElement>( '#member-name-error' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#upgrade-form-member-name' ).attributes( 'data-error' ) ).toBeFalsy();
 	} );
 
 	test( 'validates the IBAN and shows error message', async () => {
 		const bankValidationResource = newFailingBankValidationResource();
 		const wrapper = getWrapper( bankValidationResource );
 
-		await wrapper.find<HTMLInputElement>( '#iban' ).setValue( 'DEinvalidIBANxyz' );
-		await wrapper.find<HTMLInputElement>( '#iban' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( 'DEinvalidIBANxyz' );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 		await wrapper.find( 'form' ).trigger( 'submit' );
 
 		await flushPromises();
@@ -71,28 +71,28 @@ describe( 'MembershipFeeChange.vue', () => {
 
 		wrapper.find<HTMLInputElement>( '#iban' ).element.value = '';
 
-		await wrapper.find<HTMLInputElement>( '#iban' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 		await wrapper.find( 'form' ).trigger( 'submit' );
 
 		await flushPromises();
 
 		expect( bankValidationResource.validateIban ).not.toHaveBeenCalled();
-		expect( wrapper.find<HTMLElement>( '.error-summary' ).html() ).not.toContain( 'donation_form_payment_iban_error' );
+		expect( wrapper.find( '.error-summary' ).html() ).not.toContain( 'donation_form_payment_iban_error' );
 	} );
 
 	test( 'hides IBAN error message when user starts typing', async () => {
 		const bankValidationResource = newFailingBankValidationResource();
 		const wrapper = getWrapper( bankValidationResource );
 
-		await wrapper.find<HTMLInputElement>( '#iban' ).setValue( 'DEinvalidIBANxyz' );
-		await wrapper.find<HTMLInputElement>( '#iban' ).trigger( 'blur' );
+		await wrapper.find( '#iban' ).setValue( 'DEinvalidIBANxyz' );
+		await wrapper.find( '#iban' ).trigger( 'blur' );
 		await wrapper.find( 'form' ).trigger( 'submit' );
 
-		expect( wrapper.find<HTMLElement>( '#iban-error' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#payment-form-iban' ).attributes( 'data-error' ) ).toBeTruthy();
 
-		await wrapper.find<HTMLInputElement>( '#iban' ).setValue( 'n' );
+		await wrapper.find( '#iban' ).setValue( 'n' );
 
-		expect( wrapper.find<HTMLElement>( '#iban-error' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#payment-form-iban' ).attributes( 'data-error' ) ).toBeFalsy();
 	} );
 
 	test( 'shows form page content if flag is set to form page', () => {
@@ -127,7 +127,7 @@ describe( 'MembershipFeeChange.vue', () => {
 	test( 'shows success page content after successful form submission', async () => {
 		const wrapper = getWrapper();
 
-		await wrapper.find<HTMLInputElement>( '#member-name' ).setValue( 'valid example name' );
+		await wrapper.find( '#member-name' ).setValue( 'valid example name' );
 		await wrapper.find( 'form' ).trigger( 'submit' );
 
 		expect( wrapper.find( '.membership-fee-success-page' ).exists() ).toBeTruthy();

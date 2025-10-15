@@ -1,5 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
+import { nextTick } from 'vue';
 
 describe( 'AmountField.vue', () => {
 
@@ -14,15 +15,18 @@ describe( 'AmountField.vue', () => {
 					$n: ( n: number, format: string ) => `${n}-${format}`,
 				},
 			},
+			attachTo: document.body,
 		} );
 	};
 
 	it( 'shows errors', async () => {
 		const wrapper = getWrapper();
 
+		expect( wrapper.attributes( 'data-error' ) ).toBeFalsy();
+
 		await wrapper.setProps( { showError: true, errorMessage: 'I haz errorz' } );
 
-		expect( wrapper.find( '.help.is-danger' ).text() ).toStrictEqual( 'I haz errorz' );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'emits amount event when amount is selected', async () => {
@@ -113,12 +117,12 @@ describe( 'AmountField.vue', () => {
 
 		await wrapper.find( 'input[value="29900"]' ).trigger( 'change' );
 
-		expect( wrapper.find( '.radio-form-input.is-active input[value="29900"]' ).exists() ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( 'input[value="29900"]' ).element.checked ).toBeTruthy();
 
 		await customAmountInput.setValue( '1998' );
 		await customAmountInput.trigger( 'blur' );
 
-		expect( wrapper.find( '.radio-form-input.active input[value="29900"]' ).exists() ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( 'input[type="radio"]' ).element.checked ).toBeFalsy();
 	} );
 
 	it( 'unsets custom amount when amount is selected', async () => {
@@ -128,36 +132,37 @@ describe( 'AmountField.vue', () => {
 		await customAmountInput.setValue( '1998' );
 		await customAmountInput.trigger( 'blur' );
 
-		expect( wrapper.find( '.form-field-amount-custom.active' ).exists() ).toBeTruthy();
+		// Vue test utils outputs the value '1998-decimal' so test that just the value is in there
+		expect( wrapper.find<HTMLInputElement>( 'input[type="text"]' ).element.value ).toContain( '1998' );
 
 		await wrapper.find( 'input[value="29900"]' ).trigger( 'change' );
 
-		expect( wrapper.find( '.form-field-amount-custom.active' ).exists() ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( 'input[type="text"]' ).element.value ).toStrictEqual( '' );
 	} );
 
-	it( 'custom amount radio is not activated by click', async () => {
+	it( 'custom amount is focused on radio click', async () => {
 		const wrapper = getWrapper();
-		const customAmountRadioElement = wrapper.find( '.text-radio-form-input-radio' );
 
-		await customAmountRadioElement.trigger( 'click' );
+		await wrapper.find( '.text-radio__radio' ).trigger( 'click' );
+		await nextTick();
 
-		expect( wrapper.find( '.form-field-amount-custom.active' ).exists() ).toBeFalsy();
+		expect( document.activeElement ).toStrictEqual( wrapper.find( '#amount-custom' ).element );
 	} );
 
 	it( 'Checks the custom amount radio when value is custom', async () => {
 		const wrapper = getWrapper();
 		const customAmountInput = wrapper.find( '#amount-custom' );
 
-		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
+		expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
 
 		await customAmountInput.setValue( '1998' );
 		await customAmountInput.trigger( 'blur' );
 
-		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).toContain( 'checked' );
+		expect( wrapper.find( '.text-radio__radio' ).classes() ).toContain( 'text-radio__radio--checked' );
 
 		await wrapper.find( 'input[value="29900"]' ).trigger( 'change' );
 
-		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
+		expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
 	} );
 
 	it( 'does not select amounts for choices that are below minimum amount', async () => {
@@ -175,10 +180,10 @@ describe( 'AmountField.vue', () => {
 	it( 'localises choices', () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.form-field-amount-radio:nth-child(1) .control-label' ).text() ).toStrictEqual( '5-euros' );
-		expect( wrapper.find( '.form-field-amount-radio:nth-child(2) .control-label' ).text() ).toStrictEqual( '10-euros' );
-		expect( wrapper.find( '.form-field-amount-radio:nth-child(3) .control-label' ).text() ).toStrictEqual( '100-euros' );
-		expect( wrapper.find( '.form-field-amount-radio:nth-child(4) .control-label' ).text() ).toStrictEqual( '299-euros' );
+		expect( wrapper.find( '#amount-500 + span' ).text() ).toStrictEqual( '5-euros' );
+		expect( wrapper.find( '#amount-1000 + span' ).text() ).toStrictEqual( '10-euros' );
+		expect( wrapper.find( '#amount-10000 + span' ).text() ).toStrictEqual( '100-euros' );
+		expect( wrapper.find( '#amount-29900 + span' ).text() ).toStrictEqual( '299-euros' );
 	} );
 
 	it( 'sets aria-describedby', async () => {

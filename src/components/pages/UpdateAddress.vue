@@ -59,7 +59,7 @@
 				]"
 			/>
 
-			<form name="laika-address-update" ref="form" @submit.prevent="submit">
+			<form name="laika-address-update" class="flow" ref="form" @submit.prevent="submit">
 				<CheckboxField
 					v-model="receiptNeeded"
 					input-id="receipt-option-person"

@@ -6,7 +6,7 @@
 		</template>
 
 		<template #content>
-			<form id="donation-form" action="/donation/add" method="post">
+			<form id="donation-form" class="flow" action="/donation/add" method="post">
 				<AutofillHandler @autofill="onAutofill">
 
 					<NameFields
@@ -20,6 +20,7 @@
 						:show-error="fieldErrors.email"
 						v-model="formData.email.value"
 						@field-changed="onFieldChange"
+						data-max-width
 					>
 						<template #message>
 							<ValueEqualsPlaceholderWarning
@@ -43,8 +44,8 @@
 						:label="$t( 'donation_confirmation_cta_title_alt' )"
 						:show-error="receiptModel.showReceiptOptionError"
 						:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
-						alignment="row"
 						aria-describedby="donation-receipt-help-text"
+						:layout-type="'cluster'"
 					>
 					</RadioField>
 

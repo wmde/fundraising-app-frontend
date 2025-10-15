@@ -254,7 +254,7 @@
 
 					<div class="field-container flow" data-max-width data-error>
 						<label for="last-name">Last Name</label>
-						<p class="field-container__help-text">This is the name that comes after your first name.</p>
+						<p>This is the name that comes after your first name.</p>
 						<input type="text" name="last-name" id="last-name" placeholder="e.g., Bloggs">
 						<p class="field-container__error-text">Please enter your surname.</p>
 					</div>
