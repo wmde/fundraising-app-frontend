@@ -189,7 +189,3 @@ watch( () => props.modelValue, ( newValue: string ) => {
 } );
 
 </script>
-
-<style lang="scss">
-
-</style>

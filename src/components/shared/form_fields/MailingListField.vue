@@ -43,14 +43,3 @@ const onUpdateModel = ( newValue: boolean ): void => {
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
 </script>
-
-<style lang="scss">
-@use '@src/scss/settings/units';
-@use 'sass:map';
-
-.form-field-mailing-list-hint {
-	line-height: 1.5;
-	padding-left: map.get( units.$spacing, 'medium' );
-}
-
-</style>

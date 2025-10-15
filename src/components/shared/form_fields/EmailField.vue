@@ -75,7 +75,3 @@ const onUpdateModel = ( newValue: string ): void => {
 };
 
 </script>
-
-<style lang="scss">
-
-</style>
