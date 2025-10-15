@@ -8,6 +8,12 @@
 
 .field-container__message {
 	color: var(--color-grey-500);
+	font-style: italic;
+}
+
+/* This is for an implementation issue with Vuejs. In order to pass the value */
+.field-container__message:empty {
+	display: none;
 }
 
 .field-container__error-text {

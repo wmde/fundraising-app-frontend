@@ -52,10 +52,6 @@
 		line-height: var(--leading-standard);
 	}
 
-	label:has([type='checkbox']) {
-		max-width: var(--form-field-max-width);
-	}
-
 	select {
 		appearance: none;
 	}

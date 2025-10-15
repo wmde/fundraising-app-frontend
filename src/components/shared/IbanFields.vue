@@ -1,7 +1,7 @@
 <template>
 	<div class="form-section-iban">
 		<div class="form-section-iban-title">
-			<h2 class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }} {{ showCalculator }}</h2>
+			<h2 class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
 
 			<ButtonLink class="calculate-iban-button" aria-controls="iban-calculator" :aria-expanded="showCalculator" @click="showCalculator = !showCalculator">
 				{{ $t( 'donation_form_iban_calculator_button' ) }}

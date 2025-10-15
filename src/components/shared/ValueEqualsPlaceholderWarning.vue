@@ -1,5 +1,5 @@
 <template>
-	<span v-if="valueEqualsPlaceholder" class="help">{{ $t( warning, { value } ) }}</span>
+	<template v-if="valueEqualsPlaceholder">{{ $t( warning, { value } ) }}</template>
 </template>
 
 <script lang="ts">

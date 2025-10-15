@@ -1,12 +1,12 @@
 <template>
 	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
 		<template #heading>
-			<h2 id="donation-form-subheading">{{ $t( 'donation_form_address_subheading' ) }}</h2>
+			<h2 id="donation-form-subheading">2. {{ $t( 'donation_form_address_subheading' ) }}</h2>
 			<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 		</template>
 
 		<template #content>
-			<form id="donation-form" action="/donation/add" method="post">
+			<form class="compact" id="donation-form" action="/donation/add" method="post" @submit.prevent>
 				<AutofillHandler @autofill="onAutofill">
 
 					<NameFields
@@ -38,52 +38,40 @@
 	</ContentCard>
 
 	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
+		<template #heading>
+			<h2>3. Other Information</h2>
+		</template>
+
 		<template #content>
+			<form class="flow compact" @submit.prevent>
+				<CheckboxToggle
+					v-model="receiptModel.receiptNeeded"
+					name="donation-receipt"
+					input-id="donation-receipt"
+				>
+					{{ $t( 'donation_confirmation_cta_title_alt' ) }}
+				</CheckboxToggle>
 
-			<CheckboxToggle
-				v-model="receiptModel.receiptNeeded"
-				name="donation-receipt"
-				input-id="donation-receipt"
-			>
-				{{ $t( 'donation_confirmation_cta_title_alt' ) }}
-			</CheckboxToggle>
-
-			<ScrollTarget target-id="receipt-scroll-target"/>
-			<RadioField
-				v-model="receiptModel.receiptNeeded"
-				name="donationReceipt"
-				:options="[
-					{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
-					{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
-				]"
-				:label="$t( 'donation_confirmation_cta_title_alt' )"
-				:show-error="receiptModel.showReceiptOptionError"
-				:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
-				alignment="row"
-				aria-describedby="donation-receipt-help-text"
-			>
-			</RadioField>
-
-			<AddressFields
-				v-if="receiptModel.receiptNeeded"
-				:show-error="fieldErrors"
-				:form-data="formData"
-				:countries="countries"
-				:post-code-validation="addressValidationPatterns.postcode"
-				@field-changed="onFieldChange"
-			/>
+				<AddressFields
+					v-if="receiptModel.receiptNeeded"
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:countries="countries"
+					:post-code-validation="addressValidationPatterns.postcode"
+					@field-changed="onFieldChange"
+				/>
+			</form>
 		</template>
 	</ContentCard>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, toRef } from 'vue';
-import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
+import AddressFields from '@src/components/pages/donation_form/Compact/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
-import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
-import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import NameFields from '@src/components/pages/donation_form/Compact/NameFields.vue';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
