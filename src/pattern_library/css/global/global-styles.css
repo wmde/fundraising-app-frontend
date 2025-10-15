@@ -286,7 +286,11 @@ svg[role='img'][width][height] {
  * control in certain systems. It still uses the --flow-space variables though to make managing space easier
  */
 :is(form, [role='form']) > * + * {
-	margin-top: var(--flow-space, var(--space-l));
+	margin-top: var(--flow-space, var(--gutter));
+}
+
+:is(form:not(.compact), [role='form']:not(.compact)) {
+	--flow-space: var(--space-l);
 }
 
 :is(input, select, textarea) {

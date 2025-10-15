@@ -6,8 +6,10 @@
 @use "../pattern_library/css/utilities/stretch-single-content-card.css";
 @use "../pattern_library/css/utilities/visually-hidden.css";
 @use "../pattern_library/css/compositions/cluster.css";
+@use "../pattern_library/css/compositions/flex-field-group.css";
 @use "../pattern_library/css/compositions/flow.css";
 @use "../pattern_library/css/compositions/grid.css" as gridBase;
+@use "../pattern_library/css/compositions/repel.css";
 @use "../pattern_library/css/compositions/sidebar.css";
 @use "../pattern_library/css/compositions/switcher.css" as switcherBase;
 @use "../pattern_library/css/compositions/wrapper.css" as wrapperBase;

@@ -1,76 +1,79 @@
 <template>
-	<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :data-max-width="dataMaxWidth ? true : null" :id="id">
-		<template #label>{{ $t( 'donation_form_street_name_label' ) }}</template>
-		<template #field>
-			<div class="combobox">
-				<input
-					type="text"
-					name="street"
-					v-model="streetNameModel"
-					:id="inputIdStreetName"
-					autocomplete="country"
-					:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_name_placeholder' ) } )"
-					aria-controls="streets"
-					:aria-invalid="showError"
-					:aria-describedby="ariaDescribedby"
-					aria-autocomplete="list"
-					:aria-activedescendant="activeStreet ? `street-${activeStreetId}` : null"
-					@focus="onStreetNameFocus"
-					@blur="onStreetNameBlur"
-					@input="onStreetNameInput"
-					@keydown="onStreetNameKeydown"
-					@keydown.up.prevent="onStreetNameKeyArrows('up')"
-					@keydown.down.prevent="onStreetNameKeyArrows('down')"
-					@keydown.tab="onStreetNameKeySubmit"
-					@keydown.enter="onStreetNameKeySubmit"
-				/>
-				<span class="is-sr-only" :id="`${inputIdStreetName}-selected`" aria-live="assertive">
+	<div :class="{ 'flow': !isInline, 'flex-field-group' : isInline }">
+		<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :data-max-width="dataMaxWidth ? true : null">
+			<template #label>{{ $t( 'donation_form_street_name_label' ) }}</template>
+			<template #field>
+				<div class="combobox">
+					<input
+						type="text"
+						name="street"
+						v-model="streetNameModel"
+						:id="inputIdStreetName"
+						autocomplete="country"
+						:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_name_placeholder' ) } )"
+						aria-controls="streets"
+						:aria-invalid="showError"
+						:aria-describedby="ariaDescribedby"
+						aria-autocomplete="list"
+						:aria-activedescendant="activeStreet ? `street-${activeStreetId}` : null"
+						@focus="onStreetNameFocus"
+						@blur="onStreetNameBlur"
+						@input="onStreetNameInput"
+						@keydown="onStreetNameKeydown"
+						@keydown.up.prevent="onStreetNameKeyArrows('up')"
+						@keydown.down.prevent="onStreetNameKeyArrows('down')"
+						@keydown.tab="onStreetNameKeySubmit"
+						@keydown.enter="onStreetNameKeySubmit"
+					/>
+					<span class="is-sr-only" :id="`${inputIdStreetName}-selected`" aria-live="assertive">
 					{{ activeStreet }}
 				</span>
-				<transition name="fade">
-					<div id="streets" ref="scrollElement" tabindex="-1" role="listbox" :aria-label="$t( 'donation_form_street_name_list_label' )" v-show="autocompleteIsActive && filteredStreets.length > 0">
-						<button
-							v-for="( street, index ) in filteredStreets"
-							:key="street"
-							tabindex="-1"
-							role="option"
-							:id="`street-${index}`"
-							:aria-selected="street === activeStreet"
-							@click="onSelectStreet( street )"
-							@keyup.enter.space="onSelectStreet( street )"
-						>
-							{{ street }}
-						</button>
-					</div>
-				</transition>
-			</div>
-		</template>
-		<template #error>{{ errorMessage }}</template>
-		<template #message>
-			<ValueEqualsPlaceholderWarning
-				:value="streetNameModel"
-				:placeholder="$t( 'donation_form_street_placeholder' )"
-				:warning="'donation_form_street_placeholder_warning'"
-			/>
-		</template>
-	</FieldContainer>
+					<transition name="fade">
+						<div id="streets" ref="scrollElement" tabindex="-1" role="listbox" :aria-label="$t( 'donation_form_street_name_list_label' )" v-show="autocompleteIsActive && filteredStreets.length > 0">
+							<button
+								v-for="( street, index ) in filteredStreets"
+								:key="street"
+								tabindex="-1"
+								role="option"
+								:id="`street-${index}`"
+								:aria-selected="street === activeStreet"
+								@click="onSelectStreet( street )"
+								@keyup.enter.space="onSelectStreet( street )"
+							>
+								{{ street }}
+							</button>
+						</div>
+					</transition>
+				</div>
+			</template>
+			<template #error>{{ errorMessage }}</template>
+			<template #message>
+				<ValueEqualsPlaceholderWarning
+					:value="streetNameModel"
+					:placeholder="$t( 'donation_form_street_placeholder' )"
+					:warning="'donation_form_street_placeholder_warning'"
+				/>
+			</template>
+		</FieldContainer>
 
-	<TextField
-		name="building-number"
-		:input-id="inputIdBuildingNumber"
-		v-model="buildingNumberModel"
-		:show-error="false"
-		:error-message="$t('donation_form_building_number_error')"
-		:label="$t( 'donation_form_building_number_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_building_number_placeholder' ) } )"
-		@update:modelValue="onUpdateModel"
-		@field-changed="onBuildingNumberBlur"
-		:data-max-width="dataMaxWidth"
-	>
-		<template #message v-if="showBuildingNumberWarning">
-			{{ $t( 'donation_form_street_number_warning' ) }}
-		</template>
-	</TextField>
+		<TextField
+			name="building-number"
+			:input-id="inputIdBuildingNumber"
+			:class="{ 'flex-field-group__mini-fixed-width-field' : isInline }"
+			v-model="buildingNumberModel"
+			:show-error="false"
+			:error-message="$t('donation_form_building_number_error')"
+			:label="$t( isInline ? 'donation_form_building_number_label_short' : 'donation_form_building_number_label' )"
+			:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_building_number_placeholder' ) } )"
+			@update:modelValue="onUpdateModel"
+			@field-changed="onBuildingNumberBlur"
+			:data-max-width="dataMaxWidth"
+		>
+			<template #message v-if="showBuildingNumberWarning && !isInline">
+				{{ $t( 'donation_form_street_number_warning' ) }}
+			</template>
+		</TextField>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -92,9 +95,9 @@ enum InteractionState {
 }
 
 interface Props {
-	id?: string;
 	inputIdStreetName: string;
 	inputIdBuildingNumber: string;
+	isInline?: boolean;
 	scrollTargetId: string;
 	modelValue: string;
 	showError: boolean;

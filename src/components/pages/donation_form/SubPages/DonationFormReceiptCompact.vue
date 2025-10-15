@@ -3,17 +3,12 @@
 		:payment-amounts="paymentAmounts"
 		:payment-intervals="paymentIntervals"
 		:payment-types="paymentTypes"
+		:is-direct-debit-payment="isDirectDebitPayment"
 	>
 		<template #error-summary>
 			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" :receipt-model="receiptModel"/>
 		</template>
 	</PaymentSection>
-
-	<ContentCard v-if="isDirectDebitPayment">
-		<template #content>
-			<IbanFields/>
-		</template>
-	</ContentCard>
 
 	<PersonalDataSection
 		:countries="countries"
@@ -81,9 +76,8 @@ import type { Country } from '@src/view_models/Country';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { Salutation } from '@src/view_models/Salutation';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
-import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
-import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSectionDonationReceiptCompact.vue';
-import IbanFields from '@src/components/shared/IbanFields.vue';
+import PaymentSection from '@src/components/pages/donation_form/Compact/PaymentSection.vue';
+import PersonalDataSection from '@src/components/pages/donation_form/Compact/PersonalDataSection.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import ErrorSummary from '@src/components/pages/donation_form/DonationReceipt/ErrorSummary.vue';
