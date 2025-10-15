@@ -1,10 +1,6 @@
 /**
  * This is currently only used in one place, for the mailing list checkbox field
  */
-.verbose-checkbox {
-	max-width: var(--form-field-max-width);
-}
-
 .verbose-checkbox > p {
 	padding-left: calc(0.5em + var(--space-s));
 }

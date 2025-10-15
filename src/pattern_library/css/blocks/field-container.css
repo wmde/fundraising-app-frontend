@@ -1,3 +1,7 @@
+.field-container {
+	--field-container-max-width: 32em;
+}
+
 .field-container > * {
 	--flow-space: var(--space-2xs);
 }
@@ -6,14 +10,14 @@
 	color: var(--color-red-700);
 }
 
+.field-container[data-max-width] {
+	max-width: var(--field-container-max-width);
+}
+
 .field-container[data-error] {
 	--form-field-border-color: var(--color-red-700);
 }
 
 .field-container:not([data-error]) .field-container__error-text {
 	display: none;
-}
-
-.field-container__radio-grid {
-	max-width: var(--form-field-max-width);
 }

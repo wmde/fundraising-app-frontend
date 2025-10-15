@@ -6,7 +6,6 @@
 	position: absolute;
 	top: 100%;
 	width: 100%;
-	max-width: var(--form-field-max-width);
 	max-height: 200px;
 	overflow-y: scroll;
 	background: var(--color-white);

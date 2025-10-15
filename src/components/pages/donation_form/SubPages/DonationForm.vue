@@ -146,7 +146,7 @@ const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHand
 );
 
 const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
+	const scrollIntoViewElement = document.getElementById( 'donation-form-heading' );
 	if ( scrollIntoViewElement ) {
 		scrollIntoViewElement.scrollIntoView( { behavior: 'auto' } );
 	}

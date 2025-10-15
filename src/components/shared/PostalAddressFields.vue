@@ -1,9 +1,9 @@
 <template>
 	<div class="address-section">
 
-		<ScrollTarget :target-id="`${fieldIdNamespace}street-scroll-target`"/>
 		<TextField
 			name="street"
+			:id="`${fieldIdNamespace}address-form-street`"
 			:input-id="`${fieldIdNamespace}street`"
 			v-model="formData.street.value"
 			:show-error="showError.street"
@@ -26,9 +26,9 @@
 			</template>
 		</TextField>
 
-		<ScrollTarget :target-id="`${fieldIdNamespace}post-code-scroll-target`"/>
 		<TextField
 			name="postcode"
+			:id="`${fieldIdNamespace}address-form-post-code`"
 			:input-id="`${fieldIdNamespace}post-code`"
 			v-model="formData.postcode.value"
 			:show-error="showError.postcode"
@@ -47,11 +47,11 @@
 			</template>
 		</TextField>
 
-		<ScrollTarget :target-id="`${fieldIdNamespace}city-scroll-target`"/>
 		<CityAutocompleteField
 			v-model="formData.city.value"
+			:id="`${fieldIdNamespace}address-form-city`"
 			:input-id="`${fieldIdNamespace}city`"
-			:scroll-target-id="`${fieldIdNamespace}city-scroll-target`"
+			:scroll-target-id="`${fieldIdNamespace}address-form-city`"
 			:show-error="showError.city"
 			:label="$t( 'donation_form_city_label' )"
 			:error-message="$t( 'donation_form_city_error' )"
@@ -68,11 +68,11 @@
 			</template>
 		</CityAutocompleteField>
 
-		<ScrollTarget :target-id="`${fieldIdNamespace}country-scroll-target`"/>
 		<CountryAutocompleteField
 			v-model="formData.country.value"
+			:id="`${fieldIdNamespace}address-form-country`"
 			:input-id="`${fieldIdNamespace}country`"
-			:scroll-target-id="`${fieldIdNamespace}country-scroll-target`"
+			:scroll-target-id="`${fieldIdNamespace}address-form-country`"
 			:countries="countries"
 			:was-restored="countryWasRestored"
 			:show-error="showError.country"
@@ -94,7 +94,6 @@ import { computed } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import type { Country } from '@src/view_models/Country';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 interface Props {
 	formData: AddressFormData;

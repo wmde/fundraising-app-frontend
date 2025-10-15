@@ -1,17 +1,13 @@
 <template>
 	<FeatureToggle default-template="campaigns.address_pages.legacy">
 		<template #campaigns.address_pages.legacy>
-			<FeatureToggle default-template="campaigns.address_type_choice.default">
-				<template #campaigns.address_type_choice.default>
-					<StandardDonationForm v-bind="props"/>
-				</template>
-				<template #campaigns.address_type_choice.choice>
-					<ChoiceDonationForm v-bind="props" />
-				</template>
-			</FeatureToggle>
+			<StandardDonationForm v-bind="props"/>
 		</template>
-		<template #campaigns.address_pages.test_02>
+		<template #campaigns.address_pages.test_02_no_anon>
 			<ReceiptDonationForm v-bind="props"/>
+		</template>
+		<template #campaigns.address_pages.test_03_compact_no_anon>
+			<CompactReceiptDonationForm v-bind="props"/>
 		</template>
 	</FeatureToggle>
 </template>
@@ -24,7 +20,7 @@ import type { Salutation } from '@src/view_models/Salutation';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import StandardDonationForm from '@src/components/pages/donation_form/SubPages/DonationForm.vue';
 import ReceiptDonationForm from '@src/components/pages/donation_form/SubPages/DonationFormReceipt.vue';
-import ChoiceDonationForm from '@src/components/pages/donation_form/SubPages/DonationFormAnonymousChoice.vue';
+import CompactReceiptDonationForm from '@src/components/pages/donation_form/SubPages/DonationFormReceiptCompact.vue';
 
 defineOptions( {
 	name: 'DonationForm',

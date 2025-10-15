@@ -5,20 +5,20 @@
 			<hr/>
 		</div>
 		<form>
-			<div class="field-container flow">
+			<div class="field-container flow" data-max-width>
 				<label for="first-name">First Name</label>
 				<input type="text" name="first-name" id="first-name" placeholder="It's a doggy dog world">
 				<p class="field-container__error-text">It's like a bowl in a china shop</p>
 			</div>
 
-			<div class="field-container flow" data-error>
+			<div class="field-container flow" data-max-width data-error>
 				<label for="last-name">Last Name</label>
 				<p class="field-container__help-text">This is the name that comes after your first name.</p>
 				<input type="text" name="last-name" id="last-name" placeholder="It's a doggy dog world">
 				<p class="field-container__error-text">It's like a bowl in a china shop</p>
 			</div>
 
-			<div class="field-container flow">
+			<div class="field-container flow" data-max-width>
 				<label for="country">Country</label>
 				<select name="country" id="country">
 					<option value="ie">Ireland</option>
@@ -30,7 +30,7 @@
 				<p class="field-container__error-text">You must select a number no larger than 3 and no smaller than 3</p>
 			</div>
 
-			<div class="field-container flow" data-error>
+			<div class="field-container flow" data-max-width data-error>
 				<label for="city">City</label>
 				<select name="city" id="city">
 					<option value="ie">Dublin</option>
@@ -42,7 +42,7 @@
 				<p class="field-container__error-text">You must select a number no larger than 3 and no smaller than 3</p>
 			</div>
 
-			<fieldset class="field-container flow">
+			<fieldset class="field-container flow" data-max-width>
 				<legend>I ain't getting on no plane!</legend>
 				<p>I pity the fool who doesn't select one of these</p>
 				<label>
@@ -60,7 +60,7 @@
 				<p class="field-container__error-text">It's like a bowl in a china shop</p>
 			</fieldset>
 
-			<div class="field-container flow">
+			<div class="field-container flow" data-max-width>
 				<label>
 					<input type="checkbox" name="sticker" id="sticker">
 					<span>I would love a sticker</span>
@@ -68,7 +68,7 @@
 				<p class="field-container__error-text">It's like a bowl in a china shop</p>
 			</div>
 
-			<div class="field-container flow" data-error>
+			<div class="field-container flow" data-max-width data-error>
 				<label>
 					<input type="checkbox" name="sticker" id="sticker">
 					<span>I would love a sticker</span>
@@ -76,7 +76,7 @@
 				<p class="field-container__error-text">It's like a bowl in a china shop</p>
 			</div>
 
-			<div class="field-container flow">
+			<div class="field-container flow" data-max-width>
 				<div class="verbose-checkbox flow">
 					<label>
 						<input type="checkbox" name="mailing-list" id="mailing-list" aria-describedby="mailing-list-hint">
@@ -86,7 +86,7 @@
 				</div>
 			</div>
 
-			<fieldset class="field-container flow">
+			<fieldset class="field-container flow" data-max-width>
 				<legend>How often would you like to donate?</legend>
 				<div class="field-container__radio-grid">
 					<div class="grid" data-layout="halves">

@@ -26,6 +26,11 @@
 	display: none;
 }
 
+.accordion summary h2 {
+	font-size: var(--type-step-0);
+	font-weight: bold;
+}
+
 .accordion summary svg {
 	margin-inline-start: var(--gutter);
 }
