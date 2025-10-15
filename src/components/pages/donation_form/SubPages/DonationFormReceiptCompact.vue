@@ -28,47 +28,47 @@
 		:receipt-model="receiptModel"
 	/>
 
-	<ContentCard>
-		<template #heading v-if="paymentSummary">
-			<h2>{{ $t( 'donation_form_summary_title' ) }}</h2>
-			<DonationSummaryHeadline
-				:payment="paymentSummary"
-			/>
-		</template>
+	<ContentCard :is-collapsable="true" v-if="paymentSummary">
 		<template #content>
-			<Summary v-if="addressSummary || bankDataSummary">
-				<template #left v-if="addressSummary">
-					<AddressSummarySection
-						:address="addressSummary"
-						:countries="countries"
-						:salutations="salutations"
-					/>
-				</template>
-				<template #right v-if="bankDataSummary">
-					<PaymentSummarySection
-						:bank-data="bankDataSummary"
-					/>
-				</template>
-			</Summary>
-			<div class="switcher">
-				<FormButton
-					id="previous-btn"
-					:is-outlined="true"
-					@click="scrollToPaymentSection"
-				>
-					{{ $t( 'donation_form_section_back' ) }}
-				</FormButton>
-				<PaymentTextFormButton
-					id="submit-btn"
-					:is-loading="store.getters.isValidating"
-					:payment-type="paymentSummary?.paymentType"
-					@click="submit"
-				/>
-			</div>
+			<Accordion>
+				<AccordionItem>
+					<template #title><h2>{{ $t( 'donation_form_summary_title' ) }}</h2></template>
+					<template #content>
+						<div class="flow">
+							<DonationSummaryHeadline
+								:payment="paymentSummary"
+							/>
+							<Summary v-if="addressSummary || bankDataSummary">
+								<template #left v-if="addressSummary">
+									<AddressSummarySection
+										:address="addressSummary"
+										:countries="countries"
+										:salutations="salutations"
+									/>
+								</template>
+								<template #right v-if="bankDataSummary">
+									<PaymentSummarySection
+										:bank-data="bankDataSummary"
+									/>
+								</template>
+							</Summary>
+						</div>
+					</template>
+				</AccordionItem>
+			</Accordion>
 		</template>
 	</ContentCard>
 
-	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
+	<div>
+		<PaymentTextFormButton
+			id="submit-btn"
+			:is-loading="store.getters.isValidating"
+			:payment-type="paymentSummary?.paymentType"
+			@click="submit"
+		/>
+	</div>
+
+	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form" class="visually-hidden" aria-hidden="true">
 		<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
 	</form>
 </template>
@@ -85,7 +85,6 @@ import PaymentSection from '@src/components/pages/donation_form/FormSections/Pay
 import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSectionDonationReceiptCompact.vue';
 import IbanFields from '@src/components/shared/IbanFields.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
-import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import ErrorSummary from '@src/components/pages/donation_form/DonationReceipt/ErrorSummary.vue';
 import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/DonationReceipt/useDonationFormSubmitHandler';
@@ -101,6 +100,8 @@ import ContentCard from '@src/components/patterns/ContentCard.vue';
 import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
 import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';
 import Summary from '@src/components/patterns/Summary.vue';
+import AccordionItem from '@src/components/patterns/AccordionItem.vue';
+import Accordion from '@src/components/patterns/Accordion.vue';
 
 defineOptions( {
 	name: 'DonationForm',
@@ -143,13 +144,6 @@ const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHand
 	props.validateEmailUrl,
 	receiptModel.receiptNeeded
 );
-
-const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementById( 'donation-form-heading' );
-	if ( scrollIntoViewElement ) {
-		scrollIntoViewElement.scrollIntoView( { behavior: 'auto' } );
-	}
-};
 
 onMounted( () => {
 	trackDynamicForm();

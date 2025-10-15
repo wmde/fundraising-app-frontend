@@ -8,10 +8,11 @@
 @use "../pattern_library/css/compositions/sidebar.css";
 @use "../pattern_library/css/compositions/switcher.css" as switcherBase;
 @use "../pattern_library/css/compositions/wrapper.css" as wrapperBase;
-@use "../pattern_library/css/blocks/accordion.css";
+@use "../pattern_library/css/blocks/accordion.css" as accordionBase;
 @use "../pattern_library/css/blocks/alert-box.css";
 @use "../pattern_library/css/blocks/field-container.css" as fieldContainerBase;
 @use "../pattern_library/css/blocks/toggle.css" as toggleBase;
+@use "pattern-library-compatibility/accordion";
 @use "pattern-library-compatibility/content-card";
 @use "pattern-library-compatibility/field-container";
 @use "pattern-library-compatibility/icon-text";
