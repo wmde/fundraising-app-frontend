@@ -5,7 +5,7 @@
 			<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 		</template>
 		<template #content>
-			<form id="address-type-selection" @submit="evt => evt.preventDefault()">
+			<form id="address-type-selection" @submit.prevent>
 				<AddressTypeBasic
 					@address-type="$emit( 'set-address-type', $event )"
 					:disabledAddressTypes="disabledAddressTypes"
