@@ -7,6 +7,7 @@
 					id="suggested-amount"
 					v-model="isSuggestedAmount"
 					:native-value="true"
+					:aria-describedby="ariaDescribedby"
 					name="amount"
 				>
 					<template #label>
@@ -24,6 +25,7 @@
 					:placeholder="customAmountPlaceholder"
 					:has-message="false"
 					:show-error="isValid"
+					:aria-describedby="ariaDescribedby"
 					@blur.prevent="onBlurCustomAmount"
 					@input.prevent="onCustomAmountInput"
 					@update:model-value="updateAmountFromCustom"
@@ -32,15 +34,16 @@
 				/>
 			</div>
 		</div>
-		<p class="field-container__error-text">{{ errorMessage }}</p>
+		<p class="field-container__error-text" id="suggested-amount-error">{{ errorMessage }}</p>
 	</div>
 </template>
 
 <script setup lang="ts">
 import TextRadioFormInput from '@src/components/shared/form_elements/TextRadioFormInput.vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 
 interface Props {
 	modelValue: number;
@@ -60,6 +63,12 @@ const emit = defineEmits( [ 'update:modelValue', 'custom-amount-changed', 'sugge
 const { n } = useI18n();
 const isSuggestedAmount = ref<boolean>( true );
 const customAmount = ref<string>( '' );
+const ariaDescribedby = useAriaDescribedby(
+	'suggested-amount',
+	computed<boolean>( () => false ),
+	computed<boolean>( () => !props.isValid ),
+	computed<boolean>( () => false )
+);
 
 watch( isSuggestedAmount, ( newValue: boolean ) => {
 	if ( newValue ) {

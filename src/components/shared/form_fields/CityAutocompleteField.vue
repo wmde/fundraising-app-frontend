@@ -9,7 +9,7 @@
 					v-model="city"
 					:id="inputId"
 					autocomplete="city"
-					:placeholder="$t( placeholder, { example: $t( examplePlaceholder ) } )"
+					:placeholder="$t( placeholder, { example: $t( 'donation_form_city_placeholder' ) } )"
 					aria-controls="cities"
 					:aria-invalid="showError"
 					:aria-describedby="ariaDescribedby"
@@ -46,19 +46,22 @@
 			</div>
 		</template>
 		<template #error>{{ errorMessage }}</template>
-		<template #message><slot name="message"/></template>
+		<template #message v-if="valueEqualsPlaceholderWarning.hasWarning.value">{{ valueEqualsPlaceholderWarning.warning }}</template>
+		<template #message v-else-if="$slots.message"><slot name="message"/></template>
 	</FieldContainer>
 </template>
 
 <script setup lang="ts">
-import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, inject, nextTick, onMounted, ref, useSlots, watch } from 'vue';
 import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesResource';
 import type { CityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { NullCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { useValueEqualsPlaceholderWarning } from '@src/components/shared/composables/useValueEqualsPlaceholderWarning';
+import { useI18n } from 'vue-i18n';
 
 enum InteractionState {
 	Typing,
@@ -70,7 +73,6 @@ interface Props {
 	inputId: string;
 	scrollTargetId: string;
 	label: String;
-	examplePlaceholder: string;
 	showError: boolean;
 	errorMessage: String;
 	postcode: string;
@@ -78,6 +80,8 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'field-changed', 'update:modelValue' ] );
+const { t } = useI18n();
+const slots = useSlots();
 
 const city = ref<string>( props.modelValue );
 const autocompleteIsActive = ref<Boolean>( false );
@@ -86,11 +90,15 @@ const activeCity = ref<string>();
 const activeCityId = computed<number>( () => cities.value.indexOf( activeCity.value ) );
 const interactionState = ref<InteractionState>( InteractionState.Typing );
 const scrollElement = ref<HTMLElement>();
+
+const valueEqualsPlaceholderWarning = useValueEqualsPlaceholderWarning( city, t( 'donation_form_city_placeholder' ), 'donation_form_city_placeholder_warning' );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => activeCity.value ? `${props.inputId}-selected` : '' ),
-	`${props.inputId}-error`,
-	computed<boolean>( () => props.showError )
+	props.inputId,
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
 );
+
 const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );
 
 const placeholder = computed( () => {

@@ -72,9 +72,9 @@
 					name="category"
 					:label="$t( 'contact_form_topic_label' )"
 					:options="[
-					{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
-					...Object.values( contactCategories ).map( ( value: string ) => ( { label: value, value: value } ) )
-				]"
+						{ label: $t( 'contact_form_topic_placeholder' ), value: '' },
+						...Object.values( contactCategories ).map( ( value: string ) => ( { label: value, value: value } ) )
+					]"
 					:show-error="formData.topic.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_topic_error' )"
 					@field-changed="() => validateField( 'topic' )"

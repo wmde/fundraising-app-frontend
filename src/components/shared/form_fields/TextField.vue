@@ -14,7 +14,7 @@
 				:input-id="inputId"
 				:has-error="showError"
 				:has-message="false"
-				:placeholder="placeholder"
+				:placeholder="$t( 'form_for_example', { example: placeholder } )"
 				:autocomplete="autocomplete"
 				:disabled="disabled"
 				:autofocus="autofocus"
@@ -25,7 +25,8 @@
 			/>
 		</template>
 		<template #error>{{ errorMessage }}</template>
-		<template #message><slot name="message"/></template>
+		<template #message v-if="valueEqualsPlaceholderWarning.hasWarning.value">{{ valueEqualsPlaceholderWarning.warning }}</template>
+		<template #message v-else-if="$slots.message"><slot name="message"/></template>
 	</FieldContainer>
 </template>
 
@@ -33,9 +34,10 @@
 
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
-import { computed } from 'vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { computed, useSlots } from 'vue';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { useValueEqualsPlaceholderWarning } from '@src/components/shared/composables/useValueEqualsPlaceholderWarning';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 
 interface Props {
 	inputType?: 'text' | 'textarea';
@@ -45,11 +47,11 @@ interface Props {
 	name: string;
 	inputId: string;
 	placeholder: string;
+	placeholderWarning?: string;
 	modelValue: string | number;
 	errorMessage: String;
 	showError: boolean;
 	disabled?: boolean;
-	required?: boolean;
 	autocomplete?: string;
 	autofocus?: boolean;
 }
@@ -57,16 +59,18 @@ interface Props {
 const props = withDefaults( defineProps<Props>(), {
 	inputType: 'text',
 	disabled: false,
-	required: false,
 	autocomplete: 'on',
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
+const slots = useSlots();
 
 const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
+const valueEqualsPlaceholderWarning = useValueEqualsPlaceholderWarning( fieldModel, props.placeholder, props.placeholderWarning );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => ( props.helpText ? `${ props.inputId }-help-text` : '' ) ),
-	`${props.inputId}-error`,
-	computed<boolean>( () => props.showError )
+	props.inputId,
+	computed<boolean>( () => !!props.helpText ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
 );
 
 const onInput = (): void => {

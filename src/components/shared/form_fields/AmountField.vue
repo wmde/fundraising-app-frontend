@@ -45,17 +45,17 @@
 			/>
 		</div>
 		<p v-if="showError" class="field-container__error-text" id="amount-error">{{ errorMessage }}</p>
-		<p v-if="!showError && $slots.message && $slots.message.toString() !== ''" class="field-container__message"><em><slot name="message"/></em></p>
+		<p v-if="!showError && $slots.message" class="field-container__message" id="amount-message"><slot name="message"/></p>
 	</fieldset>
 </template>
 
 <script setup lang="ts">
 
-import { computed, ref, watch } from 'vue';
+import { computed, ref, useSlots, watch } from 'vue';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useI18n } from 'vue-i18n';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 import TextRadioFormInput from '@src/components/shared/form_elements/TextRadioFormInput.vue';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 
 interface Props {
 	modelValue: string;
@@ -75,13 +75,15 @@ const props = withDefaults( defineProps<Props>(), {
 	showError: false,
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
+const slots = useSlots();
 
 const { n } = useI18n();
 const amount = ref<number>( Number( props.modelValue ) );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => props.ariaDescribedby ),
-	'amount-error',
-	computed<boolean>( () => props.showError )
+	'amount',
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => !!slots.message )
 );
 const isCustomAmount = computed<boolean>( () => amount.value > 0 && props.paymentAmounts.indexOf( amount.value ) === -1 );
 
