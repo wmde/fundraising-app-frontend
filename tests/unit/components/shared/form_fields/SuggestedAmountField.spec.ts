@@ -23,67 +23,82 @@ describe( 'SuggestedAmountField.vue', () => {
 		} );
 	};
 
-	test( 'suggested amount is preselected', () => {
-		const wrapper = getWrapper();
+	describe( 'functionality tests', () => {
+		test( 'suggested amount is preselected', () => {
+			const wrapper = getWrapper();
 
-		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
+			expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
+		} );
+
+		test( 'clicking into custom amount input field does not select the radio field', () => {
+			const wrapper = getWrapper();
+
+			wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
+
+			expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
+			expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
+		} );
+
+		test( 'entering valid custom amounts deselects suggested amount', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
+			await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '5500' );
+
+			expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeFalsy();
+			expect( wrapper.find( '.text-radio__radio' ).classes() ).toContain( 'text-radio__radio--checked' );
+		} );
+
+		test( 're-selecting custom amount deselects suggested amount', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
+			await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '5500' );
+
+			expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeFalsy();
+			expect( wrapper.find( '.text-radio__radio' ).classes() ).toContain( 'text-radio__radio--checked' );
+
+			await wrapper.find<HTMLInputElement>( '#suggested-amount' ).setValue( true );
+
+			expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
+			expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
+		} );
+
+		test( 'custom amount gets cleared when suggested amount is re-selected', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
+			await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '5500' );
+
+			expect( wrapper.find<HTMLInputElement>( '#custom-amount' ).element.value ).toEqual( '5500' );
+
+			await wrapper.find<HTMLInputElement>( '#suggested-amount' ).setValue( true );
+
+			expect( wrapper.find<HTMLInputElement>( '#custom-amount' ).element.value ).toEqual( '' );
+		} );
+
+		test( 'Formats the amount to decimal when custom amount field is blurred', async () => {
+			const wrapper = getWrapper();
+
+			// We have to manually set the model value to the integer we expect because we can't do the round trip
+			await wrapper.setProps( { modelValue: 2342 } );
+			await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '23,42' );
+			await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'blur' );
+
+			expect( wrapper.find<HTMLInputElement>( '#custom-amount' ).element.value ).toEqual( '23.42-decimal' );
+		} );
 	} );
 
-	test( 'clicking into custom amount input field does not select the radio field', () => {
-		const wrapper = getWrapper();
+	describe( 'accessibility tests', () => {
+		it( 'sets aria-describedby', async () => {
+			const wrapper = getWrapper();
 
-		wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
+			expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 0 );
 
-		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
-		expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
-	} );
+			await wrapper.setProps( { isValid: false } );
 
-	test( 'entering valid custom amounts deselects suggested amount', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
-		await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '5500' );
-
-		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeFalsy();
-		expect( wrapper.find( '.text-radio__radio' ).classes() ).toContain( 'text-radio__radio--checked' );
-	} );
-
-	test( 're-selecting custom amount deselects suggested amount', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
-		await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '5500' );
-
-		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeFalsy();
-		expect( wrapper.find( '.text-radio__radio' ).classes() ).toContain( 'text-radio__radio--checked' );
-
-		await wrapper.find<HTMLInputElement>( '#suggested-amount' ).setValue( true );
-
-		expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
-		expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
-	} );
-
-	test( 'custom amount gets cleared when suggested amount is re-selected', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
-		await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '5500' );
-
-		expect( wrapper.find<HTMLInputElement>( '#custom-amount' ).element.value ).toEqual( '5500' );
-
-		await wrapper.find<HTMLInputElement>( '#suggested-amount' ).setValue( true );
-
-		expect( wrapper.find<HTMLInputElement>( '#custom-amount' ).element.value ).toEqual( '' );
-	} );
-
-	test( 'Formats the amount to decimal when custom amount field is blurred', async () => {
-		const wrapper = getWrapper();
-
-		// We have to manually set the model value to the integer we expect because we can't do the round trip
-		await wrapper.setProps( { modelValue: 2342 } );
-		await wrapper.find<HTMLInputElement>( '#custom-amount' ).setValue( '23,42' );
-		await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'blur' );
-
-		expect( wrapper.find<HTMLInputElement>( '#custom-amount' ).element.value ).toEqual( '23.42-decimal' );
+			expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 2 );
+			expect( wrapper.find( '#custom-amount' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'suggested-amount-error' );
+		} );
 	} );
 } );

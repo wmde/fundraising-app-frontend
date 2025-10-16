@@ -1,10 +1,10 @@
 <template>
-	<FieldContainer :input-id="inputId ?? 'email'" :show-error="showError" :id="id">
+	<FieldContainer :input-id="inputId" :show-error="showError" :id="id">
 		<template #label>{{ $t( 'donation_form_email_label' ) }}</template>
 		<template #field>
 			<TextFormInput
 				input-type="text"
-				:input-id="inputId ?? 'email'"
+				:input-id="inputId"
 				name="email"
 				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_email_placeholder' ) } )"
 				autocomplete="email"
@@ -18,17 +18,16 @@
 			/>
 		</template>
 		<template #error>{{ $t( 'donation_form_email_error' ) }}</template>
-		<template #message>
+		<template #message v-if="suggestedProvider">
 			<button
-				v-if="suggestedProvider"
 				class="link-button"
 				@click="onSuggestionClicked( suggestedProvider )"
 				@keyup.enter.space="onSuggestionClicked( suggestedProvider )"
 			>
 				{{ $t( 'donation_form_email_suggestion' ) }} <strong>{{ suggestedProvider }}</strong>?
 			</button>
-			<slot v-else name="message"/>
 		</template>
+		<template #message v-else-if="$slots.message"><slot name="message"/></template>
 	</FieldContainer>
 </template>
 
@@ -37,31 +36,36 @@ import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel'
 import { useSuggestedEmailProvider } from '@src/components/shared/form_fields/useSuggestedEmailProvider';
 import { useMailHostList } from '@src/components/shared/useMailHostList';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
-import { computed } from 'vue';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
+import { computed, useSlots } from 'vue';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { useValueEqualsPlaceholderWarning } from '@src/components/shared/composables/useValueEqualsPlaceholderWarning';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
 	modelValue: string;
 	showError: boolean;
 	id?: string;
 	inputId?: string;
-	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	id: 'address-form-email',
-	ariaDescribedby: '',
+	inputId: 'email',
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
+const { t } = useI18n();
+const slots = useSlots();
 
 const mailHostList = useMailHostList();
 const fieldModel = useFieldModel<string>( () => props.modelValue, props.modelValue );
 const { suggestedProvider, onSuggestionClicked } = useSuggestedEmailProvider( fieldModel, mailHostList, emit );
+const valueEqualsPlaceholderWarning = useValueEqualsPlaceholderWarning( fieldModel, t( 'donation_form_email_placeholder' ), 'donation_form_email_placeholder_warning' );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => props.ariaDescribedby ),
-	`${( props.inputId ?? 'email' )}-error`,
-	computed<boolean>( () => props.showError )
+	props.inputId,
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
 );
 
 const onInput = (): void => {

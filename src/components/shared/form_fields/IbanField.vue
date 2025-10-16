@@ -21,7 +21,7 @@
 		<template #error>
 			{{ $t( 'donation_form_payment_iban_error' ) }}
 		</template>
-		<template #message v-if="modelValue !== '' && bankName">
+		<template #message v-if="hasMessage">
 			{{ bankName }} ({{ bic }})
 		</template>
 	</FieldContainer>
@@ -29,9 +29,9 @@
 
 <script setup lang="ts">
 
-import { nextTick, onMounted, ref, toRef, watch } from 'vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 
 interface Props {
 	modelValue: string;
@@ -49,10 +49,12 @@ const emit = defineEmits( [ 'field-changed', 'input', 'blur', 'update:modelValue
 
 const fieldModel = ref<string>( props.modelValue );
 const field = ref<HTMLInputElement>( null );
+const hasMessage = computed<boolean>( () => props.modelValue !== '' && props.bankName !== '' );
 const ariaDescribedby = useAriaDescribedby(
-	toRef( (): string => props.ariaDescribedby ),
-	'iban-error',
-	toRef( (): boolean => props.showError )
+	'iban',
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => hasMessage.value )
 );
 
 const getDisplayValue = ( newValue: string ) => {

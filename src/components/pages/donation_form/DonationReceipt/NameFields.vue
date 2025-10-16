@@ -50,25 +50,17 @@
 		:error-message="$t( 'donation_form_lastname_error' )"
 		autocomplete="family-name"
 		:label="$t( 'donation_form_lastname_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_lastname_placeholder' ) } )"
+		:placeholder="$t( 'donation_form_lastname_placeholder' )"
+		placeholder-warning="donation_form_lastname_placeholder_warning"
 		@field-changed="$emit('field-changed', 'lastName')"
 		data-max-width
-	>
-		<template #message>
-			<ValueEqualsPlaceholderWarning
-				:value="formData.lastName.value"
-				:placeholder="$t( 'donation_form_lastname_placeholder_check' )"
-				:warning="'donation_form_lastname_placeholder_warning'"
-			/>
-		</template>
-	</TextField>
+	/>
 </template>
 
 <script setup lang="ts">
 
 import type { Salutation } from '@src/view_models/Salutation';
 import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';

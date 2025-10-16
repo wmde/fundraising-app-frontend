@@ -46,15 +46,7 @@
 				input-id="person-email"
 				@field-changed="onFieldChange"
 				data-max-width
-			>
-				<template #message>
-					<ValueEqualsPlaceholderWarning
-						:value="formData.email.value"
-						:placeholder="$t( 'donation_form_email_placeholder' )"
-						warning="donation_form_email_placeholder_warning"
-					/>
-				</template>
-			</EmailField>
+			/>
 			<MailingListField v-model="mailingList" input-id="person-newsletter" data-max-width/>
 		</AutofillHandler>
 	</form>
@@ -106,15 +98,7 @@
 				input-id="company-email"
 				@field-changed="onFieldChange"
 				data-max-width
-			>
-				<template #message>
-					<ValueEqualsPlaceholderWarning
-						:value="formData.email.value"
-						:placeholder="$t( 'donation_form_email_placeholder' )"
-						warning="donation_form_email_placeholder_warning"
-					/>
-				</template>
-			</EmailField>
+			/>
 			<MailingListField v-model="mailingList" input-id="company-newsletter" data-max-width/>
 		</AutofillHandler>
 	</form>
@@ -144,15 +128,7 @@
 				id="email-address-form-email"
 				input-id="email-email"
 				@field-changed="onFieldChange"
-			>
-				<template #message>
-					<ValueEqualsPlaceholderWarning
-						:value="formData.email.value"
-						:placeholder="$t( 'donation_form_email_placeholder' )"
-						warning="donation_form_email_placeholder_warning"
-					/>
-				</template>
-			</EmailField>
+			/>
 			<MailingListField v-model="mailingList" input-id="email-newsletter"/>
 		</AutofillHandler>
 	</form>
@@ -175,7 +151,6 @@ import type { Salutation } from '@src/view_models/Salutation';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import { Validity } from '@src/view_models/Validity';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import { useStore } from 'vuex';
 import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
