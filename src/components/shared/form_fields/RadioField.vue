@@ -1,7 +1,6 @@
 <template>
 	<FieldContainer :input-id="name" :show-error="showError" type="fieldset">
 		<template #label>{{ label }}</template>
-		<template #help-text><slot name="intro-message"/></template>
 		<template #field>
 			<div :class="layoutType" :data-layout="gridLayout">
 				<RadioFormInput
@@ -40,7 +39,7 @@ import type { CheckboxFormOption } from '@src/components/shared/form_fields/Form
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import { computed } from 'vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 interface Props {
@@ -67,10 +66,12 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => props.ariaDescribedby ),
-	`${props.name}-error`,
-	computed<boolean>( () => props.showError )
+	props.name,
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => false )
 );
+
 const fieldModel = useFieldModel<string | number | boolean | null>( () => props.modelValue, props.modelValue );
 
 const onFieldChange = ( newValue: string | number | boolean | null ): void => {

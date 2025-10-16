@@ -1,6 +1,6 @@
 <template>
 	<FieldContainer :input-id="inputId" :show-error="showError">
-		<template #label>{{ label }}</template>
+		<template #label>{{ $t( 'donation_form_country_label' ) }}</template>
 		<template #field>
 			<div class="combobox">
 				<input
@@ -9,7 +9,7 @@
 					v-model="countryName"
 					:id="inputId"
 					autocomplete="country"
-					:placeholder="placeholder"
+					:placeholder="$t( 'form_for_example', { example: countries[0].countryFullName } )"
 					aria-controls="countries"
 					:aria-invalid="showError"
 					:aria-describedby="ariaDescribedby"
@@ -47,8 +47,7 @@
 				</transition>
 			</div>
 		</template>
-		<template #error>{{ errorMessage }}</template>
-		<template #message><slot name="message"/></template>
+		<template #error>{{ $t('donation_form_country_error') }}</template>
 	</FieldContainer>
 </template>
 
@@ -59,7 +58,7 @@ import { useFilteredCountries } from '@src/components/shared/form_fields/useFilt
 import type { Country } from '@src/view_models/Country';
 import { computed, nextTick, ref } from 'vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
@@ -72,11 +71,8 @@ interface Props {
 	modelValue: string;
 	inputId: string;
 	scrollTargetId: string;
-	label: string;
-	placeholder: string;
 	countries?: Array<Country>;
 	showError: boolean;
-	errorMessage: string;
 	wasRestored: boolean;
 }
 
@@ -94,10 +90,12 @@ const scrollElement = ref<HTMLElement>();
 const wasFocusedBefore = ref<Boolean>( false );
 const autocompleteIsActive = ref<Boolean>( false );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => activeCountry.value ? `${props.inputId}-selected` : '' ),
-	`${props.inputId}-error`,
-	computed<boolean>( () => props.showError )
+	props.inputId,
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => false )
 );
+
 const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );
 
 const isFirstFocusOnDefaultValue = (): boolean => {

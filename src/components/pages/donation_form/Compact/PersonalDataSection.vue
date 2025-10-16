@@ -20,16 +20,7 @@
 						:show-error="fieldErrors.email"
 						v-model="formData.email.value"
 						@field-changed="onFieldChange"
-					>
-						<template #message>
-							<ValueEqualsPlaceholderWarning
-								:value="formData.email.value"
-								:placeholder="$t( 'donation_form_email_placeholder' )"
-								warning="donation_form_email_placeholder_warning"
-							/>
-						</template>
-					</EmailField>
-
+					/>
 					<MailingListField v-model="mailingList" input-id="newsletter"/>
 
 				</AutofillHandler>
@@ -40,6 +31,7 @@
 	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
 		<template #heading>
 			<h2>3. Other Information</h2>
+			<p>{{ store.state.address.addressType }}</p>
 		</template>
 
 		<template #content>
@@ -72,7 +64,6 @@ import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import NameFields from '@src/components/pages/donation_form/Compact/NameFields.vue';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import type { Country } from '@src/view_models/Country';

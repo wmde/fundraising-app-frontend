@@ -24,7 +24,7 @@
 import type { SelectFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import SelectFormInput from '@src/components/shared/form_elements/SelectFormInput.vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 import { computed } from 'vue';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
@@ -36,19 +36,17 @@ interface Props {
 	options: SelectFormOption[];
 	errorMessage?: String;
 	showError?: boolean;
-	ariaDescribedby?: string;
 }
 
-const props = withDefaults( defineProps<Props>(), {
-	ariaDescribedby: '',
-} );
+const props = defineProps<Props>();
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => props.ariaDescribedby ),
-	`${props.inputId}-error`,
-	computed<boolean>( () => props.showError )
+	props.inputId,
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => false )
 );
 
 const onFieldChange = ( newValue: string | number ): void => {

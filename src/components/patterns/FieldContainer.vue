@@ -4,7 +4,7 @@
 			<label v-if="type === 'div'" :for="inputId"><slot name="label"/></label>
 			<legend v-else><slot name="label"/></legend>
 		</template>
-		<p v-if="$slots.helpText" :id="`${inputId}-help-text`">
+		<p v-if="$slots[ 'help-text' ]" :id="`${inputId}-help-text`">
 			<slot name="help-text"/>
 		</p>
 		<slot name="field"/>

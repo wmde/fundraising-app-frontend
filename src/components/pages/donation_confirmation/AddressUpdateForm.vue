@@ -54,15 +54,8 @@
 				:show-error="fieldErrors.email"
 				v-model="formData.email.value"
 				@field-changed="onFieldChange"
-			>
-				<template #message>
-					<ValueEqualsPlaceholderWarning
-						:value="formData.email.value"
-						:placeholder="$t( 'donation_form_email_placeholder' )"
-						warning="donation_form_email_placeholder_warning"
-					/>
-				</template>
-			</EmailField>
+				data-max-width
+			/>
 
 		</AutofillHandler>
 
@@ -109,7 +102,6 @@ import type { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import NameFields from '@src/components/shared/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
