@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, toRef } from 'vue';
+import { computed, onBeforeMount, toRef } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -104,7 +104,7 @@ const {
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
-useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, toRef( props.addressType ), store );
+useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, computed<AddressTypeModel>( () => props.addressType ), store );
 
 onBeforeMount( initializeDataFromStore );
 

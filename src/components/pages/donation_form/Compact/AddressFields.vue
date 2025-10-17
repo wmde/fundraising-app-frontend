@@ -1,18 +1,4 @@
 <template>
-	<RadioField
-		v-model="addressType"
-		id="address-form-type"
-		name="addressTypeSelector"
-		:options="[
-			{ value: AddressTypeModel.PERSON, label: $t( 'C24_WMDE_Desktop_DE_01_contact_details_private' ), id: 'addressType-0' },
-			{ value: AddressTypeModel.COMPANY_WITH_CONTACT, label: $t( 'C24_WMDE_Desktop_DE_01_contact_details_company' ), id: 'addressType-1' },
-		]"
-		:label="$t( 'C24_WMDE_Desktop_DE_01_contact_details_label' )"
-		:show-error="showAddressTypeError"
-		:error-message="$t( 'donation_form_section_address_error' )"
-		:layout-type="'cluster'"
-	/>
-
 	<CheckboxField
 		v-model="isCompany"
 		name="is-company"
@@ -21,7 +7,7 @@
 		:error-message="$t( 'donation_form_section_address_error' )"
 		:show-error="showAddressTypeError"
 	>
-		<span>{{ $t( 'C24_WMDE_Desktop_DE_01_contact_details_label' ) }}</span>
+		<span>{{ $t( 'donation_form_behalf_of_company' ) }}</span>
 	</CheckboxField>
 
 	<TextField
@@ -95,13 +81,12 @@
 
 <script setup lang="ts">
 
-import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
 import { useAddressTypeModel } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeModel';
 import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
@@ -125,7 +110,7 @@ const addressType = useAddressTypeModel( store );
 const showAddressTypeError = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 const countryWasRestored = ref<boolean>( false );
 
-const isCompany = ref<boolean>( false );
+const isCompany = ref<boolean>( addressType.value === AddressTypeModel.COMPANY_WITH_CONTACT );
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {
@@ -143,6 +128,10 @@ const onCountryFieldChanged = ( country: Country | undefined ) => {
 
 onBeforeMount( () => {
 	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
+} );
+
+watch( isCompany, ( newValue: boolean ) => {
+	addressType.value = newValue ? AddressTypeModel.COMPANY_WITH_CONTACT : AddressTypeModel.PERSON;
 } );
 
 </script>
