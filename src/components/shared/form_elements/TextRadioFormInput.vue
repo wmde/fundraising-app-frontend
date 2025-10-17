@@ -1,19 +1,18 @@
 <template>
-	<div class="control text-form-input text-radio-form-input" :class="[ `locale-${ $i18n.locale }`, { 'has-icons-right': hasError || hasMessage, 'is-disabled': disabled } ]">
-		<span class="text-radio-form-input-radio" :class="{ checked: radioChecked }" @click="onClickRadio" aria-hidden="true"></span>
+	<div class="text-radio" :data-direction="$i18n.locale === 'de-DE' ? 'rtl' : null">
+		<span class="text-radio__radio" :class="{ 'text-radio__radio--checked': radioChecked }" @click="onClickRadio" aria-hidden="true"></span>
 		<input
 			:name="name"
 			v-model="inputModel"
 			ref="customInput"
-			class="input"
+			class="text-radio__text"
 			:id="inputId"
 			:class="{ 'is-danger': hasError }"
 			type="text"
 			:autocomplete="autocomplete"
 			:autofocus="autofocus"
 			:placeholder="placeholder"
-			:disabled="disabled"
-			:required="required"
+			:disabled="disabled ? true : null"
 			:aria-invalid="hasError"
 			:aria-describedby="ariaDescribedby"
 			:aria-autocomplete="ariaAutocomplete"
@@ -21,6 +20,7 @@
 			@focus="onFocus"
 			@input="onInput"
 		/>
+		<span class="text-radio__currency">€</span>
 	</div>
 </template>
 
@@ -63,76 +63,3 @@ const onClickRadio = () => {
 	emit( 'radioClicked' );
 };
 </script>
-
-<style lang="scss">
-@use '@src/scss/settings/units';
-@use '@src/scss/settings/colors';
-@use '@src/scss/settings/forms';
-@use 'sass:map';
-@use 'sass:math';
-
-$check-size: map.get( units.$spacing, 'small' );
-
-.text-radio-form-input {
-	position: relative;
-
-	.input[type="text"] {
-		padding: 0 map.get( units.$spacing, 'medium' ) 0 map.get( units.$spacing, 'xx-large' );
-		text-align: right;
-	}
-
-	&.locale-en-GB {
-		.input[type="text"] {
-			text-align: left;
-		}
-
-		&:after {
-			right: auto;
-			left: 44px;
-		}
-	}
-}
-
-.text-radio-form-input-radio {
-	position: absolute;
-	z-index: 1;
-	height: 16px;
-	width: 16px;
-	min-width: 16px;
-	top: 50%;
-	transform: translateY( -50% );
-	left: 16px;
-	display: block;
-	box-sizing: border-box;
-	cursor: pointer;
-	transition: background 150ms ease-out;
-	border-radius: 50%;
-	border: 2px solid colors.$gray-dark;
-	background: colors.$white;
-
-	&::before {
-		position: absolute;
-		content: "";
-		display: flex;
-		width: $check-size;
-		height: $check-size;
-		border-radius: 50%;
-		left: 50%;
-		top: 50%;
-		margin-top: -( math.div( $check-size, 2 ) );
-		margin-left: -( math.div( $check-size, 2 ) );
-		background-color: colors.$primary;
-		transform: scale( 0 );
-		transition: transform 150ms ease-out;
-	}
-
-	&.checked {
-		border-color: colors.$primary;
-
-		&::before {
-			transform: scale( 0.5 );
-		}
-	}
-}
-
-</style>

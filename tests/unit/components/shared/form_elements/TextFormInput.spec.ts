@@ -15,7 +15,6 @@ describe( 'TextFormInput.vue', () => {
 				hasMessage: false,
 				hasError: false,
 				disabled: false,
-				required: false,
 			},
 		} );
 	};
@@ -39,18 +38,7 @@ describe( 'TextFormInput.vue', () => {
 
 		await wrapper.setProps( { disabled: true } );
 
-		expect( wrapper.classes() ).toContain( 'is-disabled' );
 		expect( wrapper.find( 'input' ).attributes( 'disabled' ) ).toBeDefined();
-	} );
-
-	it( 'sets required', async () => {
-		const wrapper = getWrapper();
-
-		expect( wrapper.find( 'input' ).attributes( 'required' ) ).toBeUndefined();
-
-		await wrapper.setProps( { required: true } );
-
-		expect( wrapper.find( 'input' ).attributes( 'required' ) ).toBeDefined();
 	} );
 
 	it( 'emits events', async () => {
@@ -84,29 +72,9 @@ describe( 'TextFormInput.vue', () => {
 		await wrapper.setProps( { hasError: true } );
 
 		expect( wrapper.find( 'input' ).attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
-		expect( wrapper.find( 'input' ).classes() ).toContain( 'is-danger' );
-		expect( wrapper.find( '.has-text-danger' ).exists() ).toBeTruthy();
 
 		await wrapper.setProps( { inputType: 'textarea' } );
 
 		expect( wrapper.find( 'textarea' ).attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
-		expect( wrapper.find( 'textarea' ).classes() ).toContain( 'is-danger' );
-		expect( wrapper.find( '.has-text-danger' ).exists() ).toBeTruthy();
-	} );
-
-	it( 'shows error icon', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.setProps( { hasError: true } );
-
-		expect( wrapper.find( '.icon.has-text-danger' ).exists() ).toBeTruthy();
-	} );
-
-	it( 'shows message icon', async () => {
-		const wrapper = getWrapper();
-
-		await wrapper.setProps( { hasMessage: true } );
-
-		expect( wrapper.find( '.icon.has-text-warning' ).exists() ).toBeTruthy();
 	} );
 } );

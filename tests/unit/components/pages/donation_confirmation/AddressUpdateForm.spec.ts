@@ -9,6 +9,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { Store } from 'vuex';
 import type { DonorResource } from '@src/api/DonorResource';
+import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
 
 const anonAddress = {
 	addressType: 'anonym',
@@ -147,7 +148,8 @@ describe( 'AddressUpdateForm.vue', () => {
 		const wrapper = getWrapper( store, anonymousBankTransferConfirmationData );
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
-		expect( wrapper.find( '.address-type-field .is-danger' ).exists() ).toBe( true );
+
+		expect( wrapper.find( '#address-form-type' ).attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'marks empty address fields invalid if submitted after selecting address type', async () => {
@@ -164,18 +166,12 @@ describe( 'AddressUpdateForm.vue', () => {
 
 		await wrapper.vm.$nextTick();
 
-		const nameSectionText = wrapper.find( '.name-section' ).text();
-		expect( nameSectionText ).toContain( 'donation_form_salutation_error' );
-		expect( nameSectionText ).toContain( 'donation_form_firstname_error' );
-		expect( nameSectionText ).toContain( 'donation_form_lastname_error' );
-		expect( nameSectionText ).toContain( 'donation_form_lastname_error' );
-
-		const addressSectionText = wrapper.find( '.address-section' ).text();
-		expect( addressSectionText ).toContain( 'donation_form_street_error' );
-		expect( addressSectionText ).toContain( 'donation_form_zip_error' );
-		expect( addressSectionText ).toContain( 'donation_form_city_error' );
-
-		expect( wrapper.find( '.form-field-email .is-danger' ).exists() ).toBe( true );
+		expect( wrapper.find( '#address-form-first-name' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-last-name' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-street' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-post-code' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-city' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '#address-form-email' ).attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'shows error summary when there are validation errors', async () => {
@@ -239,6 +235,47 @@ describe( 'AddressUpdateForm.vue', () => {
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 
 		jest.restoreAllMocks();
+	} );
+
+	it( 'has a functional person error summary', async () => {
+		const store = createStore();
+		await store.dispatch(
+			action( 'address', 'initializeAddress' ),
+			addressData( emptyAddress, AddressTypeModel.ANON )
+		);
+		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'addressType-0', 'address-form-type' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'address-form-salutation' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'address-form-first-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'address-form-last-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'street', 'address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'post-code', 'address-form-post-code' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'city', 'address-form-city' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'email', 'address-form-email' ) ).toBeTruthy();
+	} );
+
+	it( 'has a functional company error summary', async () => {
+		const store = createStore();
+		await store.dispatch(
+			action( 'address', 'initializeAddress' ),
+			addressData( emptyAddress, AddressTypeModel.COMPANY )
+		);
+		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'company-name', 'address-form-company-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'street', 'address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'post-code', 'address-form-post-code' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'city', 'address-form-city' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'email', 'address-form-email' ) ).toBeTruthy();
 	} );
 
 	it( 'displays an error if one is returned from the server', async () => {

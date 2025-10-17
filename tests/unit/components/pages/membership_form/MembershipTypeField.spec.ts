@@ -44,13 +44,13 @@ describe( 'MembershipTypeField.vue', () => {
 		const wrapper = getWrapper();
 		const activeMembershipInputElement = wrapper.find<HTMLInputElement>( '#membershipType-1' );
 
-		expect( wrapper.find( '.is-danger' ).exists() ).toBe( false );
+		expect( wrapper.attributes( 'data-error' ) ).toBeFalsy();
 
 		await wrapper.find<HTMLInputElement>( '#membershipType-1' ).trigger( 'change' );
 		await wrapper.setProps( { disabledMembershipTypes: [ MembershipTypeModel.ACTIVE ] } );
 
 		expect( activeMembershipInputElement.attributes().disabled ).toBeDefined();
-		expect( wrapper.find( '.is-danger' ).exists() ).toBe( true );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'hides the error when a different membership type is selected', async () => {
@@ -61,14 +61,14 @@ describe( 'MembershipTypeField.vue', () => {
 		await activeMembershipInputElement.trigger( 'change' );
 		await wrapper.setProps( { disabledMembershipTypes: [ MembershipTypeModel.ACTIVE ] } );
 
-		expect( wrapper.find( '.is-danger' ).exists() ).toBe( true );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
 
 		await sustainingMembershipInputElement.trigger( 'change' );
 
 		expect( activeMembershipInputElement.element.checked ).toBe( false );
 		expect( sustainingMembershipInputElement.element.checked ).toBe( true );
 		expect( activeMembershipInputElement.attributes().disabled ).toBeDefined();
-		expect( wrapper.find( '.is-danger' ).exists() ).toBe( false );
+		expect( wrapper.attributes( 'data-error' ) ).toBeFalsy();
 	} );
 
 	it( 'hides the error when the membership option is not part of the disabled options anymore', async () => {
@@ -77,12 +77,12 @@ describe( 'MembershipTypeField.vue', () => {
 
 		await activeMembershipInputElement.trigger( 'change' );
 		await wrapper.setProps( { disabledMembershipTypes: [ MembershipTypeModel.ACTIVE ] } );
-		expect( wrapper.find( '.is-danger' ).exists() ).toBe( true );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
 
 		await wrapper.setProps( { disabledMembershipTypes: [] } );
 
 		expect( activeMembershipInputElement.element.checked ).toBe( true );
 		expect( activeMembershipInputElement.attributes().disabled ).toBeUndefined();
-		expect( wrapper.find( '.is-danger' ).exists() ).toBe( false );
+		expect( wrapper.attributes( 'data-error' ) ).toBeFalsy();
 	} );
 } );

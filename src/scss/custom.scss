@@ -19,6 +19,22 @@ html {
 	}
 }
 
+* {
+	scroll-margin-top: 80px;
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+strong {
+	color: currentColor;
+}
+
+form:not(.compact) {
+	--flow-space: var(--space-l);
+}
+
 .is-form-input-width {
 	width: $fun-min-width !important;
 	@include from($tablet) {
@@ -143,7 +159,3 @@ html {
 }
 
 @import "overrides";
-
-// Global form field styles
-@import "components/form_field";
-@import "components/radio";
