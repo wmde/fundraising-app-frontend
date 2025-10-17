@@ -31,18 +31,21 @@
 	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
 		<template #heading>
 			<h2>3. Other Information</h2>
-			<p>{{ store.state.address.addressType }}</p>
 		</template>
 
 		<template #content>
 			<form class="flow compact" @submit.prevent>
-				<CheckboxToggle
-					v-model="receiptModel.receiptNeeded"
-					name="donation-receipt"
-					input-id="donation-receipt"
-				>
-					{{ $t( 'donation_confirmation_cta_title_alt' ) }}
-				</CheckboxToggle>
+
+				<div class="repel">
+					<p>{{ $t( 'donation_form_last_step' ) }}</p>
+					<CheckboxToggle
+						v-model="receiptModel.receiptNeeded"
+						name="donation-receipt"
+						input-id="donation-receipt"
+					>
+						{{ $t( 'donation_confirmation_cta_title_alt' ) }}
+					</CheckboxToggle>
+				</div>
 
 				<AddressFields
 					v-if="receiptModel.receiptNeeded"
@@ -58,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, toRef } from 'vue';
+import { computed, onBeforeMount, toRef } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/Compact/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -70,7 +73,7 @@ import type { Country } from '@src/view_models/Country';
 import type { Salutation } from '@src/view_models/Salutation';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
-import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
+import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/Compact/useAddressTypeFromReceiptSetter';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import type { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
@@ -105,7 +108,7 @@ const {
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
-useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, toRef( props.addressType ), store );
+useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, computed<AddressTypeModel>( () => props.addressType ), store );
 
 onBeforeMount( initializeDataFromStore );
 

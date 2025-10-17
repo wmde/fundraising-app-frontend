@@ -1,5 +1,5 @@
 <template>
-	<label class="repel">
+	<label>
 		<slot/>
 		<input
 			v-model="inputModel"

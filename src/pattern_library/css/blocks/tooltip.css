@@ -34,8 +34,9 @@ label:has(.tooltip) {
 	background: var(--color-white);
 	box-shadow: 0 0 4px rgba(0,0,0,.1);
 	border: 3px solid var(--color-blue-600);
-	/* padding + 2 lines of text + padding - border */
-	height: calc(var(--space-2xs) + (var(--type-step-00) * var(--leading-standard) * 2) + var(--space-2xs) - 2px);
+	/* padding + 2 lines of text + padding + borders */
+	height: calc(var(--space-2xs) + 2lh + var(--space-2xs) + 6px);
+	line-height: var(--leading-fine);
 	width: 18rem;
 	padding: var(--space-2xs);
 	opacity: 0;

@@ -80,14 +80,14 @@ import PaymentSection from '@src/components/pages/donation_form/Compact/PaymentS
 import PersonalDataSection from '@src/components/pages/donation_form/Compact/PersonalDataSection.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import ErrorSummary from '@src/components/pages/donation_form/DonationReceipt/ErrorSummary.vue';
+import ErrorSummary from '@src/components/pages/donation_form/Compact/ErrorSummary.vue';
 import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/DonationReceipt/useDonationFormSubmitHandler';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
 import { trackDynamicForm } from '@src/util/tracking';
-import { useReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
+import { useReceiptModel } from '@src/components/pages/donation_form/Compact/useReceiptModel';
 import { useBankDataSummary } from '@src/components/pages/donation_form/useBankDataSummary';
 import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
@@ -122,11 +122,7 @@ const store = useStore();
 const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
 const { addressSummary } = useAddressSummary( store );
 const { bankDataSummary } = useBankDataSummary( store );
-const {
-	disabledAddressTypes,
-	addressType,
-	addressTypeIsInvalid,
-} = useAddressTypeFunctions( store );
+const { disabledAddressTypes, addressType, addressTypeIsInvalid } = useAddressTypeFunctions( store );
 const receiptModel = useReceiptModel( store );
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
