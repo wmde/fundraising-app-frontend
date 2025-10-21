@@ -42,9 +42,11 @@
 					:payment-intervals="paymentIntervals"
 					:payment-types="paymentTypes"
 				/>
+
 			</form>
 
 			<IbanFields v-if="isDirectDebitPayment"/>
+
 		</template>
 	</ContentCard>
 </template>
@@ -57,7 +59,7 @@ import { useStore } from 'vuex';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { Validity } from '@src/view_models/Validity';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
-import IbanFields from '@src/components/shared/IbanFields.vue';
+import IbanFields from '@src/components/pages/donation_form/Compact/IbanFields.vue';
 
 interface Props {
 	paymentAmounts: number[];

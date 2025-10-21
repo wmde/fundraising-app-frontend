@@ -19,7 +19,7 @@
 				validity: store.state.bankdata.validity.iban,
 				message: $t( 'donation_form_payment_iban_error' ),
 				focusElement: 'iban',
-				scrollElement: 'payment-form-iban',
+				scrollElement: 'payment-form-iban-calculator',
 			},
 			{
 				validity: store.state.address.validity.salutation,
@@ -67,7 +67,7 @@
 				validity: store.state.bankdata.validity.iban,
 				message: $t( 'donation_form_payment_iban_error' ),
 				focusElement: 'iban',
-				scrollElement: 'payment-form-iban',
+				scrollElement: 'payment-form-iban-calculator',
 			},
 			{
 				validity: store.state.address.validity.salutation,
@@ -139,7 +139,7 @@
 				validity: store.state.bankdata.validity.iban,
 				message: $t( 'donation_form_payment_iban_error' ),
 				focusElement: 'iban',
-				scrollElement: 'payment-form-iban',
+				scrollElement: 'payment-form-iban-calculator',
 			},
 			{
 				validity: store.state.address.validity.salutation,
@@ -217,7 +217,7 @@
 				validity: store.state.bankdata.validity.iban,
 				message: $t( 'donation_form_payment_iban_error' ),
 				focusElement: 'iban',
-				scrollElement: 'payment-form-iban',
+				scrollElement: 'payment-form-iban-calculator',
 			},
 			{
 				validity: store.state.address.validity.salutation,

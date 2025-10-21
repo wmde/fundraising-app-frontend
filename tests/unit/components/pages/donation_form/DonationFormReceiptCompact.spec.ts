@@ -123,7 +123,7 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban-calculator' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'address-form-salutation' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'address-form-first-name' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'address-form-last-name' ) ).toBeTruthy();
@@ -187,7 +187,7 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'amount-500', 'payment-form-amount' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban-calculator' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'address-form-salutation' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'address-form-first-name' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'address-form-last-name' ) ).toBeTruthy();
@@ -431,7 +431,7 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'iban', 'payment-form-iban-calculator' ) ).toBeTruthy();
 
 		await wrapper.find( '#iban' ).setValue( IBAN );
 		await wrapper.find( '#iban' ).trigger( 'blur' );
