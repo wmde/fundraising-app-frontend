@@ -81,14 +81,17 @@
 							<div class="field-container">
 								<IbanField
 									v-model="iban"
-									:label="$t('membership_fee_upgrade_iban_changed_label')"
 									:show-error="!isIbanValid"
 									:bank-name="bankName"
 									:bic="bic"
 									@blur="validateIban"
 									@input="onIbanInput"
 									data-max-width
-								/>
+								>
+									<template #label>
+										{{ $t('membership_fee_upgrade_iban_changed_label') }}
+									</template>
+								</IbanField>
 							</div>
 						</template>
 					</AccordionItem>

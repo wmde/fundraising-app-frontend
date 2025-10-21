@@ -1,7 +1,7 @@
 <template>
 	<FieldContainer input-id="iban" id="payment-form-iban" :show-error="showError">
-		<template #label>
-			{{ label ?? $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
+		<template #label v-if="$slots.label">
+			<slot name="label"/>
 		</template>
 		<template #field>
 			<input
@@ -38,7 +38,6 @@ interface Props {
 	showError: boolean;
 	bankName: string;
 	bic: string;
-	label?: String;
 	ariaDescribedby?: string;
 }
 

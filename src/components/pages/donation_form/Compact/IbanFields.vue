@@ -1,8 +1,10 @@
 <template>
-	<div class="form-section-iban">
-		<div class="form-section-iban-title">
-			<h2 class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
-
+	<div id="payment-form-iban-calculator" class="form-section-iban">
+		<div class="repel iban-calculator-control-label">
+			<label for="iban" v-if="!showCalculator">
+				<strong>{{ $t( 'donation_form_payment_bankdata_account_iban_label' ) }}</strong>
+			</label>
+			<span v-else/>
 			<ButtonLink class="calculate-iban-button" aria-controls="iban-calculator" :aria-expanded="showCalculator" @click="showCalculator = !showCalculator">
 				<small>{{ $t( 'donation_form_iban_calculator_button' ) }}</small>
 			</ButtonLink>
@@ -110,7 +112,11 @@
 				:show-error="showIbanError"
 				@field-changed="validateIban"
 				data-max-width
-			/>
+			>
+				<template #label v-if="showCalculator">
+					{{ $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
+				</template>
+			</IbanField>
 		</form>
 	</div>
 </template>
@@ -283,16 +289,22 @@ watch( () => store.state.bankdata.values.iban, ( newIban: string ) => {
 	position: relative;
 	width: 100%;
 	height: 0;
+	max-width: var(--form-field-max-width);
 	opacity: 0;
 	background: colors.$primary-pale;
 	visibility: hidden;
 	transition: opacity 400ms ease-in-out;
 
+	&-control-label {
+		max-width: var(--form-field-max-width);
+		margin-bottom: var(--space-2xs);
+	}
+
 	&.visible {
 		height: auto;
 		visibility: visible;
 		opacity: 1;
-		margin: 0 0 map.get(units.$spacing, 'small');
+		margin: map.get(units.$spacing, 'x-small') 0 map.get(units.$spacing, 'small');
 	}
 
 	&:before {
