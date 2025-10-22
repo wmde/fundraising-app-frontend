@@ -2,10 +2,12 @@
 	<ContentCard>
 		<template #heading>
 			<h1 id="donation-form-heading">{{ $t( 'donation_form_heading' ) }}</h1>
-			<h2 id="donation-form-subheading">1. {{ $t( 'donation_form_payment_subheading' ) }}</h2>
+			<h2 id="donation-form-subheading">1. {{ $t( 'compact_donation_form_payment_heading' ) }}</h2>
 		</template>
 		<template #content>
 			<slot name="error-summary"/>
+
+			<p>{{ $t( 'compact_donation_form_payment_blurb' ) }}</p>
 
 			<PaymentSummary
 				v-if="state === 'showSummary'"

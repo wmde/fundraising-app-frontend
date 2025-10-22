@@ -1,11 +1,13 @@
 <template>
 	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
 		<template #heading>
-			<h2 id="donation-form-subheading">2. {{ $t( 'donation_form_address_subheading' ) }}</h2>
-			<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
+			<h2 id="donation-form-subheading">2. {{ $t( 'compact_donation_form_name_heading' ) }}</h2>
 		</template>
 
 		<template #content>
+
+			<p id="donation-form-tagline">{{ $t( 'compact_donation_form_name_blurb' ) }}</p>
+
 			<form class="compact" id="donation-form" action="/donation/add" method="post" @submit.prevent>
 				<AutofillHandler @autofill="onAutofill">
 
@@ -30,14 +32,15 @@
 
 	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
 		<template #heading>
-			<h2>3. Other Information</h2>
+			<h2>3. {{ $t( 'compact_donation_form_other_info_heading' ) }}</h2>
 		</template>
 
 		<template #content>
+
 			<form class="flow compact" @submit.prevent>
 
 				<div class="repel">
-					<p>{{ $t( 'donation_form_last_step' ) }}</p>
+					<p>{{  $t( 'compact_donation_form_other_info_blurb' ) }}</p>
 					<CheckboxToggle
 						v-model="receiptModel.receiptNeeded"
 						name="donation-receipt"
