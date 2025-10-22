@@ -68,7 +68,7 @@
 		</template>
 	</ContentCard>
 
-	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
+	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form" class="visually-hidden" aria-hidden="true">
 		<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
 	</form>
 </template>

@@ -11,12 +11,13 @@
 @use "../pattern_library/css/compositions/sidebar.css";
 @use "../pattern_library/css/compositions/switcher.css" as switcherBase;
 @use "../pattern_library/css/compositions/wrapper.css" as wrapperBase;
-@use "../pattern_library/css/blocks/accordion.css";
+@use "../pattern_library/css/blocks/accordion.css" as accordionBase;
 @use "../pattern_library/css/blocks/alert-box.css";
 @use "../pattern_library/css/blocks/combobox.css" as comboboxBase;
 @use "../pattern_library/css/blocks/field-container.css" as fieldContainerBase;
 @use "../pattern_library/css/blocks/text-radio.css" as textRadioBase;
 @use "../pattern_library/css/blocks/toggle.css" as toggleBase;
+@use "pattern-library-compatibility/accordion";
 @use "../pattern_library/css/blocks/tooltip.css";
 @use "../pattern_library/css/blocks/verbose-checkbox.css";
 @use "pattern-library-compatibility/combobox";
