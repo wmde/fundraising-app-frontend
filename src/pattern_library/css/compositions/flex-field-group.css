@@ -18,6 +18,7 @@ CUSTOM PROPERTIES AND CONFIGURATION
 
 .flex-field-group__mini-field {
 	flex-basis: min-content;
+	min-width: 16ch;
 }
 
 .flex-field-group__mini-fixed-width-field {

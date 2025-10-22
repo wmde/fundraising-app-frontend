@@ -1,11 +1,7 @@
 <template>
-	<div class="payment-summary">
-		<div class="payment-summary-text">
-			<p v-html="props.paymentType ? summary : summaryWithoutPaymentType"/>
-		</div>
-		<div class="payment-summary-link">
-			<a href="#" @click.prevent="$emit( 'show-payment-form' )">{{ $t('donation_form_section_back') }}</a>
-		</div>
+	<div class="alert-box repel" data-neutral>
+		<p v-html="props.paymentType ? summary : summaryWithoutPaymentType"/>
+		<a href="#" @click.prevent="$emit( 'show-payment-form' )"><strong>{{ $t('donation_form_section_back') }}</strong></a>
 	</div>
 </template>
 
@@ -36,33 +32,3 @@ const summaryWithoutPaymentType = computed( () => {
 } );
 
 </script>
-
-<style lang="scss">
-@use '@src/scss/settings/colors';
-@use '@src/scss/settings/units';
-@use '@src/scss/settings/breakpoints';
-@use 'sass:map';
-
-.payment-summary {
-	display: flex;
-	align-items: center;
-	border: 2px solid colors.$gray-light;
-	padding: map.get( units.$spacing, 'small' );
-	margin: 0 0 map.get( units.$spacing, 'large' );
-
-	@include breakpoints.tablet-up {
-		margin: 0 0 map.get( units.$spacing, 'large' );
-	}
-
-	&-text {
-		flex: 1 1 auto;
-		padding-right: map.get( units.$spacing, 'small' );
-	}
-
-	&-link {
-		flex: 0 0 auto;
-		text-align: right;
-		font-weight: bold;
-	}
-}
-</style>
