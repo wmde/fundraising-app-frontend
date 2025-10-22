@@ -12,6 +12,7 @@
 					:is-direct-debit="isDirectDebitPayment"
 					:initial-address-type="addressType"
 					:address-type-is-invalid="addressTypeIsInvalid"
+					data-max-width
 				/>
 			</form>
 

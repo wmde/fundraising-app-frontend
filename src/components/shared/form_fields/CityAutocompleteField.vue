@@ -1,51 +1,53 @@
 <template>
-	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }">
-		<label :for="inputId" class="form-field-label">{{ label }}</label>
-		<div class="form-field-autocomplete-container">
-			<TextFormInput
-				v-model="city"
-				input-type="text"
-				name="city"
-				:placeholder="$t( placeholder, { example: $t( examplePlaceholder ) } )"
-				:has-error="showError"
-				:has-message="false"
-				:input-id="inputId"
-				@focus="onFocus"
-				@blur="onBlur"
-				@input="onInput"
-				@keydown="onKeydown"
-				@keydown.up.prevent="onKeyArrows( 'up' )"
-				@keydown.down.prevent="onKeyArrows( 'down' )"
-				@keydown.tab="onKeySubmit"
-				@keydown.enter="onKeySubmit"
-				:aria-describedby="ariaDescribedby"
-				aria-autocomplete="list"
-			/>
-			<span class="is-sr-only" :id="`${inputId}-selected`" aria-live="assertive">
-				{{ activeCity }}
-			</span>
-			<transition name="fade">
-				<div class="dropdown-menu" v-show="autocompleteIsActive && cities.length > 0">
-					<div class="dropdown-content" ref="scrollElement" tabindex="-1">
-						<a
-							v-for="city in cities"
-							class="dropdown-item"
-							:class="{ 'is-active-item': city === activeCity }"
+	<FieldContainer :input-id="inputId" :show-error="showError">
+		<template #label>{{ label }}</template>
+		<template #field>
+			<div class="combobox">
+				<input
+					type="text"
+					name="city"
+					v-model="city"
+					:id="inputId"
+					autocomplete="city"
+					:placeholder="$t( placeholder, { example: $t( examplePlaceholder ) } )"
+					aria-controls="cities"
+					:aria-invalid="showError"
+					:aria-describedby="ariaDescribedby"
+					aria-autocomplete="list"
+					:aria-activedescendant="activeCity ? `city-${activeCityId}` : null"
+					@focus="onFocus"
+					@blur="onBlur"
+					@input="onInput"
+					@keydown="onKeydown"
+					@keydown.up.prevent="onKeyArrows('up')"
+					@keydown.down.prevent="onKeyArrows('down')"
+					@keydown.tab="onKeySubmit"
+					@keydown.enter="onKeySubmit"
+				/>
+				<span class="is-sr-only" :id="`${inputId}-selected`" aria-live="assertive">
+					{{ activeCity }}
+				</span>
+				<transition name="fade">
+					<div id="cities" ref="scrollElement" tabindex="-1" role="listbox" :aria-label="$t( 'donation_form_city_list_label' )" v-show="autocompleteIsActive && cities.length > 0">
+						<button
+							v-for="( city, index ) in cities"
 							:key="city"
-							role="button"
 							tabindex="-1"
-							@click.stop="onSelectItem( city )"
+							role="option"
+							:id="`city-${index}`"
+							:aria-selected="city === activeCity"
+							@click="onSelectItem( city )"
 							@keyup.enter.space="onSelectItem( city )"
 						>
 							<strong>{{ postcode }}</strong> {{ city }}
-						</a>
+						</button>
 					</div>
-				</div>
-			</transition>
-		</div>
-		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
-		<slot name="message"/>
-	</div>
+				</transition>
+			</div>
+		</template>
+		<template #error>{{ errorMessage }}</template>
+		<template #message><slot name="message"/></template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
@@ -53,10 +55,10 @@ import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useCitiesResource } from '@src/components/shared/form_fields/useCitiesResource';
 import type { CityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { NullCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
-import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
 import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 enum InteractionState {
 	Typing,
@@ -81,6 +83,7 @@ const city = ref<string>( props.modelValue );
 const autocompleteIsActive = ref<Boolean>( false );
 const { cities, fetchCitiesForPostcode } = useCitiesResource( inject<CityAutocompleteResource>( 'cityAutocompleteResource', NullCityAutocompleteResource ) );
 const activeCity = ref<string>();
+const activeCityId = computed<number>( () => cities.value.indexOf( activeCity.value ) );
 const interactionState = ref<InteractionState>( InteractionState.Typing );
 const scrollElement = ref<HTMLElement>();
 const ariaDescribedby = useAriaDescribedby(
@@ -186,7 +189,3 @@ watch( () => props.modelValue, ( newValue: string ) => {
 } );
 
 </script>
-
-<style lang="scss">
-
-</style>

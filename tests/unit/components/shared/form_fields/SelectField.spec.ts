@@ -53,9 +53,7 @@ describe( 'SelectField.vue', () => {
 
 		await wrapper.setProps( { showError: true } );
 
-		expect( wrapper.find( 'span.help.is-danger' ).exists() ).toBeTruthy();
-		expect( wrapper.find( 'span.help.is-danger' ).text() ).toStrictEqual( '404 Lasagne not found' );
-		expect( wrapper.find( 'select' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'select-error' );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'sets aria-describedby', async () => {

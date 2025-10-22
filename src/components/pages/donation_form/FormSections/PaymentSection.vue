@@ -34,7 +34,7 @@
 			<form
 				v-if="state === 'showEntireForm'"
 				name="laika-donation-payment"
-				class="payment-page"
+				class="payment-page flow"
 				ref="paymentForm"
 			>
 				<Payment

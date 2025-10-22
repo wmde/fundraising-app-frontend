@@ -80,7 +80,7 @@ describe( 'IbanFields.vue', () => {
 		await wrapper.find( '.iban-calculator' ).trigger( 'submit' );
 		await flushPromises();
 
-		expect( wrapper.findAll( '.form-field.is-invalid' ).length ).toStrictEqual( 1 );
+		expect( wrapper.findAll( '.field-container[data-error]' ).length ).toStrictEqual( 1 );
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( wrapper.find<HTMLLinkElement>( '.error-summary-list a' ).element.href ).toContain( '#account-number' );
 		expect( resource.validateBankNumber ).not.toHaveBeenCalled();
@@ -97,7 +97,7 @@ describe( 'IbanFields.vue', () => {
 		await wrapper.find( '.iban-calculator' ).trigger( 'submit' );
 		await flushPromises();
 
-		expect( wrapper.findAll( '.form-field.is-invalid' ).length ).toStrictEqual( 1 );
+		expect( wrapper.findAll( '.field-container[data-error]' ).length ).toStrictEqual( 1 );
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( wrapper.find<HTMLLinkElement>( '.error-summary-list a' ).element.href ).toContain( '#bank-code' );
 		expect( resource.validateBankNumber ).not.toHaveBeenCalled();
@@ -116,7 +116,7 @@ describe( 'IbanFields.vue', () => {
 		await wrapper.find( '.iban-calculator' ).trigger( 'submit' );
 		await flushPromises();
 
-		expect( wrapper.findAll( '.form-field.is-invalid' ).length ).toStrictEqual( 2 );
+		expect( wrapper.findAll( '.field-container[data-error]' ).length ).toStrictEqual( 2 );
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 	} );
 
@@ -184,7 +184,7 @@ describe( 'IbanFields.vue', () => {
 		const wrapper = getWrapper( resource );
 
 		await wrapper.find( '#iban' ).trigger( 'blur' );
-		expect( wrapper.find( '#iban-error' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#payment-form-iban' ).attributes( 'data-error' ) ).toBeTruthy();
 
 		await wrapper.find( '.calculate-iban-button' ).trigger( 'click' );
 		await wrapper.find( '#account-number' ).setValue( accountNumber );
@@ -199,7 +199,7 @@ describe( 'IbanFields.vue', () => {
 
 		await wrapper.find( '.iban-calculator-results-buttons .form-button:nth-child( 1 )' ).trigger( 'click' );
 
-		expect( wrapper.find( '#iban-error' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#payment-form-iban' ).attributes( 'data-error' ) ).toBeFalsy();
 	} );
 
 	it( 'Validates the IBAN when the IBAN field is blurred', async () => {
@@ -210,9 +210,9 @@ describe( 'IbanFields.vue', () => {
 		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		expect( resource.validateIban ).toHaveBeenCalledWith( { iban: IBAN } );
-		expect( wrapper.find( '#iban-error' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.iban-bank-name' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.iban-bank-name' ).text() ).toStrictEqual( `${ bankName } (${ BIC })` );
+		expect( wrapper.find( '#payment-form-iban' ).attributes( 'data-error' ) ).toBeFalsy();
+		expect( wrapper.find( '#payment-form-iban .field-container__message' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#payment-form-iban .field-container__message' ).text() ).toStrictEqual( `${ bankName } (${ BIC })` );
 	} );
 
 	it( 'Handles error result from IBAN validation API call', async () => {

@@ -30,6 +30,7 @@ import siteHead from '@src/pattern_library/patterns/site-head';
 import summary from '@src/pattern_library/patterns/summary';
 import textRadio from '@src/pattern_library/patterns/text-radio';
 import toggle from '@src/pattern_library/patterns/toggle';
+import tooltip from '@src/pattern_library/patterns/tooltip';
 import verboseCheckbox from '@src/pattern_library/patterns/verbose-checkbox';
 
 import compactDonationForm from '@src/pattern_library/samples/compact-donation-form';
@@ -67,6 +68,7 @@ const patterns: Pattern[] = [
 	summary,
 	textRadio,
 	toggle,
+	tooltip,
 	verboseCheckbox,
 ];
 

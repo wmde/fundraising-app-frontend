@@ -1,55 +1,59 @@
 <template>
-	<div class="form-field form-field-autocomplete" :class="{ 'is-invalid': showError }" :id="id">
-		<label :for="inputIdStreetName" class="form-field-label">{{ $t( 'donation_form_street_name_label' ) }}</label>
-		<div class="form-field-autocomplete-container">
-			<TextFormInput
-				v-model="streetNameModel"
-				input-type="text"
-				name="street"
-				:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_name_placeholder' ) } )"
-				:has-error="showError"
-				:has-message="false"
-				:input-id="inputIdStreetName"
-				@focus="onStreetNameFocus"
-				@blur="onStreetNameBlur"
-				@input="onStreetNameInput"
-				@keydown="onStreetNameKeydown"
-				@keydown.up.prevent="onStreetNameKeyArrows( 'up' )"
-				@keydown.down.prevent="onStreetNameKeyArrows( 'down' )"
-				@keydown.tab="onStreetNameKeySubmit"
-				@keydown.enter="onStreetNameKeySubmit"
-				:aria-describedby="ariaDescribedby"
-				aria-autocomplete="list"
-			/>
-			<span class="is-sr-only" :id="`${inputIdStreetName}-selected`" aria-live="assertive">
-				{{ activeStreet }}
-			</span>
-			<transition name="fade">
-				<div class="dropdown-menu" v-show="autocompleteIsActive && filteredStreets.length > 0">
-					<div class="dropdown-content" ref="scrollElement" tabindex="-1">
-						<a
-							v-for="street in filteredStreets"
-							class="dropdown-item"
-							:class="{ 'is-active-item': street === activeStreet }"
+	<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :data-max-width="dataMaxWidth ? true : null" :id="id">
+		<template #label>{{ $t( 'donation_form_street_name_label' ) }}</template>
+		<template #field>
+			<div class="combobox">
+				<input
+					type="text"
+					name="street"
+					v-model="streetNameModel"
+					:id="inputIdStreetName"
+					autocomplete="country"
+					:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_name_placeholder' ) } )"
+					aria-controls="streets"
+					:aria-invalid="showError"
+					:aria-describedby="ariaDescribedby"
+					aria-autocomplete="list"
+					:aria-activedescendant="activeStreet ? `street-${activeStreetId}` : null"
+					@focus="onStreetNameFocus"
+					@blur="onStreetNameBlur"
+					@input="onStreetNameInput"
+					@keydown="onStreetNameKeydown"
+					@keydown.up.prevent="onStreetNameKeyArrows('up')"
+					@keydown.down.prevent="onStreetNameKeyArrows('down')"
+					@keydown.tab="onStreetNameKeySubmit"
+					@keydown.enter="onStreetNameKeySubmit"
+				/>
+				<span class="is-sr-only" :id="`${inputIdStreetName}-selected`" aria-live="assertive">
+					{{ activeStreet }}
+				</span>
+				<transition name="fade">
+					<div id="streets" ref="scrollElement" tabindex="-1" role="listbox" :aria-label="$t( 'donation_form_street_name_list_label' )" v-show="autocompleteIsActive && filteredStreets.length > 0">
+						<button
+							v-for="( street, index ) in filteredStreets"
 							:key="street"
-							role="button"
 							tabindex="-1"
-							@click.stop="onSelectStreet( street )"
+							role="option"
+							:id="`street-${index}`"
+							:aria-selected="street === activeStreet"
+							@click="onSelectStreet( street )"
 							@keyup.enter.space="onSelectStreet( street )"
 						>
 							{{ street }}
-						</a>
+						</button>
 					</div>
-				</div>
-			</transition>
-		</div>
-		<span v-if="showError" class="help is-danger" :id="`${inputIdStreetName}-error`">{{ errorMessage }}</span>
-		<ValueEqualsPlaceholderWarning
-			:value="streetNameModel"
-			:placeholder="$t( 'donation_form_street_placeholder' )"
-			:warning="'donation_form_street_placeholder_warning'"
-		/>
-	</div>
+				</transition>
+			</div>
+		</template>
+		<template #error>{{ errorMessage }}</template>
+		<template #message>
+			<ValueEqualsPlaceholderWarning
+				:value="streetNameModel"
+				:placeholder="$t( 'donation_form_street_placeholder' )"
+				:warning="'donation_form_street_placeholder_warning'"
+			/>
+		</template>
+	</FieldContainer>
 
 	<TextField
 		name="building-number"
@@ -61,11 +65,10 @@
 		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_building_number_placeholder' ) } )"
 		@update:modelValue="onUpdateModel"
 		@field-changed="onBuildingNumberBlur"
+		:data-max-width="dataMaxWidth"
 	>
-		<template #message>
-			<span v-if="showBuildingNumberWarning" class="street-number-warning help">
-				{{ $t( 'donation_form_street_number_warning' ) }}
-			</span>
+		<template #message v-if="showBuildingNumberWarning">
+			{{ $t( 'donation_form_street_number_warning' ) }}
 		</template>
 	</TextField>
 </template>
@@ -78,10 +81,10 @@ import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDe
 import { NullStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 import type { StreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 import { useStreetsResource } from '@src/components/shared/form_fields/useStreetsResource';
-import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
 import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 enum InteractionState {
 	Typing,
@@ -97,6 +100,7 @@ interface Props {
 	showError: boolean;
 	errorMessage: String;
 	postcode: string;
+	dataMaxWidth?: string;
 }
 
 const props = defineProps<Props>();
@@ -127,6 +131,7 @@ const filteredStreets = computed<Array<string>>( () => {
 
 	return streetNameModel.value !== '' || streetList.length > 0 ? streetList : streets.value;
 } );
+const activeStreetId = computed<number>( () => filteredStreets.value.indexOf( activeStreet.value ) );
 
 const onUpdateModel = (): void => {
 	emit( 'update:modelValue', joinStreetAndBuildingNumber( streetNameModel.value, buildingNumberModel.value ) );

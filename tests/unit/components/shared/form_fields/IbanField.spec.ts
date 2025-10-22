@@ -84,26 +84,26 @@ describe( 'IbanField.vue', () => {
 	it( 'shows the error message', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '#iban-error' ).exists() ).toBeFalsy();
+		expect( wrapper.attributes( 'data-error' ) ).toBeFalsy();
 
 		await wrapper.setProps( { showError: true } );
 
-		expect( wrapper.find( '#iban-error' ).exists() ).toBeTruthy();
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'shows the bank name when it exists and IBAN is not blank', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.iban-bank-name' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.field-container__message' ).exists() ).toBeFalsy();
 
 		await wrapper.setProps( { bankName, bic: BIC } );
 
-		expect( wrapper.find( '.iban-bank-name' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.field-container__message' ).exists() ).toBeFalsy();
 
 		await wrapper.setProps( { modelValue: IBAN } );
 
-		expect( wrapper.find( '.iban-bank-name' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.iban-bank-name' ).text() ).toStrictEqual( `${ bankName } (${ BIC })` );
+		expect( wrapper.find( '.field-container__message' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.field-container__message' ).text() ).toStrictEqual( `${ bankName } (${ BIC })` );
 	} );
 
 	it( 'emits change events', async () => {

@@ -9,7 +9,6 @@
 			:name="name"
 			:id="inputId"
 			:disabled="disabled"
-			:required="required"
 			:aria-describedby="describedBy"
 		/>
 	</label>

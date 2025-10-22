@@ -6,6 +6,10 @@
 	--flow-space: var(--space-2xs);
 }
 
+.field-container__message {
+	color: var(--color-grey-500);
+}
+
 .field-container__error-text {
 	color: var(--color-red-700);
 }

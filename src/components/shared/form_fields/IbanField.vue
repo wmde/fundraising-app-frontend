@@ -1,15 +1,13 @@
 <template>
-	<div class="form-field form-field-iban" :class="[ 'form-field-text', { 'is-invalid': showError } ]" id="payment-form-iban">
-		<label for="iban" class="form-field-label">
+	<FieldContainer input-id="iban" id="payment-form-iban" :show-error="showError">
+		<template #label>
 			{{ label ?? $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
-		</label>
-		<div class="control text-form-input" :class="{ 'has-icons-right': showError }">
+		</template>
+		<template #field>
 			<input
 				ref="field"
 				name="iban"
-				class="input"
 				id="iban"
-				:class="{ 'is-danger': showError }"
 				type="text"
 				autocomplete="on"
 				:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' )"
@@ -19,18 +17,21 @@
 				@input="onInput"
 				@paste="onInput"
 			/>
-		</div>
-		<span v-if="showError" class="help is-danger" id="iban-error">{{ $t( 'donation_form_payment_iban_error' ) }}</span>
-		<span class="field-info-message iban-bank-name" v-if="modelValue !== '' && bankName">
+		</template>
+		<template #error>
+			{{ $t( 'donation_form_payment_iban_error' ) }}
+		</template>
+		<template #message v-if="modelValue !== '' && bankName">
 			{{ bankName }} ({{ bic }})
-		</span>
-	</div>
+		</template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
 
 import { nextTick, onMounted, ref, toRef, watch } from 'vue';
 import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 interface Props {
 	modelValue: string;

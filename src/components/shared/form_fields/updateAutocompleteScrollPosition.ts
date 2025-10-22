@@ -1,7 +1,7 @@
 import { Ref } from 'vue';
 
 export function updateAutocompleteScrollPosition( scrollElement: Ref<HTMLElement> ): void {
-	const element = scrollElement.value.querySelector<HTMLElement>( '.is-active-item' );
+	const element = scrollElement.value.querySelector<HTMLElement>( '[aria-selected="true"]' );
 
 	if ( element === null ) {
 		scrollElement.value.scrollTop = 0;

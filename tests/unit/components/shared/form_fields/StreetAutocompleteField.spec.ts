@@ -37,7 +37,7 @@ describe( 'StreetAutocompleteField.vue', () => {
 
 		await flushPromises();
 
-		expect( wrapper.findAll( '.dropdown-item' ).length ).toStrictEqual( 9 );
+		expect( wrapper.findAll( '[role="listbox"] > *' ).length ).toStrictEqual( 9 );
 	} );
 
 	it( 'filters streets', async () => {
@@ -46,7 +46,7 @@ describe( 'StreetAutocompleteField.vue', () => {
 		await flushPromises();
 		await wrapper.find( '#street' ).setValue( 's' );
 
-		expect( wrapper.findAll( '.dropdown-item' ).length ).toStrictEqual( 2 );
+		expect( wrapper.findAll( '[role="listbox"] > *' ).length ).toStrictEqual( 2 );
 	} );
 
 	it( 'searches for streets when postcode prop changes', async () => {
@@ -54,12 +54,12 @@ describe( 'StreetAutocompleteField.vue', () => {
 
 		await flushPromises();
 
-		expect( wrapper.findAll( '.dropdown-item' ).length ).toStrictEqual( 0 );
+		expect( wrapper.findAll( '[role="listbox"] > *' ).length ).toStrictEqual( 0 );
 
 		await wrapper.setProps( { postcode: '12345' } );
 		await flushPromises();
 
-		expect( wrapper.findAll( '.dropdown-item' ).length ).toStrictEqual( 9 );
+		expect( wrapper.findAll( '[role="listbox"] > *' ).length ).toStrictEqual( 9 );
 	} );
 
 	it( 'only searches for streets when given a valid German postcode', async () => {
@@ -67,17 +67,17 @@ describe( 'StreetAutocompleteField.vue', () => {
 
 		await flushPromises();
 
-		expect( wrapper.findAll( '.dropdown-item' ).length ).toStrictEqual( 0 );
+		expect( wrapper.findAll( '[role="listbox"] > *' ).length ).toStrictEqual( 0 );
 
 		await wrapper.setProps( { postcode: '12345' } );
 		await flushPromises();
 
-		expect( wrapper.findAll( '.dropdown-item' ).length ).toStrictEqual( 9 );
+		expect( wrapper.findAll( '[role="listbox"] > *' ).length ).toStrictEqual( 9 );
 
 		await wrapper.setProps( { postcode: 'This is not a valid postcode' } );
 		await flushPromises();
 
-		expect( wrapper.findAll( '.dropdown-item' ).length ).toStrictEqual( 0 );
+		expect( wrapper.findAll( '[role="listbox"] > *' ).length ).toStrictEqual( 0 );
 	} );
 
 	it( 'shows the street name error', async () => {
@@ -114,7 +114,7 @@ describe( 'StreetAutocompleteField.vue', () => {
 		await flushPromises();
 
 		await wrapper.find( '#building-number' ).setValue( '42' );
-		await wrapper.find( '.dropdown-item:nth-child( 6 )' ).trigger( 'click' );
+		await wrapper.find( '[role="listbox"] :nth-child( 6 )' ).trigger( 'click' );
 
 		expect( wrapper.emitted( 'update:modelValue' )[ 1 ][ 0 ] ).toBe( `Cobblestone Way${ separator }42` );
 	} );
@@ -126,7 +126,7 @@ describe( 'StreetAutocompleteField.vue', () => {
 		const field = wrapper.find<HTMLInputElement>( '#street' );
 
 		await field.trigger( 'focus' );
-		await wrapper.find( '.dropdown-item:nth-child(3)' ).trigger( 'click' );
+		await wrapper.find( '[role="listbox"] :nth-child(3)' ).trigger( 'click' );
 
 		await jest.runAllTimersAsync();
 
@@ -154,16 +154,16 @@ describe( 'StreetAutocompleteField.vue', () => {
 	it( 'shows and hides the street number help text', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.street-number-warning' ).exists() ).toBeFalsy();
+		expect( wrapper.html() ).not.toContain( 'donation_form_street_number_warning' );
 
 		await wrapper.find( '#building-number' ).trigger( 'blur' );
 
-		expect( wrapper.find( '.street-number-warning' ).exists() ).toBeTruthy();
+		expect( wrapper.html() ).toContain( 'donation_form_street_number_warning' );
 
 		await wrapper.find( '#building-number' ).setValue( '42' );
 		await wrapper.find( '#building-number' ).trigger( 'blur' );
 
-		expect( wrapper.find( '.street-number-warning' ).exists() ).toBeFalsy();
+		expect( wrapper.html() ).not.toContain( 'donation_form_street_number_warning' );
 	} );
 
 	it( 'highlights streets on the list on keyboard up and down', async () => {
@@ -176,11 +176,13 @@ describe( 'StreetAutocompleteField.vue', () => {
 		await field.trigger( 'focus' );
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(1)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'street-0' );
 
 		await field.trigger( 'keydown', { key: 'ArrowUp' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(1)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'street-0' );
 
 		// Go to the bottom of the list
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
@@ -192,11 +194,13 @@ describe( 'StreetAutocompleteField.vue', () => {
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(9)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(9)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'street-8' );
 
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(9)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(9)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'street-8' );
 	} );
 
 	it( 'sets the field value when the donor presses submit while navigating the list', async () => {

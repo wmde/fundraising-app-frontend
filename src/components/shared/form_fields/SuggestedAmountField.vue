@@ -23,7 +23,6 @@
 					input-id="custom-amount"
 					:placeholder="customAmountPlaceholder"
 					:has-message="false"
-					class="membership-fee-change-custom-euro-symbol"
 					:show-error="isValid"
 					@blur.prevent="onBlurCustomAmount"
 					@input.prevent="onCustomAmountInput"

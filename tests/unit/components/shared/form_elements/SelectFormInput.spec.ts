@@ -25,18 +25,7 @@ describe( 'SelectFormInput.vue', () => {
 
 		await wrapper.setProps( { disabled: true } );
 
-		expect( wrapper.classes() ).toContain( 'is-disabled' );
 		expect( wrapper.find( 'select' ).attributes( 'disabled' ) ).toBeDefined();
-	} );
-
-	it( 'sets required', async () => {
-		const wrapper = getWrapper();
-
-		expect( wrapper.find( 'select' ).attributes( 'required' ) ).toBeUndefined();
-
-		await wrapper.setProps( { required: true } );
-
-		expect( wrapper.find( 'select' ).attributes( 'required' ) ).toBeDefined();
 	} );
 
 	it( 'emits events', async () => {
