@@ -29,9 +29,7 @@ describe( 'TextField.vue', () => {
 
 		await wrapper.setProps( { showError: true } );
 
-		expect( wrapper.find( 'span.help.is-danger' ).exists() ).toBeTruthy();
-		expect( wrapper.find( 'span.help.is-danger' ).text() ).toStrictEqual( '404 Lasagne not found' );
-		expect( wrapper.find( 'input' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'textField-error' );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
 	} );
 
 	it( 'shows the message slot', async () => {

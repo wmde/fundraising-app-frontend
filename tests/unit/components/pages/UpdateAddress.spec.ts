@@ -11,6 +11,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { nextTick } from 'vue';
 import type { AddressChangeResource } from '@src/api/AddressChangeResource';
 import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
+import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
 
 jest.mock( '@src/util/tracking', () => {
 	return {
@@ -109,6 +110,56 @@ describe( 'UpdateAddress.vue', () => {
 		await jest.runAllTimersAsync();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+
+		jest.restoreAllMocks();
+	} );
+
+	it( 'has a functional person error summary', async () => {
+		jest.useFakeTimers();
+
+		const store = createStore();
+		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.PERSON, fields: [] } );
+		const wrapper = getWrapper( store );
+
+		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( 'form' ).trigger( 'submit' );
+		await nextTick();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'address-form-salutation' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'address-form-first-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'address-form-last-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'street', 'address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'post-code', 'address-form-post-code' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'city', 'address-form-city' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
+
+		jest.restoreAllMocks();
+	} );
+
+	it( 'has a functional company error summary', async () => {
+		jest.useFakeTimers();
+
+		const store = createStore();
+		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
+		const wrapper = getWrapper( store );
+
+		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
+		await wrapper.find( '#country' ).trigger( 'blur' );
+		await jest.runAllTimersAsync();
+
+		await wrapper.find( 'form' ).trigger( 'submit' );
+		await nextTick();
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'company-name', 'address-form-company-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'street', 'address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'post-code', 'address-form-post-code' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'city', 'address-form-city' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
 
 		jest.restoreAllMocks();
 	} );

@@ -1,3 +1,16 @@
+## Display Toggler
+
+Sometimes we need to hide and show content. This class will allow elements with `.display-toggler` to be hidden, and `.display-toggler`s with `.display-toggler--visible` will be shown. We could use something like `.display-hidden` that hides an element but that would require javascript evaluations to be reversed and would be harder to read. It also helps explicitly show an element that's being toggled in the browser inspector.
+
+```html
+<div class="display-toggler">
+    I am hidden
+</div>
+<div class="display-toggler display-toggler--visible">
+	I am visible
+</div>
+```
+
 ## Footer Bottom
 
 We want the footer to always be displayed on the bottom of the page, even when the content is too short to push it all the way down. We manage this with:

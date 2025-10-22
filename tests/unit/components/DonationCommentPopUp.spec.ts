@@ -91,12 +91,12 @@ describe( 'DonationCommentPopUp.vue', () => {
 
 		await wrapper.trigger( 'submit' );
 
-		expect( wrapper.find( '#comment-error' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '.field-container:has(#comment)' ).attributes( 'data-error' ) ).toBeTruthy();
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 
 		await wrapper.find( '#comment' ).setValue( 'My super great comment' );
 
-		expect( wrapper.find( '#comment-error' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '.field-container:has(#comment)' ).attributes( 'data-error' ) ).toBeFalsy();
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
 

@@ -6,13 +6,13 @@
 		</template>
 		<template #content>
 			<form id="address-type-selection" @submit="evt => evt.preventDefault()">
-				<ScrollTarget target-id="address-type-scroll-target"/>
 				<AddressTypeBasic
 					@address-type="$emit( 'set-address-type', $event )"
 					:disabledAddressTypes="disabledAddressTypes"
 					:is-direct-debit="isDirectDebitPayment"
 					:initial-address-type="addressType"
 					:address-type-is-invalid="addressTypeIsInvalid"
+					data-max-width
 				/>
 			</form>
 
@@ -29,7 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import AddressTypeBasic from '@src/components/pages/donation_form/AddressTypeBasic.vue';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import type { CampaignValues } from '@src/view_models/CampaignValues';

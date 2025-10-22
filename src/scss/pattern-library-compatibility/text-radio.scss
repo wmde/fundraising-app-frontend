@@ -1,0 +1,11 @@
+.text-radio {
+	max-width: var(--form-field-max-width);
+}
+
+.text-radio__radio {
+	left: 14px;
+}
+
+.text-radio:not([data-direction="rtl"]) .text-radio__currency {
+	left: 28px;
+}

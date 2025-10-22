@@ -94,7 +94,7 @@ describe( 'CityAutocompleteField.vue', () => {
 		await nextTick();
 		await nextTick();
 
-		await wrapper.find( '.dropdown-item:nth-child( 6 )' ).trigger( 'click' );
+		await wrapper.find( '[role="listbox"] :nth-child( 6 )' ).trigger( 'click' );
 		await runAllTimersAsync();
 
 		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toBe( 'Satan City' );
@@ -120,7 +120,7 @@ describe( 'CityAutocompleteField.vue', () => {
 		await nextTick();
 		await nextTick();
 
-		await wrapper.find( '.dropdown-item:nth-child( 1 )' ).trigger( 'click' );
+		await wrapper.find( '[role="listbox"] :nth-child( 1 )' ).trigger( 'click' );
 
 		expect( wrapper.emitted( 'field-changed' ).length ).toBe( 1 );
 	} );
@@ -130,8 +130,8 @@ describe( 'CityAutocompleteField.vue', () => {
 
 		await wrapper.setProps( { showError: true } );
 
-		expect( wrapper.find( '.help.is-danger' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.help.is-danger' ).text() ).toStrictEqual( 'I haz error' );
+		expect( wrapper.attributes( 'data-error' ) ).toBeTruthy();
+		expect( wrapper.find( '.field-container__error-text' ).text() ).toStrictEqual( 'I haz error' );
 	} );
 
 	it( 'highlights cities on the list on keyboard up and down', async () => {
@@ -142,11 +142,13 @@ describe( 'CityAutocompleteField.vue', () => {
 		await field.trigger( 'focus' );
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(1)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'city-0' );
 
 		await field.trigger( 'keydown', { key: 'ArrowUp' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(1)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(1)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'city-0' );
 
 		// Go to the bottom of the list
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
@@ -158,11 +160,13 @@ describe( 'CityAutocompleteField.vue', () => {
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(9)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(9)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'city-8' );
 
 		await field.trigger( 'keydown', { key: 'ArrowDown' } );
 
-		expect( wrapper.find( '.dropdown-content > *:nth-child(9)' ).classes() ).toContain( 'is-active-item' );
+		expect( wrapper.find( '[role="listbox"] > *:nth-child(9)' ).attributes( 'aria-selected' ) ).toBeTruthy();
+		expect( wrapper.find( 'input' ).attributes( 'aria-activedescendant' ) ).toStrictEqual( 'city-8' );
 	} );
 
 	it( 'sets the field value when the donor presses submit while navigating the list', async () => {

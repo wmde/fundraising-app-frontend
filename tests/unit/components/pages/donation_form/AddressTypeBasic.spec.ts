@@ -48,7 +48,7 @@ describe( 'AddressTypeBasic.vue', () => {
 	it( 'renders tooltip hint if payment is direct debit', () => {
 		const wrapper = getWrapper( [ AddressTypeModel.ANON ], true );
 
-		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
+		expect( wrapper.find( '.tooltip__popup' ).isVisible() ).toBe( true );
 	} );
 
 	it( 'does not render tooltip hint if payment is not direct debit', () => {

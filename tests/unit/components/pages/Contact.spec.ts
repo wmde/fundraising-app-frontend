@@ -2,6 +2,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import Contact from '@src/components/pages/Contact.vue';
 import type { ContactInitialFormData } from '@src/components/pages/contact/ContactInitialFormData';
 import { contactFormValidationPatterns } from '@test/data/validation';
+import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
 
 // This is so the error summary scrollIntoView doesn't throw errors
 const errorSummaryScrollElement = { scrollIntoView: () => {} };
@@ -79,6 +80,17 @@ describe( 'Contact.vue', () => {
 		expect( subject.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( messageBody.attributes( 'aria-invalid' ) ).toStrictEqual( 'false' );
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'has a functional error summary', async () => {
+		const wrapper = getWrapper();
+		await wrapper.find( '#laika-contact' ).trigger( 'submit' );
+
+		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'email', 'address-form-email' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'topic', 'contact-form-topic' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'subject', 'contact-form-subject' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'messageBody', 'contact-form-messageBody' ) ).toBeTruthy();
 	} );
 
 	it( 'Shows and hides field errors when initialised with them', async () => {

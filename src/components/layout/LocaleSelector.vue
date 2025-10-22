@@ -13,14 +13,14 @@
 		</button>
 
 		<form class="navigation-locale-dropdown" id="navigation-locale-dropdown" @submit.prevent="updateCookie">
-			<fieldset>
+			<fieldset class="field-container">
 				<legend class="is-sr-only" :lang="localeSelectorItem.value">{{ localeSelectorItem.helpText }}</legend>
 				<div class="navigation-locale-item" v-for="( localeItem, index ) in LOCALES" :key="index">
 					<RadioFormInput
 						input-type="radio"
 						:id="`navigation-locale-item-${ localeItem.value }`"
 						input-class="navigation-locale-input"
-						label-class="navigation-locale-label"
+						class="navigation-locale-label"
 						name="locale"
 						:native-value="localeItem.value"
 						:lang="localeItem.value"
@@ -163,18 +163,16 @@ useDetectOutsideClick( localeSelectorRef, handleLocaleItemBlur );
 		}
 	}
 
-	.radio-form-input {
+	&-item {
 		width: 100%;
 
 		input {
-			left: map.get(units.$spacing, 'small');
 			z-index: 1;
 		}
 
-		label {
+		.navigation-locale-label label {
 			border: 0;
 			border-radius: 0;
-			padding-left: map.get(units.$spacing, 'x-large');
 		}
 
 		label:hover,
@@ -184,7 +182,7 @@ useDetectOutsideClick( localeSelectorRef, handleLocaleItemBlur );
 			border: 0;
 		}
 
-		input:checked + label {
+		label:has(input:checked) {
 			border: 0;
 			background: colors.$primary-locale-active;
 			color: colors.$primary;
