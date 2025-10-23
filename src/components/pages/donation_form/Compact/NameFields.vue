@@ -1,20 +1,6 @@
 <template>
 
 	<div class="flex-field-group">
-		<SelectField
-			name="title"
-			v-model="formData.title.value"
-			id="address-form-title"
-			input-id="title"
-			:label="$t( 'donation_form_academic_title_label' )"
-			:options="[
-				{ label: $t( 'donation_form_academic_title_option_none' ), value: '' },
-				{ label: 'Dr.', value: 'Dr.' },
-				{ label: 'Prof.', value: 'Prof.' },
-				{ label: 'Prof. Dr.', value: 'Prof. Dr.' },
-			]"
-			@field-changed="$emit('field-changed', 'title')"
-		/>
 		<RadioField
 			name="salutation"
 			id="address-form-salutation"
@@ -25,6 +11,21 @@
 			:error-message="$t( 'donation_form_salutation_error' )"
 			layoutType="cluster"
 			@field-changed="$emit('field-changed', 'salutation')"
+		/>
+		<SelectField
+			name="title"
+			v-model="formData.title.value"
+			id="address-form-title"
+			class="flex-field-group__stretch"
+			input-id="title"
+			:label="$t( 'donation_form_academic_title_label' )"
+			:options="[
+				{ label: $t( 'donation_form_academic_title_option_none' ), value: '' },
+				{ label: 'Dr.', value: 'Dr.' },
+				{ label: 'Prof.', value: 'Prof.' },
+				{ label: 'Prof. Dr.', value: 'Prof. Dr.' },
+			]"
+			@field-changed="$emit('field-changed', 'title')"
 		/>
 	</div>
 

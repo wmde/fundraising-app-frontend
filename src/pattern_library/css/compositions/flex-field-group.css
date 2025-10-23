@@ -16,13 +16,25 @@ CUSTOM PROPERTIES AND CONFIGURATION
 	flex-grow: 1;
 }
 
+.flex-field-group__stretch {
+	flex-grow: 999;
+	min-width: 16ch;
+}
+
 .flex-field-group__mini-field {
 	flex-basis: min-content;
 	min-width: 16ch;
 }
 
-.flex-field-group__mini-fixed-width-field {
-	max-width: clamp(3rem, 6rem, 6rem);
+.flex-field-group__sidebar-field {
+	flex-basis: 0;
+	flex-grow: 999;
+	min-width: 20rem;
+}
+
+.flex-field-group__sidebar-field-sidebar {
+	flex-basis: 16ch;
+	flex-grow: 1;
 }
 
 .flex-field-group[data-nowrap] {

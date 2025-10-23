@@ -1,6 +1,6 @@
 <template>
 	<div :class="{ 'flow': !isInline, 'flex-field-group' : isInline }">
-		<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :data-max-width="dataMaxWidth ? true : null">
+		<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :data-max-width="dataMaxWidth ? true : null" class="flex-field-group__sidebar-field">
 			<template #label>{{ $t( 'donation_form_street_name_label' ) }}</template>
 			<template #field>
 				<div class="combobox">
@@ -50,7 +50,7 @@
 		<TextField
 			name="building-number"
 			:input-id="inputIdBuildingNumber"
-			:class="{ 'flex-field-group__mini-fixed-width-field' : isInline }"
+			:class="{ 'flex-field-group__sidebar-field-sidebar' : isInline }"
 			v-model="buildingNumberModel"
 			:show-error="false"
 			:error-message="$t('donation_form_building_number_error')"
@@ -60,7 +60,7 @@
 			@field-changed="onBuildingNumberBlur"
 			:data-max-width="dataMaxWidth"
 		>
-			<template #message v-if="showBuildingNumberWarning && !isInline">
+			<template #message v-if="showBuildingNumberWarning">
 				{{ $t( 'donation_form_street_number_warning' ) }}
 			</template>
 		</TextField>
