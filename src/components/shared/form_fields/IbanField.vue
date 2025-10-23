@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer input-id="iban" id="payment-form-iban" :show-error="showError">
+	<FieldContainer input-id="iban" id="payment-form-iban" :show-error="showError" :is-max-width-field="isMaxWidthField">
 		<template #label v-if="$slots.label">
 			<slot name="label"/>
 		</template>
@@ -39,6 +39,7 @@ interface Props {
 	bankName: string;
 	bic: string;
 	ariaDescribedby?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {

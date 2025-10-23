@@ -39,8 +39,8 @@
 								placeholder=""
 								:show-error="accountNumberError"
 								:error-message="$t( 'donation_form_account_number_error' )"
+								:is-max-width-field="true"
 								@field-changed="validateAccountNumber"
-								data-max-width
 							/>
 
 							<TextField
@@ -51,8 +51,8 @@
 								:placeholder="$t( 'donation_form_payment_bankdata_bank_legacy_placeholder' )"
 								:show-error="bankCodeError"
 								:error-message="$t( 'donation_form_bank_code_error' )"
+								:is-max-width-field="true"
 								@field-changed="validateBankCode"
-								data-max-width
 							/>
 
 							<ErrorSummary :is-visible="showCalculatorErrorSummary" :focus-on-submit="false" :items="[
@@ -108,8 +108,8 @@
 				:bank-name="bankName"
 				:bic="bic"
 				:show-error="showIbanError"
+				:is-max-width-field="true"
 				@field-changed="validateIban"
-				data-max-width
 			/>
 		</form>
 	</div>

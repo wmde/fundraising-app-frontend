@@ -53,8 +53,8 @@
 			<EmailField
 				:show-error="fieldErrors.email"
 				v-model="formData.email.value"
+				:is-max-width-field="true"
 				@field-changed="onFieldChange"
-				data-max-width
 			/>
 
 		</AutofillHandler>

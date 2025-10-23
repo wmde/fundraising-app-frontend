@@ -1,6 +1,6 @@
 <template>
 	<div :class="{ 'flow': !isInline, 'flex-field-group' : isInline }">
-		<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :data-max-width="dataMaxWidth ? true : null" class="flex-field-group__sidebar-field">
+		<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :is-max-width-field="isMaxWidthField" class="flex-field-group__sidebar-field">
 			<template #label>{{ $t( 'donation_form_street_name_label' ) }}</template>
 			<template #field>
 				<div class="combobox">
@@ -58,7 +58,7 @@
 			:placeholder="$t( 'donation_form_building_number_placeholder' )"
 			@update:modelValue="onUpdateModel"
 			@field-changed="onBuildingNumberBlur"
-			:data-max-width="dataMaxWidth"
+			:is-max-width-field="isMaxWidthField"
 		>
 			<template #message v-if="showBuildingNumberWarning">
 				{{ $t( 'donation_form_street_number_warning' ) }}
@@ -94,7 +94,7 @@ interface Props {
 	modelValue: string;
 	showError: boolean;
 	postcode: string;
-	dataMaxWidth?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();

@@ -1,5 +1,5 @@
 <template>
-	<div class="field-container field-container__radio-grid flow" :data-error="isValid ? null : true">
+	<div class="field-container field-container__radio-grid flow" :data-error="isValid ? null : true" :data-max-width="isMaxWidthField ? true : null">
 		<div class="grid" data-layout="halves">
 			<div class="flow">
 				<label for="suggested-amount">{{ suggestedAmountLabel }}</label>
@@ -53,6 +53,7 @@ interface Props {
 	customAmountLabel: string;
 	customAmountPlaceholder: string;
 	errorMessage: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {

@@ -8,7 +8,7 @@
 		:disabled="[]"
 		:show-error="!intervalIsValid"
 		:error-message="$t('membership_form_interval_error')"
-		data-max-width
+		:is-max-width-field="true"
 	/>
 
 	<AmountField
@@ -35,7 +35,7 @@
 			:disabled="[]"
 			:show-error="!paymentTypeIsValid"
 			:error-message="$t('membership_form_payment_type_error')"
-			data-max-width
+			:is-max-width-field="true"
 		/>
 	</template>
 

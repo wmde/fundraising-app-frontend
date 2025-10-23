@@ -18,7 +18,7 @@
 		:options="paymentIntervalsAsOptions"
 		:disabled="disabledPaymentIntervals"
 		grid-layout="halves"
-		data-max-width
+		:is-max-width-field="true"
 	/>
 
 	<RadioField
@@ -33,7 +33,7 @@
 		grid-layout="halves"
 		:show-error="!paymentTypeIsValid"
 		:error-message="$t('donation_form_payment_type_error')"
-		data-max-width
+		:is-max-width-field="true"
 	>
 		<template #tooltip-BEZ>
 			<Tooltip v-if="disabledPaymentTypes.includes( 'BEZ' )">

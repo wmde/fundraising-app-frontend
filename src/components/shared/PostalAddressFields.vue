@@ -9,8 +9,8 @@
 		autocomplete="street-address"
 		:label="$t( 'donation_form_street_label' )"
 		:placeholder="$t( 'donation_form_street_placeholder' )"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'street')"
-		data-max-width
 	>
 		<template #message v-if="showStreetWarning">
 			{{ $t( 'donation_form_street_number_warning' ) }}
@@ -28,8 +28,8 @@
 		:label="$t( 'donation_form_zip_label' )"
 		:placeholder="$t( 'donation_form_zip_placeholder' )"
 		placeholder-warning="donation_form_zip_placeholder_warning"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'postcode')"
-		data-max-width
 	/>
 
 	<CityAutocompleteField
@@ -41,8 +41,8 @@
 		:label="$t( 'donation_form_city_label' )"
 		:error-message="$t( 'donation_form_city_error' )"
 		:postcode="formData.postcode.value"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'city' )"
-		data-max-width
 	/>
 
 	<CountryAutocompleteField
@@ -53,8 +53,8 @@
 		:countries="countries"
 		:was-restored="countryWasRestored"
 		:show-error="showError.country"
+		:is-max-width-field="true"
 		@field-changed="onCountryFieldChanged"
-		data-max-width
 	/>
 </template>
 

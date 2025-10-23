@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="inputId" :show-error="showError" :id="id">
+	<FieldContainer :input-id="inputId" :show-error="showError" :id="id" :is-max-width-field="isMaxWidthField">
 		<template #label>{{ $t( 'donation_form_email_label' ) }}</template>
 		<template #field>
 			<TextFormInput
@@ -47,6 +47,7 @@ interface Props {
 	showError: boolean;
 	id?: string;
 	inputId?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {

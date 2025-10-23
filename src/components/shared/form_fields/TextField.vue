@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="inputId" :show-error="showError">
+	<FieldContainer :input-id="inputId" :show-error="showError" :is-max-width-field="isMaxWidthField">
 		<template #label>
 			{{ label }} <em v-if="labelHelpText">{{ labelHelpText }}</em>
 		</template>
@@ -54,6 +54,7 @@ interface Props {
 	disabled?: boolean;
 	autocomplete?: string;
 	autofocus?: boolean;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
