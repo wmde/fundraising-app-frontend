@@ -11,7 +11,7 @@
 	font-style: italic;
 }
 
-/* This is for an implementation issue with Vuejs. In order to pass the value */
+/* This is for an implementation issue edge case with Vuejs. Sometimes a field will show an empty message element */
 .field-container__message:empty {
 	display: none;
 }

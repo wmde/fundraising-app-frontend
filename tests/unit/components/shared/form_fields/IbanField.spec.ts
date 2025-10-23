@@ -95,15 +95,14 @@ describe( 'IbanField.vue', () => {
 		it( 'shows the bank name when it exists and IBAN is not blank', async () => {
 			const wrapper = getWrapper();
 
-			expect( wrapper.find( '.field-container__message' ).exists() ).toBeFalsy();
+			expect( wrapper.find( '.field-container__message' ).text() ).toStrictEqual( '' );
 
 			await wrapper.setProps( { bankName, bic: BIC } );
 
-			expect( wrapper.find( '.field-container__message' ).exists() ).toBeFalsy();
+			expect( wrapper.find( '.field-container__message' ).text() ).toStrictEqual( '' );
 
 			await wrapper.setProps( { modelValue: IBAN } );
 
-			expect( wrapper.find( '.field-container__message' ).exists() ).toBeTruthy();
 			expect( wrapper.find( '.field-container__message' ).text() ).toStrictEqual( `${ bankName } (${ BIC })` );
 		} );
 

@@ -73,6 +73,7 @@
 		position: relative;
 		background: var(--color-white);
 		margin: 0.5ex 0 0;
+		cursor: pointer;
 	}
 
 	:is([type='checkbox'], [type='radio']):checked {

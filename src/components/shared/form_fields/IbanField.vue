@@ -21,8 +21,13 @@
 		<template #error>
 			{{ $t( 'donation_form_payment_iban_error' ) }}
 		</template>
-		<template #message v-if="hasMessage">
-			{{ bankName }} ({{ bic }})
+		<template #message>
+			<template v-if="hasMessage">
+				{{ bankName }} ({{ bic }})
+			</template>
+			<template v-else>
+				&nbsp;
+			</template>
 		</template>
 	</FieldContainer>
 </template>
