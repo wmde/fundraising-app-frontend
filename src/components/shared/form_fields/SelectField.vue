@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="inputId" :show-error="showError">
+	<FieldContainer :input-id="inputId" :show-error="showError" :is-max-width-field="isMaxWidthField">
 		<template #label>{{ label }}</template>
 		<template #field>
 			<SelectFormInput
@@ -36,6 +36,7 @@ interface Props {
 	options: SelectFormOption[];
 	errorMessage?: String;
 	showError?: boolean;
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();

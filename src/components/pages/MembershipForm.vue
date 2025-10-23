@@ -83,7 +83,7 @@
 					v-if="showMembershipTypeOption"
 					v-model="membershipTypeModel"
 					:disabledMembershipTypes="disabledMembershipTypes"
-					data-max-width
+					:is-max-width-field="true"
 				/>
 
 				<AddressType
@@ -92,7 +92,7 @@
 					:is-direct-debit="isDirectDebitPayment"
 					:initial-address-type="addressType"
 					:address-type-is-invalid="false"
-					data-max-width
+					:is-max-width-field="true"
 				/>
 
 				<Payment

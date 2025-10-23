@@ -28,8 +28,8 @@
 		<IncentivesField
 			:incentive-form-field-options="incentivesAsOptions"
 			v-model="incentivesModel"
+			:is-max-width-field="true"
 			@field-changed="onFieldChange"
-			data-max-width
 		/>
 
 		<TextField
@@ -41,8 +41,8 @@
 			:placeholder="$t( 'membership_form_birth_date_placeholder' )"
 			:show-error="fieldErrors.date"
 			:error-message="$t( 'membership_form_birth_date_error' )"
+			:is-max-width-field="true"
 			@field-changed="onFieldChange"
-			data-max-width
 		>
 			<template #message v-if="!fieldErrors.date">
 				{{ $t( 'membership_form_birth_date_help_text' ) }}
@@ -52,8 +52,8 @@
 		<EmailField
 			:show-error="fieldErrors.email"
 			v-model="formData.email.value"
+			:is-max-width-field="true"
 			@field-changed="onFieldChange"
-			data-max-width
 		/>
 	</AutofillHandler>
 </template>

@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="name" :show-error="showError" type="fieldset">
+	<FieldContainer :input-id="name" :show-error="showError" type="fieldset" :is-max-width-field="isMaxWidthField">
 		<template #label>{{ label }}</template>
 		<template #field>
 			<div :class="layoutType" :data-layout="gridLayout">
@@ -54,6 +54,7 @@ interface Props {
 	gridLayout?: 'full' | '50-50' | 'halves' | 'thirds' | 'quarters';
 	autofocus?: boolean;
 	ariaDescribedby?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {

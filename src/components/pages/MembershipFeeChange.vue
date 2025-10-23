@@ -45,9 +45,9 @@
 					:custom-amount-placeholder="$t( 'form_for_example', { example: $n( suggestedAmountInCents / 100 * 1.25, 'integer' ) } )"
 					:error-message="feeErrorMessage"
 					id="upgrade-form-custom-amount"
+					:is-max-width-field="true"
 					@custom-amount-changed="validateAmount"
 					@suggested-selected="isFeeValid = true"
-					data-max-width
 				/>
 
 				<TextField
@@ -65,9 +65,9 @@
 					:placeholder="$t( 'form_for_example', {
 						example: $t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')
 					} )"
+					:is-max-width-field="true"
 					@field-changed="validateMemberName"
 					@blur="validateMemberName"
-					data-max-width
 				/>
 			</template>
 		</ContentCard>
@@ -84,9 +84,9 @@
 									:show-error="!isIbanValid"
 									:bank-name="bankName"
 									:bic="bic"
+									:is-max-width-field="true"
 									@blur="validateIban"
 									@input="onIbanInput"
-									data-max-width
 								>
 									<template #label>
 										{{ $t('membership_fee_upgrade_iban_changed_label') }}

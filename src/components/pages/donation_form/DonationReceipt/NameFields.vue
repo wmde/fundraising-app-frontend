@@ -8,7 +8,7 @@
 		:show-error="showError.salutation"
 		:error-message="$t( 'donation_form_salutation_error' )"
 		@field-changed="$emit('field-changed', 'salutation')"
-		data-max-width
+		:is-max-width-field="true"
 	/>
 
 	<SelectField
@@ -23,8 +23,8 @@
 			{ label: 'Prof.', value: 'Prof.' },
 			{ label: 'Prof. Dr.', value: 'Prof. Dr.' },
 		]"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'title')"
-		data-max-width
 	/>
 
 	<TextField
@@ -37,8 +37,8 @@
 		autocomplete="given-name"
 		:label="$t( 'donation_form_firstname_label' )"
 		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_firstname_placeholder' ) } )"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'firstName')"
-		data-max-width
 	/>
 
 	<TextField
@@ -52,8 +52,8 @@
 		:label="$t( 'donation_form_lastname_label' )"
 		:placeholder="$t( 'donation_form_lastname_placeholder' )"
 		placeholder-warning="donation_form_lastname_placeholder_warning"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'lastName')"
-		data-max-width
 	/>
 </template>
 

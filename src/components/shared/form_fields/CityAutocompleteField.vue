@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="inputId" :show-error="showError">
+	<FieldContainer :input-id="inputId" :show-error="showError" :is-max-width-field="isMaxWidthField">
 		<template #label>{{ label }}</template>
 		<template #field>
 			<div class="combobox">
@@ -76,6 +76,7 @@ interface Props {
 	showError: boolean;
 	errorMessage: String;
 	postcode: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();

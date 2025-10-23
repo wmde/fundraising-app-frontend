@@ -20,6 +20,7 @@
 		:disabled="disabledMembershipTypes"
 		:show-error="activeTypeSelectedAndDisabled"
 		:error-message="$t('membership_form_membershiptype_error')"
+		:is-max-width-field="isMaxWidthField"
 	>
 		<template #message-0>
 			<div class="option-info-message">
@@ -44,6 +45,7 @@ import { computed } from 'vue';
 interface Props {
 	modelValue: number;
 	disabledMembershipTypes: number[];
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();

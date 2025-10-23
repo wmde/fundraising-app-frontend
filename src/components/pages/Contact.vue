@@ -25,8 +25,8 @@
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_firstname_placeholder' ) } )"
 					:show-error="formData.firstname.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_firstname_error' )"
+					:is-max-width-field="true"
 					@field-changed="() => validateField( 'firstname' )"
-					data-max-width
 				/>
 
 				<TextField
@@ -39,8 +39,8 @@
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_lastname_placeholder' ) } )"
 					:show-error="formData.lastname.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_lastname_error' )"
+					:is-max-width-field="true"
 					@field-changed="() => validateField( 'lastname' )"
-					data-max-width
 				/>
 
 				<TextField
@@ -54,15 +54,15 @@
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_donation_number_placeholder' ) } )"
 					:show-error="formData.donationNumber.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_donation_number_error' )"
+					:is-max-width-field="true"
 					@field-changed="() => validateField( 'donationNumber' )"
-					data-max-width
 				/>
 
 				<EmailField
 					v-model="formData.email.value"
 					:show-error="formData.email.validity === Validity.INVALID"
+					:is-max-width-field="true"
 					@field-changed="() => validateField( 'email' )"
-					data-max-width
 				/>
 
 				<SelectField
@@ -77,8 +77,8 @@
 					]"
 					:show-error="formData.topic.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_topic_error' )"
+					:is-max-width-field="true"
 					@field-changed="() => validateField( 'topic' )"
-					data-max-width
 				/>
 
 				<TextField
@@ -90,8 +90,8 @@
 					:placeholder="$t( 'form_for_example', { example: $t( 'contact_form_subject_placeholder' ) } )"
 					:show-error="formData.subject.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_subject_error' )"
+					:is-max-width-field="true"
 					@field-changed="() => validateField( 'subject' )"
-					data-max-width
 				/>
 
 				<TextField
@@ -104,8 +104,8 @@
 					placeholder=""
 					:show-error="formData.comment.validity === Validity.INVALID"
 					:error-message="$t( 'contact_form_body_error' )"
+					:is-max-width-field="true"
 					@field-changed="() => validateField( 'comment' )"
-					data-max-width
 				/>
 
 				<div class="contact-form-button">

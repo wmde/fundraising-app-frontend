@@ -1,5 +1,5 @@
 <template>
-	<component :is="type" class="field-container flow" :data-error="showError ? true : null">
+	<component :is="type" class="field-container flow" :data-error="showError ? true : null" :data-max-width="isMaxWidthField ? true : null">
 		<template v-if="$slots.label">
 			<label v-if="type === 'div'" :for="inputId"><slot name="label"/></label>
 			<legend v-else><slot name="label"/></legend>
@@ -19,6 +19,7 @@
 interface Props {
 	type?: 'div' | 'fieldset';
 	showError?: boolean;
+	isMaxWidthField?: boolean;
 	inputId: string;
 }
 

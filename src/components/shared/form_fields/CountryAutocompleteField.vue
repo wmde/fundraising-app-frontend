@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="inputId" :show-error="showError">
+	<FieldContainer :input-id="inputId" :show-error="showError" :is-max-width-field="isMaxWidthField">
 		<template #label>{{ $t( 'donation_form_country_label' ) }}</template>
 		<template #field>
 			<div class="combobox">
@@ -74,6 +74,7 @@ interface Props {
 	countries?: Array<Country>;
 	showError: boolean;
 	wasRestored: boolean;
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();
