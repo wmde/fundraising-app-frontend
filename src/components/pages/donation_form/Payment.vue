@@ -17,8 +17,8 @@
 		:label="$t('donation_form_payment_interval_title')"
 		:options="paymentIntervalsAsOptions"
 		:disabled="disabledPaymentIntervals"
-		layout="halves"
-		data-max-width
+		grid-layout="halves"
+		:is-max-width-field="true"
 	/>
 
 	<RadioField
@@ -30,10 +30,10 @@
 		:label="$t('donation_form_payment_type_title')"
 		:options="paymentTypesAsOptions"
 		:disabled="disabledPaymentTypes"
-		layout="halves"
+		grid-layout="halves"
 		:show-error="!paymentTypeIsValid"
 		:error-message="$t('donation_form_payment_type_error')"
-		data-max-width
+		:is-max-width-field="true"
 	>
 		<template #tooltip-BEZ>
 			<Tooltip v-if="disabledPaymentTypes.includes( 'BEZ' )">

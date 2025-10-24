@@ -10,7 +10,7 @@
 		:error-message="$t( 'donation_form_salutation_error' )"
 		@field-changed="$emit('field-changed', 'salutation')"
 		alignment="column"
-		data-max-width
+		:is-max-width-field="true"
 	/>
 
 	<SelectField
@@ -26,8 +26,8 @@
 			{ label: 'Prof.', value: 'Prof.' },
 			{ label: 'Prof. Dr.', value: 'Prof. Dr.' },
 		]"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'title')"
-		data-max-width
 	/>
 
 	<TextField
@@ -40,9 +40,9 @@
 		:error-message="$t( 'donation_form_firstname_error' )"
 		autocomplete="given-name"
 		:label="$t( 'donation_form_firstname_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_firstname_placeholder' ) } )"
+		:placeholder="$t( 'donation_form_firstname_placeholder' )"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'firstName')"
-		data-max-width
 	/>
 
 	<TextField
@@ -55,18 +55,11 @@
 		:error-message="$t( 'donation_form_lastname_error' )"
 		autocomplete="family-name"
 		:label="$t( 'donation_form_lastname_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_lastname_placeholder' ) } )"
+		:placeholder="$t( 'donation_form_lastname_placeholder' )"
+		placeholder-warning="donation_form_lastname_placeholder_warning"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'lastName')"
-		data-max-width
-	>
-		<template #message>
-			<ValueEqualsPlaceholderWarning
-				:value="formData.lastName.value"
-				:placeholder="$t( 'donation_form_lastname_placeholder_check' )"
-				:warning="'donation_form_lastname_placeholder_warning'"
-			/>
-		</template>
-	</TextField>
+	/>
 
 	<TextField
 		v-if="showCompanyFields"
@@ -78,9 +71,9 @@
 		:error-message="$t( 'donation_form_companyname_error' )"
 		autocomplete="organization"
 		:label="$t( 'donation_form_companyname_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_companyname_placeholder' ) } )"
+		:placeholder="$t( 'donation_form_companyname_placeholder' )"
+		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'companyName')"
-		data-max-width
 	/>
 </template>
 
@@ -88,7 +81,6 @@
 
 import type { Salutation } from '@src/view_models/Salutation';
 import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';

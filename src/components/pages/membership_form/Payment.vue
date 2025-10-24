@@ -8,7 +8,7 @@
 		:disabled="[]"
 		:show-error="!intervalIsValid"
 		:error-message="$t('membership_form_interval_error')"
-		data-max-width
+		:is-max-width-field="true"
 	/>
 
 	<AmountField
@@ -19,10 +19,9 @@
 		:show-error="!feeIsValid"
 		:minimum-amount="minimumAmount"
 		:minimum-amount-message="$t('membership_form_payment_amount_description')"
-		aria-describedby="cap-notice"
 	>
 		<template #message>
-			<span id="cap-notice">{{ $t('membership_form_payment_amount_cap_notice') }}</span>
+			{{ $t('membership_form_payment_amount_cap_notice') }}
 		</template>
 	</AmountField>
 
@@ -36,7 +35,7 @@
 			:disabled="[]"
 			:show-error="!paymentTypeIsValid"
 			:error-message="$t('membership_form_payment_type_error')"
-			data-max-width
+			:is-max-width-field="true"
 		/>
 	</template>
 

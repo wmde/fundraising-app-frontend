@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="inputId">
+	<FieldContainer :input-id="inputId" :is-max-width-field="isMaxWidthField">
 		<template #field>
 			<div class="verbose-checkbox flow">
 				<CheckboxSingleFormInput
@@ -29,6 +29,7 @@ import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 interface Props {
 	modelValue: boolean;
 	inputId: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();

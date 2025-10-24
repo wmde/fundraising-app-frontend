@@ -1,90 +1,85 @@
 <template>
-	<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :data-max-width="dataMaxWidth ? true : null" :id="id">
-		<template #label>{{ $t( 'donation_form_street_name_label' ) }}</template>
-		<template #field>
-			<div class="combobox">
-				<input
-					type="text"
-					name="street"
-					v-model="streetNameModel"
-					:id="inputIdStreetName"
-					autocomplete="country"
-					:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_name_placeholder' ) } )"
-					aria-controls="streets"
-					:aria-invalid="showError"
-					:aria-describedby="ariaDescribedby"
-					aria-autocomplete="list"
-					:aria-activedescendant="activeStreet ? `street-${activeStreetId}` : null"
-					@focus="onStreetNameFocus"
-					@blur="onStreetNameBlur"
-					@input="onStreetNameInput"
-					@keydown="onStreetNameKeydown"
-					@keydown.up.prevent="onStreetNameKeyArrows('up')"
-					@keydown.down.prevent="onStreetNameKeyArrows('down')"
-					@keydown.tab="onStreetNameKeySubmit"
-					@keydown.enter="onStreetNameKeySubmit"
-				/>
-				<span class="is-sr-only" :id="`${inputIdStreetName}-selected`" aria-live="assertive">
-					{{ activeStreet }}
-				</span>
-				<transition name="fade">
-					<div id="streets" ref="scrollElement" tabindex="-1" role="listbox" :aria-label="$t( 'donation_form_street_name_list_label' )" v-show="autocompleteIsActive && filteredStreets.length > 0">
-						<button
-							v-for="( street, index ) in filteredStreets"
-							:key="street"
-							tabindex="-1"
-							role="option"
-							:id="`street-${index}`"
-							:aria-selected="street === activeStreet"
-							@click="onSelectStreet( street )"
-							@keyup.enter.space="onSelectStreet( street )"
-						>
-							{{ street }}
-						</button>
-					</div>
-				</transition>
-			</div>
-		</template>
-		<template #error>{{ errorMessage }}</template>
-		<template #message>
-			<ValueEqualsPlaceholderWarning
-				:value="streetNameModel"
-				:placeholder="$t( 'donation_form_street_placeholder' )"
-				:warning="'donation_form_street_placeholder_warning'"
-			/>
-		</template>
-	</FieldContainer>
+	<div :class="{ 'flow': !isInline, 'flex-field-group' : isInline }">
+		<FieldContainer :input-id="inputIdStreetName" :show-error="showError" :is-max-width-field="isMaxWidthField" class="flex-field-group__sidebar-field">
+			<template #label>{{ $t( 'donation_form_street_name_label' ) }}</template>
+			<template #field>
+				<div class="combobox">
+					<input
+						type="text"
+						name="street"
+						v-model="streetNameModel"
+						:id="inputIdStreetName"
+						autocomplete="country"
+						:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_name_placeholder' ) } )"
+						aria-controls="streets"
+						:aria-invalid="showError"
+						:aria-describedby="ariaDescribedby"
+						aria-autocomplete="list"
+						:aria-activedescendant="activeStreet ? `street-${activeStreetId}` : null"
+						@focus="onStreetNameFocus"
+						@blur="onStreetNameBlur"
+						@input="onStreetNameInput"
+						@keydown="onStreetNameKeydown"
+						@keydown.up.prevent="onStreetNameKeyArrows('up')"
+						@keydown.down.prevent="onStreetNameKeyArrows('down')"
+						@keydown.tab="onStreetNameKeySubmit"
+						@keydown.enter="onStreetNameKeySubmit"
+					/>
+					<transition name="fade">
+						<div id="streets" ref="scrollElement" tabindex="-1" role="listbox" :aria-label="$t( 'donation_form_street_name_list_label' )" v-show="autocompleteIsActive && filteredStreets.length > 0">
+							<button
+								v-for="( street, index ) in filteredStreets"
+								:key="street"
+								tabindex="-1"
+								role="option"
+								:id="`street-${index}`"
+								:aria-selected="street === activeStreet"
+								@click="onSelectStreet( street )"
+								@keyup.enter.space="onSelectStreet( street )"
+							>
+								{{ street }}
+							</button>
+						</div>
+					</transition>
+				</div>
+			</template>
+			<template #error>{{ $t( 'donation_form_street_error' ) }}</template>
+			<template #message v-if="valueEqualsPlaceholderWarning.hasWarning.value">{{ valueEqualsPlaceholderWarning.warning }}</template>
+		</FieldContainer>
 
-	<TextField
-		name="building-number"
-		:input-id="inputIdBuildingNumber"
-		v-model="buildingNumberModel"
-		:show-error="false"
-		:error-message="$t('donation_form_building_number_error')"
-		:label="$t( 'donation_form_building_number_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_building_number_placeholder' ) } )"
-		@update:modelValue="onUpdateModel"
-		@field-changed="onBuildingNumberBlur"
-		:data-max-width="dataMaxWidth"
-	>
-		<template #message v-if="showBuildingNumberWarning">
-			{{ $t( 'donation_form_street_number_warning' ) }}
-		</template>
-	</TextField>
+		<TextField
+			name="building-number"
+			:input-id="inputIdBuildingNumber"
+			:class="{ 'flex-field-group__sidebar-field-sidebar' : isInline }"
+			v-model="buildingNumberModel"
+			:show-error="false"
+			:error-message="$t('donation_form_building_number_error')"
+			:label="$t( isInline ? 'donation_form_building_number_label_short' : 'donation_form_building_number_label' )"
+			:placeholder="$t( 'donation_form_building_number_placeholder' )"
+			@update:modelValue="onUpdateModel"
+			@field-changed="onBuildingNumberBlur"
+			:is-max-width-field="isMaxWidthField"
+		>
+			<template #message v-if="showBuildingNumberWarning">
+				{{ $t( 'donation_form_street_number_warning' ) }}
+			</template>
+		</TextField>
+	</div>
 </template>
 
 <script setup lang="ts">
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, inject, nextTick, onMounted, ref, useSlots, watch } from 'vue';
 import { joinStreetAndBuildingNumber, splitStreetAndBuildingNumber } from '@src/util/street_and_building_number_tools';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 import { NullStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 import type { StreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 import { useStreetsResource } from '@src/components/shared/form_fields/useStreetsResource';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { useValueEqualsPlaceholderWarning } from '@src/components/shared/composables/useValueEqualsPlaceholderWarning';
+import { useI18n } from 'vue-i18n';
 
 enum InteractionState {
 	Typing,
@@ -92,19 +87,20 @@ enum InteractionState {
 }
 
 interface Props {
-	id?: string;
 	inputIdStreetName: string;
 	inputIdBuildingNumber: string;
+	isInline?: boolean;
 	scrollTargetId: string;
 	modelValue: string;
 	showError: boolean;
-	errorMessage: String;
 	postcode: string;
-	dataMaxWidth?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
+const { t } = useI18n();
+const slots = useSlots();
 
 const streetNameModel = ref<string>( '' );
 const buildingNumberModel = ref<string>( '' );
@@ -115,10 +111,12 @@ const { streets, fetchStreetsForPostcode } = useStreetsResource( inject<StreetAu
 const activeStreet = ref<string>();
 const interactionState = ref<InteractionState>( InteractionState.Typing );
 const scrollElement = ref<HTMLElement>();
+const valueEqualsPlaceholderWarning = useValueEqualsPlaceholderWarning( streetNameModel, t( 'donation_form_street_name_placeholder' ), 'donation_form_street_placeholder_warning' );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => activeStreet.value ? `${props.inputIdStreetName}-selected` : '' ),
-	`${props.inputIdStreetName}-error`,
-	computed<boolean>( () => props.showError )
+	props.inputIdStreetName,
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
 );
 const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );
 

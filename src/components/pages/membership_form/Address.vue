@@ -28,8 +28,8 @@
 		<IncentivesField
 			:incentive-form-field-options="incentivesAsOptions"
 			v-model="incentivesModel"
+			:is-max-width-field="true"
 			@field-changed="onFieldChange"
-			data-max-width
 		/>
 
 		<TextField
@@ -41,8 +41,8 @@
 			:placeholder="$t( 'membership_form_birth_date_placeholder' )"
 			:show-error="fieldErrors.date"
 			:error-message="$t( 'membership_form_birth_date_error' )"
+			:is-max-width-field="true"
 			@field-changed="onFieldChange"
-			data-max-width
 		>
 			<template #message v-if="!fieldErrors.date">
 				{{ $t( 'membership_form_birth_date_help_text' ) }}
@@ -52,17 +52,9 @@
 		<EmailField
 			:show-error="fieldErrors.email"
 			v-model="formData.email.value"
+			:is-max-width-field="true"
 			@field-changed="onFieldChange"
-			data-max-width
-		>
-			<template #message>
-				<ValueEqualsPlaceholderWarning
-					:value="formData.email.value"
-					:placeholder="$t( 'donation_form_email_placeholder' )"
-					warning="donation_form_email_placeholder_warning"
-				/>
-			</template>
-		</EmailField>
+		/>
 	</AutofillHandler>
 </template>
 
@@ -78,7 +70,6 @@ import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import IncentivesField from '@src/components/shared/form_fields/IncentivesField.vue';
 import { useAddressFunctions } from '@src/components/pages/membership_form/AddressFunctions';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { useReceiptModel } from '@src/components/pages/membership_form/useReceiptModel';
 import { useIncentivesModel } from '@src/components/pages/membership_form/useIncentivesModel';

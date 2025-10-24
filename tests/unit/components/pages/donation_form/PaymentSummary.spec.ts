@@ -11,7 +11,7 @@ describe( 'PaymentSummary.vue', () => {
 			},
 		} );
 
-		expect( wrapper.find( '.payment-summary-text' ).html() ).toContain(
+		expect( wrapper.find( '.alert-box' ).html() ).toContain(
 			'donation_form_payment_summary'
 		);
 	} );
@@ -24,7 +24,7 @@ describe( 'PaymentSummary.vue', () => {
 			},
 		} );
 
-		expect( wrapper.find( '.payment-summary-text' ).html() ).toContain(
+		expect( wrapper.find( '.alert-box' ).html() ).toContain(
 			'donation_form_payment_summary_payment_type_missing'
 		);
 	} );

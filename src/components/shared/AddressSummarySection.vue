@@ -2,6 +2,7 @@
 	<h3>{{ $t('form_summary_contact_details_header') }}</h3>
 	<p>
 		<template v-if="name"><strong>{{ name }}</strong><br/></template>
+		<template v-if="companyName"><strong>{{ companyName }}</strong><br/></template>
 		<template v-if="cleanedStreetAddress">{{ cleanedStreetAddress }}<br/></template>
 		<template v-if="postcodeCity">{{ postcodeCity }}<br/></template>
 		<template v-if="showCountry">{{ country }}<br/></template>
@@ -23,21 +24,17 @@ interface Props {
 	salutations: Array<Salutation>;
 }
 const props = defineProps<Props>();
-
 const { t } = useI18n();
 
-/*
-Future feature:
- 1. Company name with contact person
- 2. AddressType = 'email' without requiring FullName
-	For this, we need to remove the second arg of the `else if`,
-	because the FullName/ name field should be empty
-*/
+const companyName = computed<string>( () => {
+	if ( [ 'firma', 'company_with_contact' ].includes( props.address.addressType ) ) {
+		return props.address.companyName || '';
+	}
+	return '';
+} );
 
 const name = computed( () => {
-	if ( props.address.addressType === 'firma' ) {
-		return props.address.companyName || '';
-	} else if ( props.address.addressType === 'person' || props.address.addressType === 'email' ) {
+	if ( [ 'person', 'email', 'company_with_contact' ].includes( props.address.addressType ) ) {
 
 		if ( !props.address.firstName?.trim() || !props.address.lastName?.trim() ) {
 			return '';

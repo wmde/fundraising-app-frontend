@@ -5,14 +5,14 @@
 			<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
 		</template>
 		<template #content>
-			<form id="address-type-selection" @submit="evt => evt.preventDefault()">
+			<form id="address-type-selection" @submit.prevent>
 				<AddressTypeBasic
 					@address-type="$emit( 'set-address-type', $event )"
 					:disabledAddressTypes="disabledAddressTypes"
 					:is-direct-debit="isDirectDebitPayment"
 					:initial-address-type="addressType"
 					:address-type-is-invalid="addressTypeIsInvalid"
-					data-max-width
+					:is-max-width-field="true"
 				/>
 			</form>
 

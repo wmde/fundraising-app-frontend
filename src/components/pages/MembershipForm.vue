@@ -83,7 +83,7 @@
 					v-if="showMembershipTypeOption"
 					v-model="membershipTypeModel"
 					:disabledMembershipTypes="disabledMembershipTypes"
-					data-max-width
+					:is-max-width-field="true"
 				/>
 
 				<AddressType
@@ -92,7 +92,7 @@
 					:is-direct-debit="isDirectDebitPayment"
 					:initial-address-type="addressType"
 					:address-type-is-invalid="false"
-					data-max-width
+					:is-max-width-field="true"
 				/>
 
 				<Payment
@@ -126,9 +126,9 @@
 
 		<ContentCard>
 
-				<template #heading v-if="paymentSummary">
+				<template #heading v-if="paymentSummary || addressSummary || bankDataSummary">
 					<h2 aria-live="polite">{{ $t( 'form_summary_title' ) }}</h2>
-					<MembershipSummaryHeadline :paymentSummary="paymentSummary"/>
+					<MembershipSummaryHeadline v-if="paymentSummary" :paymentSummary="paymentSummary"/>
 				</template>
 
 				<template #content>

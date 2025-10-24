@@ -52,10 +52,6 @@
 		line-height: var(--leading-standard);
 	}
 
-	label:has([type='checkbox']) {
-		max-width: var(--form-field-max-width);
-	}
-
 	select {
 		appearance: none;
 	}
@@ -76,6 +72,8 @@
 		border: 1px solid var(--form-field-border-color, var(--color-grey-300));
 		position: relative;
 		background: var(--color-white);
+		margin: 0.5ex 0 0;
+		cursor: pointer;
 	}
 
 	:is([type='checkbox'], [type='radio']):checked {
@@ -85,10 +83,6 @@
 	:is([type='checkbox'], [type='radio']):before {
 		content: '';
 		position: absolute;
-	}
-
-	[type='radio'] {
-		margin: 0.2ex 0 0;
 	}
 
 	[type='radio'],
@@ -106,7 +100,6 @@
 	}
 
 	[type='checkbox'] {
-		margin: 0.2ex 0 0;
 		border-radius: 2px;
 	}
 
@@ -131,7 +124,7 @@
 	}
 
 	label {
-		line-height: var(--leading-fine);
+		line-height: var(--leading-standard);
 		font-weight: var(--font-bold);
 	}
 

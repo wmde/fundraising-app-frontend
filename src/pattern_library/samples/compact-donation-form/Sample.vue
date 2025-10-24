@@ -338,13 +338,13 @@
 						</div>
 
 						<div class="flex-field-group" data-nowrap>
-							<div class="field-container flow">
+							<div class="field-container flow flex-field-group__sidebar-field">
 								<label for="street">Street Name</label>
 								<input type="text" name="street" id="street" placeholder="e.g., Sesame">
 								<p class="field-container__error-text">Please enter a valid street name.</p>
 							</div>
 
-							<div class="field-container flow flex-field-group__mini-fixed-width-field">
+							<div class="field-container flow flex-field-group__sidebar-field-sidebar">
 								<label for="building-number">No</label>
 								<input type="text" name="building-number" id="building-number" placeholder="e.g., 42">
 								<p class="field-container__error-text">Please enter a valid building number.</p>

@@ -8,6 +8,12 @@
 
 .field-container__message {
 	color: var(--color-grey-500);
+	font-style: italic;
+}
+
+/* This is for an implementation issue edge case with Vuejs. Sometimes a field will show an empty message element */
+.field-container__message:empty {
+	display: none;
 }
 
 .field-container__error-text {

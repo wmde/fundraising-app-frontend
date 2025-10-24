@@ -19,17 +19,9 @@
 					<EmailField
 						:show-error="fieldErrors.email"
 						v-model="formData.email.value"
+						:is-max-width-field="true"
 						@field-changed="onFieldChange"
-						data-max-width
-					>
-						<template #message>
-							<ValueEqualsPlaceholderWarning
-								:value="formData.email.value"
-								:placeholder="$t( 'donation_form_email_placeholder' )"
-								warning="donation_form_email_placeholder_warning"
-							/>
-						</template>
-					</EmailField>
+					/>
 
 					<MailingListField v-model="mailingList" input-id="newsletter"/>
 
@@ -65,14 +57,13 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, toRef } from 'vue';
+import { computed, onBeforeMount, toRef } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import type { Country } from '@src/view_models/Country';
@@ -113,7 +104,7 @@ const {
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
-useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, toRef( props.addressType ), store );
+useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, computed<AddressTypeModel>( () => props.addressType ), store );
 
 onBeforeMount( initializeDataFromStore );
 

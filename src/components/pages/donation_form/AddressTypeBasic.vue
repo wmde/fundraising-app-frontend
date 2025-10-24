@@ -26,6 +26,7 @@
 		:error-message="$t( 'donation_form_section_address_error' )"
 		v-model="addressType"
 		alignment="column"
+		:is-max-width-field="isMaxWidthField"
 	>
 		<template #tooltip-4>
 			<Tooltip v-if="isDirectDebit">
@@ -48,6 +49,7 @@ interface Props {
 	isDirectDebit: boolean;
 	addressTypeIsInvalid: boolean;
 	initialAddressType?: AddressTypeModel;
+	isMaxWidthField?: boolean;
 }
 const props = defineProps<Props>();
 

@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer input-id="tote_bag">
+	<FieldContainer input-id="tote_bag" :is-max-width-field="isMaxWidthField">
 		<template #field>
 			<CheckboxMultipleFormInput
 				v-for="incentive in incentiveFormFieldOptions"
@@ -26,6 +26,7 @@ import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 interface Props {
 	incentiveFormFieldOptions: CheckboxFormOption[];
 	modelValue: string[];
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();

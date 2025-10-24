@@ -1,7 +1,7 @@
 <template>
-	<FieldContainer input-id="iban" id="payment-form-iban" :show-error="showError">
-		<template #label>
-			{{ label ?? $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
+	<FieldContainer input-id="iban" id="payment-form-iban" :show-error="showError" :is-max-width-field="isMaxWidthField">
+		<template #label v-if="$slots.label">
+			<slot name="label"/>
 		</template>
 		<template #field>
 			<input
@@ -21,25 +21,30 @@
 		<template #error>
 			{{ $t( 'donation_form_payment_iban_error' ) }}
 		</template>
-		<template #message v-if="modelValue !== '' && bankName">
-			{{ bankName }} ({{ bic }})
+		<template #message>
+			<template v-if="hasMessage">
+				{{ bankName }} ({{ bic }})
+			</template>
+			<template v-else>
+				&nbsp;
+			</template>
 		</template>
 	</FieldContainer>
 </template>
 
 <script setup lang="ts">
 
-import { nextTick, onMounted, ref, toRef, watch } from 'vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 
 interface Props {
 	modelValue: string;
 	showError: boolean;
 	bankName: string;
 	bic: string;
-	label?: String;
 	ariaDescribedby?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -49,10 +54,12 @@ const emit = defineEmits( [ 'field-changed', 'input', 'blur', 'update:modelValue
 
 const fieldModel = ref<string>( props.modelValue );
 const field = ref<HTMLInputElement>( null );
+const hasMessage = computed<boolean>( () => props.modelValue !== '' && props.bankName !== '' );
 const ariaDescribedby = useAriaDescribedby(
-	toRef( (): string => props.ariaDescribedby ),
-	'iban-error',
-	toRef( (): boolean => props.showError )
+	'iban',
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => hasMessage.value )
 );
 
 const getDisplayValue = ( newValue: string ) => {

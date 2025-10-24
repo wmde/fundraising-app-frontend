@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="inputId">
+	<FieldContainer :input-id="inputId" :is-max-width-field="isMaxWidthField">
 		<template #field>
 			<CheckboxSingleFormInput
 				v-model="fieldModel"
@@ -27,6 +27,7 @@ interface Props {
 	disabled?: boolean;
 	required?: boolean;
 	ariaDescribedby?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
