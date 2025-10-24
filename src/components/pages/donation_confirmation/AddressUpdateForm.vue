@@ -26,6 +26,7 @@
 				v-model="addressTypeModel"
 				alignment="column"
 				:autofocus="true"
+				:is-max-width-field="true"
 			/>
 
 			<NameFields
