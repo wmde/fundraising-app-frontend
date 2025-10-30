@@ -71,6 +71,12 @@
 							scrollElement: 'address-form-country',
 						},
 						{
+							validity: store.state.membership_address.validity.date,
+							message: $t( 'membership_form_birth_date_error' ),
+							focusElement: 'date',
+							scrollElement: 'address-form-date-of-birth',
+						},
+						{
 							validity: store.state.membership_address.validity.email,
 							message: $t( 'donation_form_email_error' ),
 							focusElement: 'email',

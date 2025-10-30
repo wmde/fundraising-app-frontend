@@ -41,6 +41,7 @@
 			:placeholder="$t( 'membership_form_birth_date_placeholder' )"
 			:show-error="fieldErrors.date"
 			:error-message="$t( 'membership_form_birth_date_error' )"
+			scroll-target-id="address-form-date-of-birth"
 			:is-max-width-field="true"
 			@field-changed="onFieldChange"
 		>
