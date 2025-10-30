@@ -36,7 +36,7 @@
 								name="account-number"
 								input-id="account-number"
 								:label="$t( 'donation_form_payment_bankdata_account_legacy_label' )"
-								placeholder=""
+								:placeholder="$t( 'donation_form_payment_bankdata_bank_account_number_legacy_placeholder' )"
 								:show-error="accountNumberError"
 								:error-message="$t( 'donation_form_account_number_error' )"
 								:is-max-width-field="true"

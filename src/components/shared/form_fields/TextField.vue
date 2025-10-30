@@ -14,7 +14,7 @@
 				:input-id="inputId"
 				:has-error="showError"
 				:has-message="false"
-				:placeholder="$t( 'form_for_example', { example: placeholder } )"
+				:placeholder="placeholderText"
 				:autocomplete="autocomplete"
 				:disabled="disabled"
 				:autofocus="autofocus"
@@ -38,6 +38,7 @@ import { computed, useSlots } from 'vue';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 import { useValueEqualsPlaceholderWarning } from '@src/components/shared/composables/useValueEqualsPlaceholderWarning';
 import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
 	inputType?: 'text' | 'textarea';
@@ -64,6 +65,7 @@ const props = withDefaults( defineProps<Props>(), {
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 const slots = useSlots();
+const { t } = useI18n();
 
 const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
 const valueEqualsPlaceholderWarning = useValueEqualsPlaceholderWarning( fieldModel, props.placeholder, props.placeholderWarning );
@@ -73,6 +75,13 @@ const ariaDescribedby = useAriaDescribedby(
 	computed<boolean>( () => props.showError ),
 	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
 );
+
+const placeholderText = computed( (): string => {
+	if ( props.placeholder ) {
+		return t( 'form_for_example', { example: props.placeholder } );
+	}
+	return '';
+} );
 
 const onInput = (): void => {
 	if ( props.showError ) {
