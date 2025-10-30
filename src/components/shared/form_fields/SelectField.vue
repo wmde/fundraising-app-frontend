@@ -1,20 +1,22 @@
 <template>
-	<div class="form-field form-field-select" :class="{ 'is-invalid': showError }">
-		<label :for="inputId" class="form-field-label">{{ label }}</label>
-		<SelectFormInput
-			v-model="fieldModel"
-			:select-id="inputId"
-			:name="name"
-			:has-error="showError"
-			:aria-describedby="ariaDescribedby"
-			@update:modelValue="onFieldChange"
-		>
-			<option v-for="( option, index ) in options" :key="index" :value="option.value">
-				{{ option.label }}
-			</option>
-		</SelectFormInput>
-		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
-	</div>
+	<FieldContainer :input-id="inputId" :show-error="showError" :is-max-width-field="isMaxWidthField">
+		<template #label>{{ label }}</template>
+		<template #field>
+			<SelectFormInput
+				v-model="fieldModel"
+				:select-id="inputId"
+				:name="name"
+				:has-error="showError"
+				:aria-describedby="ariaDescribedby"
+				@update:modelValue="onFieldChange"
+			>
+				<option v-for="( option, index ) in options" :key="index" :value="option.value">
+					{{ option.label }}
+				</option>
+			</SelectFormInput>
+		</template>
+		<template #error>{{ errorMessage }}</template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
@@ -22,8 +24,9 @@
 import type { SelectFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import SelectFormInput from '@src/components/shared/form_elements/SelectFormInput.vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 import { computed } from 'vue';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 interface Props {
 	label: String;
@@ -33,19 +36,18 @@ interface Props {
 	options: SelectFormOption[];
 	errorMessage?: String;
 	showError?: boolean;
-	ariaDescribedby?: string;
+	isMaxWidthField?: boolean;
 }
 
-const props = withDefaults( defineProps<Props>(), {
-	ariaDescribedby: '',
-} );
+const props = defineProps<Props>();
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
 const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => props.ariaDescribedby ),
-	`${props.inputId}-error`,
-	computed<boolean>( () => props.showError )
+	props.inputId,
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => false )
 );
 
 const onFieldChange = ( newValue: string | number ): void => {
@@ -54,11 +56,3 @@ const onFieldChange = ( newValue: string | number ): void => {
 };
 
 </script>
-
-<style lang="scss">
-.form-field-select {
-	.select:not( .is-multiple ) {
-		height: auto;
-	}
-}
-</style>

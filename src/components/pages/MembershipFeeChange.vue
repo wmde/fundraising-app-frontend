@@ -19,19 +19,19 @@
 							validity: isFeeValid ? Validity.VALID : Validity.INVALID,
 							message: $t( 'error_summary_amount' ),
 							focusElement: 'custom-amount',
-							scrollElement: 'custom-amount',
+							scrollElement: 'upgrade-form-custom-amount',
 						},
 						{
 							validity: isMemberNameValid ? Validity.VALID : Validity.INVALID,
 							message: $t('membership_fee_upgrade_member_name_error_message'),
 							focusElement: 'member-name',
-							scrollElement: 'member-name',
+							scrollElement: 'upgrade-form-member-name',
 						},
 						{
 							validity: isIbanValid ? Validity.VALID : Validity.INVALID,
 							message: $t('donation_form_payment_iban_error'),
 							focusElement: 'iban',
-							scrollElement: 'iban',
+							scrollElement: 'payment-form-iban',
 						},
 					]"
 				/>
@@ -44,29 +44,31 @@
 					:custom-amount-label="$t('membership_fee_upgrade_custom_amount_label')"
 					:custom-amount-placeholder="$t( 'form_for_example', { example: $n( suggestedAmountInCents / 100 * 1.25, 'integer' ) } )"
 					:error-message="feeErrorMessage"
+					id="upgrade-form-custom-amount"
+					:is-max-width-field="true"
 					@custom-amount-changed="validateAmount"
 					@suggested-selected="isFeeValid = true"
 				/>
 
-				<div class="field-container flow" :data-error="isMemberNameValid ? null : true">
-					<TextField
-						:disabled="false"
-						:label="$t('membership_fee_upgrade_member_name_label')"
-						label-help-text=""
-						help-text=""
-						name="member-name"
-						input-id="member-name"
-						input-type="text"
-						v-model="memberName"
-						:error-message="$t('membership_fee_upgrade_member_name_error_message')"
-						:show-error="!isMemberNameValid"
-						:placeholder="$t( 'form_for_example', {
-							example: $t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')
-						} )"
-						@field-changed="validateMemberName"
-						@blur="validateMemberName"
-					/>
-				</div>
+				<TextField
+					:disabled="false"
+					:label="$t('membership_fee_upgrade_member_name_label')"
+					label-help-text=""
+					help-text=""
+					name="member-name"
+					id="upgrade-form-member-name"
+					input-id="member-name"
+					input-type="text"
+					v-model="memberName"
+					:error-message="$t('membership_fee_upgrade_member_name_error_message')"
+					:show-error="!isMemberNameValid"
+					:placeholder="$t( 'form_for_example', {
+						example: $t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')
+					} )"
+					:is-max-width-field="true"
+					@field-changed="validateMemberName"
+					@blur="validateMemberName"
+				/>
 			</template>
 		</ContentCard>
 
@@ -79,13 +81,17 @@
 							<div class="field-container">
 								<IbanField
 									v-model="iban"
-									:label="$t('membership_fee_upgrade_iban_changed_label')"
 									:show-error="!isIbanValid"
 									:bank-name="bankName"
 									:bic="bic"
+									:is-max-width-field="true"
 									@blur="validateIban"
 									@input="onIbanInput"
-								/>
+								>
+									<template #label>
+										{{ $t('membership_fee_upgrade_iban_changed_label') }}
+									</template>
+								</IbanField>
 							</div>
 						</template>
 					</AccordionItem>
@@ -119,7 +125,7 @@ import type { BankAccountResponse } from '@src/view_models/BankAccount';
 import { FeeChangeRequest } from '@src/Domain/MembershipFeeChange/FeeChangeRequest';
 import { MembershipFeeChangeResource } from '@src/api/MembershipFeeChangeResource';
 import { FeeChangeResponse } from '@src/Domain/MembershipFeeChange/FeeChangeResponse';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import { Validity } from '@src/view_models/Validity';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import ErrorMessage from '@src/components/pages/membership_fee_change/ErrorMessage.vue';

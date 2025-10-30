@@ -4,7 +4,7 @@
 			<h2 class="form-subtitle">{{ $t( 'donation_form_payment_bankdata_title' ) }}</h2>
 
 			<ButtonLink class="calculate-iban-button" aria-controls="iban-calculator" :aria-expanded="showCalculator" @click="showCalculator = !showCalculator">
-				{{ $t( 'donation_form_iban_calculator_button' ) }}
+				<small>{{ $t( 'donation_form_iban_calculator_button' ) }}</small>
 			</ButtonLink>
 		</div>
 
@@ -14,8 +14,6 @@
 			:class="{ 'visible': showCalculator }"
 			:style="{ '--iban-calculator-page-transition' : calculatorPageTransitionMilliseconds + 'ms' }"
 		>
-			<ScrollTarget target-id="iban-calculator-scroll-target"/>
-
 			<div class="iban-calculator-content">
 				<div class="title">
 					<IconText :is-small-heading="true">
@@ -31,16 +29,17 @@
 
 				<div class="iban-calculator-pages" :class="{ 'page-2': calculatorPage === 2 }">
 					<div class="iban-calculator-scroller" tabindex="-1">
-						<div class="iban-calculator-page" :inert="calculatorPage === 2" tabindex="-1">
+						<div class="iban-calculator-page flow" :inert="calculatorPage === 2" tabindex="-1">
 							<p>{{ $t( 'donation_form_iban_calculator_help_text' ) }}</p>
 							<TextField
 								v-model="accountNumber"
 								name="account-number"
 								input-id="account-number"
 								:label="$t( 'donation_form_payment_bankdata_account_legacy_label' )"
-								placeholder=""
+								:placeholder="$t( 'donation_form_payment_bankdata_bank_account_number_legacy_placeholder' )"
 								:show-error="accountNumberError"
 								:error-message="$t( 'donation_form_account_number_error' )"
+								:is-max-width-field="true"
 								@field-changed="validateAccountNumber"
 							/>
 
@@ -52,6 +51,7 @@
 								:placeholder="$t( 'donation_form_payment_bankdata_bank_legacy_placeholder' )"
 								:show-error="bankCodeError"
 								:error-message="$t( 'donation_form_bank_code_error' )"
+								:is-max-width-field="true"
 								@field-changed="validateBankCode"
 							/>
 
@@ -60,13 +60,13 @@
 									validity: accountNumberError ? Validity.INVALID : Validity.VALID,
 									message: $t( 'donation_form_account_number_error' ),
 									focusElement: 'account-number',
-									scrollElement: 'iban-calculator-scroll-target'
+									scrollElement: 'iban-calculator'
 								},
 								{
 									validity: bankCodeError ? Validity.INVALID : Validity.VALID,
 									message: $t( 'donation_form_bank_code_error' ),
 									focusElement: 'bank-code',
-									scrollElement: 'iban-calculator-scroll-target'
+									scrollElement: 'iban-calculator'
 								}
 							]"/>
 
@@ -103,12 +103,12 @@
 		</form>
 
 		<form class="iban-form" @submit.prevent="() => {}">
-			<ScrollTarget target-id="iban-scroll-target"/>
 			<IbanField
 				v-model="iban"
 				:bank-name="bankName"
 				:bic="bic"
 				:show-error="showIbanError"
+				:is-max-width-field="true"
 				@field-changed="validateIban"
 			/>
 		</form>
@@ -118,11 +118,10 @@
 <script setup lang="ts">
 
 import { Validity } from '@src/view_models/Validity';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import IbanField from '@src/components/shared/form_fields/IbanField.vue';
 import ButtonLink from '@src/components/shared/ButtonLink.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import BankIcon from '@src/components/shared/icons/BankIcon.vue';
 import CloseIcon from '@src/components/shared/icons/CloseIcon.vue';
@@ -333,6 +332,7 @@ watch( () => store.state.bankdata.values.iban, ( newIban: string ) => {
 	}
 
 	&-page {
+		--flow-space: var(--space-xs);
 		flex: 0 0 50%;
 		padding: map.get(units.$spacing, 'small');
 	}

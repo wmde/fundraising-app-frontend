@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import NameFields from '@src/components/shared/NameFields.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -10,8 +10,7 @@ import { Validity } from '@src/view_models/Validity';
 import { addressValidationPatterns } from '@test/data/validation';
 import each from 'jest-each';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
-
-const store = createStore();
+import { Store } from 'vuex';
 
 export const EXAMPLE_SALUTATIONS = [
 	{
@@ -48,60 +47,58 @@ export const EXAMPLE_SALUTATIONS = [
 
 describe( 'AddressForms.vue', () => {
 
-	let originalStoreDispatch: any;
-
-	const createOptionsForAddressType = ( addressType: AddressTypeModel ) => ( {
-		props: {
-			countries: countries,
-			addressValidationPatterns: addressValidationPatterns,
-			addressType,
-			trackingData: {
-				bannerImpressionCount: 1,
-				impressionCount: 5,
+	const getWrapper = ( addressType: AddressTypeModel, store: Store<any> = createStore() ): VueWrapper<any> => {
+		return mount( AddressForms, {
+			props: {
+				countries: countries,
+				addressValidationPatterns: addressValidationPatterns,
+				addressType,
+				trackingData: {
+					bannerImpressionCount: 1,
+					impressionCount: 5,
+				},
+				campaignValues: {
+					campaign: 'nicholas',
+					keyword: 'cage',
+				},
+				salutations: EXAMPLE_SALUTATIONS,
 			},
-			campaignValues: {
-				campaign: 'nicholas',
-				keyword: 'cage',
+			global: {
+				plugins: [ store ],
+				provide: {
+					[ StoreKey as symbol ]: store,
+				},
+				components: {
+					FeatureToggle: createFeatureToggle( [] ),
+				},
 			},
-			salutations: EXAMPLE_SALUTATIONS,
-		},
-		global: {
-			plugins: [ store ],
-			provide: {
-				[ StoreKey as symbol ]: store,
-			},
-			components: {
-				FeatureToggle: createFeatureToggle( [] ),
-			},
-		},
-	} );
-
-	let wrapper: any;
-	beforeEach( () => {
-		originalStoreDispatch = store.dispatch;
-		wrapper = mount( AddressForms, createOptionsForAddressType( AddressTypeModel.PERSON ) );
-	} );
-
-	afterEach( () => {
-		store.dispatch = originalStoreDispatch;
-	} );
+		} );
+	};
 
 	each( [
-		[ AddressTypeModel.ANON, 'address-type-anonymous' ],
-		[ AddressTypeModel.EMAIL, 'address-type-email' ],
-		[ AddressTypeModel.UNSET, 'address-type-person' ],
-		[ AddressTypeModel.PERSON, 'address-type-person' ],
-		[ AddressTypeModel.COMPANY, 'address-type-company' ],
-	] ).test( 'adapts the class attribute', ( addressType, expectedClass ) => {
-		const options = createOptionsForAddressType( addressType );
-		wrapper = mount( AddressForms, options );
-		expect( wrapper.classes() ).toContain( expectedClass );
+		[ AddressTypeModel.EMAIL, '#laika-donation-personal-data-email' ],
+		[ AddressTypeModel.UNSET, '#laika-donation-personal-data-person' ],
+		[ AddressTypeModel.PERSON, '#laika-donation-personal-data-person' ],
+		[ AddressTypeModel.COMPANY, '#laika-donation-personal-data-company' ],
+	] ).test( 'shows the form based on the address type', ( addressType, formId ) => {
+		const wrapper = getWrapper( addressType );
+
+		expect( wrapper.find( formId ).classes() ).toContain( 'display-toggler--visible' );
+	} );
+
+	it( 'shows no form for anonymous', () => {
+		const wrapper = getWrapper( AddressTypeModel.ANON );
+
+		expect( wrapper.findAll( '.display-toggler--visible' ).length ).toStrictEqual( 0 );
 	} );
 
 	it( 'sets address field in store when it receives field-changed event', async () => {
+		const store = createStore();
 		store.dispatch = jest.fn();
 		const expectedAction = action( 'address', 'setAddressField' );
 		const firstNameValue = 'Vuetiful';
+		const wrapper = getWrapper( AddressTypeModel.PERSON, store );
+
 		await wrapper.find( '#person-first-name' ).setValue( firstNameValue );
 
 		wrapper.findComponent( NameFields ).vm.$emit( 'field-changed', 'firstName' );
@@ -114,16 +111,22 @@ describe( 'AddressForms.vue', () => {
 	} );
 
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
+		const store = createStore();
 		store.dispatch = jest.fn();
 		const expectedAction = action( 'address', 'setReceiptChoice' );
 		const expectedPayload = false;
+		const wrapper = getWrapper( AddressTypeModel.PERSON, store );
+
 		await wrapper.find( '#receipt-option-company' ).setValue( false );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
 	} );
 
 	it( 'sets email in store when it receives email event', async () => {
 		const testEmail = 'test@wikimedia.de';
+		const store = createStore();
 		store.dispatch = jest.fn();
+		const wrapper = getWrapper( AddressTypeModel.PERSON, store );
+
 		await wrapper.find( '#person-email' ).setValue( testEmail );
 
 		const expectedAction = action( 'address', 'setAddressField' );
@@ -143,39 +146,12 @@ describe( 'AddressForms.vue', () => {
 			addressType: AddressTypeModel.PERSON,
 			fields: [ firstName, lastName ],
 		};
+		const store = createStore();
 		await store.dispatch( action( 'address', 'initializeAddress' ), initialData );
-		wrapper = mount( AddressForms, {
-			props: {
-				addressType: AddressTypeModel.PERSON,
-				validateAddressUrl: 'validate-address',
-				countries: countries,
-				addressValidationPatterns: addressValidationPatterns,
-				trackingData: {
-					bannerImpressionCount: 1,
-					impressionCount: 5,
-				},
-				campaignValues: {
-					campaign: 'nicholas',
-					keyword: 'cage',
-				},
-				salutations: EXAMPLE_SALUTATIONS,
-			},
-			global: {
-				plugins: [ store ],
-				provide: {
-					[ StoreKey as symbol ]: store,
-				},
-				mocks: {
-					$t: ( key: string ) => key,
-				},
-				components: {
-					FeatureToggle: createFeatureToggle( [] ),
-				},
-			},
-		} );
+		const wrapper = getWrapper( AddressTypeModel.PERSON, store );
 
-		expect( wrapper.find( '#person-first-name' ).element.value ).toBe( firstName.value );
-		expect( wrapper.find( '#person-last-name' ).element.value ).toBe( lastName.value );
+		expect( wrapper.find<HTMLInputElement>( '#person-first-name' ).element.value ).toBe( firstName.value );
+		expect( wrapper.find<HTMLInputElement>( '#person-last-name' ).element.value ).toBe( lastName.value );
 		expect( store.state.address.validity.firstName ).not.toBe( Validity.RESTORED );
 		expect( store.state.address.validity.lastName ).not.toBe( Validity.RESTORED );
 	} );

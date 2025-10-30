@@ -1,15 +1,13 @@
 <template>
-	<div class="form-field form-field-iban" :class="[ 'form-field-text', { 'is-invalid': showError } ]">
-		<label for="iban" class="form-field-label">
-			{{ label ?? $t( 'donation_form_payment_bankdata_account_iban_label' ) }}
-		</label>
-		<div class="control text-form-input" :class="{ 'has-icons-right': showError }">
+	<FieldContainer input-id="iban" id="payment-form-iban" :show-error="showError" :is-max-width-field="isMaxWidthField">
+		<template #label v-if="$slots.label">
+			<slot name="label"/>
+		</template>
+		<template #field>
 			<input
 				ref="field"
 				name="iban"
-				class="input"
 				id="iban"
-				:class="{ 'is-danger': showError }"
 				type="text"
 				autocomplete="on"
 				:placeholder="$t( 'donation_form_payment_bankdata_account_iban_placeholder' )"
@@ -19,26 +17,34 @@
 				@input="onInput"
 				@paste="onInput"
 			/>
-		</div>
-		<span v-if="showError" class="help is-danger" id="iban-error">{{ $t( 'donation_form_payment_iban_error' ) }}</span>
-		<span class="field-info-message iban-bank-name" v-if="modelValue !== '' && bankName">
-			{{ bankName }} ({{ bic }})
-		</span>
-	</div>
+		</template>
+		<template #error>
+			{{ $t( 'donation_form_payment_iban_error' ) }}
+		</template>
+		<template #message>
+			<template v-if="hasMessage">
+				{{ bankName }} ({{ bic }})
+			</template>
+			<template v-else>
+				&nbsp;
+			</template>
+		</template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
 
-import { nextTick, onMounted, ref, toRef, watch } from 'vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 
 interface Props {
 	modelValue: string;
 	showError: boolean;
 	bankName: string;
 	bic: string;
-	label?: String;
 	ariaDescribedby?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -48,10 +54,12 @@ const emit = defineEmits( [ 'field-changed', 'input', 'blur', 'update:modelValue
 
 const fieldModel = ref<string>( props.modelValue );
 const field = ref<HTMLInputElement>( null );
+const hasMessage = computed<boolean>( () => props.modelValue !== '' && props.bankName !== '' );
 const ariaDescribedby = useAriaDescribedby(
-	toRef( (): string => props.ariaDescribedby ),
-	'iban-error',
-	toRef( (): boolean => props.showError )
+	'iban',
+	computed<boolean>( () => false ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => hasMessage.value )
 );
 
 const getDisplayValue = ( newValue: string ) => {

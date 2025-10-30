@@ -1,41 +1,44 @@
 <template>
-	<div class="form-field" :class="[ `form-field-${inputType}`, { 'is-invalid': showError } ]">
-		<label :for="inputId" class="form-field-label">
+	<FieldContainer :input-id="inputId" :show-error="showError" :is-max-width-field="isMaxWidthField">
+		<template #label>
 			{{ label }} <em v-if="labelHelpText">{{ labelHelpText }}</em>
-		</label>
-		<div v-if="helpText" class="form-field-help-text" :id="`${inputId}-help-text`">
+		</template>
+		<template v-if="helpText" #help-text>
 			{{ helpText }}
-		</div>
-		<TextFormInput
-			:name="name"
-			:input-type="inputType"
-			v-model="fieldModel"
-			:input-id="inputId"
-			:has-error="showError"
-			:has-message="false"
-			:placeholder="placeholder"
-			:autocomplete="autocomplete"
-			:disabled="disabled"
-			:required="required"
-			:autofocus="autofocus"
-			:aria-describedby="ariaDescribedby"
-			@blur="$emit('field-changed', name )"
-			@input="onInput"
-			@update:modelValue="onUpdateModel"
-		/>
-		<span v-if="showError" class="help is-danger" :id="`${inputId}-error`">{{ errorMessage }}</span>
-		<span class="field-info-message">
-			<slot name="message"/>
-		</span>
-	</div>
+		</template>
+		<template #field>
+			<TextFormInput
+				:name="name"
+				:input-type="inputType"
+				v-model="fieldModel"
+				:input-id="inputId"
+				:has-error="showError"
+				:has-message="false"
+				:placeholder="placeholderText"
+				:autocomplete="autocomplete"
+				:disabled="disabled"
+				:autofocus="autofocus"
+				:aria-describedby="ariaDescribedby"
+				@blur="$emit('field-changed', name )"
+				@input="onInput"
+				@update:modelValue="onUpdateModel"
+			/>
+		</template>
+		<template #error>{{ errorMessage }}</template>
+		<template #message v-if="valueEqualsPlaceholderWarning.hasWarning.value">{{ valueEqualsPlaceholderWarning.warning }}</template>
+		<template #message v-else-if="$slots.message"><slot name="message"/></template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
 
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
-import { computed } from 'vue';
-import { useAriaDescribedby } from '@src/components/shared/form_fields/useAriaDescribedby';
+import { computed, useSlots } from 'vue';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { useValueEqualsPlaceholderWarning } from '@src/components/shared/composables/useValueEqualsPlaceholderWarning';
+import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
 	inputType?: 'text' | 'textarea';
@@ -45,29 +48,40 @@ interface Props {
 	name: string;
 	inputId: string;
 	placeholder: string;
+	placeholderWarning?: string;
 	modelValue: string | number;
 	errorMessage: String;
 	showError: boolean;
 	disabled?: boolean;
-	required?: boolean;
 	autocomplete?: string;
 	autofocus?: boolean;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	inputType: 'text',
 	disabled: false,
-	required: false,
 	autocomplete: 'on',
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
+const slots = useSlots();
+const { t } = useI18n();
 
 const fieldModel = useFieldModel<string | number>( () => props.modelValue, props.modelValue );
+const valueEqualsPlaceholderWarning = useValueEqualsPlaceholderWarning( fieldModel, props.placeholder, props.placeholderWarning );
 const ariaDescribedby = useAriaDescribedby(
-	computed<string>( () => ( props.helpText ? `${ props.inputId }-help-text` : '' ) ),
-	`${props.inputId}-error`,
-	computed<boolean>( () => props.showError )
+	props.inputId,
+	computed<boolean>( () => !!props.helpText ),
+	computed<boolean>( () => props.showError ),
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
 );
+
+const placeholderText = computed( (): string => {
+	if ( props.placeholder ) {
+		return t( 'form_for_example', { example: props.placeholder } );
+	}
+	return '';
+} );
 
 const onInput = (): void => {
 	if ( props.showError ) {
@@ -80,12 +94,3 @@ const onUpdateModel = ( newValue: string | number ): void => {
 };
 
 </script>
-
-<style lang="scss">
-@use '@src/scss/settings/colors';
-
-.field-info-message {
-	color: colors.$gray-dark;
-}
-
-</style>

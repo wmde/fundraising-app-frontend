@@ -1,56 +1,51 @@
 <template>
-	<div class="payment-form">
-		<FormSection v-if="displaySections.includes( 'amount' )" id="payment-form-amount">
-			<ScrollTarget target-id="payment-form-amount-scroll-target"/>
-			<AmountField
-				v-model="amount"
-				:label="$t('donation_form_payment_amount_title')"
-				:payment-amounts="paymentAmounts"
-				:error-message="amountErrorMessage"
-				:show-error="amountErrorMessage !== ''"
-			/>
-		</FormSection>
+	<template v-if="displaySections.includes( 'amount' )">
+		<AmountField
+			v-model="amount"
+			:label="$t('donation_form_payment_amount_title')"
+			:payment-amounts="paymentAmounts"
+			:error-message="amountErrorMessage"
+			:show-error="amountErrorMessage !== ''"
+		/>
+	</template>
 
-		<FormSection v-if="displaySections.includes( 'interval' )" id="payment-form-interval">
-			<RadioField
-				name="interval"
-				input-id="interval"
-				v-model="interval"
-				:label="$t('donation_form_payment_interval_title')"
-				:options="paymentIntervalsAsOptions"
-				:required="true"
-				:disabled="disabledPaymentIntervals"
-				alignment="twocolumnsperrow"
-			/>
-		</FormSection>
+	<RadioField
+		v-if="displaySections.includes( 'interval' )"
+		id="payment-form-interval"
+		name="interval"
+		v-model="interval"
+		:label="$t('donation_form_payment_interval_title')"
+		:options="paymentIntervalsAsOptions"
+		:disabled="disabledPaymentIntervals"
+		grid-layout="halves"
+		:is-max-width-field="true"
+	/>
 
-		<FormSection v-if="displaySections.includes( 'paymentType' )" id="payment-form-type">
-			<ScrollTarget target-id="payment-form-type-scroll-target"/>
-			<RadioField
-				name="paymentType"
-				input-id="paymentType"
-				v-model="paymentType"
-				:label="$t('donation_form_payment_type_title')"
-				:options="paymentTypesAsOptions"
-				:required="true"
-				:disabled="disabledPaymentTypes"
-				alignment="twocolumnsperrow"
-				:show-error="!paymentTypeIsValid"
-				:error-message="$t('donation_form_payment_type_error')"
-			>
-				<template #tooltip-BEZ>
-					<RadioFieldHelpText v-if="disabledPaymentTypes.includes( 'BEZ' )">
-						{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
-					</RadioFieldHelpText>
-				</template>
-				<template #tooltip-SUB>
-					<RadioFieldHelpText v-if="disabledPaymentTypes.includes( 'SUB' )">
-						{{ $t( 'donation_form_SUB_payment_type_info' ) }}
-					</RadioFieldHelpText>
-				</template>
-			</RadioField>
-		</FormSection>
-	</div>
+	<RadioField
+		v-if="displaySections.includes( 'paymentType' )"
+		name="paymentType"
+		id="payment-form-type"
+		input-id="paymentType"
+		v-model="paymentType"
+		:label="$t('donation_form_payment_type_title')"
+		:options="paymentTypesAsOptions"
+		:disabled="disabledPaymentTypes"
+		grid-layout="halves"
+		:show-error="!paymentTypeIsValid"
+		:error-message="$t('donation_form_payment_type_error')"
+		:is-max-width-field="true"
+	>
+		<template #tooltip-BEZ>
+			<Tooltip v-if="disabledPaymentTypes.includes( 'BEZ' )">
+				{{ $t( 'donation_form_address_choice_direct_debit_disclaimer' ) }}
+			</Tooltip>
+		</template>
+		<template #tooltip-SUB>
+			<Tooltip v-if="disabledPaymentTypes.includes( 'SUB' )">
+				{{ $t( 'donation_form_SUB_payment_type_info' ) }}
+			</Tooltip>
+		</template>
+	</RadioField>
 </template>
 
 <script setup lang="ts">
@@ -64,9 +59,7 @@ import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
 import { usePaymentFieldModel } from '@src/components/pages/donation_form/usePaymentFieldModel';
 import { Validity } from '@src/view_models/Validity';
-import FormSection from '@src/components/shared/form_elements/FormSection.vue';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
-import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
+import Tooltip from '@src/components/patterns/Tooltip.vue';
 import { DisplaySectionCollection } from '@src/components/pages/donation_form/Payment';
 
 interface Props {

@@ -45,6 +45,8 @@
 	--summary-margin: 0;
 	--summary-padding: var(--space-xs-l);
 	--summary-border: 0;
+
+	cursor: pointer;
 }
 
 .content-card[data-collapsable] details > div {

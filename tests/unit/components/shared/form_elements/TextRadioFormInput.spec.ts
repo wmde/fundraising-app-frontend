@@ -28,18 +28,7 @@ describe( 'TextFormInput.vue', () => {
 
 		await wrapper.setProps( { disabled: true } );
 
-		expect( wrapper.classes() ).toContain( 'is-disabled' );
 		expect( wrapper.find( 'input[type="text"]' ).attributes( 'disabled' ) ).toBeDefined();
-	} );
-
-	it( 'sets required', async () => {
-		const wrapper = getWrapper();
-
-		expect( wrapper.find( 'input[type="text"]' ).attributes( 'required' ) ).toBeUndefined();
-
-		await wrapper.setProps( { required: true } );
-
-		expect( wrapper.find( 'input[type="text"]' ).attributes( 'required' ) ).toBeDefined();
 	} );
 
 	it( 'emits events', async () => {
@@ -48,7 +37,7 @@ describe( 'TextFormInput.vue', () => {
 		await wrapper.find( 'input[type="text"]' ).trigger( 'focus' );
 		await wrapper.find( 'input[type="text"]' ).setValue( 'Chewy' );
 		await wrapper.find( 'input[type="text"]' ).trigger( 'blur' );
-		await wrapper.find( '.text-radio-form-input-radio' ).trigger( 'click' );
+		await wrapper.find( '.text-radio__radio' ).trigger( 'click' );
 
 		expect( wrapper.emitted( 'focus' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
@@ -82,10 +71,10 @@ describe( 'TextFormInput.vue', () => {
 	it( 'sets the radio checked', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).not.toContain( 'checked' );
+		expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
 
 		await wrapper.setProps( { radioChecked: true } );
 
-		expect( wrapper.find( '.text-radio-form-input-radio' ).classes() ).toContain( 'checked' );
+		expect( wrapper.find( '.text-radio__radio' ).classes() ).toContain( 'text-radio__radio--checked' );
 	} );
 } );

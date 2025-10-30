@@ -82,6 +82,9 @@ const toggle = () => {
 		&-icon {
 			text-align: right;
 			flex: 0 0 30px;
+			position: relative;
+			top: -10px;
+			height: 30px;
 		}
 	}
 

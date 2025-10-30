@@ -1,0 +1,31 @@
+<template>
+	<component :is="type" class="field-container flow" :data-error="showError ? true : null" :data-max-width="isMaxWidthField ? true : null">
+		<template v-if="$slots.label">
+			<label v-if="type === 'div'" :for="inputId"><slot name="label"/></label>
+			<legend v-else><slot name="label"/></legend>
+		</template>
+		<p v-if="$slots[ 'help-text' ]" :id="`${inputId}-help-text`">
+			<slot name="help-text"/>
+		</p>
+		<slot name="field"/>
+		<p v-if="$slots.error" class="field-container__error-text" :id="`${inputId}-error`">
+			<slot name="error"/>
+		</p>
+		<p v-if="!showError && $slots.message" class="field-container__message" :id="`${inputId}-message`"><slot name="message"/></p>
+	</component>
+</template>
+
+<script setup lang="ts">
+interface Props {
+	type?: 'div' | 'fieldset';
+	showError?: boolean;
+	isMaxWidthField?: boolean;
+	inputId: string;
+}
+
+withDefaults( defineProps<Props>(), {
+	type: 'div',
+	showError: false,
+} );
+
+</script>

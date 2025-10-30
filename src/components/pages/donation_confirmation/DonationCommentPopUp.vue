@@ -13,9 +13,8 @@
 				{{ $t( 'back_to_donation_summary' ) }}
 			</FormButton>
 		</div>
-		<div v-else>
+		<div v-else class="flow">
 			<p>{{ $t( 'donation_comment_popup_explanation' ) }}</p>
-			<ScrollTarget target-id="comment-scroll-target"/>
 
 			<ErrorSummary
 				:is-visible="commentErrored"
@@ -24,7 +23,7 @@
 						validity: commentErrored ? Validity.INVALID : Validity.VALID,
 						message: $t( commentError ),
 						focusElement: 'comment',
-						scrollElement: 'comment-scroll-target'
+						scrollElement: 'comment',
 					},
 				]"
 			/>
@@ -58,23 +57,21 @@
 				{{ $t( 'donation_comment_popup_is_public' ) }}
 			</CheckboxField>
 
-			<FormSummary :show-border="false">
-				<template #summary-buttons>
-					<FormButton
-						id="previous-btn"
-						:is-outlined="true"
-						@click="$emit( 'close' )"
-					>
-						{{ $t( 'donation_comment_popup_cancel' ) }}
-					</FormButton>
-					<FormButton
-						id="submit-btn"
-						button-type="submit"
-					>
-						{{ $t( 'donation_comment_popup_submit' ) }}
-					</FormButton>
-				</template>
-			</FormSummary>
+			<div class="switcher">
+				<FormButton
+					id="previous-btn"
+					:is-outlined="true"
+					@click="$emit( 'close' )"
+				>
+					{{ $t( 'donation_comment_popup_cancel' ) }}
+				</FormButton>
+				<FormButton
+					id="submit-btn"
+					button-type="submit"
+				>
+					{{ $t( 'donation_comment_popup_submit' ) }}
+				</FormButton>
+			</div>
 		</div>
 	</form>
 </template>
@@ -85,13 +82,11 @@ import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import type { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
-import FormSummary from '@src/components/shared/FormSummary.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 import type { CommentResource } from '@src/api/CommentResource';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import { Validity } from '@src/view_models/Validity';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 
 enum CommentErrorTypes {
 	Empty,
@@ -170,6 +165,8 @@ watch( comment, ( newComment: string ) => {
 @use 'sass:map';
 
 .donation-comment {
+	--flow-space: var(--space-xs);
+
 	p {
 		margin-bottom: map.get( units.$spacing, 'small' );
 	}

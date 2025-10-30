@@ -65,7 +65,7 @@ describe( 'Payment.vue', () => {
 		await wrapper.find<HTMLInputElement>( '#interval-1' ).trigger( 'change' );
 		await nextTick();
 
-		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
+		expect( wrapper.find( '.tooltip__popup' ).isVisible() ).toBe( true );
 	} );
 
 	it( 'does not render tooltip hint if SUB payment method is enabled', async () => {
@@ -74,7 +74,7 @@ describe( 'Payment.vue', () => {
 		await wrapper.find( '#interval-0' ).trigger( 'click' );
 		await nextTick();
 
-		expect( wrapper.find( '.radio-field-tooltip' ).exists() ).toBe( false );
+		expect( wrapper.find( '.tooltip__popup' ).exists() ).toBe( false );
 	} );
 
 	it( 'renders tooltip hint if address type is Anonymous', async () => {
@@ -82,7 +82,7 @@ describe( 'Payment.vue', () => {
 
 		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.ANON );
 
-		expect( wrapper.find( '.radio-field-tooltip' ).isVisible() ).toBe( true );
+		expect( wrapper.find( '.tooltip__popup' ).isVisible() ).toBe( true );
 	} );
 
 	it( 'does not render tooltip hint if address type is something different than Anonymous', async () => {
@@ -90,7 +90,7 @@ describe( 'Payment.vue', () => {
 
 		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.EMAIL );
 
-		expect( wrapper.find( '.radio-field-tooltip' ).exists() ).toBe( false );
+		expect( wrapper.find( '.tooltip__popup' ).exists() ).toBe( false );
 	} );
 
 	it.each( [

@@ -10,7 +10,8 @@ describe( 'IncentivesField', () => {
 				modelValue: [ 'tote_bag' ],
 			},
 		} );
-		const checkBox = wrapper.find<HTMLInputElement>( '.form-field-incentives input' );
+
+		const checkBox = wrapper.find<HTMLInputElement>( '#tote_bag' );
 
 		expect( checkBox.element.checked ).toBeTruthy();
 	} );
@@ -23,7 +24,7 @@ describe( 'IncentivesField', () => {
 				modelValue: [ '' ],
 			},
 		} );
-		const checkBox = wrapper.find<HTMLInputElement>( '.form-field-incentives input' );
+		const checkBox = wrapper.find<HTMLInputElement>( '#tote_bag' );
 
 		expect( checkBox.element.checked ).toBeFalsy();
 	} );
@@ -36,7 +37,7 @@ describe( 'IncentivesField', () => {
 			},
 		} );
 		const event = 'update:modelValue';
-		const checkBox = wrapper.find( '.form-field-incentives input' );
+		const checkBox = wrapper.find( '#tote_bag' );
 
 		await checkBox.setValue( true );
 

@@ -1,6 +1,7 @@
 <template>
 	<RadioField
 		name="addressType"
+		id="address-form-type"
 		:label="$t('membership_form_section_address_header_type')"
 		:options="[
 			{
@@ -19,6 +20,7 @@
 		:error-message="$t( 'donation_form_section_address_error' )"
 		v-model="addressType"
 		alignment="column"
+		:is-max-width-field="isMaxWidthField"
 	>
 	</RadioField>
 </template>
@@ -34,6 +36,7 @@ interface Props {
 	isDirectDebit: boolean;
 	addressTypeIsInvalid: boolean;
 	initialAddressType?: AddressTypeModel;
+	isMaxWidthField?: boolean;
 }
 const props = defineProps<Props>();
 

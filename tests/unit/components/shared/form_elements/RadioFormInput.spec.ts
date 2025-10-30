@@ -16,14 +16,14 @@ describe( 'RadioFormInput.vue', () => {
 		} );
 	};
 
-	it( 'sets active', async () => {
+	it( 'sets checked', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.classes() ).not.toContain( 'is-active' );
+		expect( wrapper.find<HTMLInputElement>( 'input' ).element.checked ).toBeFalsy();
 
 		await wrapper.setProps( { modelValue: 'elephant' } );
 
-		expect( wrapper.classes() ).toContain( 'is-active' );
+		expect( wrapper.find<HTMLInputElement>( 'input' ).element.checked ).toBeTruthy();
 	} );
 
 	it( 'sets disabled', async () => {
@@ -33,18 +33,7 @@ describe( 'RadioFormInput.vue', () => {
 
 		await wrapper.setProps( { disabled: true } );
 
-		expect( wrapper.classes() ).toContain( 'is-disabled' );
 		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'disabled' ) ).toBeDefined();
-	} );
-
-	it( 'sets required', async () => {
-		const wrapper = getWrapper();
-
-		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'required' ) ).toBeUndefined();
-
-		await wrapper.setProps( { required: true } );
-
-		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'required' ) ).toBeDefined();
 	} );
 
 	it( 'emits on value change', async () => {

@@ -29,8 +29,11 @@ import siteFoot from '@src/pattern_library/patterns/site-foot';
 import siteHead from '@src/pattern_library/patterns/site-head';
 import summary from '@src/pattern_library/patterns/summary';
 import textRadio from '@src/pattern_library/patterns/text-radio';
+import toggle from '@src/pattern_library/patterns/toggle';
+import tooltip from '@src/pattern_library/patterns/tooltip';
 import verboseCheckbox from '@src/pattern_library/patterns/verbose-checkbox';
 
+import compactDonationForm from '@src/pattern_library/samples/compact-donation-form';
 import donationForm from '@src/pattern_library/samples/donation-form';
 import membershipFeeChange from '@src/pattern_library/samples/membership-fee-change';
 
@@ -64,10 +67,13 @@ const patterns: Pattern[] = [
 	siteHead,
 	summary,
 	textRadio,
+	toggle,
+	tooltip,
 	verboseCheckbox,
 ];
 
 const samples: Sample[] = [
+	compactDonationForm,
 	donationForm,
 	membershipFeeChange,
 ];

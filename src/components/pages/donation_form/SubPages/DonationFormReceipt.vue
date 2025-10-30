@@ -68,7 +68,7 @@
 		</template>
 	</ContentCard>
 
-	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form">
+	<form :action="`/donation/add?${campaignParams}`" method="post" ref="submitValuesForm" id="submit-form" class="visually-hidden" aria-hidden="true">
 		<SubmitValues :tracking-data="trackingData" :campaign-values="campaignValues"/>
 	</form>
 </template>
@@ -145,7 +145,7 @@ const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHand
 );
 
 const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
+	const scrollIntoViewElement = document.getElementById( 'donation-form-heading' );
 	if ( scrollIntoViewElement ) {
 		scrollIntoViewElement.scrollIntoView( { behavior: 'auto' } );
 	}

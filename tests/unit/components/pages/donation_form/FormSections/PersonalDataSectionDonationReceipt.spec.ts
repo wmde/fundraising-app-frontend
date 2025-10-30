@@ -101,10 +101,18 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 	it( 'shows the address fields when the donor wants a receipt', async () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.address-section' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#address-form-type' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#address-form-country' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#address-form-post-code' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#address-form-city' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#address-form-street' ).exists() ).toBeFalsy();
 
 		await wrapper.find( '#donationReceipt-0' ).trigger( 'change' );
 
-		expect( wrapper.find( '.address-section' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#address-form-type' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#address-form-country' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#address-form-post-code' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#address-form-city' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#address-form-street' ).exists() ).toBeTruthy();
 	} );
 } );

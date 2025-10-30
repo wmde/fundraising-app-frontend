@@ -261,7 +261,7 @@ a:not([class]):hover {
 
 ::selection {
 	color: var(--color-white);
-	background: var(--color-wikimedia-green);
+	background: var(--color-blue-600);
 }
 
 /* TODO: Think about how to handle margin bottom in a flow element */
@@ -286,7 +286,11 @@ svg[role='img'][width][height] {
  * control in certain systems. It still uses the --flow-space variables though to make managing space easier
  */
 :is(form, [role='form']) > * + * {
-	margin-top: var(--flow-space, var(--space-l));
+	margin-top: var(--flow-space, var(--gutter));
+}
+
+:is(form:not(.compact), [role='form']:not(.compact)) {
+	--flow-space: var(--space-l);
 }
 
 :is(input, select, textarea) {
@@ -300,25 +304,28 @@ svg[role='img'][width][height] {
 	outline: 2px solid var(--color-blue-600, currentColor);
 }
 
-:is(input:not([type='checkbox'], [type='radio'], [type='color']), select, textarea),
-label:has([type='radio']) {
+:where(
+	input:not([type='checkbox'], [type='radio'], [type='color']),
+	select,
+	textarea,
+	label:has([type='radio'])
+) {
 	padding: 0.5em;
 	border: 1px solid var(--form-field-border-color, var(--color-grey-300));
 	border-radius: var(--border-radius);
 	background-color: var(--color-white);
 	color: var(--color-black);
-	width: 100%;
 	font-family: var(--font-base);
-	max-width: var(--form-field-max-width);
 	line-height: var(--leading-standard);
 }
 
-label:has([type='checkbox']) {
-	max-width: var(--form-field-max-width);
+label:has([type='radio']) {
+	inline-size: 100%;
 }
 
 select {
 	appearance: none;
+	min-width: 20ch;
 }
 
 select,
@@ -337,6 +344,7 @@ input[role='combobox'] {
 	border: 1px solid var(--form-field-border-color, var(--color-grey-300));
 	position: relative;
 	background: var(--color-white);
+	cursor: pointer;
 }
 
 :is([type='checkbox'], [type='radio']):checked {
@@ -349,7 +357,7 @@ input[role='combobox'] {
 }
 
 [type='radio'] {
-	margin: 0.4ex 0 0;
+	margin: 0.2ex 0 0;
 }
 
 [type='radio'],
@@ -366,7 +374,7 @@ input[role='combobox'] {
 	border-radius: 50%;
 }
 
-[type='checkbox'] {
+[type='checkbox']:not([class]) {
 	margin: 0.2ex 0 0;
 	border-radius: 2px;
 }
@@ -408,7 +416,7 @@ label:has(input) {
 	font-weight: var(--font-normal);
 }
 
-label:has([type='checkbox']:focus, [type='radio']:focus) {
+label:has([type='checkbox']:not([class]):focus, [type='radio']:not([class]):focus) {
 	--form-field-border-color: var(--color-blue-600);
 	outline: 2px solid var(--color-blue-600, currentColor);
 }
@@ -418,12 +426,18 @@ label:has([type='checkbox']:checked, [type='radio']:checked) {
 }
 
 input:disabled {
-	background: var(--color-grey-500);
+	background: var(--color-grey-300);
 }
 
 input:disabled,
-label input:disabled + * {
+label input:disabled + *,
+label:has(input:disabled) {
 	cursor: not-allowed;
+}
+
+label:has(input:disabled) {
+	--form-field-border-color: var(--color-grey-200);
+	color: var(--color-grey-200);
 }
 
 fieldset {

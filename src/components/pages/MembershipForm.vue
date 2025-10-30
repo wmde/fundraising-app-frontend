@@ -7,7 +7,6 @@
 			</template>
 
 			<template #content>
-				<ScrollTarget target-id="payment-section-top-scroll-target"/>
 				<ErrorSummary
 					:is-visible="showErrorSummary"
 					:items="[
@@ -15,67 +14,73 @@
 							validity: store.state.membership_fee.validity.interval,
 							message: $t( 'error_summary_interval' ),
 							focusElement: 'interval-0',
-							scrollElement: 'payment-form-interval-scroll-target'
+							scrollElement: 'payment-form-interval',
 						},
 						{
 							validity: store.state.membership_fee.validity.fee,
 							message: $t( 'error_summary_amount' ),
 							focusElement: 'amount-500',
-							scrollElement: 'payment-form-amount-scroll-target'
+							scrollElement: 'payment-form-amount',
 						},
 						{
 							validity: store.state.bankdata.validity.iban,
 							message: $t( 'donation_form_payment_iban_error' ),
 							focusElement: 'iban',
-							scrollElement: 'iban-scroll-target'
+							scrollElement: 'payment-form-iban',
 						},
 						{
 							validity: store.state.membership_address.validity.salutation,
 							message: $t( 'donation_form_salutation_error' ),
 							focusElement: 'salutation-0',
-							scrollElement: 'salutation-scroll-target'
+							scrollElement: 'address-form-salutation',
 						},
 						{
 							validity: store.state.membership_address.validity.firstName,
 							message: $t( 'donation_form_firstname_error' ),
 							focusElement: 'first-name',
-							scrollElement: 'first-name-scroll-target'
+							scrollElement: 'address-form-first-name',
 						},
 						{
 							validity: store.state.membership_address.validity.lastName,
 							message: $t( 'donation_form_lastname_error' ),
 							focusElement: 'last-name',
-							scrollElement: 'last-name-scroll-target'
+							scrollElement: 'address-form-last-name',
 						},
 						{
 							validity: store.state.membership_address.validity.street,
 							message: $t( 'donation_form_street_error' ),
 							focusElement: 'street',
-							scrollElement: 'street-scroll-target'
+							scrollElement: 'address-form-street',
 						},
 						{
 							validity: store.state.membership_address.validity.postcode,
 							message: $t( 'donation_form_zip_error' ),
 							focusElement: 'post-code',
-							scrollElement: 'post-code-scroll-target'
+							scrollElement: 'address-form-post-code',
 						},
 						{
 							validity: store.state.membership_address.validity.city,
 							message: $t( 'donation_form_city_error' ),
 							focusElement: 'city',
-							scrollElement: 'city-scroll-target'
+							scrollElement: 'address-form-city',
 						},
 						{
 							validity: store.state.membership_address.validity.country,
 							message: $t( 'donation_form_country_error' ),
 							focusElement: 'country',
-							scrollElement: 'country-scroll-target'
+							scrollElement: 'address-form-country',
+						},
+						{
+							validity: store.state.membership_address.validity.date,
+							message: $t( 'membership_form_birth_date_error' ),
+							focusElement: 'date',
+							scrollElement: 'address-form-date-of-birth',
 						},
 						{
 							validity: store.state.membership_address.validity.email,
 							message: $t( 'donation_form_email_error' ),
 							focusElement: 'email',
-							scrollElement: 'email-scroll-target'
+							scrollElement: 'address-form-email',
 						},
 					]"
 				/>
@@ -84,6 +89,7 @@
 					v-if="showMembershipTypeOption"
 					v-model="membershipTypeModel"
 					:disabledMembershipTypes="disabledMembershipTypes"
+					:is-max-width-field="true"
 				/>
 
 				<AddressType
@@ -92,6 +98,7 @@
 					:is-direct-debit="isDirectDebitPayment"
 					:initial-address-type="addressType"
 					:address-type-is-invalid="false"
+					:is-max-width-field="true"
 				/>
 
 				<Payment
@@ -125,9 +132,9 @@
 
 		<ContentCard>
 
-				<template #heading v-if="paymentSummary">
+				<template #heading v-if="paymentSummary || addressSummary || bankDataSummary">
 					<h2 aria-live="polite">{{ $t( 'form_summary_title' ) }}</h2>
-					<MembershipSummaryHeadline :paymentSummary="paymentSummary"/>
+					<MembershipSummaryHeadline v-if="paymentSummary" :paymentSummary="paymentSummary"/>
 				</template>
 
 				<template #content>
@@ -180,7 +187,7 @@ import type { TrackingData } from '@src/view_models/TrackingData';
 import type { Salutation } from '@src/view_models/Salutation';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import Payment from '@src/components/pages/membership_form/Payment.vue';
-import ErrorSummary from '@src/components/shared/validation_summary/ErrorSummary.vue';
+import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import MembershipTypeField from '@src/components/pages/membership_form/MembershipTypeField.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { useStore } from 'vuex';
@@ -193,7 +200,6 @@ import { trackFormSubmission } from '@src/util/tracking';
 import AddressFields from '@src/components/pages/membership_form/Address.vue';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import SubmitValues from '@src/components/pages/membership_form/SubmitValues.vue';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import MembershipSummaryHeadline from '@src/components/pages/membership_form/MembershipSummaryHeadline.vue';
 import Summary from '@src/components/patterns/Summary.vue';
 import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
@@ -244,7 +250,7 @@ const {
 } = useMembershipFormSubmitHandler( store, isDirectDebitPayment, props.validateAddressUrl, props.validateEmailUrl, trackAddressForm );
 
 const scrollToPaymentSection = () => {
-	const scrollIntoViewElement = document.getElementById( 'payment-section-top-scroll-target' );
+	const scrollIntoViewElement = document.getElementById( 'membership-form-heading' );
 	if ( scrollIntoViewElement ) {
 		scrollIntoViewElement.scrollIntoView( { behavior: 'auto' } );
 	}

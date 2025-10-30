@@ -1,30 +1,34 @@
 <template>
-	<div :class="`address-section address-type-${ addressTypeId }`">
-		<form
-			name="laika-donation-personal-data-person"
-			id="laika-donation-personal-data-person"
-			action="/donation/add"
-			method="post"
-		>
-			<AutofillHandler @autofill="onAutofill">
-				<NameFields
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:address-type="AddressTypeModel.PERSON"
-					:salutations="salutations"
-					field-id-namespace="person"
-					v-on:field-changed="onFieldChange"
-				/>
-				<PostalAddressFields
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:countries="countries"
-					:post-code-validation="addressValidationPatterns.postcode"
-					:country-was-restored="countryWasRestored"
-					field-id-namespace="person"
-					v-on:field-changed="onFieldChange"
-				/>
-				<div class="form-field form-field-donation-receipt">
+	<form
+		name="laika-donation-personal-data-person"
+		id="laika-donation-personal-data-person"
+		class="address-type-form display-toggler"
+		:class="{ 'display-toggler--visible': addressType === AddressTypeModel.PERSON || addressType === AddressTypeModel.UNSET }"
+		action="/donation/add"
+		method="post"
+		@submit.prevent
+	>
+		<AutofillHandler @autofill="onAutofill">
+			<NameFields
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:address-type="AddressTypeModel.PERSON"
+				:salutations="salutations"
+				field-id-namespace="person"
+				v-on:field-changed="onFieldChange"
+			/>
+			<PostalAddressFields
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:countries="countries"
+				:post-code-validation="addressValidationPatterns.postcode"
+				:country-was-restored="countryWasRestored"
+				field-id-namespace="person"
+				v-on:field-changed="onFieldChange"
+			/>
+
+			<FieldContainer input-id="receipt-option-person" :is-max-width-field="true">
+				<template #field>
 					<CheckboxSingleFormInput
 						input-id="receipt-option-person"
 						name="receipt-option"
@@ -32,119 +36,107 @@
 					>
 						{{ $t( 'receipt_needed_donation_page' ) }}
 					</CheckboxSingleFormInput>
-				</div>
+				</template>
+			</FieldContainer>
 
-				<ScrollTarget target-id="person-email-scroll-target"/>
-				<EmailField
-					:show-error="fieldErrors.email"
-					v-model="formData.email.value"
-					input-id="person-email"
-					@field-changed="onFieldChange"
-				>
-					<template #message>
-						<ValueEqualsPlaceholderWarning
-							:value="formData.email.value"
-							:placeholder="$t( 'donation_form_email_placeholder' )"
-							warning="donation_form_email_placeholder_warning"
-						/>
-					</template>
-				</EmailField>
-				<MailingListField v-model="mailingList" input-id="person-newsletter"/>
-			</AutofillHandler>
-		</form>
+			<EmailField
+				:show-error="fieldErrors.email"
+				v-model="formData.email.value"
+				id="person-address-form-email"
+				input-id="person-email"
+				:is-max-width-field="true"
+				@field-changed="onFieldChange"
+			/>
+			<MailingListField v-model="mailingList" input-id="person-newsletter" :is-max-width-field="true"/>
+		</AutofillHandler>
+	</form>
 
-		<form
-			name="laika-donation-personal-data-company"
-			id="laika-donation-personal-data-company"
-			action="/donation/add"
-			method="post"
-		>
-			<AutofillHandler @autofill="onAutofill">
-				<NameFields
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:address-type="AddressTypeModel.COMPANY"
-					:salutations="salutations"
-					field-id-namespace="company"
-					v-on:field-changed="onFieldChange"
-				/>
-				<PostalAddressFields
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:countries="countries"
-					:post-code-validation="addressValidationPatterns.postcode"
-					:country-was-restored="countryWasRestored"
-					field-id-namespace="company"
-					v-on:field-changed="onFieldChange"
-				/>
-				<div class="form-field form-field-donation-receipt">
+	<form
+		name="laika-donation-personal-data-company"
+		id="laika-donation-personal-data-company"
+		class="address-type-form display-toggler"
+		:class="{ 'display-toggler--visible': addressType === AddressTypeModel.COMPANY }"
+		action="/donation/add"
+		method="post"
+		@submit.prevent
+	>
+		<AutofillHandler @autofill="onAutofill">
+			<NameFields
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:address-type="AddressTypeModel.COMPANY"
+				:salutations="salutations"
+				field-id-namespace="company"
+				v-on:field-changed="onFieldChange"
+			/>
+			<PostalAddressFields
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:countries="countries"
+				:post-code-validation="addressValidationPatterns.postcode"
+				:country-was-restored="countryWasRestored"
+				field-id-namespace="company"
+				v-on:field-changed="onFieldChange"
+			/>
+
+			<FieldContainer input-id="receipt-option-company" :is-max-width-field="true">
+				<template #field>
 					<CheckboxSingleFormInput
 						input-id="receipt-option-company"
 						name="receipt-option"
-						v-model="receiptNeeded">
+						v-model="receiptNeeded"
+					>
 						{{ $t( 'receipt_needed_donation_page' ) }}
 					</CheckboxSingleFormInput>
-				</div>
+				</template>
+			</FieldContainer>
 
-				<ScrollTarget target-id="company-email-scroll-target"/>
-				<EmailField
-					:show-error="fieldErrors.email"
-					v-model="formData.email.value"
-					input-id="company-email"
-					@field-changed="onFieldChange"
-				>
-					<template #message>
-						<ValueEqualsPlaceholderWarning
-							:value="formData.email.value"
-							:placeholder="$t( 'donation_form_email_placeholder' )"
-							warning="donation_form_email_placeholder_warning"
-						/>
-					</template>
-				</EmailField>
-				<MailingListField v-model="mailingList" input-id="company-newsletter"/>
-			</AutofillHandler>
-		</form>
+			<EmailField
+				:show-error="fieldErrors.email"
+				v-model="formData.email.value"
+				id="company-address-form-email"
+				input-id="company-email"
+				:is-max-width-field="true"
+				@field-changed="onFieldChange"
+			/>
+			<MailingListField v-model="mailingList" input-id="company-newsletter" :is-max-width-field="true"/>
+		</AutofillHandler>
+	</form>
 
-		<form
-			name="laika-donation-personal-data-email"
-			id="laika-donation-personal-data-email"
-			action="/donation/add"
-			method="post"
-		>
-			<AutofillHandler @autofill="onAutofill">
-				<NameFields
-					:show-error="fieldErrors"
-					:form-data="formData"
-					:address-type="AddressTypeModel.PERSON"
-					:salutations="salutations"
-					field-id-namespace="email"
-					v-on:field-changed="onFieldChange"
-				/>
+	<form
+		name="laika-donation-personal-data-email"
+		id="laika-donation-personal-data-email"
+		class="address-type-form display-toggler"
+		:class="{ 'display-toggler--visible': addressType === AddressTypeModel.EMAIL }"
+		action="/donation/add"
+		method="post"
+		@submit.prevent
+	>
+		<AutofillHandler @autofill="onAutofill">
+			<NameFields
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:address-type="AddressTypeModel.PERSON"
+				:salutations="salutations"
+				field-id-namespace="email"
+				v-on:field-changed="onFieldChange"
+			/>
 
-				<ScrollTarget target-id="email-email-scroll-target"/>
-				<EmailField
-					:show-error="fieldErrors.email"
-					v-model="formData.email.value"
-					input-id="email-email"
-					@field-changed="onFieldChange"
-				>
-					<template #message>
-						<ValueEqualsPlaceholderWarning
-							:value="formData.email.value"
-							:placeholder="$t( 'donation_form_email_placeholder' )"
-							warning="donation_form_email_placeholder_warning"
-						/>
-					</template>
-				</EmailField>
-				<MailingListField v-model="mailingList" input-id="email-newsletter"/>
-			</AutofillHandler>
-		</form>
+			<EmailField
+				:show-error="fieldErrors.email"
+				v-model="formData.email.value"
+				id="email-address-form-email"
+				input-id="email-email"
+				@field-changed="onFieldChange"
+			/>
+			<MailingListField v-model="mailingList" input-id="email-newsletter"/>
+		</AutofillHandler>
+	</form>
 
-	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, toRefs } from 'vue';
+import { onBeforeMount, ref, toRefs } from 'vue';
 import PostalAddressFields from '@src/components/pages/donation_form/PostalAddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
@@ -158,13 +150,11 @@ import { useAddressFunctions } from './AddressFunctions';
 import type { Salutation } from '@src/view_models/Salutation';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
-import { AddressTypeIds } from '@src/components/pages/donation_form/AddressTypeIds';
 import { Validity } from '@src/view_models/Validity';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { useStore } from 'vuex';
 import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 interface Props {
 	countries: Country[];
@@ -193,13 +183,6 @@ const mailingList = useMailingListModel( store );
 
 const { receiptNeeded } = useReceiptModel( store );
 
-const addressTypeId = computed( () => {
-	if ( addressType.value === AddressTypeModel.UNSET ) {
-		return AddressTypeIds.get( AddressTypeModel.PERSON );
-	}
-	return AddressTypeIds.has( addressType.value ) ? AddressTypeIds.get( addressType.value ) : '';
-} );
-
 const countryWasRestored = ref<boolean>( false );
 
 onBeforeMount( () => {
@@ -207,29 +190,3 @@ onBeforeMount( () => {
 	initializeDataFromStore();
 } );
 </script>
-
-<style lang="scss">
-.address-section {
-	form {
-		display: none;
-	}
-}
-
-.address-type-person {
-	#laika-donation-personal-data-person {
-		display: block;
-	}
-}
-
-.address-type-company {
-	#laika-donation-personal-data-company {
-		display: block;
-	}
-}
-
-.address-type-email {
-	#laika-donation-personal-data-email {
-		display: block;
-	}
-}
-</style>

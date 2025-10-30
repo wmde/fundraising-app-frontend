@@ -24,11 +24,11 @@ describe( 'AddressType.vue', () => {
 	it( 'preselects initial address type', () => {
 		const wrapper = getWrapper();
 
-		const privatePersonRadioElement = wrapper.find( '.radio-form-input:first-child' );
-		const companyRadioElement = wrapper.find( '.radio-form-input:last-child' );
+		const privatePersonRadioElement = wrapper.find<HTMLInputElement>( '#addressType-0' );
+		const companyRadioElement = wrapper.find<HTMLInputElement>( '#addressType-1' );
 
-		expect( companyRadioElement.classes() ).toContain( 'is-active' );
-		expect( privatePersonRadioElement.classes() ).not.toContain( 'is-active' );
+		expect( companyRadioElement.element.checked ).toBeTruthy();
+		expect( privatePersonRadioElement.element.checked ).toBeFalsy();
 	} );
 
 	it( 'emits field changed event on blur', async () => {

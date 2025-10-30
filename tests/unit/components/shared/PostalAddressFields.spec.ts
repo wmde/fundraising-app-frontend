@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import countries from '@src/../tests/data/countries';
-import { addressValidationPatterns } from '../../../data/validation';
+import countries from '@test/data/countries';
+import { addressValidationPatterns } from '@test/data/validation';
+import { nextTick } from 'vue';
 
 function newTestProperties( overrides: Object ) {
 	return Object.assign(
@@ -74,7 +74,6 @@ function newTestProperties( overrides: Object ) {
 				},
 			},
 			countries: countries,
-			addressType: AddressTypeModel.PERSON,
 			postCodeValidation: addressValidationPatterns.postcode,
 			countryWasRestored: false,
 		},
@@ -82,17 +81,28 @@ function newTestProperties( overrides: Object ) {
 	);
 }
 
-describe( 'Postal.vue', () => {
+describe( 'PostalAddressFields.vue', () => {
 	it( 'shows street number warning if street field does not contain numbers', async () => {
 		const wrapper = mount( PostalAddressFields, {
 			props: newTestProperties( {} ),
 		} );
+
 		const street = wrapper.find( '#street' );
+		await street.setValue( '' );
+		await street.trigger( 'blur' );
+
+		expect( wrapper.find( '#street-message' ).exists() ).toBeFalsy();
+
+		await street.setValue( 'Testenhofen Ufer 42' );
+		await street.trigger( 'blur' );
+
+		expect( wrapper.find( '#street-message' ).exists() ).toBeFalsy();
+
 		await street.setValue( 'Testenhofen Ufer' );
 		await street.trigger( 'blur' );
-		await wrapper.vm.$nextTick();
+		await nextTick();
 
-		expect( wrapper.find( '.street-number-warning' ).exists() ).toBe( true );
+		expect( wrapper.find( '#street-message' ).exists() ).toBeTruthy();
 	} );
 
 	it( 'emits field changed event on blur', () => {

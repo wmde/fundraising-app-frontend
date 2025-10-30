@@ -1,6 +1,7 @@
 <template>
 	<button
-		class="button-link"
+		class="link-button"
+		type="button"
 		@click.prevent="$emit( 'click' )"
 		:aria-controls="ariaControls"
 		:aria-expanded="ariaExpanded"

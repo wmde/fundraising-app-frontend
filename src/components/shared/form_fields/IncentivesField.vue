@@ -1,6 +1,6 @@
 <template>
-	<div class="form-field form-field-incentives">
-		<div class="option-checkbox">
+	<FieldContainer input-id="tote_bag" :is-max-width-field="isMaxWidthField">
+		<template #field>
 			<CheckboxMultipleFormInput
 				v-for="incentive in incentiveFormFieldOptions"
 				:key="incentive.id"
@@ -12,8 +12,8 @@
 			>
 				{{ incentive.label}}
 			</CheckboxMultipleFormInput>
-		</div>
-	</div>
+		</template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
@@ -21,10 +21,12 @@
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 import CheckboxMultipleFormInput from '@src/components/shared/form_elements/CheckboxMultipleFormInput.vue';
 import type { CheckboxFormOption } from '@src/components/shared/form_fields/FormOptions';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 interface Props {
 	incentiveFormFieldOptions: CheckboxFormOption[];
 	modelValue: string[];
+	isMaxWidthField?: boolean;
 }
 
 const props = defineProps<Props>();

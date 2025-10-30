@@ -63,15 +63,26 @@ describe( 'PersonalDataSection.vue', () => {
 
 		await wrapper.setProps( { addressType: AddressTypeModel.PERSON } );
 
-		expect( wrapper.find( '.address-type-person' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#laika-donation-personal-data-person' ).classes() ).toContain( 'display-toggler--visible' );
+		expect( wrapper.find( '#laika-donation-personal-data-company' ).classes() ).not.toContain( 'display-toggler--visible' );
+		expect( wrapper.find( '#laika-donation-personal-data-email' ).classes() ).not.toContain( 'display-toggler--visible' );
 
 		await wrapper.setProps( { addressType: AddressTypeModel.COMPANY } );
 
-		expect( wrapper.find( '.address-type-company' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#laika-donation-personal-data-person' ).classes() ).not.toContain( 'display-toggler--visible' );
+		expect( wrapper.find( '#laika-donation-personal-data-company' ).classes() ).toContain( 'display-toggler--visible' );
+		expect( wrapper.find( '#laika-donation-personal-data-email' ).classes() ).not.toContain( 'display-toggler--visible' );
+
+		await wrapper.setProps( { addressType: AddressTypeModel.EMAIL } );
+
+		expect( wrapper.find( '#laika-donation-personal-data-person' ).classes() ).not.toContain( 'display-toggler--visible' );
+		expect( wrapper.find( '#laika-donation-personal-data-company' ).classes() ).not.toContain( 'display-toggler--visible' );
+		expect( wrapper.find( '#laika-donation-personal-data-email' ).classes() ).toContain( 'display-toggler--visible' );
 
 		await wrapper.setProps( { addressType: AddressTypeModel.ANON } );
 
-		expect( wrapper.find( '.address-type-person' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.address-type-company' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#laika-donation-personal-data-person' ).classes() ).not.toContain( 'display-toggler--visible' );
+		expect( wrapper.find( '#laika-donation-personal-data-company' ).classes() ).not.toContain( 'display-toggler--visible' );
+		expect( wrapper.find( '#laika-donation-personal-data-email' ).classes() ).not.toContain( 'display-toggler--visible' );
 	} );
 } );

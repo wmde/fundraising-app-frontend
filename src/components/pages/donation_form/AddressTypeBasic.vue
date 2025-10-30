@@ -2,6 +2,7 @@
 
 	<RadioField
 		name="addressType"
+		id="address-form-type"
 		:options="[
 			{
 				value: AddressTypeModel.PERSON,
@@ -25,11 +26,12 @@
 		:error-message="$t( 'donation_form_section_address_error' )"
 		v-model="addressType"
 		alignment="column"
+		:is-max-width-field="isMaxWidthField"
 	>
 		<template #tooltip-4>
-			<RadioFieldHelpText v-if="isDirectDebit">
+			<Tooltip v-if="isDirectDebit">
 				{{ $t( 'donation_form_address_choice_direct_debit_disclaimer_addresstype_basic') }}
-			</RadioFieldHelpText>
+			</Tooltip>
 		</template>
 	</RadioField>
 
@@ -40,13 +42,14 @@
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { ref, watch } from 'vue';
-import RadioFieldHelpText from '@src/components/shared/form_elements/RadioFieldTooltip.vue';
+import Tooltip from '@src/components/patterns/Tooltip.vue';
 
 interface Props {
 	disabledAddressTypes: AddressTypeModel[];
 	isDirectDebit: boolean;
 	addressTypeIsInvalid: boolean;
 	initialAddressType?: AddressTypeModel;
+	isMaxWidthField?: boolean;
 }
 const props = defineProps<Props>();
 

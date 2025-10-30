@@ -6,7 +6,7 @@
 		</template>
 
 		<template #content>
-			<form id="donation-form" action="/donation/add" method="post">
+			<form id="donation-form" class="flow" action="/donation/add" method="post">
 				<AutofillHandler @autofill="onAutofill">
 
 					<NameFields
@@ -16,36 +16,28 @@
 						@field-changed="onFieldChange"
 					/>
 
-					<ScrollTarget target-id="email-scroll-target"/>
 					<EmailField
 						:show-error="fieldErrors.email"
 						v-model="formData.email.value"
+						:is-max-width-field="true"
 						@field-changed="onFieldChange"
-					>
-						<template #message>
-							<ValueEqualsPlaceholderWarning
-								:value="formData.email.value"
-								:placeholder="$t( 'donation_form_email_placeholder' )"
-								warning="donation_form_email_placeholder_warning"
-							/>
-						</template>
-					</EmailField>
+					/>
 
 					<MailingListField v-model="mailingList" input-id="newsletter"/>
 
-					<ScrollTarget target-id="receipt-scroll-target"/>
 					<RadioField
+						id="address-form-receipt"
 						v-model="receiptModel.receiptNeeded"
 						name="donationReceipt"
 						:options="[
-						{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
-						{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
-					]"
+							{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
+							{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
+						]"
 						:label="$t( 'donation_confirmation_cta_title_alt' )"
 						:show-error="receiptModel.showReceiptOptionError"
 						:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
-						alignment="row"
 						aria-describedby="donation-receipt-help-text"
+						:layout-type="'cluster'"
 					>
 					</RadioField>
 
@@ -65,14 +57,13 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, toRef } from 'vue';
+import { computed, onBeforeMount, toRef } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import ValueEqualsPlaceholderWarning from '@src/components/shared/ValueEqualsPlaceholderWarning.vue';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import type { Country } from '@src/view_models/Country';
@@ -83,7 +74,6 @@ import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import type { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
-import ScrollTarget from '@src/components/shared/ScrollTarget.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 
@@ -114,7 +104,7 @@ const {
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
-useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, toRef( props.addressType ), store );
+useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, computed<AddressTypeModel>( () => props.addressType ), store );
 
 onBeforeMount( initializeDataFromStore );
 

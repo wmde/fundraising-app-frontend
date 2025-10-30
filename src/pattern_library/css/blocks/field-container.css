@@ -1,9 +1,27 @@
+.field-container {
+	--field-container-max-width: 32em;
+}
+
 .field-container > * {
 	--flow-space: var(--space-2xs);
 }
 
+.field-container__message {
+	color: var(--color-grey-500);
+	font-style: italic;
+}
+
+/* This is for an implementation issue edge case with Vuejs. Sometimes a field will show an empty message element */
+.field-container__message:empty {
+	display: none;
+}
+
 .field-container__error-text {
 	color: var(--color-red-700);
+}
+
+.field-container[data-max-width] {
+	max-width: var(--field-container-max-width);
 }
 
 .field-container[data-error] {
@@ -12,8 +30,4 @@
 
 .field-container:not([data-error]) .field-container__error-text {
 	display: none;
-}
-
-.field-container__radio-grid {
-	max-width: var(--form-field-max-width);
 }

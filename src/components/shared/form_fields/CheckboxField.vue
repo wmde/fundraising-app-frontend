@@ -1,22 +1,24 @@
 <template>
-	<div class="form-field form-field-checkbox">
-		<CheckboxSingleFormInput
-			v-model="fieldModel"
-			:name="name"
-			:input-id="inputId"
-			:disabled="disabled"
-			:required="required"
-			:ariaDescribedby="ariaDescribedby"
-			@update:modelValue="onFieldChange"
-		>
-			<slot/>
-		</CheckboxSingleFormInput>
-	</div>
+	<FieldContainer :input-id="inputId" :is-max-width-field="isMaxWidthField">
+		<template #field>
+			<CheckboxSingleFormInput
+				v-model="fieldModel"
+				:name="name"
+				:input-id="inputId"
+				:disabled="disabled"
+				:ariaDescribedby="ariaDescribedby"
+				@update:modelValue="onFieldChange"
+			>
+				<slot/>
+			</CheckboxSingleFormInput>
+		</template>
+	</FieldContainer>
 </template>
 
 <script setup lang="ts">
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
 import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
+import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 
 interface Props {
 	name: string;
@@ -25,6 +27,7 @@ interface Props {
 	disabled?: boolean;
 	required?: boolean;
 	ariaDescribedby?: string;
+	isMaxWidthField?: boolean;
 }
 
 const props = withDefaults( defineProps<Props>(), {

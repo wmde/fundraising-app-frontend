@@ -1,4 +1,6 @@
 .field-container {
+	--field-container-max-width: 414px;
+
 	.form-field {
 		margin-bottom: 0;
 	}
@@ -20,6 +22,164 @@
 		label {
 			padding-left: 40px;
 		}
+	}
+
+	:is(input, select, textarea) {
+		accent-color: var(--color-blue-600);
+	}
+
+	/* We hide the focus styles on radios and checkboxes because the enclosing label with be the visual indicator
+	 */
+	:is(:not([type='checkbox'], [type='radio'])):focus-visible {
+		--form-field-border-color: var(--color-blue-600);
+		outline: 2px solid var(--color-blue-600, currentColor);
+	}
+
+	:where(
+		input:not([type='checkbox'], [type='radio'], [type='color']),
+		select,
+		textarea,
+		label:has([type='radio'])
+	){
+		padding: 0.7em;
+		border: 1px solid var(--form-field-border-color, var(--color-grey-300));
+		border-radius: var(--border-radius);
+		background-color: var(--color-white);
+		color: var(--color-black);
+		width: 100%;
+		font-family: var(--font-base);
+		font-size: 1em;
+		line-height: var(--leading-standard);
+	}
+
+	select {
+		appearance: none;
+	}
+
+	select,
+	input[role='combobox'] {
+		background: var(--select-input-chevron);
+		background-size: 1em;
+	}
+
+	:is([type='checkbox'], [type='radio']) {
+		--radio-size: var(--space-s);
+
+		flex-shrink: 0;
+		appearance: none;
+		width: var(--radio-size);
+		height: var(--radio-size);
+		border: 1px solid var(--form-field-border-color, var(--color-grey-300));
+		position: relative;
+		background: var(--color-white);
+		margin: 0.5ex 0 0;
+		cursor: pointer;
+	}
+
+	:is([type='checkbox'], [type='radio']):checked {
+		background: var(--color-blue-600);
+	}
+
+	:is([type='checkbox'], [type='radio']):before {
+		content: '';
+		position: absolute;
+	}
+
+	[type='radio'],
+	[type='radio']:before {
+		border-radius: 50%;
+	}
+
+	[type='radio']:before {
+		background: var(--color-white);
+		height: 40%;
+		width: 40%;
+		top: 30%;
+		left: 30%;
+		border-radius: 50%;
+	}
+
+	[type='checkbox'] {
+		border-radius: 2px;
+	}
+
+	[type='checkbox']:before {
+		height: 80%;
+		width: 40%;
+		top: 2%;
+		left: 30%;
+		transform: rotateZ(45deg);
+		border-color: var(--color-white);
+		border-width: 0 3px 3px 0;
+		border-style: solid;
+	}
+
+	label:has([type='checkbox'], [type='radio'])::placeholder {
+		color: var(--color-grey-500);
+		opacity: 1;
+	}
+
+	label:has([type='checkbox'], [type='radio']):hover {
+		cursor: pointer;
+	}
+
+	label {
+		line-height: var(--leading-standard);
+		font-weight: var(--font-bold);
+	}
+
+	label::after {
+		content: '\A';
+		white-space: pre;
+	}
+
+	/* Usually label wraps checkbox and radio buttons, so we give ourselves more layout and text-flow control with flex */
+	label:has(input) {
+		display: flex;
+		gap: 0.5em;
+		font-weight: var(--font-normal);
+	}
+
+	label:has([type='checkbox']:focus, [type='radio']:focus) {
+		--form-field-border-color: var(--color-blue-600);
+		outline: 2px solid var(--color-blue-600, currentColor);
+	}
+
+	label:has([type='checkbox']:checked, [type='radio']:checked) {
+		--form-field-border-color: var(--color-blue-600);
+	}
+
+	input:disabled {
+		background: var(--color-grey-300);
+	}
+
+	input:disabled,
+	label input:disabled + *,
+	label:has(input:disabled) {
+		cursor: not-allowed;
+	}
+
+	label:has(input:disabled) {
+		--form-field-border-color: var(--color-grey-200);
+		color: var(--color-grey-200);
+	}
+
+	&:is(fieldset) {
+		border: 0;
+		padding: 0;
+	}
+
+	/* We consider the legend element to be the main "label" in fieldsets so actual labels should not be bold */
+	&:has(legend) label {
+		font-weight: var(--font-normal);
+	}
+
+	button:not([disabled]) {
+		cursor: pointer;
+	}
+
+	legend {
+		font-weight: var(--font-bold);
 	}
 }
 
