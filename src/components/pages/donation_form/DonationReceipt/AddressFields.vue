@@ -24,7 +24,7 @@
 		:error-message="$t( 'donation_form_companyname_error' )"
 		autocomplete="organization"
 		:label="$t( 'donation_form_companyname_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_companyname_placeholder' ) } )"
+		:placeholder="$t( 'donation_form_companyname_placeholder' )"
 		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'companyName')"
 	/>
@@ -50,7 +50,7 @@
 		:error-message="$t('donation_form_zip_error')"
 		autocomplete="postal-code"
 		:label="$t( 'donation_form_zip_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_zip_placeholder' ) } )"
+		:placeholder="$t( 'donation_form_zip_placeholder' )"
 		placeholder-warning="donation_form_zip_placeholder_warning"
 		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'postcode')"

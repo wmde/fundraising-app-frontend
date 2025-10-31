@@ -36,7 +36,7 @@
 		:error-message="$t( 'donation_form_firstname_error' )"
 		autocomplete="given-name"
 		:label="$t( 'donation_form_firstname_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_firstname_placeholder' ) } )"
+		:placeholder="$t( 'donation_form_firstname_placeholder' )"
 		:is-max-width-field="true"
 		@field-changed="$emit('field-changed', 'firstName')"
 	/>
