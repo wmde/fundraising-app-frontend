@@ -102,7 +102,7 @@
 			</div>
 		</form>
 
-		<form class="iban-form" @submit.prevent="() => {}">
+		<form class="iban-form" @submit.prevent>
 			<IbanField
 				v-model="iban"
 				:bank-name="bankName"

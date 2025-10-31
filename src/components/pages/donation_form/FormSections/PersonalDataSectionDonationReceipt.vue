@@ -6,7 +6,7 @@
 		</template>
 
 		<template #content>
-			<form id="donation-form" class="flow" action="/donation/add" method="post">
+			<form id="donation-form" class="flow" action="/donation/add" method="post" @submit.prevent>
 				<AutofillHandler @autofill="onAutofill">
 
 					<NameFields

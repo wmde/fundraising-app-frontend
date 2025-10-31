@@ -38,6 +38,7 @@
 				name="laika-donation-payment"
 				class="flow compact"
 				ref="paymentForm"
+				@submit.prevent
 			>
 				<Payment
 					:payment-amounts="paymentAmounts"
