@@ -1,5 +1,5 @@
 <template>
-	<form action="">
+	<form action="" @submit.prevent>
 		<ContentCard>
 			<template #heading>
 				<h1 id="membership-form-heading">{{ $t( 'membership_form_headline' ) }}</h1>
