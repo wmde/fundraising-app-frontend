@@ -1,5 +1,5 @@
 <template>
-	<div class="accordion" :data-theme="theme">
+	<div class="accordion flow" :data-theme="theme">
 		<slot/>
 	</div>
 </template>

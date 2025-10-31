@@ -1,19 +1,24 @@
-.accordion details {
+.accordion {
 	--chevron-stroke: var(--summary-color, var(--color-grey-800));
-	--details-gutter: var(--gutter);
 	--summary-border: var(--stroke);
 	--summary-margin: var(--space-2xs);
 	--summary-padding: var(--space-2xs) 0;
+}
 
+.accordion-group + .accordion-group {
+	margin-block-start: var(--accordion-group-space, var(--space-xl));
+}
+
+.accordion details {
 	background: var(--background-color, transparent);
 	padding-inline: var(--padding-inline, 0);
 }
 
-.accordion details + details {
-	margin-block-start: var(--details-gutter);
-}
-
-.accordion summary {
+/*
+ * Sometimes we need to show a mix of disclosure and non-disclosure items in an accordion
+ * group. .accordion__dummy is to match the styles from the summary element to the dummy
+ */
+.accordion :is(summary, .accordion__dummy) {
 	list-style: none;
 	display: flex;
 	justify-content: space-between;
@@ -63,7 +68,7 @@
 }
 
 .accordion[data-theme="wikimedia"] details + details {
-	--details-gutter: 1px;
+	margin-block-start: 1px;
 }
 
 .accordion[data-theme="wikimedia"] details[open] {
