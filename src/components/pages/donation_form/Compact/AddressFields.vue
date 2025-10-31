@@ -20,7 +20,7 @@
 		:error-message="$t( 'donation_form_companyname_error' )"
 		autocomplete="organization"
 		:label="$t( 'donation_form_companyname_label' )"
-		:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_companyname_placeholder' ) } )"
+		:placeholder="$t( 'donation_form_companyname_placeholder' )"
 		@field-changed="$emit('field-changed', 'companyName')"
 	/>
 

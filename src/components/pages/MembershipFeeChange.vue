@@ -62,9 +62,7 @@
 					v-model="memberName"
 					:error-message="$t('membership_fee_upgrade_member_name_error_message')"
 					:show-error="!isMemberNameValid"
-					:placeholder="$t( 'form_for_example', {
-						example: $t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')
-					} )"
+					:placeholder="$t( 'donation_form_firstname_placeholder') + ' ' + $t( 'donation_form_lastname_placeholder')"
 					:is-max-width-field="true"
 					@field-changed="validateMemberName"
 					@blur="validateMemberName"
