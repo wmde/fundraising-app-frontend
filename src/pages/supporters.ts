@@ -13,7 +13,6 @@ interface ErrorModel {
 }
 
 const PAGE_IDENTIFIER = 'supporters';
-const staticPage: any = document.getElementById( 'appdata' );
 const pageData = new PageDataInitializer<ErrorModel>( '#appdata' );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
 
@@ -26,9 +25,9 @@ createVueApp( App,
 		bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 		pageIdentifier: PAGE_IDENTIFIER,
 		page: Supporters,
-		pageTitle: staticPage.getAttribute( 'data-page-title' ),
+		pageTitle: 'supporters',
 		pageProps: {
-			pageTitle: staticPage.getAttribute( 'data-page-title' ),
+			pageTitle: 'supporters',
 			supporters: supportersFromObject( JSON.parse( pageData.applicationVars.supporters ) ),
 		},
 	} ).mount( '#app' );

@@ -4,17 +4,21 @@
 			<h1>{{ $t('faq_headline') }}</h1>
 		</template>
 		<template #content>
-			<section v-for="(topic, index) in content.topics" :key="index" class="flow">
+			<section v-for="(topic, index) in content.topics" :key="index" class="accordion-group flow">
 				<h2>{{ topic.name }}</h2>
-				<div>
+				<Accordion>
 					<AccordionItem
 						v-for="( content, itemIndex ) in getQuestionsByTopic( topic )"
 						:key="topic.id + itemIndex"
-						:id="`faq-item-${topic.id}-${itemIndex}`"
-						:title="content.question"
-						:content="appendCampaignQueryParams( content.visibleText, campaignParams )"
-					/>
-				</div>
+					>
+						<template #title>
+							{{ content.question }}
+						</template>
+						<template #content>
+							<div v-html="appendCampaignQueryParams( content.visibleText, campaignParams )"/>
+						</template>
+					</AccordionItem>
+				</Accordion>
 			</section>
 		</template>
 	</ContentCard>
@@ -23,10 +27,11 @@
 <script setup lang="ts">
 import { inject } from 'vue';
 import type { FaqContent, QuestionModel, Topic } from '@src/view_models/faq';
-import AccordionItem from '@src/components/shared/AccordionItem.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { appendCampaignQueryParams } from '@src/util/append_campaign_query_params';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
+import Accordion from '@src/components/patterns/Accordion.vue';
+import AccordionItem from '@src/components/patterns/AccordionItem.vue';
 
 interface Props {
 	content: FaqContent;
@@ -41,17 +46,3 @@ const getQuestionsByTopic = ( topic: Topic ): QuestionModel[] => {
 	);
 };
 </script>
-
-<style lang="scss">
-@use 'src/scss/settings/units';
-@use 'sass:map';
-
-ul.faq-item {
-	list-style-type: none;
-	padding-left: 0;
-
-	>li:not( :last-child ) {
-		margin-bottom: map.get( units.$spacing, 'xx-large' );
-	}
-}
-</style>
