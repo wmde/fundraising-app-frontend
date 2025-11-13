@@ -1,5 +1,5 @@
 <template>
-	<div class="alert-box repel" data-neutral>
+	<div class="callout repel" data-neutral>
 		<p v-html="props.paymentType ? summary : summaryWithoutPaymentType"/>
 		<a href="#" @click.prevent="$emit( 'show-payment-form' )"><strong>{{ $t('donation_form_section_back') }}</strong></a>
 	</div>

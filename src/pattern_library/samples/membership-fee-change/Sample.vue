@@ -52,7 +52,7 @@
 					<div class="icon-text__icon" aria-hidden="true"><SuccessIcon/></div>
 					<div class="flow">
 						<h1>Herzlichen Dank für Ihre Erhöhung.</h1>
-						<p class="alert-box" data-neutral>Ab sofort stärken Sie uns mit: monatlich 36,00 Euro</p>
+						<p class="callout" data-neutral>Ab sofort stärken Sie uns mit: monatlich 36,00 Euro</p>
 						<p>Ihre Bestätigung ist auf dem Weg zu Ihnen. In 1–2 Tagen sollte sie bei Ihnen im Briefkasten liegen.</p>
 					</div>
 				</div>

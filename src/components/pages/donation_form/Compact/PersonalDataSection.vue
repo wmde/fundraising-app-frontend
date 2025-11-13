@@ -51,7 +51,6 @@
 				</div>
 
 				<AddressFields
-					v-if="receiptModel.receiptNeeded"
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"

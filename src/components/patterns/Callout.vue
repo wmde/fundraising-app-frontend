@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="alert-box flow"
+		class="callout flow"
 		:data-success="type === 'success' ? true : null"
 		:data-warning="type === 'warning' ? true : null"
 		:data-error="type === 'error' ? true : null"
