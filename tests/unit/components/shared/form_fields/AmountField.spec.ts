@@ -211,6 +211,11 @@ describe( 'AmountField.vue', () => {
 
 			expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 5 );
 			expect( wrapper.find( '#amount-custom' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'amount-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'extra-label' } );
+
+			expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 5 );
+			expect( wrapper.find( '#amount-custom' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'amount-error extra-label' );
 		} );
 	} );
 } );

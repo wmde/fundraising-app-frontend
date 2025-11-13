@@ -48,7 +48,7 @@ interface Props {
 	hasMessage: boolean;
 	hasError?: boolean;
 	disabled?: boolean;
-	ariaDescribedby?: string;
+	ariaDescribedby?: string | undefined;
 	ariaAutocomplete?: 'none' | 'inline' | 'list' | 'both';
 }
 

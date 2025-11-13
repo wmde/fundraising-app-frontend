@@ -99,6 +99,11 @@ describe( 'SuggestedAmountField.vue', () => {
 
 			expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 2 );
 			expect( wrapper.find( '#custom-amount' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'suggested-amount-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'extra-label' } );
+
+			expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 2 );
+			expect( wrapper.find( '#custom-amount' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'suggested-amount-error extra-label' );
 		} );
 	} );
 } );

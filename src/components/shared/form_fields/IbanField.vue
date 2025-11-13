@@ -43,13 +43,11 @@ interface Props {
 	showError: boolean;
 	bankName: string;
 	bic: string;
-	ariaDescribedby?: string;
+	ariaDescribedby?: string | undefined;
 	isMaxWidthField?: boolean;
 }
 
-const props = withDefaults( defineProps<Props>(), {
-	ariaDescribedby: '',
-} );
+const props = defineProps<Props>();
 const emit = defineEmits( [ 'field-changed', 'input', 'blur', 'update:modelValue' ] );
 
 const fieldModel = ref<string>( props.modelValue );
@@ -59,7 +57,8 @@ const ariaDescribedby = useAriaDescribedby(
 	'iban',
 	computed<boolean>( () => false ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => hasMessage.value )
+	computed<boolean>( () => hasMessage.value ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 
 const getDisplayValue = ( newValue: string ) => {

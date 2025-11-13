@@ -65,13 +65,12 @@ interface Props {
 	label?: String;
 	errorMessage?: String;
 	minimumAmountMessage?: string;
-	ariaDescribedby?: string;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	minimumAmount: 0,
 	minimumAmountMessage: '',
-	ariaDescribedby: '',
 	showError: false,
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
@@ -83,7 +82,8 @@ const ariaDescribedby = useAriaDescribedby(
 	'amount',
 	computed<boolean>( () => false ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => !!slots.message )
+	computed<boolean>( () => !!slots.message ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 const isCustomAmount = computed<boolean>( () => amount.value > 0 && props.paymentAmounts.indexOf( amount.value ) === -1 );
 

@@ -138,6 +138,10 @@ describe( 'TextField.vue', () => {
 			await wrapper.setProps( { showError: true } );
 
 			expect( wrapper.find( '#textField' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'textField-help-text textField-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'extra-label' } );
+
+			expect( wrapper.find( '#textField' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'textField-help-text textField-error extra-label' );
 		} );
 
 		it( 'sets aria-describedby when there is a message slot', async () => {
