@@ -10,6 +10,11 @@
 		<span>{{ $t( 'donation_form_behalf_of_company' ) }}</span>
 	</CheckboxField>
 
+	<div class="callout repel" v-if="addressHasValues">
+		<p>In order to keep our address blah blah all fields are required</p>
+		<button type="button" class="link-button" @click.prevent="clearAddress">Clear Address</button>
+	</div>
+
 	<TextField
 		v-if="isCompany"
 		name="companyName"
@@ -93,6 +98,8 @@ import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAu
 import type { Country } from '@src/view_models/Country';
 import { Validity } from '@src/view_models/Validity';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
+import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
+import { action } from '@src/store/util';
 
 interface Props {
 	formData: AddressFormData;
@@ -111,6 +118,27 @@ const showAddressTypeError = computed( () => store.getters[ 'address/addressType
 const countryWasRestored = ref<boolean>( false );
 
 const isCompany = ref<boolean>( addressType.value === AddressTypeModel.COMPANY_WITH_CONTACT );
+
+const addressHasValues = computed<boolean>( () => {
+	return store.state.address.values.country !== '' ||
+		clearStreetAndBuildingNumberSeparator( store.state.address.values.street ) !== '' ||
+		store.state.address.values.postcode !== '' ||
+		store.state.address.values.city !== '' ||
+		store.state.address.values.companyName !== '';
+} );
+
+const clearAddress = (): void => {
+	props.formData.country.value = '';
+	props.formData.street.value = '';
+	props.formData.postcode.value = '';
+	props.formData.city.value = '';
+	props.formData.companyName.value = '';
+	store.dispatch( action( 'address', 'setAddressField' ), props.formData.country );
+	store.dispatch( action( 'address', 'setAddressField' ), props.formData.street );
+	store.dispatch( action( 'address', 'setAddressField' ), props.formData.postcode );
+	store.dispatch( action( 'address', 'setAddressField' ), props.formData.city );
+	store.dispatch( action( 'address', 'setAddressField' ), props.formData.companyName );
+};
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {
