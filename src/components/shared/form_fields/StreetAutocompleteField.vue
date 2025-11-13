@@ -59,6 +59,7 @@
 			@update:modelValue="onUpdateModel"
 			@field-changed="onBuildingNumberBlur"
 			:is-max-width-field="isMaxWidthField"
+			:aria-describedby="props.ariaDescribedby"
 		>
 			<template #message v-if="showBuildingNumberWarning">
 				{{ $t( 'donation_form_street_number_warning' ) }}
@@ -95,6 +96,7 @@ interface Props {
 	showError: boolean;
 	postcode: string;
 	isMaxWidthField?: boolean;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = defineProps<Props>();
@@ -116,7 +118,8 @@ const ariaDescribedby = useAriaDescribedby(
 	props.inputIdStreetName,
 	computed<boolean>( () => false ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );
 

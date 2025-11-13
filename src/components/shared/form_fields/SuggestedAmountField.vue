@@ -54,6 +54,7 @@ interface Props {
 	customAmountPlaceholder: string;
 	errorMessage: string;
 	isMaxWidthField?: boolean;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -68,7 +69,8 @@ const ariaDescribedby = useAriaDescribedby(
 	'suggested-amount',
 	computed<boolean>( () => false ),
 	computed<boolean>( () => !props.isValid ),
-	computed<boolean>( () => false )
+	computed<boolean>( () => false ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 
 watch( isSuggestedAmount, ( newValue: boolean ) => {

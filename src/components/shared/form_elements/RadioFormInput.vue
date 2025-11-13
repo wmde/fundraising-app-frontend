@@ -37,7 +37,7 @@ interface Props {
 	id: string;
 	inputClass?: string;
 	disabled?: boolean;
-	ariaDescribedby?: string;
+	ariaDescribedby?: string | undefined;
 	ariaInvalid?: boolean;
 	autofocus?: boolean;
 }

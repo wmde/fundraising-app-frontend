@@ -9,7 +9,7 @@
 			:name="name"
 			:id="inputId"
 			:disabled="disabled"
-			:aria-describedby="describedBy"
+			:aria-describedby="ariaDescribedby"
 		/>
 	</label>
 </template>
@@ -23,7 +23,7 @@ interface Props {
 	inputId: string;
 	disabled?: boolean;
 	required?: boolean;
-	describedBy?: string;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = withDefaults( defineProps<Props>(), {

@@ -13,11 +13,26 @@ export const mutations: MutationTree<AddressState> = {
 			state.validity[ field.name ] = Helper.inputIsValid( field.value, field.pattern );
 		}
 	},
+	setFieldValidity( state: AddressState, payload: { field: InputField; validity: Validity } ) {
+		state.validity[ payload.field.name ] = payload.validity;
+	},
+	/**
+	 * On the compact form we have fields that are always visible but not always in need of validation
+	 * These fields can be marked as invalid on the form but not actually required so we need to reset
+	 * the validation state before we revalidate.
+	 */
+	resetDynamicFieldsValidation( state: AddressState ): void {
+		if ( state.addressType === AddressTypeModel.EMAIL ) {
+			state.validity.companyName = Validity.INCOMPLETE;
+			state.validity.country = Validity.INCOMPLETE;
+			state.validity.postcode = Validity.INCOMPLETE;
+			state.validity.city = Validity.INCOMPLETE;
+			state.validity.street = Validity.INCOMPLETE;
+		}
+	},
 	MARK_EMPTY_FIELDS_INVALID( state: AddressState ) {
-		let addressTypeRequirements = state.requiredFields[ state.addressType ];
 		state.requiredFields[ state.addressType ].forEach( ( fieldName: string ) => {
-			if ( state.validity[ fieldName ] === Validity.INCOMPLETE &&
-				addressTypeRequirements[ addressTypeRequirements.indexOf( fieldName ) ] ) {
+			if ( state.validity[ fieldName ] === Validity.INCOMPLETE ) {
 				state.validity[ fieldName ] = Validity.INVALID;
 			}
 		} );

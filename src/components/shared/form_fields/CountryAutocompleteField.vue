@@ -75,6 +75,7 @@ interface Props {
 	showError: boolean;
 	wasRestored: boolean;
 	isMaxWidthField?: boolean;
+	ariaDescribedby?: string | null;
 }
 
 const props = defineProps<Props>();
@@ -94,7 +95,8 @@ const ariaDescribedby = useAriaDescribedby(
 	props.inputId,
 	computed<boolean>( () => false ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => false )
+	computed<boolean>( () => false ),
+	computed<string | null>( () => props.ariaDescribedby )
 );
 
 const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );

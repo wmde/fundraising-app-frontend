@@ -4,13 +4,13 @@ import createPayment from '@src/store/payment';
 import createAddress from '@src/store/address';
 import createBankData from '@src/store/bankdata';
 
-import { REQUIRED_FIELDS } from '@src/store/address/constants';
+import { DEFAULT_FIELDS, REQUIRED_FIELDS } from '@src/store/address/constants';
 
 export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) {
 	const storeBundle: StoreOptions<any> = {
 		modules: {
 			[ 'payment' ]: createPayment(),
-			[ 'address' ]: createAddress( REQUIRED_FIELDS ),
+			[ 'address' ]: createAddress( REQUIRED_FIELDS, DEFAULT_FIELDS ),
 			[ 'bankdata' ]: createBankData(),
 		},
 		strict: process.env.NODE_ENV !== 'production',

@@ -1,18 +1,18 @@
 <template>
 	<div class="content-card">
-		<div class="alert-box flow">
+		<div class="callout flow">
 			<h3>A Standard Alert</h3>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi consequatur doloremque, fugiat nisi optio quos rerum voluptatem voluptatibus. Aliquid beatae explicabo necessitatibus nostrum odio quaerat sunt veniam! Accusamus, ad?</p>
 		</div>
 	</div>
 
-	<div class="alert-box flow">
+	<div class="callout flow">
 		<h3>An Alert Displayed Outside of a Content Card</h3>
 		<p>My padding matches a content card so things line up. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi consequatur doloremque, fugiat nisi optio quos rerum voluptatem voluptatibus. Aliquid beatae explicabo necessitatibus nostrum odio quaerat sunt veniam! Accusamus, ad?</p>
 	</div>
 
 	<div class="content-card">
-		<div class="alert-box flow" data-success>
+		<div class="callout flow" data-success>
 			<div class="icon-text">
 				<div class="icon-text__icon" aria-hidden="true"><SuccessIcon/></div><h3>Success! Also, I use the icon text!</h3>
 			</div>
@@ -21,14 +21,14 @@
 	</div>
 
 	<div class="content-card">
-		<div class="alert-box flow" data-warning>
+		<div class="callout flow" data-warning>
 			<h3>Warning!</h3>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi consequatur doloremque, fugiat nisi optio quos rerum voluptatem voluptatibus. Aliquid beatae explicabo necessitatibus nostrum odio quaerat sunt veniam! Accusamus, ad?</p>
 		</div>
 	</div>
 
 	<div class="content-card">
-		<div class="alert-box flow" data-error>
+		<div class="callout flow" data-error>
 			<h3>Please fix the following errors.</h3>
 
 			<ul>
@@ -47,7 +47,13 @@
 	</div>
 
 	<div class="content-card">
-		<div class="alert-box flow" data-neutral>
+		<div class="callout flow" data-neutral>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi consequatur doloremque, fugiat nisi optio quos rerum voluptatem voluptatibus. Aliquid beatae explicabo necessitatibus nostrum odio quaerat sunt veniam! Accusamus, ad?</p>
+		</div>
+	</div>
+
+	<div class="content-card">
+		<div class="callout flow" data-transparent>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi consequatur doloremque, fugiat nisi optio quos rerum voluptatem voluptatibus. Aliquid beatae explicabo necessitatibus nostrum odio quaerat sunt veniam! Accusamus, ad?</p>
 		</div>
 	</div>

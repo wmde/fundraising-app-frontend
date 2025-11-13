@@ -19,7 +19,7 @@ describe( 'RadioField.vue', () => {
 		} );
 	};
 
-	describe( 'accessibility tests', () => {
+	describe( 'functionality tests', () => {
 		it( 'fill options', () => {
 			const wrapper = getWrapper();
 
@@ -88,6 +88,11 @@ describe( 'RadioField.vue', () => {
 
 			expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 2 );
 			expect( wrapper.find( 'input[value=mouse]' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'animal-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'describedby-label' } );
+
+			expect( wrapper.findAll( '[aria-describedby]' ).length ).toStrictEqual( 2 );
+			expect( wrapper.find( 'input[value=mouse]' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'animal-error describedby-label' );
 		} );
 	} );
 } );

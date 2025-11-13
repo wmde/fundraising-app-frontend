@@ -6,7 +6,7 @@
 		:is-direct-debit-payment="isDirectDebitPayment"
 	>
 		<template #error-summary>
-			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" :receipt-model="receiptModel"/>
+			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" :receipt-needed="receiptNeeded"/>
 		</template>
 	</PaymentSection>
 
@@ -20,7 +20,8 @@
 		:disabled-address-types="disabledAddressTypes"
 		:address-type="addressType"
 		:address-type-is-invalid="addressTypeIsInvalid"
-		:receipt-model="receiptModel"
+		:receipt-needed="receiptNeeded"
+		@receipt-needed-toggled="receiptNeededToggled"
 	/>
 
 	<ContentCard :is-collapsable="true" v-if="paymentSummary">
@@ -82,7 +83,7 @@ import PersonalDataSection from '@src/components/pages/donation_form/Compact/Per
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
 import ErrorSummary from '@src/components/pages/donation_form/Compact/ErrorSummary.vue';
-import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/DonationReceipt/useDonationFormSubmitHandler';
+import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/Compact/useDonationFormSubmitHandler';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { useAddressSummary } from '@src/components/pages/donation_form/useAddressSummary';
@@ -124,7 +125,7 @@ const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
 const { addressSummary } = useAddressSummary( store );
 const { bankDataSummary } = useBankDataSummary( store );
 const { disabledAddressTypes, addressType, addressTypeIsInvalid } = useAddressTypeFunctions( store );
-const receiptModel = useReceiptModel( store );
+const { receiptNeeded } = useReceiptModel( store );
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
@@ -132,9 +133,12 @@ const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHand
 	store,
 	isDirectDebitPayment,
 	props.validateAddressUrl,
-	props.validateEmailUrl,
-	receiptModel.receiptNeeded
+	props.validateEmailUrl
 );
+
+const receiptNeededToggled = ( newReceiptNeeded: boolean ): void => {
+	receiptNeeded.value = newReceiptNeeded;
+};
 
 onMounted( () => {
 	trackDynamicForm();

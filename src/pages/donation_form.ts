@@ -1,7 +1,6 @@
 import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
 import { createStore, StoreKey } from '@src/store/donation_store';
-
 import CampaignParameters from '@src/util/CampaignParameters';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
 import PageDataInitializer from '@src/util/page_data_initializer';
@@ -41,9 +40,9 @@ const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
 const pageData = new PageDataInitializer<DonationFormModel>( '#appdata' );
 const dataPersister = createDataPersister( new LocalStorageRepository(), FORM_NAMESPACE, pageData.applicationVars.userDataKey );
-const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
-const campaignParameters = new CampaignParameters( new URLSearchParams( window.location.search ) );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
+const campaignParameters = new CampaignParameters( new URLSearchParams( window.location.search ) );
+const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 
 dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [

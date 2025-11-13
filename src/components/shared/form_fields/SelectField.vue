@@ -37,6 +37,7 @@ interface Props {
 	errorMessage?: String;
 	showError?: boolean;
 	isMaxWidthField?: boolean;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = defineProps<Props>();
@@ -47,7 +48,8 @@ const ariaDescribedby = useAriaDescribedby(
 	props.inputId,
 	computed<boolean>( () => false ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => false )
+	computed<boolean>( () => false ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 
 const onFieldChange = ( newValue: string | number ): void => {

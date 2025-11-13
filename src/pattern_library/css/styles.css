@@ -24,7 +24,7 @@
 @import "compositions/wrapper.css";
 
 @import "blocks/accordion.css";
-@import "blocks/alert-box.css";
+@import "blocks/callout.css";
 @import "blocks/button.css";
 @import "blocks/combobox.css";
 @import "blocks/content-card.css";
