@@ -13,5 +13,5 @@ export function joinStreetAndBuildingNumber( streetName: string, buildingNumber:
 }
 
 export function clearStreetAndBuildingNumberSeparator( street: string ): string {
-	return street.replace( separator, ' ' );
+	return street.replace( separator, ' ' ).trim();
 }

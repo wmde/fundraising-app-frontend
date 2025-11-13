@@ -13,13 +13,19 @@ import type { Salutation } from '@src/view_models/Salutation';
 import { salutationValueTranslations } from '@src/view_models/salutationValueTranslations';
 
 export const actions = {
+	setAddressField( context: ActionContext<AddressState, any>, field: InputField ): void {
+		field.value = field.value.trim();
+		context.commit( 'SET_ADDRESS_FIELD', field );
+	},
 	validateAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
 		context.commit( 'VALIDATE_INPUT', field );
 	},
-	setAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
-		field.value = field.value.trim();
-		context.commit( 'SET_ADDRESS_FIELD', field );
-		context.commit( 'VALIDATE_INPUT', field );
+	setAndValidateAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
+		this.setAddressField( context, field );
+		this.validateAddressField( context, field );
+	},
+	validateRequiredAddressFields( context: ActionContext<AddressState, any> ): void {
+		context.commit( 'validateRequiredFields' );
 	},
 	validateAddress( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
 		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );

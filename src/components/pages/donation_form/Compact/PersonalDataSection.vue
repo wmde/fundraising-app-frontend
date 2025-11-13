@@ -51,12 +51,15 @@
 				</div>
 
 				<AddressFields
-					v-if="receiptModel.receiptNeeded"
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
 					:post-code-validation="addressValidationPatterns.postcode"
-					@field-changed="onFieldChange"
+					:receipt-model="receiptModel"
+					:address-type="addressType"
+					:is-company="isCompany"
+					@field-changed="onAddressFieldChange"
+					@company-toggled="onToggleCompany"
 				/>
 			</form>
 		</template>
@@ -64,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, toRef } from 'vue';
+import { computed, onBeforeMount, ref, toRef } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/Compact/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -76,13 +79,14 @@ import type { Country } from '@src/view_models/Country';
 import type { Salutation } from '@src/view_models/Salutation';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
-import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/Compact/useAddressTypeFromReceiptSetter';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
 import type { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
+import { useAddressTypeManager } from '@src/components/pages/donation_form/Compact/useAddressTypeManager';
+import { action } from '@src/store/util';
 
 interface Props {
 	countries: Country[];
@@ -102,6 +106,7 @@ const store = useStore();
 
 const mailingList = useMailingListModel( store );
 const receiptModel = toRef<ReceiptModel>( props.receiptModel );
+const isCompany = ref<boolean>( props.addressType === AddressTypeModel.COMPANY_WITH_CONTACT );
 
 const {
 	formData,
@@ -111,7 +116,27 @@ const {
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
-useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, computed<AddressTypeModel>( () => props.addressType ), store );
+const { updateAddressType } = useAddressTypeManager(
+	computed<boolean>( () => receiptModel.value.receiptNeeded ),
+	isCompany,
+	computed<AddressTypeModel>( () => props.addressType ),
+	formData,
+	store
+);
+
+const onToggleCompany = ( newValue: boolean ): void => {
+	isCompany.value = newValue;
+	updateAddressType();
+};
+
+const onAddressFieldChange = ( fieldName: string ): void => {
+	updateAddressType();
+	if ( fieldErrors.value[ fieldName ] ) {
+		onFieldChange( fieldName );
+	} else if ( props.addressType !== AddressTypeModel.EMAIL ) {
+		store.dispatch( action( 'address', 'setAndValidateAddressField' ), formData[ fieldName ] );
+	}
+};
 
 onBeforeMount( initializeDataFromStore );
 

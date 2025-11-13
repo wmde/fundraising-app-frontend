@@ -1,17 +1,20 @@
 <template>
+	<pre>{{ addressType }}</pre>
+
 	<CheckboxField
-		v-model="isCompany"
+		v-model="isCompanyModel"
 		name="is-company"
 		id="address-form-is-company"
 		input-id="is-company"
 		:error-message="$t( 'donation_form_section_address_error' )"
 		:show-error="showAddressTypeError"
+		@field-changed="$emit( 'company-toggled', isCompanyModel )"
 	>
 		<span>{{ $t( 'donation_form_behalf_of_company' ) }}</span>
 	</CheckboxField>
 
 	<TextField
-		v-if="isCompany"
+		v-if="isCompanyModel"
 		name="companyName"
 		id="address-form-company-name"
 		input-id="company-name"
@@ -77,40 +80,59 @@
 			@field-changed="$emit('field-changed', 'street' )"
 		/>
 	</div>
+
+	<Callout type="neutral" :has-action="true" v-if="!receiptModel.receiptNeeded">
+		<p>{{ $t( 'donation_form_optional_address_message' ) }}</p>
+		<button type="button" class="link-button" @click.prevent="clearAddress">{{ $t( 'donation_form_clear_all_address' ) }}</button>
+	</Callout>
 </template>
 
 <script setup lang="ts">
 
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
-import { useAddressTypeModel } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeModel';
 import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 import type { Country } from '@src/view_models/Country';
 import { Validity } from '@src/view_models/Validity';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
+import type { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
+import Callout from '@src/components/patterns/Callout.vue';
+import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 
 interface Props {
 	formData: AddressFormData;
 	showError: AddressValidity;
 	countries: Country[];
 	postCodeValidation: string;
+	receiptModel: ReceiptModel;
+	addressType: AddressTypeModel;
+	isCompany: boolean;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'field-changed' ] );
+const emit = defineEmits( [ 'field-changed', 'company-toggled' ] );
 
 const store = useStore();
-const addressType = useAddressTypeModel( store );
 
 const showAddressTypeError = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 const countryWasRestored = ref<boolean>( false );
+const isCompanyModel = useFieldModel<boolean>( () => props.isCompany, props.isCompany );
 
-const isCompany = ref<boolean>( addressType.value === AddressTypeModel.COMPANY_WITH_CONTACT );
+const clearAddress = (): void => {
+	isCompanyModel.value = false;
+	emit( 'company-toggled', false );
+
+	props.formData.country.value = '';
+	props.formData.street.value = '';
+	props.formData.postcode.value = '';
+	props.formData.city.value = '';
+	props.formData.companyName.value = '';
+};
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {
@@ -128,10 +150,6 @@ const onCountryFieldChanged = ( country: Country | undefined ) => {
 
 onBeforeMount( () => {
 	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
-} );
-
-watch( isCompany, ( newValue: boolean ) => {
-	addressType.value = newValue ? AddressTypeModel.COMPANY_WITH_CONTACT : AddressTypeModel.PERSON;
 } );
 
 </script>

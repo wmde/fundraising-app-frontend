@@ -95,7 +95,7 @@ describe( 'AddressForms.vue', () => {
 	it( 'sets address field in store when it receives field-changed event', async () => {
 		const store = createStore();
 		store.dispatch = jest.fn();
-		const expectedAction = action( 'address', 'setAddressField' );
+		const expectedAction = action( 'address', 'setAndValidateAddressField' );
 		const firstNameValue = 'Vuetiful';
 		const wrapper = getWrapper( AddressTypeModel.PERSON, store );
 
@@ -129,7 +129,7 @@ describe( 'AddressForms.vue', () => {
 
 		await wrapper.find( '#person-email' ).setValue( testEmail );
 
-		const expectedAction = action( 'address', 'setAddressField' );
+		const expectedAction = action( 'address', 'setAndValidateAddressField' );
 		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
 		expect( store.dispatch ).toBeCalledWith( expectedAction, {
 			'name': 'email',

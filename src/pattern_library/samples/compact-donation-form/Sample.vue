@@ -12,7 +12,7 @@
 				<template v-if="!changePayment">
 					<p>Your donation helps keep free knowledge accessible to everyone. Thank you!</p>
 
-					<div class="alert-box repel" data-neutral>
+					<div class="callout repel" data-neutral>
 						<p>You will donate: <strong>€5 yearly</strong> with <strong>Direct Debit</strong></p>
 						<button class="link-button" @click="changePayment = true">Change Payment</button>
 					</div>

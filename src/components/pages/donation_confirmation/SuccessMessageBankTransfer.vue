@@ -6,10 +6,10 @@
 				<template #content><h1>{{ $t( 'donation_confirmation_topbox_payment_title_bank_transfer_alt' ) }}</h1></template>
 			</IconText>
 			<div class="switcher">
-				<AlertBox :is-borderless="true">
+				<Callout :is-borderless="true" class="flow">
 					<h2> {{ $t( 'donation_confirmation_payment_bank_transfer_details' ) }} </h2>
 					<BankData :bank-transfer-code="donation.bankTransferCode" :bank-transfer-amount="formattedAmount" />
-				</AlertBox>
+				</Callout>
 				<div class="flow">
 					<p>{{ donationSummaryMessage }}</p>
 					<p v-html="$t( 'donation_confirmation_reminder_bank_transfer', { bankTransferCode: donation.bankTransferCode } )"></p>
@@ -30,7 +30,7 @@ import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import { useI18n } from 'vue-i18n';
 import IconText from '@src/components/patterns/IconText.vue';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
-import AlertBox from '@src/components/patterns/AlertBox.vue';
+import Callout from '@src/components/patterns/Callout.vue';
 
 interface Props {
 	donation: Donation;

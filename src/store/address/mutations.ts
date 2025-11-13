@@ -25,6 +25,9 @@ export const mutations: MutationTree<AddressState> = {
 			state.validity.addressType = Validity.INVALID;
 		}
 	},
+	validateRequiredFields( state: AddressState ): void {
+		console.log( state.requiredFields[ state.addressType ] );
+	},
 	/**
 	 * This is a hacky workaround for test C24_WMDE_Desktop_DE_01 if we move to that style of form we
 	 * need to add proper store fields to handle it, if not then we should delete this
