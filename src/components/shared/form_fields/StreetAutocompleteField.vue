@@ -9,7 +9,7 @@
 						name="street"
 						v-model="streetNameModel"
 						:id="inputIdStreetName"
-						autocomplete="country"
+						autocomplete="street-address"
 						:placeholder="$t( 'form_for_example', { example: $t( 'donation_form_street_name_placeholder' ) } )"
 						aria-controls="streets"
 						:aria-invalid="showError"
