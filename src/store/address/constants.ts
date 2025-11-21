@@ -5,6 +5,10 @@ export interface AddressRequirements {
 	[ key: number ]: string[];
 }
 
+export interface DefaultFields {
+	[key: string]: string;
+}
+
 export const REQUIRED_FIELDS: AddressRequirements = {
 	[ AddressTypeModel.PERSON ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],
 	[ AddressTypeModel.COMPANY ]: [ 'companyName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],
@@ -29,4 +33,8 @@ export const REQUIRED_FIELDS_ADDRESS_UPDATE: AddressRequirements = {
 	[ AddressTypeModel.PERSON ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country' ],
 	[ AddressTypeModel.COMPANY ]: [ 'companyName', 'street', 'postcode', 'city', 'country' ],
 	[ AddressTypeModel.COMPANY_WITH_CONTACT ]: [ 'salutation', 'firstName', 'lastName', 'companyName', 'street', 'postcode', 'city', 'country' ],
+};
+
+export const DEFAULT_FIELDS: DefaultFields = {
+	country: 'DE',
 };

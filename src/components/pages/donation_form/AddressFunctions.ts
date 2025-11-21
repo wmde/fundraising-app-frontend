@@ -93,14 +93,14 @@ export const useAddressFunctions = ( props: AddressFunctionParams, store: any ) 
 
 	// methods
 	function onFieldChange( fieldName: string ): void {
-		store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
+		store.dispatch( action( 'address', 'setAndValidateAddressField' ), formData[ fieldName ] );
 	}
 
 	function onAutofill( autofilledFields: { [key: string]: string } ): void {
 		Object.keys( autofilledFields ).forEach( key => {
 			const fieldName = camelizeName( key );
 			if ( formData[ fieldName ] ) {
-				store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
+				store.dispatch( action( 'address', 'setAndValidateAddressField' ), formData[ fieldName ] );
 			}
 		} );
 	}

@@ -1,6 +1,7 @@
 import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
 import { createStore, StoreKey } from '@src/store/donation_store';
+// import { createStore as createStoreOptionalAddress } from '@src/store/donation_store_optional_address';
 
 import CampaignParameters from '@src/util/CampaignParameters';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
@@ -23,6 +24,8 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
 
+// const COMPACT_FORM_TEST = 'campaigns.address_pages.test_03_compact_no_anon';
+
 interface DonationFormModel {
 	initialFormValues: any;
 	presetAmounts: Array<string>;
@@ -41,9 +44,11 @@ const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
 const pageData = new PageDataInitializer<DonationFormModel>( '#appdata' );
 const dataPersister = createDataPersister( new LocalStorageRepository(), FORM_NAMESPACE, pageData.applicationVars.userDataKey );
-const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
-const campaignParameters = new CampaignParameters( new URLSearchParams( window.location.search ) );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
+const campaignParameters = new CampaignParameters( new URLSearchParams( window.location.search ) );
+
+// const createStoreFunction = featureFetcher.getFeatures().includes( COMPACT_FORM_TEST ) ? createStoreOptionalAddress : createStore;
+const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 
 dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [

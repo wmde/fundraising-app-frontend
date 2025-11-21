@@ -292,10 +292,10 @@ describe( 'Address', () => {
 		} );
 	} );
 
-	describe( 'Actions/setAddressField', () => {
+	describe( 'Actions/setAndValidateAddressField', () => {
 		it( 'commits to mutation [SET_ADDRESS_FIELD] and [VALIDATE_INPUT] with the correct field', () => {
 			const commit = jest.fn(),
-				action = actions.setAddressField as any,
+				action = actions.setAndValidateAddressField as any,
 				field = {
 					name: 'postcode',
 					value: '',
@@ -315,7 +315,7 @@ describe( 'Address', () => {
 
 		it( 'trims values before it commits to mutation', () => {
 			const commit = jest.fn(),
-				action = actions.setAddressField as any,
+				action = actions.setAndValidateAddressField as any,
 				field = {
 					name: 'postcode',
 					value: '     12345      ',
