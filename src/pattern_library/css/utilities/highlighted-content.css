@@ -1,0 +1,7 @@
+.highlighted-content-text {
+	color: var( --color-blue-600 );
+}
+
+.highlighted-icon {
+	--icon-color: var( --color-blue-600 );
+}

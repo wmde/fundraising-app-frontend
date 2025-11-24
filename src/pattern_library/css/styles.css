@@ -12,6 +12,7 @@
 @import "utilities/link-button.css";
 @import "utilities/sticky.css";
 @import "utilities/visually-hidden.css";
+@import "utilities/highlighted-content.css";
 
 @import "compositions/cluster.css";
 @import "compositions/flow.css";
