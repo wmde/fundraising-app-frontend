@@ -12,8 +12,13 @@
 	<ContentCard :is-sidebar-card="true">
 		<template #content>
 			<IconText :is-small-heading="true">
-				<template #icon><BankIcon/></template>
-				<template #content><h2>{{ $t('bank_data_title') }}</h2></template>
+				<template #icon><BankIcon class="highlighted-icon"/></template>
+				<template #content>
+					<h2>
+						<span class="highlighted-content-text">{{ $t('bank_data_title_new_prefix') }}</span>
+						{{ $t('bank_data_title') }}
+					</h2>
+				</template>
 			</IconText>
 			<BankData/>
 		</template>

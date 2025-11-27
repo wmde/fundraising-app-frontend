@@ -67,3 +67,16 @@ If you hide an element with `display: none`, it will also hide it from assistive
     You can’t see me, but a screen reader can still access me
 </p>
 ```
+
+## Content highlighting (for icons, text)
+
+For highlighting certain words, sentences or icons in a body of text or content section.
+
+```html
+<p class="highlighted-content-text">
+    You can’t see me, but a screen reader can still access me
+</p>
+```
+```html
+<FooBarIcon class="highlighted-icon"/>
+```

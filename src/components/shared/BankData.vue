@@ -1,7 +1,7 @@
 <template>
 	<ul class="bank-data-list">
 		<li><strong>{{ $t( 'bank_data_account_owner' ) }}:</strong> {{ $t( 'bank_data_operator_account_owner' ) }}</li>
-		<li>
+		<li class="highlighted-content-text">
 			<strong>{{ $t( 'bank_data_iban')  }}:</strong>
 			<span
 					class="spacer"
