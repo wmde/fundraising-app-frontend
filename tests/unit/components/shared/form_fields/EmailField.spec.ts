@@ -133,6 +133,10 @@ describe( 'EmailField.vue', () => {
 			await wrapper.setProps( { showError: true } );
 
 			expect( wrapper.find( '#email' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'email-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'extra-label' } );
+
+			expect( wrapper.find( '#email' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'email-error extra-label' );
 		} );
 	} );
 } );

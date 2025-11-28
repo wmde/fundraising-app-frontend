@@ -77,6 +77,7 @@ interface Props {
 	errorMessage: String;
 	postcode: string;
 	isMaxWidthField?: boolean;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = defineProps<Props>();
@@ -97,7 +98,8 @@ const ariaDescribedby = useAriaDescribedby(
 	props.inputId,
 	computed<boolean>( () => false ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 
 const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );

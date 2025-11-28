@@ -56,6 +56,7 @@ interface Props {
 	autocomplete?: string;
 	autofocus?: boolean;
 	isMaxWidthField?: boolean;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = withDefaults( defineProps<Props>(), {
@@ -73,7 +74,8 @@ const ariaDescribedby = useAriaDescribedby(
 	props.inputId,
 	computed<boolean>( () => !!props.helpText ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 
 const placeholderText = computed( (): string => {

@@ -100,7 +100,7 @@
 						<input type="text" name="bank-code" id="bank-code" placeholder="e.g., 50012345">
 						<p class="field-container__error-text">Please enter a valid Bank Code.</p>
 					</div>
-					<div class="alert-box flow" data-error>
+					<div class="callout flow" data-error>
 						<p><strong>Please fix the following errors.</strong></p>
 						<ul>
 							<li><a href="#">Please enter a valid account number.</a></li>

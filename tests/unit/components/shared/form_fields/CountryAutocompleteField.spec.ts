@@ -319,6 +319,10 @@ describe( 'CountryAutocompleteField.vue', () => {
 			await wrapper.setProps( { showError: true } );
 
 			expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'country-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'extra-label' } );
+
+			expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'country-error extra-label' );
 		} );
 
 		it( 'sets aria-activedescendant', async () => {

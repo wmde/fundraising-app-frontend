@@ -7,7 +7,7 @@
 					name="info"
 					:input-id="inputId"
 					@update:modelValue="onUpdateModel"
-					described-by="mailing-list-hint"
+					aria-describedby="mailing-list-hint"
 				>
 					<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
 				</CheckboxSingleFormInput>

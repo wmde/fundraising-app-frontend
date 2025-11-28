@@ -23,7 +23,7 @@ interface Props {
 	hasError?: boolean;
 	disabled?: boolean;
 	required?: boolean;
-	ariaDescribedby?: string;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = withDefaults( defineProps<Props>(), {
