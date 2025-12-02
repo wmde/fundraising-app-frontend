@@ -141,7 +141,8 @@ describe( 'AddressFields.vue', () => {
 		await wrapper.find( '#street' ).setValue( 'Sesame' );
 		await wrapper.find( '#building-number' ).setValue( '42' );
 
-		await wrapper.find( '.callout button' ).trigger( 'click' );
+		const clearFormButton = wrapper.find( '.callout button' );
+		await clearFormButton.trigger( 'click' );
 
 		expect( wrapper.emitted( 'clear-address' ).length ).toStrictEqual( 1 );
 		expect( wrapper.emitted( 'update:is-company' ).length ).toStrictEqual( 1 );

@@ -107,7 +107,7 @@ const slots = useSlots();
 const streetNameModel = ref<string>( '' );
 const buildingNumberModel = ref<string>( '' );
 const buildingNumberWasBlurred = ref<boolean>( false );
-const showBuildingNumberWarning = computed( () => buildingNumberWasBlurred.value && buildingNumberModel.value === '' );
+const showBuildingNumberWarning = computed( () => streetNameModel.value !== '' && buildingNumberWasBlurred.value && buildingNumberModel.value === '' );
 const autocompleteIsActive = ref<Boolean>( false );
 const { streets, fetchStreetsForPostcode } = useStreetsResource( inject<StreetAutocompleteResource>( 'streetAutocompleteResource', NullStreetAutocompleteResource ) );
 const activeStreet = ref<string>();
