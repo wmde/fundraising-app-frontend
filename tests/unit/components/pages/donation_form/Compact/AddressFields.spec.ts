@@ -28,7 +28,11 @@ const initialValues: InitialAddressValues = {
 
 describe( 'AddressFields.vue', () => {
 
+	let trackEvent: () => void;
+
 	const getWrapper = ( store: Store<any> = createStore() ): VueWrapper<any> => {
+		trackEvent = jest.fn();
+
 		return mount( AddressFields, {
 			props: {
 				formData: {
@@ -63,6 +67,9 @@ describe( 'AddressFields.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					trackEvent: trackEvent,
+				},
 			},
 		} );
 	};
@@ -121,7 +128,7 @@ describe( 'AddressFields.vue', () => {
 		jest.restoreAllMocks();
 	} );
 
-	it( 'emits is company change', async () => {
+	it( 'emits is-company change', async () => {
 		const wrapper = getWrapper();
 
 		await wrapper.find( '#is-company' ).trigger( 'change' );
@@ -129,7 +136,7 @@ describe( 'AddressFields.vue', () => {
 		expect( wrapper.emitted( 'update:is-company' ).length ).toStrictEqual( 1 );
 	} );
 
-	it( 'clears the address', async () => {
+	it( 'clears the address when the button for clearing address is clicked', async () => {
 		const store = createStore();
 		const wrapper = getWrapper( store );
 
@@ -157,5 +164,7 @@ describe( 'AddressFields.vue', () => {
 		expect( store.state.address.values.postcode ).toStrictEqual( '' );
 		expect( store.state.address.values.city ).toStrictEqual( '' );
 		expect( store.state.address.values.street ).toStrictEqual( '' );
+
+		expect( trackEvent ).toHaveBeenCalledWith( 'address-form-cleared', 'Compact Donation Form', 'button click by donor' );
 	} );
 } );

@@ -80,6 +80,7 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 				plugins: [ store ?? createStore() ],
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
+					trackEvent: () => {},
 				},
 			},
 			attachTo: document.body,

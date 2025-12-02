@@ -47,6 +47,9 @@ describe( 'PersonalDataSection.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					trackEvent: () => {},
+				},
 			},
 		} );
 	};
@@ -61,7 +64,7 @@ describe( 'PersonalDataSection.vue', () => {
 		expect( store.state.address.validity.firstName ).toStrictEqual( Validity.VALID );
 	} );
 
-	it( 'emits the receipt needed event', async () => {
+	it( 'emits the receipt-needed event', async () => {
 		const wrapper = getWrapper();
 
 		await wrapper.find( '#donation-receipt' ).setValue( true );
@@ -69,7 +72,7 @@ describe( 'PersonalDataSection.vue', () => {
 		expect( wrapper.emitted( 'receipt-needed-toggled' ).length ).toStrictEqual( 1 );
 	} );
 
-	it( 'updates the address type when receipt needed changes', async () => {
+	it( 'updates the address type when receiptNeeded changes', async () => {
 		const store = createStore();
 		const wrapper = getWrapper( store );
 
@@ -80,7 +83,7 @@ describe( 'PersonalDataSection.vue', () => {
 		expect( store.state.address.addressType ).toStrictEqual( AddressTypeModel.PERSON );
 	} );
 
-	it( 'updates the address type when is company changes', async () => {
+	it( 'updates the address type when is-company changes', async () => {
 		const store = createStore();
 		const wrapper = getWrapper( store );
 

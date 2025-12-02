@@ -22,8 +22,8 @@ export function trackFormValidationErrors( formName: string, formFieldName: stri
 	_paq.push( [ 'trackEvent', 'Form Field Invalid', formName, formFieldName ] );
 }
 
-export function trackEvent( eventName: string, ...params: Array<string> ) {
-	_paq.push( [ 'trackEvent', eventName, ...params ] );
+export function trackEvent( eventName: string, category: string, action: string ) {
+	_paq.push( [ 'trackEvent', eventName, category, action ] );
 }
 
 export function trackGoal( goalID: number, amount?: number ) {

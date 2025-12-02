@@ -21,6 +21,7 @@ import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
+import { trackEvent } from '@src/util/tracking';
 
 interface DonationFormModel {
 	initialFormValues: any;
@@ -105,6 +106,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			pageData.applicationVars.urls.validateIban,
 			pageData.applicationVars.urls.convertBankData
 		) );
+		app.provide( 'trackEvent', trackEvent );
 		app.provide( StoreKey, store );
 		app.use( store );
 		app.mount( '#app' );

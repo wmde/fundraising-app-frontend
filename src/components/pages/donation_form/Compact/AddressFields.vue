@@ -97,7 +97,7 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
 import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, inject, onBeforeMount, ref } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
@@ -119,7 +119,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'field-changed', 'update:is-company', 'clear-address' ] );
-
+const trackEvent = inject<( eventName: string, category: string, action: string ) => void>( 'trackEvent' );
 const store = useStore();
 
 const showAddressTypeError = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
@@ -145,6 +145,8 @@ const clearAddress = (): void => {
 	emit( 'field-changed', 'street' );
 	emit( 'field-changed', 'postcode' );
 	emit( 'field-changed', 'city' );
+
+	trackEvent( 'address-form-cleared', 'Compact Donation Form', 'button click by donor' );
 };
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
