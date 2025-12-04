@@ -66,6 +66,10 @@ describe( 'SelectField.vue', () => {
 			await wrapper.setProps( { showError: true } );
 
 			expect( wrapper.find( '#select' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'select-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'describedby-label' } );
+
+			expect( wrapper.find( '#select' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'select-error describedby-label' );
 		} );
 	} );
 } );

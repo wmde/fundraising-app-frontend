@@ -13,13 +13,19 @@ import type { Salutation } from '@src/view_models/Salutation';
 import { salutationValueTranslations } from '@src/view_models/salutationValueTranslations';
 
 export const actions = {
+	setAddressField( context: ActionContext<AddressState, any>, field: InputField ): void {
+		field.value = field.value.trim();
+		context.commit( 'SET_ADDRESS_FIELD', field );
+	},
 	validateAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
 		context.commit( 'VALIDATE_INPUT', field );
 	},
-	setAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
-		field.value = field.value.trim();
-		context.commit( 'SET_ADDRESS_FIELD', field );
-		context.commit( 'VALIDATE_INPUT', field );
+	setAndValidateAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
+		context.dispatch( 'setAddressField', field );
+		context.dispatch( 'validateAddressField', field );
+	},
+	setFieldValidity( context: ActionContext<AddressState, any>, payload: { field: InputField; validity: Validity } ) {
+		context.commit( 'SET_FIELD_VALIDITY', payload );
 	},
 	validateAddress( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
 		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );
@@ -44,9 +50,10 @@ export const actions = {
 	/**
 	 * This is a hacky workaround for test C24_WMDE_Desktop_DE_01 if we move to that style of form we
 	 * need to add proper store fields to handle it, if not then we should delete this
+	 * Update 2025 campaign: This form is still being used for email campaigns.
 	 */
 	validateDonationReceiptAddress( context: ActionContext<AddressState, any>, payload: { receiptNeeded: boolean | null; validateAddressUrl: string } ) {
-		context.commit( 'markEmptyDonationReceiptFieldsAsInvalid', payload.receiptNeeded );
+		context.commit( 'MARK_EMPTY_DONATION_FIELDS_AS_INVALID', payload.receiptNeeded );
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );
 		}
@@ -64,6 +71,31 @@ export const actions = {
 			return validationResult.data;
 		} );
 
+	},
+	/**
+	 * We're performing more hackery here as we need to validate the different donation form address fields
+	 * depending on the address type
+	 */
+	validateAddressOnCompactForm( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
+		context.commit( 'RESET_DYNAMIC_FIELDS_VALIDATION' );
+		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );
+
+		if ( !context.getters.requiredFieldsAreValid ) {
+			return Promise.resolve( { status: 'ERR', messages: [] } );
+		}
+
+		context.commit( 'BEGIN_ADDRESS_VALIDATION' );
+		const bodyFormData = new FormData();
+		Object.keys( context.state.values ).forEach(
+			field => bodyFormData.append( field, context.state.values[ field ] )
+		);
+		bodyFormData.append( 'addressType', addressTypeName( context.state.addressType ) );
+		return axios.post( validateAddressUrl, bodyFormData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
+			context.commit( 'FINISH_ADDRESS_VALIDATION', validationResult.data );
+			return validationResult.data;
+		} );
 	},
 	validateEmail( context: ActionContext<AddressState, any>, validateEmailUrl: string ) {
 		if ( !context.getters.requiredFieldsAreValid ) {

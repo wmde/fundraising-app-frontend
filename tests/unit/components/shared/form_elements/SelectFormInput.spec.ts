@@ -18,33 +18,45 @@ describe( 'SelectFormInput.vue', () => {
 		} );
 	};
 
-	it( 'sets disabled', async () => {
-		const wrapper = getWrapper();
+	describe( 'functionality tests', () => {
+		it( 'sets disabled', async () => {
+			const wrapper = getWrapper();
 
-		expect( wrapper.find( 'select' ).attributes( 'disabled' ) ).toBeUndefined();
+			expect( wrapper.find( 'select' ).attributes( 'disabled' ) ).toBeUndefined();
 
-		await wrapper.setProps( { disabled: true } );
+			await wrapper.setProps( { disabled: true } );
 
-		expect( wrapper.find( 'select' ).attributes( 'disabled' ) ).toBeDefined();
+			expect( wrapper.find( 'select' ).attributes( 'disabled' ) ).toBeDefined();
+		} );
+
+		it( 'emits events', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find( 'select' ).setValue( 'bingo' );
+
+			expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
+			expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( 'bingo' );
+		} );
+
+		it( 'updates value on model change', async () => {
+			const wrapper = getWrapper();
+			const select = wrapper.find<HTMLSelectElement>( 'select' );
+
+			expect( select.element.value ).toStrictEqual( 'rolly' );
+
+			await wrapper.setProps( { modelValue: 'bingo' } );
+
+			expect( select.element.value ).toStrictEqual( 'bingo' );
+		} );
 	} );
 
-	it( 'emits events', async () => {
-		const wrapper = getWrapper();
+	describe( 'accessibility tests', () => {
+		it( 'sets aria-describedby', async () => {
+			const wrapper = getWrapper();
 
-		await wrapper.find( 'select' ).setValue( 'bingo' );
+			await wrapper.setProps( { ariaDescribedby: 'describedby-label' } );
 
-		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
-		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( 'bingo' );
-	} );
-
-	it( 'updates value on model change', async () => {
-		const wrapper = getWrapper();
-		const select = wrapper.find<HTMLSelectElement>( 'select' );
-
-		expect( select.element.value ).toStrictEqual( 'rolly' );
-
-		await wrapper.setProps( { modelValue: 'bingo' } );
-
-		expect( select.element.value ).toStrictEqual( 'bingo' );
+			expect( wrapper.find( 'select' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'describedby-label' );
+		} );
 	} );
 } );

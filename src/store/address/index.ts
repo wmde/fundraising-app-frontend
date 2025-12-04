@@ -5,9 +5,9 @@ import { actions } from '@src/store/address/actions';
 import { getters } from '@src/store/address/getters';
 import { mutations } from '@src/store/address/mutations';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import type { AddressRequirements } from '@src/store/address/constants';
+import { AddressRequirements, DefaultFields } from '@src/store/address/constants';
 
-export default function ( requiredFields: AddressRequirements ): Module<AddressState, any> {
+export default function ( requiredFields: AddressRequirements, defaultFields: DefaultFields ): Module<AddressState, any> {
 	const state: AddressState = {
 		serverSideValidationCount: 0,
 		addressType: AddressTypeModel.UNSET,
@@ -15,16 +15,16 @@ export default function ( requiredFields: AddressRequirements ): Module<AddressS
 		receipt: true,
 		requiredFields: requiredFields,
 		values: {
-			salutation: '',
-			title: '',
-			firstName: '',
-			lastName: '',
-			companyName: '',
-			street: '',
-			postcode: '',
-			city: '',
-			country: 'DE',
-			email: '',
+			salutation: defaultFields.salutation ?? '',
+			title: defaultFields.title ?? '',
+			firstName: defaultFields.firstName ?? '',
+			lastName: defaultFields.lastName ?? '',
+			companyName: defaultFields.companyName ?? '',
+			street: defaultFields.street ?? '',
+			postcode: defaultFields.postcode ?? '',
+			city: defaultFields.city ?? '',
+			country: defaultFields.country ?? '',
+			email: defaultFields.email ?? '',
 		},
 		validity: {
 			salutation: Validity.INCOMPLETE,

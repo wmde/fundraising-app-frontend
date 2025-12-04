@@ -1,7 +1,6 @@
 import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
 import { createStore, StoreKey } from '@src/store/donation_store';
-
 import CampaignParameters from '@src/util/CampaignParameters';
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
 import PageDataInitializer from '@src/util/page_data_initializer';
@@ -22,6 +21,7 @@ import { ApiCityAutocompleteResource } from '@src/api/CityAutocompleteResource';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { ApiStreetAutocompleteResource } from '@src/api/StreetAutocompleteResource';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
+import { trackEvent } from '@src/util/tracking';
 
 interface DonationFormModel {
 	initialFormValues: any;
@@ -41,9 +41,9 @@ const PAGE_IDENTIFIER = 'donation-form';
 const FORM_NAMESPACE = 'donation_form';
 const pageData = new PageDataInitializer<DonationFormModel>( '#appdata' );
 const dataPersister = createDataPersister( new LocalStorageRepository(), FORM_NAMESPACE, pageData.applicationVars.userDataKey );
-const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
-const campaignParameters = new CampaignParameters( new URLSearchParams( window.location.search ) );
 const featureFetcher = createFeatureFetcher( pageData.selectedBuckets, pageData.activeFeatures );
+const campaignParameters = new CampaignParameters( new URLSearchParams( window.location.search ) );
+const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
 
 dataPersister.initialize( persistenceItems ).then( () => {
 	Promise.all( [
@@ -106,6 +106,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 			pageData.applicationVars.urls.validateIban,
 			pageData.applicationVars.urls.convertBankData
 		) );
+		app.provide( 'trackEvent', trackEvent );
 		app.provide( StoreKey, store );
 		app.use( store );
 		app.mount( '#app' );

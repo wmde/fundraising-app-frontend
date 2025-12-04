@@ -9,6 +9,7 @@
 				v-model="fieldModel"
 				@update:modelValue="onUpdateModel"
 				:input-id="incentive.id"
+				:aria-describedby="ariaDescribedby"
 			>
 				{{ incentive.label}}
 			</CheckboxMultipleFormInput>
@@ -27,6 +28,7 @@ interface Props {
 	incentiveFormFieldOptions: CheckboxFormOption[];
 	modelValue: string[];
 	isMaxWidthField?: boolean;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = defineProps<Props>();

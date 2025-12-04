@@ -14,33 +14,44 @@ describe( 'CheckboxToggle.vue', () => {
 		} );
 	};
 
-	it( 'sets disabled', async () => {
-		const wrapper = getWrapper( false );
+	describe( 'functionality tests', () => {
+		it( 'sets disabled', async () => {
+			const wrapper = getWrapper( false );
 
-		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'disabled' ) ).toBeUndefined();
+			expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'disabled' ) ).toBeUndefined();
 
-		await wrapper.setProps( { disabled: true } );
+			await wrapper.setProps( { disabled: true } );
 
-		expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'disabled' ) ).toBeDefined();
+			expect( wrapper.find<HTMLInputElement>( 'input' ).attributes( 'disabled' ) ).toBeDefined();
+		} );
+
+		it( 'emits on value change', async () => {
+			const wrapper = getWrapper( true );
+
+			await wrapper.find( 'input' ).trigger( 'change' );
+
+			expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
+			expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( true );
+		} );
+
+		it( 'updates value on model change', async () => {
+			const wrapper = getWrapper( true );
+			const radio = wrapper.find<HTMLInputElement>( 'input' );
+
+			expect( radio.element.checked ).toBeTruthy();
+
+			await wrapper.setProps( { modelValue: false } );
+
+			expect( radio.element.checked ).toBeFalsy();
+		} );
 	} );
+	describe( 'accessibility tests', () => {
+		it( 'sets aria-describedby', async () => {
+			const wrapper = getWrapper( false );
 
-	it( 'emits on value change', async () => {
-		const wrapper = getWrapper( true );
+			await wrapper.setProps( { ariaDescribedby: 'describedby-label' } );
 
-		await wrapper.find( 'input' ).trigger( 'change' );
-
-		expect( wrapper.emitted( 'update:modelValue' ).length ).toStrictEqual( 1 );
-		expect( wrapper.emitted( 'update:modelValue' )[ 0 ][ 0 ] ).toStrictEqual( true );
-	} );
-
-	it( 'updates value on model change', async () => {
-		const wrapper = getWrapper( true );
-		const radio = wrapper.find<HTMLInputElement>( 'input' );
-
-		expect( radio.element.checked ).toBeTruthy();
-
-		await wrapper.setProps( { modelValue: false } );
-
-		expect( radio.element.checked ).toBeFalsy();
+			expect( wrapper.find( 'input' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'describedby-label' );
+		} );
 	} );
 } );

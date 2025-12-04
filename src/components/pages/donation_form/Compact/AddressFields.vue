@@ -1,17 +1,19 @@
 <template>
 	<CheckboxField
-		v-model="isCompany"
+		v-model="isCompanyModel"
 		name="is-company"
 		id="address-form-is-company"
 		input-id="is-company"
 		:error-message="$t( 'donation_form_section_address_error' )"
 		:show-error="showAddressTypeError"
+		:aria-describedby="describedBy"
+		@field-changed="onIsCompanyToggled"
 	>
 		<span>{{ $t( 'donation_form_behalf_of_company' ) }}</span>
 	</CheckboxField>
 
 	<TextField
-		v-if="isCompany"
+		v-if="isCompanyModel"
 		name="companyName"
 		id="address-form-company-name"
 		input-id="company-name"
@@ -21,6 +23,7 @@
 		autocomplete="organization"
 		:label="$t( 'donation_form_companyname_label' )"
 		:placeholder="$t( 'donation_form_companyname_placeholder' )"
+		:aria-describedby="describedBy"
 		@field-changed="$emit('field-changed', 'companyName')"
 	/>
 
@@ -33,6 +36,7 @@
 			:countries="countries"
 			:was-restored="countryWasRestored"
 			:show-error="showError.country"
+			:aria-describedby="describedBy"
 			@field-changed="onCountryFieldChanged"
 		/>
 
@@ -48,6 +52,7 @@
 			:label="$t( 'donation_form_zip_label' )"
 			:placeholder="$t( 'donation_form_zip_placeholder' )"
 			placeholder-warning="donation_form_zip_placeholder_warning"
+			:aria-describedby="describedBy"
 			@field-changed="$emit('field-changed', 'postcode')"
 		/>
 
@@ -60,6 +65,7 @@
 			:label="$t( 'donation_form_city_label' )"
 			:error-message="$t( 'donation_form_city_error' )"
 			:postcode="formData.postcode.value"
+			:aria-describedby="describedBy"
 			@field-changed="$emit('field-changed', 'city' )"
 		/>
 	</div>
@@ -74,43 +80,74 @@
 			v-model="formData.street.value"
 			:postcode="formData.postcode.value"
 			:show-error="showError.street"
+			:aria-describedby="describedBy"
 			@field-changed="$emit('field-changed', 'street' )"
 		/>
 	</div>
+
+	<Callout type="neutral" :has-action="true" v-if="!receiptNeeded">
+		<p id="address-notice">{{ $t( 'donation_form_optional_address_message' ) }}</p>
+		<button type="button" class="link-button" @click.prevent="clearAddress">{{ $t( 'donation_form_clear_all_address' ) }}</button>
+	</Callout>
 </template>
 
 <script setup lang="ts">
 
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
-import { useAddressTypeModel } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeModel';
 import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, inject, onBeforeMount, ref } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 import type { Country } from '@src/view_models/Country';
 import { Validity } from '@src/view_models/Validity';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
+import Callout from '@src/components/patterns/Callout.vue';
+import { useFieldModel } from '@src/components/shared/form_fields/useFieldModel';
 
 interface Props {
 	formData: AddressFormData;
 	showError: AddressValidity;
 	countries: Country[];
 	postCodeValidation: string;
+	receiptNeeded: boolean;
+	addressType: AddressTypeModel;
+	isCompany: boolean;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'field-changed' ] );
-
+const emit = defineEmits( [ 'field-changed', 'update:is-company', 'clear-address' ] );
+const trackEvent = inject<( eventName: string, category: string, action: string ) => void>( 'trackEvent' );
 const store = useStore();
-const addressType = useAddressTypeModel( store );
 
 const showAddressTypeError = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 const countryWasRestored = ref<boolean>( false );
+const isCompanyModel = useFieldModel<boolean>( () => props.isCompany, props.isCompany );
+const describedBy = computed<string>( () => props.addressType === AddressTypeModel.EMAIL ? 'address-notice' : '' );
 
-const isCompany = ref<boolean>( addressType.value === AddressTypeModel.COMPANY_WITH_CONTACT );
+const onIsCompanyToggled = (): void => {
+	emit( 'update:is-company', isCompanyModel.value );
+};
+
+const clearAddress = (): void => {
+	isCompanyModel.value = false;
+	onIsCompanyToggled();
+	emit( 'clear-address' );
+
+	props.formData.companyName.value = '';
+	props.formData.street.value = '';
+	props.formData.postcode.value = '';
+	props.formData.city.value = '';
+
+	emit( 'field-changed', 'companyName' );
+	emit( 'field-changed', 'street' );
+	emit( 'field-changed', 'postcode' );
+	emit( 'field-changed', 'city' );
+
+	trackEvent( 'address-form-cleared', 'Compact Donation Form', 'button click by donor' );
+};
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {
@@ -128,10 +165,6 @@ const onCountryFieldChanged = ( country: Country | undefined ) => {
 
 onBeforeMount( () => {
 	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
-} );
-
-watch( isCompany, ( newValue: boolean ) => {
-	addressType.value = newValue ? AddressTypeModel.COMPANY_WITH_CONTACT : AddressTypeModel.PERSON;
 } );
 
 </script>

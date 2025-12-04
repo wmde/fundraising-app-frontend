@@ -292,51 +292,61 @@ describe( 'Address', () => {
 		} );
 	} );
 
-	describe( 'Actions/setAddressField', () => {
+	describe( 'Actions/setAndValidateAddressField', () => {
 		it( 'commits to mutation [SET_ADDRESS_FIELD] and [VALIDATE_INPUT] with the correct field', () => {
-			const commit = jest.fn(),
-				action = actions.setAddressField as any,
-				field = {
-					name: 'postcode',
-					value: '',
-					pattern: '^[0-9]{4,5}$',
-					optionalField: false,
-				};
-			action( { commit }, field );
-			expect( commit ).toBeCalledWith(
-				'SET_ADDRESS_FIELD',
-				field
-			);
-			expect( commit ).toBeCalledWith(
-				'VALIDATE_INPUT',
-				field
-			);
-		} );
+			const dispatch = jest.fn();
+			const action = actions.setAndValidateAddressField as any;
+			const field = {
+				name: 'postcode',
+				value: '',
+				pattern: '^[0-9]{4,5}$',
+				optionalField: false,
+			};
 
+			action( { dispatch }, field );
+
+			expect( dispatch ).toHaveBeenCalledWith( 'setAddressField', field );
+			expect( dispatch ).toHaveBeenCalledWith( 'validateAddressField', field );
+		} );
+	} );
+
+	describe( 'Actions/setAddressField', () => {
 		it( 'trims values before it commits to mutation', () => {
-			const commit = jest.fn(),
-				action = actions.setAddressField as any,
-				field = {
-					name: 'postcode',
-					value: '     12345      ',
-					pattern: '^[0-9]{4,5}$',
-					optionalField: false,
-				},
-				trimmedField = {
-					name: 'postcode',
-					value: '12345',
-					pattern: '^[0-9]{4,5}$',
-					optionalField: false,
-				};
+			const commit = jest.fn();
+			const action = actions.setAddressField as any;
+			const field = {
+				name: 'postcode',
+				value: '     12345      ',
+				pattern: '^[0-9]{4,5}$',
+				optionalField: false,
+			};
+			const trimmedField = {
+				name: 'postcode',
+				value: '12345',
+				pattern: '^[0-9]{4,5}$',
+				optionalField: false,
+			};
+
 			action( { commit }, field );
-			expect( commit ).toBeCalledWith(
-				'SET_ADDRESS_FIELD',
-				trimmedField
-			);
-			expect( commit ).toBeCalledWith(
-				'VALIDATE_INPUT',
-				trimmedField
-			);
+
+			expect( commit ).toHaveBeenCalledWith( 'SET_ADDRESS_FIELD', trimmedField );
+		} );
+	} );
+
+	describe( 'Actions/validateAddressField', () => {
+		it( 'validates field', () => {
+			const commit = jest.fn();
+			const action = actions.validateAddressField as any;
+			const field = {
+				name: 'postcode',
+				value: '12345',
+				pattern: '^[0-9]{4,5}$',
+				optionalField: false,
+			};
+
+			action( { commit }, field );
+
+			expect( commit ).toHaveBeenCalledWith( 'VALIDATE_INPUT', field );
 		} );
 	} );
 

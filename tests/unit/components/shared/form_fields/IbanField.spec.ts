@@ -145,6 +145,10 @@ describe( 'IbanField.vue', () => {
 			await wrapper.setProps( { showError: true } );
 
 			expect( wrapper.find( '#iban' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'iban-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'extra-label' } );
+
+			expect( wrapper.find( '#iban' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'iban-error extra-label' );
 		} );
 	} );
 } );

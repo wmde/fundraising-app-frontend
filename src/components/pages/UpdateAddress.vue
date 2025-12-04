@@ -223,7 +223,7 @@ const validateForm = (): Promise<ValidationResult> => {
 };
 
 const onFieldChange = ( fieldName: string ): void => {
-	store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
+	store.dispatch( action( 'address', 'setAndValidateAddressField' ), formData[ fieldName ] );
 };
 
 const getAddressData = (): Address => {

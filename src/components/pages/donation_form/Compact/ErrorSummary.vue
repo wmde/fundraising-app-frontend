@@ -1,6 +1,6 @@
 <template>
 	<ErrorSummary
-		v-if="!receiptModel.receiptNeeded && addressType === AddressTypeModel.UNSET"
+		v-if="!receiptNeeded && addressType === AddressTypeModel.UNSET"
 		:is-visible="showErrorSummary"
 		:items="[
 			{
@@ -48,7 +48,7 @@
 		]"
 	/>
 	<ErrorSummary
-		v-if="( receiptModel.receiptNeeded && addressType === AddressTypeModel.UNSET ) || addressType === AddressTypeModel.PERSON"
+		v-if="( receiptNeeded && addressType === AddressTypeModel.UNSET ) || addressType === AddressTypeModel.PERSON"
 		:is-visible="showErrorSummary"
 		:items="[
 			{
@@ -249,20 +249,17 @@
 
 <script setup lang="ts">
 
-import { toRef } from 'vue';
 import { useStore } from 'vuex';
 import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
-import type { ReturnType as ReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 
 interface Props {
 	showErrorSummary: boolean;
 	addressType: AddressTypeModel;
-	receiptModel: ReceiptModel;
+	receiptNeeded: boolean;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const store = useStore();
-const receiptModel = toRef<ReceiptModel>( props.receiptModel );
 
 </script>

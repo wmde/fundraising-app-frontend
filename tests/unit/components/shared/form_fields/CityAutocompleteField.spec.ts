@@ -276,6 +276,10 @@ describe( 'CityAutocompleteField.vue', () => {
 			await wrapper.setProps( { showError: true } );
 
 			expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'city-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'extra-label' } );
+
+			expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'city-error extra-label' );
 		} );
 
 		it( 'sets aria-activedescendant', async () => {

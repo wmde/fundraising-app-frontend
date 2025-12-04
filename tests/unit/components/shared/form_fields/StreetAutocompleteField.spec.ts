@@ -159,6 +159,10 @@ describe( 'StreetAutocompleteField.vue', () => {
 
 			await wrapper.find( '#building-number' ).trigger( 'blur' );
 
+			expect( wrapper.html() ).not.toContain( 'donation_form_street_number_warning' );
+
+			await wrapper.find( '#street' ).setValue( 'sesame street' );
+
 			expect( wrapper.html() ).toContain( 'donation_form_street_number_warning' );
 
 			await wrapper.find( '#building-number' ).setValue( '42' );
@@ -300,6 +304,12 @@ describe( 'StreetAutocompleteField.vue', () => {
 			await wrapper.setProps( { showError: true } );
 
 			expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'street-error' );
+
+			await wrapper.setProps( { ariaDescribedby: 'extra-label' } );
+
+			expect( field.attributes( 'aria-describedby' ) ).toStrictEqual( 'street-error extra-label' );
+
+			expect( wrapper.find( '#building-number' ).attributes( 'aria-describedby' ) ).toStrictEqual( 'extra-label' );
 		} );
 
 		it( 'sets aria-activedescendant', async () => {

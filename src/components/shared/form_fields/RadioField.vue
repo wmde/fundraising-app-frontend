@@ -53,7 +53,7 @@ interface Props {
 	layoutType?: 'cluster' | 'grid';
 	gridLayout?: 'full' | '50-50' | 'halves' | 'thirds' | 'quarters';
 	autofocus?: boolean;
-	ariaDescribedby?: string;
+	ariaDescribedby?: string | undefined;
 	isMaxWidthField?: boolean;
 }
 
@@ -62,7 +62,6 @@ const props = withDefaults( defineProps<Props>(), {
 	layoutType: 'grid',
 	gridLayout: 'full',
 	showError: false,
-	ariaDescribedby: '',
 } );
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 
@@ -70,7 +69,8 @@ const ariaDescribedby = useAriaDescribedby(
 	props.name,
 	computed<boolean>( () => false ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => false )
+	computed<boolean>( () => false ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 
 const fieldModel = useFieldModel<string | number | boolean | null>( () => props.modelValue, props.modelValue );

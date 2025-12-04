@@ -7,7 +7,7 @@
 			:name="name"
 			:id="inputId"
 			:disabled="disabled ? true : null"
-			:aria-describedby="describedBy"
+			:aria-describedby="ariaDescribedby"
 		/>
 		<span><slot/></span>
 	</label>
@@ -21,7 +21,7 @@ interface Props {
 	name: string;
 	inputId: string;
 	disabled?: boolean;
-	describedBy?: string;
+	ariaDescribedby?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {

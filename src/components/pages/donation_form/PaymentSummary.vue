@@ -1,13 +1,14 @@
 <template>
-	<div class="alert-box repel" data-neutral>
+	<Callout type="transparent" class="repel">
 		<p v-html="props.paymentType ? summary : summaryWithoutPaymentType"/>
-		<a href="#" @click.prevent="$emit( 'show-payment-form' )"><strong>{{ $t('donation_form_section_back') }}</strong></a>
-	</div>
+		<a href="#" @click.prevent="$emit( 'show-payment-form' )">{{ $t('donation_form_section_back') }}</a>
+	</Callout>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
+import Callout from '@src/components/patterns/Callout.vue';
 
 interface Props {
 	amount: number;

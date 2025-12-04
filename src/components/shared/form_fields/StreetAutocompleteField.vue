@@ -59,6 +59,7 @@
 			@update:modelValue="onUpdateModel"
 			@field-changed="onBuildingNumberBlur"
 			:is-max-width-field="isMaxWidthField"
+			:aria-describedby="props.ariaDescribedby"
 		>
 			<template #message v-if="showBuildingNumberWarning">
 				{{ $t( 'donation_form_street_number_warning' ) }}
@@ -95,6 +96,7 @@ interface Props {
 	showError: boolean;
 	postcode: string;
 	isMaxWidthField?: boolean;
+	ariaDescribedby?: string | undefined;
 }
 
 const props = defineProps<Props>();
@@ -105,7 +107,7 @@ const slots = useSlots();
 const streetNameModel = ref<string>( '' );
 const buildingNumberModel = ref<string>( '' );
 const buildingNumberWasBlurred = ref<boolean>( false );
-const showBuildingNumberWarning = computed( () => buildingNumberWasBlurred.value && buildingNumberModel.value === '' );
+const showBuildingNumberWarning = computed( () => streetNameModel.value !== '' && buildingNumberWasBlurred.value && buildingNumberModel.value === '' );
 const autocompleteIsActive = ref<Boolean>( false );
 const { streets, fetchStreetsForPostcode } = useStreetsResource( inject<StreetAutocompleteResource>( 'streetAutocompleteResource', NullStreetAutocompleteResource ) );
 const activeStreet = ref<string>();
@@ -116,7 +118,8 @@ const ariaDescribedby = useAriaDescribedby(
 	props.inputIdStreetName,
 	computed<boolean>( () => false ),
 	computed<boolean>( () => props.showError ),
-	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message )
+	computed<boolean>( () => valueEqualsPlaceholderWarning.hasWarning.value || !!slots.message ),
+	computed<string | undefined>( () => props.ariaDescribedby )
 );
 const scrollIntoView = useAutocompleteScrollIntoViewOnFocus( props.scrollTargetId, autoscrollMaxWidth );
 
