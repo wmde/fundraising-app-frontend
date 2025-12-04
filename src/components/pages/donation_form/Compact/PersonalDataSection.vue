@@ -84,7 +84,7 @@ import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
-import { useAddressTypeManager } from '@src/components/pages/donation_form/Compact/useAddressTypeManager';
+import { useAddressTypeUpdater } from '@src/components/pages/donation_form/Compact/useAddressTypeUpdater';
 import { action } from '@src/store/util';
 import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
 import { Validity } from '@src/view_models/Validity';
@@ -118,7 +118,7 @@ const {
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
-const { updateAddressType } = useAddressTypeManager(
+const { updateAddressType } = useAddressTypeUpdater(
 	computed<boolean>( () => props.receiptNeeded ),
 	isCompany,
 	computed<AddressTypeModel>( () => props.addressType ),

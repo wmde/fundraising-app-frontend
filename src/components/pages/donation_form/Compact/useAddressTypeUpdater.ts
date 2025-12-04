@@ -7,7 +7,7 @@ import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_buil
 
 type ReturnType = { updateAddressType: () => Promise<void> };
 
-export function useAddressTypeManager(
+export function useAddressTypeUpdater(
 	receiptNeeded: Ref<boolean>,
 	isCompany: Ref<boolean | null>,
 	addressType: Ref<AddressTypeModel>,
