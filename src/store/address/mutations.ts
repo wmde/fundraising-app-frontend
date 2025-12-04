@@ -13,7 +13,7 @@ export const mutations: MutationTree<AddressState> = {
 			state.validity[ field.name ] = Helper.inputIsValid( field.value, field.pattern );
 		}
 	},
-	setFieldValidity( state: AddressState, payload: { field: InputField; validity: Validity } ) {
+	SET_FIELD_VALIDITY( state: AddressState, payload: { field: InputField; validity: Validity } ) {
 		state.validity[ payload.field.name ] = payload.validity;
 	},
 	/**
@@ -21,7 +21,7 @@ export const mutations: MutationTree<AddressState> = {
 	 * These fields can be marked as invalid on the form but not actually required so we need to reset
 	 * the validation state before we revalidate.
 	 */
-	resetDynamicFieldsValidation( state: AddressState ): void {
+	RESET_DYNAMIC_FIELDS_VALIDATION( state: AddressState ): void {
 		if ( state.addressType === AddressTypeModel.EMAIL ) {
 			state.validity.companyName = Validity.INCOMPLETE;
 			state.validity.country = Validity.INCOMPLETE;
@@ -44,7 +44,7 @@ export const mutations: MutationTree<AddressState> = {
 	 * This is a hacky workaround for test C24_WMDE_Desktop_DE_01 if we move to that style of form we
 	 * need to add proper store fields to handle it, if not then we should delete this
 	 */
-	markEmptyDonationReceiptFieldsAsInvalid( state: AddressState, receiptNeeded: boolean | null ) {
+	MARK_EMPTY_DONATION_FIELDS_AS_INVALID( state: AddressState, receiptNeeded: boolean | null ) {
 		const addressTypeRequirements = state.requiredFields[ receiptNeeded === null ? AddressTypeModel.EMAIL : state.addressType ];
 		state.requiredFields[ state.addressType ].forEach( ( fieldName: string ) => {
 			if ( state.validity[ fieldName ] === Validity.INCOMPLETE &&

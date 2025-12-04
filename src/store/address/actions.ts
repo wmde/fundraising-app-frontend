@@ -25,7 +25,7 @@ export const actions = {
 		context.dispatch( 'validateAddressField', field );
 	},
 	setFieldValidity( context: ActionContext<AddressState, any>, payload: { field: InputField; validity: Validity } ) {
-		context.commit( 'setFieldValidity', payload );
+		context.commit( 'SET_FIELD_VALIDITY', payload );
 	},
 	validateAddress( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
 		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );
@@ -53,7 +53,7 @@ export const actions = {
 	 * Update 2025 campaign: This form is still being used for email campaigns.
 	 */
 	validateDonationReceiptAddress( context: ActionContext<AddressState, any>, payload: { receiptNeeded: boolean | null; validateAddressUrl: string } ) {
-		context.commit( 'markEmptyDonationReceiptFieldsAsInvalid', payload.receiptNeeded );
+		context.commit( 'MARK_EMPTY_DONATION_FIELDS_AS_INVALID', payload.receiptNeeded );
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );
 		}
@@ -77,7 +77,7 @@ export const actions = {
 	 * depending on the address type
 	 */
 	validateAddressOnCompactForm( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
-		context.commit( 'resetDynamicFieldsValidation' );
+		context.commit( 'RESET_DYNAMIC_FIELDS_VALIDATION' );
 		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );
 
 		if ( !context.getters.requiredFieldsAreValid ) {
