@@ -11,6 +11,15 @@ type ReturnType = {
 	showErrorSummary: Ref<boolean>;
 };
 
+/**
+ * This handler works similarly to the regular submit handler, except it
+ * conditionally validates the address fields depending on the address type
+ *
+ * @param store
+ * @param isDirectDebit
+ * @param validateAddressUrl
+ * @param validateEmailUrl
+ */
 export function useDonationFormSubmitHandler(
 	store: Store<any>,
 	isDirectDebit: ComputedRef<any>,
