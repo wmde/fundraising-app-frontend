@@ -15,7 +15,7 @@
 				:payment-type="paymentSummary.paymentType"
 			/>
 
-			<div v-if="state === 'showSummaryAndPaymentType'" class="show-summary-and-payment-type">
+			<div v-if="state === 'showSummaryAndPaymentType'" class="show-summary-and-payment-type flow">
 				<PaymentSummary
 					@show-payment-form="state='showEntireForm'"
 					:amount="paymentSummary.amount"
