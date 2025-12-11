@@ -2,6 +2,30 @@
 	color: var( --color-blue-600 );
 }
 
+.highlighted-content-text[data-success] {
+	color: var( --color-green-500 );
+}
+
+.highlighted-content-text[data-warning] {
+	color: var( --color-yellow-300 );
+}
+
+.highlighted-content-text[data-error] {
+	color: var( --color-red-700 );
+}
+
 .highlighted-icon {
 	--icon-color: var( --color-blue-600 );
+}
+
+.highlighted-icon[data-success] {
+	--icon-color: var( --color-green-500 );
+}
+
+.highlighted-icon[data-warning] {
+	--icon-color: var( --color-yellow-300 );
+}
+
+.highlighted-icon[data-error] {
+	--icon-color: var( --color-red-700 );
 }
