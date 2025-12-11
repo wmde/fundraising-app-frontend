@@ -19,7 +19,8 @@
 }
 
 .content-card[data-sidebar-card] {
-	--flow-space: 0;
+	--flow-space: var( --space-3xs );
+
 	padding: 16px;
 	line-height: 1.5;
 }
