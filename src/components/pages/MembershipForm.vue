@@ -9,71 +9,67 @@
 							<span class="icon-text__icon">
 								<GlobeIcon class="highlighted-icon"/>
 							</span>
-							Fördermitgliedschaft wirkt
+							{{ $t('membership_form_detailed_info_box_heading') }}
 						</h1>
 					</template>
 					<template #collapsed-content >
 						<p>
-							Regelmäßige Förderbeiträge unterstützen unseren gemeinnützigen Verein besonders nachhaltig.
-							Sie ermöglichen eine verlässliche Planung unserer Aktivitäten
-							für die langfristige Entwicklung von Wikipedia und der anderen Wikimedia-Projekte.
+							{{ $t('membership_form_detailed_info_box_collapsed_info_text') }}
 						</p>
 						<div class="iconized-categories">
 							<div class="iconized-category" >
 								<SoftwareTechnologyIcon/>
-								<strong>Weiterentwicklung</strong> von Technik und Software
+								<strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
+								{{ $t('membership_form_detailed_info_box_category_1_headline') }}
 							</div>
 							<div class="iconized-category" >
 								<ShieldIcon/>
-								<strong>Schutz</strong> der Freiwilligen
+								<strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
+								{{ $t('membership_form_detailed_info_box_category_2_headline') }}
 							</div>
 							<div class="iconized-category" >
 								<BooksIcon/>
-								<strong>Wissensgerechtigkeit</strong> für alle – weltweit
+								<strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
+								{{ $t('membership_form_detailed_info_box_category_3_headline') }}
 							</div>
 						</div>
 					</template>
 					<template #expanded-content >
 						<p>
-							Regelmäßige Förderbeiträge unterstützen unseren gemeinnützigen Verein besonders nachhaltig.
-							Sie ermöglichen eine verlässliche Planung unserer Aktivitäten
-							für die langfristige Entwicklung von Wikipedia und der anderen Wikimedia-Projekte.
+							{{ $t('membership_form_detailed_info_box_expanded_info_text') }}
 						</p>
 						<div class="iconized-categories">
 
 							<div class="iconized-category" >
-								<SoftwareTechnologyIcon/>
+								<span><SoftwareTechnologyIcon/></span>
 								<div class="iconized-category-text">
 									<div class="iconized-category-headline">
-										<strong>Weiterentwicklung</strong> von Technik und Software
+										<strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
+										{{ $t('membership_form_detailed_info_box_category_1_headline') }}
 									</div>
-									Sie helfen, die technische Infrastruktur von Wikipedia & Co. immer weiter zu verbessern,
-									z.B. durch Softwarelösungen und global verteilte Server,
-									die die Datensicherheit und Leistungsfähigkeit von Wikipedia gewährleisten.
+									{{ $t('membership_form_detailed_info_box_category_1_text_expanded') }}
 								</div>
 							</div>
 
 							<div class="iconized-category" >
-								<ShieldIcon/>
+								<span><ShieldIcon/></span>
 								<div class="iconized-category-text">
 									<div class="iconized-category-headline">
-										<strong>Schutz</strong> der Freiwilligen
+										<strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
+										{{ $t('membership_form_detailed_info_box_category_2_headline') }}
 									</div>
-									Sie helfen uns, die Freiwilligen vor Versuchen von Einschüchterung zu schützen:
-									technisch, aber auch juristisch.
-									Das wird in Zeiten „alternative Fakten“ immer wichtiger.
+									{{ $t('membership_form_detailed_info_box_category_2_text_expanded') }}
 								</div>
 							</div>
 
 							<div class="iconized-category" >
-								<BooksIcon/>
+								<span><BooksIcon/></span>
 								<div class="iconized-category-text">
 									<div class="iconized-category-headline">
-										<strong>Wissensgerechtigkeit</strong> für alle – weltweit
+										<strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
+										{{ $t('membership_form_detailed_info_box_category_3_headline') }}
 									</div>
-									Sie tragen dazu bei, dass unsere Projekte vielfältiger, umfangreicher und besser werden.
-									Und Sie stellen sicher, dass alle Menschen weiterhin kostenlosen Zugang
-									zu vertrauenswürdigem Wissen haben.
+									{{ $t('membership_form_detailed_info_box_category_3_text_expanded') }}
 								</div>
 							</div>
 
