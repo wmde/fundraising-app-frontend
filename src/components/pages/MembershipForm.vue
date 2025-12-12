@@ -1,5 +1,89 @@
 <template>
 	<form action="" @submit.prevent>
+
+		<FeatureToggle default-template="campaigns.membership_form.legacy">
+			<template #campaigns.membership_form.test_01_more_info>
+				<DetailedInfoBox>
+					<template #heading >
+						<h1 class="highlighted-content-text icon-text">
+							<span class="icon-text__icon">
+								<GlobeIcon class="highlighted-icon"/>
+							</span>
+							Fördermitgliedschaft wirkt
+						</h1>
+					</template>
+					<template #collapsed-content >
+						<p>
+							Regelmäßige Förderbeiträge unterstützen unseren gemeinnützigen Verein besonders nachhaltig.
+							Sie ermöglichen eine verlässliche Planung unserer Aktivitäten
+							für die langfristige Entwicklung von Wikipedia und der anderen Wikimedia-Projekte.
+						</p>
+						<div class="iconized-categories">
+							<div class="iconized-category" >
+								<SoftwareTechnologyIcon/>
+								<strong>Weiterentwicklung</strong> von Technik und Software
+							</div>
+							<div class="iconized-category" >
+								<ShieldIcon/>
+								<strong>Schutz</strong> der Freiwilligen
+							</div>
+							<div class="iconized-category" >
+								<BooksIcon/>
+								<strong>Wissensgerechtigkeit</strong> für alle – weltweit
+							</div>
+						</div>
+					</template>
+					<template #expanded-content >
+						<p>
+							Regelmäßige Förderbeiträge unterstützen unseren gemeinnützigen Verein besonders nachhaltig.
+							Sie ermöglichen eine verlässliche Planung unserer Aktivitäten
+							für die langfristige Entwicklung von Wikipedia und der anderen Wikimedia-Projekte.
+						</p>
+						<div class="iconized-categories">
+
+							<div class="iconized-category" >
+								<SoftwareTechnologyIcon/>
+								<div class="iconized-category-text">
+									<div class="iconized-category-headline">
+										<strong>Weiterentwicklung</strong> von Technik und Software
+									</div>
+									Sie helfen, die technische Infrastruktur von Wikipedia & Co. immer weiter zu verbessern,
+									z.B. durch Softwarelösungen und global verteilte Server,
+									die die Datensicherheit und Leistungsfähigkeit von Wikipedia gewährleisten.
+								</div>
+							</div>
+
+							<div class="iconized-category" >
+								<ShieldIcon/>
+								<div class="iconized-category-text">
+									<div class="iconized-category-headline">
+										<strong>Schutz</strong> der Freiwilligen
+									</div>
+									Sie helfen uns, die Freiwilligen vor Versuchen von Einschüchterung zu schützen:
+									technisch, aber auch juristisch.
+									Das wird in Zeiten „alternative Fakten“ immer wichtiger.
+								</div>
+							</div>
+
+							<div class="iconized-category" >
+								<BooksIcon/>
+								<div class="iconized-category-text">
+									<div class="iconized-category-headline">
+										<strong>Wissensgerechtigkeit</strong> für alle – weltweit
+									</div>
+									Sie tragen dazu bei, dass unsere Projekte vielfältiger, umfangreicher und besser werden.
+									Und Sie stellen sicher, dass alle Menschen weiterhin kostenlosen Zugang
+									zu vertrauenswürdigem Wissen haben.
+								</div>
+							</div>
+
+						</div>
+					</template>
+
+				</DetailedInfoBox>
+			</template>
+		</FeatureToggle>
+
 		<ContentCard>
 			<template #heading>
 				<h1 id="membership-form-heading">{{ $t( 'membership_form_headline' ) }}</h1>
@@ -230,6 +314,11 @@ import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.
 import { useMembershipBankDataSummary } from '@src/components/pages/membership_form/useMembershipBankDataSummary';
 import { useMembershipPaymentFunctions } from '@src/components/pages/membership_form/useMembershipPaymentFunctions';
 import TickIcon from '@src/components/shared/icons/TickIcon.vue';
+import DetailedInfoBox from '@src/components/patterns/DetailedInfoBox.vue';
+import GlobeIcon from '@src/components/shared/icons/GlobeIcon.vue';
+import BooksIcon from '@src/components/shared/icons/BooksIcon.vue';
+import ShieldIcon from '@src/components/shared/icons/ShieldIcon.vue';
+import SoftwareTechnologyIcon from '@src/components/shared/icons/SoftwareTechnologyIcon.vue';
 
 interface Props {
 	validateAddressUrl: string;
