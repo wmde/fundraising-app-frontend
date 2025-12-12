@@ -92,6 +92,29 @@
 					:is-max-width-field="true"
 				/>
 
+				<FeatureToggle default-template="campaigns.membership_form.legacy">
+					<template #campaigns.membership_form.test_01_more_info>
+						<ul class="icon-list">
+							<li class="icon-text">
+								<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+								<span>{{ $t( 'membership_form_reasons_01' ) }}</span>
+							</li>
+							<li class="icon-text">
+								<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+								<span>{{ $t( 'membership_form_reasons_02' ) }}</span>
+							</li>
+							<li class="icon-text">
+								<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+								<span>{{ $t( 'membership_form_reasons_03' ) }}</span>
+							</li>
+							<li class="icon-text">
+								<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+								<span>{{ $t( 'membership_form_reasons_04' ) }}</span>
+							</li>
+						</ul>
+					</template>
+				</FeatureToggle>
+
 				<AddressType
 					@field-changed="setAddressType( $event )"
 					:disabledAddressTypes="disabledAddressTypes"
@@ -206,6 +229,7 @@ import AddressSummarySection from '@src/components/shared/AddressSummarySection.
 import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import { useMembershipBankDataSummary } from '@src/components/pages/membership_form/useMembershipBankDataSummary';
 import { useMembershipPaymentFunctions } from '@src/components/pages/membership_form/useMembershipPaymentFunctions';
+import TickIcon from '@src/components/shared/icons/TickIcon.vue';
 
 interface Props {
 	validateAddressUrl: string;

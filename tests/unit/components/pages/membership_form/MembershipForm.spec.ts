@@ -16,6 +16,7 @@ import type { TrackingData } from '@src/view_models/TrackingData';
 import { Validity } from '@src/view_models/Validity';
 import axios from 'axios';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
 
 // This is so the error summary scrollIntoView doesn't throw errors
 const errorSummaryScrollElement = { scrollIntoView: () => {} };
@@ -69,6 +70,9 @@ describe( 'MembershipForm.vue', () => {
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
 				},
+			},
+			components: {
+				FeatureToggle: createFeatureToggle( [] ),
 			},
 		} );
 
