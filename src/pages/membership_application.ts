@@ -27,6 +27,8 @@ import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import CampaignParameters from '@src/util/CampaignParameters';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import { ApiBankValidationResource } from '@src/api/BankValidationResource';
+import DefaultSidebar from '@src/components/layout/DefaultSidebar.vue';
+import Sidebar from '@src/components/pages/membership_form/Sidebar.vue';
 
 interface MembershipAmountModel {
 	presetAmounts: Array<string>;
@@ -45,6 +47,8 @@ interface MembershipAmountModel {
 
 const PAGE_IDENTIFIER = 'membership-application';
 const FORM_NAMESPACE = 'membership_application';
+const NEW_FORM_BUCKET = 'campaigns.membership_form.test_01_more_info';
+
 const pageData = new PageDataInitializer<MembershipAmountModel>( '#appdata' );
 const dataPersister = createDataPersister( new LocalStorageRepository(), FORM_NAMESPACE, pageData.applicationVars.userDataKey );
 const store = createStore( [ dataPersister.getPlugin( persistenceItems ), createTrackFormErrorsPlugin( FORM_NAMESPACE ) ] );
@@ -93,6 +97,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				bucketClasses: bucketIdToCssClass( pageData.selectedBuckets ),
 				pageIdentifier: PAGE_IDENTIFIER,
 				page: MembershipForm,
+				sidebar: pageData.selectedBuckets.includes( NEW_FORM_BUCKET ) ? Sidebar : DefaultSidebar,
 				usesContentCards: true,
 				pageTitle: 'membership_application_page_title',
 				pageProps: {

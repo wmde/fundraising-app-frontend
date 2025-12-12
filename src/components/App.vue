@@ -11,7 +11,7 @@
 					<component :is="page" v-bind="pageProps"/>
 				</template>
 				<template #sidebar v-if="hasSidebar">
-					<component :is="sidebar ?? AppSidebar" v-bind="sidebarProps"/>
+					<component :is="sidebar ?? DefaultSidebar" v-bind="sidebarProps"/>
 				</template>
 			</AppContent>
 		</div>
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import AppHeader from '@src/components/layout/AppHeader.vue';
 import AppContent from '@src/components/layout/AppContent.vue';
-import AppSidebar from '@src/components/layout/AppSidebar.vue';
+import DefaultSidebar from '@src/components/layout/DefaultSidebar.vue';
 import AppFooter from '@src/components/layout/AppFooter.vue';
 import { useI18n } from 'vue-i18n';
 import { Component, onMounted, watch } from 'vue';
