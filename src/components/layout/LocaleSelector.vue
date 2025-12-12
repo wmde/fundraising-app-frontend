@@ -137,7 +137,7 @@ useDetectOutsideClick( localeSelectorRef, handleLocaleItemBlur );
 			margin-right: 5px;
 		}
 
-		.chevron-down-icon {
+		.chevron-down-icon, .chevron-up-icon {
 			--chevron-stroke: #{colors.$primary};
 			width: 10px;
 			margin-left: 4px;

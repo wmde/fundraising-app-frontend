@@ -1,0 +1,41 @@
+.detailed-info-box {
+
+	--books-icon-fill: var(--color-blue-600);
+	--globe-icon-fill: var(--color-blue-600);
+	--shield-icon-fill: var(--color-blue-600);
+	--software-technology-icon-fill: var(--color-blue-600);
+	--chevron-stroke: var( --color-grey-800 );
+
+	.iconized-category {
+		padding: 15px 30px 15px 0;
+	}
+
+	.collapsed-info {
+		.iconized-categories {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			svg {
+				display: block;
+			}
+			.iconized-category {
+				max-width: 185px;
+			}
+		}
+
+	}
+
+	.expanded-info {
+		.iconized-categories {
+			display: flex;
+			flex-direction: column;
+
+			.iconized-category {
+				display: flex;
+				svg {
+					margin-right: 15px;
+				}
+			}
+		}
+	}
+}

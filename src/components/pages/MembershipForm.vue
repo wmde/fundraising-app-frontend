@@ -1,5 +1,85 @@
 <template>
 	<form action="" @submit.prevent>
+
+		<FeatureToggle default-template="campaigns.membership_form.legacy">
+			<template #campaigns.membership_form.test_01_more_info>
+				<DetailedInfoBox>
+					<template #heading >
+						<h1 class="highlighted-content-text icon-text">
+							<span class="icon-text__icon">
+								<GlobeIcon class="highlighted-icon"/>
+							</span>
+							{{ $t('membership_form_detailed_info_box_heading') }}
+						</h1>
+					</template>
+					<template #collapsed-content >
+						<p>
+							{{ $t('membership_form_detailed_info_box_collapsed_info_text') }}
+						</p>
+						<div class="iconized-categories">
+							<div class="iconized-category" >
+								<SoftwareTechnologyIcon/>
+								<strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
+								{{ $t('membership_form_detailed_info_box_category_1_headline') }}
+							</div>
+							<div class="iconized-category" >
+								<ShieldIcon/>
+								<strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
+								{{ $t('membership_form_detailed_info_box_category_2_headline') }}
+							</div>
+							<div class="iconized-category" >
+								<BooksIcon/>
+								<strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
+								{{ $t('membership_form_detailed_info_box_category_3_headline') }}
+							</div>
+						</div>
+					</template>
+					<template #expanded-content >
+						<p>
+							{{ $t('membership_form_detailed_info_box_expanded_info_text') }}
+						</p>
+						<div class="iconized-categories">
+
+							<div class="iconized-category" >
+								<SoftwareTechnologyIcon/>
+								<div class="iconized-category-text">
+									<div class="iconized-category-headline">
+										<strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
+										{{ $t('membership_form_detailed_info_box_category_1_headline') }}
+									</div>
+									{{ $t('membership_form_detailed_info_box_category_1_text_expanded') }}
+								</div>
+							</div>
+
+							<div class="iconized-category" >
+								<ShieldIcon/>
+								<div class="iconized-category-text">
+									<div class="iconized-category-headline">
+										<strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
+										{{ $t('membership_form_detailed_info_box_category_2_headline') }}
+									</div>
+									{{ $t('membership_form_detailed_info_box_category_2_text_expanded') }}
+								</div>
+							</div>
+
+							<div class="iconized-category" >
+								<BooksIcon/>
+								<div class="iconized-category-text">
+									<div class="iconized-category-headline">
+										<strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
+										{{ $t('membership_form_detailed_info_box_category_3_headline') }}
+									</div>
+									{{ $t('membership_form_detailed_info_box_category_3_text_expanded') }}
+								</div>
+							</div>
+
+						</div>
+					</template>
+
+				</DetailedInfoBox>
+			</template>
+		</FeatureToggle>
+
 		<ContentCard>
 			<template #heading>
 				<h1 id="membership-form-heading">{{ $t( 'membership_form_headline' ) }}</h1>
@@ -230,6 +310,11 @@ import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.
 import { useMembershipBankDataSummary } from '@src/components/pages/membership_form/useMembershipBankDataSummary';
 import { useMembershipPaymentFunctions } from '@src/components/pages/membership_form/useMembershipPaymentFunctions';
 import TickIcon from '@src/components/shared/icons/TickIcon.vue';
+import DetailedInfoBox from '@src/components/patterns/DetailedInfoBox.vue';
+import GlobeIcon from '@src/components/shared/icons/GlobeIcon.vue';
+import BooksIcon from '@src/components/shared/icons/BooksIcon.vue';
+import ShieldIcon from '@src/components/shared/icons/ShieldIcon.vue';
+import SoftwareTechnologyIcon from '@src/components/shared/icons/SoftwareTechnologyIcon.vue';
 
 interface Props {
 	validateAddressUrl: string;
