@@ -14,6 +14,7 @@
 		.iconized-categories {
 			display: flex;
 			flex-direction: row;
+			flex-wrap: wrap;
 			justify-content: space-between;
 			svg {
 				display: block;

@@ -8,8 +8,10 @@
 					@click="showExpandedInfo = !showExpandedInfo"
 					class="link-button highlighted-icon"
 				>
-					<ChevronDown v-if="!showExpandedInfo"/>
-					<ChevronUpIcon v-if="showExpandedInfo"/>
+					<span>
+						<ChevronDown v-if="!showExpandedInfo"/>
+						<ChevronUpIcon v-if="showExpandedInfo"/>
+					</span>
 				</button>
 			</div>
 			<hr/>
