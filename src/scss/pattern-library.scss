@@ -19,6 +19,8 @@
 @use "../pattern_library/css/blocks/combobox.css" as comboboxBase;
 @use "../pattern_library/css/blocks/detailed-info-box.css";
 @use "../pattern_library/css/blocks/field-container.css" as fieldContainerBase;
+@use "../pattern_library/css/blocks/icon-sidebar.css";
+@use "../pattern_library/css/blocks/info-columns.css";
 @use "../pattern_library/css/blocks/text-radio.css" as textRadioBase;
 @use "../pattern_library/css/blocks/toggle.css" as toggleBase;
 @use "pattern-library-compatibility/accordion";
@@ -96,6 +98,7 @@
 	--space-0-s: #{map.get( units.$spacing, 'x-small' )};
 
 	--type-step-00: 13px;
+	--type-step-3: 24px;
 
 	/* Type Leading */
 	--leading-micro: 0.85;

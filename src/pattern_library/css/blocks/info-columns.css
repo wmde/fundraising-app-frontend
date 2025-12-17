@@ -1,0 +1,20 @@
+.info-columns {
+	--cluster-item-width: 16ch;
+	--cluster-vertical-alignment: start;
+}
+
+.info-columns > * {
+	--flow-space: var(--space-3xs);
+
+	flex-basis: var(--cluster-item-width, auto);
+}
+
+.info-columns__icon {
+	width: 2.5rem;
+	height: 2.5rem;
+}
+
+.info-columns__icon svg {
+	width: 100%;
+	height: auto;
+}

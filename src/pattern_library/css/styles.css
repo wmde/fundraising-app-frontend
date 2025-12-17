@@ -33,7 +33,9 @@
 @import "blocks/field-container.css";
 @import "blocks/footer-nav.css";
 @import "blocks/iban-calculator.css";
+@import "blocks/icon-sidebar.css";
 @import "blocks/icon-text.css";
+@import "blocks/info-columns.css";
 @import "blocks/locale.css";
 @import "blocks/mobile-nav-toggle.css";
 @import "blocks/modal-dialogue.css";
