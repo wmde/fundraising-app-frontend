@@ -3,7 +3,7 @@
 		<template #content>
 			<IconText :is-small-heading="true">
 				<template #icon><InfoIcon/></template>
-				<template #content><h2>{{ $t('sidebar_getintouch_headline') }}</h2></template>
+				<template #content><h2>{{ $t( headlineTextKey ) }}</h2></template>
 			</IconText>
 			<p v-html="appendCampaignQueryParams( $t('sidebar_getintouch_mixed'), campaignParams )"></p>
 			<slot name="default"/>
@@ -21,4 +21,11 @@ import ContentCard from '@src/components/patterns/ContentCard.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
+
+interface Props {
+	headlineTextKey?: string;
+}
+withDefaults( defineProps<Props>(), {
+	headlineTextKey: 'sidebar_getintouch_headline',
+} );
 </script>
