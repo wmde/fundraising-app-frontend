@@ -1,0 +1,12 @@
+.icon-sidebar {
+	--sidebar-target-width: 2.5rem;
+	--sidebar-content-min-width: 80%;
+
+	row-gap: 0;
+}
+
+.icon-sidebar svg {
+	width: 100%;
+	max-width: 2.5rem;
+	height: auto;
+}

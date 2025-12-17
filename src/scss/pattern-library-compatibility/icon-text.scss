@@ -1,6 +1,7 @@
 .icon-text {
 	display: flex;
 	flex-wrap: nowrap;
+	align-items: var(--icon-text-vertical-alignment, flex-start);
 }
 
 .icon-text[data-small-heading] :is(h1, h2, h3) {
@@ -9,8 +10,18 @@
 	margin-bottom: 0;
 }
 
+.icon-text:not([data-small-heading]):has(h1) {
+	--icon-height: calc(var(--type-step-3) * var(--leading-fine));
+}
+
 .icon-text__icon {
 	margin-right: 16px;
+	height: var(--icon-height);
+}
+
+.icon-text__icon svg {
+	width: 100%;
+	height: auto;
 }
 
 .icon-text:has(p) .icon-text__icon {
