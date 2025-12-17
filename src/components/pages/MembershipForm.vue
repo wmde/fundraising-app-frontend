@@ -18,22 +18,28 @@
 								<div class="info-columns__icon">
 									<SoftwareTechnologyIcon class="highlighted-icon"/>
 								</div>
-								<p><strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
-									{{ $t('membership_form_detailed_info_box_category_1_headline') }}</p>
+								<div>
+									<strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
+									<p>{{ $t('membership_form_detailed_info_box_category_1_headline') }}</p>
+								</div>
 							</div>
 							<div class="flow">
 								<div class="info-columns__icon">
 									<ShieldIcon class="highlighted-icon"/>
 								</div>
-								<p><strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
-									{{ $t('membership_form_detailed_info_box_category_2_headline') }}</p>
+								<div>
+									<strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
+									<p>{{ $t('membership_form_detailed_info_box_category_2_headline') }}</p>
+								</div>
 							</div>
 							<div class="flow">
 								<div class="info-columns__icon">
 									<BooksIcon class="highlighted-icon"/>
 								</div>
-								<p><strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
-									{{ $t('membership_form_detailed_info_box_category_3_headline') }}</p>
+								<div>
+									<strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
+									<p>{{ $t('membership_form_detailed_info_box_category_3_headline') }}</p>
+								</div>
 							</div>
 						</div>
 					</template>
