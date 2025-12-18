@@ -3,7 +3,7 @@
 
 		<FeatureToggle default-template="campaigns.membership_form.legacy">
 			<template #campaigns.membership_form.test_01_more_info>
-				<ContentCard :is-collapsable="true">
+				<ContentCard :is-collapsable="true" :is-flow="false">
 					<template #content>
 						<DetailedInfoBox id="membership-benefits-info-box">
 							<template #heading >
@@ -73,34 +73,36 @@
 							</template>
 						</DetailedInfoBox>
 
-						<div class="content-card__content flow">
-							<h3>{{ $t( 'membership_form_reasons_title' ) }}</h3>
-							<ul class="icon-list">
-								<li class="icon-text">
-									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-									<span>{{ $t( 'membership_form_reasons_01' ) }}</span>
-								</li>
-								<li class="icon-text">
-									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-									<span>{{ $t( 'membership_form_reasons_02' ) }}</span>
-								</li>
-								<li class="icon-text">
-									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-									<span>{{ $t( 'membership_form_reasons_03' ) }}</span>
-								</li>
-								<li class="icon-text">
-									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-									<span>{{ $t( 'membership_form_reasons_04' ) }}</span>
-								</li>
-								<li class="icon-text">
-									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-									<span>{{ $t( 'membership_form_reasons_05' ) }}</span>
-								</li>
-								<li class="icon-text">
-									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-									<span>{{ $t( 'membership_form_reasons_06' ) }}</span>
-								</li>
-							</ul>
+						<div class="content-card__content">
+							<div class="callout flow" data-borderless>
+								<h3>{{ $t( 'membership_form_reasons_title' ) }}</h3>
+								<ul class="icon-list">
+									<li class="icon-text">
+										<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+										<span>{{ $t( 'membership_form_reasons_01' ) }}</span>
+									</li>
+									<li class="icon-text">
+										<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+										<span>{{ $t( 'membership_form_reasons_02' ) }}</span>
+									</li>
+									<li class="icon-text">
+										<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+										<span>{{ $t( 'membership_form_reasons_03' ) }}</span>
+									</li>
+									<li class="icon-text">
+										<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+										<span>{{ $t( 'membership_form_reasons_04' ) }}</span>
+									</li>
+									<li class="icon-text">
+										<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+										<span>{{ $t( 'membership_form_reasons_05' ) }}</span>
+									</li>
+									<li class="icon-text">
+										<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+										<span>{{ $t( 'membership_form_reasons_06' ) }}</span>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</template>
 				</ContentCard>
