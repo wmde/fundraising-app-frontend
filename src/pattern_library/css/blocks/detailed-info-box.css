@@ -12,6 +12,11 @@
 	cursor: pointer;
 }
 
+.detailed-info-box__toggle > :first-child,
+.detailed-info-box__toggle > :last-child {
+	flex-shrink: 0;
+}
+
 .detailed-info-box__toggle > :last-child {
 	margin-left: auto;
 }
