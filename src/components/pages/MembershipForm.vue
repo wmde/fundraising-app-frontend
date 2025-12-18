@@ -92,6 +92,14 @@
 									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
 									<span>{{ $t( 'membership_form_reasons_04' ) }}</span>
 								</li>
+								<li class="icon-text">
+									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+									<span>{{ $t( 'membership_form_reasons_05' ) }}</span>
+								</li>
+								<li class="icon-text">
+									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+									<span>{{ $t( 'membership_form_reasons_06' ) }}</span>
+								</li>
 							</ul>
 						</div>
 					</template>
