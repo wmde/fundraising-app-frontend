@@ -3,6 +3,7 @@
 	--icon-gutter: 1ch;
 
 	display: flex;
+	align-items: var(--icon-text-vertical-alignment, flex-start);
 }
 
 .icon-text[data-small-heading] :is(h1, h2, h3) {

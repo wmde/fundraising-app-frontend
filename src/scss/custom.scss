@@ -31,7 +31,8 @@ strong {
 	color: currentColor;
 }
 
-form:not(.compact) {
+form:not(.compact) :is(fieldset, .field-container, .form-section-iban),
+form + form {
 	--flow-space: var(--space-l);
 }
 

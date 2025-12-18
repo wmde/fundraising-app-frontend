@@ -17,7 +17,10 @@
 @use "../pattern_library/css/blocks/accordion.css" as accordionBase;
 @use "../pattern_library/css/blocks/callout.css";
 @use "../pattern_library/css/blocks/combobox.css" as comboboxBase;
+@use "../pattern_library/css/blocks/detailed-info-box.css";
 @use "../pattern_library/css/blocks/field-container.css" as fieldContainerBase;
+@use "../pattern_library/css/blocks/icon-sidebar.css";
+@use "../pattern_library/css/blocks/info-columns.css";
 @use "../pattern_library/css/blocks/text-radio.css" as textRadioBase;
 @use "../pattern_library/css/blocks/toggle.css" as toggleBase;
 @use "pattern-library-compatibility/accordion";
@@ -49,6 +52,11 @@
 	--color-blue-600: #{colors.$primary};
 	--color-blue-200: #{colors.$primary-pale};
 	--color-red-700: #{colors.$error};
+	--color-green-100: #e3f2e4;
+	--color-green-500: #259948;
+
+	--color-yellow-50: #fdf2d5;
+	--color-yellow-300: #eeb533;
 
 	--font-base: "Source Sans Pro", "Open Sans", Helvetica, Arial, sans-serif;
 	--font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
@@ -95,6 +103,7 @@
 	--space-0-s: #{map.get( units.$spacing, 'x-small' )};
 
 	--type-step-00: 13px;
+	--type-step-3: 24px;
 
 	/* Type Leading */
 	--leading-micro: 0.85;

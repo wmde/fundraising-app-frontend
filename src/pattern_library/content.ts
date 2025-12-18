@@ -13,11 +13,14 @@ import button from '@src/pattern_library/patterns/button';
 import callout from '@src/pattern_library/patterns/callout';
 import combobox from '@src/pattern_library/patterns/combobox';
 import contentCard from '@src/pattern_library/patterns/content-card';
+import detailedInfoBox from '@src/pattern_library/patterns/detailed-info-box';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
 import fieldContainer from '@src/pattern_library/patterns/field-container';
 import footerNav from '@src/pattern_library/patterns/footer-nav';
 import ibanCalculator from '@src/pattern_library/patterns/iban-calculator';
+import iconSidebar from '@src/pattern_library/patterns/icon-sidebar';
 import iconText from '@src/pattern_library/patterns/icon-text';
+import infoColumns from '@src/pattern_library/patterns/info-columns';
 import locale from '@src/pattern_library/patterns/locale';
 import mobileNavToggle from '@src/pattern_library/patterns/mobile-nav-toggle';
 import modalDialogue from '@src/pattern_library/patterns/modal-dialogue';
@@ -51,11 +54,14 @@ const patterns: Pattern[] = [
 	callout,
 	combobox,
 	contentCard,
+	detailedInfoBox,
 	donationComment,
 	fieldContainer,
 	footerNav,
 	ibanCalculator,
+	iconSidebar,
 	iconText,
+	infoColumns,
 	locale,
 	mobileNavToggle,
 	modalDialogue,

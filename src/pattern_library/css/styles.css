@@ -28,11 +28,14 @@
 @import "blocks/button.css";
 @import "blocks/combobox.css";
 @import "blocks/content-card.css";
+@import "blocks/detailed-info-box.css";
 @import "blocks/donation-comment.css";
 @import "blocks/field-container.css";
 @import "blocks/footer-nav.css";
 @import "blocks/iban-calculator.css";
+@import "blocks/icon-sidebar.css";
 @import "blocks/icon-text.css";
+@import "blocks/info-columns.css";
 @import "blocks/locale.css";
 @import "blocks/mobile-nav-toggle.css";
 @import "blocks/modal-dialogue.css";

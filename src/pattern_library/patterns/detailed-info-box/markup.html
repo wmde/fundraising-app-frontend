@@ -1,0 +1,84 @@
+<div class="detailed-info-box content-card" :class="{ 'detailed-info-box--expanded': showExpandedInfo }" data-collapsable>
+	<div
+		role="button"
+		id="detailed-info-box-control"
+		class="detailed-info-box__toggle cluster"
+		tabindex="0"
+		@click="showExpandedInfo = !showExpandedInfo"
+		@keyup.space.prevent="showExpandedInfo = !showExpandedInfo"
+		@keyup.enter.prevent="showExpandedInfo = !showExpandedInfo"
+		aria-controls="detailed-info-box-content"
+		:aria-expanded="showExpandedInfo"
+	>
+		<GlobeIcon class="highlighted-icon"/>
+		<h2 class="highlighted-content-text">Fördermitgliedschaft wirkt</h2>
+		<ChevronDown class="detailed-info-box__chevron highlighted-icon" aria-label="Read More"/>
+	</div>
+
+	<div class="detailed-info-box__content flow" id="detailed-info-box-content" aria-live="assertive" aria-labelledby="detailed-info-box-control">
+		<hr>
+		<div class="flow" v-if="!showExpandedInfo">
+			<p>
+				Regelmäßige Förderbeiträge unterstützen unseren gemeinnützigen Verein besonders nachhaltig.
+				Sie ermöglichen eine verlässliche Planung unserer Aktivitäten
+				für die langfristige Entwicklung von Wikipedia und der anderen Wikimedia-Projekte.
+			</p>
+			<div class="cluster info-columns">
+				<div class="flow">
+					<div class="info-columns__icon"><SoftwareTechnologyIcon class="highlighted-icon" data-warning/></div>
+					<p>Lorem ipsum dolor sit amet</p>
+				</div>
+				<div class="flow">
+					<div class="info-columns__icon"><ShieldIcon class="highlighted-icon"/></div>
+					<p>Lorem ipsum dolor sit amet</p>
+				</div>
+				<div class="flow">
+					<div class="info-columns__icon"><BooksIcon class="highlighted-icon" data-error/></div>
+					<p>Lorem ipsum dolor sit amet</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="flow" v-if="showExpandedInfo">
+			<p>
+				Regelmäßige Förderbeiträge unterstützen unseren gemeinnützigen Verein besonders nachhaltig.
+				Sie ermöglichen eine verlässliche Planung unserer Aktivitäten
+				für die langfristige Entwicklung von Wikipedia und der anderen Wikimedia-Projekte.
+			</p>
+			<div class="flow">
+				<div class="sidebar icon-sidebar">
+					<div class="icon-sidebar__icon"><SoftwareTechnologyIcon class="highlighted-icon"/></div>
+					<div>
+						<p><strong>Lorem ipsum</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto natus possimus quas vel voluptatibus. Animi aperiam ea necessitatibus quisquam repudiandae. Autem commodi cupiditate ea facilis iste minima odit, quam vero.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi asperiores at doloremque expedita facere ipsam ipsum mollitia quam quibusdam. Blanditiis eligendi expedita itaque maiores minus officiis quibusdam quis suscipit.</p>
+					</div>
+				</div>
+
+				<div class="sidebar icon-sidebar">
+					<div class="icon-sidebar__icon"><ShieldIcon class="highlighted-icon"/></div>
+					<div>
+						<p><strong>Lorem ipsum</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto natus possimus quas vel voluptatibus. Animi aperiam ea necessitatibus quisquam repudiandae. Autem commodi cupiditate ea facilis iste minima odit, quam vero.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi asperiores at doloremque expedita facere ipsam ipsum mollitia quam quibusdam. Blanditiis eligendi expedita itaque maiores minus officiis quibusdam quis suscipit.</p>
+					</div>
+				</div>
+
+				<div class="sidebar icon-sidebar">
+					<div class="icon-sidebar__icon"><BooksIcon class="highlighted-icon"/></div>
+					<div>
+						<p><strong>Lorem ipsum</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto natus possimus quas vel voluptatibus. Animi aperiam ea necessitatibus quisquam repudiandae. Autem commodi cupiditate ea facilis iste minima odit, quam vero.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias animi asperiores at doloremque expedita facere ipsam ipsum mollitia quam quibusdam. Blanditiis eligendi expedita itaque maiores minus officiis quibusdam quis suscipit.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button
+			class="link-button detailed-info-box__read-more"
+			type="button"
+			@click="showExpandedInfo = !showExpandedInfo"
+			aria-controls="detailed-info-box-content"
+			:aria-expanded="showExpandedInfo"
+		>
+			Read More <ChevronDown class="highlighted-icon" aria-hidden="true"/>
+		</button>
+	</div>
+</div>
