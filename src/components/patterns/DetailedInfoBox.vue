@@ -1,5 +1,5 @@
 <template>
-	<div class="detailed-info-box content-card" :class="{ 'detailed-info-box--expanded': showExpandedInfo }" data-collapsable>
+	<div class="detailed-info-box" :class="{ 'detailed-info-box--expanded': showExpandedInfo }">
 		<div
 			role="button"
 			:id="`${id}-control`"

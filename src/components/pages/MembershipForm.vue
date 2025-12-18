@@ -3,80 +3,99 @@
 
 		<FeatureToggle default-template="campaigns.membership_form.legacy">
 			<template #campaigns.membership_form.test_01_more_info>
-				<DetailedInfoBox id="membership-benefits-info-box">
-					<template #heading >
-						<GlobeIcon class="highlighted-icon"/>
-						<h2 class="highlighted-content-text">{{ $t('membership_form_detailed_info_box_heading') }}</h2>
-					</template>
+				<ContentCard :is-collapsable="true">
+					<template #content>
+						<DetailedInfoBox id="membership-benefits-info-box">
+							<template #heading >
+								<GlobeIcon class="highlighted-icon"/>
+								<h2 class="highlighted-content-text">{{ $t('membership_form_detailed_info_box_heading') }}</h2>
+							</template>
 
-					<template #collapsed-content >
-						<p>
-							{{ $t('membership_form_detailed_info_box_collapsed_info_text') }}
-						</p>
-						<div class="cluster info-columns">
-							<div class="flow">
-								<div class="info-columns__icon">
-									<SoftwareTechnologyIcon class="highlighted-icon"/>
+							<template #collapsed-content >
+								<p>
+									{{ $t('membership_form_detailed_info_box_collapsed_info_text') }}
+								</p>
+								<div class="cluster info-columns">
+									<div class="flow">
+										<div class="info-columns__icon">
+											<SoftwareTechnologyIcon class="highlighted-icon"/>
+										</div>
+										<p><strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong><br>
+											{{ $t('membership_form_detailed_info_box_category_1_headline') }}</p>
+									</div>
+									<div class="flow">
+										<div class="info-columns__icon">
+											<ShieldIcon class="highlighted-icon"/>
+										</div>
+										<p><strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong><br>
+											{{ $t('membership_form_detailed_info_box_category_2_headline') }}</p>
+									</div>
+									<div class="flow">
+										<div class="info-columns__icon">
+											<BooksIcon class="highlighted-icon"/>
+										</div>
+										<p><strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong><br>
+											{{ $t('membership_form_detailed_info_box_category_3_headline') }}</p>
+									</div>
 								</div>
-								<div>
-									<strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
-									<p>{{ $t('membership_form_detailed_info_box_category_1_headline') }}</p>
+							</template>
+							<template #expanded-content>
+								<p>
+									{{ $t('membership_form_detailed_info_box_expanded_info_text') }}
+								</p>
+
+								<div class="sidebar icon-sidebar">
+									<div><SoftwareTechnologyIcon class="highlighted-icon"/></div>
+									<div>
+										<p><strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
+											{{ $t('membership_form_detailed_info_box_category_1_headline') }}</p>
+										<p>{{ $t('membership_form_detailed_info_box_category_1_text_expanded') }}</p>
+									</div>
 								</div>
-							</div>
-							<div class="flow">
-								<div class="info-columns__icon">
-									<ShieldIcon class="highlighted-icon"/>
+
+								<div class="sidebar icon-sidebar">
+									<div><ShieldIcon class="highlighted-icon"/></div>
+									<div>
+										<p><strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
+											{{ $t('membership_form_detailed_info_box_category_2_headline') }}</p>
+										<p>{{ $t('membership_form_detailed_info_box_category_2_text_expanded') }}</p>
+									</div>
 								</div>
-								<div>
-									<strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
-									<p>{{ $t('membership_form_detailed_info_box_category_2_headline') }}</p>
+
+								<div class="sidebar icon-sidebar">
+									<div><BooksIcon class="highlighted-icon"/></div>
+									<div>
+										<p><strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
+											{{ $t('membership_form_detailed_info_box_category_3_headline') }}</p>
+										<p>{{ $t('membership_form_detailed_info_box_category_3_text_expanded') }}</p>
+									</div>
 								</div>
-							</div>
-							<div class="flow">
-								<div class="info-columns__icon">
-									<BooksIcon class="highlighted-icon"/>
-								</div>
-								<div>
-									<strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
-									<p>{{ $t('membership_form_detailed_info_box_category_3_headline') }}</p>
-								</div>
-							</div>
+							</template>
+						</DetailedInfoBox>
+
+						<div class="content-card__content flow">
+							<h3>{{ $t( 'membership_form_reasons_title' ) }}</h3>
+							<ul class="icon-list">
+								<li class="icon-text">
+									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+									<span>{{ $t( 'membership_form_reasons_01' ) }}</span>
+								</li>
+								<li class="icon-text">
+									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+									<span>{{ $t( 'membership_form_reasons_02' ) }}</span>
+								</li>
+								<li class="icon-text">
+									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+									<span>{{ $t( 'membership_form_reasons_03' ) }}</span>
+								</li>
+								<li class="icon-text">
+									<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
+									<span>{{ $t( 'membership_form_reasons_04' ) }}</span>
+								</li>
+							</ul>
 						</div>
 					</template>
-					<template #expanded-content>
-						<p>
-							{{ $t('membership_form_detailed_info_box_expanded_info_text') }}
-						</p>
-
-						<div class="sidebar icon-sidebar">
-							<div><SoftwareTechnologyIcon class="highlighted-icon"/></div>
-							<div>
-								<p><strong>{{ $t('membership_form_detailed_info_box_category_1') }}</strong>
-									{{ $t('membership_form_detailed_info_box_category_1_headline') }}</p>
-								<p>{{ $t('membership_form_detailed_info_box_category_1_text_expanded') }}</p>
-							</div>
-						</div>
-
-						<div class="sidebar icon-sidebar">
-							<div><ShieldIcon class="highlighted-icon"/></div>
-							<div>
-								<p><strong>{{ $t('membership_form_detailed_info_box_category_2') }}</strong>
-									{{ $t('membership_form_detailed_info_box_category_2_headline') }}</p>
-								<p>{{ $t('membership_form_detailed_info_box_category_2_text_expanded') }}</p>
-							</div>
-						</div>
-
-						<div class="sidebar icon-sidebar">
-							<div><BooksIcon class="highlighted-icon"/></div>
-							<div>
-								<p><strong>{{ $t('membership_form_detailed_info_box_category_3') }}</strong>
-									{{ $t('membership_form_detailed_info_box_category_3_headline') }}</p>
-								<p>{{ $t('membership_form_detailed_info_box_category_3_text_expanded') }}</p>
-							</div>
-						</div>
-					</template>
-
-				</DetailedInfoBox>
+				</ContentCard>
 			</template>
 		</FeatureToggle>
 
@@ -171,29 +190,6 @@
 					:disabledMembershipTypes="disabledMembershipTypes"
 					:is-max-width-field="true"
 				/>
-
-				<FeatureToggle default-template="campaigns.membership_form.legacy">
-					<template #campaigns.membership_form.test_01_more_info>
-						<ul class="icon-list">
-							<li class="icon-text">
-								<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-								<span>{{ $t( 'membership_form_reasons_01' ) }}</span>
-							</li>
-							<li class="icon-text">
-								<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-								<span>{{ $t( 'membership_form_reasons_02' ) }}</span>
-							</li>
-							<li class="icon-text">
-								<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-								<span>{{ $t( 'membership_form_reasons_03' ) }}</span>
-							</li>
-							<li class="icon-text">
-								<span class="icon-text__icon"><TickIcon class="highlighted-icon"/></span>
-								<span>{{ $t( 'membership_form_reasons_04' ) }}</span>
-							</li>
-						</ul>
-					</template>
-				</FeatureToggle>
 
 				<AddressType
 					@field-changed="setAddressType( $event )"

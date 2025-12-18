@@ -50,7 +50,8 @@
 	cursor: pointer;
 }
 
-.content-card[data-collapsable] details > div {
+.content-card[data-collapsable] details > div,
+.content-card[data-collapsable] .content-card__content {
 	padding-inline: var(--space-xs-l);
 	padding-block-end: var(--space-xs-l);
 }
