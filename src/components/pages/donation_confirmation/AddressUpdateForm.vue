@@ -107,7 +107,6 @@ import NameFields from '@src/components/shared/NameFields.vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
-import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
 import AddressUpdateFormErrorSummaries
 	from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
 import type { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
@@ -209,7 +208,7 @@ const { addressType, addressTypeIsInvalid, setAddressType } = useAddressTypeFunc
 const addressTypeModel = ref<AddressTypeModel>( addressType.value );
 watch( addressTypeModel, ( newAddressType: AddressTypeModel ) => setAddressType( newAddressType ) );
 
-const mailingList = ref<boolean>( MAILING_LIST_ADDRESS_PAGE );
+const mailingList = ref<boolean>( store.state.address.newsletter );
 
 const validateForm = async (): Promise<ValidationResult> => {
 	const results = await Promise.all( [

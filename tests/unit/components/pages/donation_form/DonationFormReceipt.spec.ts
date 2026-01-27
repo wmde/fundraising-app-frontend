@@ -90,7 +90,7 @@ describe( 'DonationFormReciept.vue', () => {
 		const wrapper = getWrapper();
 
 		expect( wrapper.find<HTMLInputElement>( '#interval-0' ).element.checked ).toBeTruthy();
-		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBeFalsy();
 		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-0' ).element.checked ).toBeFalsy();
 		expect( wrapper.find<HTMLInputElement>( '#donationReceipt-1' ).element.checked ).toBeFalsy();
 	} );

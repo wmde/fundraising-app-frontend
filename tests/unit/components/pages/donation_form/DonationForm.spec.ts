@@ -90,7 +90,7 @@ describe( 'DonationForm.vue', () => {
 
 		expect( wrapper.find<HTMLInputElement>( '#interval-0' ).element.checked ).toBeTruthy();
 		expect( wrapper.find<HTMLInputElement>( '#receipt-option-person' ).element.checked ).toBeTruthy();
-		expect( wrapper.find<HTMLInputElement>( '#person-newsletter' ).element.checked ).toBeTruthy();
+		expect( wrapper.find<HTMLInputElement>( '#person-newsletter' ).element.checked ).toBeFalsy();
 	} );
 
 	it( 'sets the correct receipt wanted field', async () => {
