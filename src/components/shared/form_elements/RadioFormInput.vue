@@ -10,7 +10,6 @@
 				:value="nativeValue"
 				:disabled="disabled ? true : null"
 				:readonly="disabled"
-				:aria-readonly="disabled"
 				:aria-describedby="ariaDescribedby"
 				:aria-invalid="ariaInvalid"
 				:aria-disabled="disabled"

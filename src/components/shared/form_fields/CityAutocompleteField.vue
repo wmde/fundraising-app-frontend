@@ -8,7 +8,7 @@
 					name="city"
 					v-model="city"
 					:id="inputId"
-					autocomplete="city"
+					autocomplete="address-level2"
 					:placeholder="$t( placeholder, { example: $t( 'donation_form_city_placeholder' ) } )"
 					aria-controls="cities"
 					:aria-invalid="showError"
