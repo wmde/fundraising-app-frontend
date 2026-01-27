@@ -9,7 +9,7 @@
 					@update:modelValue="onUpdateModel"
 					aria-describedby="mailing-list-hint"
 				>
-					<strong>{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}</strong>
+					{{ $t( 'donation_form_newsletter_label_paragraph_1' ) }}
 				</CheckboxSingleFormInput>
 				<p id="mailing-list-hint" v-html="appendCampaignQueryParams( $t( 'donation_form_newsletter_label_paragraph_2'), campaignParams )"/>
 			</div>
