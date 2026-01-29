@@ -8,8 +8,8 @@
 			<slot name="error-summary"/>
 
 			<PaymentSummary
-				v-if="state === 'showSummary'"
-				@show-payment-form="state='showEntireForm'"
+				v-if="state === FormStates.showSummary"
+				@show-payment-form="showPaymentForm"
 				:amount="paymentSummary.amount"
 				:interval="paymentSummary.interval"
 				:payment-type="paymentSummary.paymentType"
@@ -17,7 +17,7 @@
 
 			<div v-if="state === 'showSummaryAndPaymentType'" class="show-summary-and-payment-type flow">
 				<PaymentSummary
-					@show-payment-form="state='showEntireForm'"
+					@show-payment-form="showPaymentForm"
 					:amount="paymentSummary.amount"
 					:interval="paymentSummary.interval"
 					:payment-type="paymentSummary.paymentType"
@@ -32,7 +32,7 @@
 			</div>
 
 			<form
-				v-if="state === 'showEntireForm'"
+				v-if="state === FormStates.showEntireForm"
 				name="laika-donation-payment"
 				class="payment-page flow"
 				ref="paymentForm"
@@ -50,12 +50,19 @@
 
 <script setup lang="ts">
 import Payment from '@src/components/pages/donation_form/Payment.vue';
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
 import { useStore } from 'vuex';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
 import { Validity } from '@src/view_models/Validity';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
+import { useAmountFocuser } from '@src/components/shared/composables/useAmountFocuser';
+
+enum FormStates {
+	showEntireForm = 'showEntireForm',
+	showSummary = 'showSummary',
+	showSummaryAndPaymentType = 'showSummaryAndPaymentType',
+}
 
 interface Props {
 	paymentAmounts: number[];
@@ -64,21 +71,27 @@ interface Props {
 }
 
 defineProps<Props>();
-
-type formStates = 'showEntireForm' | 'showSummary' | 'showSummaryAndPaymentType';
 const store = useStore();
-let initialFormState: formStates;
+const focusAmount = useAmountFocuser( useStore() );
 
-if ( store.state.payment.validity.type === Validity.VALID && store.state.payment.validity.amount === Validity.VALID ) {
-	initialFormState = 'showSummary';
-} else if ( store.state.payment.validity.amount === Validity.VALID ) {
-	initialFormState = 'showSummaryAndPaymentType';
-} else {
-	initialFormState = 'showEntireForm';
-}
+const initialFormState = (): FormStates => {
+	if ( store.state.payment.validity.type === Validity.VALID && store.state.payment.validity.amount === Validity.VALID ) {
+		return FormStates.showSummary;
+	} else if ( store.state.payment.validity.amount === Validity.VALID ) {
+		return FormStates.showSummaryAndPaymentType;
+	} else {
+		return FormStates.showEntireForm;
+	}
+};
 
-const state = ref<formStates>( initialFormState );
+const state = ref<FormStates>( initialFormState() );
 
 const { paymentSummary } = usePaymentFunctions( store );
+
+const showPaymentForm = async () => {
+	state.value = FormStates.showEntireForm;
+	await nextTick();
+	focusAmount();
+};
 
 </script>

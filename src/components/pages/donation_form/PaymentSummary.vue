@@ -1,7 +1,7 @@
 <template>
 	<Callout type="transparent" class="repel">
 		<p v-html="props.paymentType ? summary : summaryWithoutPaymentType"/>
-		<a href="#" @click.prevent="$emit( 'show-payment-form' )">{{ $t('donation_form_section_back') }}</a>
+		<button type="button" class="link-button" @click.prevent="$emit( 'show-payment-form' )">{{ $t('donation_form_section_back') }}</button>
 	</Callout>
 </template>
 

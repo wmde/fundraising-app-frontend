@@ -5,20 +5,26 @@ import { action } from '@src/store/util';
 import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
 import Payment from '@src/components/pages/donation_form/Payment.vue';
 
-const getWrapper = ( store: any ): VueWrapper<any> => {
-	return mount( PaymentSection, {
-		props: {
-			paymentAmounts: [ 10, 20, 30 ],
-			paymentIntervals: [ 1, 12 ],
-			paymentTypes: [ 'direct_debit', 'bank_transfer', 'credit_card' ],
-		},
-		global: {
-			plugins: [ store ],
-		},
-	} );
-};
-
 describe( 'PaymentSection.vue', () => {
+
+	afterEach( () => {
+		document.getElementsByTagName( 'html' )[ 0 ].innerHTML = '';
+	} );
+
+	const getWrapper = ( store: any ): VueWrapper<any> => {
+		return mount( PaymentSection, {
+			props: {
+				paymentAmounts: [ 1000, 2000, 3000 ],
+				paymentIntervals: [ 1, 12 ],
+				paymentTypes: [ 'direct_debit', 'bank_transfer', 'credit_card' ],
+			},
+			global: {
+				plugins: [ store ],
+			},
+			attachTo: document.body,
+		} );
+	};
+
 	it( 'should display the summary when the payment data in the store is valid', async () => {
 		const store = createStore();
 		await store.dispatch( action( 'payment', 'setAmount' ), '1000' );
@@ -54,5 +60,18 @@ describe( 'PaymentSection.vue', () => {
 		expect( wrapper.find( 'form[name="laika-donation-payment"]' ).exists() ).toBe( true );
 		expect( wrapper.findComponent( Payment ).exists() ).toBe( true );
 		expect( wrapper.findComponent( PaymentSummary ).exists() ).toBe( false );
+	} );
+
+	it( 'focuses the amount when the summary is closed', async () => {
+		const store = createStore();
+		await store.dispatch( action( 'payment', 'setAmount' ), '1000' );
+		await store.dispatch( action( 'payment', 'setInterval' ), 'monthly' );
+		await store.dispatch( action( 'payment', 'setType' ), 'credit_card' );
+		const wrapper = getWrapper( store );
+
+		await wrapper.findComponent( PaymentSummary ).trigger( 'show-payment-form' );
+		const selectedAmount = wrapper.find( '#amount-1000' );
+
+		expect( document.activeElement ).toStrictEqual( selectedAmount.element );
 	} );
 } );
