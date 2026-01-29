@@ -4,6 +4,10 @@ import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString'
 
 describe( 'AppHeader.vue', () => {
 
+	afterEach( () => {
+		document.getElementsByTagName( 'html' )[ 0 ].innerHTML = '';
+	} );
+
 	const getWrapper = ( pageIdentifier: string = '' ): VueWrapper<any> => {
 		return mount( AppHeader, {
 			props: {
@@ -15,6 +19,7 @@ describe( 'AppHeader.vue', () => {
 					[ QUERY_STRING_INJECTION_KEY ]: '',
 				},
 			},
+			attachTo: document.body,
 		} );
 	};
 
@@ -94,19 +99,6 @@ describe( 'AppHeader.vue', () => {
 		expect( wrapper.find( '.navigation-items' ).classes() ).not.toContain( 'active' );
 	} );
 
-	it( 'does not hide the menu when the an item is blurred and a different menu item is focused', async () => {
-		const wrapper = getWrapper();
-		const contains = jest.fn().mockReturnValue( true );
-		Object.defineProperty( document, 'activeElement', { value: { classList: { contains } } } );
-
-		await wrapper.find( '.navigation-burger' ).trigger( 'click' );
-		await wrapper.find( '.navigation-burger' ).trigger( 'blur' );
-		await wrapper.find( '.navigation-items .navigation-item:nth-child(1)' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
-
-		expect( wrapper.find( '.navigation-items' ).classes() ).toContain( 'active' );
-	} );
-
 	it( 'shows the navigation menu in the correct place on large screens', async () => {
 		Object.defineProperty( window, 'innerWidth', { value: 770 } );
 		const wrapper = getWrapper();
@@ -119,5 +111,30 @@ describe( 'AppHeader.vue', () => {
 		const wrapper = getWrapper();
 
 		expect( wrapper.find( '.navigation > :nth-child(3)' ).classes() ).toContain( 'navigation-items' );
+	} );
+
+	it( 'focuses the burger when the donor hides the menu with escape', async () => {
+		Object.defineProperty( window, 'innerWidth', { value: 769 } );
+
+		const wrapper = getWrapper();
+		const burger = wrapper.find( 'button.navigation-burger' );
+
+		await burger.trigger( 'click' );
+		await wrapper.find( '#main-navigation-items li:first-child a' ).trigger( 'keyup.esc' );
+
+		expect( document.activeElement ).toStrictEqual( burger.element );
+	} );
+
+	it( 'does not hide the menu when the an item is blurred and a different menu item is focused', async () => {
+		const wrapper = getWrapper();
+		const contains = jest.fn().mockReturnValue( true );
+		Object.defineProperty( document, 'activeElement', { value: { classList: { contains } } } );
+
+		await wrapper.find( '.navigation-burger' ).trigger( 'click' );
+		await wrapper.find( '.navigation-burger' ).trigger( 'blur' );
+		await wrapper.find( '.navigation-items .navigation-item:nth-child(1)' ).trigger( 'blur' );
+		await jest.runAllTimersAsync();
+
+		expect( wrapper.find( '.navigation-items' ).classes() ).toContain( 'active' );
 	} );
 } );
