@@ -1,7 +1,7 @@
 .pagination {
 	--cluster-horizontal-alignment: center;
 	--gutter: var(--space-xs);
-	--chevron-fill: var(--color-grey-800);
+	--chevron-fill: var(--color-neutral-base);
 	--flow-space: var(--space-xl);
 }
 
@@ -17,11 +17,11 @@
 }
 
 .pagination button:where([aria-current], :hover, :focus) {
-	border-color: var(--color-blue-600);
+	border-color: var(--color-primary-base);
 }
 
 .pagination button[aria-current] {
-	color: var(--color-blue-600);
+	color: var(--color-primary-base);
 }
 
 .pagination button:disabled {

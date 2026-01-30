@@ -1,11 +1,13 @@
 .nav {
+	--background: var(--color-white);
+
 	display: none;
 	line-height: calc(var(--navigation-height) - 2px);
 	position: absolute;
 	top: 100%;
 	left: 0;
 	width: 100%;
-	background-color: var(--color-white);
+	background-color: var(--background);
 	box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -24,8 +26,8 @@
 .nav a:hover,
 .nav a:focus,
 .nav a[aria-current="page"] {
-	border-bottom-color: var(--color-blue-600);
-	color: var(--color-blue-600);
+	border-bottom-color: var(--color-primary-base);
+	color: var(--color-primary-base);
 }
 
 .nav a[aria-current="page"] {

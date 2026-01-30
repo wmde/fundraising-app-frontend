@@ -3,12 +3,12 @@
  */
 .link-button {
 	all: unset;
-	color: var(--color-blue-600);
+	color: var(--color-primary-base);
 	cursor: pointer;
 	text-decoration: underline;
 }
 
 .link-button:hover,
 .link-button:focus {
-	color: var(--color-grey-800);
+	color: var(--color-primary-dark);
 }
