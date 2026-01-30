@@ -9,7 +9,7 @@
 			<button class="locale__button" @click="localeActive = !localeActive">
 				<LocaleIcon/><span>en</span><ChevronDown/>
 			</button>
-			<form action="/" class="locale__form flow">
+			<form action="/" class="locale__form">
 				<label><input type="radio" name="locale" value="de"> Deutsch</label>
 				<label><input type="radio" name="locale" value="en" checked> English</label>
 				<button class="button" type="submit" data-size-small>Set Language</button>

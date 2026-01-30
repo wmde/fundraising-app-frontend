@@ -1,5 +1,7 @@
 .combobox {
 	position: relative;
+	--background: var(--color-white);
+	--background-selected: var(--color-grey-100);
 }
 
 .combobox [role='listbox'] {
@@ -8,7 +10,7 @@
 	width: 100%;
 	max-height: 200px;
 	overflow-y: scroll;
-	background: var(--color-white);
+	background: var(--background);
 	box-shadow: 0 0.5em 1em -0.125em rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.02);
 	transition: opacity 200ms ease-in-out;
 	cursor: pointer;
@@ -17,7 +19,7 @@
 .combobox [role='option'] {
 	width: 100%;
 	text-align: left;
-	background: var(--color-white);
+	background: var(--background);
 	border: 0;
 	padding-block: var(--space-2xs);
 	padding-inline: var(--space-xs);
@@ -25,5 +27,5 @@
 
 .combobox [role='option']:hover,
 .combobox [role='option'][aria-selected='true'] {
-	background: var(--color-grey-100);
+	background: var(--background-selected);
 }

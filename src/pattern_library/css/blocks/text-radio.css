@@ -15,7 +15,7 @@
 	margin: 0;
 	width: var(--radio-size);
 	height: var(--radio-size);
-	border: 1px solid var(--form-field-border-color, var(--color-grey-300));
+	border: 1px solid var(--form-field-border-color, var(--color-neutral-base));
 	background: var(--color-white);
 	border-radius: 50%;
 }
@@ -23,7 +23,7 @@
 .text-radio__radio:before {
 	content: '';
 	position: absolute;
-	background: var(--color-white);
+	background: var(--color-form-bg);
 	height: 40%;
 	width: 40%;
 	top: 30%;
@@ -32,8 +32,8 @@
 }
 
 .text-radio__radio--checked {
-	--form-field-border-color: var(--color-blue-600);
-	background: var(--color-blue-600);
+	--form-field-border-color: var(--color-primary-base);
+	background: var(--color-primary-base);
 }
 
 .text-radio__currency {
@@ -43,7 +43,7 @@
 	top: 0;
 	height: 100%;
 	width: 1.5rem;
-	color: var(--color-grey-500);
+	color: var(--color-neutral-base);
 }
 
 .text-radio:not([data-direction="rtl"]) .text-radio__currency {
