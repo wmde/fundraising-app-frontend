@@ -16,6 +16,7 @@
 		<div class="navigation-right">
 			<LocaleSelector :assets-path="assetsPath"/>
 			<NavigationBurger
+				ref="burger"
 				:active="showMobileNavbar"
 				@click="showMobileNavbar = !showMobileNavbar"
 				@keyup.esc="showMobileNavbar = false"
@@ -29,14 +30,14 @@
 			:header-menu="headerMenu"
 			@click="showMobileNavbar = !showMobileNavbar"
 			@blur="handleMenuItemBlur"
-			@esc="showMobileNavbar = false"
+			@esc="handleMenuEsc"
 		/>
 	</div>
 </template>
 
 <script setup lang="ts">
 
-import { inject, ref } from 'vue';
+import { inject, ref, useTemplateRef } from 'vue';
 import LocaleSelector from '@src/components/layout/LocaleSelector.vue';
 import Logo from '@src/components/layout/Logo.vue';
 import NavigationBurger from '@src/components/layout/NavigationBurger.vue';
@@ -64,6 +65,7 @@ const headerMenu = [
 	{ ids: [ 'faq-page' ], localeId: 'faq', url: `/faq?${ campaignParams }` },
 ];
 const onLargeScreen = useDisplaySwitch( 769 );
+const burgerButton = useTemplateRef( 'burger' );
 
 const handleMenuItemBlur = () => {
 	if ( !showMobileNavbar.value ) {
@@ -76,6 +78,14 @@ const handleMenuItemBlur = () => {
 			showMobileNavbar.value = false;
 		}
 	} );
+};
+
+const handleMenuEsc = () => {
+	if ( !showMobileNavbar.value ) {
+		return;
+	}
+	burgerButton.value.$el.focus();
+	showMobileNavbar.value = false;
 };
 
 </script>
