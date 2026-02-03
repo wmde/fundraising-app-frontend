@@ -21,7 +21,7 @@
     "axios": "^1.13.4",
     "bulma": "0.9.4",
     "core-js": "^3.48.0",
-    "globals": "^17.1.0",
+    "globals": "^17.3.0",
     "js-cookie": "^3.0.5",
     "process": "^0.11.10",
     "vue": "~3.5.17",
@@ -29,10 +29,10 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.6",
+    "@babel/core": "^7.29.0",
     "@babel/eslint-parser": "^7.28.6",
-    "@babel/plugin-transform-runtime": "^7.28.5",
-    "@babel/preset-env": "^7.28.6",
+    "@babel/plugin-transform-runtime": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
     "@eslint/js": "^9.39.2",
     "@stylistic/eslint-plugin": "^5.7.1",
     "@testing-library/jest-dom": "6.9.1",
