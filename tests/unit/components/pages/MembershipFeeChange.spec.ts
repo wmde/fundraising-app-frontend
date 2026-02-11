@@ -98,30 +98,30 @@ describe( 'MembershipFeeChange.vue', () => {
 	test( 'shows form page content if flag is set to form page', () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.membership-fee-form-page' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.membership-fee-return-page' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.membership-fee-error-page' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.membership-fee-success-page' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).toContain( 'membership_fee_upgrade_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_error_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_returning_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_confirmation_headline' );
 	} );
 
 	test( 'shows error page content if flag ss set to error', async () => {
 		const wrapper = getWrapper();
 		await wrapper.setProps( { feeChangeFrontendFlag: 'SHOW_ERROR_PAGE' } );
 
-		expect( wrapper.find( '.membership-fee-error-page' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.membership-fee-form-page' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.membership-fee-return-page' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.membership-fee-success-page' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_page_headline' );
+		expect( wrapper.text() ).toContain( 'membership_fee_upgrade_error_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_returning_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_confirmation_headline' );
 	} );
 
 	test( 'shows returning page content if flag is set to return page', async () => {
 		const wrapper = getWrapper();
 		await wrapper.setProps( { feeChangeFrontendFlag: 'SHOW_FEE_ALREADY_CHANGED_PAGE' } );
 
-		expect( wrapper.find( '.membership-fee-return-page' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.membership-fee-error-page' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.membership-fee-form-page' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.membership-fee-success-page' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_error_page_headline' );
+		expect( wrapper.text() ).toContain( 'membership_fee_upgrade_returning_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_confirmation_headline' );
 	} );
 
 	test( 'shows success page content after successful form submission', async () => {
@@ -130,10 +130,10 @@ describe( 'MembershipFeeChange.vue', () => {
 		await wrapper.find( '#member-name' ).setValue( 'valid example name' );
 		await wrapper.find( 'form' ).trigger( 'submit' );
 
-		expect( wrapper.find( '.membership-fee-success-page' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '.membership-fee-return-page' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.membership-fee-error-page' ).exists() ).toBeFalsy();
-		expect( wrapper.find( '.membership-fee-form-page' ).exists() ).toBeFalsy();
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_error_page_headline' );
+		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_returning_page_headline' );
+		expect( wrapper.text() ).toContain( 'membership_fee_upgrade_confirmation_headline' );
 	} );
 
 } );

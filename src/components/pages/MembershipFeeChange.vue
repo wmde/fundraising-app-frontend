@@ -1,9 +1,10 @@
 <template>
-	<ErrorMessage v-if="feeChangeFrontendFlag === 'SHOW_ERROR_PAGE'"/>
+	<InactiveMessage v-if="feeChangeFrontendFlag === 'SHOW_IS_INACTIVE'"/>
+	<ErrorMessage v-else-if="feeChangeFrontendFlag === 'SHOW_ERROR_PAGE'"/>
 	<FeeAlreadyChangedMessage v-else-if="feeChangeFrontendFlag === 'SHOW_FEE_ALREADY_CHANGED_PAGE'"/>
 	<SuccessMessage :new-fee="newFee" :current-interval="currentInterval" v-else-if="feeChangeFrontendFlag === 'SHOW_FEE_CHANGE_FORM' && showSuccessPage"/>
 	<form v-else action="#" @submit.prevent="validateAndSubmit" class="flow">
-		<ContentCard class="membership-fee-form-page">
+		<ContentCard>
 			<template #heading>
 				<h1>
 					{{ $t('membership_fee_upgrade_page_headline', {
@@ -130,13 +131,14 @@ import ErrorMessage from '@src/components/pages/membership_fee_change/ErrorMessa
 import FeeAlreadyChangedMessage from '@src/components/pages/membership_fee_change/FeeAlreadyChangedMessage.vue';
 import SuccessMessage from '@src/components/pages/membership_fee_change/SuccessMessage.vue';
 import SuggestedAmountField from '@src/components/shared/form_fields/SuggestedAmountField.vue';
+import InactiveMessage from '@src/components/pages/membership_fee_change/InactiveMessage.vue';
 
 interface Props {
 	uuid: string;
 	currentAmountInCents: number;
 	suggestedAmountInCents: number;
 	currentInterval: number;
-	feeChangeFrontendFlag: 'SHOW_FEE_CHANGE_FORM' | 'SHOW_FEE_ALREADY_CHANGED_PAGE' | 'SHOW_ERROR_PAGE';
+	feeChangeFrontendFlag: 'SHOW_FEE_CHANGE_FORM' | 'SHOW_FEE_ALREADY_CHANGED_PAGE' | 'SHOW_ERROR_PAGE' | 'SHOW_IS_INACTIVE';
 }
 const props = defineProps<Props>();
 const { t } = useI18n();

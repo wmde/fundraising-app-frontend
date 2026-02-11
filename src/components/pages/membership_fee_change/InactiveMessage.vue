@@ -5,8 +5,8 @@
 				<template #icon><WarningIcon/></template>
 				<template #content>
 					<div class="flow">
-						<h2>{{ $t('membership_fee_upgrade_error_page_headline') }}</h2>
-						<p>{{ $t('membership_fee_upgrade_error_page_text') }}</p>
+						<h2>{{ $t('membership_fee_upgrade_inactive_page_headline') }}</h2>
+						<p v-html="$t('membership_fee_upgrade_inactive_page_text')"></p>
 					</div>
 				</template>
 			</IconText>

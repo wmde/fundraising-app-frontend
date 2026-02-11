@@ -1,5 +1,5 @@
 <template>
-	<ContentCard class="membership-fee-return-page">
+	<ContentCard>
 		<template #content>
 			<IconText>
 				<template #icon><SuccessIcon/></template>
