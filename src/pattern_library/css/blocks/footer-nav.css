@@ -1,8 +1,8 @@
 .footer-nav a {
 	display: block;
 	padding-block: var(--space-2xs);
-	color: var(--color-grey-800);
-	border-bottom: 1px solid var(--color-grey-600);
+	color: var(--color-text-main);
+	border-bottom: 1px solid currentColor;
 }
 
 .footer-nav a:not(:hover):not(:focus) {
@@ -11,5 +11,5 @@
 
 .footer-nav a:hover,
 .footer-nav a:focus {
-	color: var(--color-blue-600);
+	color: var(--color-primary-base);
 }

@@ -1,5 +1,5 @@
 .site-foot {
-	background: var(--color-blue-300);
+	background: var(--color-footer-background);
 	padding-block: var(--space-s-l);
 	margin-block-start: var(--space-2xl);
 }
