@@ -211,15 +211,6 @@
 
 				<form action="" class="flow">
 					<div class="flex-field-group">
-						<div class="field-container flow">
-							<label for="country">Title</label>
-							<select name="title" id="title">
-								<option value="ie">No Title</option>
-								<option value="de">Dr.</option>
-								<option value="fr">Prof.</option>
-								<option value="be">Prof. Dr.</option>
-							</select>
-						</div>
 						<fieldset class="field-container flow">
 							<legend>Form of address</legend>
 							<div class="cluster">
@@ -244,6 +235,15 @@
 							</div>
 							<p class="field-container__error-text">Please provide your preferred form of address.</p>
 						</fieldset>
+						<div class="field-container flow flex-field-group__stretch">
+							<label for="country">Title</label>
+							<select name="title" id="title">
+								<option value="ie">No Title</option>
+								<option value="de">Dr.</option>
+								<option value="fr">Prof.</option>
+								<option value="be">Prof. Dr.</option>
+							</select>
+						</div>
 					</div>
 
 					<div class="grid" data-layout="halves">
