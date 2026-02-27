@@ -16,6 +16,7 @@
 @use "../pattern_library/css/compositions/wrapper.css" as wrapperBase;
 @use "../pattern_library/css/blocks/accordion.css" as accordionBase;
 @use "../pattern_library/css/blocks/callout.css";
+@use "../pattern_library/css/blocks/contact-card.css";
 @use "../pattern_library/css/blocks/combobox.css" as comboboxBase;
 @use "../pattern_library/css/blocks/detailed-info-box.css";
 @use "../pattern_library/css/blocks/field-container.css" as fieldContainerBase;
@@ -50,6 +51,7 @@
 	--color-grey-300: #{colors.$gray-mid};
 	--color-grey-500: #{colors.$gray-dark};
 	--color-neutral-base: #{colors.$gray-dark};
+	--color-neutral-pastel: #{colors.$gray-lighter};
 	--color-grey-700: #363636;
 	--color-grey-800: #{colors.$black};
 	--color-blue-600: #{colors.$primary};

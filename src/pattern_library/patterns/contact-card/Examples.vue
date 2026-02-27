@@ -29,8 +29,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import PhoneIcon from '@src/pattern_library/components/icons/PhoneIcon.vue';
-import MailIcon from '@src/pattern_library/components/icons/MailIcon.vue';
+import PhoneIcon from '@src/components/shared/icons/PhoneIcon.vue';
+import MailIcon from '@src/components/shared/icons/MailIcon.vue';
 
 defineOptions( { inheritAttrs: false } );
 
