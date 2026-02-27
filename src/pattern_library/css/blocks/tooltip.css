@@ -8,9 +8,9 @@ label:has(.tooltip) {
 	width: var(--space-s);
 	height: var(--space-s);
 	margin: 0.2ex 0 0;
-	border: 1px solid var(--color-grey-800);
-	background: var(--color-white);
-	color: var(--color-grey-800);
+	border: 1px solid var(--color-neutral-base);
+	background: var(--color-form-bg);
+	color: var(--color-neutral-base);
 	font-size: var(--type-step-00);
 	border-radius: 50%;
 }
@@ -33,7 +33,7 @@ label:has(.tooltip) {
 	left: -1rem;
 	background: var(--color-white);
 	box-shadow: 0 0 4px rgba(0,0,0,.1);
-	border: 3px solid var(--color-blue-600);
+	border: 3px solid var(--color-primary-base);
 	/* padding + 2 lines of text + padding + borders */
 	height: calc(var(--space-2xs) + 2lh + var(--space-2xs) + 6px);
 	line-height: var(--leading-fine);
@@ -45,7 +45,7 @@ label:has(.tooltip) {
 }
 
 .tooltip__popup:before {
-	border-color: var(--color-blue-600) transparent transparent;
+	border-color: var(--color-primary-base) transparent transparent;
 	border-style: solid;
 	border-width: 9px 10px 0 9px;
 	bottom: -9px;

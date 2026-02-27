@@ -3,7 +3,7 @@
 }
 
 .more-info-toggle summary::marker {
-	color: var(--color-blue-600);
+	color: var(--color-primary-base);
 }
 
 .button + .more-info-toggle {

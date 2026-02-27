@@ -8,7 +8,7 @@
 			<hr/>
 		</div>
 
-		<div id="iban-calculator-1" class="iban-calculator" :data-visible="visible1 ? true : null" :data-submitted="submitted1 ? true : null">
+		<div id="iban-calculator-1" class="iban-calculator callout" data-borderless :data-visible="visible1 ? true : null" :data-submitted="submitted1 ? true : null">
 			<div class="iban-calculator__heading repel" data-nowrap>
 				<div class="icon-text">
 					<div class="icon-text__icon" aria-hidden="true">
@@ -74,7 +74,7 @@
 			<hr/>
 		</div>
 
-		<div id="iban-calculator-2" class="iban-calculator" data-visible>
+		<div id="iban-calculator-2" class="iban-calculator callout" data-visible data-borderless>
 			<div class="iban-calculator__heading repel" data-nowrap>
 				<div class="icon-text">
 					<div class="icon-text__icon" aria-hidden="true">

@@ -3,37 +3,35 @@ This defines all the colours used on the site
 */
 :root {
 	--color-white: #ffffff;
+	--color-grey-50: #f8f9fa;
+	--color-grey-100: #eaecf0;
+	--color-grey-200: #dadde3;
+	--color-grey-300: #c8ccd1;
+	--color-grey-400: #a2a9b1;
+	--color-grey-500: #72777d;
+	--color-grey-600: #54595d;
+	--color-grey-700: #404244;
+	--color-grey-800: #27292d;
+	--color-grey-900: #202122;
+	--color-grey-1000: #101418;
 	--color-black: #000000;
 
-	--color-black-transparent-14: rgb(0 0 0 / 14%);
-	--color-black-transparent-80: rgb(0 0 0 / 80%);
-	--color-black-transparent-07: rgb(0 0 0 / 7%);
-
-	--color-grey-100: #f5f5f5;
-	--color-grey-200: #e5e5e5;
-	--color-grey-300: #b7b7b7;
-	--color-grey-500: #808080;
-	--color-grey-600: #666666;
-	--color-grey-700: #363636;
-	--color-grey-800: #222222;
-
-	--color-red-100: #fee7e6;
-	--color-red-500: #ff4242;
-	--color-red-600: #d73333;
-	--color-red-700: #b32424;
-
 	--color-blue-50: #eaf3ff;
-	--color-blue-100: #dce4e8;
-	--color-blue-200: #ddedf6;
-	--color-blue-300: #c7d1d8;
-	--color-blue-500: #1e88ca;
-	--color-blue-600: #3366cc;
-
-	--color-green-100: #e3f2e4;
-	--color-green-500: #259948;
-
-	--color-yellow-50: #fdf2d5;
-	--color-yellow-300: #eeb533;
+	--color-blue-200: #447ff5;
+	--color-blue-500: #3366cc;
+	--color-blue-700: #2a4b8d;
+	--color-red-50: #fee7e6;
+	--color-red-200: #ff4242;
+	--color-red-500: #dd3333;
+	--color-red-700: #b32424;
+	--color-green-50: #d5fdf4;
+	--color-green-200: #00daab;
+	--color-green-500: #00af89;
+	--color-green-700: #14866d;
+	--color-yellow-50: #fef6e7;
+	--color-yellow-200: #ffd865;
+	--color-yellow-500: #ffcc33;
+	--color-yellow-700: #ac6600;
 
 	--color-wikimedia-green: #10826b;
 	--color-wikimedia-green-light: #ecfffb;
@@ -43,4 +41,44 @@ This defines all the colours used on the site
 	--color-wikimedia-blue-light: #d7edff;
 	--color-wikimedia-grey: #555555;
 	--color-wikimedia-grey-light: #f3f3f3;
+
+	--color-primary-base: var( --color-blue-500 );
+	--color-primary-light: var( --color-blue-200 );
+	--color-primary-dark: var( --color-blue-700 );
+	--color-primary-pastel: var( --color-blue-50 );
+
+	--color-error-base: var( --color-red-500 );
+	--color-error-light: var( --color-red-200 );
+	--color-error-dark: var( --color-red-700 );
+	--color-error-pastel: var( --color-red-50 );
+
+	--color-success-base: var( --color-green-500 );
+	--color-success-light: var( --color-green-200 );
+	--color-success-dark: var( --color-green-700 );
+	--color-success-pastel: var( --color-green-50 );
+
+	--color-warning-base: var( --color-yellow-500 );
+	--color-warning-light: var( --color-yellow-200 );
+	--color-warning-dark: var( --color-yellow-700 );
+	--color-warning-pastel: var( --color-yellow-50 );
+
+	--color-neutral-base: var( --color-grey-500 );
+	--color-neutral-light: var( --color-grey-200 );
+	--color-neutral-dark: var( --color-grey-700 );
+	--color-neutral-pastel: var( --color-grey-50 );
+
+	--color-main-background: #dce4e8;
+	--color-footer-background: #c7d1d8;
+
+	--color-black-transparent-14: rgb(0 0 0 / 14%);
+	--color-black-transparent-80: rgb(0 0 0 / 80%);
+	--color-black-transparent-07: rgb(0 0 0 / 7%);
+
+	--color-text-main: var( --color-grey-1000 );
+	--color-text-faded: var( --color-grey-500 );
+	--color-text-inverted: var( --color-white );
+	--color-selection-text: var( --color-white );
+	--color-selection-bg: var( --color-primary-base );
+	--color-form-border: var( --color-grey-400 );
+	--color-form-bg: var( --color-white );
 }
