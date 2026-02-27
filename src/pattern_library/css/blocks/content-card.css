@@ -15,6 +15,10 @@
 	--card-padding: var(--space-xs);
 }
 
+.content-card[data-sidebar-card] h2 {
+	font-size: var(--type-step-1);
+}
+
 .content-card[data-collapsable] {
 	--card-padding: 0;
 	--summary-color: var(--color-primary-base);
