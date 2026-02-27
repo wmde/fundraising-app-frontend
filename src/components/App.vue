@@ -11,7 +11,7 @@
 					<component :is="page" v-bind="pageProps"/>
 				</template>
 				<template #sidebar v-if="hasSidebar">
-					<component :is="sidebar ?? DefaultSidebar" v-bind="sidebarProps"/>
+					<component :is="sidebar ?? DefaultSidebar" v-bind="sidebarProps" :assets-path="assetsPath"/>
 				</template>
 			</AppContent>
 		</div>

@@ -13,6 +13,7 @@ import accordion from '@src/pattern_library/patterns/accordion';
 import button from '@src/pattern_library/patterns/button';
 import callout from '@src/pattern_library/patterns/callout';
 import combobox from '@src/pattern_library/patterns/combobox';
+import contactCard from '@src/pattern_library/patterns/contact-card';
 import contentCard from '@src/pattern_library/patterns/content-card';
 import detailedInfoBox from '@src/pattern_library/patterns/detailed-info-box';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
@@ -55,6 +56,7 @@ const patterns: Pattern[] = [
 	button,
 	callout,
 	combobox,
+	contactCard,
 	contentCard,
 	detailedInfoBox,
 	donationComment,
