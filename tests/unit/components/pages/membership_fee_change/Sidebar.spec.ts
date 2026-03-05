@@ -6,6 +6,7 @@ describe( 'Sidebar.vue', () => {
 		return mount( Sidebar, {
 			props: {
 				externalMemberId,
+				assetsPath: '/',
 			},
 		} );
 	};
