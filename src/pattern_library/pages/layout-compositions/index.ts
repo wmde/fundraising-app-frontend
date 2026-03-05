@@ -5,6 +5,7 @@ const url = 'layout-compositions';
 import content from './content.md';
 
 import cluster from '@src/pattern_library/css/compositions/cluster.css?raw';
+import flexFieldGroup from '@src/pattern_library/css/compositions/flex-field-group.css?raw';
 import flow from '@src/pattern_library/css/compositions/flow.css?raw';
 import grid from '@src/pattern_library/css/compositions/grid.css?raw';
 import repel from '@src/pattern_library/css/compositions/repel.css?raw';
@@ -14,6 +15,7 @@ import wrapper from '@src/pattern_library/css/compositions/wrapper.css?raw';
 
 const codeSamples = [
 	{ name: 'cluster.css', code: cluster },
+	{ name: 'flex-field-group.css', code: flexFieldGroup },
 	{ name: 'flow.css', code: flow },
 	{ name: 'grid.css', code: grid },
 	{ name: 'repel.css', code: repel },

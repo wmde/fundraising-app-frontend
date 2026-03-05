@@ -203,3 +203,87 @@ This should be used in all contexts where the content needs to be in the center 
 
 <div class="content-wrapper">I am centered and have a nice, consistent gutter.</div>
 ```
+
+## Flex Field Group
+
+This is used when we want to array fields horizontally but also allow them to stack when needed on small screens. You can see it used extensively in the [Compact Form Sample](/pattern-library/compact-donation-form).
+
+### Examples
+
+It contains some sub-layout options, to allow some flexibility with the layouts.
+
+#### `.flex-field-group__stretch`
+
+This will make one field stretch and fill all the space available.
+
+```html
+<fieldset class="field-container flow">
+	<legend>Form of address</legend>
+	<div class="cluster">
+		<div>
+			<label>
+				<input type="radio" name="salutation" id="salutation-mr"><span>Mr</span>
+			</label>
+		</div>
+		<div>
+			<label>
+				<input type="radio" name="salutation" id="salutation-ms"><span>Ms</span>
+			</label>
+		</div>
+	</div>
+</fieldset>
+<div class="field-container flow flex-field-group__stretch">
+	<label for="country">Title</label>
+	<select name="title" id="title">
+		<option value="ie">No Title</option>
+		<option value="de">Dr.</option>
+		<option value="fr">Prof.</option>
+		<option value="be">Prof. Dr.</option>
+	</select>
+</div>
+```
+#### `.flex-field-group__mini-field`
+When you want one field in the row to be smaller than the others, eg for a postcode.
+
+```html
+<div class="flex-field-group">
+	<div class="field-container flow">
+		<label for="country">Country</label>
+		<select name="country" id="country">
+			<option value="ie">Ireland</option>
+		</select>
+	</div>
+
+	<div class="field-container flow flex-field-group__mini-field">
+		<label for="postcode">Postcode</label>
+		<input type="text" name="postcode" id="postcode" placeholder="e.g., 25950">
+	</div>
+
+	<div class="field-container flow">
+		<label for="city">City</label>
+		<input type="text" name="city" id="city" placeholder="e.g., Berlin">
+	</div>
+</div>
+```
+#### `.flex-field-group__sidebar-field and .flex-field-group__sidebar-field-sidebar`
+When you want a small fixed width field next to a stretched one, eg for a street name and number combo. It can be used in conjunction with the nowrap extension.
+
+```html
+<div class="flex-field-group" data-nowrap>
+	<div class="field-container flow flex-field-group__sidebar-field">
+		<label for="street">Street Name</label>
+		<input type="text" name="street" id="street" placeholder="e.g., Sesame">
+	</div>
+
+	<div class="field-container flow flex-field-group__sidebar-field-sidebar">
+		<label for="building-number">No</label>
+		<input type="text" name="building-number" id="building-number" placeholder="e.g., 42">
+	</div>
+</div>
+```
+
+### Exceptions
+
+| Exception               | Description                                                    |
+|-------------------------|----------------------------------------------------------------|
+| `.sidebar[data-nowrap]` | Use this when you want to prevent a field group from wrapping. |
