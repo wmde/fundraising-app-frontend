@@ -7,7 +7,7 @@
 }
 
 .field-container__message {
-	color: var(--color-grey-500);
+	color: var(--color-text-faded);
 	font-style: italic;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .field-container__error-text {
-	color: var(--color-red-700);
+	color: var(--color-error-base);
 }
 
 .field-container[data-max-width] {
@@ -25,7 +25,7 @@
 }
 
 .field-container[data-error] {
-	--form-field-border-color: var(--color-red-700);
+	--form-field-border-color: var(--color-error-base);
 }
 
 .field-container:not([data-error]) .field-container__error-text {

@@ -1,6 +1,6 @@
 .callout {
-	--border-color: var(--color-blue-600);
-	--background-color: var(--color-blue-200);
+	--border-color: var(--color-primary-base);
+	--background-color: var(--color-primary-pastel);
 
 	background: var(--background-color);
 	padding: var(--space-xs-l);
@@ -15,27 +15,27 @@
 }
 
 .callout[data-success] {
-	--border-color: var(--color-green-500);
-	--background-color: var(--color-green-100);
+	--border-color: var(--color-success-base);
+	--background-color: var(--color-success-pastel);
 }
 
 .callout[data-warning] {
-	--border-color: var(--color-yellow-300);
-	--background-color: var(--color-yellow-50);
+	--border-color: var(--color-warning-base);
+	--background-color: var(--color-warning-pastel);
 }
 
 .callout[data-error] {
-	--border-color: var(--color-red-700);
-	--background-color: var(--color-red-100);
+	--border-color: var(--color-error-base);
+	--background-color: var(--color-error-pastel);
 }
 
 .callout[data-neutral] {
-	--border-color: var(--color-grey-200);
-	--background-color: var(--color-grey-100);
+	--border-color: var(--color-neutral-light);
+	--background-color: var(--color-neutral-pastel);
 }
 
 .callout[data-transparent] {
-	--border-color: var(--color-grey-200);
+	--border-color: var(--color-neutral-light);
 	--background-color: transparent;
 }
 

@@ -1,5 +1,5 @@
 .accordion {
-	--chevron-stroke: var(--summary-color, var(--color-grey-800));
+	--chevron-stroke: var(--summary-color, var(--color-text-main));
 	--summary-border: var(--stroke);
 	--summary-margin: var(--space-2xs);
 	--summary-padding: var(--space-2xs) 0;
@@ -51,9 +51,12 @@
 }
 
 .accordion details[open] summary {
-	--chevron-stroke: var(--summary-color, var(--color-blue-600));
 	margin-block-end: var(--summary-margin);
-	color: var(--summary-color, var(--color-blue-600));
+	color: var(--summary-color, var(--color-primary-base));
+}
+
+.accordion:not([data-theme="wikimedia"]) details[open] summary {
+	--chevron-stroke: var(--color-primary-base);
 }
 
 .accordion details[open] summary svg {
@@ -78,19 +81,23 @@
 .accordion[data-theme="wikimedia"] details:nth-of-type(1n) {
 	--background-color: var(--color-wikimedia-green-light);
 	--summary-color: var(--color-wikimedia-green);
+	--chevron-stroke: var(--color-wikimedia-green);
 }
 
 .accordion[data-theme="wikimedia"] details:nth-of-type(2n) {
 	--background-color: var(--color-wikimedia-red-light);
 	--summary-color: var(--color-wikimedia-red);
+	--chevron-stroke: var(--color-wikimedia-red);
 }
 
 .accordion[data-theme="wikimedia"] details:nth-of-type(3n) {
 	--background-color: var(--color-wikimedia-blue-light);
 	--summary-color: var(--color-wikimedia-blue);
+	--chevron-stroke: var(--color-wikimedia-blue);
 }
 
 .accordion[data-theme="wikimedia"] details:nth-of-type(4n) {
 	--background-color: var(--color-wikimedia-grey-light);
 	--summary-color: var(--color-wikimedia-grey);
+	--chevron-stroke: var(--color-wikimedia-grey);
 }

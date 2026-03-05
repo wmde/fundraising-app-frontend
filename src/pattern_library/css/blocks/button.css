@@ -1,7 +1,7 @@
 .button {
-	--button-bg: var(--color-blue-600);
-	--button-border-color: var(--color-blue-600);
-	--button-text: var(--color-white);
+	--button-bg: var(--color-primary-base);
+	--button-border-color: var(--color-primary-base);
+	--button-text: var(--color-text-inverted);
 	--button-padding-block: 1em;
 	--button-padding-inline: 2em;
 
@@ -26,8 +26,8 @@
 }
 
 .button:focus {
-	--button-border-color: var(--color-white);
-	box-shadow: 0 0 0 2px var(--color-blue-600);
+	outline: 2px solid var(--color-primary-base, currentColor);
+	outline-offset: 2px;
 }
 
 .button:active {
@@ -36,13 +36,13 @@
 
 .button[data-style-hollow] {
 	--button-bg: var(--color-white);
-	--button-text: var(--color-blue-600);
+	--button-text: var(--color-primary-base);
 }
 
 .button[data-style-hollow]:hover,
 .button[data-style-hollow]:focus {
-	--button-bg: var(--color-blue-600);
-	--button-text: var(--color-white);
+	--button-bg: var(--color-primary-base);
+	--button-text: var(--color-text-inverted);
 }
 
 .button[data-size-small] {
