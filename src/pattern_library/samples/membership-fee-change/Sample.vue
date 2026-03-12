@@ -90,7 +90,7 @@
 				</div>
 
 				<div class="content-card" data-sidebar-card>
-					<button class="button" data-size-small @click="error = !error">Toggle Error State</button>
+					<button class="button" data-size="small" @click="error = !error">Toggle Error State</button>
 				</div>
 			</SidebarLinks>
 		</aside>
