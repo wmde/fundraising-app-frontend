@@ -64,7 +64,7 @@ describe( 'App.vue', () => {
 	it( 'shows the default sidebar content', () => {
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.main-content > .sidebar' ).html() ).toContain( 'sidebar_getintouch_headline' );
+		expect( wrapper.find( '.main-content > .sidebar' ).html() ).toContain( 'contact_sidebar_title' );
 		expect( wrapper.find( '.main-content > .sidebar' ).html() ).toContain( 'bank_data_title' );
 	} );
 
