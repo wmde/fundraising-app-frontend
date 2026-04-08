@@ -41,7 +41,7 @@ export default defineComponent( {
 			if ( evt.animationName !== 'onAutoFillStart' ) {
 				return;
 			}
-			this.$data.autofillQueue.add( evt.target );
+			this.$data.autofillQueue.add( evt.target as HTMLInputElement );
 			if ( this.$data.debounceTimeout !== null ) {
 				clearTimeout( this.$data.debounceTimeout );
 			}

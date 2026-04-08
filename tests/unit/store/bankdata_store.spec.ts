@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { actions } from '@src/store/bankdata/actions';
 import { Validity } from '@src/view_models/Validity';
 import type { InitialBankAccountData } from '@src/view_models/BankAccount';
@@ -7,7 +8,7 @@ describe( 'BankData', () => {
 	describe( 'Actions/initializeBankData', () => {
 		it( 'commits the data to the internal state', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 				},
 				payload: InitialBankAccountData = {
 					iban: IBAN,
@@ -26,7 +27,7 @@ describe( 'BankData', () => {
 
 		it( 'does not restore IBAN validity if empty', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 				},
 				payload: InitialBankAccountData = {
 					iban: '',
@@ -42,12 +43,12 @@ describe( 'BankData', () => {
 	} );
 
 	describe( 'Actions/initializeBankData', () => {
-		test.each( [
+		it.each( [
 			[ Validity.INCOMPLETE ],
 			[ Validity.RESTORED ],
 		] )( 'marks iban as invalid', ( validity: Validity ) => {
 			const context = {
-				commit: jest.fn(),
+				commit: vi.fn(),
 				state: {
 					validity: {
 						iban: validity,

@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, it } from 'vitest';
 import { createStore } from '@src/store/donation_store';
 import { mount, VueWrapper } from '@vue/test-utils';
 import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';

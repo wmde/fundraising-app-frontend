@@ -1,9 +1,9 @@
+import { describe, expect, it, vi } from 'vitest';
 import { getters } from '@src/store/payment/getters';
 import { actions } from '@src/store/payment/actions';
 import { mutations } from '@src/store/payment/mutations';
 import { Validity } from '@src/view_models/Validity';
 import { AmountValidity } from '@src/view_models/Payment';
-import each from 'jest-each';
 import { DonationPayment } from '@src/store/payment/types';
 import { ActionContext } from 'vuex';
 import { PaymentType } from '@src/view_models/PaymentType';
@@ -46,7 +46,7 @@ describe( 'Payment', () => {
 			) ).toBe( true );
 		} );
 
-		each( validityCases ).it( 'converts validity types to boolean state (test index %#)',
+		it.each( validityCases )( 'converts validity types to boolean state (test index %#)',
 			( amountValidity, isValid ) => {
 				const state = {
 					validity: {
@@ -78,7 +78,7 @@ describe( 'Payment', () => {
 			) ).toBe( AmountValidity.AMOUNT_VALID );
 		} );
 
-		each( validCentAmounts ).it( 'does not return invalid amount on valid donation amount (cents)', ( validAmount ) => {
+		it.each( validCentAmounts )( 'does not return invalid amount on valid donation amount (cents)', ( validAmount ) => {
 			expect( getters.amountValidity(
 				newMinimalStore( { values: { amount: validAmount } } ),
 				null,
@@ -87,7 +87,7 @@ describe( 'Payment', () => {
 			) ).toBe( AmountValidity.AMOUNT_VALID );
 		} );
 
-		each( invalidCentAmountsTooLow ).it( 'returns amount too low error on minimum donation amounts (cents)', ( tooLowAmount ) => {
+		it.each( invalidCentAmountsTooLow )( 'returns amount too low error on minimum donation amounts (cents)', ( tooLowAmount ) => {
 			expect( getters.amountValidity(
 				newMinimalStore( { values: { amount: tooLowAmount }, validity: { amount: Validity.INVALID } } ),
 				null,
@@ -96,7 +96,7 @@ describe( 'Payment', () => {
 			) ).toBe( AmountValidity.AMOUNT_TOO_LOW );
 		} );
 
-		each( invalidCentAmountsTooHigh ).it( 'returns amount too high error on maximum donation amounts (cents)', ( tooHighAmount ) => {
+		it.each( invalidCentAmountsTooHigh )( 'returns amount too high error on maximum donation amounts (cents)', ( tooHighAmount ) => {
 			expect( getters.amountValidity(
 				newMinimalStore( { values: { amount: tooHighAmount }, validity: { amount: Validity.INVALID } } ),
 				null,
@@ -116,7 +116,7 @@ describe( 'Payment', () => {
 			) ).toBe( true );
 		} );
 
-		each( validityCases ).it(
+		it.each( validityCases )(
 			'returns the expected validity for a given type (test index %#)',
 			( typeValidity, isValid ) => {
 				const state = {
@@ -139,7 +139,7 @@ describe( 'Payment', () => {
 		const externalPaymentTypes = [ 'PPL', 'MCP', 'SUB' ];
 		const nonExternalPaymentTypes = [ 'UEB', 'BEZ' ];
 
-		each( externalPaymentTypes ).it( 'returns true for external payments', ( paymentType ) => {
+		it.each( externalPaymentTypes )( 'returns true for external payments', ( paymentType ) => {
 			expect( getters.isExternalPayment(
 				newMinimalStore( { values: { type: paymentType } } ),
 				null,
@@ -148,7 +148,7 @@ describe( 'Payment', () => {
 			) ).toBe( true );
 		} );
 
-		each( nonExternalPaymentTypes ).it( 'returns false for non-external payments', ( paymentType ) => {
+		it.each( nonExternalPaymentTypes )( 'returns false for non-external payments', ( paymentType ) => {
 			expect( getters.isExternalPayment(
 				newMinimalStore( { values: { type: paymentType } } ),
 				null,
@@ -160,7 +160,7 @@ describe( 'Payment', () => {
 
 	describe( 'Actions/initializePayment', () => {
 		it( 'does not commit empty amount', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
@@ -178,7 +178,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'commits amount and sets it to valid when amount is set', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
@@ -197,7 +197,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'does not commit empty payment type', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
@@ -215,7 +215,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'commits payment type and set it to valid when payment type is set', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
@@ -234,7 +234,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'commits interval', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 12 ],
@@ -261,7 +261,7 @@ describe( 'Payment', () => {
 
 		describe.each( paymentAndAmountCases )( 'with initial payment data', ( data: any ) => {
 			it( `whose amount is ${ data.amount } and type is ${ data.type } should be ${ data.expectedResolution }`, () => {
-				const commit = jest.fn();
+				const commit = vi.fn();
 				const action = actions.initializePayment as any;
 				const payload: PaymentInitialisationPayload = {
 					allowedIntervals: [ 0, 12 ],
@@ -280,7 +280,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'does not initialise Sofort payment type if initialised with an interval', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
@@ -298,7 +298,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'initialises Sofort payment type if interval is 0', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
@@ -316,7 +316,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'initialises Sofort payment type if interval is emtpy', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
@@ -334,7 +334,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'does not initialise payment type if it is not in allowed list', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
@@ -352,7 +352,7 @@ describe( 'Payment', () => {
 		} );
 
 		it( 'does not initialise interval if it is not in allowed list', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.initializePayment as any;
 			const payload: PaymentInitialisationPayload = {
 				allowedIntervals: [ 0, 12 ],
@@ -372,7 +372,7 @@ describe( 'Payment', () => {
 
 	describe( 'Actions/markEmptyAmountAsInvalid', () => {
 		it( 'commits to mutation [MARK_EMPTY_AMOUNT_INVALID]', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.markEmptyAmountAsInvalid as any;
 			action( { commit } );
 			expect( commit ).toBeCalledWith(
@@ -384,7 +384,7 @@ describe( 'Payment', () => {
 	describe( 'Actions/markEmptyValuesAsInvalid', () => {
 		it( 'commits to mutation [MARK_EMPTY_FIELDS_INVALID]', () => {
 			const context = {
-				commit: jest.fn(),
+				commit: vi.fn(),
 				getters: {
 					'payment/paymentDataIsValid': true,
 				},
@@ -400,7 +400,7 @@ describe( 'Payment', () => {
 	describe( 'Actions/setInterval', () => {
 		it( 'commits to mutation [SET_INTERVAL]', () => {
 			const context = {
-				commit: jest.fn(),
+				commit: vi.fn(),
 			};
 			const action = actions.setInterval as any;
 			action( context, 3 );
@@ -414,7 +414,7 @@ describe( 'Payment', () => {
 	describe( 'Actions/setType', () => {
 		it( 'commits to mutation [SET_TYPE]', () => {
 			const context = {
-				commit: jest.fn(),
+				commit: vi.fn(),
 			};
 			const action = actions.setType as any;
 			action( context, 'BEZ' );
@@ -425,7 +425,7 @@ describe( 'Payment', () => {
 		} );
 		it( 'commits to mutation [SET_TYPE_VALIDITY]', () => {
 			const context = {
-				commit: jest.fn(),
+				commit: vi.fn(),
 			};
 			const action = actions.setType as any;
 			action( context );
@@ -438,8 +438,8 @@ describe( 'Payment', () => {
 	describe( 'Actions/setAmount', () => {
 
 		const newMockActionContext = (): ActionContext<DonationPayment, any> => ( {
-			commit: jest.fn(),
-			dispatch: jest.fn(),
+			commit: vi.fn(),
+			dispatch: vi.fn(),
 			getters: undefined,
 			rootGetters: undefined,
 			rootState: undefined,
@@ -488,7 +488,7 @@ describe( 'Payment', () => {
 			[ { values: { amount: 'hello' } }, Validity.INVALID ],
 		];
 
-		each( amountStates ).it(
+		it.each( amountStates )(
 			'mutates the state with the correct validity for a given amount (test index %#)',
 			( amountState, expectedValidity ) => {
 				const store = newMinimalStore( amountState );

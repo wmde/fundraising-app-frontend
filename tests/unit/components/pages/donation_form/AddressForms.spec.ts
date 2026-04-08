@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import AddressForms from '@src/components/pages/donation_form/AddressForms.vue';
 import NameFields from '@src/components/shared/NameFields.vue';
@@ -8,7 +9,6 @@ import { action } from '@src/store/util';
 import countries from '@src/../tests/data/countries';
 import { Validity } from '@src/view_models/Validity';
 import { addressValidationPatterns } from '@test/data/validation';
-import each from 'jest-each';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import { Store } from 'vuex';
 
@@ -46,7 +46,6 @@ export const EXAMPLE_SALUTATIONS = [
 ];
 
 describe( 'AddressForms.vue', () => {
-
 	const getWrapper = ( addressType: AddressTypeModel, store: Store<any> = createStore() ): VueWrapper<any> => {
 		return mount( AddressForms, {
 			props: {
@@ -75,12 +74,12 @@ describe( 'AddressForms.vue', () => {
 		} );
 	};
 
-	each( [
+	it.each( [
 		[ AddressTypeModel.EMAIL, '#laika-donation-personal-data-email' ],
 		[ AddressTypeModel.UNSET, '#laika-donation-personal-data-person' ],
 		[ AddressTypeModel.PERSON, '#laika-donation-personal-data-person' ],
 		[ AddressTypeModel.COMPANY, '#laika-donation-personal-data-company' ],
-	] ).test( 'shows the form based on the address type', ( addressType, formId ) => {
+	] )( 'shows the form based on the address type', ( addressType, formId ) => {
 		const wrapper = getWrapper( addressType );
 
 		expect( wrapper.find( formId ).classes() ).toContain( 'display-toggler--visible' );
@@ -94,7 +93,7 @@ describe( 'AddressForms.vue', () => {
 
 	it( 'sets address field in store when it receives field-changed event', async () => {
 		const store = createStore();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedAction = action( 'address', 'setAndValidateAddressField' );
 		const firstNameValue = 'Vuetiful';
 		const wrapper = getWrapper( AddressTypeModel.PERSON, store );
@@ -102,7 +101,7 @@ describe( 'AddressForms.vue', () => {
 		await wrapper.find( '#person-first-name' ).setValue( firstNameValue );
 
 		wrapper.findComponent( NameFields ).vm.$emit( 'field-changed', 'firstName' );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, {
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, {
 			'name': 'firstName',
 			'optionalField': false,
 			'pattern': addressValidationPatterns.firstName,
@@ -112,26 +111,26 @@ describe( 'AddressForms.vue', () => {
 
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		const store = createStore();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedAction = action( 'address', 'setReceiptChoice' );
 		const expectedPayload = false;
 		const wrapper = getWrapper( AddressTypeModel.PERSON, store );
 
 		await wrapper.find( '#receipt-option-company' ).setValue( false );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, expectedPayload );
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, expectedPayload );
 	} );
 
 	it( 'sets email in store when it receives email event', async () => {
 		const testEmail = 'test@wikimedia.de';
 		const store = createStore();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const wrapper = getWrapper( AddressTypeModel.PERSON, store );
 
 		await wrapper.find( '#person-email' ).setValue( testEmail );
 
 		const expectedAction = action( 'address', 'setAndValidateAddressField' );
 		wrapper.findComponent( EmailField ).vm.$emit( 'field-changed', 'email' );
-		expect( store.dispatch ).toBeCalledWith( expectedAction, {
+		expect( store.dispatch ).toHaveBeenCalledWith( expectedAction, {
 			'name': 'email',
 			'optionalField': false,
 			'pattern': addressValidationPatterns.email,

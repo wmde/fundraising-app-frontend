@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from 'vitest';
 import { testBankTransferCode } from '@test/data/confirmationData';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SuccessMessageBankTransfer from '@src/components/pages/donation_confirmation/SuccessMessageBankTransfer.vue';

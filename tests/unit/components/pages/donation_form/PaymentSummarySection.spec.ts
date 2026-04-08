@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import { mount, VueWrapper } from '@vue/test-utils';
 

@@ -61,7 +61,7 @@ const slots = useSlots();
 
 const mailHostList = useMailHostList();
 const fieldModel = useFieldModel<string>( () => props.modelValue, props.modelValue );
-const { suggestedProvider, onSuggestionClicked } = useSuggestedEmailProvider( fieldModel, mailHostList, emit );
+const { suggestedProvider, onSuggestionClicked } = useSuggestedEmailProvider( fieldModel, mailHostList, emit as ( event: string, value: any ) => void );
 const valueEqualsPlaceholderWarning = useValueEqualsPlaceholderWarning( fieldModel, t( 'donation_form_email_placeholder' ), 'donation_form_email_placeholder_warning' );
 const ariaDescribedby = useAriaDescribedby(
 	props.inputId,

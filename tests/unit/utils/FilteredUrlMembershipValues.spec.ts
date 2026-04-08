@@ -1,5 +1,5 @@
+import { describe, expect, it, test } from 'vitest';
 import FilteredUrlMembershipValues from '@src/util/FilteredUrlMembershipValues';
-import each from 'jest-each';
 
 describe( 'FilteredUrlMembershipValues', function () {
 	it( 'returns validation url', function () {
@@ -14,30 +14,30 @@ describe( 'FilteredUrlMembershipValues', function () {
 		expect( urlValues.fee ).toEqual( '1450' );
 	} );
 
-	each( [
+	test.each( [
 		// Descriptions are optional, see https://stackoverflow.com/questions/45348083/how-to-add-custom-message-to-jest-expect
 		[ '14.50', 'float values' ],
 		[ 'hello', 'string values' ],
 		[ '0xff', 'hex values' ],
 		[ '123hello', 'string value starting with numbers' ],
-	] ).test( 'returns empty fee for non-integers', function ( fee ) {
+	] )( 'returns empty fee for non-integers', function ( fee ) {
 		const urlValues = new FilteredUrlMembershipValues( new URLSearchParams( `fee=${fee}` ), 'https://example.com/' );
 
 		expect( urlValues.fee ).toEqual( '' );
 	} );
 
-	each( [
+	test.each( [
 		[ '1' ],
 		[ '3' ],
 		[ '6' ],
 		[ '12' ],
-	] ).test( 'allows valid intervals', function ( inputInterval ) {
+	] )( 'allows valid intervals', function ( inputInterval ) {
 		const urlValues = new FilteredUrlMembershipValues( new URLSearchParams( `interval=${inputInterval}` ), 'https://example.com/' );
 
 		expect( urlValues.interval ).toEqual( inputInterval );
 	} );
 
-	each( [
+	test.each( [
 		[ '0' ],
 		[ '00' ],
 		[ '21' ],
@@ -45,7 +45,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 		[ ' ' ],
 		[ 'abdc' ],
 		[ '12.99' ],
-	] ).test( 'disallows invalid intervals', function ( inputInterval ) {
+	] )( 'disallows invalid intervals', function ( inputInterval ) {
 		const urlValues = new FilteredUrlMembershipValues( new URLSearchParams( `interval=${inputInterval}` ), 'https://example.com/' );
 
 		expect( urlValues.interval ).toEqual( '' );
