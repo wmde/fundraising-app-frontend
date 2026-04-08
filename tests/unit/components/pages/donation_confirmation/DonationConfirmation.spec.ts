@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
 import { createStore } from '@src/store/donation_store';

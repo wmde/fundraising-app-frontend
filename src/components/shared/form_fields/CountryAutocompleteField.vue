@@ -81,7 +81,7 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'initialised', 'field-changed', 'update:modelValue' ] );
 
-const { country, countryName } = useCountryInput( props.modelValue, props.countries, emit );
+const { country, countryName } = useCountryInput( props.modelValue, props.countries, emit as ( event: string, value: any ) => void );
 const { filteredCountries, groupSeparatorIndex } = useFilteredCountries( props.countries, countryName );
 const interactionState = ref<InteractionState>( InteractionState.Typing );
 const activeCountry = ref<string>();

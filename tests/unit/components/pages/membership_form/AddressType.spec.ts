@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';

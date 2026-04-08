@@ -1,6 +1,10 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import mockAxios from 'jest-mock-axios';
+import axios from 'axios';
+
+vi.mock( 'axios' );
+vi.mocked( axios.get ).mockReturnValue( Promise.resolve( { data: [ 'gmail.com', 'gmx.de' ] } ) );
 
 describe( 'EmailField.vue', () => {
 
@@ -13,10 +17,6 @@ describe( 'EmailField.vue', () => {
 			slots,
 		} );
 	};
-
-	afterEach( function () {
-		mockAxios.reset();
-	} );
 
 	describe( 'functionality tests', () => {
 		it( 'shows the error message', async () => {
@@ -65,11 +65,6 @@ describe( 'EmailField.vue', () => {
 		it( 'shows suggested provider', async () => {
 			const wrapper = getWrapper();
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: [ 'gmail.com', 'gmx.de' ],
-			} );
-
 			await wrapper.find( 'input' ).setValue( 'space@gmaiil.com' );
 
 			expect( wrapper.find( '.field-container__message' ).exists() ).toBeTruthy();
@@ -78,11 +73,6 @@ describe( 'EmailField.vue', () => {
 
 		it( 'updates model on suggested provider click', async () => {
 			const wrapper = getWrapper();
-
-			mockAxios.mockResponse( {
-				status: 200,
-				data: [ 'gmail.com', 'gmx.de' ],
-			} );
 
 			await wrapper.find( 'input' ).setValue( 'space@gmaiil.com' );
 			await wrapper.find( 'input' ).trigger( 'blur' );

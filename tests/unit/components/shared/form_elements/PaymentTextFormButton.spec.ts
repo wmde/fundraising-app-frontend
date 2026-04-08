@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 
@@ -13,14 +14,14 @@ describe( 'PaymentTextFormButton.vue', () => {
 		[ '', 'donation_form_finalize' ],
 	];
 
-	test.each( cases )(
+	it.each( cases )(
 		'given payment method %p the submit button shows %p',
-		( paymentMethod: 'PPL' | 'UEB' | 'MCP' | 'SUB', expectedTranslationKey: string ) => {
+		( paymentMethod: string, expectedTranslationKey: string ) => {
 
 			const wrapper = mount( PaymentTextFormButton, {
 				props: {
 					isLoading: true,
-					paymentType: paymentMethod,
+					paymentType: paymentMethod as 'PPL' | 'UEB' | 'MCP' | 'SUB',
 				},
 			} );
 			expect( JSON.parse( wrapper.text() ) ).toStrictEqual( { 'key': expectedTranslationKey } );

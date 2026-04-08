@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';
 

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import type { BankAccountResponse } from '@src/view_models/BankAccount';
 import type { BankValidationResource } from '@src/api/BankValidationResource';
 import { accountNumber, bankCode, bankName, BIC, IBAN } from '@test/data/bankdata';
@@ -11,7 +12,7 @@ export const newSucceedingBankValidationResource = ( apiReturnValue: BankAccount
 		bic: BIC,
 	};
 	return {
-		validateBankNumber: jest.fn( () => Promise.resolve( returnValue ) ),
-		validateIban: jest.fn( () => Promise.resolve( returnValue ) ),
+		validateBankNumber: vi.fn( () => Promise.resolve( returnValue ) ),
+		validateIban: vi.fn( () => Promise.resolve( returnValue ) ),
 	};
 };

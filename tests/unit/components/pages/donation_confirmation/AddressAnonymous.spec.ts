@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import AddressAnonymous from '@src/components/pages/donation_confirmation/AddressAnonymous.vue';
 

@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
@@ -30,7 +31,7 @@ describe( 'Payment.vue', () => {
 
 	it( 'sends amount to store when amount model updates', async () => {
 		const wrapper = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const payload = '1500';
 
 		wrapper.findComponent( AmountField ).vm.$emit( 'update:modelValue', payload );
@@ -41,7 +42,7 @@ describe( 'Payment.vue', () => {
 
 	it( 'sends interval to store when interval model updates', async () => {
 		const wrapper = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 
 		wrapper.findAllComponents( RadioField )[ 0 ].vm.$emit( 'update:modelValue', 6 );
 		await nextTick();
@@ -51,7 +52,7 @@ describe( 'Payment.vue', () => {
 
 	it( 'sends payment type to store when payment model updates', async () => {
 		const wrapper = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 
 		wrapper.findAllComponents( RadioField )[ 1 ].vm.$emit( 'update:modelValue', 'PPL' );
 		await nextTick();
@@ -97,8 +98,8 @@ describe( 'Payment.vue', () => {
 		[ 'amount', { amount: true, interval: false, paymentType: false } ],
 		[ 'interval', { amount: false, interval: true, paymentType: false } ],
 		[ 'paymentType', { amount: false, interval: false, paymentType: true } ],
-	] )( 'can render only one display section - %s ', ( sectionName: DisplaySection, elementExists: Record<string, boolean> ) => {
-		const wrapper = getWrapper( [ sectionName ] );
+	] )( 'can render only one display section - %s ', ( sectionName: string, elementExists: Record<DisplaySection, boolean> ) => {
+		const wrapper = getWrapper( [ sectionName as DisplaySection ] );
 
 		expect( wrapper.find( '#payment-form-amount' ).exists() ).toBe( elementExists.amount );
 		expect( wrapper.find( '#payment-form-interval' ).exists() ).toBe( elementExists.interval );

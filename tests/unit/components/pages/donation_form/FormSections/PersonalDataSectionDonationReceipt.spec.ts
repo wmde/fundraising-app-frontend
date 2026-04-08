@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
@@ -80,7 +81,7 @@ describe( 'PersonalDataSectionDonationReceipt.vue', () => {
 	it( 'initialises the address form data when mounted', async () => {
 		const store = createStore();
 		await store.dispatch( action( 'address', 'initializeAddress' ), initialValues );
-		store.dispatch = jest.fn().mockResolvedValue( true );
+		store.dispatch = vi.fn().mockResolvedValue( true );
 
 		const wrapper = getWrapper( store );
 

@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -109,7 +110,7 @@ describe( 'PersonalDataSection.vue', () => {
 	} );
 
 	it( 'does not validate address fields on blur when address type is email and address is empty', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const store = createStore();
 		const wrapper = getWrapper( store );
@@ -119,17 +120,17 @@ describe( 'PersonalDataSection.vue', () => {
 		await wrapper.find( '#city' ).trigger( 'blur' );
 		await wrapper.find( '#street' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( store.state.address.validity.postcode ).toStrictEqual( Validity.INCOMPLETE );
 		expect( store.state.address.validity.city ).toStrictEqual( Validity.INCOMPLETE );
 		expect( store.state.address.validity.street ).toStrictEqual( Validity.INCOMPLETE );
 
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	it( 'validates address fields on blur when address type is person', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const store = createStore();
 		const wrapper = getWrapper( store );
@@ -139,17 +140,17 @@ describe( 'PersonalDataSection.vue', () => {
 		await wrapper.find( '#city' ).trigger( 'blur' );
 		await wrapper.find( '#street' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( store.state.address.validity.postcode ).toStrictEqual( Validity.INVALID );
 		expect( store.state.address.validity.city ).toStrictEqual( Validity.INVALID );
 		expect( store.state.address.validity.street ).toStrictEqual( Validity.INVALID );
 
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	it( 'validates address fields on blur when address type is company', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const store = createStore();
 		const wrapper = getWrapper( store );
@@ -160,17 +161,17 @@ describe( 'PersonalDataSection.vue', () => {
 		await wrapper.find( '#city' ).trigger( 'blur' );
 		await wrapper.find( '#street' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( store.state.address.validity.postcode ).toStrictEqual( Validity.INVALID );
 		expect( store.state.address.validity.city ).toStrictEqual( Validity.INVALID );
 		expect( store.state.address.validity.street ).toStrictEqual( Validity.INVALID );
 
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	it( 'removes the errors from an empty address', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const store = createStore();
 		const wrapper = getWrapper( store );
@@ -180,7 +181,7 @@ describe( 'PersonalDataSection.vue', () => {
 		await wrapper.find( '#city' ).trigger( 'blur' );
 		await wrapper.find( '#street' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( store.state.address.validity.postcode ).toStrictEqual( Validity.INVALID );
 		expect( store.state.address.validity.city ).toStrictEqual( Validity.INVALID );

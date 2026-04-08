@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SuggestedAmountField from '@src/components/shared/form_fields/SuggestedAmountField.vue';
 
@@ -24,13 +25,13 @@ describe( 'SuggestedAmountField.vue', () => {
 	};
 
 	describe( 'functionality tests', () => {
-		test( 'suggested amount is preselected', () => {
+		it( 'suggested amount is preselected', () => {
 			const wrapper = getWrapper();
 
 			expect( wrapper.find<HTMLInputElement>( '#suggested-amount' ).element.checked ).toBeTruthy();
 		} );
 
-		test( 'clicking into custom amount input field does not select the radio field', () => {
+		it( 'clicking into custom amount input field does not select the radio field', () => {
 			const wrapper = getWrapper();
 
 			wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
@@ -39,7 +40,7 @@ describe( 'SuggestedAmountField.vue', () => {
 			expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
 		} );
 
-		test( 'entering valid custom amounts deselects suggested amount', async () => {
+		it( 'entering valid custom amounts deselects suggested amount', async () => {
 			const wrapper = getWrapper();
 
 			await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
@@ -49,7 +50,7 @@ describe( 'SuggestedAmountField.vue', () => {
 			expect( wrapper.find( '.text-radio__radio' ).classes() ).toContain( 'text-radio__radio--checked' );
 		} );
 
-		test( 're-selecting custom amount deselects suggested amount', async () => {
+		it( 're-selecting custom amount deselects suggested amount', async () => {
 			const wrapper = getWrapper();
 
 			await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
@@ -64,7 +65,7 @@ describe( 'SuggestedAmountField.vue', () => {
 			expect( wrapper.find( '.text-radio__radio' ).classes() ).not.toContain( 'text-radio__radio--checked' );
 		} );
 
-		test( 'custom amount gets cleared when suggested amount is re-selected', async () => {
+		it( 'custom amount gets cleared when suggested amount is re-selected', async () => {
 			const wrapper = getWrapper();
 
 			await wrapper.find<HTMLInputElement>( '#custom-amount' ).trigger( 'click' );
@@ -77,7 +78,7 @@ describe( 'SuggestedAmountField.vue', () => {
 			expect( wrapper.find<HTMLInputElement>( '#custom-amount' ).element.value ).toEqual( '' );
 		} );
 
-		test( 'Formats the amount to decimal when custom amount field is blurred', async () => {
+		it( 'Formats the amount to decimal when custom amount field is blurred', async () => {
 			const wrapper = getWrapper();
 
 			// We have to manually set the model value to the integer we expect because we can't do the round trip

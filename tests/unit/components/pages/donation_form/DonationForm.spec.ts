@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import DonationForm from '@src/components/pages/donation_form/SubPages/DonationForm.vue';
 import countries from '@test/data/countries';
@@ -11,8 +12,8 @@ import { action } from '@src/store/util';
 import { Store } from 'vuex';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
 
-jest.mock( 'axios' );
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock( 'axios' );
+vi.mocked( axios.get ).mockReturnValue( Promise.resolve( { data: [] } ) );
 
 declare global {
 	namespace NodeJS {
@@ -28,12 +29,12 @@ Object.defineProperty( document, 'getElementById', { writable: true, configurabl
 
 describe( 'DonationForm.vue', () => {
 	beforeEach( () => {
-		global.window.scrollTo = jest.fn();
-		jest.useFakeTimers();
+		global.window.scrollTo = vi.fn();
+		vi.useFakeTimers();
 	} );
 
 	afterEach( () => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 		document.getElementsByTagName( 'html' )[ 0 ].innerHTML = '';
 	} );
 
@@ -114,7 +115,7 @@ describe( 'DonationForm.vue', () => {
 
 		await wrapper.find( '#person-country' ).setValue( 'I am clearly not a country' );
 		await wrapper.find( '#person-country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -170,7 +171,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#person-email' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
@@ -181,7 +182,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( 'input[name="addressType"][value="0"]' ).trigger( 'change' );
 		await wrapper.find( '#person-country' ).setValue( 'I am clearly not a country' );
 		await wrapper.find( '#person-country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -234,7 +235,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( '#person-email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#person-email' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
@@ -245,7 +246,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( 'input[name="addressType"][value="1"]' ).trigger( 'change' );
 		await wrapper.find( '#company-country' ).setValue( 'I am clearly not a country' );
 		await wrapper.find( '#company-country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -292,7 +293,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( '#company-email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#company-email' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
@@ -314,17 +315,17 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="PPL"]' ).trigger( 'change' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 	} );
 
 	it( 'submits the form for a person', async () => {
-		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
+		vi.mocked( axios.post ).mockResolvedValue( { data: { status: 'OK' } } );
 		const wrapper = getWrapper();
 
 		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
-		submitForm.element.submit = jest.fn();
+		submitForm.element.submit = vi.fn();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
@@ -350,7 +351,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( '#person-city' ).setValue( 'city' );
 		await wrapper.find( '#person-city' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#person-country' ).setValue( countries[ 0 ].countryFullName );
 		await wrapper.find( '#person-country' ).trigger( 'blur' );
@@ -360,18 +361,18 @@ describe( 'DonationForm.vue', () => {
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 		await flushPromises();
 
 		expect( submitForm.element.submit ).toHaveBeenCalled();
 	} );
 
 	it( 'submits the form for a company', async () => {
-		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
+		vi.mocked( axios.post ).mockResolvedValue( { data: { status: 'OK' } } );
 		const wrapper = getWrapper();
 
 		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
-		submitForm.element.submit = jest.fn();
+		submitForm.element.submit = vi.fn();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
@@ -393,7 +394,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( '#company-city' ).setValue( 'city' );
 		await wrapper.find( '#company-city' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#company-country' ).setValue( countries[ 0 ].countryFullName );
 		await wrapper.find( '#company-country' ).trigger( 'blur' );
@@ -403,18 +404,18 @@ describe( 'DonationForm.vue', () => {
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 		await flushPromises();
 
 		expect( submitForm.element.submit ).toHaveBeenCalled();
 	} );
 
 	it( 'submits the form for anonymous', async () => {
-		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
+		vi.mocked( axios.post ).mockResolvedValue( { data: { status: 'OK' } } );
 		const wrapper = getWrapper();
 
 		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
-		submitForm.element.submit = jest.fn();
+		submitForm.element.submit = vi.fn();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="PPL"]' ).trigger( 'change' );
@@ -423,18 +424,18 @@ describe( 'DonationForm.vue', () => {
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 		await flushPromises();
 
 		expect( submitForm.element.submit ).toHaveBeenCalled();
 	} );
 
 	it( 'switching between payment types with empty iban should reset iban validity', async () => {
-		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
+		vi.mocked( axios.post ).mockResolvedValue( { data: { status: 'OK' } } );
 		const wrapper = getWrapper();
 
 		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
-		submitForm.element.submit = jest.fn();
+		submitForm.element.submit = vi.fn();
 
 		await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
 		await wrapper.find( 'input[name="paymentType"][value="UEB"]' ).trigger( 'change' );
@@ -457,7 +458,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( '#person-city' ).setValue( 'city' );
 		await wrapper.find( '#person-city' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#person-country' ).setValue( countries[ 0 ].countryFullName );
 		await wrapper.find( '#person-country' ).trigger( 'blur' );
@@ -470,7 +471,7 @@ describe( 'DonationForm.vue', () => {
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
@@ -483,7 +484,7 @@ describe( 'DonationForm.vue', () => {
 	} );
 
 	it( 'scrolls to payment section when button for changing payment data is clicked', async () => {
-		const scrollElement = { scrollIntoView: jest.fn() };
+		const scrollElement = { scrollIntoView: vi.fn() };
 		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
 
 		const wrapper = getWrapper();

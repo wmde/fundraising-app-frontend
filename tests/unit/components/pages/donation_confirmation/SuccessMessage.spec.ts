@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SuccessMessage from '@src/components/pages/donation_confirmation/SuccessMessage.vue';
 import { directDebitConfirmationData, payPalConfirmationData } from '../../../../data/confirmationData';

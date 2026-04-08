@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SelectFormInput from '@src/components/shared/form_elements/SelectFormInput.vue';
 

@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import MembershipForm from '@src/components/pages/MembershipForm.vue';
 import AddressType from '@src/components/pages/membership_form/AddressType.vue';
@@ -22,8 +23,8 @@ import { createFeatureToggle } from '@src/util/createFeatureToggle';
 const errorSummaryScrollElement = { scrollIntoView: () => {} };
 Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
 
-jest.mock( 'axios' );
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock( 'axios' );
+vi.mocked( axios.get ).mockReturnValue( Promise.resolve( { data: [] } ) );
 
 const testCountry = {
 	countryCode: 'de',
@@ -80,17 +81,17 @@ describe( 'MembershipForm.vue', () => {
 	};
 
 	beforeEach( () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 	} );
 
 	afterEach( () => {
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it( 'sets address type in store when it receives address-type event', () => {
 		const { wrapper, store } = getWrapper();
 
-		store.dispatch = jest.fn( () => Promise.resolve() );
+		store.dispatch = vi.fn( () => Promise.resolve() );
 		const expectedAction = action( 'membership_address', 'setAddressType' );
 		const expectedPayload = AddressTypeModel.PERSON;
 
@@ -112,6 +113,8 @@ describe( 'MembershipForm.vue', () => {
 
 	it( 'shows and hides the error summary', async () => {
 		const { wrapper } = getWrapper();
+
+		vi.mocked( axios.post ).mockReturnValue( Promise.resolve( { data: { status: 'OK' } } ) );
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -142,7 +145,7 @@ describe( 'MembershipForm.vue', () => {
 
 		await wrapper.find( '#city' ).setValue( 'city' );
 		await wrapper.find( '#city' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#country' ).setValue( 'country' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
@@ -171,7 +174,7 @@ describe( 'MembershipForm.vue', () => {
 
 		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -192,7 +195,7 @@ describe( 'MembershipForm.vue', () => {
 	} );
 
 	it( 'submits the form', async () => {
-		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
+		vi.mocked( axios.post ).mockResolvedValue( { data: { status: 'OK' } } );
 		const store = createStore();
 
 		await store.dispatch( action( 'membership_fee', 'initializeMembershipFee' ), {
@@ -227,7 +230,7 @@ describe( 'MembershipForm.vue', () => {
 		const { wrapper } = getWrapper( store );
 
 		const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
-		submitForm.element.submit = jest.fn();
+		submitForm.element.submit = vi.fn();
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await flushPromises();

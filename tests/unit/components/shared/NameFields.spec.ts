@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import NameFields from '@src/components/shared/NameFields.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';

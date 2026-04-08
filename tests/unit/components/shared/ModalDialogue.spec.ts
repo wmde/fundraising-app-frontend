@@ -1,17 +1,19 @@
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import ModalDialogue from '@src/components/shared/ModalDialogue.vue';
 import { ModalStates, useModalState } from '@src/components/shared/composables/useModalState';
+import { Mock } from '@vitest/spy';
 
 const modalState = useModalState();
 
 describe( 'ModalDialogue.vue', () => {
 
-	let showCallback: jest.Mock;
-	let closeCallback: jest.Mock;
+	let showCallback: Mock<() => void>;
+	let closeCallback: Mock<() => void>;
 
 	beforeAll( () => {
-		showCallback = jest.fn();
-		closeCallback = jest.fn();
+		showCallback = vi.fn();
+		closeCallback = vi.fn();
 		HTMLDialogElement.prototype.showModal = showCallback;
 		HTMLDialogElement.prototype.close = closeCallback;
 	} );

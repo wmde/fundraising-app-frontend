@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import CampaignParameters, { campaignKey, cookieKey, defaultKeyword, keywordKey } from '@src/util/CampaignParameters';
 import Cookies from 'js-cookie';
 
@@ -12,7 +13,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 		let savedKey = null;
 		let savedValue: null | string | object = null;
 
-		jest.spyOn( Cookies, 'set' )
+		vi.spyOn( Cookies, 'set' )
 			.mockImplementation( ( name: string, value: string | object ): string | undefined => {
 				savedKey = name;
 				savedValue = value;
@@ -31,7 +32,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 		let savedKey = '';
 		let savedValue: string | object = '';
 
-		jest.spyOn( Cookies, 'set' )
+		vi.spyOn( Cookies, 'set' )
 			.mockImplementation( ( name: string, value: string | object ): string | undefined => {
 				savedKey = name;
 				savedValue = value;
@@ -50,7 +51,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 		let savedKey = '';
 		let savedValue: string | object = '';
 
-		jest.spyOn( Cookies, 'set' )
+		vi.spyOn( Cookies, 'set' )
 			.mockImplementation( ( name: string, value: string | object ): string | undefined => {
 				savedKey = name;
 				savedValue = value;
@@ -67,7 +68,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 
 	it( 'returns parameters when values are in url and referrer is stored', function () {
 		// @ts-ignore
-		jest.spyOn( Cookies, 'get' ).mockReturnValue( 'RAGECAGE' );
+		vi.spyOn( Cookies, 'get' ).mockReturnValue( 'RAGECAGE' );
 
 		const campaignParameters = new CampaignParameters( new URLSearchParams( `${campaignKey}=nicholas&${keywordKey}=cage` ) );
 
@@ -76,7 +77,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 
 	it( 'returns defaults when values are not in url and referrer is stored', function () {
 		// @ts-ignore
-		jest.spyOn( Cookies, 'get' ).mockReturnValue( 'RAGECAGE' );
+		vi.spyOn( Cookies, 'get' ).mockReturnValue( 'RAGECAGE' );
 
 		const campaignParameters = new CampaignParameters( new URLSearchParams( '' ) );
 
@@ -85,7 +86,7 @@ describe( 'FilteredUrlMembershipValues', function () {
 
 	it( 'returns empty strings when values are not in url', function () {
 		// @ts-ignore
-		jest.spyOn( Cookies, 'get' ).mockReturnValue( undefined );
+		vi.spyOn( Cookies, 'get' ).mockReturnValue( undefined );
 
 		const campaignParameters = new CampaignParameters( new URLSearchParams( '' ) );
 

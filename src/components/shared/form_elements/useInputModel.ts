@@ -3,7 +3,7 @@ import { computed, ref, UnwrapRef, watch, WritableComputedRef } from 'vue';
 export function useInputModel<T>(
 	modelValue: () => UnwrapRef<T>,
 	initialValue: T,
-	emit: ( event: string, value: UnwrapRef<T> ) => void
+	emit: ( event: 'update:modelValue', value: UnwrapRef<T> ) => void
 ): WritableComputedRef<UnwrapRef<T>> {
 	const backingValue = ref<T>( initialValue );
 
