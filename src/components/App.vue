@@ -26,17 +26,17 @@ import AppContent from '@src/components/layout/AppContent.vue';
 import DefaultSidebar from '@src/components/layout/DefaultSidebar.vue';
 import AppFooter from '@src/components/layout/AppFooter.vue';
 import { useI18n } from 'vue-i18n';
-import { Component, onMounted, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { ModalStates, useModalState } from '@src/components/shared/composables/useModalState';
 import { setModalClosed, setModalOpened } from '@src/util/modalPageFreezer';
 
 interface Props {
 	assetsPath: string;
 	pageIdentifier: string;
-	page: Component;
+	page: object;
 	pageProps?: Record<string, any>;
 	hasSidebar?: boolean;
-	sidebar?: Component;
+	sidebar?: object;
 	sidebarProps?: Record<string, any>;
 	pageTitle: string;
 	bucketClasses?: string[];
