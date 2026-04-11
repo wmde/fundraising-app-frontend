@@ -18,7 +18,7 @@
   "dependencies": {
     "@airbrake/browser": "^2.1.9",
     "@babel/runtime": "^7.29.2",
-    "axios": "^1.14.0",
+    "axios": "^1.15.0",
     "bulma": "0.9.4",
     "core-js": "^3.49.0",
     "globals": "^17.4.0",
