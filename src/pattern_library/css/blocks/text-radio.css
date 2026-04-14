@@ -60,6 +60,6 @@
 
 .text-radio[data-direction="rtl"] .text-radio__text {
 	padding-inline-start: 2rem;
-	padding-inline-end: 1.5rem;
+	padding-inline-end: 1.25rem;
 	text-align: right;
 }
