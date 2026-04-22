@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { createStore } from '@src/store/membership_store';
 import { Validity } from '@src/view_models/Validity';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -6,7 +7,7 @@ import { validateFeeDataRemotely } from '@src/store/axios';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 import type { InitialBankAccountData } from '@src/view_models/BankAccount';
 
-jest.mock( '@src/store/axios' );
+vi.mock( '@src/store/axios' );
 
 describe( 'Membership Store', () => {
 
@@ -54,7 +55,7 @@ describe( 'Membership Store', () => {
 				fee: '1200',
 				interval: '2',
 			};
-			const mockedValidateFeeDataRemotely = jest.mocked( validateFeeDataRemotely, { shallow: true } );
+			const mockedValidateFeeDataRemotely = vi.mocked( validateFeeDataRemotely, { deep: false } );
 			mockedValidateFeeDataRemotely.mockResolvedValue( { status: 'OK' } );
 			const store = createStore();
 			await store.dispatch( action( 'membership_fee', 'initializeMembershipFee' ), initialData );

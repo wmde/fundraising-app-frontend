@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -74,19 +75,19 @@ describe( 'AddressFields.vue', () => {
 	} );
 
 	it( 'sets the post code validation pattern when the country field is changed', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const wrapper = getWrapper();
 
 		await wrapper.find( '#country' ).setValue( 'Ireland' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.props( 'formData' ).postcode.pattern ).toStrictEqual( '^[0-9]{11}$' );
 
 		await wrapper.find( '#country' ).setValue( 'Not a country' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.props( 'formData' ).postcode.pattern ).toStrictEqual( '' );
 		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 4 );
@@ -95,11 +96,11 @@ describe( 'AddressFields.vue', () => {
 		expect( wrapper.emitted( 'field-changed' )[ 2 ][ 0 ] ).toStrictEqual( 'country' );
 		expect( wrapper.emitted( 'field-changed' )[ 3 ][ 0 ] ).toStrictEqual( 'postcode' );
 
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it( 'emits field changes', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const wrapper = getWrapper();
 
@@ -109,12 +110,12 @@ describe( 'AddressFields.vue', () => {
 		await wrapper.find( '#city' ).setValue( 'Big City' );
 		await wrapper.find( '#city' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 2 );
 		expect( wrapper.emitted( 'field-changed' )[ 0 ][ 0 ] ).toStrictEqual( 'street' );
 		expect( wrapper.emitted( 'field-changed' )[ 1 ][ 0 ] ).toStrictEqual( 'city' );
 
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 } );

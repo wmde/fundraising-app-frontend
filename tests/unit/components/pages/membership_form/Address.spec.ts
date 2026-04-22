@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import Address from '@src/components/pages/membership_form/Address.vue';
 import { createStore } from '@src/store/membership_store';
@@ -58,7 +59,7 @@ describe( 'Address.vue', () => {
 
 	it( 'sets address field in store when it receives field-changed event', async () => {
 		const { wrapper, store } = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedAction = action( 'membership_address', 'setAddressField' );
 		const firstNameValue = 'Vuetiful';
 		await wrapper.find( '#first-name' ).setValue( firstNameValue );
@@ -74,7 +75,7 @@ describe( 'Address.vue', () => {
 
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		const { wrapper, store } = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedAction = action( 'membership_address', 'setReceiptChoice' );
 		const expectedPayload = false;
 
@@ -87,7 +88,7 @@ describe( 'Address.vue', () => {
 
 	it( 'sets incentive preference in store when it receives field-change event', async () => {
 		const { wrapper, store } = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedAction = action( 'membership_address', 'setIncentives' );
 		const expectedPayload = [ 'tote_bag' ];
 
@@ -101,7 +102,7 @@ describe( 'Address.vue', () => {
 	it( 'sets email in store when it receives email event', async () => {
 		const { wrapper, store } = getWrapper();
 		const testEmail = 'test@wikimedia.de';
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		await wrapper.find( '#email' ).setValue( testEmail );
 
 		const expectedAction = action( 'membership_address', 'setAddressField' );

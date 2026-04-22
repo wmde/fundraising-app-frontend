@@ -41,6 +41,7 @@ const webpackConfig = {
 		extensions: [ '.ts', '.js', '.vue' ],
 		alias: {
 			'@src': helpers.root( 'src' ),
+			vue: "vue/dist/vue.esm-bundler.js",
 		},
 	},
 	module: {

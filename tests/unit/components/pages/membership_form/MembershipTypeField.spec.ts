@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/membership_store';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
@@ -22,7 +23,7 @@ describe( 'MembershipTypeField.vue', () => {
 
 	it( 'emits model change event on field change', async () => {
 		const wrapper = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 
 		await wrapper.find<HTMLInputElement>( '#membershipType-1' ).trigger( 'change' );
 

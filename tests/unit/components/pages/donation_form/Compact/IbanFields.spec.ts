@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import IbanFields from '@src/components/pages/donation_form/Compact/IbanFields.vue';
 import { Store } from 'vuex';

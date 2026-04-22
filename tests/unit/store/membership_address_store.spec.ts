@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { getters } from '@src/store/membership_address/getters';
 import { actions } from '@src/store/membership_address/actions';
 import { mutations } from '@src/store/membership_address/mutations';
@@ -6,7 +7,10 @@ import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import type { MembershipAddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { REQUIRED_FIELDS } from '@src/store/membership_address/constants';
-import mockAxios from 'jest-mock-axios';
+import axios from 'axios';
+
+vi.mock( 'axios' );
+vi.mocked( axios.post ).mockReturnValue( Promise.resolve( { status: 200, data: { status: 'OK' } } ) );
 
 function newMinimalStore( overrides: Object ): MembershipAddressState {
 	return Object.assign(
@@ -233,7 +237,7 @@ describe( 'MembershipAddress', () => {
 
 	describe( 'Actions/setAddressField', () => {
 		it( 'commits to mutation [SET_ADDRESS_FIELD] and [VALIDATE_INPUT] with the correct field', () => {
-			const commit = jest.fn(),
+			const commit = vi.fn(),
 				action = actions.setAddressField as any,
 				field = {
 					name: 'postcode',
@@ -253,7 +257,7 @@ describe( 'MembershipAddress', () => {
 		} );
 
 		it( 'trims values before it commits to mutation', () => {
-			const commit = jest.fn(),
+			const commit = vi.fn(),
 				action = actions.setAddressField as any,
 				field = {
 					name: 'postcode',
@@ -280,12 +284,9 @@ describe( 'MembershipAddress', () => {
 	} );
 
 	describe( 'Actions/validateAddress', () => {
-		afterEach( function () {
-			mockAxios.reset();
-		} );
 		it( 'commits to mutation [MARK_EMPTY_FIELDS_INVALID] and [BEGIN_ADDRESS_VALIDATION]', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					getters: {
 						requiredFieldsAreValid: true,
 					},
@@ -318,7 +319,7 @@ describe( 'MembershipAddress', () => {
 
 		it( 'sends post request for validation when required fields are valid and commits to mutation [FINISH_ADDRESS_VALIDATION]', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					getters: {
 						requiredFieldsAreValid: true,
 					},
@@ -347,19 +348,12 @@ describe( 'MembershipAddress', () => {
 				} );
 			} );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					status: 'OK',
-				} as any,
-			} );
-
 			return actionResult;
 		} );
 
 		it( 'does not send a post request when required fields are invalid and returns an error', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					getters: {
 						requiredFieldsAreValid: false,
 					},
@@ -391,7 +385,7 @@ describe( 'MembershipAddress', () => {
 	describe( 'Actions/validateDateOfBirth', () => {
 		it( 'returns result if client-side validity is valid', async () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					state: newMinimalStore( {
 						validity: {
 							date: Validity.VALID,
@@ -406,7 +400,7 @@ describe( 'MembershipAddress', () => {
 
 		it( 'returns result if client-side validity is invalid', async () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					state: newMinimalStore( {
 						validity: {
 							date: Validity.INVALID,
@@ -422,8 +416,8 @@ describe( 'MembershipAddress', () => {
 
 	describe( 'Actions/setAddressType', () => {
 		it( 'commits to mutation [SET_ADDRESS_TYPE] with the chosen type', () => {
-			const commit = jest.fn(),
-				dispatch = jest.fn(),
+			const commit = vi.fn(),
+				dispatch = vi.fn(),
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
 			action( { commit, dispatch, getters, rootGetters: { allPaymentValuesAreSet: false } }, type );
@@ -434,8 +428,8 @@ describe( 'MembershipAddress', () => {
 		} );
 		it( 'commits to mutation [SET_MEMBERSHIP_TYPE_VALIDITY] with invalid when address type is company and membership type is active', () => {
 			const context = {
-					commit: jest.fn(),
-					dispatch: jest.fn(),
+					commit: vi.fn(),
+					dispatch: vi.fn(),
 					getters: {
 						membershipType: MembershipTypeModel.ACTIVE,
 					},
@@ -456,8 +450,8 @@ describe( 'MembershipAddress', () => {
 		} );
 
 		it( 'triggers fee reset action', () => {
-			const commit = jest.fn(),
-				dispatch = jest.fn(),
+			const commit = vi.fn(),
+				dispatch = vi.fn(),
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
 			action( { commit, dispatch, getters, rootGetters: { allPaymentValuesAreSet: false } }, type );
@@ -470,8 +464,8 @@ describe( 'MembershipAddress', () => {
 
 		it( 'triggers fee validation when payment values are set', () => {
 			const context = {
-					commit: jest.fn(),
-					dispatch: jest.fn().mockImplementation( () => Promise.resolve() ),
+					commit: vi.fn(),
+					dispatch: vi.fn().mockImplementation( () => Promise.resolve() ),
 					rootGetters: { allPaymentValuesAreSet: true },
 					rootState: { [ 'membership_fee' ]: { values: { fee: '500' } } },
 					state: newMinimalStore( {} ),
@@ -498,7 +492,7 @@ describe( 'MembershipAddress', () => {
 
 	describe( 'Actions/setReceiptChoice', () => {
 		it( 'commits to mutation [SET_RECEIPT] with the entered choice', () => {
-			const commit = jest.fn(),
+			const commit = vi.fn(),
 				action = actions.setReceiptChoice as any,
 				choice = true;
 			action( { commit }, choice );
@@ -511,7 +505,7 @@ describe( 'MembershipAddress', () => {
 
 	describe( 'Actions/setIncentive', () => {
 		it( 'commits to mutation [SET_INCENTIVES] with the entered choice', () => {
-			const commit = jest.fn(),
+			const commit = vi.fn(),
 				action = actions.setIncentives as any,
 				choice = [ 'Playstation 5' ];
 			action( { commit }, choice );
@@ -524,7 +518,7 @@ describe( 'MembershipAddress', () => {
 
 	describe( 'Actions/setMembershipType', () => {
 		it( 'commits to mutation [SET_MEMBERSHIP_TYPE] with the chosen membership type and to [SET_MEMBERSHIP_TYPE_VALIDITY]', () => {
-			const commit = jest.fn(),
+			const commit = vi.fn(),
 				action = actions.setMembershipType as any,
 				choice = MembershipTypeModel.ACTIVE;
 			action( { commit }, choice );

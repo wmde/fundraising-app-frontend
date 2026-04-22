@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import AppHeader from '@src/components/layout/AppHeader.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
@@ -24,11 +25,11 @@ describe( 'AppHeader.vue', () => {
 	};
 
 	beforeEach( () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 	} );
 
 	afterEach( () => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	it.each( [
@@ -84,7 +85,7 @@ describe( 'AppHeader.vue', () => {
 
 		await wrapper.find( '.navigation-burger' ).trigger( 'click' );
 		await wrapper.find( '.navigation-burger' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.find( '.navigation-items' ).classes() ).not.toContain( 'active' );
 	} );
@@ -94,7 +95,7 @@ describe( 'AppHeader.vue', () => {
 
 		await wrapper.find( '.navigation-burger' ).trigger( 'click' );
 		await wrapper.find( '.navigation-items .navigation-item:nth-child(1)' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.find( '.navigation-items' ).classes() ).not.toContain( 'active' );
 	} );
@@ -103,14 +104,14 @@ describe( 'AppHeader.vue', () => {
 		Object.defineProperty( window, 'innerWidth', { value: 770 } );
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.navigation > :nth-child(2)' ).classes() ).toContain( 'navigation-items' );
+		expect( wrapper.find( '.navigation-left + div' ).classes() ).toContain( 'navigation-items' );
 	} );
 
 	it( 'shows the navigation menu in the correct place on small screens', async () => {
 		Object.defineProperty( window, 'innerWidth', { value: 769 } );
 		const wrapper = getWrapper();
 
-		expect( wrapper.find( '.navigation > :nth-child(3)' ).classes() ).toContain( 'navigation-items' );
+		expect( wrapper.find( '.navigation-right + div' ).classes() ).toContain( 'navigation-items' );
 	} );
 
 	it( 'focuses the burger when the donor hides the menu with escape', async () => {
@@ -127,13 +128,13 @@ describe( 'AppHeader.vue', () => {
 
 	it( 'does not hide the menu when the an item is blurred and a different menu item is focused', async () => {
 		const wrapper = getWrapper();
-		const contains = jest.fn().mockReturnValue( true );
+		const contains = vi.fn().mockReturnValue( true );
 		Object.defineProperty( document, 'activeElement', { value: { classList: { contains } } } );
 
 		await wrapper.find( '.navigation-burger' ).trigger( 'click' );
 		await wrapper.find( '.navigation-burger' ).trigger( 'blur' );
 		await wrapper.find( '.navigation-items .navigation-item:nth-child(1)' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.find( '.navigation-items' ).classes() ).toContain( 'active' );
 	} );
