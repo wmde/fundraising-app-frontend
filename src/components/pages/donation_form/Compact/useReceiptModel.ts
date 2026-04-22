@@ -9,7 +9,7 @@ export interface ReceiptModel {
 }
 
 export function useReceiptModel( store: Store<any> ): ReceiptModel {
-	const initialReceipt = store.state.address.validity.receipt === Validity.RESTORED ? store.state.address.receipt : false;
+	const initialReceipt = store.state.address.validity.receipt === Validity.RESTORED ? store.state.address.receipt : true;
 	const receiptNeeded = ref<boolean | null>( initialReceipt );
 
 	const showReceiptOptionError = computed( () => {

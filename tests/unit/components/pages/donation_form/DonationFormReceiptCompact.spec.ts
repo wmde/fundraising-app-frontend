@@ -81,7 +81,6 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 				plugins: [ store ?? createStore() ],
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
-					trackEvent: () => {},
 				},
 			},
 			attachTo: document.body,
@@ -93,7 +92,7 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 
 		expect( wrapper.find<HTMLInputElement>( '#interval-0' ).element.checked ).toBeTruthy();
 		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBeFalsy();
-		expect( wrapper.find<HTMLInputElement>( '#donation-receipt' ).element.checked ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( '#donation-receipt' ).element.checked ).toBeTruthy();
 	} );
 
 	it( 'sets the correct receipt not wanted field', async () => {
@@ -107,7 +106,6 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 	it( 'handles the error summary when only receipt option is yes', async () => {
 		const wrapper = getWrapper();
 
-		await wrapper.find( '#donation-receipt' ).setValue( true );
 		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
 		await vi.runAllTimersAsync();
@@ -238,6 +236,8 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 
 	it( 'handles the error summary when only receipt option is no', async () => {
 		const wrapper = getWrapper();
+
+		await wrapper.find( '#donation-receipt' ).trigger( 'click' );
 
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 		await nextTick();
@@ -390,6 +390,8 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#email' ).trigger( 'blur' );
 
+		await wrapper.find( '#donation-receipt' ).trigger( 'click' );
+
 		await wrapper.find( '#submit-btn' ).trigger( 'click' );
 
 		await vi.runAllTimersAsync();
@@ -418,6 +420,8 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 
 		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#email' ).trigger( 'blur' );
+
+		await wrapper.find( '#donation-receipt' ).trigger( 'click' );
 
 		// change to BEZ to make the IBAN field appear
 		await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
