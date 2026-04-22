@@ -42,7 +42,7 @@
 				<div class="repel">
 					<p>{{  $t( 'compact_donation_form_other_info_blurb' ) }}</p>
 					<CheckboxToggle
-						v-model="receiptModel"
+						v-model="receiptModel.receiptNeeded"
 						name="donation-receipt"
 						input-id="donation-receipt"
 					>
@@ -51,15 +51,12 @@
 				</div>
 
 				<AddressFields
+					v-if="receiptModel.receiptNeeded"
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
 					:post-code-validation="addressValidationPatterns.postcode"
-					:receipt-needed="receiptNeeded"
-					:address-type="addressType"
-					v-model:is-company="isCompany"
-					@field-changed="onAddressFieldChange"
-					@clear-address="removeErrorsFromEmptyAddress"
+					@field-changed="onFieldChange"
 				/>
 			</form>
 		</template>
@@ -67,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, onBeforeMount, toRef } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/Compact/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -79,15 +76,13 @@ import type { Country } from '@src/view_models/Country';
 import type { Salutation } from '@src/view_models/Salutation';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
+import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/Compact/useAddressTypeFromReceiptSetter';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
+import type { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
-import { useAddressTypeUpdater } from '@src/components/pages/donation_form/Compact/useAddressTypeUpdater';
-import { action } from '@src/store/util';
-import { clearStreetAndBuildingNumberSeparator } from '@src/util/street_and_building_number_tools';
-import { Validity } from '@src/view_models/Validity';
 
 interface Props {
 	countries: Country[];
@@ -98,17 +93,15 @@ interface Props {
 	isDirectDebitPayment: boolean;
 	disabledAddressTypes: AddressTypeModel[];
 	addressType: AddressTypeModel;
-	receiptNeeded: boolean;
+	receiptModel: ReceiptModel;
 	addressTypeIsInvalid: boolean;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits( [ 'receipt-needed-toggled' ] );
 const store = useStore();
 
 const mailingList = useMailingListModel( store );
-const receiptModel = ref<boolean>( props.receiptNeeded );
-const isCompany = ref<boolean>( props.addressType === AddressTypeModel.COMPANY_WITH_CONTACT );
+const receiptModel = toRef<ReceiptModel>( props.receiptModel );
 
 const {
 	formData,
@@ -118,52 +111,8 @@ const {
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
 
-const { updateAddressType } = useAddressTypeUpdater(
-	computed<boolean>( () => props.receiptNeeded ),
-	isCompany,
-	computed<AddressTypeModel>( () => props.addressType ),
-	formData,
-	store
-);
-
-const removeErrorsFromEmptyAddress = (): void => {
-	if ( formData.companyName.value === '' ) {
-		store.dispatch( action( 'address', 'setFieldValidity' ), { field: formData.companyName, validity: Validity.INCOMPLETE } );
-	}
-
-	if ( clearStreetAndBuildingNumberSeparator( formData.street.value ) === '' ) {
-		store.dispatch( action( 'address', 'setFieldValidity' ), { field: formData.street, validity: Validity.INCOMPLETE } );
-	}
-
-	if ( formData.postcode.value === '' ) {
-		store.dispatch( action( 'address', 'setFieldValidity' ), { field: formData.postcode, validity: Validity.INCOMPLETE } );
-	}
-
-	if ( formData.city.value === '' ) {
-		store.dispatch( action( 'address', 'setFieldValidity' ), { field: formData.city, validity: Validity.INCOMPLETE } );
-	}
-};
-
-const onAddressFieldChange = async ( fieldName: string ): Promise<void> => {
-	await updateAddressType();
-
-	if ( props.addressType === AddressTypeModel.EMAIL ) {
-		// if its email and there's an invalid field check all fields are empty and remove validation
-		if ( fieldErrors.value[ fieldName ] ) {
-			removeErrorsFromEmptyAddress();
-		}
-
-		// If the address type is email then address is optional and we don't want to live validate it,
-		// for now just set the value and the validation will run on submit
-		store.dispatch( action( 'address', 'setAddressField' ), formData[ fieldName ] );
-	} else {
-		// If it's not email validate as usual?
-		onFieldChange( fieldName );
-	}
-};
+useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, computed<AddressTypeModel>( () => props.addressType ), store );
 
 onBeforeMount( initializeDataFromStore );
-watch( isCompany, updateAddressType );
-watch( receiptModel, () => emit( 'receipt-needed-toggled', receiptModel.value ) );
 
 </script>

@@ -7,7 +7,6 @@ import type { CampaignValues } from '@src/view_models/CampaignValues';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { Salutation } from '@src/view_models/Salutation';
 import PersonalDataSection from '@src/components/pages/donation_form/FormSections/PersonalDataSection.vue';
-import { Store } from 'vuex';
 
 const testCountry = {
 	countryCode: 'de',
@@ -30,11 +29,7 @@ const salutations: Salutation[] = [
 ];
 
 describe( 'PersonalDataSection.vue', () => {
-	let store: Store<any>;
-
 	const getWrapper = (): VueWrapper<any> => {
-		store = createStore();
-
 		return mount( PersonalDataSection, {
 			props: {
 				countries: [ testCountry ],
@@ -48,7 +43,7 @@ describe( 'PersonalDataSection.vue', () => {
 				addressTypeIsInvalid: false,
 			},
 			global: {
-				plugins: [ store ],
+				plugins: [ createStore() ],
 			},
 		} );
 	};
