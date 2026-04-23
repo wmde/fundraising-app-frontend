@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import axios from 'axios';
 import UpdateAddress from '@src/components/pages/UpdateAddress.vue';
-import { EXAMPLE_SALUTATIONS } from '@test/unit/components/pages/donation_form/AddressForms.spec';
 import countries from '@src/../tests/data/countries';
 import { addressValidationPatterns } from '@test/data/validation';
 import { Store } from 'vuex';
@@ -13,6 +12,39 @@ import { nextTick } from 'vue';
 import type { AddressChangeResource } from '@src/api/AddressChangeResource';
 import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
+
+const EXAMPLE_SALUTATIONS = [
+	{
+		label: 'Mr',
+		value: 'Herr',
+		display: 'Herr',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'Ms',
+		value: 'Frau',
+		display: 'Frau',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'No Salutation',
+		value: 'Divers',
+		display: 'Divers',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+];
 
 vi.mock( '@src/util/tracking', () => {
 	return {

@@ -83,7 +83,7 @@
 
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
-import { useAddressTypeModel } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeModel';
+import { useAddressTypeModel } from '@src/components/pages/donation_form/composables/useAddressTypeModel';
 import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 import { computed, onBeforeMount, ref, watch } from 'vue';

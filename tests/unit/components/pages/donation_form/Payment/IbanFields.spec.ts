@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
-import IbanFields from '@src/components/pages/donation_form/Compact/IbanFields.vue';
+import IbanFields from '@src/components/pages/donation_form/Payment/IbanFields.vue';
 import { Store } from 'vuex';
 import { createStore } from '@src/store/donation_store';
 import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';

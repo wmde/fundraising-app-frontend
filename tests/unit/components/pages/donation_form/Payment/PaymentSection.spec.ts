@@ -1,10 +1,11 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { createStore } from '@src/store/donation_store';
 import { mount, VueWrapper } from '@vue/test-utils';
-import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import PaymentSummary from '@src/components/pages/donation_form/Summaries/PaymentSummary.vue';
 import { action } from '@src/store/util';
-import PaymentSection from '@src/components/pages/donation_form/FormSections/PaymentSection.vue';
-import Payment from '@src/components/pages/donation_form/Payment.vue';
+import PaymentSection from '@src/components/pages/donation_form/Payment/PaymentSection.vue';
+import Payment from '@src/components/pages/donation_form/Payment/Payment.vue';
+import { FakeBankValidationResource } from '@test/unit/TestDoubles/FakeBankValidationResource';
 
 describe( 'PaymentSection.vue', () => {
 
@@ -18,9 +19,13 @@ describe( 'PaymentSection.vue', () => {
 				paymentAmounts: [ 1000, 2000, 3000 ],
 				paymentIntervals: [ 1, 12 ],
 				paymentTypes: [ 'direct_debit', 'bank_transfer', 'credit_card' ],
+				isDirectDebitPayment: false,
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					bankValidationResource: new FakeBankValidationResource(),
+				},
 			},
 			attachTo: document.body,
 		} );
@@ -74,5 +79,15 @@ describe( 'PaymentSection.vue', () => {
 		const selectedAmount = wrapper.find( '#amount-1000' );
 
 		expect( document.activeElement ).toStrictEqual( selectedAmount.element );
+	} );
+
+	it( 'shows the IBAN fields when direct debit is selected', async () => {
+		const wrapper = getWrapper( createStore() );
+
+		expect( wrapper.find( '#payment-form-iban-calculator' ).exists() ).toBeFalsy();
+
+		await wrapper.setProps( { isDirectDebitPayment: true } );
+
+		expect( wrapper.find( '#payment-form-iban-calculator' ).exists() ).toBeTruthy();
 	} );
 } );

@@ -1,12 +1,14 @@
 <template>
 	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
 		<template #heading>
-			<h2 id="donation-form-subheading">{{ $t( 'donation_form_address_subheading' ) }}</h2>
-			<p id="donation-form-tagline">{{ $t( 'donation_form_section_address_tagline' ) }}</p>
+			<h2 id="donation-form-subheading">2. {{ $t( 'compact_donation_form_name_heading' ) }}</h2>
 		</template>
 
 		<template #content>
-			<form id="donation-form" class="flow" action="/donation/add" method="post" @submit.prevent>
+
+			<p id="donation-form-tagline">{{ $t( 'compact_donation_form_name_blurb' ) }}</p>
+
+			<form class="compact" id="donation-form" action="/donation/add" method="post" @submit.prevent>
 				<AutofillHandler @autofill="onAutofill">
 
 					<NameFields
@@ -19,38 +21,43 @@
 					<EmailField
 						:show-error="fieldErrors.email"
 						v-model="formData.email.value"
-						:is-max-width-field="true"
 						@field-changed="onFieldChange"
 					/>
-
 					<MailingListField v-model="mailingList" input-id="newsletter"/>
 
-					<RadioField
-						id="address-form-receipt"
-						v-model="receiptModel.receiptNeeded"
-						name="donationReceipt"
-						:options="[
-							{ value: true, label: $t( 'yes' ), id: 'donationReceipt-0' },
-							{ value: false, label: $t( 'no' ), id: 'donationReceipt-1' },
-						]"
-						:label="$t( 'donation_confirmation_cta_title_alt' )"
-						:show-error="receiptModel.showReceiptOptionError"
-						:error-message="$t( 'C24_WMDE_Desktop_DE_01_receipt_error' )"
-						aria-describedby="donation-receipt-help-text"
-						:layout-type="'cluster'"
-					>
-					</RadioField>
-
-					<AddressFields
-						v-if="receiptModel.receiptNeeded"
-						:show-error="fieldErrors"
-						:form-data="formData"
-						:countries="countries"
-						:post-code-validation="addressValidationPatterns.postcode"
-						@field-changed="onFieldChange"
-					/>
-
 				</AutofillHandler>
+			</form>
+		</template>
+	</ContentCard>
+
+	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
+		<template #heading>
+			<h2>3. {{ $t( 'compact_donation_form_other_info_heading' ) }}</h2>
+		</template>
+
+		<template #content>
+
+			<form class="flow compact" @submit.prevent>
+
+				<div class="repel">
+					<p>{{  $t( 'compact_donation_form_other_info_blurb' ) }}</p>
+					<CheckboxToggle
+						v-model="receiptModel.receiptNeeded"
+						name="donation-receipt"
+						input-id="donation-receipt"
+					>
+						{{ $t( 'donation_confirmation_cta_title_alt' ) }}
+					</CheckboxToggle>
+				</div>
+
+				<AddressFields
+					v-if="receiptModel.receiptNeeded"
+					:show-error="fieldErrors"
+					:form-data="formData"
+					:countries="countries"
+					:post-code-validation="addressValidationPatterns.postcode"
+					@field-changed="onFieldChange"
+				/>
 			</form>
 		</template>
 	</ContentCard>
@@ -58,24 +65,24 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, toRef } from 'vue';
-import AddressFields from '@src/components/pages/donation_form/DonationReceipt/AddressFields.vue';
+import AddressFields from '@src/components/pages/donation_form/PersonalData/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
-import NameFields from '@src/components/pages/donation_form/DonationReceipt/NameFields.vue';
-import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import NameFields from '@src/components/pages/donation_form/PersonalData/NameFields.vue';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { CampaignValues } from '@src/view_models/CampaignValues';
 import type { Country } from '@src/view_models/Country';
 import type { Salutation } from '@src/view_models/Salutation';
 import type { TrackingData } from '@src/view_models/TrackingData';
-import { useAddressFunctions } from '@src/components/pages/donation_form/AddressFunctions';
-import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/DonationReceipt/useAddressTypeFromReceiptSetter';
+import { useAddressFunctions } from '@src/components/pages/donation_form/composables/useAddressFunctions';
+import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/composables/useAddressTypeFromReceiptSetter';
 import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
-import type { ReceiptModel } from '@src/components/pages/donation_form/DonationReceipt/useReceiptModel';
+import type { ReceiptModel } from '@src/components/pages/donation_form/composables/useReceiptModel';
 import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
+import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
 
 interface Props {
 	countries: Country[];
