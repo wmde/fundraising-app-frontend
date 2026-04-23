@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mergeValidationResults } from '@src/util/merge_validation_results';
 
 describe( 'mergeValidationResults', () => {

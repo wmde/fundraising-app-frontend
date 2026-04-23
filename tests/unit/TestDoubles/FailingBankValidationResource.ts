@@ -1,8 +1,9 @@
+import { vi } from 'vitest';
 import type { BankValidationResource } from '@src/api/BankValidationResource';
 
 export const newFailingBankValidationResource = (): BankValidationResource => {
 	return {
-		validateBankNumber: jest.fn().mockRejectedValue( 'ERR' ),
-		validateIban: jest.fn().mockRejectedValue( 'ERR' ),
+		validateBankNumber: vi.fn().mockRejectedValue( 'ERR' ),
+		validateIban: vi.fn().mockRejectedValue( 'ERR' ),
 	};
 };

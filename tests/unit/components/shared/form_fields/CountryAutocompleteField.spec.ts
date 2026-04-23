@@ -1,16 +1,18 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import countries from '@test/data/countries';
+import { Mock } from '@vitest/spy';
 
 describe( 'CountryAutocompleteField.vue', () => {
-	let scrollElement: { scrollIntoView: jest.Mock };
+	let scrollElement: { scrollIntoView: Mock };
 
 	const getWrapper = ( modelValue: string = '', wasRestored: boolean = false ): VueWrapper<any> => {
 		const currentElement = { clientHeight: 0, offsetTop: 0 };
 		Object.defineProperty( document, 'querySelector', { writable: true, configurable: true, value: () => currentElement } );
 
-		scrollElement = { scrollIntoView: jest.fn() };
+		scrollElement = { scrollIntoView: vi.fn() };
 		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
 
 		return mount( CountryAutocompleteField, {
@@ -29,11 +31,11 @@ describe( 'CountryAutocompleteField.vue', () => {
 	};
 
 	beforeEach( () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 	} );
 
 	afterEach( () => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	describe( 'functionality tests', () => {
@@ -79,7 +81,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 			await field.trigger( 'focus' );
 			await field.trigger( 'blur' );
 
-			await jest.runAllTimersAsync();
+			await vi.runAllTimersAsync();
 
 			expect( wrapper.find( '[role="listbox"]' ).isVisible() ).toBeFalsy();
 		} );
@@ -90,7 +92,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 
 			await field.trigger( 'blur' );
 
-			await jest.runAllTimersAsync();
+			await vi.runAllTimersAsync();
 
 			expect( wrapper.emitted( 'field-changed' ).length ).toBe( 1 );
 		} );
@@ -125,7 +127,7 @@ describe( 'CountryAutocompleteField.vue', () => {
 		} );
 
 		it( 'emits single field changed event when an autocomplete item is clicked', async () => {
-			jest.useFakeTimers();
+			vi.useFakeTimers();
 
 			const wrapper = getWrapper();
 			const field = wrapper.find<HTMLInputElement>( '#country' );
@@ -133,15 +135,15 @@ describe( 'CountryAutocompleteField.vue', () => {
 			await field.trigger( 'focus' );
 			await wrapper.find( '[role="listbox"] button:nth-of-type(3)' ).trigger( 'click' );
 
-			await jest.runAllTimersAsync();
+			await vi.runAllTimersAsync();
 
 			expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
 
-			jest.clearAllMocks();
+			vi.clearAllMocks();
 		} );
 
 		it( 'emits field changed event when field is blurred', async () => {
-			jest.useFakeTimers();
+			vi.useFakeTimers();
 
 			const wrapper = getWrapper();
 			const field = wrapper.find<HTMLInputElement>( '#country' );
@@ -149,11 +151,11 @@ describe( 'CountryAutocompleteField.vue', () => {
 			await field.trigger( 'focus' );
 			await field.trigger( 'blur' );
 
-			await jest.runAllTimersAsync();
+			await vi.runAllTimersAsync();
 
 			expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
 
-			jest.clearAllMocks();
+			vi.clearAllMocks();
 		} );
 
 		it( 'selects the input text on second focus when initialised with default', async () => {

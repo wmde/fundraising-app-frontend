@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import MembershipFeeChange from '@src/components/pages/MembershipFeeChange.vue';
 import { newSucceedingBankValidationResource } from '@test/unit/TestDoubles/SucceedingBankValidationResource';
@@ -32,11 +33,11 @@ describe( 'MembershipFeeChange.vue', () => {
 	};
 
 	beforeEach( () => {
-		const scrollElement = { scrollIntoView: jest.fn() };
+		const scrollElement = { scrollIntoView: vi.fn() };
 		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
 	} );
 
-	test( 'shows and hides member name error message once user starts typing in the field', async () => {
+	it( 'shows and hides member name error message once user starts typing in the field', async () => {
 		const wrapper = getWrapper();
 
 		await wrapper.find( 'form' ).trigger( 'submit' );
@@ -51,7 +52,7 @@ describe( 'MembershipFeeChange.vue', () => {
 		expect( wrapper.find( '#upgrade-form-member-name' ).attributes( 'data-error' ) ).toBeFalsy();
 	} );
 
-	test( 'validates the IBAN and shows error message', async () => {
+	it( 'validates the IBAN and shows error message', async () => {
 		const bankValidationResource = newFailingBankValidationResource();
 		const wrapper = getWrapper( bankValidationResource );
 
@@ -65,7 +66,7 @@ describe( 'MembershipFeeChange.vue', () => {
 		expect( wrapper.find<HTMLElement>( '.error-summary' ).html() ).toContain( 'donation_form_payment_iban_error' );
 	} );
 
-	test( 'does not validate the IBAN or show error message if it is empty', async () => {
+	it( 'does not validate the IBAN or show error message if it is empty', async () => {
 		const bankValidationResource = newSucceedingBankValidationResource();
 		const wrapper = getWrapper( bankValidationResource );
 
@@ -80,7 +81,7 @@ describe( 'MembershipFeeChange.vue', () => {
 		expect( wrapper.find( '.error-summary' ).html() ).not.toContain( 'donation_form_payment_iban_error' );
 	} );
 
-	test( 'hides IBAN error message when user starts typing', async () => {
+	it( 'hides IBAN error message when user starts typing', async () => {
 		const bankValidationResource = newFailingBankValidationResource();
 		const wrapper = getWrapper( bankValidationResource );
 
@@ -95,7 +96,7 @@ describe( 'MembershipFeeChange.vue', () => {
 		expect( wrapper.find( '#payment-form-iban' ).attributes( 'data-error' ) ).toBeFalsy();
 	} );
 
-	test( 'shows form page content if flag is set to form page', () => {
+	it( 'shows form page content if flag is set to form page', () => {
 		const wrapper = getWrapper();
 
 		expect( wrapper.text() ).toContain( 'membership_fee_upgrade_page_headline' );
@@ -104,7 +105,7 @@ describe( 'MembershipFeeChange.vue', () => {
 		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_confirmation_headline' );
 	} );
 
-	test( 'shows error page content if flag ss set to error', async () => {
+	it( 'shows error page content if flag ss set to error', async () => {
 		const wrapper = getWrapper();
 		await wrapper.setProps( { feeChangeFrontendFlag: 'SHOW_ERROR_PAGE' } );
 
@@ -114,7 +115,7 @@ describe( 'MembershipFeeChange.vue', () => {
 		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_confirmation_headline' );
 	} );
 
-	test( 'shows returning page content if flag is set to return page', async () => {
+	it( 'shows returning page content if flag is set to return page', async () => {
 		const wrapper = getWrapper();
 		await wrapper.setProps( { feeChangeFrontendFlag: 'SHOW_FEE_ALREADY_CHANGED_PAGE' } );
 
@@ -124,7 +125,7 @@ describe( 'MembershipFeeChange.vue', () => {
 		expect( wrapper.text() ).not.toContain( 'membership_fee_upgrade_confirmation_headline' );
 	} );
 
-	test( 'shows success page content after successful form submission', async () => {
+	it( 'shows success page content after successful form submission', async () => {
 		const wrapper = getWrapper();
 
 		await wrapper.find( '#member-name' ).setValue( 'valid example name' );

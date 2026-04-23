@@ -1,20 +1,24 @@
 {
 	"compilerOptions": {
 		"experimentalDecorators": true,
-		"target": "es5",
 		"skipLibCheck": true,
 		"importHelpers": true,
 		"sourceMap": true,
-		"baseUrl": ".",
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
+		// The next 4 lines are for turning down typescript checking, we really should have
+		// separate tsconfigs for the tests and src files with different nag levels.
+		// See: https://phabricator.wikimedia.org/T422611
+		"ignoreDeprecations": "6.0",
+		"alwaysStrict": false,
+		"strictNullChecks": false,
+		"noImplicitAny": false,
 		"types": [
 			"webpack-env",
-			"jest"
 		],
 		"paths": {
-			"@src/*": [ "src/*" ],
-			"@test/*": [ "tests/*" ]
+			"@src/*": [ "./src/*" ],
+			"@test/*": [ "./tests/*" ]
 		},
 		"lib": [
 			"esnext",

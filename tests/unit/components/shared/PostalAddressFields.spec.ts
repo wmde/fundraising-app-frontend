@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
 import countries from '@test/data/countries';
@@ -117,22 +118,22 @@ describe( 'PostalAddressFields.vue', () => {
 	} );
 
 	it( 'sets the correct postcode regex on country change', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 		const props = newTestProperties( {} );
 		const wrapper = mount( PostalAddressFields, { props } );
 
 		await wrapper.find( '#country' ).setValue( countries[ 1 ].countryFullName );
 		await wrapper.find( '#country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( props.formData.postcode.pattern ).toEqual( countries[ 1 ].postCodeValidation );
 
 		await wrapper.find( '#country' ).setValue( '' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( props.formData.postcode.pattern ).toEqual( addressValidationPatterns.postcode );
 
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 } );

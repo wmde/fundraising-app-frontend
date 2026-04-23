@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import AppFooter from '@src/components/layout/AppFooter.vue';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';

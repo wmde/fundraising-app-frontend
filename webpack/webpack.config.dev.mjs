@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import commonConfig from './webpack.config.common.mjs';
 import environment from './env/dev.env.mjs';
+import helpers from './helpers.mjs';
 
 const webpackConfig = merge( commonConfig, {
 	mode: 'development',
@@ -13,6 +14,7 @@ const webpackConfig = merge( commonConfig, {
 		new webpack.DefinePlugin( {
 			__VUE_OPTIONS_API__: true,
 			__VUE_PROD_DEVTOOLS__: true,
+			__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: true,
 		} ),
 	],
 	devServer: {

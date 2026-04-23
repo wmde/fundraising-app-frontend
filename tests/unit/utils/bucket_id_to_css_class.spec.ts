@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 
 describe( 'bucketIdToCssClass', () => {
