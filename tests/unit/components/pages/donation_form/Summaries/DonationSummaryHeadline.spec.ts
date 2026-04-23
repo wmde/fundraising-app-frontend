@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
-import DonationSummaryHeadline from '@src/components/pages/donation_form/DonationSummaryHeadline.vue';
+import DonationSummaryHeadline from '@src/components/pages/donation_form/Summaries/DonationSummaryHeadline.vue';
 
 describe( 'DonationSummaryHeadline.vue', () => {
 

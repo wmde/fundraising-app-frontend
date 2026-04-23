@@ -13,8 +13,40 @@ import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue'
 import IncentivesField from '@src/components/shared/form_fields/IncentivesField.vue';
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import { EXAMPLE_SALUTATIONS } from '@test/unit/components/pages/donation_form/AddressForms.spec';
 import type { InitialMembershipAddressValues } from '@src/view_models/Address';
+
+const EXAMPLE_SALUTATIONS = [
+	{
+		label: 'Mr',
+		value: 'Herr',
+		display: 'Herr',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'Ms',
+		value: 'Frau',
+		display: 'Frau',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'No Salutation',
+		value: 'Divers',
+		display: 'Divers',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+];
 
 describe( 'Address.vue', () => {
 

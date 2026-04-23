@@ -2,10 +2,12 @@
 	<ContentCard>
 		<template #heading>
 			<h1 id="donation-form-heading">{{ $t( 'donation_form_heading' ) }}</h1>
-			<h2 id="donation-form-subheading">{{ $t( 'donation_form_payment_subheading' ) }}</h2>
+			<h2 id="donation-form-subheading">1. {{ $t( 'compact_donation_form_payment_heading' ) }}</h2>
 		</template>
 		<template #content>
 			<slot name="error-summary"/>
+
+			<p>{{ $t( 'compact_donation_form_payment_blurb' ) }}</p>
 
 			<PaymentSummary
 				v-if="state === FormStates.showSummary"
@@ -15,7 +17,7 @@
 				:payment-type="paymentSummary.paymentType"
 			/>
 
-			<div v-if="state === 'showSummaryAndPaymentType'" class="show-summary-and-payment-type flow">
+			<div v-if="state === FormStates.showSummaryAndPaymentType" class="show-summary-and-payment-type flow">
 				<PaymentSummary
 					@show-payment-form="showPaymentForm"
 					:amount="paymentSummary.amount"
@@ -34,7 +36,7 @@
 			<form
 				v-if="state === FormStates.showEntireForm"
 				name="laika-donation-payment"
-				class="payment-page flow"
+				class="flow compact"
 				ref="paymentForm"
 				@submit.prevent
 			>
@@ -43,19 +45,24 @@
 					:payment-intervals="paymentIntervals"
 					:payment-types="paymentTypes"
 				/>
+
 			</form>
+
+			<IbanFields v-if="isDirectDebitPayment"/>
+
 		</template>
 	</ContentCard>
 </template>
 
 <script setup lang="ts">
-import Payment from '@src/components/pages/donation_form/Payment.vue';
+import Payment from '@src/components/pages/donation_form/Payment/Payment.vue';
 import { nextTick, ref } from 'vue';
-import PaymentSummary from '@src/components/pages/donation_form/PaymentSummary.vue';
+import PaymentSummary from '@src/components/pages/donation_form/Summaries/PaymentSummary.vue';
 import { useStore } from 'vuex';
-import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import { usePaymentFunctions } from '@src/components/pages/donation_form/composables/usePaymentFunctions';
 import { Validity } from '@src/view_models/Validity';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
+import IbanFields from '@src/components/pages/donation_form/Payment/IbanFields.vue';
 import { useAmountFocuser } from '@src/components/shared/composables/useAmountFocuser';
 
 enum FormStates {
@@ -68,6 +75,7 @@ interface Props {
 	paymentAmounts: number[];
 	paymentIntervals: number[];
 	paymentTypes: string[];
+	isDirectDebitPayment: boolean;
 }
 
 defineProps<Props>();

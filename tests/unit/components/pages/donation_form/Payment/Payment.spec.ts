@@ -3,7 +3,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import { action } from '@src/store/util';
 
-import Payment from '@src/components/pages/donation_form/Payment.vue';
+import Payment from '@src/components/pages/donation_form/Payment/Payment.vue';
 import { Store } from 'vuex';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';

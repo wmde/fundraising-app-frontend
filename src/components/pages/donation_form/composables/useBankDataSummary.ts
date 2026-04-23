@@ -1,6 +1,6 @@
 import { Store } from 'vuex';
 import { computed, ComputedRef } from 'vue';
-import { usePaymentFunctions } from '@src/components/pages/donation_form/usePaymentFunctions';
+import { usePaymentFunctions } from '@src/components/pages/donation_form/composables/usePaymentFunctions';
 
 type ReturnType = {
 	bankDataSummary: ComputedRef<{ iban: string; bankName: string; bic: string } | undefined>;

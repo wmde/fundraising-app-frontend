@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { shallowMount, VueWrapper } from '@vue/test-utils';
-import AddressSummarySection from '@src/components/pages/donation_form/Compact/AddressSummarySection.vue';
+import AddressSummary from '@src/components/pages/donation_form/Summaries/AddressSummary.vue';
 import countries from '@test/data/countries';
 import salutations from '@test/data/salutations';
 import { nextTick } from 'vue';
@@ -8,7 +8,7 @@ import { nextTick } from 'vue';
 describe( 'AddressSummarySection.vue', () => {
 
 	const getWrapper = (): VueWrapper<any> => {
-		return shallowMount( AddressSummarySection, {
+		return shallowMount( AddressSummary, {
 			props: {
 				address: {
 					addressType: '',
