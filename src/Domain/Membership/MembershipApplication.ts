@@ -7,4 +7,15 @@ export interface MembershipApplication {
 	paymentType: string;
 	incentives: string[];
 	isExported: boolean;
+
+	id: number;
+	accessToken: string;
+	updateToken: string;
+	receipt: boolean;
+
+	// Following properties are not needed I think
+	bankTransferCode: string;
+	status: string;
+	newsletter: boolean;
+	creationDate: string;
 }

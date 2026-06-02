@@ -1,7 +1,7 @@
 import { Validity } from './Validity';
 import { AddressTypeModel } from './AddressTypeModel';
 import { MembershipTypeModel } from './MembershipTypeModel';
-import type { AddressRequirements } from '@src/store/address/constants';
+import type { AddressRequirements } from '@src/store/membership_address/constants';
 import type { FieldInitialization } from '@src/view_models/FieldInitialization';
 
 export interface Address {
@@ -60,6 +60,7 @@ export interface MembershipAddressState {
 	incentives: string[];
 	values: FormValues;
 	validity: FormValidity;
+	requiredFields: AddressRequirements;
 }
 
 export interface InitialAddressValues {

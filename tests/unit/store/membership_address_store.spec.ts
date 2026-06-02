@@ -20,6 +20,7 @@ function newMinimalStore( overrides: Object ): MembershipAddressState {
 			membershipType: MembershipTypeModel.SUSTAINING,
 			receipt: false,
 			incentives: [],
+			requiredFields: REQUIRED_FIELDS,
 			values: {
 				salutation: '',
 				title: '',

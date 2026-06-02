@@ -5,11 +5,12 @@ import createPayment from '@src/store/membership_fee';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
 import { validateFee } from '@src/store/feeValidator';
+import { DEFAULT_FIELDS, REQUIRED_FIELDS_MEMBERSHIP_APPLICANT_UPDATE } from '@src/store/membership_address/constants';
 
 export function createStore( plugins: Array< ( s: Store<any> ) => void > = [] ) {
 	const storeBundle: StoreOptions<any> = {
 		modules: {
-			[ 'membership_address' ]: createAddress(),
+			[ 'membership_address' ]: createAddress( REQUIRED_FIELDS_MEMBERSHIP_APPLICANT_UPDATE, DEFAULT_FIELDS ),
 			[ 'membership_fee' ]: createPayment(),
 			[ 'bankdata' ]: createBankData(),
 		},
