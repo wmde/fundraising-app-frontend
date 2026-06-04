@@ -1,16 +1,18 @@
+import { describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 import { separator } from '@src/util/street_and_building_number_tools';
 import { nextTick } from 'vue';
 import { FakeStreetAutocompleteResource } from '@test/unit/TestDoubles/FakeStreetAutocompleteResource';
+import { Mock } from '@vitest/spy';
 
 const streetAutocompleteResource = new FakeStreetAutocompleteResource();
 
 describe( 'StreetAutocompleteField.vue', () => {
-	let scrollElement: { scrollIntoView: jest.Mock };
+	let scrollElement: { scrollIntoView: Mock<any> };
 
 	const getWrapper = ( value: string = '', postcode: string = '' ): VueWrapper<any> => {
-		scrollElement = { scrollIntoView: jest.fn() };
+		scrollElement = { scrollIntoView: vi.fn() };
 		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
 
 		return mount( StreetAutocompleteField, {
@@ -121,7 +123,7 @@ describe( 'StreetAutocompleteField.vue', () => {
 		} );
 
 		it( 'emits single field changed event when an autocomplete item is clicked', async () => {
-			jest.useFakeTimers();
+			vi.useFakeTimers();
 
 			const wrapper = getWrapper( '', '12345' );
 			const field = wrapper.find<HTMLInputElement>( '#street' );
@@ -129,15 +131,15 @@ describe( 'StreetAutocompleteField.vue', () => {
 			await field.trigger( 'focus' );
 			await wrapper.find( '[role="listbox"] :nth-child(3)' ).trigger( 'click' );
 
-			await jest.runAllTimersAsync();
+			await vi.runAllTimersAsync();
 
 			expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
 
-			jest.clearAllMocks();
+			vi.clearAllMocks();
 		} );
 
 		it( 'emits field changed event when field is blurred', async () => {
-			jest.useFakeTimers();
+			vi.useFakeTimers();
 
 			const wrapper = getWrapper();
 			const field = wrapper.find<HTMLInputElement>( '#street' );
@@ -145,11 +147,11 @@ describe( 'StreetAutocompleteField.vue', () => {
 			await field.trigger( 'focus' );
 			await field.trigger( 'blur' );
 
-			await jest.runAllTimersAsync();
+			await vi.runAllTimersAsync();
 
 			expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
 
-			jest.clearAllMocks();
+			vi.clearAllMocks();
 		} );
 
 		it( 'shows and hides the street number help text', async () => {

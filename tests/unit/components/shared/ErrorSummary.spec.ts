@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import ErrorSummary from '@src/components/shared/ErrorSummary.vue';
 import { shallowMount, VueWrapper } from '@vue/test-utils';
 import { Validity } from '@src/view_models/Validity';
@@ -34,7 +35,7 @@ describe( 'ErrorSummary.vue', () => {
 	};
 
 	it( 'Focuses the summary when it becomes visible', async () => {
-		const scrollElement = { scrollIntoView: jest.fn() };
+		const scrollElement = { scrollIntoView: vi.fn() };
 		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => scrollElement } );
 
 		const wrapper = getWrapper();
@@ -57,8 +58,8 @@ describe( 'ErrorSummary.vue', () => {
 	} );
 
 	it( 'Focuses and scrolls the invalid field when a summary item is clicked', async () => {
-		const focusElement = { focus: jest.fn() };
-		const scrollElement = { scrollIntoView: jest.fn() };
+		const focusElement = { focus: vi.fn() };
+		const scrollElement = { scrollIntoView: vi.fn() };
 		Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: ( id: string ) => {
 			switch ( id ) {
 				case 'amount-500':

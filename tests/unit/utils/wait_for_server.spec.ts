@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { ValidationState, waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { createStore } from 'vuex';
 

@@ -1,7 +1,7 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import axios from 'axios';
 import UpdateAddress from '@src/components/pages/UpdateAddress.vue';
-import { EXAMPLE_SALUTATIONS } from '@test/unit/components/pages/donation_form/AddressForms.spec';
 import countries from '@src/../tests/data/countries';
 import { addressValidationPatterns } from '@test/data/validation';
 import { Store } from 'vuex';
@@ -13,14 +13,47 @@ import type { AddressChangeResource } from '@src/api/AddressChangeResource';
 import type { UpdateAddressResponse } from '@src/api/UpdateAddressResponse';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
 
-jest.mock( '@src/util/tracking', () => {
+const EXAMPLE_SALUTATIONS = [
+	{
+		label: 'Mr',
+		value: 'Herr',
+		display: 'Herr',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'Ms',
+		value: 'Frau',
+		display: 'Frau',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'No Salutation',
+		value: 'Divers',
+		display: 'Divers',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+];
+
+vi.mock( '@src/util/tracking', () => {
 	return {
-		trackFormSubmission: jest.fn(),
+		trackFormSubmission: vi.fn(),
 	};
 } );
 
-jest.mock( 'axios' );
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+vi.mock( 'axios' );
+vi.mocked( axios.get ).mockReturnValue( Promise.resolve( { data: [] } ) );
 
 const defaultAddressChangeResource: AddressChangeResource = {
 	put(): Promise<UpdateAddressResponse> {
@@ -79,7 +112,7 @@ describe( 'UpdateAddress.vue', () => {
 	} );
 
 	it( 'shows and hides the error summary', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const store = createStore();
 		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
@@ -107,15 +140,15 @@ describe( 'UpdateAddress.vue', () => {
 		await country.setValue( 'country' );
 		await country.trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it( 'has a functional person error summary', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const store = createStore();
 		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.PERSON, fields: [] } );
@@ -123,7 +156,7 @@ describe( 'UpdateAddress.vue', () => {
 
 		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( 'form' ).trigger( 'submit' );
 		await nextTick();
@@ -137,11 +170,11 @@ describe( 'UpdateAddress.vue', () => {
 		expect( errorSummaryItemIsFunctional( wrapper, 'city', 'address-form-city' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
 
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it( 'has a functional company error summary', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const store = createStore();
 		await store.dispatch( action( 'address', 'initializeAddress' ), { addressType: AddressTypeModel.COMPANY, fields: [] } );
@@ -149,7 +182,7 @@ describe( 'UpdateAddress.vue', () => {
 
 		await wrapper.find( '#country' ).setValue( 'I am clearly not a country' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( 'form' ).trigger( 'submit' );
 		await nextTick();
@@ -161,13 +194,13 @@ describe( 'UpdateAddress.vue', () => {
 		expect( errorSummaryItemIsFunctional( wrapper, 'city', 'address-form-city' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
 
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it( 'redirects to the success page on successful submit', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
-		mockedAxios.post.mockResolvedValue( { data: { status: 'OK' } } );
+		vi.mocked( axios.post ).mockResolvedValue( { data: { status: 'OK' } } );
 		Object.defineProperty( window, 'location', { value: { href: '' }, writable: true } );
 
 		const addressChangeResource: AddressChangeResource = {
@@ -191,13 +224,13 @@ describe( 'UpdateAddress.vue', () => {
 		await wrapper.find( '#country' ).setValue( 'Deutschland' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( 'form' ).trigger( 'submit' );
 		await nextTick();
 
 		expect( window.location.href ).toStrictEqual( '/update-address/success?addressToken=anything' );
 
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 } );

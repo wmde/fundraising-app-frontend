@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import LocaleSelector from '@src/components/layout/LocaleSelector.vue';
 import Cookies from 'js-cookie';
@@ -9,31 +10,31 @@ const deLocale = LOCALES.find( x => x.value === 'de_DE' );
 describe( 'LocaleSelector.vue', () => {
 
 	beforeEach( () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 	} );
 
 	afterEach( () => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	} );
 
 	it( 'sets default locale if cookie is not set', () => {
 		// @ts-ignore
-		jest.spyOn( Cookies, 'get' ).mockReturnValue( undefined );
+		vi.spyOn( Cookies, 'get' ).mockReturnValue( undefined );
 
 		const wrapper = mount( LocaleSelector );
 
 		expect( wrapper.find( '.navigation-locale-toggle' ).text() ).toStrictEqual( deLocale.abbreviation );
-		expect( wrapper.find( '#navigation-locale-item-de_DE' ).element ).toBeChecked();
+		expect( wrapper.find<HTMLInputElement>( '#navigation-locale-item-de_DE' ).element.checked ).toBeTruthy();
 	} );
 
 	it( 'sets cookie locale if cookie is set', () => {
 		// @ts-ignore
-		jest.spyOn( Cookies, 'get' ).mockReturnValue( enLocale.value );
+		vi.spyOn( Cookies, 'get' ).mockReturnValue( enLocale.value );
 
 		const wrapper = mount( LocaleSelector );
 
 		expect( wrapper.find( '.navigation-locale-toggle' ).text() ).toStrictEqual( enLocale.abbreviation );
-		expect( wrapper.find( '#navigation-locale-item-en_GB' ).element ).toBeChecked();
+		expect( wrapper.find<HTMLInputElement>( '#navigation-locale-item-en_GB' ).element.checked ).toBeTruthy();
 	} );
 
 	it( 'stores cookie on selection', async () => {
@@ -41,10 +42,10 @@ describe( 'LocaleSelector.vue', () => {
 		let savedValue: string | object = '';
 
 		Object.defineProperty( window, 'location', {
-			value: { reload: jest.fn() },
+			value: { reload: vi.fn() },
 		} );
 
-		jest.spyOn( Cookies, 'set' )
+		vi.spyOn( Cookies, 'set' )
 			.mockImplementation( ( name: string, value: string | object ): string | undefined => {
 				savedKey = name;
 				savedValue = value;
@@ -62,7 +63,7 @@ describe( 'LocaleSelector.vue', () => {
 
 	it( 'reloads window on selection', async () => {
 		Object.defineProperty( window, 'location', {
-			value: { reload: jest.fn() },
+			value: { reload: vi.fn() },
 		} );
 
 		const wrapper = mount( LocaleSelector );
@@ -137,7 +138,7 @@ describe( 'LocaleSelector.vue', () => {
 
 		await wrapper.find( '.navigation-locale-toggle' ).trigger( 'click' );
 		await wrapper.find( '.navigation-locale-toggle' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.classes() ).not.toContain( 'active' );
 	} );
@@ -147,7 +148,7 @@ describe( 'LocaleSelector.vue', () => {
 
 		await wrapper.find( '.navigation-locale-toggle' ).trigger( 'click' );
 		await wrapper.find( '#navigation-locale-item-en_GB' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.classes() ).not.toContain( 'active' );
 	} );
@@ -157,34 +158,34 @@ describe( 'LocaleSelector.vue', () => {
 
 		await wrapper.find( '.navigation-locale-toggle' ).trigger( 'click' );
 		await wrapper.find( '.navigation-locale-button' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.classes() ).not.toContain( 'active' );
 	} );
 
 	it( 'does not hide the menu when the toggle is blurred and another locale selector item is focused', async () => {
 		const wrapper = mount( LocaleSelector );
-		const contains = jest.fn().mockReturnValue( true );
+		const contains = vi.fn().mockReturnValue( true );
 		Object.defineProperty( document, 'activeElement', { writable: true, configurable: true, value: { classList: { contains } } } );
 
 		await wrapper.find( '.navigation-locale-toggle' ).trigger( 'click' );
 		await wrapper.find( '.navigation-locale-toggle' ).trigger( 'blur' );
 		await wrapper.find( '#navigation-locale-item-en_GB' ).trigger( 'blur' );
 		await wrapper.find( '.navigation-locale-button' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.classes() ).toContain( 'active' );
 	} );
 
 	it( 'does not hide the menu when a radio element is blurred but label text is selected', async () => {
 		const wrapper = mount( LocaleSelector );
-		const contains = jest.fn().mockReturnValue( true );
+		const contains = vi.fn().mockReturnValue( true );
 		const selection = { anchorNode: { parentElement: { classList: { contains } } } };
 		Object.defineProperty( document, 'getSelection', { writable: true, configurable: true, value: selection } );
 
 		await wrapper.find( '.navigation-locale-toggle' ).trigger( 'click' );
 		await wrapper.find( '#navigation-locale-item-en_GB' ).trigger( 'blur' );
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		expect( wrapper.classes() ).toContain( 'active' );
 	} );

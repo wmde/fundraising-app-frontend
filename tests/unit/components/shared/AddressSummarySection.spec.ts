@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { shallowMount, VueWrapper } from '@vue/test-utils';
 import AddressSummarySection from '@src/components/shared/AddressSummarySection.vue';
 import countries from '@test/data/countries';

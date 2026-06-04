@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import FakeDataPersister from '../TestDoubles/FakeDataPersister';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
@@ -10,6 +11,11 @@ import {
 	createInitialMembershipFeeValues,
 } from '@src/store/dataInitializers';
 import type { InitialBankAccountData } from '@src/view_models/BankAccount';
+
+// eslint-disable-next-line no-underscore-dangle
+global._paq = {
+	push: vi.fn(),
+};
 
 describe( 'createInitialDonationAddressValues', () => {
 	it( 'fills data from storage', () => {

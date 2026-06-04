@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import App from '@src/components/App.vue';
 import { ModalStates, useModalState } from '@src/components/shared/composables/useModalState';
@@ -32,7 +33,7 @@ describe( 'App.vue', () => {
 	} );
 
 	it( 'freezes the page when a modal is opened', async () => {
-		const scrollTo = jest.fn();
+		const scrollTo = vi.fn();
 		Object.defineProperty( window, 'scrollTo', { writable: true, configurable: true, value: scrollTo } );
 		modalState.value = ModalStates.Closed;
 		getWrapper();
@@ -41,14 +42,14 @@ describe( 'App.vue', () => {
 		await nextTick();
 
 		expect( document.body.style.position ).toStrictEqual( 'fixed' );
-		expect( document.body.style.top ).toStrictEqual( '-0px' );
+		expect( document.body.style.top ).toStrictEqual( '0px' );
 
 		modalState.value = ModalStates.Closed;
 		await nextTick();
 
 		expect( document.body.style.position ).toStrictEqual( '' );
 		expect( document.body.style.top ).toStrictEqual( '' );
-		expect( scrollTo ).toHaveBeenCalledWith( 0, 0 );
+		expect( scrollTo ).toHaveBeenCalledWith( 0, -0 );
 	} );
 
 	it( 'hides the sidebar when needed', async () => {

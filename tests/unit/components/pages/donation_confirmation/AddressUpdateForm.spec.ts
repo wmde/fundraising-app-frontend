@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donor_update_store';
 import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
@@ -191,7 +192,7 @@ describe( 'AddressUpdateForm.vue', () => {
 	} );
 
 	it( 'shows and hides the error summary', async () => {
-		jest.useFakeTimers();
+		vi.useFakeTimers();
 
 		const store = createStore();
 		await store.dispatch(
@@ -227,14 +228,14 @@ describe( 'AddressUpdateForm.vue', () => {
 		await wrapper.find( '#country' ).setValue( 'Deutschland' );
 		await wrapper.find( '#country' ).trigger( 'blur' );
 
-		await jest.runAllTimersAsync();
+		await vi.runAllTimersAsync();
 
 		await wrapper.find( '#email' ).setValue( 'joe@dolan.com' );
 		await wrapper.find( '#email' ).trigger( 'blur' );
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
 
-		jest.restoreAllMocks();
+		vi.restoreAllMocks();
 	} );
 
 	it( 'has a functional person error summary', async () => {
@@ -280,11 +281,11 @@ describe( 'AddressUpdateForm.vue', () => {
 
 	it( 'displays an error if one is returned from the server', async () => {
 		const store = createStore();
-		store.dispatch = jest.fn().mockResolvedValue( { status: 'OK', messages: {} } );
+		store.dispatch = vi.fn().mockResolvedValue( { status: 'OK', messages: {} } );
 
 		const error = 'Get outta that garden!';
 		const donorResource = {
-			put: jest.fn().mockRejectedValue( error ),
+			put: vi.fn().mockRejectedValue( error ),
 		};
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData, donorResource );
@@ -296,7 +297,7 @@ describe( 'AddressUpdateForm.vue', () => {
 		expect( wrapper.find( '.server-message' ).text() ).toStrictEqual( error );
 	} );
 
-	test.each( [
+	it.each( [
 		[ AddressTypeModel.PERSON ],
 		[ AddressTypeModel.EMAIL ],
 		[ AddressTypeModel.ANON ],

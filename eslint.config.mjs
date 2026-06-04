@@ -52,13 +52,12 @@ export default [
 		},
 	},
 	{
-		name: 'Additional rules for Jest TypeScript test files',
+		name: 'Additional rules for Vitest TypeScript test files',
 		files: [ 'tests/**/*.ts' ],
 		languageOptions: {
 			globals: {
 				...globals.node,
 				...fixedBrowserGlobals,
-				...globals.jest,
 			},
 			parser: parser,
 			ecmaVersion: 7,

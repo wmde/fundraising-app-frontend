@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { getters } from '@src/store/address/getters';
 import { actions } from '@src/store/address/actions';
 import { mutations } from '@src/store/address/mutations';
@@ -5,7 +6,10 @@ import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import type { AddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { REQUIRED_FIELDS } from '@src/store/address/constants';
-import mockAxios from 'jest-mock-axios';
+import axios from 'axios';
+
+vi.mock( 'axios' );
+vi.mocked( axios.post ).mockReturnValue( Promise.resolve( { status: 200, data: { status: 'OK' } } ) );
 
 function newMinimalStore( overrides: Object ): AddressState {
 	return Object.assign(
@@ -294,7 +298,7 @@ describe( 'Address', () => {
 
 	describe( 'Actions/setAndValidateAddressField', () => {
 		it( 'commits to mutation [SET_ADDRESS_FIELD] and [VALIDATE_INPUT] with the correct field', () => {
-			const dispatch = jest.fn();
+			const dispatch = vi.fn();
 			const action = actions.setAndValidateAddressField as any;
 			const field = {
 				name: 'postcode',
@@ -312,7 +316,7 @@ describe( 'Address', () => {
 
 	describe( 'Actions/setAddressField', () => {
 		it( 'trims values before it commits to mutation', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.setAddressField as any;
 			const field = {
 				name: 'postcode',
@@ -335,7 +339,7 @@ describe( 'Address', () => {
 
 	describe( 'Actions/validateAddressField', () => {
 		it( 'validates field', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.validateAddressField as any;
 			const field = {
 				name: 'postcode',
@@ -352,12 +356,9 @@ describe( 'Address', () => {
 
 	describe( 'Actions/validateAddress', () => {
 
-		afterEach( function () {
-			mockAxios.reset();
-		} );
 		it( 'commits to mutation [MARK_EMPTY_FIELDS_INVALID] and [BEGIN_ADDRESS_VALIDATION]', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					getters: {
 						requiredFieldsAreValid: true,
 					},
@@ -390,7 +391,7 @@ describe( 'Address', () => {
 
 		it( 'sends post request for validation when required fields are valid and commits to mutation [FINISH_ADDRESS_VALIDATION]', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					getters: {
 						requiredFieldsAreValid: true,
 					},
@@ -419,19 +420,12 @@ describe( 'Address', () => {
 				} );
 			} );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					status: 'OK',
-				} as any,
-			} );
-
 			return actionResult;
 		} );
 
 		it( 'does not send a post request when required fields are invalid and returns an error', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					getters: {
 						requiredFieldsAreValid: false,
 					},
@@ -463,7 +457,7 @@ describe( 'Address', () => {
 
 	describe( 'Actions/setAddressType', () => {
 		it( 'commits to mutation [SET_ADDRESS_TYPE] with the chosen type', () => {
-			const commit = jest.fn(),
+			const commit = vi.fn(),
 				action = actions.setAddressType as any,
 				type = AddressTypeModel.COMPANY;
 			action( { commit, getters }, type );
@@ -476,7 +470,7 @@ describe( 'Address', () => {
 
 	describe( 'Actions/setReceiptChoice', () => {
 		it( 'commits to mutation [SET_RECEIPT] with the entered choice', () => {
-			const commit = jest.fn(),
+			const commit = vi.fn(),
 				action = actions.setReceiptChoice as any,
 				choice = true;
 			action( { commit }, choice );
@@ -489,7 +483,7 @@ describe( 'Address', () => {
 
 	describe( 'Actions/setNewsletterChoice', () => {
 		it( 'commits to mutation [SET_NEWSLETTER] with the entered choice', () => {
-			const commit = jest.fn(),
+			const commit = vi.fn(),
 				action = actions.setNewsletterChoice as any,
 				choice = true;
 			action( { commit }, choice );
@@ -502,7 +496,7 @@ describe( 'Address', () => {
 
 	describe( 'Actions/adjustSalutationLocale', () => {
 		it( 'does not adjust when salutation is empty', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.adjustSalutationLocale as any;
 			const salutations = [ { value: 'Mr' }, { value: 'Ms' } ];
 
@@ -512,7 +506,7 @@ describe( 'Address', () => {
 		} );
 
 		it( 'adjusts the salutation when it finds it in the server salutations array', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.adjustSalutationLocale as any;
 			const salutations = [ { value: 'Mr' }, { value: 'Ms' } ];
 
@@ -525,7 +519,7 @@ describe( 'Address', () => {
 		} );
 
 		it( 'adjusts the salutation when it finds it in the local translations array', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.adjustSalutationLocale as any;
 			const salutations = [ { value: 'Mr' }, { value: 'Ms' } ];
 

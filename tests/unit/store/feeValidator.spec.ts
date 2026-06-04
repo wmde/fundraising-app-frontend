@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { validateFee } from '@src/store/feeValidator';
 import { FeeValidity } from '@src/view_models/MembershipFee';
 

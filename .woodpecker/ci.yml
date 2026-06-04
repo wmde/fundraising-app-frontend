@@ -1,13 +1,13 @@
 # This is the "build" step for creating deployable archives of the frontend app.
-# 
-# We don't run `npm run ci` again, because the Jest tests take too long (~10 minutes).
+#
+# We don't run `npm run ci` again, because the test runner takes too long (~10 minutes).
 # Instead, we rely on the checks being run in the GitHub action and blindly build the assets.
 #
 steps:
     -   name: build
-        when: 
-          # Note that for pull request events (`pull_request`, `pull_request_closed`) the 
-          # variable $CI_COMMIT_BRANCH (i.e. "branch name") is the 
+        when:
+          # Note that for pull request events (`pull_request`, `pull_request_closed`) the
+          # variable $CI_COMMIT_BRANCH (i.e. "branch name") is the
           # *target* branch of the pull request (e.g. "main" for a PR to main from a feature branch)
           # This is why we don't included the events in the `when` clause above.
           # The build step would override `main` with a random feature branch

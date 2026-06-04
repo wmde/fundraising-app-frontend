@@ -1,8 +1,9 @@
+import { describe, expect, it } from 'vitest';
 import { createCampaignQueryString } from '@src/util/createCampaignQueryString';
 
 describe( 'createCampaignQueryString', () => {
 
-	test.each( [
+	it.each( [
 		// URL contains all parameters
 		[ 'test1=test1&test2=test2', 'test1=test1&test2=test2' ],
 		// URL contains additional params - they should be filtered

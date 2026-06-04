@@ -1,0 +1,108 @@
+import { describe, expect, it, vi } from 'vitest';
+import { mount, VueWrapper } from '@vue/test-utils';
+import { createStore } from '@src/store/donation_store';
+import { action } from '@src/store/util';
+
+import Payment from '@src/components/pages/donation_form/Payment/Payment.vue';
+import { Store } from 'vuex';
+import AmountField from '@src/components/shared/form_fields/AmountField.vue';
+import { nextTick } from 'vue';
+import RadioField from '@src/components/shared/form_fields/RadioField.vue';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { DisplaySection, DisplaySectionCollection } from '@src/components/pages/donation_form/Payment';
+
+describe( 'Payment.vue', () => {
+	let store: Store<any>;
+
+	const getWrapper = ( displaySections: DisplaySectionCollection = [ 'amount', 'interval', 'paymentType' ] ): VueWrapper<any> => {
+		store = createStore();
+		return mount( Payment, {
+			props: {
+				paymentAmounts: [ 5 ],
+				paymentIntervals: [ 0, 1, 3, 6, 12 ],
+				paymentTypes: [ 'BEZ', 'PPL', 'UEB', 'SUB', 'BTC' ],
+				displaySections,
+			},
+			global: {
+				plugins: [ store ],
+			},
+		} );
+	};
+
+	it( 'sends amount to store when amount model updates', async () => {
+		const wrapper = getWrapper();
+		store.dispatch = vi.fn();
+		const payload = '1500';
+
+		wrapper.findComponent( AmountField ).vm.$emit( 'update:modelValue', payload );
+		await nextTick();
+
+		expect( store.dispatch ).toBeCalledWith( action( 'payment', 'setAmount' ), payload );
+	} );
+
+	it( 'sends interval to store when interval model updates', async () => {
+		const wrapper = getWrapper();
+		store.dispatch = vi.fn();
+
+		wrapper.findAllComponents( RadioField )[ 0 ].vm.$emit( 'update:modelValue', 6 );
+		await nextTick();
+
+		expect( store.dispatch ).toBeCalledWith( action( 'payment', 'setInterval' ), 6 );
+	} );
+
+	it( 'sends payment type to store when payment model updates', async () => {
+		const wrapper = getWrapper();
+		store.dispatch = vi.fn();
+
+		wrapper.findAllComponents( RadioField )[ 1 ].vm.$emit( 'update:modelValue', 'PPL' );
+		await nextTick();
+
+		expect( store.dispatch ).toBeCalledWith( action( 'payment', 'setType' ), 'PPL' );
+	} );
+
+	it( 'renders tooltip hint if SUB payment method is disabled', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find<HTMLInputElement>( '#interval-1' ).trigger( 'change' );
+		await nextTick();
+
+		expect( wrapper.find( '.tooltip__popup' ).isVisible() ).toBe( true );
+	} );
+
+	it( 'does not render tooltip hint if SUB payment method is enabled', async () => {
+		const wrapper = getWrapper();
+
+		await wrapper.find( '#interval-0' ).trigger( 'click' );
+		await nextTick();
+
+		expect( wrapper.find( '.tooltip__popup' ).exists() ).toBe( false );
+	} );
+
+	it( 'renders tooltip hint if address type is Anonymous', async () => {
+		const wrapper = getWrapper();
+
+		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.ANON );
+
+		expect( wrapper.find( '.tooltip__popup' ).isVisible() ).toBe( true );
+	} );
+
+	it( 'does not render tooltip hint if address type is something different than Anonymous', async () => {
+		const wrapper = getWrapper();
+
+		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.EMAIL );
+
+		expect( wrapper.find( '.tooltip__popup' ).exists() ).toBe( false );
+	} );
+
+	it.each( [
+		[ 'amount', { amount: true, interval: false, paymentType: false } ],
+		[ 'interval', { amount: false, interval: true, paymentType: false } ],
+		[ 'paymentType', { amount: false, interval: false, paymentType: true } ],
+	] )( 'can render only one display section - %s ', ( sectionName: string, elementExists: Record<DisplaySection, boolean> ) => {
+		const wrapper = getWrapper( [ sectionName as DisplaySection ] );
+
+		expect( wrapper.find( '#payment-form-amount' ).exists() ).toBe( elementExists.amount );
+		expect( wrapper.find( '#payment-form-interval' ).exists() ).toBe( elementExists.interval );
+		expect( wrapper.find( '#payment-form-type' ).exists() ).toBe( elementExists.paymentType );
+	} );
+} );

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
 import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
@@ -72,7 +73,7 @@ describe( 'MembershipConfirmation.vue', () => {
 		} );
 	};
 
-	test( 'displays the correct membership fee', () => {
+	it( 'displays the correct membership fee', () => {
 		const wrapper = getWrapper( yearlyApplication, privateAddress );
 		const summaryElement = wrapper.find( '.content-card:first-child' );
 
@@ -82,7 +83,7 @@ describe( 'MembershipConfirmation.vue', () => {
 		expect( summaryElement.text() ).toContain( 'sustaining' );
 	} );
 
-	test( 'displays the calculated yearly membership fee', () => {
+	it( 'displays the calculated yearly membership fee', () => {
 		const wrapper = getWrapper( monthlyApplication, privateAddress );
 		const summaryElement = wrapper.find( '.content-card:first-child' );
 
@@ -92,7 +93,7 @@ describe( 'MembershipConfirmation.vue', () => {
 		expect( summaryElement.text() ).toContain( 'donation_form_payment_interval_12' );
 	} );
 
-	test( 'displays the correct address for a private person', () => {
+	it( 'displays the correct address for a private person', () => {
 		const wrapper = getWrapper( yearlyApplication, privateAddress );
 		const addressElement = wrapper.find( '.switcher > .flow:first-child > .content-card' );
 
@@ -103,7 +104,7 @@ describe( 'MembershipConfirmation.vue', () => {
 		expect( addressElement.text() ).toContain( 'testperson@wikimedia.de' );
 	} );
 
-	test( 'displays the correct address for a company', () => {
+	it( 'displays the correct address for a company', () => {
 		const wrapper = getWrapper( yearlyApplication, companyAddress );
 		const addressElement = wrapper.find( '.switcher > .flow:first-child > .content-card' );
 
@@ -114,7 +115,7 @@ describe( 'MembershipConfirmation.vue', () => {
 		expect( addressElement.text() ).toContain( 'testcompany@wikimedia.de' );
 	} );
 
-	test( 'displays different text when membership has incentives', () => {
+	it( 'displays different text when membership has incentives', () => {
 		const wrapperWithoutIncentives = getWrapper( yearlyApplication, privateAddress );
 		const wrapperWithIncentives = getWrapper( { ...yearlyApplication, incentives: [ 'incentive1', 'incentive2' ] }, privateAddress );
 
@@ -122,20 +123,20 @@ describe( 'MembershipConfirmation.vue', () => {
 		expect( wrapperWithIncentives.text() ).toContain( 'membership_confirmation_success_text_incentive' );
 	} );
 
-	test( 'displays additional text when payment is bank transfer', () => {
+	it( 'displays additional text when payment is bank transfer', () => {
 		const wrapper = getWrapper( { ...yearlyApplication, paymentType: 'UEB' }, privateAddress );
 
 		expect( wrapper.text() ).toContain( 'membership_confirmation_success_text_bank_transfer' );
 	} );
 
-	test( 'tells the member that their address was anonymised', () => {
+	it( 'tells the member that their address was anonymised', () => {
 		const wrapper = getWrapper( { ...monthlyApplication, isExported: true }, privateAddress );
 
 		expect( wrapper.text() ).toContain( 'membership_confirmation_exported_title' );
 		expect( wrapper.text() ).toContain( 'membership_confirmation_exported_content' );
 	} );
 
-	test( 'shows the survey tile if survey link language item is not empty', () => {
+	it( 'shows the survey tile if survey link language item is not empty', () => {
 		const translateMock = ( key: string ): string => {
 			if ( key === 'membership_confirmation_survey_link' ) {
 				return 'https://example.com/survey';
@@ -148,7 +149,7 @@ describe( 'MembershipConfirmation.vue', () => {
 		expect( wrapper.text() ).toContain( 'membership_confirmation_survey_title' );
 	} );
 
-	test( 'hides the survey tile if survey link language item is blank', () => {
+	it( 'hides the survey tile if survey link language item is blank', () => {
 		const translateMock = ( key: string ): string => {
 			if ( key === 'membership_confirmation_survey_link' ) {
 				return '';

@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import Address from '@src/components/pages/membership_form/Address.vue';
 import { createStore } from '@src/store/membership_store';
@@ -12,8 +13,40 @@ import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue'
 import IncentivesField from '@src/components/shared/form_fields/IncentivesField.vue';
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import { EXAMPLE_SALUTATIONS } from '@test/unit/components/pages/donation_form/AddressForms.spec';
 import type { InitialMembershipAddressValues } from '@src/view_models/Address';
+
+const EXAMPLE_SALUTATIONS = [
+	{
+		label: 'Mr',
+		value: 'Herr',
+		display: 'Herr',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'Ms',
+		value: 'Frau',
+		display: 'Frau',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+	{
+		label: 'No Salutation',
+		value: 'Divers',
+		display: 'Divers',
+		greetings: {
+			formal: '',
+			informal: '',
+			lastNameInformal: '',
+		},
+	},
+];
 
 describe( 'Address.vue', () => {
 
@@ -58,7 +91,7 @@ describe( 'Address.vue', () => {
 
 	it( 'sets address field in store when it receives field-changed event', async () => {
 		const { wrapper, store } = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedAction = action( 'membership_address', 'setAddressField' );
 		const firstNameValue = 'Vuetiful';
 		await wrapper.find( '#first-name' ).setValue( firstNameValue );
@@ -74,7 +107,7 @@ describe( 'Address.vue', () => {
 
 	it( 'sets receipt preference in store when it receives receipt-changed event', async () => {
 		const { wrapper, store } = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedAction = action( 'membership_address', 'setReceiptChoice' );
 		const expectedPayload = false;
 
@@ -87,7 +120,7 @@ describe( 'Address.vue', () => {
 
 	it( 'sets incentive preference in store when it receives field-change event', async () => {
 		const { wrapper, store } = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedAction = action( 'membership_address', 'setIncentives' );
 		const expectedPayload = [ 'tote_bag' ];
 
@@ -101,7 +134,7 @@ describe( 'Address.vue', () => {
 	it( 'sets email in store when it receives email event', async () => {
 		const { wrapper, store } = getWrapper();
 		const testEmail = 'test@wikimedia.de';
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		await wrapper.find( '#email' ).setValue( testEmail );
 
 		const expectedAction = action( 'membership_address', 'setAddressField' );

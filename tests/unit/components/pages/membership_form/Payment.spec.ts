@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import Payment from '@src/components/pages/membership_form/Payment.vue';
 import { createStore } from '@src/store/membership_store';
@@ -37,7 +38,7 @@ describe( 'Payment.vue', () => {
 
 	it( 'sends amount to store when amount model updates', async () => {
 		const wrapper = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedPayload: GenericValuePayload = {
 			selectedValue: '1500',
 			validateFeeUrl: 'https://example.com/amount-check',
@@ -64,7 +65,7 @@ describe( 'Payment.vue', () => {
 
 	it( 'sends interval to store when interval model updates', async () => {
 		const wrapper = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedPayload: GenericValuePayload = {
 			selectedValue: '6',
 			validateFeeUrl: 'https://example.com/amount-check',
@@ -78,7 +79,7 @@ describe( 'Payment.vue', () => {
 
 	it( 'sends payment type to store when payment model updates', async () => {
 		const wrapper = getWrapper();
-		store.dispatch = jest.fn();
+		store.dispatch = vi.fn();
 		const expectedPayload: GenericValuePayload = {
 			selectedValue: 'PPL',
 			validateFeeUrl: 'https://example.com/amount-check',
@@ -98,7 +99,7 @@ describe( 'Payment.vue', () => {
 
 		// selects first input element of the AmountField
 		const lowFeeInputElement = wrapper.findComponent( AmountField ).find<HTMLInputElement>( 'input' );
-		expect( lowFeeInputElement.element ).toBeChecked();
+		expect( lowFeeInputElement.element.checked ).toBeTruthy();
 
 		// address type changes / interval changes
 		await store.dispatch( action( 'membership_address', 'setAddressType' ), AddressTypeModel.COMPANY );
@@ -108,8 +109,8 @@ describe( 'Payment.vue', () => {
 		} );
 		await nextTick();
 
-		expect( lowFeeInputElement.element ).not.toBeChecked();
-		expect( lowFeeInputElement.element ).toBeDisabled();
+		expect( lowFeeInputElement.element.checked ).toBeFalsy();
+		expect( lowFeeInputElement.element.disabled ).toBeTruthy();
 	} );
 
 	it( 'Does not show fee error when field is empty and interval changes', async () => {

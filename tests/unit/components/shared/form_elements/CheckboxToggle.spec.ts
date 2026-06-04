@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
 import { mount, VueWrapper } from '@vue/test-utils';
 

@@ -1,11 +1,13 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { getters } from '@src/store/membership_fee/getters';
 import { actions } from '@src/store/membership_fee/actions';
 import { mutations } from '@src/store/membership_fee/mutations';
 import type { GenericValuePayload, MembershipFee } from '@src/view_models/MembershipFee';
 import { Validity } from '@src/view_models/Validity';
-import each from 'jest-each';
-import mockAxios from 'jest-mock-axios';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import axios from 'axios';
+
+vi.mock( 'axios' );
 
 function newMinimalStore( overrides: Object ): MembershipFee {
 	return Object.assign(
@@ -27,6 +29,10 @@ function newMinimalStore( overrides: Object ): MembershipFee {
 
 describe( 'MembershipFee', () => {
 
+	beforeEach( () => {
+		vi.mocked( axios.post ).mockReturnValue( Promise.resolve( { status: 200, data: { status: 'OK' } } ) );
+	} );
+
 	const validityCases = [
 		[ Validity.VALID, true ],
 		[ Validity.INVALID, false ],
@@ -43,7 +49,7 @@ describe( 'MembershipFee', () => {
 			) ).toBe( true );
 		} );
 
-		each( validityCases ).it( 'converts validity types to boolean state (test index %#)',
+		it.each( validityCases )( 'converts validity types to boolean state (test index %#)',
 			( feeValidity, isValid ) => {
 				const state = {
 					validity: {
@@ -71,7 +77,7 @@ describe( 'MembershipFee', () => {
 			) ).toBe( true );
 		} );
 
-		each( validityCases ).it(
+		it.each( validityCases )(
 			'returns the expected validity for a given type (test index %#)',
 			( typeValidity, isValid ) => {
 				const state = {
@@ -91,23 +97,26 @@ describe( 'MembershipFee', () => {
 	} );
 
 	describe( 'Getters/allPaymentValuesAreSet', () => {
-		each( [ 'fee', 'interval', 'type' ] )
-			.it( 'returns false if a field is not filled (test index %#)', ( unfilledField: 'fee' | 'interval' | 'type' ) => {
-				const state = {
-					values: {
-						fee: '2000',
-						interval: '6',
-						type: 'BEZ',
-					},
-				};
-				state.values[ unfilledField ] = '';
-				expect( getters.allPaymentValuesAreSet(
-					newMinimalStore( state ),
-					null,
-					null,
-					null
-				) ).toBe( false );
-			} );
+		it.each( [
+			'fee',
+			'interval',
+			'type',
+		] )( 'returns false if a field is not filled (test index %#)', ( unfilledField: string ) => {
+			const state = {
+				values: {
+					fee: '2000',
+					interval: '6',
+					type: 'BEZ',
+				},
+			};
+			state.values[ unfilledField ] = '';
+			expect( getters.allPaymentValuesAreSet(
+				newMinimalStore( state ),
+				null,
+				null,
+				null
+			) ).toBe( false );
+		} );
 
 		it( 'returns true if all field are filled', () => {
 			const state = {
@@ -128,7 +137,7 @@ describe( 'MembershipFee', () => {
 
 	describe( 'Actions/markEmptyFeeAsInvalid', () => {
 		it( 'commits to mutation [MARK_EMPTY_FEE_INVALID]', () => {
-			const commit = jest.fn();
+			const commit = vi.fn();
 			const action = actions.markEmptyFeeAsInvalid as any;
 			action( { commit } );
 			expect( commit ).toBeCalledWith(
@@ -140,7 +149,7 @@ describe( 'MembershipFee', () => {
 	describe( 'Actions/markEmptyValuesAsInvalid', () => {
 		it( 'commits to mutation [MARK_EMPTY_FIELDS_INVALID]', () => {
 			const context = {
-				commit: jest.fn(),
+				commit: vi.fn(),
 				getters: {
 					'membership_fee/paymentDataIsValid': true,
 				},
@@ -156,7 +165,7 @@ describe( 'MembershipFee', () => {
 	describe( 'Actions/setInterval', () => {
 		it( 'stores interval [SET_INTERVAL] and validates with [SET_INTERVAL_VALIDITY]', () => {
 			const context = {
-				commit: jest.fn(),
+				commit: vi.fn(),
 				state: {
 					values: {
 						fee: '',
@@ -181,8 +190,8 @@ describe( 'MembershipFee', () => {
 
 		it( 'triggers server-side-validation when all values are set', () => {
 			const context = {
-					commit: jest.fn(),
-					dispatch: jest.fn( () => Promise.resolve() ),
+					commit: vi.fn(),
+					dispatch: vi.fn( () => Promise.resolve() ),
 					state: {
 						values: {
 							fee: '2000',
@@ -215,8 +224,8 @@ describe( 'MembershipFee', () => {
 
 		it( 'stores fee with [SET_FEE]]', () => {
 			const context = {
-					commit: jest.fn(),
-					dispatch: jest.fn().mockResolvedValue( null ),
+					commit: vi.fn(),
+					dispatch: vi.fn().mockResolvedValue( null ),
 					state: {
 						values: {
 							interval: 12,
@@ -243,8 +252,8 @@ describe( 'MembershipFee', () => {
 
 		it( 'calls validation action with payload when interval and fee look ok', () => {
 			const context = {
-					commit: jest.fn(),
-					dispatch: jest.fn().mockResolvedValue( null ),
+					commit: vi.fn(),
+					dispatch: vi.fn().mockResolvedValue( null ),
 					state: {
 						values: {
 							interval: 12,
@@ -271,8 +280,8 @@ describe( 'MembershipFee', () => {
 
 		it( 'commits INVALID validity if a non-numeric fee is supplied', () => {
 			const context = {
-					commit: jest.fn(),
-					dispatch: jest.fn().mockResolvedValue( null ),
+					commit: vi.fn(),
+					dispatch: vi.fn().mockResolvedValue( null ),
 					state: {
 						values: {
 							interval: 12,
@@ -303,8 +312,8 @@ describe( 'MembershipFee', () => {
 
 		it( 'unsets fee when invalid fee was supplied', () => {
 			const context = {
-					commit: jest.fn(),
-					dispatch: jest.fn().mockResolvedValue( null ),
+					commit: vi.fn(),
+					dispatch: vi.fn().mockResolvedValue( null ),
 					state: {
 						values: {
 							interval: 12,
@@ -336,14 +345,9 @@ describe( 'MembershipFee', () => {
 	} );
 
 	describe( 'Actions/validateFee', () => {
-
-		afterEach( function () {
-			mockAxios.reset();
-		} );
-
-		it( 'sends a post request for fee validation', () => {
+		it( 'sends a post request for fee validation', async () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					state: {
 						values: {
 							interval: 12,
@@ -363,15 +367,17 @@ describe( 'MembershipFee', () => {
 			expectedFormData.append( 'membershipFee', '2500' );
 			expectedFormData.append( 'paymentIntervalInMonths', '12' );
 			expectedFormData.append( 'addressType', 'person' );
+			expectedFormData.append( 'paymentType', undefined );
 			const action = actions.validateFee as any;
-			action( context, payload ).then( function () {
-				expect( mockAxios.post ).toHaveBeenCalledWith( payload.validateFeeUrl, expectedFormData );
-			} );
+
+			await action( context, payload );
+
+			expect( axios.post ).toHaveBeenCalledWith( payload.validateFeeUrl, expectedFormData, { headers: { 'Content-Type': 'multipart/form-data' } } );
 		} );
 
 		it( 'commits to mutation [SET_FEE_VALIDITY] after server side request', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					state: {
 						values: {
 							interval: 12,
@@ -393,19 +399,12 @@ describe( 'MembershipFee', () => {
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_FEE_VALIDITY', Validity.VALID );
 			} );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
-				},
-			} );
-
 			return actionResult;
 		} );
 
 		it( 'commits to mutation [SET_IS_VALIDATING] when doing server side validation', () => {
 			const context = {
-					commit: jest.fn(),
+					commit: vi.fn(),
 					state: {
 						values: {
 							interval: 12,
@@ -428,13 +427,6 @@ describe( 'MembershipFee', () => {
 				expect( context.commit ).toHaveBeenCalledWith( 'SET_IS_VALIDATING', false );
 			} );
 
-			mockAxios.mockResponse( {
-				status: 200,
-				data: {
-					'status': 'OK',
-				},
-			} );
-
 			return actionResult;
 		} );
 	} );
@@ -447,7 +439,7 @@ describe( 'MembershipFee', () => {
 			[ { values: { fee: 'hello' } }, Validity.INVALID ],
 		];
 
-		each( feeStates ).it(
+		it.each( feeStates )(
 			'mutates the state with the correct validity for a given fee (test index %#)',
 			( feeState, expectedValidity ) => {
 				const store = newMinimalStore( feeState );
