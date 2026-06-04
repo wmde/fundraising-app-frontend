@@ -15,7 +15,6 @@ describe( 'FilteredUrlMembershipValues', function () {
 	} );
 
 	test.each( [
-		// Descriptions are optional, see https://stackoverflow.com/questions/45348083/how-to-add-custom-message-to-jest-expect
 		[ '14.50', 'float values' ],
 		[ 'hello', 'string values' ],
 		[ '0xff', 'hex values' ],
