@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import FakeDataPersister from '../TestDoubles/FakeDataPersister';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel, AddressTypeNames } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
 import persistenceAddress from '@src/store/data_persistence/address';
 import {
@@ -225,7 +225,21 @@ describe( 'createInitialMembershipAddressValues', () => {
 		expect( values.date ).toEqual( date.value );
 	} );
 
-	it( 'converts initial testType from string to AddressTypeModel', () => {
+	it.each( [
+		[ AddressTypeNames.get( AddressTypeModel.PERSON ), AddressTypeModel.PERSON ],
+		[ AddressTypeNames.get( AddressTypeModel.COMPANY ), AddressTypeModel.COMPANY ],
+		[ AddressTypeNames.get( AddressTypeModel.COMPANY_WITH_CONTACT ), null ],
+		[ AddressTypeNames.get( AddressTypeModel.EMAIL ), null ],
+		[ AddressTypeNames.get( AddressTypeModel.ANON ), null ],
+		[ AddressTypeNames.get( AddressTypeModel.UNSET ), null ],
+	] )( 'only initilises allowed address types', ( addressTypeName: string, addressType: AddressTypeModel ) => {
+		const dataPersister = new FakeDataPersister( [] );
+		const values = createInitialMembershipAddressValues( dataPersister, new Map( Object.entries( { addressType: addressTypeName } ) ) );
+
+		expect( values.addressType ).toEqual( addressType );
+	} );
+
+	it( 'converts initial addressType from string to AddressTypeModel', () => {
 		const initialAddressType = 'person';
 		const dataPersister = new FakeDataPersister( [] );
 
