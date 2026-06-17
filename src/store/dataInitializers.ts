@@ -9,7 +9,6 @@ import type { InitialBankAccountData } from '@src/view_models/BankAccount';
 import type { InitialMembershipFeeValues } from '@src/view_models/MembershipFee';
 import { trackFormFieldRestored } from '@src/util/tracking';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
-import { ALLOWED_ADDRESS_TYPES } from '@src/store/membership_address/constants';
 
 const replaceInitialValue = ( defaultValue: any, replacement: any ): any => {
 	if ( replacement !== undefined && replacement !== null && replacement !== '' ) {
@@ -83,9 +82,8 @@ export const createInitialMembershipAddressValues = ( dataPersister: DataPersist
 	const addressPersistItems: FieldInitialization[] = [];
 
 	if ( initialFormValues.has( 'addressType' ) ) {
-		const addressTypeName = initialFormValues.get( 'addressType' );
-		const addressType = addressTypeFromName( addressTypeName );
-		initialFormValues.set( 'addressType', ALLOWED_ADDRESS_TYPES.includes( addressType ) ? addressType : null );
+		const addressType = initialFormValues.get( 'addressType' );
+		initialFormValues.set( 'addressType', addressTypeFromName( addressType ) );
 	}
 
 	persistenceAddress( 'membership_address' ).fields.forEach( field => {
