@@ -50,7 +50,7 @@
     "css-loader": "^7.1.4",
     "css-minimizer-webpack-plugin": "^8.0.0",
     "eslint-plugin-security": "^4.0.1",
-    "eslint-plugin-unicorn": "^68.0.0",
+    "eslint-plugin-unicorn": "^69.0.0",
     "eslint-plugin-vue": "^10.9.2",
     "eslint-plugin-vuejs-accessibility": "^2.5.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
