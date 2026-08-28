@@ -339,13 +339,13 @@ input[role='combobox'] {
 	appearance: none;
 	width: var(--radio-size);
 	height: var(--radio-size);
-	border: 1px solid var(--form-field-border-color, var(--color-form-border));
+	border: 2px solid var(--form-field-border-color, var(--color-form-border));
 	position: relative;
 	background: var(--color-form-bg);
 	cursor: pointer;
 }
 
-:is([type='checkbox'], [type='radio']):checked {
+[type='checkbox']:checked {
 	background: var(--color-primary-base);
 }
 
@@ -365,11 +365,15 @@ input[role='combobox'] {
 
 [type='radio']:before {
 	background: var(--color-form-bg);
-	height: 40%;
-	width: 40%;
-	top: 30%;
-	left: 30%;
+	height: 60%;
+	width: 60%;
+	top: 20%;
+	left: 20%;
 	border-radius: 50%;
+}
+
+[type='radio']:checked:before {
+	background: var(--color-primary-base);
 }
 
 [type='checkbox']:not([class]) {
