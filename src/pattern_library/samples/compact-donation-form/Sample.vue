@@ -19,7 +19,7 @@
 				</template>
 
 				<form v-else action="" class="flow">
-					<fieldset class="field-container flow" data-max-width data-error>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width data-error>
 						<legend>How much would you like to donate?</legend>
 						<p>Please choose an amount from the list or enter a custom amount below.</p>
 
@@ -85,7 +85,7 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>How often would you like to donate?</legend>
 						<div class="field-container__radio-grid">
 							<div class="grid" data-layout="halves">
@@ -113,7 +113,7 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>How would you like to donate?</legend>
 						<div class="field-container__radio-grid">
 							<div class="grid" data-layout="halves">
@@ -211,7 +211,7 @@
 
 				<form action="" class="flow">
 					<div class="flex-field-group">
-						<fieldset class="field-container flow">
+						<fieldset class="field-container bordered-radio-field flow">
 							<legend>Form of address</legend>
 							<div class="cluster">
 								<div>

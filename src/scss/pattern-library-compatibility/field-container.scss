@@ -24,6 +24,10 @@
 		}
 	}
 
+	&.bordered-radio-field label:has([type='radio']) {
+		padding: 0.7em;
+	}
+
 	:is(input, select, textarea) {
 		accent-color: var(--color-blue-600);
 	}
@@ -38,8 +42,7 @@
 	:where(
 		input:not([type='checkbox'], [type='radio'], [type='color']),
 		select,
-		textarea,
-		label:has([type='radio'])
+		textarea
 	){
 		padding: 0.7em;
 		border: 1px solid var(--form-field-border-color, var(--color-grey-300));
