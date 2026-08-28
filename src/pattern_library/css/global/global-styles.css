@@ -305,8 +305,7 @@ svg[role='img'][width][height] {
 :where(
 	input:not([type='checkbox'], [type='radio'], [type='color']),
 	select,
-	textarea,
-	label:has([type='radio'])
+	textarea
 ) {
 	padding: 0.5em;
 	border: 1px solid var(--form-field-border-color, var(--color-form-border));
