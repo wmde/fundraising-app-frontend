@@ -12,6 +12,7 @@ import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
 import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
 
 vi.mock( 'axios' );
 vi.mocked( axios.get ).mockReturnValue( Promise.resolve( { data: [] } ) );
@@ -82,6 +83,9 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 				plugins: [ store ?? createStore() ],
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
+				},
+				components: {
+					FeatureToggle: createFeatureToggle( [ 'campaigns.new_newsletter.legacy' ] ),
 				},
 			},
 			attachTo: document.body,
