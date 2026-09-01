@@ -1,1 +1,1 @@
-export const MAILING_LIST_ADDRESS_PAGE: boolean = false;
+export const MAILING_LIST_ADDRESS_PAGE: boolean = true;

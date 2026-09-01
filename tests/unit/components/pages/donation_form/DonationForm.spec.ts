@@ -11,6 +11,7 @@ import { IBAN } from '@test/data/bankdata';
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
+import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
 
 vi.mock( 'axios' );
 vi.mocked( axios.get ).mockReturnValue( Promise.resolve( { data: [] } ) );
@@ -91,7 +92,7 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 		const wrapper = getWrapper();
 
 		expect( wrapper.find<HTMLInputElement>( '#interval-0' ).element.checked ).toBeTruthy();
-		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toStrictEqual( MAILING_LIST_ADDRESS_PAGE );
 		expect( wrapper.find<HTMLInputElement>( '#donation-receipt' ).element.checked ).toBeTruthy();
 	} );
 
