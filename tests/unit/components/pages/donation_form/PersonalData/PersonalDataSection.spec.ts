@@ -8,6 +8,7 @@ import type { AddressValidation } from '@src/view_models/Validation';
 import type { Salutation } from '@src/view_models/Salutation';
 import PersonalDataSection from '@src/components/pages/donation_form/PersonalData/PersonalDataSection.vue';
 import { useReceiptModel } from '@src/components/pages/donation_form/composables/useReceiptModel';
+import { createFeatureToggle } from '@src/util/createFeatureToggle';
 
 const testCountry = {
 	countryCode: 'de',
@@ -48,6 +49,9 @@ describe( 'PersonalDataSection.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				components: {
+					FeatureToggle: createFeatureToggle( [ 'campaigns.new_newsletter.legacy' ] ),
+				},
 			},
 			attachTo: document.body,
 		} );

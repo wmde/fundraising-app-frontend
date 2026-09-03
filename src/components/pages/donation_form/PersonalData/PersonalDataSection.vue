@@ -23,7 +23,15 @@
 						v-model="formData.email.value"
 						@field-changed="onFieldChange"
 					/>
-					<MailingListField v-model="mailingList" input-id="newsletter"/>
+
+					<FeatureToggle default-template="campaigns.new_newsletter.legacy">
+						<template #campaigns.new_newsletter.legacy>
+							<MailingListField v-model="mailingList" input-id="newsletter"/>
+						</template>
+						<template #campaigns.new_newsletter.new>
+							<MailingListRadioField v-model="mailingList" input-id="newsletter"/>
+						</template>
+					</FeatureToggle>
 
 				</AutofillHandler>
 			</form>
@@ -83,6 +91,7 @@ import { useStore } from 'vuex';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
+import MailingListRadioField from '@src/components/shared/form_fields/MailingListRadioField.vue';
 
 interface Props {
 	countries: Country[];

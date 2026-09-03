@@ -10,7 +10,7 @@
 				</div>
 
 				<form action="">
-					<fieldset class="field-container flow" data-max-width data-error>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width data-error>
 						<legend>How much would you like to donate?</legend>
 						<p>Please choose an amount from the list or enter a custom amount below.</p>
 
@@ -76,7 +76,7 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>How often would you like to donate?</legend>
 						<div class="field-container__radio-grid">
 							<div class="grid" data-layout="halves">
@@ -104,7 +104,7 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>How would you like to donate?</legend>
 						<div class="field-container__radio-grid">
 							<div class="grid" data-layout="halves">
@@ -202,7 +202,7 @@
 				</div>
 
 				<form action="">
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>How would you like to donate?</legend>
 						<label>
 							<input type="radio" name="address-type" id="address-type-private">
@@ -219,7 +219,7 @@
 						<p class="field-container__error-text">Please select an address type.</p>
 					</fieldset>
 
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>Form of address</legend>
 						<label>
 							<input type="radio" name="salutation" id="salutation-mr">
