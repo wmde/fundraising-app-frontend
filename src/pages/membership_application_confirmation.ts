@@ -12,6 +12,7 @@ import MembershipConfirmation from '@src/components/pages/MembershipConfirmation
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import type { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
+import { ApiMembershipApplicantResource } from '@src/api/MembershipApplicantResource';
 
 const PAGE_IDENTIFIER = 'membership-application-confirmation';
 const LOCAL_STORAGE_DELETION_NAMESPACES = [ 'donation_form', 'membership_application' ];
@@ -40,5 +41,20 @@ createVueApp( App,
 			confirmationData: pageData.applicationVars,
 			salutations: pageData.applicationVars.salutations,
 			countries: pageData.applicationVars.countries,
+			membershipApplicationResource:
+				new ApiMembershipApplicantResource( // pageData.applicationVars.urls.updateMembership
+					pageData.applicationVars.membershipApplication.updateToken
+				),
+
+			/* Still have to figure out if following are needed
+
+			validateAddressUrl:
+			pageData.applicationVars.urls.validateAddress,
+
+			validateEmailUrl:
+			pageData.applicationVars.urls.validateEmail,
+
+			addressValidationPatterns:
+			pageData.applicationVars.addressValidationPatterns, */
 		},
 	} ).mount( '#app' );

@@ -38,6 +38,17 @@ const monthlyApplication: MembershipApplication = {
 	paymentType: 'BEZ',
 	incentives: [],
 	isExported: false,
+
+	id: 1,
+	accessToken: 'njnjnjnjnnjnj',
+	updateToken: 'jjijijijij',
+	receipt: true;
+
+	// Following properties are not needed I think
+	bankTransferCode: 'dfertz',
+	status: 'qqqq',
+	newsletter: true,
+	creationDate: '21-08-2026';
 };
 
 const yearlyApplication: MembershipApplication = {
