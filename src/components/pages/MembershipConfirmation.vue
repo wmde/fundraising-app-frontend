@@ -25,14 +25,29 @@
 							<template #content><h2>{{ $t( 'membership_confirmation_address_head' ) }}</h2></template>
 						</IconText>
 						<p>
-							<template v-if="address.applicantType === 'person'">{{ salutation }}{{ address.fullName }}</template>
-							<template v-else>{{ address.fullName }}</template>
+							<template v-if="currentAddress.applicantType === 'person'">
+								{{ salutation }}{{ currentAddress.fullName }}
+							</template>
+							<template v-else>
+								{{ currentAddress.fullName }}
+							</template>
 							<br />
-							{{ address.streetAddress }}<br />
-							{{ address.postalCode }} {{ address.city }}<br />
+							{{ currentAddress.streetAddress }}<br />
+							{{ currentAddress.postalCode }} {{ currentAddress.city }}<br />
 							{{ countryName }}
 						</p>
-						<p>{{ address.email }}</p>
+						<p>{{ currentAddress.email }}</p>
+						<p>
+							{{ $t( 'confirmation_page_address_update' ) }}
+							<ButtonLink
+								id="update-address-link"
+								aria-controls="address-change-modal"
+								:aria-expanded="isAddressModalOpen"
+								@click="showAddressModal"
+							>
+								{{ $t( 'confirmation_page_address_update_link' ) }}
+							</ButtonLink>
+						</p>
 					</template>
 					<template #content v-else>
 						<IconText>
@@ -53,6 +68,24 @@
 			</div>
 		</div>
 	</div>
+	<ModalDialogue
+		id="address-change-modal"
+		:visible="isAddressModalOpen"
+		:title="$t( 'confirmation_page_update_address_form_header' )"
+		@hide="closeAddressModal"
+	>
+		<MembershipAddressUpdateForm
+			:address-validation-patterns="addressValidationPatterns"
+			:countries="countries"
+			:salutations="salutations"
+			:membership="membership"
+			:membershipApplicantResource="membershipApplicantResource"
+			:validate-address-url="validateAddressUrl"
+			:validate-email-url="validateEmailUrl"
+			@address-updated="updateAddress( $event )"
+			@close="closeAddressModal"
+		/>
+	</ModalDialogue>
 	<MembershipConfirmationBannerNotifier/>
 </template>
 
@@ -63,27 +96,49 @@ import MembershipConfirmationBannerNotifier
 import type { Salutation } from '@src/view_models/Salutation';
 import type { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
 import type { Country } from '@src/view_models/Country';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
 import { useI18n } from 'vue-i18n';
 import SuccessIcon from '@src/components/shared/icons/SuccessIcon.vue';
 import WarningIcon from '@src/components/shared/icons/WarningIcon.vue';
 import IconText from '@src/components/patterns/IconText.vue';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
+import { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
+import ModalDialogue from '@src/components/shared/ModalDialogue.vue';
+import { AddressValidation } from '@src/view_models/Validation';
+import { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
+import { MembershipApplicantResource } from '@src/api/MembershipApplicantResource';
+import ButtonLink from '@src/components/shared/ButtonLink.vue';
+import MembershipAddressUpdateForm from '@src/components/pages/membership_confirmation/MembershipAddressUpdateForm.vue';
 
 interface Props {
 	confirmationData: MembershipApplicationConfirmationData;
 	salutations: Salutation[];
 	countries: Country[];
+	addressValidationPatterns: AddressValidation;
+	membership: MembershipApplication;
+	membershipApplicantResource: MembershipApplicantResource;
+	addressType: string;
+	validateAddressUrl: string;
+	validateEmailUrl: string;
 }
 
 const { t, n } = useI18n();
 
 const props = defineProps<Props>();
+
+const isAddressModalOpen = ref<boolean>( false );
+const showAddressModal = (): void => {
+	isAddressModalOpen.value = true;
+};
+const closeAddressModal = (): void => {
+	isAddressModalOpen.value = false;
+};
+
 const hasIncentives = props.confirmationData.membershipApplication.incentives?.length > 0;
 const showBankTransferContent = props.confirmationData.membershipApplication.paymentType === 'UEB';
 
-const geYearlyAmountForSmallIntervals = ( amount: number, interval: number, intervalTranslation: String ): string => {
+const getYearlyAmountForSmallIntervals = ( amount: number, interval: number, intervalTranslation: String ): string => {
 	if ( interval === 12 ) {
 		return '';
 	}
@@ -91,14 +146,14 @@ const geYearlyAmountForSmallIntervals = ( amount: number, interval: number, inte
 	return `(${formattedAmount} ${intervalTranslation})`;
 };
 
-const address = props.confirmationData.address;
+const currentAddress = ref<MembershipAddress>( props.confirmationData.address );
 
 const salutation = computed( () => {
-	if ( !address.salutation ) {
+	if ( !currentAddress.value.salutation ) {
 		return '';
 	}
 
-	const salutationObject = props.salutations.find( s => s.label === address.salutation );
+	const salutationObject = props.salutations.find( s => s.label === currentAddress.value.salutation );
 	if ( salutationObject === undefined ) {
 		return '';
 	}
@@ -106,7 +161,7 @@ const salutation = computed( () => {
 } );
 
 const countryName = computed( () => {
-	const countryObject = props.countries.find( c => ( c.countryCode === address.countryCode ) );
+	const countryObject = props.countries.find( c => ( c.countryCode === currentAddress.value.countryCode ) );
 	return countryObject ? countryObject.countryFullName : '';
 } );
 
@@ -120,7 +175,7 @@ const summaryData = computed( () => {
 		paymentInterval: t( 'donation_form_payment_interval_' + membership.paymentIntervalInMonths ),
 		membershipType: t( membership.membershipType === 'active' ? 'membership_type_active' : 'membership_type_sustaining' ),
 		membershipFeeFormatted: n( yearlyFee.membershipFeePerInterval, { key: 'currency', currencyDisplay: 'name' } ),
-		membershipFeeYearlyFormatted: geYearlyAmountForSmallIntervals(
+		membershipFeeYearlyFormatted: getYearlyAmountForSmallIntervals(
 			yearlyFee.yearlyFee,
 			yearlyFee.paymentIntervalInMonths,
 			t( 'donation_form_payment_interval_12' )
@@ -128,5 +183,12 @@ const summaryData = computed( () => {
 		paymentType: t( membership.paymentType ),
 	};
 } );
+
+const currentAddressType = ref<string>( props.addressType );
+const updateAddress = ( submittedAddress: { addressData: MembershipAddress; addressType: string } ): void => {
+	currentAddress.value = submittedAddress.addressData;
+	currentAddressType.value = submittedAddress.addressType;
+	isAddressModalOpen.value = false;
+};
 
 </script>
