@@ -6,26 +6,28 @@ import { getters } from '@src/store/membership_address/getters';
 import { mutations } from '@src/store/membership_address/mutations';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
+import { AddressRequirements, DefaultFields } from '@src/store/membership_address/constants';
 
-export default function (): Module<MembershipAddressState, any> {
+export default function ( requiredFields: AddressRequirements, defaultFields: DefaultFields ): Module<MembershipAddressState, any> {
 	const state: MembershipAddressState = {
 		serverSideValidationCount: 0,
 		addressType: AddressTypeModel.PERSON,
 		membershipType: MembershipTypeModel.SUSTAINING,
 		receipt: true,
+		requiredFields: requiredFields,
 		incentives: [],
 		values: {
-			salutation: '',
-			title: '',
-			firstName: '',
-			lastName: '',
-			companyName: '',
-			street: '',
-			postcode: '',
-			city: '',
-			country: 'DE',
-			email: '',
-			date: '',
+			salutation: defaultFields.salutation ?? '',
+			title: defaultFields.title ?? '',
+			firstName: defaultFields.firstName ?? '',
+			lastName: defaultFields.lastName ?? '',
+			companyName: defaultFields.companyName ?? '',
+			street: defaultFields.street ?? '',
+			postcode: defaultFields.postcode ?? '',
+			city: defaultFields.city ?? '',
+			country: defaultFields.country ?? 'DE',
+			email: defaultFields.email ?? '',
+			date: defaultFields.date ?? '',
 		},
 		validity: {
 			salutation: Validity.INCOMPLETE,

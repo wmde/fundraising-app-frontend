@@ -7,4 +7,6 @@ export interface MembershipApplication {
 	paymentType: string;
 	incentives: string[];
 	isExported: boolean;
+	id: number;
+	updateToken: string;
 }
