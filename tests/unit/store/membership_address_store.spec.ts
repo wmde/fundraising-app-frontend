@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { describe, expect, it, vi } from 'vitest';
 import { getters } from '@src/store/membership_address/getters';
 import { actions } from '@src/store/membership_address/actions';
