@@ -13,7 +13,7 @@ import { createFeatureFetcher } from '@src/util/FeatureFetcher';
 import { bucketIdToCssClass } from '@src/util/bucket_id_to_css_class';
 import type { MembershipApplicationConfirmationData } from '@src/Domain/Membership/MembershipApplicationConfirmationData';
 import { ApiMembershipApplicantResource } from '@src/api/MembershipApplicantResource';
-import { createStore } from '@src/store/donor_update_store';
+import { createStore } from '@src/store/membership_applicant_update_store';
 import { action } from '@src/store/util';
 import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';

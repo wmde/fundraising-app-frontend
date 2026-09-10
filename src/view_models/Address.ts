@@ -60,6 +60,7 @@ export interface MembershipAddressState {
 	incentives: string[];
 	values: FormValues;
 	validity: FormValidity;
+	requiredFields: AddressRequirements;
 }
 
 export interface InitialAddressValues {
