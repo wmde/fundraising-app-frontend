@@ -15,7 +15,7 @@
 	margin: 0;
 	width: var(--radio-size);
 	height: var(--radio-size);
-	border: 1px solid var(--form-field-border-color, var(--color-neutral-base));
+	border: 2px solid var(--form-field-border-color, var(--color-neutral-base));
 	background: var(--color-white);
 	border-radius: 50%;
 }
@@ -24,15 +24,18 @@
 	content: '';
 	position: absolute;
 	background: var(--color-form-bg);
-	height: 40%;
-	width: 40%;
-	top: 30%;
-	left: 30%;
+	height: 60%;
+	width: 60%;
+	top: 20%;
+	left: 20%;
 	border-radius: 50%;
 }
 
 .text-radio__radio--checked {
 	--form-field-border-color: var(--color-primary-base);
+}
+
+.text-radio__radio--checked:before {
 	background: var(--color-primary-base);
 }
 

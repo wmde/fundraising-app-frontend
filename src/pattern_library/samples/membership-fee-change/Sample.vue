@@ -9,7 +9,7 @@
 						<hr>
 					</div>
 
-					<div class="field-container field-container__radio-grid flow" :data-error="error ? true : null">
+					<div class="field-container bordered-radio-field field-container__radio-grid flow" :data-error="error ? true : null">
 						<div class="grid" data-layout="halves">
 							<div class="flow">
 								<label for="preset-amount">Empfehlung:</label>

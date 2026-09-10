@@ -10,7 +10,7 @@
 				</div>
 
 				<form action="">
-					<fieldset class="field-container flow" data-max-width data-error>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width data-error>
 						<legend>How much would you like to donate?</legend>
 						<p>Please choose an amount from the list or enter a custom amount below.</p>
 
@@ -76,7 +76,7 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>How often would you like to donate?</legend>
 						<div class="field-container__radio-grid">
 							<div class="grid" data-layout="halves">
@@ -104,7 +104,7 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>How would you like to donate?</legend>
 						<div class="field-container__radio-grid">
 							<div class="grid" data-layout="halves">
@@ -202,7 +202,7 @@
 				</div>
 
 				<form action="">
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>How would you like to donate?</legend>
 						<label>
 							<input type="radio" name="address-type" id="address-type-private">
@@ -219,7 +219,7 @@
 						<p class="field-container__error-text">Please select an address type.</p>
 					</fieldset>
 
-					<fieldset class="field-container flow" data-max-width>
+					<fieldset class="field-container bordered-radio-field flow" data-max-width>
 						<legend>Form of address</legend>
 						<label>
 							<input type="radio" name="salutation" id="salutation-mr">
@@ -311,10 +311,14 @@
 					<div class="field-container flow" data-max-width>
 						<div class="verbose-checkbox flow">
 							<label>
-								<input type="checkbox" name="mailing-list" id="mailing-list" aria-describedby="mailing-list-hint">
-								<strong>Yes, I would like to be notified if Wikipedia needs my help in the future. I understand I can revoke my consent at any time by sending an email to spenden@wikimedia.de.</strong>
+								<input type="radio" name="mailing-list" value="yes">
+								<span>Yes, if Wikipedia needs my help I want to be informed.</span>
 							</label>
-							<p id="mailing-list-hint">If you do not want to receive emails, please uncheck the box. You can also unsubscribe at any time in the future, for example, via the unsubscribe link at the bottom of each email or by sending an email to spenden@wikimedia.de. You can find further information in our <a href="#">privacy policy</a>.</p>
+							<label>
+								<input type="radio" name="mailing-list" value="no">
+								<span>No, I don't want to be informed if Wikipedia needs my help.</span>
+							</label>
+							<p id="mailing-list-hint">You can withdraw your consent at any time with effect for the future by sending an email to spenden@wikimedia.de. You can find further information in our <a href="#">privacy policy</a>.</p>
 						</div>
 					</div>
 				</form>
