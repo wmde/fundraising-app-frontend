@@ -38,14 +38,14 @@
 						</p>
 						<p>{{ currentAddress.email }}</p>
 						<p>
-							{{ $t( 'confirmation_page_address_update' ) }}
+							{{ $t( 'membership_confirmation_address_update' ) }}
 							<ButtonLink
 								id="update-address-link"
 								aria-controls="address-change-modal"
 								:aria-expanded="isAddressModalOpen"
 								@click="showAddressModal"
 							>
-								{{ $t( 'confirmation_page_address_update_link' ) }}
+								{{ $t( 'membership_confirmation_address_update_link' ) }}
 							</ButtonLink>
 						</p>
 					</template>
@@ -71,7 +71,7 @@
 	<ModalDialogue
 		id="address-change-modal"
 		:visible="isAddressModalOpen"
-		:title="$t( 'confirmation_page_update_address_form_header' )"
+		:title="$t( 'membership_page_update_address_form_header' )"
 		@hide="closeAddressModal"
 	>
 		<MembershipAddressUpdateForm
@@ -82,6 +82,7 @@
 			:membershipApplicantResource="membershipApplicantResource"
 			:validate-address-url="validateAddressUrl"
 			:validate-email-url="validateEmailUrl"
+			:updateToken="updateToken"
 			@address-updated="updateAddress( $event )"
 			@close="closeAddressModal"
 		/>
@@ -121,6 +122,7 @@ interface Props {
 	addressType: string;
 	validateAddressUrl: string;
 	validateEmailUrl: string;
+	updateToken: string;
 }
 
 const { t, n } = useI18n();

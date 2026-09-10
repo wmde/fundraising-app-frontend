@@ -30,4 +30,5 @@ export const getters: GetterTree<MembershipAddressState, any> = {
 	isValidating: ( state: MembershipAddressState ): boolean => {
 		return state.serverSideValidationCount > 0;
 	},
+	addressTypeIsInvalid: ( state: MembershipAddressState ): boolean => state.validity.addressType === Validity.INVALID,
 };

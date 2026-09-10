@@ -8,6 +8,4 @@ export interface MembershipApplication {
 	incentives: string[];
 	isExported: boolean;
 	id: number;
-
-	updateToken: string; // Adding this to for `const getAddressData = (): UpdateMembershipApplicantRequest => {`
 }

@@ -15,4 +15,5 @@ export interface MembershipApplicationConfirmationData {
 	tracking?: string;
 	addressValidationPatterns: AddressValidation; // Because DonationConfirmationModel has it
 	urls: { [ key: string ]: string };
+	updateToken: string;
 }

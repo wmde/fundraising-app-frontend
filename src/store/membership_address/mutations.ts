@@ -77,4 +77,7 @@ export const mutations: MutationTree<MembershipAddressState> = {
 	SET_MEMBERSHIP_TYPE_VALIDITY( state: MembershipAddressState, validity: Validity ) {
 		state.validity.membershipType = validity;
 	},
+	SET_VALIDITY( state: MembershipAddressState, { name, value } ) {
+		state.validity[ name ] = value;
+	},
 };

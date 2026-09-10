@@ -1,98 +1,57 @@
 import { describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
-import { createStore } from '@src/store/donor_update_store';
-import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
+import { createStore } from '@src/store/membership_applicant_update_store';
+import MembershipAddressUpdateForm from '@src/components/pages/membership_confirmation/MembershipAddressUpdateForm.vue';
 import { action } from '@src/store/util';
 import { addressValidationPatterns } from '@test/data/validation';
-import { anonymousBankTransferConfirmationData, bankTransferConfirmationData } from '@test/data/confirmationData';
-import type { Address } from '@src/view_models/Address';
+import { sustainingMembershipConfirmationData, activeMembershipConfirmationData } from '@test/data/membershipConfirmationData';
+import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { Store } from 'vuex';
-import type { DonorResource } from '@src/api/DonorResource';
+import type { MembershipApplicantResource } from '@src/api/MembershipApplicantResource';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
 
-const anonAddress = {
-	addressType: 'anonym',
+const emptyAddress: MembershipAddress = {
+	applicantType: 'person',
 	salutation: '',
 	title: '',
 	firstName: '',
 	lastName: '',
 	fullName: '',
 	companyName: '',
-	street: '',
-	postcode: '',
+	streetAddress: '',
+	postalCode: '',
 	city: '',
-	country: 'DE',
+	countryCode: '',
 	email: '',
 };
 
-const validAddress = {
-	addressType: 'person',
-	salutation: 'Herr',
-	title: '',
-	firstName: 'Johnny',
-	lastName: 'Lawrence',
-	fullName: 'Johnny Lawrence',
-	companyName: 'Eagle Fang Karate',
-	street: 'Sesame',
-	postcode: '12345',
-	city: 'Berlin',
-	country: 'DE',
+const inValidAddress: MembershipAddress = {
+	...emptyAddress,
 	email: 'not.a.real.email@domainlalalaxoxoxo.de',
 };
 
-const inValidAddress = {
-	addressType: 'person',
-	salutation: '',
-	title: '',
-	firstName: '',
-	lastName: '',
-	fullName: '',
-	companyName: '',
-	street: '',
-	postcode: '',
-	city: '',
-	country: '',
-	email: 'not.a.real.email@domainlalalaxoxoxo.de',
-};
-
-const emptyAddress = {
-	addressType: '',
-	salutation: '',
-	title: '',
-	firstName: '',
-	lastName: '',
-	fullName: '',
-	companyName: '',
-	street: '',
-	postcode: '',
-	city: '',
-	country: '',
-	email: '',
-};
-
-const addressData = ( address: Address, addressType: AddressTypeModel ) => {
+const addressData = ( address: MembershipAddress, addressType: AddressTypeModel ) => {
 	return {
 		addressType,
-		newsletter: true,
 		fields: [
 			{ name: 'salutation', value: address.salutation, validity: Validity.INCOMPLETE },
 			{ name: 'title', value: address.title, validity: Validity.INCOMPLETE },
 			{ name: 'firstName', value: address.firstName, validity: Validity.INCOMPLETE },
 			{ name: 'lastName', value: address.lastName, validity: Validity.INCOMPLETE },
 			{ name: 'companyName', value: address.companyName, validity: Validity.INCOMPLETE },
-			{ name: 'street', value: address.street, validity: Validity.INCOMPLETE },
-			{ name: 'postcode', value: address.postcode, validity: Validity.INCOMPLETE },
+			{ name: 'street', value: address.streetAddress, validity: Validity.INCOMPLETE },
+			{ name: 'postcode', value: address.postalCode, validity: Validity.INCOMPLETE },
 			{ name: 'city', value: address.city, validity: Validity.INCOMPLETE },
-			{ name: 'country', value: address.country, validity: Validity.INCOMPLETE },
+			{ name: 'country', value: address.countryCode, validity: Validity.INCOMPLETE },
 			{ name: 'email', value: address.email, validity: Validity.INCOMPLETE },
 		],
 	};
 };
 
-const defaultDonorResource: DonorResource = {
-	put(): Promise<Address> {
+const defaultMembershipApplicantResource: MembershipApplicantResource = {
+	put(): Promise<MembershipAddress> {
 		return Promise.resolve( undefined );
 	},
 };
@@ -101,16 +60,22 @@ const defaultDonorResource: DonorResource = {
 const errorSummaryScrollElement = { scrollIntoView: () => {} };
 Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
 
-describe( 'AddressUpdateForm.vue', () => {
-	const getWrapper = ( store: Store<any>, confirmationData: any, donorResource: DonorResource = defaultDonorResource ): VueWrapper<any> => {
-		return mount( AddressUpdateForm, {
+describe( 'MembershipAddressUpdateForm.vue', () => {
+	const getWrapper = (
+		store: Store<any>,
+		confirmationData: any = sustainingMembershipConfirmationData,
+		membershipApplicantResource: MembershipApplicantResource = defaultMembershipApplicantResource
+	): VueWrapper<any> => {
+		return mount( MembershipAddressUpdateForm, {
 			props: {
-				addressValidationPatterns,
-				donation: {},
-				donorResource,
+				addressValidationPatterns: addressValidationPatterns,
+				membership: confirmationData.membershipApplication,
+				membershipApplicantResource: membershipApplicantResource,
 				validateEmailUrl: '',
 				validateAddressUrl: '',
-				...confirmationData,
+				updateToken: confirmationData.updateToken,
+				countries: confirmationData.countries,
+				salutations: confirmationData.salutations,
 			},
 			global: {
 				plugins: [ store ],
@@ -122,31 +87,53 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( validAddress, AddressTypeModel.PERSON )
+			addressData( sustainingMembershipConfirmationData.address, AddressTypeModel.PERSON )
 		);
 
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		const wrapper = getWrapper( store );
 
-		expect( wrapper.find<HTMLInputElement>( '[name="salutation"]' ).element.value ).toBe( validAddress.salutation );
-		expect( wrapper.find<HTMLInputElement>( '#title' ).element.value ).toBe( validAddress.title );
-		expect( wrapper.find<HTMLInputElement>( '#first-name' ).element.value ).toBe( validAddress.firstName );
-		expect( wrapper.find<HTMLInputElement>( '#last-name' ).element.value ).toBe( validAddress.lastName );
-		expect( wrapper.find<HTMLInputElement>( '#street' ).element.value ).toBe( validAddress.street );
-		expect( wrapper.find<HTMLInputElement>( '#post-code' ).element.value ).toBe( validAddress.postcode );
-		expect( wrapper.find<HTMLInputElement>( '#city' ).element.value ).toBe( validAddress.city );
+		expect( wrapper.find<HTMLInputElement>( '[name="salutation"]' ).element.value ).toBe( sustainingMembershipConfirmationData.address.salutation );
+		expect( wrapper.find<HTMLInputElement>( '#title' ).element.value ).toBe( sustainingMembershipConfirmationData.address.title );
+		expect( wrapper.find<HTMLInputElement>( '#first-name' ).element.value ).toBe( sustainingMembershipConfirmationData.address.firstName );
+		expect( wrapper.find<HTMLInputElement>( '#last-name' ).element.value ).toBe( sustainingMembershipConfirmationData.address.lastName );
+		expect( wrapper.find<HTMLInputElement>( '#street' ).element.value ).toBe( sustainingMembershipConfirmationData.address.streetAddress );
+		expect( wrapper.find<HTMLInputElement>( '#post-code' ).element.value ).toBe( sustainingMembershipConfirmationData.address.postalCode );
+		expect( wrapper.find<HTMLInputElement>( '#city' ).element.value ).toBe( sustainingMembershipConfirmationData.address.city );
 		expect( wrapper.find<HTMLInputElement>( '#country' ).element.value ).toBe( 'Deutschland' );
-		expect( wrapper.find<HTMLInputElement>( '#email' ).element.value ).toBe( validAddress.email );
-		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBe( true );
+		expect( wrapper.find<HTMLInputElement>( '#email' ).element.value ).toBe( sustainingMembershipConfirmationData.address.email );
 	} );
 
-	it( 'marks address type invalid if submitted without selecting', async () => {
+	it( 'shows the address type radio for a sustaining membership', () => {
+		const store = createStore();
+		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
+
+		expect( wrapper.find( '#address-form-type' ).exists() ).toBeTruthy();
+	} );
+
+	it( 'hides the address type radio for an active membership and defaults to person', async () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( anonAddress, AddressTypeModel.ANON )
+			addressData( emptyAddress, AddressTypeModel.COMPANY )
 		);
 
-		const wrapper = getWrapper( store, anonymousBankTransferConfirmationData );
+		const wrapper = getWrapper( store, activeMembershipConfirmationData );
+
+		await wrapper.vm.$nextTick();
+
+		expect( wrapper.find( '#address-form-type' ).exists() ).toBeFalsy();
+		expect( wrapper.find( '#first-name' ).exists() ).toBeTruthy();
+		expect( wrapper.find( '#company-name' ).exists() ).toBeFalsy();
+	} );
+
+	it( 'marks address type invalid if a sustaining membership is submitted without selecting', async () => {
+		const store = createStore();
+		await store.dispatch(
+			action( 'address', 'initializeAddress' ),
+			addressData( emptyAddress, AddressTypeModel.UNSET )
+		);
+
+		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 
@@ -157,10 +144,10 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( anonAddress, AddressTypeModel.ANON )
+			addressData( emptyAddress, AddressTypeModel.UNSET )
 		);
 
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
@@ -179,10 +166,10 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( inValidAddress, AddressTypeModel.ANON )
+			addressData( inValidAddress, AddressTypeModel.PERSON )
 		);
 
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
@@ -197,10 +184,10 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( inValidAddress, AddressTypeModel.ANON )
+			addressData( inValidAddress, AddressTypeModel.UNSET )
 		);
 
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
@@ -242,14 +229,14 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( emptyAddress, AddressTypeModel.ANON )
+			addressData( emptyAddress, AddressTypeModel.UNSET )
 		);
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
+		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'addressType-0', 'address-form-type' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'address-form-salutation' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'address-form-first-name' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'address-form-last-name' ) ).toBeTruthy();
@@ -264,9 +251,10 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( emptyAddress, AddressTypeModel.COMPANY )
+			addressData( { ...emptyAddress, applicantType: 'firma' }, AddressTypeModel.COMPANY )
 		);
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
+		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
+		await wrapper.find( '#addressType-1' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
 
@@ -284,80 +272,16 @@ describe( 'AddressUpdateForm.vue', () => {
 		store.dispatch = vi.fn().mockResolvedValue( { status: 'OK', messages: {} } );
 
 		const error = 'Get outta that garden!';
-		const donorResource = {
+		const membershipApplicantResource = {
 			put: vi.fn().mockRejectedValue( error ),
 		};
 
-		const wrapper = getWrapper( store, bankTransferConfirmationData, donorResource );
+		const wrapper = getWrapper( store, sustainingMembershipConfirmationData, membershipApplicantResource );
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
 
 		expect( wrapper.find( '.server-message' ).exists() ).toBe( true );
 		expect( wrapper.find( '.server-message' ).text() ).toStrictEqual( error );
-	} );
-
-	it.each( [
-		[ AddressTypeModel.PERSON ],
-		[ AddressTypeModel.EMAIL ],
-		[ AddressTypeModel.ANON ],
-	] )( 'shows and validates as person when initial address type is %s', async ( addressType: AddressTypeModel ) => {
-		const store = createStore();
-		await store.dispatch(
-			action( 'address', 'initializeAddress' ),
-			addressData( emptyAddress, addressType )
-		);
-
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
-
-		expect( wrapper.find( '#salutation-0' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#title' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#first-name' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#last-name' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#street' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#post-code' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#city' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#country' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#email' ).exists() ).toBeTruthy();
-
-		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
-		await flushPromises();
-
-		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#salutation-0"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#first-name"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#last-name"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#street"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#post-code"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#city"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#country"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#email"]' ).exists() ).toBeTruthy();
-	} );
-
-	it( 'shows and validates as company when address type is company', async () => {
-		const store = createStore();
-		emptyAddress.addressType = 'firma';
-		await store.dispatch(
-			action( 'address', 'initializeAddress' ),
-			addressData( emptyAddress, AddressTypeModel.COMPANY )
-		);
-
-		const wrapper = getWrapper( store, bankTransferConfirmationData );
-
-		expect( wrapper.find( '#company-name' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#street' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#city' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#country' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '#email' ).exists() ).toBeTruthy();
-
-		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
-		await flushPromises();
-
-		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#company-name"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#street"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#city"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#country"]' ).exists() ).toBeTruthy();
-		expect( wrapper.find( '[href="#email"]' ).exists() ).toBeTruthy();
 	} );
 } );
