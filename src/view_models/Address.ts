@@ -123,3 +123,8 @@ export interface AddressTypeValidationRequest {
 	type: AddressTypeModel;
 	disallowed: AddressTypeModel[];
 }
+
+export interface MembershipAddressTypeValidationRequest {
+	type: MembershipTypeModel;
+	disallowed: MembershipTypeModel[];
+}

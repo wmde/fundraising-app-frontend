@@ -1,6 +1,10 @@
 import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
-import type { InitialMembershipAddressValues, InputField, MembershipAddressState } from '@src/view_models/Address';
+import {
+	InitialMembershipAddressValues,
+	InputField,
+	MembershipAddressState, MembershipAddressTypeValidationRequest,
+} from '@src/view_models/Address';
 import type { ValidationResponse } from '@src/store/ValidationResponse';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { MembershipTypeModel } from '@src/view_models/MembershipTypeModel';
@@ -122,4 +126,16 @@ export const actions = {
 		context.commit( 'SET_MEMBERSHIP_TYPE_VALIDITY', Validity.VALID );
 	},
 
+	validateAddressType( context: ActionContext<MembershipAddressState, any>, request: MembershipAddressTypeValidationRequest ) {
+		if ( request.disallowed.includes( request.type ) ) {
+			context.commit( 'SET_ADDRESS_FIELD_VALIDITY', { name: 'addressType', validity: Validity.INVALID } );
+			return Promise.resolve( { status: 'ERR', messages: [] } );
+		}
+		return Promise.resolve( { status: 'OK', messages: [] } );
+	},
+
+	setAndValidateAddressField( context: ActionContext<MembershipAddressState, any>, field: InputField ) {
+		context.dispatch( 'setAddressField', field );
+		context.dispatch( 'validateAddressField', field );
+	},
 };

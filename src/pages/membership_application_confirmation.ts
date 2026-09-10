@@ -1,12 +1,10 @@
 import 'core-js/stable';
 import { createVueApp } from '@src/createVueApp';
-
 import LocalStorageRepository from '@src/store/LocalStorageRepository';
 import PageDataInitializer from '@src/util/page_data_initializer';
 import { YearlyMembershipFee } from '@src/view_models/MembershipFee';
 import { clearPersistentData } from '@src/store/create_data_persister';
 import { trackGoal } from '@src/util/tracking';
-
 import App from '@src/components/App.vue';
 import MembershipConfirmation from '@src/components/pages/MembershipConfirmation.vue';
 import { createFeatureFetcher } from '@src/util/FeatureFetcher';
@@ -33,7 +31,6 @@ const address = pageData.applicationVars.address;
 clearPersistentData( new LocalStorageRepository(), LOCAL_STORAGE_DELETION_NAMESPACES );
 trackGoal( pageData.applicationVars.piwik.membershipApplicationConfirmationGoalId, yearlyFee.yearlyFee );
 
-console.log( pageData.applicationVars );
 store.dispatch(
 	action( 'address', 'initializeAddress' ),
 	{
@@ -69,6 +66,7 @@ store.dispatch(
 				countries: pageData.applicationVars.countries,
 				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
 				membership: pageData.applicationVars.membershipApplication,
+				updateToken: pageData.applicationVars.updateToken,
 				membershipApplicantResource: new ApiMembershipApplicantResource( pageData.applicationVars.urls.updateMembershipApplication ),
 				addressType: pageData.applicationVars.address.applicantType,
 				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
