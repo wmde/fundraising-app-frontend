@@ -68,7 +68,11 @@ store.dispatch(
 				salutations: pageData.applicationVars.salutations,
 				countries: pageData.applicationVars.countries,
 				addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
-				membership: pageData.applicationVars.membershipApplication,
+				// membership: pageData.applicationVars.membershipApplication,
+				membership: {
+					...pageData.applicationVars.membershipApplication,
+					updateToken: pageData.applicationVars.updateToken,
+				},
 				membershipApplicantResource: new ApiMembershipApplicantResource( pageData.applicationVars.urls.updateMembershipApplication ),
 				addressType: pageData.applicationVars.address.applicantType,
 				validateAddressUrl: pageData.applicationVars.urls.validateAddress,
