@@ -137,6 +137,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
+		await flushPromises();
 
 		expect( wrapper.find( '#address-form-type' ).attributes( 'data-error' ) ).toBeTruthy();
 	} );
@@ -152,6 +153,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
 		await flushPromises();
 
 		await wrapper.vm.$nextTick();
@@ -176,6 +178,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
+		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 	} );
@@ -193,6 +196,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
@@ -237,6 +241,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
+		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'address-form-salutation' ) ).toBeTruthy();
@@ -258,6 +263,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
 		await wrapper.find( '#addressType-1' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
@@ -281,6 +287,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 		const wrapper = getWrapper( store, sustainingMembershipConfirmationData, membershipApplicantResource );
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
 		await flushPromises();
 
 		expect( wrapper.find( '.server-message' ).exists() ).toBe( true );
