@@ -1,0 +1,9 @@
+.bordered-radio-field label:has([type='radio']) {
+	padding: 0.5em;
+	border: 1px solid var(--form-field-border-color, var(--color-form-border));
+	border-radius: var(--border-radius);
+	background-color: var(--color-form-bg);
+	color: var(--color-text-main);
+	font-family: var(--font-base);
+	line-height: var(--leading-standard);
+}

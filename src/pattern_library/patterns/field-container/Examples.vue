@@ -43,7 +43,7 @@
 				<p class="field-container__error-text">You must select a number no larger than 3 and no smaller than 3</p>
 			</div>
 
-			<fieldset class="field-container flow" data-max-width>
+			<fieldset class="field-container bordered-radio-field flow" data-max-width>
 				<legend>I ain't getting on no plane!</legend>
 				<p>I pity the fool who doesn't select one of these</p>
 				<label>
@@ -87,7 +87,7 @@
 				</div>
 			</div>
 
-			<fieldset class="field-container flow" data-max-width>
+			<fieldset class="field-container bordered-radio-field flow" data-max-width>
 				<legend>How often would you like to donate?</legend>
 				<div class="field-container__radio-grid">
 					<div class="grid" data-layout="halves">

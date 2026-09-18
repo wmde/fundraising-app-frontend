@@ -1,5 +1,5 @@
 <template>
-	<FieldContainer :input-id="name" :show-error="showError" type="fieldset" :is-max-width-field="isMaxWidthField">
+	<FieldContainer class="bordered-radio-field" :input-id="name" :show-error="showError" type="fieldset" :is-max-width-field="isMaxWidthField">
 		<template #label>{{ label }}</template>
 		<template #field>
 			<div :class="layoutType" :data-layout="gridLayout">

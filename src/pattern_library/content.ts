@@ -10,6 +10,7 @@ import fontScaling from '@src/pattern_library/pages/font-scaling';
 import spacing from '@src/pattern_library/pages/spacing';
 
 import accordion from '@src/pattern_library/patterns/accordion';
+import borderedRadioField from '@src/pattern_library/patterns/bordered-radio-field';
 import button from '@src/pattern_library/patterns/button';
 import callout from '@src/pattern_library/patterns/callout';
 import combobox from '@src/pattern_library/patterns/combobox';
@@ -53,6 +54,7 @@ const pages: Page[] = [
 
 const patterns: Pattern[] = [
 	accordion,
+	borderedRadioField,
 	button,
 	callout,
 	combobox,

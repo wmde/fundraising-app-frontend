@@ -24,6 +24,10 @@
 		}
 	}
 
+	&.bordered-radio-field label:has([type='radio']) {
+		padding: 0.7em;
+	}
+
 	:is(input, select, textarea) {
 		accent-color: var(--color-blue-600);
 	}
@@ -38,8 +42,7 @@
 	:where(
 		input:not([type='checkbox'], [type='radio'], [type='color']),
 		select,
-		textarea,
-		label:has([type='radio'])
+		textarea
 	){
 		padding: 0.7em;
 		border: 1px solid var(--form-field-border-color, var(--color-grey-300));
@@ -69,14 +72,14 @@
 		appearance: none;
 		width: var(--radio-size);
 		height: var(--radio-size);
-		border: 1px solid var(--form-field-border-color, var(--color-grey-300));
+		border: 2px solid var(--form-field-border-color, var(--color-grey-300));
 		position: relative;
 		background: var(--color-white);
 		margin: 0.5ex 0 0;
 		cursor: pointer;
 	}
 
-	:is([type='checkbox'], [type='radio']):checked {
+	[type='checkbox']:checked {
 		background: var(--color-blue-600);
 	}
 
@@ -92,11 +95,15 @@
 
 	[type='radio']:before {
 		background: var(--color-white);
-		height: 40%;
-		width: 40%;
-		top: 30%;
-		left: 30%;
+		height: 60%;
+		width: 60%;
+		top: 20%;
+		left: 20%;
 		border-radius: 50%;
+	}
+
+	[type='radio']:checked:before {
+		background: var(--color-blue-600);
 	}
 
 	[type='checkbox'] {

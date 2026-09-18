@@ -1,5 +1,5 @@
 <template>
-	<fieldset class="field-container flow" id="payment-form-amount" :class="[ `locale-${ $i18n.locale }` ]" :data-error="showError ? true : null" data-max-width>
+	<fieldset class="field-container bordered-radio-field flow" id="payment-form-amount" :class="[ `locale-${ $i18n.locale }` ]" :data-error="showError ? true : null" data-max-width>
 		<legend v-if="label">{{ label }}</legend>
 		<p>{{ $t( 'donation_form_payment_amount_help_text' ) }}</p>
 		<p v-if="minimumAmountMessage!=''">{{ minimumAmountMessage }}</p>
