@@ -136,6 +136,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 		const wrapper = getWrapper( store, sustainingMembershipConfirmationData );
 
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
 
 		expect( wrapper.find( '#address-form-type' ).attributes( 'data-error' ) ).toBeTruthy();
 	} );
@@ -151,6 +152,7 @@ describe( 'MembershipAddressUpdateForm.vue', () => {
 
 		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
+		await flushPromises();
 
 		await wrapper.vm.$nextTick();
 
