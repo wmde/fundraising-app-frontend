@@ -22,7 +22,7 @@
 					<template #content v-if="!confirmationData.membershipApplication.isExported">
 						<IconText>
 							<template #icon><SuccessIcon/></template>
-							<template #content><h2>{{ $t( 'membership_confirmation_address_head' ) }}</h2></template>
+							<template #content><h2>{{ $t( addressHeadingKey ) }}</h2></template>
 						</IconText>
 						<p>
 							<template v-if="currentAddress.applicantType === 'person'">
@@ -137,6 +137,14 @@ const closeAddressModal = (): void => {
 	isAddressModalOpen.value = false;
 };
 
+const addressWasUpdated = ref<boolean>( false );
+
+const addressHeadingKey = computed<string>( () =>
+	addressWasUpdated.value
+		? 'membership_confirmation_success_text_after_address_change'
+		: 'membership_confirmation_address_head'
+);
+
 const hasIncentives = props.confirmationData.membershipApplication.incentives?.length > 0;
 const showBankTransferContent = props.confirmationData.membershipApplication.paymentType === 'UEB';
 
@@ -191,6 +199,7 @@ const updateAddress = ( submittedAddress: { addressData: MembershipAddress; addr
 	currentAddress.value = submittedAddress.addressData;
 	currentAddressType.value = submittedAddress.addressType;
 	isAddressModalOpen.value = false;
+	addressWasUpdated.value = true;
 };
 
 </script>
