@@ -3,10 +3,9 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import countries from '@test/data/countries';
-import { Mock } from '@vitest/spy';
 
 describe( 'CountryAutocompleteField.vue', () => {
-	let scrollElement: { scrollIntoView: Mock };
+	let scrollElement: { scrollIntoView: () => void };
 
 	const getWrapper = ( modelValue: string = '', wasRestored: boolean = false ): VueWrapper<any> => {
 		const currentElement = { clientHeight: 0, offsetTop: 0 };
