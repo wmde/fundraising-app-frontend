@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { createStore } from '@src/store/membership_applicant_update_store';
 import { mount } from '@vue/test-utils';
 import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
 import type { MembershipAddress } from '@src/Domain/Membership/MembershipAddress';
@@ -6,6 +7,8 @@ import type { MembershipApplicationConfirmationData } from '@src/Domain/Membersh
 import salutations from '@test/data/salutations';
 import countries from '@test/data/countries';
 import MembershipConfirmation from '@src/components/pages/MembershipConfirmation.vue';
+import { addressValidationPatterns } from '@test/data/validation';
+import { MembershipApplicantResource } from '@src/api/MembershipApplicantResource';
 
 const privateAddress: MembershipAddress = {
 	applicantType: 'person',
@@ -17,6 +20,9 @@ const privateAddress: MembershipAddress = {
 	salutation: 'Herr',
 	streetAddress: 'Tempelhofer Ufer 26',
 	title: 'Prof. Dr.',
+	firstName: 'Testy',
+	lastName: 'MacTest',
+	companyName: '',
 };
 
 const companyAddress: MembershipAddress = {
@@ -29,6 +35,9 @@ const companyAddress: MembershipAddress = {
 	salutation: 'Firma',
 	streetAddress: 'Teststreet 123',
 	title: '',
+	firstName: '',
+	lastName: '',
+	companyName: 'Test Company',
 };
 
 const monthlyApplication: MembershipApplication = {
@@ -38,12 +47,19 @@ const monthlyApplication: MembershipApplication = {
 	paymentType: 'BEZ',
 	incentives: [],
 	isExported: false,
+	id: 1,
 };
 
 const yearlyApplication: MembershipApplication = {
 	...monthlyApplication,
 	membershipFee: '199.00',
 	paymentIntervalInMonths: 12,
+};
+
+const defaultMembershipApplicantResource: MembershipApplicantResource = {
+	put(): Promise<MembershipAddress> {
+		return Promise.resolve( undefined );
+	},
 };
 
 describe( 'MembershipConfirmation.vue', () => {
@@ -57,14 +73,25 @@ describe( 'MembershipConfirmation.vue', () => {
 			address,
 			countries,
 			salutations,
+			addressValidationPatterns,
+			urls: {},
+			updateToken: '',
 		};
 		return mount( MembershipConfirmation, {
 			props: {
-				confirmationData,
-				countries,
-				salutations,
+				confirmationData: confirmationData,
+				countries: countries,
+				salutations: salutations,
+				addressValidationPatterns: addressValidationPatterns,
+				membership: monthlyApplication,
+				membershipApplicantResource: defaultMembershipApplicantResource,
+				addressType: 'person',
+				validateAddressUrl: '',
+				validateEmailUrl: '',
+				updateToken: '',
 			},
 			global: {
+				plugins: [ createStore() ],
 				mocks: {
 					$t: translateFn,
 					$n: ( amount: string ) => amount,

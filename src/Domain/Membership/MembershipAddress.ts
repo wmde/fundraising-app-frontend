@@ -8,4 +8,7 @@ export interface MembershipAddress {
 	city: string;
 	countryCode: string;
 	applicantType: 'person' | 'firma';
+	firstName: string;
+	lastName: string;
+	companyName: string;
 }

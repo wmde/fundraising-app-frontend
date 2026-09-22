@@ -60,6 +60,7 @@ export interface MembershipAddressState {
 	incentives: string[];
 	values: FormValues;
 	validity: FormValidity;
+	requiredFields: AddressRequirements;
 }
 
 export interface InitialAddressValues {
@@ -121,4 +122,9 @@ export interface SubmittedAddress {
 export interface AddressTypeValidationRequest {
 	type: AddressTypeModel;
 	disallowed: AddressTypeModel[];
+}
+
+export interface MembershipAddressTypeValidationRequest {
+	type: MembershipTypeModel;
+	disallowed: MembershipTypeModel[];
 }
