@@ -52,6 +52,7 @@ const onCopy = (): void => {
   display: flex;
   align-items: center;
   gap: 0.5ch;
+  color: inherit;
   font-size: unset;
   cursor: pointer;
 }
