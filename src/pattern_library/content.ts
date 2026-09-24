@@ -16,6 +16,7 @@ import callout from '@src/pattern_library/patterns/callout';
 import combobox from '@src/pattern_library/patterns/combobox';
 import contactCard from '@src/pattern_library/patterns/contact-card';
 import contentCard from '@src/pattern_library/patterns/content-card';
+import contentCopier from '@src/pattern_library/patterns/content-copier';
 import detailedInfoBox from '@src/pattern_library/patterns/detailed-info-box';
 import donationComment from '@src/pattern_library/patterns/donation-comment';
 import fieldContainer from '@src/pattern_library/patterns/field-container';
@@ -60,6 +61,7 @@ const patterns: Pattern[] = [
 	combobox,
 	contactCard,
 	contentCard,
+	contentCopier,
 	detailedInfoBox,
 	donationComment,
 	fieldContainer,
