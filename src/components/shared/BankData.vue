@@ -1,29 +1,32 @@
 <template>
 	<ul class="bank-data-list">
-		<li><strong>{{ $t( 'bank_data_account_owner' ) }}:</strong> {{ $t( 'bank_data_operator_account_owner' ) }}</li>
+		<li><ContentCopier :label="$t( 'bank_data_account_owner' )" :value="$t( 'bank_data_operator_account_owner' )"/></li>
 		<li class="highlighted-content-text">
-			<strong>{{ $t( 'bank_data_iban')  }}:</strong>
-			<span
-					class="spacer"
-					v-for="( ibanPartial, index ) in ibanParts"
-					:key="index">{{ ibanPartial }}</span>
+			<ContentCopier
+				:label="$t( 'bank_data_iban')"
+				:value="$t( 'bank_data_operator_account_iban' )"
+				:copy-value="$t( 'bank_data_operator_account_iban' ).replaceAll( ' ', '' )"
+			/>
 		</li>
-		<li><strong>{{ $t( 'bank_data_bic')  }}:</strong> {{ $t( 'bank_data_operator_account_bic')  }}</li>
-		<li>{{ $t( 'bank_data_operator_bank_name')  }}</li>
+		<li><ContentCopier :label="$t( 'bank_data_bic')" :value="$t( 'bank_data_operator_account_bic')"/></li>
+		<li><ContentCopier :value="$t( 'bank_data_operator_bank_name')"/></li>
 		<li v-if="bankTransferAmount">
-			<strong>{{ $t( 'bank_data_transfer_amount_label' ) }}: </strong>
-			<span class="bank-transfer-code"> {{ bankTransferAmount }}</span>
+			<ContentCopier
+				:label="$t( 'bank_data_transfer_amount_label' )"
+				:value="bankTransferAmount.toString()"
+			/>
 		</li>
 		<li v-if="bankTransferCode">
-			<strong>{{ $t( 'bank_data_transfer_code' ) }}: </strong>
-			<span class="bank-transfer-code"> {{ bankTransferCode }}</span>
+			<ContentCopier
+				:label="$t( 'bank_data_transfer_code' )"
+				:value="bankTransferCode.toString()"
+			/>
 		</li>
 	</ul>
 </template>
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import ContentCopier from '@src/components/shared/ContentCopier.vue';
 
 interface Props {
 	bankTransferCode?: String;
@@ -31,16 +34,9 @@ interface Props {
 }
 
 defineProps<Props>();
-
-const { t } = useI18n();
-const ibanParts = computed( () => t( 'bank_data_operator_account_iban' ).split( ' ' ) );
-
 </script>
 <style lang="scss">
 .bank-transfer-code {
 	white-space: nowrap;
-}
-.spacer {
-	margin-left: 3px;
 }
 </style>
