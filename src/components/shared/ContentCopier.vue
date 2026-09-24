@@ -52,7 +52,7 @@ const onCopy = (): void => {
   display: flex;
   align-items: center;
   gap: 0.5ch;
-  font-size: var( --content-copier-font-size );
+  font-size: unset;
   cursor: pointer;
 }
 
