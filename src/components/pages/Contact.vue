@@ -99,6 +99,20 @@
 				/>
 
 				<TextField
+					v-if="showCancellationReasonOther"
+					id="contact-form-cancellation-reason-other"
+					input-id="cancellationReasonOther"
+					name="cancellationReasonOther"
+					v-model="formData.cancellationReasonOther.value"
+					:label="$t( 'contact_form_reason_other_label' )"
+					:placeholder="$t( 'contact_form_reason_other_placeholder' )"
+					:show-error="formData.cancellationReasonOther.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_reason_error' )"
+					:is-max-width-field="true"
+					@field-changed="() => validateField( 'cancellationReasonOther' )"
+				/>
+
+				<TextField
 					name="subject"
 					id="contact-form-subject"
 					input-id="subject"
@@ -171,6 +185,8 @@ const showServerErrorSummary = ref<boolean>( props.errors !== undefined );
 const showErrorSummary = ref<boolean>( false );
 // eslint-disable-next-line no-use-before-define
 const showCancellationReason = computed( () => formData.topic.value === props.contactCategories.contact_topic_4 );
+// eslint-disable-next-line no-use-before-define
+const showCancellationReasonOther = computed( () => showCancellationReason.value && formData.cancellationReason.value === props.cancellationReasons.contact_form_reason_4 );
 const form = ref<HTMLFormElement>( null );
 const formData = reactive<ContactFormData>( {
 	firstname: {
@@ -217,6 +233,16 @@ const formData = reactive<ContactFormData>( {
 			( props.errors?.cancellationReason ? Validity.INVALID : Validity.INCOMPLETE ) :
 			Validity.VALID,
 	},
+	cancellationReasonOther: {
+		name: 'cancellationReasonOther',
+		value: props.initialFormData?.cancellationReasonOther ?? '',
+		pattern: props.validationPatterns.cancellationReasonOther,
+		optionalField: computed( () => !showCancellationReasonOther.value ),
+		validity: props.initialFormData?.category === props.contactCategories.contact_topic_4 &&
+			props.initialFormData?.cancellationReason === props.cancellationReasons.contact_form_reason_4 ?
+			( props.errors?.cancellationReasonOther ? Validity.INVALID : Validity.INCOMPLETE ) :
+			Validity.VALID,
+	},
 	subject: {
 		name: 'subject',
 		value: props.initialFormData?.subject ?? '',
@@ -257,6 +283,12 @@ const validationItems = computed<ValidationSummaryItem[]>( () => [
 		message: t( 'contact_form_reason_error' ),
 		focusElement: 'cancellationReason',
 		scrollElement: 'contact-form-cancellation-reason',
+	},
+	{
+		validity: formData.cancellationReasonOther.validity,
+		message: t( 'contact_form_reason_error' ),
+		focusElement: 'cancellationReasonOther',
+		scrollElement: 'contact-form-cancellation-reason-other',
 	},
 	{
 		validity: formData.subject.validity,
@@ -304,6 +336,7 @@ watch( formData, ( newFormData: ContactFormData ) => {
 	if ( newFormData.email.validity === Validity.VALID
 		&& newFormData.topic.validity === Validity.VALID
 		&& newFormData.cancellationReason.validity === Validity.VALID
+		&& newFormData.cancellationReasonOther.validity === Validity.VALID
 		&& newFormData.subject.validity === Validity.VALID
 		&& newFormData.comment.validity === Validity.VALID ) {
 		showErrorSummary.value = false;

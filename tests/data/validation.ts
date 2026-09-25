@@ -21,6 +21,7 @@ export const contactFormValidationPatterns: ContactFormValidation = {
 	topic: '^.+$',
 	subject: '^.+$',
 	cancellationReason: '^.+$',
+	cancellationReasonOther: '^.+$',
 	comment: '(\n|.)+',
 };
 
