@@ -18,5 +18,7 @@ export interface ContactFormValidation {
 	email: string;
 	topic: string;
 	subject: string;
+	cancellationReason: string;
+	cancellationReasonOther: string;
 	comment: string;
 }
