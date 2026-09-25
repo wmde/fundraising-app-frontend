@@ -8,7 +8,7 @@
 			<div class="switcher">
 				<Callout :is-borderless="true" class="flow">
 					<h2> {{ $t( 'donation_confirmation_payment_bank_transfer_details' ) }} </h2>
-					<BankData :bank-transfer-code="donation.bankTransferCode" :bank-transfer-amount-with-currency="formattedAmountWithCurrency" :bank-transfer-amount-without-currency="formattedAmountWithoutCurrency" />
+					<BankData :bank-transfer-code="donation.bankTransferCode" :bank-transfer-amount="formattedAmount" />
 				</Callout>
 				<div class="flow">
 					<p>{{ donationSummaryMessage }}</p>
@@ -39,12 +39,11 @@ interface Props {
 const props = defineProps<Props>();
 const { t, n } = useI18n();
 
-const formattedAmountWithCurrency = n( props.donation.amount, { key: 'currency', currencyDisplay: 'name' } );
-const formattedAmountWithoutCurrency = n( props.donation.amount, 'decimal' );
+const formattedAmount = n( props.donation.amount, { key: 'currency', currencyDisplay: 'name' } );
 
 const donationSummaryMessage = computed<String>( () => {
 	return t( 'donation_confirmation_payment_bank_transfer', {
-		formattedAmountWithCurrency,
+		formattedAmount,
 		interval: t( 'donation_confirmation_bank_transfer_interval_' + props.donation.interval ),
 	} );
 } );

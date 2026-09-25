@@ -9,13 +9,10 @@
 			/>
 		</li>
 		<li><ContentCopier :label="$t( 'bank_data_bic')" :value="$t( 'bank_data_operator_account_bic')"/></li>
-		<li><ContentCopier :value="$t( 'bank_data_operator_bank_name')"/></li>
-		<li v-if="bankTransferAmountWithCurrency && bankTransferAmountWithoutCurrency">
-			<ContentCopier
-				:label="$t( 'bank_data_transfer_amount_label' )"
-				:value="bankTransferAmountWithCurrency.toString()"
-				:copy-value="bankTransferAmountWithoutCurrency.toString()"
-			/>
+		<li>{{ $t( 'bank_data_operator_bank_name')  }}</li>
+		<li v-if="bankTransferAmount">
+			<strong>{{ $t( 'bank_data_transfer_amount_label' ) }}: </strong>
+			<span class="bank-transfer-code"> {{ bankTransferAmount }}</span>
 		</li>
 		<li v-if="bankTransferCode">
 			<ContentCopier
@@ -31,8 +28,7 @@ import ContentCopier from '@src/components/shared/ContentCopier.vue';
 
 interface Props {
 	bankTransferCode?: String;
-	bankTransferAmountWithCurrency?: String;
-	bankTransferAmountWithoutCurrency?: String;
+	bankTransferAmount?: String;
 }
 
 defineProps<Props>();
