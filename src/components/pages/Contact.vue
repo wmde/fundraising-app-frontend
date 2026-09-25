@@ -82,6 +82,7 @@
 				/>
 
 				<TextField
+					v-if="!cancellationReasonReplacesSubject"
 					name="subject"
 					id="contact-form-subject"
 					input-id="subject"
@@ -92,6 +93,23 @@
 					:error-message="$t( 'contact_form_subject_error' )"
 					:is-max-width-field="true"
 					@field-changed="() => validateField( 'subject' )"
+				/>
+
+				<SelectField
+					v-if="cancellationReasonReplacesSubject"
+					v-model="formData.cancellationReason.value"
+					id="contact-form-cancellation-reason"
+					input-id="cancellationReason"
+					name="cancellationReason"
+					:label="$t( 'contact_form_reason_label' )"
+					:options="[
+						{ label: $t( 'contact_form_reason_placeholder' ), value: '' },
+						...Object.values( cancellationReasons ).map( ( value: string ) => ( { label: value, value: value } ) )
+					]"
+					:show-error="formData.cancellationReason.validity === Validity.INVALID"
+					:error-message="$t( 'contact_form_reason_error' )"
+					:is-max-width-field="true"
+					@field-changed="() => validateField( 'cancellationReason' )"
 				/>
 
 				<TextField
@@ -141,6 +159,7 @@ defineOptions( {
 
 interface Props {
 	contactCategories: Record<string, string>;
+	cancellationReasons: Record<string, string>;
 	initialFormData?: ContactInitialFormData;
 	errors?: Record<string, string>;
 	validationPatterns: ContactFormValidation;
@@ -151,6 +170,8 @@ const { t } = useI18n();
 
 const showServerErrorSummary = ref<boolean>( props.errors !== undefined );
 const showErrorSummary = ref<boolean>( false );
+// eslint-disable-next-line no-use-before-define
+const cancellationReasonReplacesSubject = computed( () => formData.topic.value === props.contactCategories.contact_topic_3 );
 const form = ref<HTMLFormElement>( null );
 const formData = reactive<ContactFormData>( {
 	firstname: {
@@ -192,8 +213,19 @@ const formData = reactive<ContactFormData>( {
 		name: 'subject',
 		value: props.initialFormData?.subject ?? '',
 		pattern: props.validationPatterns.subject,
-		optionalField: false,
-		validity: props.errors?.subject ? Validity.INVALID : Validity.INCOMPLETE,
+		optionalField: computed( () => cancellationReasonReplacesSubject.value ),
+		validity: props.initialFormData?.category !== props.contactCategories.contact_topic_3 ?
+			( props.errors?.subject ? Validity.INVALID : Validity.INCOMPLETE ) :
+			Validity.VALID,
+	},
+	cancellationReason: {
+		name: 'cancellationReason',
+		value: props.initialFormData?.cancellationReason ?? '',
+		pattern: props.validationPatterns.cancellationReason,
+		optionalField: computed( () => !cancellationReasonReplacesSubject.value ),
+		validity: props.initialFormData?.category === props.contactCategories.contact_topic_3 ?
+			( props.errors?.cancellationReason ? Validity.INVALID : Validity.INCOMPLETE ) :
+			Validity.VALID,
 	},
 	comment: {
 		name: 'comment',
@@ -228,6 +260,12 @@ const validationItems = computed<ValidationSummaryItem[]>( () => [
 		message: t( 'contact_form_subject_error' ),
 		focusElement: 'subject',
 		scrollElement: 'contact-form-subject',
+	},
+	{
+		validity: formData.cancellationReason.validity,
+		message: t( 'contact_form_reason_error' ),
+		focusElement: 'cancellationReason',
+		scrollElement: 'contact-form-cancellation-reason',
 	},
 	{
 		validity: formData.comment.validity,
@@ -269,6 +307,7 @@ watch( formData, ( newFormData: ContactFormData ) => {
 	if ( newFormData.email.validity === Validity.VALID
 		&& newFormData.topic.validity === Validity.VALID
 		&& newFormData.subject.validity === Validity.VALID
+		&& newFormData.cancellationReason.validity === Validity.VALID
 		&& newFormData.comment.validity === Validity.VALID ) {
 		showErrorSummary.value = false;
 		showServerErrorSummary.value = false;
