@@ -15,7 +15,17 @@ describe( 'Contact.vue', () => {
 
 		return mount( Contact, {
 			props: {
-				contactCategories: { 'category_1': 'category_1', 'category_2': 'category_2' },
+				contactCategories: {
+					'category_1': 'category_1',
+					'category_2': 'category_2',
+					'contact_topic_4': 'contact_topic_4',
+				},
+				cancellationReasons: {
+					'contact_form_reason_1': 'contact_form_reason_1',
+					'contact_form_reason_2': 'contact_form_reason_2',
+					'contact_form_reason_3': 'contact_form_reason_3',
+					'contact_form_reason_4': 'contact_form_reason_4',
+				},
 				initialFormData,
 				validationPatterns: contactFormValidationPatterns,
 				errors,

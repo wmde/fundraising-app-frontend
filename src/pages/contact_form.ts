@@ -13,6 +13,7 @@ interface ContactFormModel {
 	contactFormValidationPatterns: ContactFormValidation;
 	submitted_form_data: ContactInitialFormData;
 	contact_categories: Record<string, string>;
+	cancellation_reasons: Record<string, string>;
 	errors: string[];
 }
 
@@ -33,6 +34,7 @@ createVueApp(
 		pageTitle: 'contact_form_page_title',
 		pageProps: {
 			contactCategories: pageData.applicationVars.contact_categories,
+			cancellationReasons: pageData.applicationVars.cancellation_reasons,
 			errors: pageData.applicationVars.errors,
 			initialFormData: pageData.applicationVars.submitted_form_data,
 			validationPatterns: pageData.applicationVars.contactFormValidationPatterns,

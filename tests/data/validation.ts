@@ -20,6 +20,7 @@ export const contactFormValidationPatterns: ContactFormValidation = {
 	email: '^(.+)@(.+)\\.(.+)$',
 	topic: '^.+$',
 	subject: '^.+$',
+	cancellationReason: '^.+$',
 	comment: '(\n|.)+',
 };
 
