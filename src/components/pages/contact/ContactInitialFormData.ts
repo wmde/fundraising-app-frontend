@@ -5,5 +5,6 @@ export interface ContactInitialFormData {
 	email?: string;
 	category?: string;
 	subject?: string;
+	cancellationReason?: string;
 	messageBody?: string;
 }
