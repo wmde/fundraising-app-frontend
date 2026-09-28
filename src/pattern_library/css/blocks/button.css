@@ -2,11 +2,12 @@
 	--button-bg: var(--color-primary-base);
 	--button-border-color: var(--color-primary-base);
 	--button-text: var(--color-text-inverted);
-	--button-padding-block: 1em;
-	--button-padding-inline: 2em;
+	--button-min-width: 12rem;
+	--button-padding-block: 0.85rem;
+	--button-padding-inline: 0.85rem;
 
 	display: inline-flex;
-	gap: 0.5ch;
+	gap: 1ch;
 	align-items: center;
 	justify-content: center;
 	line-height: var(--leading-flat);
@@ -14,41 +15,64 @@
 	border-radius: var(--border-radius);
 	background: var(--button-bg);
 	color: var(--button-text);
+	min-width: var(--button-min-width);
 	padding-block: var(--button-padding-block);
 	padding-inline: var(--button-padding-inline);
 	text-decoration: none;
 	text-align: center;
+	font-size: var(--type-step-0);
 	font-weight: var(--font-bold);
-}
-
-.button:hover {
-	filter: brightness(105%);
-}
-
-.button:focus {
-	outline: 2px solid var(--color-primary-base, currentColor);
 	outline-offset: 2px;
+	transition: background 200ms ease-in-out, border 200ms ease-in-out, color 200ms ease-in-out;
+}
+
+.button svg {
+	max-height: 1lh;
+	width: auto;
+}
+
+.button:hover,
+.button:focus-visible {
+	--button-bg: var(--color-primary-light);
+	--button-border-color: var(--color-primary-light);
+}
+
+.button:focus-visible {
+	outline: 2px solid var(--button-border-color);
 }
 
 .button:active {
-	transform: scale(99%);
+	--button-bg: var(--color-primary-dark);
+	--button-border-color: var(--color-primary-dark);
 }
 
-.button[data-style-hollow] {
+.button:disabled {
+	--button-bg: var(--color-neutral-light);
+	--button-border-color: var(--color-neutral-light);
+
+	cursor: not-allowed;
+}
+
+.button[data-secondary] {
 	--button-bg: var(--color-white);
 	--button-text: var(--color-primary-base);
 }
 
-.button[data-style-hollow]:hover,
-.button[data-style-hollow]:focus {
-	--button-bg: var(--color-primary-base);
-	--button-text: var(--color-text-inverted);
+.button[data-secondary]:not(:disabled):where(:hover, :focus-visible) {
+	--button-bg: var(--color-primary-pastel);
+	--button-text: var(--color-primary-base);
 }
 
-.button[data-size-small] {
+.button[data-secondary]:not(:disabled):active {
+	--button-border-color: var(--color-primary-dark);
+	--button-text: var(--color-primary-dark);
+}
+
+.button[data-secondary]:disabled {
+	--button-text: var(--color-neutral-light);
+}
+
+.button[data-size="small"] {
+	--button-min-width: 8rem;
 	--button-padding-block: 0.4em;
-}
-
-.button[data-size-fill-width] {
-	width: 100%;
 }
