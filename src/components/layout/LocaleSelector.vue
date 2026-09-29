@@ -173,6 +173,7 @@ useDetectOutsideClick( localeSelectorRef, handleLocaleItemBlur );
 		.navigation-locale-label label {
 			border: 0;
 			border-radius: 0;
+			padding: var(--space-xs) .5em;
 		}
 
 		label:hover,
