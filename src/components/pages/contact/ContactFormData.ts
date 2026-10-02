@@ -7,5 +7,6 @@ export interface ContactFormData {
 	email: ContactFormItem;
 	topic: ContactFormItem;
 	subject: ContactFormItem;
+	cancellationReason: ContactFormItem;
 	comment: ContactFormItem;
 }
