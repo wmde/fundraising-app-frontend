@@ -1,0 +1,33 @@
+.content-copier {
+	border: 0;
+	background: transparent;
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 0.5ch;
+	padding-inline: 0;
+	color: inherit;
+	font-size: unset;
+	cursor: pointer;
+}
+
+.content-copier__popup {
+	position: absolute;
+	inset: 0;
+	visibility: hidden;
+	opacity: 0;
+	background: var( --content-copier-copied-background, #dadada );
+	color: var( --content-copier-copied-color, #000000 );
+	text-align: center;
+	border-radius: 3px;
+}
+
+.content-copier--copied > .content-copier__popup {
+	visibility: visible;
+	opacity: 1;
+}
+
+.content-copier > svg {
+	width: 1lh;
+	height: 1lh;
+}
