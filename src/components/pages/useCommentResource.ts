@@ -8,7 +8,7 @@ export function useCommentResource() {
 
 	const fetchComments = async (): Promise<void> => {
 		try {
-			let response = await axios.get( '/list-comments.json?n=100&anon=1' );
+			let response = await axios.get( '/list-comments.json?n=100' );
 			comments.value = commentModelsFromObject( response.data );
 			return Promise.resolve();
 		} catch {
