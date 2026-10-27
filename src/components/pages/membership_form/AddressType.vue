@@ -22,6 +22,11 @@
 		alignment="column"
 		:is-max-width-field="isMaxWidthField"
 	>
+		<template #[companyTooltipSlotName]>
+			<Tooltip v-if="disabledAddressTypes.includes( AddressTypeModel.COMPANY )">
+				{{ $t( 'membership_form_address_type_company_disabled_info' ) }}
+			</Tooltip>
+		</template>
 	</RadioField>
 </template>
 
@@ -29,6 +34,7 @@
 
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import Tooltip from '@src/components/patterns/Tooltip.vue';
 import { ref, watch } from 'vue';
 
 interface Props {
@@ -43,6 +49,8 @@ const props = defineProps<Props>();
 const emit = defineEmits( [ 'field-changed' ] );
 
 const addressType = ref<AddressTypeModel>( props.initialAddressType ?? AddressTypeModel.UNSET );
+
+const companyTooltipSlotName = `tooltip-${ AddressTypeModel.COMPANY }`;
 
 watch( addressType, newAddressType => {
 	emit( 'field-changed', newAddressType );
