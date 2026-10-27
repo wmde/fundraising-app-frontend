@@ -7,7 +7,14 @@ import { Store } from 'vuex';
 
 describe( 'AddressType.vue', () => {
 	let store: Store<any>;
-	const getWrapper = (): VueWrapper<any> => {
+	const getWrapper = (
+		props: {
+			disabledAddressTypes: AddressTypeModel[];
+			initialAddressType: AddressTypeModel;
+		} = {
+			disabledAddressTypes: [],
+			initialAddressType: AddressTypeModel.COMPANY,
+		} ): VueWrapper<any> => {
 		store = createStore();
 		return mount( AddressType, {
 			props: {
@@ -15,6 +22,7 @@ describe( 'AddressType.vue', () => {
 				isDirectDebit: false,
 				addressTypeIsInvalid: false,
 				initialAddressType: AddressTypeModel.COMPANY,
+				...props,
 			},
 			global: {
 				plugins: [ store ],
@@ -42,5 +50,22 @@ describe( 'AddressType.vue', () => {
 
 		expect( wrapper.emitted( event ) ).toHaveLength( 1 );
 		expect( wrapper.emitted( event )![ 0 ] ).toEqual( [ AddressTypeModel.PERSON ] );
+	} );
+
+	it( 'shows no tooltip when company is not disabled', () => {
+		const wrapper = getWrapper();
+
+		expect( wrapper.find( '.tooltip' ).exists() ).toBeFalsy();
+		expect( wrapper.find<HTMLInputElement>( '#addressType-1' ).element.disabled ).toBeFalsy();
+	} );
+
+	it( 'disables company and shows tooltip when company is in disabledAddressTypes', () => {
+		const wrapper = getWrapper( {
+			disabledAddressTypes: [ AddressTypeModel.COMPANY ],
+			initialAddressType: AddressTypeModel.PERSON,
+		} );
+
+		expect( wrapper.find<HTMLInputElement>( '#addressType-1' ).element.disabled ).toBeTruthy();
+		expect( wrapper.find( '.tooltip' ).exists() ).toBeTruthy();
 	} );
 } );
