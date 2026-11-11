@@ -37,10 +37,10 @@ $hover-color: color.adjust( colors.$primary, $lightness: -5% );
 .form-button {
 	position: relative;
 	display: inline-block;
-	background: colors.$primary;
-	color: colors.$white;
+	background: var( --button-bg, colors.$primary );
+	color: var( --button-text, colors.$white );
 	border: 0;
-	border-radius: map.get( forms.$input, 'border-radius' );
+	border-radius: var(--button-border-radius, map.get( forms.$input, 'border-radius' ));
 	padding: 0;
 	margin: 0;
 	font-size: 1em;
@@ -54,11 +54,10 @@ $hover-color: color.adjust( colors.$primary, $lightness: -5% );
 
 	&:hover,
 	&:focus {
-		color: colors.$white;
 		text-decoration: none;
-		background: $hover-color;
+		background: var( --button-bg-hover, $hover-color );
 		border: 1px solid colors.$white;
-		box-shadow: 0 0 0 2px colors.$primary;
+		box-shadow: 0 0 0 2px var( --button-bg, colors.$primary );
 	}
 
 	&-outlined {

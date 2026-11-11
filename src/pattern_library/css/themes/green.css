@@ -1,0 +1,16 @@
+:root:has( [data-theme="green"] ) {
+	--color-main-background: #ffffff;
+	--content-card-background: #DCF3EC;
+	--color-footer-background: #DCF3EC;
+	--content-card-border-radius: 16px;
+	--content-card-border-color: transparent;
+	--button-bg: #FFCC33;
+	--button-bg-hover: #f5c430;
+	--button-text: #000000;
+	--hr-stroke: 1px solid #bed8d2;
+	--button-border-radius: 26px;
+}
+
+[data-theme="green"] .content-card[data-sidebar-card] {
+	--content-card-background: #ffffff;
+}

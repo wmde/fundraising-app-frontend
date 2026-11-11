@@ -1,10 +1,11 @@
 .content-card {
 	--card-padding: var(--space-xs-l);
-	--background: var(--color-white);
+	--background: var(--content-card-background, var(--color-white));
 
 	padding: var(--card-padding);
 	background: var(--background);
 	border-bottom: 1px solid var(--color-primary-base);
+	border-radius: var( --content-card-border-radius, 0 );
 }
 
 .content-card[data-theme='bordered'] {

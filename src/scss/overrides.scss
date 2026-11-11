@@ -233,3 +233,7 @@ body {
 	user-select: none;
 	cursor: inherit;
 }
+
+hr {
+	border-block-start: var(--hr-stroke, var(--stroke));
+}

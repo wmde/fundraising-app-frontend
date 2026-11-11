@@ -1,5 +1,5 @@
 <template>
-	<div class="app-container" :class="bucketClasses">
+	<div class="app-container" :class="bucketClasses" :data-theme="theme">
 		<header class="site-head">
 			<a href="#content" class="skip-link">{{ $t( 'skip_link_text' ) }}</a>
 			<AppHeader :page-identifier="pageIdentifier" :assets-path="assetsPath"/>
@@ -40,11 +40,13 @@ interface Props {
 	sidebarProps?: Record<string, any>;
 	pageTitle: string;
 	bucketClasses?: string[];
+	theme?: string;
 }
 
 const props = withDefaults( defineProps<Props>(), {
 	bucketClasses: () => [],
 	hasSidebar: true,
+	theme: 'default',
 } );
 
 const modalState = useModalState();

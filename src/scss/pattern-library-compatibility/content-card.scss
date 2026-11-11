@@ -4,9 +4,10 @@
 @use 'sass:map';
 
 .content-card {
-	background: colors.$white;
+	background: var( --content-card-background, colors.$white );
 	border: 0;
-	border-bottom: 1px solid colors.$primary;
+	border-bottom: 1px solid var( --content-card-border-color, colors.$primary );
+	border-radius: var( --content-card-border-radius, 0 );
 
 	.bank-data-list {
 		list-style-type: none;

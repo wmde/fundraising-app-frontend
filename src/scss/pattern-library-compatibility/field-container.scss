@@ -61,8 +61,10 @@
 
 	select,
 	input[role='combobox'] {
-		background: var(--select-input-chevron);
+		background-image: var(--select-input-chevron);
 		background-size: 1em;
+		background-repeat: no-repeat;
+		background-position: 96% 55%;
 	}
 
 	:is([type='checkbox'], [type='radio']) {
