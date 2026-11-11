@@ -8,6 +8,7 @@
 			:id="inputId"
 			:disabled="disabled ? true : null"
 			:aria-describedby="ariaDescribedby"
+			@focus="trackFieldInteraction( name, 'focus' )"
 		/>
 		<span><slot/></span>
 	</label>
@@ -15,6 +16,8 @@
 
 <script setup lang="ts">
 import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
+import { inject } from 'vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 interface Props {
 	modelValue: Array<string | number>;
@@ -31,5 +34,6 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue' ] );
 
 const inputModel = useInputModel<Array<string | number>>( () => props.modelValue, props.modelValue, emit );
+const trackFieldInteraction = inject<trackFieldInteractionType>( 'trackFieldInteraction' );
 
 </script>

@@ -7,6 +7,7 @@
 		:class="{ 'is-danger': hasError }"
 		:aria-invalid="hasError"
 		:aria-describedby="ariaDescribedby"
+		@focus="trackFieldInteraction( name, 'focus' )"
 	>
 		<slot/>
 	</select>
@@ -15,6 +16,8 @@
 <script setup lang="ts">
 
 import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
+import { inject } from 'vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 interface Props {
 	modelValue: string | number;
@@ -34,5 +37,6 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur' ] );
 
 const inputModel = useInputModel<string | number>( () => props.modelValue, props.modelValue, emit );
+const trackFieldInteraction = inject<trackFieldInteractionType>( 'trackFieldInteraction' );
 
 </script>

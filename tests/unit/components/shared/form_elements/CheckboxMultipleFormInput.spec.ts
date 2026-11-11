@@ -1,8 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import CheckboxMultipleFormInput from '@src/components/shared/form_elements/CheckboxMultipleFormInput.vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 describe( 'CheckboxMultipleFormInput.vue', () => {
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = (): VueWrapper<any> => {
 		return mount( CheckboxMultipleFormInput, {
@@ -13,6 +19,11 @@ describe( 'CheckboxMultipleFormInput.vue', () => {
 				inputId: 'captain',
 				disabled: false,
 				required: false,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction,
+				},
 			},
 		} );
 	};
@@ -46,6 +57,14 @@ describe( 'CheckboxMultipleFormInput.vue', () => {
 			await wrapper.setProps( { modelValue: [ 'pike' ] } );
 
 			expect( radio.element.checked ).toBeTruthy();
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( 'input' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( 'captain', 'focus' );
 		} );
 	} );
 

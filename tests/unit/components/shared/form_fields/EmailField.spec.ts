@@ -15,6 +15,11 @@ describe( 'EmailField.vue', () => {
 				showError: false,
 			},
 			slots,
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
+			},
 		} );
 	};
 

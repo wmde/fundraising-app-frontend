@@ -56,11 +56,12 @@
 import { useCountryInput } from '@src/components/shared/form_fields/useCountryInput';
 import { useFilteredCountries } from '@src/components/shared/form_fields/useFilteredCountries';
 import type { Country } from '@src/view_models/Country';
-import { computed, nextTick, ref } from 'vue';
+import { computed, inject, nextTick, ref } from 'vue';
 import { updateAutocompleteScrollPosition } from '@src/components/shared/form_fields/updateAutocompleteScrollPosition';
 import { useAriaDescribedby } from '@src/components/shared/composables/useAriaDescribedby';
 import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/components/shared/form_fields/useAutocompleteScrollIntoViewOnFocus';
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 enum InteractionState {
 	Typing,
@@ -80,6 +81,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits( [ 'initialised', 'field-changed', 'update:modelValue' ] );
+const trackFieldInteraction = inject<trackFieldInteractionType>( 'trackFieldInteraction' );
 
 const { country, countryName } = useCountryInput( props.modelValue, props.countries, emit as ( event: string, value: any ) => void );
 const { filteredCountries, groupSeparatorIndex } = useFilteredCountries( props.countries, countryName );
@@ -106,6 +108,7 @@ const isFirstFocusOnDefaultValue = (): boolean => {
 };
 
 const onFocus = ( event: Event ) => {
+	trackFieldInteraction( 'country', 'focus' );
 	if ( isFirstFocusOnDefaultValue() ) {
 		countryName.value = '';
 	}

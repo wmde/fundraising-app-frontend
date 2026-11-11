@@ -1,15 +1,21 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 import { separator } from '@src/util/street_and_building_number_tools';
 import { nextTick } from 'vue';
 import { FakeStreetAutocompleteResource } from '@test/unit/TestDoubles/FakeStreetAutocompleteResource';
 import { Mock } from '@vitest/spy';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 const streetAutocompleteResource = new FakeStreetAutocompleteResource();
 
 describe( 'StreetAutocompleteField.vue', () => {
 	let scrollElement: { scrollIntoView: Mock<any> };
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = ( value: string = '', postcode: string = '' ): VueWrapper<any> => {
 		scrollElement = { scrollIntoView: vi.fn() };
@@ -28,6 +34,7 @@ describe( 'StreetAutocompleteField.vue', () => {
 			global: {
 				provide: {
 					streetAutocompleteResource,
+					trackFieldInteraction,
 				},
 			},
 			attachTo: document.body,
@@ -289,6 +296,24 @@ describe( 'StreetAutocompleteField.vue', () => {
 			await wrapper.find( '#street' ).trigger( 'input' );
 
 			expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+		} );
+
+		it( 'tracks street focus events', async () => {
+			const wrapper = getWrapper( '', '12345' );
+			const field = wrapper.find<HTMLInputElement>( '#street' );
+
+			await field.trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( 'street-name', 'focus' );
+		} );
+
+		it( 'tracks building number focus events', async () => {
+			const wrapper = getWrapper( '', '12345' );
+			const field = wrapper.find<HTMLInputElement>( '#building-number' );
+
+			await field.trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( 'building-number', 'focus' );
 		} );
 	} );
 

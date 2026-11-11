@@ -1,8 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import TextFormInput from '@src/components/shared/form_elements/TextFormInput.vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 describe( 'TextFormInput.vue', () => {
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = (): VueWrapper<any> => {
 		return mount( TextFormInput, {
@@ -16,6 +22,11 @@ describe( 'TextFormInput.vue', () => {
 				hasMessage: false,
 				hasError: false,
 				disabled: false,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction,
+				},
 			},
 		} );
 	};
@@ -78,6 +89,14 @@ describe( 'TextFormInput.vue', () => {
 			await wrapper.setProps( { inputType: 'textarea' } );
 
 			expect( wrapper.find( 'textarea' ).attributes( 'aria-invalid' ) ).toStrictEqual( 'true' );
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( 'input' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( 'input', 'focus' );
 		} );
 	} );
 

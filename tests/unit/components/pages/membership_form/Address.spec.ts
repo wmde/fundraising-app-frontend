@@ -62,6 +62,9 @@ describe( 'Address.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 
@@ -172,6 +175,9 @@ describe( 'Address.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 

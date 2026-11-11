@@ -1,8 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import RadioFormInput from '@src/components/shared/form_elements/RadioFormInput.vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 describe( 'RadioFormInput.vue', () => {
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = (): VueWrapper<any> => {
 		return mount( RadioFormInput, {
@@ -13,6 +19,11 @@ describe( 'RadioFormInput.vue', () => {
 				id: '',
 				disabled: false,
 				required: false,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction,
+				},
 			},
 		} );
 	};
@@ -66,6 +77,11 @@ describe( 'RadioFormInput.vue', () => {
 					name: '',
 					id: '',
 				},
+				global: {
+					provide: {
+						trackFieldInteraction,
+					},
+				},
 			} );
 
 			await wrapper.find( 'input' ).trigger( 'change' );
@@ -81,6 +97,11 @@ describe( 'RadioFormInput.vue', () => {
 					nativeValue: true,
 					name: '',
 					id: '',
+				},
+				global: {
+					provide: {
+						trackFieldInteraction,
+					},
 				},
 			} );
 
@@ -101,6 +122,11 @@ describe( 'RadioFormInput.vue', () => {
 					name: '',
 					id: '',
 				},
+				global: {
+					provide: {
+						trackFieldInteraction,
+					},
+				},
 			} );
 
 			const radio = wrapper.find<HTMLInputElement>( 'input' );
@@ -108,6 +134,14 @@ describe( 'RadioFormInput.vue', () => {
 			await radio.trigger( 'blur' );
 
 			expect( wrapper.emitted( 'blur' ).length ).toStrictEqual( 1 );
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( 'input' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( '', 'focus' );
 		} );
 	} );
 

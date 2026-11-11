@@ -25,6 +25,9 @@ describe( 'Payment.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 	};

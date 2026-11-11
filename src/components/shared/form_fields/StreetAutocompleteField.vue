@@ -60,6 +60,7 @@
 			@field-changed="onBuildingNumberBlur"
 			:is-max-width-field="isMaxWidthField"
 			:aria-describedby="props.ariaDescribedby"
+			@focus="trackFieldInteraction( 'building-number', 'focus' )"
 		>
 			<template #message v-if="showBuildingNumberWarning">
 				{{ $t( 'donation_form_street_number_warning' ) }}
@@ -81,6 +82,7 @@ import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/c
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 import { useValueEqualsPlaceholderWarning } from '@src/components/shared/composables/useValueEqualsPlaceholderWarning';
 import { useI18n } from 'vue-i18n';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 enum InteractionState {
 	Typing,
@@ -103,6 +105,7 @@ const props = defineProps<Props>();
 const emit = defineEmits( [ 'update:modelValue', 'field-changed' ] );
 const { t } = useI18n();
 const slots = useSlots();
+const trackFieldInteraction = inject<trackFieldInteractionType>( 'trackFieldInteraction' );
 
 const streetNameModel = ref<string>( '' );
 const buildingNumberModel = ref<string>( '' );
@@ -139,6 +142,7 @@ const onUpdateModel = (): void => {
 };
 
 const onStreetNameFocus = ( event: Event ) => {
+	trackFieldInteraction( 'street-name', 'focus' );
 	autocompleteIsActive.value = true;
 	scrollIntoView();
 	( event.target as HTMLInputElement ).select();

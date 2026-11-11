@@ -1,8 +1,15 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
 import { mount, VueWrapper } from '@vue/test-utils';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 describe( 'CheckboxToggle.vue', () => {
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
+
 	const getWrapper = ( modelValue: boolean ): VueWrapper<any> => {
 		return mount( CheckboxToggle, {
 			props: {
@@ -11,6 +18,11 @@ describe( 'CheckboxToggle.vue', () => {
 				inputId: '',
 				disabled: false,
 				required: false,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction,
+				},
 			},
 		} );
 	};
@@ -44,6 +56,14 @@ describe( 'CheckboxToggle.vue', () => {
 			await wrapper.setProps( { modelValue: false } );
 
 			expect( radio.element.checked ).toBeFalsy();
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper( true );
+
+			await wrapper.find<HTMLInputElement>( 'input' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( '', 'focus' );
 		} );
 	} );
 	describe( 'accessibility tests', () => {
