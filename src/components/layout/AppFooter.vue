@@ -63,7 +63,7 @@ const footerMenu = [
 	}
 
 	&-wrapper {
-		background: colors.$footer;
+		background: var( --color-footer-background, colors.$footer );
 		margin-top: 16px;
 
 		@include breakpoints.tablet-up {

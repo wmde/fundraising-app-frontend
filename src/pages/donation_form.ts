@@ -35,6 +35,7 @@ interface DonationFormModel {
 	addressValidationPatterns: AddressValidation;
 	donationMaximumAmount: number;
 	salutations: Array<Salutation>;
+	theme: string;
 }
 
 const PAGE_IDENTIFIER = 'donation-form';
@@ -84,6 +85,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 				pageIdentifier: PAGE_IDENTIFIER,
 				page: DonationForm,
 				pageTitle: 'donation_form_page_title',
+				theme: pageData.applicationVars.theme,
 				pageProps: {
 					assetsPath: pageData.assetsPath,
 					validateAddressUrl: pageData.applicationVars.urls.validateAddress,
