@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SelectField from '@src/components/shared/form_fields/SelectField.vue';
 
@@ -16,6 +16,11 @@ describe( 'SelectField.vue', () => {
 					{ value: 'rolly', label: 'Rolly' },
 				],
 				errorMessage: '404 Lasagne not found',
+			},
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 	};

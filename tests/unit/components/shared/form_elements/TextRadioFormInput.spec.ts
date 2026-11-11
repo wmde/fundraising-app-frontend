@@ -1,8 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import TextRadioFormInput from '@src/components/shared/form_elements/TextRadioFormInput.vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
-describe( 'TextFormInput.vue', () => {
+describe( 'TextRadioFormInput.vue', () => {
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = (): VueWrapper<any> => {
 		return mount( TextRadioFormInput, {
@@ -18,6 +24,11 @@ describe( 'TextFormInput.vue', () => {
 				hasError: false,
 				disabled: false,
 				required: false,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction,
+				},
 			},
 		} );
 	};
@@ -78,6 +89,14 @@ describe( 'TextFormInput.vue', () => {
 			await wrapper.setProps( { radioChecked: true } );
 
 			expect( wrapper.find( '.text-radio__radio' ).classes() ).toContain( 'text-radio__radio--checked' );
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( 'input' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( 'input', 'focus' );
 		} );
 	} );
 

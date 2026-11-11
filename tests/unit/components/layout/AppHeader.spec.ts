@@ -18,6 +18,7 @@ describe( 'AppHeader.vue', () => {
 			global: {
 				provide: {
 					[ QUERY_STRING_INJECTION_KEY ]: '',
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 			attachTo: document.body,

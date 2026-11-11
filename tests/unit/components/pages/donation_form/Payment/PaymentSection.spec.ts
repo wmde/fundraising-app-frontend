@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createStore } from '@src/store/donation_store';
 import { mount, VueWrapper } from '@vue/test-utils';
 import PaymentSummary from '@src/components/pages/donation_form/Summaries/PaymentSummary.vue';
@@ -25,6 +25,7 @@ describe( 'PaymentSection.vue', () => {
 				plugins: [ store ],
 				provide: {
 					bankValidationResource: new FakeBankValidationResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 			attachTo: document.body,

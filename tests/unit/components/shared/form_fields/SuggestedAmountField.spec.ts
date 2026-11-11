@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SuggestedAmountField from '@src/components/shared/form_fields/SuggestedAmountField.vue';
 
@@ -19,6 +19,9 @@ describe( 'SuggestedAmountField.vue', () => {
 			global: {
 				mocks: {
 					$n: ( n: number, format: string ) => `${n}-${format}`,
+				},
+				provide: {
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );

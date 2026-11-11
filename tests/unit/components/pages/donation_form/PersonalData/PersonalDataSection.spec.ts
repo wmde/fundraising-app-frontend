@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { createStore } from '@src/store/donation_store';
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
@@ -48,6 +48,9 @@ describe( 'PersonalDataSection.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 			attachTo: document.body,
 		} );

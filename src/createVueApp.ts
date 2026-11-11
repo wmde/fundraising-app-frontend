@@ -4,6 +4,7 @@ import createLogger from '@src/util/logger';
 import { createFeatureToggle } from '@src/util/createFeatureToggle';
 import type { FeatureFetcher } from '@src/util/FeatureFetcher';
 import { createCampaignQueryString, QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
+import { trackFieldInteraction } from '@src/util/tracking';
 
 type Data = Record<string, unknown>;
 type Messages = Record<string, string>;
@@ -32,6 +33,7 @@ export function createVueApp(
 
 	app.component( 'FeatureToggle', createFeatureToggle( featureFetcher.getFeatures() ) );
 	app.provide( QUERY_STRING_INJECTION_KEY, createCampaignQueryString( window.location.search, allowedCampaignParameters ) );
+	app.provide( 'trackFieldInteraction', trackFieldInteraction );
 
 	return app;
 }

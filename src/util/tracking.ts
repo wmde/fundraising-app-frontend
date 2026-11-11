@@ -6,6 +6,8 @@ interface MatomoLoggable {
 	push( eventData: Array<any> ): void;
 }
 
+export type trackFieldInteractionType = ( fieldName: string, eventType: string ) => void;
+
 export function trackDynamicForm() {
 	_paq.push( [ 'FormAnalytics::scanForForms' ] );
 }
@@ -24,6 +26,10 @@ export function trackFormValidationErrors( formName: string, formFieldName: stri
 
 export function trackEvent( eventName: string, category: string, action: string ) {
 	_paq.push( [ 'trackEvent', eventName, category, action ] );
+}
+
+export function trackFieldInteraction( fieldName: string, eventType: string ) {
+	_paq.push( [ 'trackEvent', 'field-interaction', fieldName, eventType ] );
 }
 
 export function trackGoal( goalID: number, amount?: number ) {

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import IbanFields from '@src/components/shared/IbanFields.vue';
 import { Store } from 'vuex';
@@ -21,6 +21,7 @@ describe( 'IbanFields.vue', () => {
 				plugins: [ store ?? createStore() ],
 				provide: {
 					bankValidationResource: bankValidationResource ?? new FakeBankValidationResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );

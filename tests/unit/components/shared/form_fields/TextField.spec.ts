@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
 
@@ -20,6 +20,11 @@ describe( 'TextField.vue', () => {
 				autocomplete: 'on',
 			},
 			slots,
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
+			},
 		} );
 	};
 

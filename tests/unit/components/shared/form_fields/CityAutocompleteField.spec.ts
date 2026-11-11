@@ -1,9 +1,10 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
 import { mount, VueWrapper } from '@vue/test-utils';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import { FakeCityAutocompleteResource } from '@test/unit/TestDoubles/FakeCityAutocompleteResource';
 import { Mock } from '@vitest/spy';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 const cityAutocompleteResource = new FakeCityAutocompleteResource();
 const placeholderKey = 'form_for_example';
@@ -11,6 +12,11 @@ const placeholderKeyWhenSuggestionsExist = 'form_autocomplete_prompt';
 
 describe( 'CityAutocompleteField.vue', () => {
 	let scrollElement: { scrollIntoView: Mock<any> };
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = ( postcode: string = '' ): VueWrapper<any> => {
 		const currentElement = { clientHeight: 0, offsetTop: 0 };
@@ -33,6 +39,7 @@ describe( 'CityAutocompleteField.vue', () => {
 			global: {
 				provide: {
 					cityAutocompleteResource,
+					trackFieldInteraction,
 				},
 			},
 		} );
@@ -260,6 +267,14 @@ describe( 'CityAutocompleteField.vue', () => {
 			await wrapper.setProps( { modelValue: 'Berlin' } );
 
 			expect( wrapper.find<HTMLInputElement>( '#city' ).element.value ).toBe( 'Berlin' );
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( '#city' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( 'city', 'focus' );
 		} );
 	} );
 

@@ -24,6 +24,7 @@ describe( 'MembershipFeeChange.vue', () => {
 				provide: {
 					bankValidationResource: bankValidationResource ?? newSucceedingBankValidationResource(),
 					membershipFeeChangeResource: { put: () => Promise.resolve( { status: 'OK' } ) },
+					trackFieldInteraction: vi.fn(),
 				},
 				mocks: {
 					$n: ( n: number, format: string ) => `${n}-${format}`,
