@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import IbanField from '@src/components/shared/form_fields/IbanField.vue';
 
@@ -15,6 +15,11 @@ describe( 'IbanField.vue', () => {
 				showError: false,
 				bankName: '',
 				bic: '',
+			},
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 	};

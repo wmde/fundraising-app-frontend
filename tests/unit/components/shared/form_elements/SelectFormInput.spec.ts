@@ -1,8 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import SelectFormInput from '@src/components/shared/form_elements/SelectFormInput.vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 describe( 'SelectFormInput.vue', () => {
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = (): VueWrapper<any> => {
 		return mount( SelectFormInput, {
@@ -15,6 +21,11 @@ describe( 'SelectFormInput.vue', () => {
 			},
 			slots: {
 				default: `<option value="bingo">Bingo</option><option value="rolly">Rolly</option>`,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction,
+				},
 			},
 		} );
 	};
@@ -48,6 +59,14 @@ describe( 'SelectFormInput.vue', () => {
 			await wrapper.setProps( { modelValue: 'bingo' } );
 
 			expect( select.element.value ).toStrictEqual( 'bingo' );
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLSelectElement>( 'select' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( 'select', 'focus' );
 		} );
 	} );
 

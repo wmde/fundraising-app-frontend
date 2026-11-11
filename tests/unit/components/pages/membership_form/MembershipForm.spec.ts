@@ -70,6 +70,7 @@ describe( 'MembershipForm.vue', () => {
 				plugins: [ store ],
 				provide: {
 					bankValidationResource: newSucceedingBankValidationResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 			components: {

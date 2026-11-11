@@ -31,6 +31,7 @@ describe( 'Payment.vue', () => {
 				provide: {
 					'paymentPageRef': { focus: () => {} },
 					bankValidationResource: new FakeBankValidationResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );

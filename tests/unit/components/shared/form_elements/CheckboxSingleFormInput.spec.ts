@@ -1,8 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import CheckboxSingleFormInput from '@src/components/shared/form_elements/CheckboxSingleFormInput.vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 describe( 'CheckboxSingleFormInput.vue', () => {
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = ( modelValue: boolean ): VueWrapper<any> => {
 		return mount( CheckboxSingleFormInput, {
@@ -12,6 +18,11 @@ describe( 'CheckboxSingleFormInput.vue', () => {
 				inputId: '',
 				disabled: false,
 				required: false,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction,
+				},
 			},
 		} );
 	};
@@ -45,6 +56,14 @@ describe( 'CheckboxSingleFormInput.vue', () => {
 			await wrapper.setProps( { modelValue: false } );
 
 			expect( radio.element.checked ).toBeFalsy();
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper( true );
+
+			await wrapper.find<HTMLInputElement>( 'input' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( '', 'focus' );
 		} );
 	} );
 

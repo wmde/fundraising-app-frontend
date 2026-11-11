@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createStore } from '@src/store/membership_applicant_update_store';
 import { mount } from '@vue/test-utils';
 import type { MembershipApplication } from '@src/Domain/Membership/MembershipApplication';
@@ -95,6 +95,9 @@ describe( 'MembershipConfirmation.vue', () => {
 				mocks: {
 					$t: translateFn,
 					$n: ( amount: string ) => amount,
+				},
+				provide: {
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );

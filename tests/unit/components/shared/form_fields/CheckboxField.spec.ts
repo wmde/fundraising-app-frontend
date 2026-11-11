@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
 
@@ -13,6 +13,9 @@ describe( 'CheckboxField.vue', () => {
 				errorMessage: 'error_message',
 			},
 			attachTo: document.body,
+			provide: {
+				trackFieldInteraction: vi.fn(),
+			},
 		} );
 	};
 

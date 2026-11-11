@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import DonationCommentPopUp from '@src/components/pages/donation_confirmation/DonationCommentPopUp.vue';
 import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
@@ -43,6 +43,7 @@ describe( 'DonationCommentPopUp.vue', () => {
 			global: {
 				provide: {
 					commentResource: new FakeSucceedingCommentResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );
@@ -56,6 +57,7 @@ describe( 'DonationCommentPopUp.vue', () => {
 			global: {
 				provide: {
 					commentResource: new FakeSucceedingCommentResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );
@@ -69,6 +71,7 @@ describe( 'DonationCommentPopUp.vue', () => {
 			global: {
 				provide: {
 					commentResource: new FakeSucceedingCommentResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );
@@ -86,6 +89,7 @@ describe( 'DonationCommentPopUp.vue', () => {
 			global: {
 				provide: {
 					commentResource: new FakeSucceedingCommentResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );
@@ -107,6 +111,7 @@ describe( 'DonationCommentPopUp.vue', () => {
 			global: {
 				provide: {
 					commentResource: new FakeFailingCommentResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );
@@ -125,6 +130,7 @@ describe( 'DonationCommentPopUp.vue', () => {
 			global: {
 				provide: {
 					commentResource: new FakeSucceedingCommentResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );

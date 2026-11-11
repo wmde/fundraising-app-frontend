@@ -15,6 +15,7 @@
 				:aria-disabled="disabled"
 				:autofocus="autofocus"
 				@blur="$emit( 'blur' )"
+				@focus="trackFieldInteraction( name, 'focus' )"
 			/>
 			<span>
 			<slot name="label"/>
@@ -28,6 +29,8 @@
 <script setup lang="ts">
 
 import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
+import { inject } from 'vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 interface Props {
 	modelValue: string | number | boolean | null;
@@ -50,5 +53,6 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue', 'blur' ] );
 
 const inputModel = useInputModel<string | number | boolean | null>( () => props.modelValue, props.modelValue, emit );
+const trackFieldInteraction = inject<trackFieldInteractionType>( 'trackFieldInteraction' );
 
 </script>

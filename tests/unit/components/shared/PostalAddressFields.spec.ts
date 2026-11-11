@@ -86,6 +86,11 @@ describe( 'PostalAddressFields.vue', () => {
 	it( 'shows street number warning if street field does not contain numbers', async () => {
 		const wrapper = mount( PostalAddressFields, {
 			props: newTestProperties( {} ),
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
+			},
 		} );
 
 		const street = wrapper.find( '#street' );
@@ -109,6 +114,11 @@ describe( 'PostalAddressFields.vue', () => {
 	it( 'emits field changed event on blur', () => {
 		const wrapper = mount( PostalAddressFields, {
 				props: newTestProperties( {} ),
+				global: {
+					provide: {
+						trackFieldInteraction: vi.fn(),
+					},
+				},
 			} ),
 			field = wrapper.find( '#post-code' );
 
@@ -120,7 +130,14 @@ describe( 'PostalAddressFields.vue', () => {
 	it( 'sets the correct postcode regex on country change', async () => {
 		vi.useFakeTimers();
 		const props = newTestProperties( {} );
-		const wrapper = mount( PostalAddressFields, { props } );
+		const wrapper = mount( PostalAddressFields, {
+			props,
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
+			},
+		} );
 
 		await wrapper.find( '#country' ).setValue( countries[ 1 ].countryFullName );
 		await wrapper.find( '#country' ).trigger( 'blur' );

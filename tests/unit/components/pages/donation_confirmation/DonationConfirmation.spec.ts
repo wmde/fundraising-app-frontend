@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import DonationConfirmation from '@src/components/pages/DonationConfirmation.vue';
 import { createStore } from '@src/store/donation_store';
@@ -43,6 +43,7 @@ describe( 'DonationConfirmation.vue', () => {
 				},
 				provide: {
 					commentResource: new FakeSucceedingCommentResource(),
+					trackFieldInteraction: vi.fn(),
 				},
 			},
 		} );

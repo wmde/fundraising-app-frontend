@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import IncentivesField from '@src/components/shared/form_fields/IncentivesField.vue';
 
@@ -9,6 +9,11 @@ describe( 'IncentivesField', () => {
 			props: {
 				incentiveFormFieldOptions: [ { value: 'tote_bag', label: 'some descriptive label', id: 'tote_bag' } ],
 				modelValue,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 	};

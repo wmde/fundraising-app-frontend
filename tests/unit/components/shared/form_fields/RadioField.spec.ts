@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount, VueWrapper } from '@vue/test-utils';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
 
@@ -16,6 +16,11 @@ describe( 'RadioField.vue', () => {
 				],
 				errorMessage: 'error_message',
 				alignment: 'row',
+			},
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 	};
