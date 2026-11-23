@@ -36,6 +36,8 @@
 <script setup lang="ts">
 
 import { useInputModel } from '@src/components/shared/form_elements/useInputModel';
+import { inject } from 'vue';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 interface Props {
 	inputType: 'text' | 'textarea';
@@ -60,8 +62,12 @@ const props = withDefaults( defineProps<Props>(), {
 const emit = defineEmits( [ 'update:modelValue', 'focus', 'blur', 'input', 'keyup', 'keydown' ] );
 
 const inputModel = useInputModel<string | number>( () => props.modelValue, props.modelValue, emit );
+const trackFieldInteraction = inject<trackFieldInteractionType>( 'trackFieldInteraction' );
 
-const onFocus = ( event: Event ): void => emit( 'focus', event );
+const onFocus = ( event: Event ): void => {
+	trackFieldInteraction( props.name, 'focus' );
+	emit( 'focus', event );
+};
 const onBlur = ( event: Event ): void => emit( 'blur', event );
 const onInput = ( event: Event ): void => emit( 'input', event );
 

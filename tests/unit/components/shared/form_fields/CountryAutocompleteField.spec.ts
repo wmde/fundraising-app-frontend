@@ -3,9 +3,15 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import countries from '@test/data/countries';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 describe( 'CountryAutocompleteField.vue', () => {
 	let scrollElement: { scrollIntoView: () => void };
+	let trackFieldInteraction: trackFieldInteractionType;
+
+	beforeEach( () => {
+		trackFieldInteraction = vi.fn();
+	} );
 
 	const getWrapper = ( modelValue: string = '', wasRestored: boolean = false ): VueWrapper<any> => {
 		const currentElement = { clientHeight: 0, offsetTop: 0 };
@@ -25,6 +31,11 @@ describe( 'CountryAutocompleteField.vue', () => {
 				showError: false,
 				errorMessage: 'I haz error',
 				wasRestored,
+			},
+			global: {
+				provide: {
+					trackFieldInteraction,
+				},
 			},
 		} );
 	};
@@ -307,6 +318,14 @@ describe( 'CountryAutocompleteField.vue', () => {
 			await wrapper.find( '#country' ).trigger( 'input' );
 
 			expect( wrapper.emitted( 'field-changed' ).length ).toStrictEqual( 1 );
+		} );
+
+		it( 'tracks focus events', async () => {
+			const wrapper = getWrapper();
+
+			await wrapper.find<HTMLInputElement>( '#country' ).trigger( 'focus' );
+
+			expect( trackFieldInteraction ).toHaveBeenCalledWith( 'country', 'focus' );
 		} );
 	} );
 

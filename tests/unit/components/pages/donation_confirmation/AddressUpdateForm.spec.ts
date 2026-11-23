@@ -114,6 +114,9 @@ describe( 'AddressUpdateForm.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 	};

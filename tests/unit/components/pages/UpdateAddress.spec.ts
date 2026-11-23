@@ -78,6 +78,9 @@ describe( 'UpdateAddress.vue', () => {
 			},
 			global: {
 				plugins: [ store ],
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
 			},
 		} );
 	};

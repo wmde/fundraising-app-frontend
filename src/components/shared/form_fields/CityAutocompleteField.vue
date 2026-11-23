@@ -62,6 +62,7 @@ import { autoscrollMaxWidth, useAutocompleteScrollIntoViewOnFocus } from '@src/c
 import FieldContainer from '@src/components/patterns/FieldContainer.vue';
 import { useValueEqualsPlaceholderWarning } from '@src/components/shared/composables/useValueEqualsPlaceholderWarning';
 import { useI18n } from 'vue-i18n';
+import { trackFieldInteractionType } from '@src/util/tracking';
 
 enum InteractionState {
 	Typing,
@@ -84,6 +85,7 @@ const props = defineProps<Props>();
 const emit = defineEmits( [ 'field-changed', 'update:modelValue' ] );
 const { t } = useI18n();
 const slots = useSlots();
+const trackFieldInteraction = inject<trackFieldInteractionType>( 'trackFieldInteraction' );
 
 const city = ref<string>( props.modelValue );
 const autocompleteIsActive = ref<Boolean>( false );
@@ -112,6 +114,7 @@ const placeholder = computed( () => {
 } );
 
 const onFocus = ( event: Event ) => {
+	trackFieldInteraction( 'city', 'focus' );
 	autocompleteIsActive.value = true;
 	scrollIntoView();
 	( event.target as HTMLInputElement ).select();

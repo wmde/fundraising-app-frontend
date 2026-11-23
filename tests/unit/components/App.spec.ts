@@ -19,6 +19,11 @@ describe( 'App.vue', () => {
 				bucketClasses: [],
 				usesContentCards: false,
 			},
+			global: {
+				provide: {
+					trackFieldInteraction: vi.fn(),
+				},
+			},
 		} );
 	};
 
