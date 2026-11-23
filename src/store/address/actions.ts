@@ -110,6 +110,9 @@ export const actions = {
 			return validationResult.data;
 		} );
 	},
+	/**
+	 * @deprecated
+	 */
 	setAddressType( context: ActionContext<AddressState, any>, type: AddressTypeModel ) {
 		context.commit( 'SET_ADDRESS_TYPE', type );
 		context.commit( 'SET_VALIDITY', { name: 'addressType', value: Validity.VALID } );
@@ -127,6 +130,12 @@ export const actions = {
 	setReceiptChoice( context: ActionContext<AddressState, any>, choice: boolean ) {
 		context.commit( 'SET_RECEIPT', choice );
 	},
+	setIsAnonymous( context: ActionContext<AddressState, any>, isAnonymous: boolean ): void {
+		context.commit( 'SET_IS_ANONYMOUS', isAnonymous );
+	},
+	setIsCompany( context: ActionContext<AddressState, any>, isCompany: boolean ): void {
+		context.commit( 'SET_IS_COMPANY', isCompany );
+	},
 	initializeAddress( context: ActionContext<AddressState, any>, initialValues: InitialAddressValues ): void {
 		if ( initialValues.addressType !== null && initialValues.addressType !== undefined ) {
 			context.commit( 'SET_ADDRESS_TYPE', initialValues.addressType );
@@ -140,6 +149,13 @@ export const actions = {
 		if ( initialValues.receipt !== null && initialValues.receipt !== undefined ) {
 			context.commit( 'SET_RECEIPT', initialValues.receipt );
 			context.commit( 'SET_VALIDITY', { name: 'receipt', value: Validity.RESTORED } );
+		}
+		if ( initialValues.isAnonymous !== null && initialValues.isAnonymous !== undefined ) {
+			context.commit( 'SET_IS_ANONYMOUS', initialValues.isAnonymous );
+			context.commit( 'SET_VALIDITY', { name: 'isAnonymous', value: Validity.RESTORED } );
+		}
+		if ( initialValues.isCompany !== null && initialValues.isCompany !== undefined ) {
+			context.commit( 'SET_IS_COMPANY', initialValues.isCompany );
 		}
 		context.commit( 'INITIALIZE_ADDRESS', initialValues.fields );
 	},

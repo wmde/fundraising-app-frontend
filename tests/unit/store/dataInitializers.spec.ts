@@ -24,7 +24,7 @@ describe( 'createInitialDonationAddressValues', () => {
 		const addressType = 'anonym';
 
 		const dataPersister = new FakeDataPersister( [ firstName, lastName ] );
-		const values = createInitialDonationAddressValues( dataPersister, { addressType: addressType } );
+		const values = createInitialDonationAddressValues( dataPersister, { addressType: addressType, isCompany: false } );
 
 		const firstNameValue = values.fields.find( field => field.name === firstName.key );
 		const lastNameValue = values.fields.find( field => field.name === lastName.key );
@@ -34,6 +34,8 @@ describe( 'createInitialDonationAddressValues', () => {
 		expect( lastNameValue ).toBeDefined();
 		expect( ( lastNameValue || {} ).value ).toEqual( lastName.value );
 		expect( values.addressType ).toEqual( AddressTypeModel.ANON );
+		expect( values.isAnonymous ).toEqual( null );
+		expect( values.isCompany ).toEqual( false );
 	} );
 
 	it( 'uses initial address type over stored address type', () => {
@@ -72,6 +74,24 @@ describe( 'createInitialDonationAddressValues', () => {
 		const values = createInitialDonationAddressValues( dataPersister, {} );
 
 		expect( values.receipt ).toEqual( true );
+	} );
+
+	it( 'uses stored is anonymous when initial is anonymous is missing', () => {
+		const storedIsAnonymous = { key: 'isAnonymous', value: true };
+
+		const dataPersister = new FakeDataPersister( [ storedIsAnonymous ] );
+		const values = createInitialDonationAddressValues( dataPersister, {} );
+
+		expect( values.isAnonymous ).toEqual( true );
+	} );
+
+	it( 'uses stored is company when initial is company is missing', () => {
+		const storedIsCompany = { key: 'isCompany', value: true };
+
+		const dataPersister = new FakeDataPersister( [ storedIsCompany ] );
+		const values = createInitialDonationAddressValues( dataPersister, {} );
+
+		expect( values.isCompany ).toEqual( true );
 	} );
 } );
 

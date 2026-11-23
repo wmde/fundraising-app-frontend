@@ -1,14 +1,16 @@
 import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 
-/** AddressTypeModel: String array of required fields */
 export interface AddressRequirements {
 	[ key: number ]: string[];
 }
 
 export interface DefaultFields {
-	[key: string]: string;
+	[ key: string ]: string;
 }
 
+/**
+ * @deprecated
+ */
 export const REQUIRED_FIELDS: AddressRequirements = {
 	[ AddressTypeModel.PERSON ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],
 	[ AddressTypeModel.COMPANY ]: [ 'companyName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],
@@ -19,6 +21,9 @@ export const REQUIRED_FIELDS: AddressRequirements = {
 	[ AddressTypeModel.UNSET ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email', 'addressType' ],
 };
 
+/**
+ * @deprecated
+ */
 export const REQUIRED_FIELDS_DONOR_UPDATE: AddressRequirements = {
 	[ AddressTypeModel.PERSON ]: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
 	[ AddressTypeModel.COMPANY ]: [ 'addressType', 'companyName', 'street', 'postcode', 'city', 'country', 'email' ],
@@ -29,6 +34,9 @@ export const REQUIRED_FIELDS_DONOR_UPDATE: AddressRequirements = {
 	[ AddressTypeModel.UNSET ]: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
 };
 
+/**
+ * @deprecated
+ */
 export const REQUIRED_FIELDS_ADDRESS_UPDATE: AddressRequirements = {
 	[ AddressTypeModel.PERSON ]: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country' ],
 	[ AddressTypeModel.COMPANY ]: [ 'companyName', 'street', 'postcode', 'city', 'country' ],

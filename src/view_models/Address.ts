@@ -44,9 +44,14 @@ export interface FormValues {
 
 export interface AddressState {
 	serverSideValidationCount: number;
+	/**
+	 * @deprecated
+	 */
 	addressType: AddressTypeModel;
 	newsletter: boolean;
 	receipt: boolean;
+	isAnonymous: boolean;
+	isCompany: boolean;
 	values: FormValues;
 	validity: FormValidity;
 	requiredFields: AddressRequirements;
@@ -54,6 +59,9 @@ export interface AddressState {
 
 export interface MembershipAddressState {
 	serverSideValidationCount: number;
+	/**
+	 * @deprecated
+	 */
 	addressType: AddressTypeModel;
 	membershipType: MembershipTypeModel;
 	receipt: boolean;
@@ -64,13 +72,21 @@ export interface MembershipAddressState {
 }
 
 export interface InitialAddressValues {
+	/**
+	 * @deprecated
+	 */
 	addressType: AddressTypeModel;
 	newsletter: boolean;
 	receipt: boolean;
+	isAnonymous: boolean;
+	isCompany: boolean;
 	fields: FieldInitialization[];
 }
 
 export interface InitialMembershipAddressValues {
+	/**
+	 * @deprecated
+	 */
 	addressType?: AddressTypeModel;
 	membershipType?: MembershipTypeModel;
 	date?: string | null;
@@ -119,6 +135,9 @@ export interface SubmittedAddress {
 	addressType: string;
 }
 
+/**
+ * @deprecated
+ */
 export interface AddressTypeValidationRequest {
 	type: AddressTypeModel;
 	disallowed: AddressTypeModel[];

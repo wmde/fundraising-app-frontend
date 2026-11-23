@@ -51,6 +51,8 @@ export const createInitialDonationAddressValues = ( dataPersister: DataPersister
 		// The receipt chosen by the user in the banner should override the choice made later, assuming that
 		// reloading the page (and restoring from localStorage) happens less often than coming back from a banner
 		receipt: replaceInitialValue( dataPersister.getValue( 'receipt' ), initialFormValues.receipt ),
+		isAnonymous: replaceInitialValue( dataPersister.getValue( 'isAnonymous' ), initialFormValues.isAnonymous ),
+		isCompany: replaceInitialValue( dataPersister.getValue( 'isCompany' ), initialFormValues.isCompany ),
 		fields: addressPersistItems,
 	};
 };

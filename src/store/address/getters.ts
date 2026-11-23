@@ -10,11 +10,23 @@ export const getters: GetterTree<AddressState, any> = {
 	requiredFieldsAreValid: ( state: AddressState, addressGetters: GetterTree<AddressState, any> ): boolean => {
 		return addressGetters.invalidFields.length === 0;
 	},
+	/**
+	 * @deprecated
+	 */
 	addressType: ( state: AddressState ): AddressTypeModel => state.addressType,
+	/**
+	 * @deprecated
+	 */
 	addressTypeIsNotAnon: ( state: AddressState, addressGetters ): boolean => addressGetters.addressType !== AddressTypeModel.ANON,
+	/**
+	 * @deprecated
+	 */
 	addressTypeIsNeitherAnonNorEmail: ( state: AddressState, addressGetters ): boolean => {
 		return addressGetters.addressType !== AddressTypeModel.ANON && addressGetters.addressType !== AddressTypeModel.EMAIL;
 	},
+	/**
+	 * @deprecated
+	 */
 	addressTypeIsInvalid: ( state: AddressState ): boolean => state.validity.addressType === Validity.INVALID,
 	fullName: ( state: AddressState ): string => {
 		// Duplicating code from DonorName PHP class

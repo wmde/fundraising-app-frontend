@@ -67,6 +67,9 @@ export const mutations: MutationTree<AddressState> = {
 			state.validity.email = Validity.INVALID;
 		}
 	},
+	/**
+	 * @deprecated
+	 */
 	SET_ADDRESS_TYPE( state: AddressState, type ) {
 		state.addressType = type;
 	},
@@ -86,6 +89,12 @@ export const mutations: MutationTree<AddressState> = {
 	},
 	SET_RECEIPT( state: AddressState, choice ) {
 		state.receipt = choice;
+	},
+	SET_IS_ANONYMOUS( state: AddressState, isAnonymous: boolean ): void {
+		state.isAnonymous = isAnonymous;
+	},
+	SET_IS_COMPANY( state: AddressState, isCompany: boolean ): void {
+		state.isCompany = isCompany;
 	},
 	SET_VALIDITY( state: AddressState, { name, value } ) {
 		state.validity[ name ] = value;

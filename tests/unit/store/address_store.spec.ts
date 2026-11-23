@@ -16,6 +16,8 @@ function newMinimalStore( overrides: Object ): AddressState {
 		{
 			serverSideValidationCount: 0,
 			addressType: AddressTypeModel.PERSON,
+			isAnonymous: false,
+			isCompany: false,
 			newsletter: false,
 			receipt: false,
 			requiredFields: REQUIRED_FIELDS,
@@ -481,6 +483,32 @@ describe( 'Address', () => {
 		} );
 	} );
 
+	describe( 'Actions/setIsAnonymous', () => {
+		it( 'commits to mutation [SET_IS_ANONYMOUS] with the entered choice', () => {
+			const commit = vi.fn(),
+				action = actions.setIsAnonymous as any,
+				choice = true;
+			action( { commit }, choice );
+			expect( commit ).toBeCalledWith(
+				'SET_IS_ANONYMOUS',
+				choice
+			);
+		} );
+	} );
+
+	describe( 'Actions/setIsCompany', () => {
+		it( 'commits to mutation [SET_IS_COMPANY] with the entered choice', () => {
+			const commit = vi.fn(),
+				action = actions.setIsCompany as any,
+				choice = true;
+			action( { commit }, choice );
+			expect( commit ).toBeCalledWith(
+				'SET_IS_COMPANY',
+				choice
+			);
+		} );
+	} );
+
 	describe( 'Actions/setNewsletterChoice', () => {
 		it( 'commits to mutation [SET_NEWSLETTER] with the entered choice', () => {
 			const commit = vi.fn(),
@@ -763,6 +791,24 @@ describe( 'Address', () => {
 			const choice = true;
 			mutations.SET_NEWSLETTER( store, choice );
 			expect( store.newsletter ).toBe( choice );
+		} );
+	} );
+
+	describe( 'Mutations/SET_IS_ANONYMOUS', () => {
+		it( 'sets anonymous choice', () => {
+			const store = newMinimalStore( {} );
+			const choice = true;
+			mutations.SET_IS_ANONYMOUS( store, choice );
+			expect( store.isAnonymous ).toBe( choice );
+		} );
+	} );
+
+	describe( 'Mutations/SET_IS_COMPANY', () => {
+		it( 'sets company choice', () => {
+			const store = newMinimalStore( {} );
+			const choice = true;
+			mutations.SET_IS_COMPANY( store, choice );
+			expect( store.isCompany ).toBe( choice );
 		} );
 	} );
 
