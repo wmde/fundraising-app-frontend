@@ -3,7 +3,7 @@ import { Validity } from '@src/view_models/Validity';
 import { Helper } from '@src/store/util';
 import type { AddressState, InputField } from '@src/view_models/Address';
 import type { FieldInitialization } from '@src/view_models/FieldInitialization';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 export const mutations: MutationTree<AddressState> = {
 	VALIDATE_INPUT( state: AddressState, field: InputField ) {
@@ -14,8 +14,8 @@ export const mutations: MutationTree<AddressState> = {
 		}
 	},
 	MARK_EMPTY_FIELDS_INVALID( state: AddressState ) {
-		let addressTypeRequirements = state.requiredFields[ state.addressType ];
-		state.requiredFields[ state.addressType ].forEach( ( fieldName: string ) => {
+		let addressTypeRequirements = state.requiredFields[ addressTypeName( state.addressType ) ];
+		state.requiredFields[ addressTypeName( state.addressType ) ].forEach( ( fieldName: string ) => {
 			if ( state.validity[ fieldName ] === Validity.INCOMPLETE &&
 				addressTypeRequirements[ addressTypeRequirements.indexOf( fieldName ) ] ) {
 				state.validity[ fieldName ] = Validity.INVALID;
@@ -30,8 +30,8 @@ export const mutations: MutationTree<AddressState> = {
 	 * need to add proper store fields to handle it, if not then we should delete this
 	 */
 	MARK_EMPTY_DONATION_FIELDS_AS_INVALID( state: AddressState, receiptNeeded: boolean | null ) {
-		const addressTypeRequirements = state.requiredFields[ receiptNeeded === null ? AddressTypeModel.EMAIL : state.addressType ];
-		state.requiredFields[ state.addressType ].forEach( ( fieldName: string ) => {
+		const addressTypeRequirements = state.requiredFields[ receiptNeeded === null ? AddressTypeModel.EMAIL : addressTypeName( state.addressType ) ];
+		state.requiredFields[ addressTypeName( state.addressType ) ].forEach( ( fieldName: string ) => {
 			if ( state.validity[ fieldName ] === Validity.INCOMPLETE &&
 				addressTypeRequirements[ addressTypeRequirements.indexOf( fieldName ) ] ) {
 				state.validity[ fieldName ] = Validity.INVALID;
@@ -49,7 +49,7 @@ export const mutations: MutationTree<AddressState> = {
 		if ( payload.status === 'OK' ) {
 			return;
 		}
-		state.requiredFields[ state.addressType ].forEach( name => {
+		state.requiredFields[ addressTypeName( state.addressType ) ].forEach( name => {
 			if ( payload.messages[ name ] ) {
 				state.validity[ name ] = Validity.INVALID;
 			}
@@ -63,7 +63,7 @@ export const mutations: MutationTree<AddressState> = {
 		if ( payload.status === 'OK' ) {
 			return;
 		}
-		if ( state.requiredFields[ state.addressType ].indexOf( 'email' ) > -1 ) {
+		if ( state.requiredFields[ addressTypeName( state.addressType ) ].indexOf( 'email' ) > -1 ) {
 			state.validity.email = Validity.INVALID;
 		}
 	},

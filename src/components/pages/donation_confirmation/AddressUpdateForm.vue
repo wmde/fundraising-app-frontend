@@ -239,7 +239,7 @@ const getAddressData = (): UpdateDonorRequest => {
 	return {
 		donationId: props.donation.id,
 		updateToken: props.donation.updateToken,
-		addressType: addressTypeName( store.getters[ 'address/addressType' ] ),
+		addressType: addressTypeName( store.state.address.addressType ),
 		city: formData.city.value,
 		companyName: formData.companyName.value,
 		country: formData.country.value,

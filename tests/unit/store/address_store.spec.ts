@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { getters } from '@src/store/address/getters';
 import { actions } from '@src/store/address/actions';
 import { mutations } from '@src/store/address/mutations';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import type { AddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { REQUIRED_FIELDS } from '@src/store/address/constants';
@@ -54,7 +54,7 @@ function newMinimalStore( overrides: Object ): AddressState {
 describe( 'Address', () => {
 
 	describe( 'Getters/invalidFields', () => {
-		const requiredFields = REQUIRED_FIELDS[ AddressTypeModel.PERSON ];
+		const requiredFields = REQUIRED_FIELDS[ addressTypeName( AddressTypeModel.PERSON ) ];
 
 		it( 'does not return non-required fields as invalid when they are not set', () => {
 			const expectedInvalidFields = requiredFields.filter( e => e !== 'addressType' );
@@ -123,7 +123,7 @@ describe( 'Address', () => {
 	describe( 'Getters/addressType', () => {
 
 		it( 'returns address type from the store', () => {
-			expect( getters.addressType(
+			expect( getters.addressTypeModel(
 				newMinimalStore( {
 					addressType: AddressTypeModel.COMPANY,
 				} ),

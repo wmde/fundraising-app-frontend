@@ -7,7 +7,7 @@ import type { CampaignValues } from '@src/view_models/CampaignValues';
 import type { AddressValidation } from '@src/view_models/Validation';
 import type { Salutation } from '@src/view_models/Salutation';
 import PersonalDataSection from '@src/components/pages/donation_form/PersonalData/PersonalDataSection.vue';
-import { useReceiptModel } from '@src/components/pages/donation_form/composables/useReceiptModel';
+import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 
 const testCountry = {
 	countryCode: 'de',

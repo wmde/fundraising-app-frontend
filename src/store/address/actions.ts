@@ -69,31 +69,6 @@ export const actions = {
 		} );
 
 	},
-	/**
-	 * We're performing more hackery here as we need to validate the different donation form address fields
-	 * depending on the address type
-	 */
-	validateAddressOnCompactForm( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
-		context.commit( 'RESET_DYNAMIC_FIELDS_VALIDATION' );
-		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );
-
-		if ( !context.getters.requiredFieldsAreValid ) {
-			return Promise.resolve( { status: 'ERR', messages: [] } );
-		}
-
-		context.commit( 'BEGIN_ADDRESS_VALIDATION' );
-		const bodyFormData = new FormData();
-		Object.keys( context.state.values ).forEach(
-			field => bodyFormData.append( field, context.state.values[ field ] )
-		);
-		bodyFormData.append( 'addressType', addressTypeName( context.state.addressType ) );
-		return axios.post( validateAddressUrl, bodyFormData, {
-			headers: { 'Content-Type': 'multipart/form-data' },
-		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
-			context.commit( 'FINISH_ADDRESS_VALIDATION', validationResult.data );
-			return validationResult.data;
-		} );
-	},
 	validateEmail( context: ActionContext<AddressState, any>, validateEmailUrl: string ) {
 		if ( !context.getters.requiredFieldsAreValid ) {
 			return Promise.resolve( { status: 'ERR', messages: [] } );

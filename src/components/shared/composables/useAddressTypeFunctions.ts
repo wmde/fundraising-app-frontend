@@ -8,7 +8,7 @@ export const useAddressTypeFunctions = ( store: any ) => {
 			return store.getters[ 'payment/isDirectDebitPayment' ] ? [ AddressTypeModel.ANON ] : [];
 		}
 	);
-	const addressType = computed( () => store.getters[ 'address/addressType' ] );
+	const addressType = computed( () => store.state.address.addressType );
 	const addressTypeIsNotAnon = computed( () => store.getters[ 'address/addressTypeIsNotAnon' ] );
 	const addressTypeIsInvalid = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 

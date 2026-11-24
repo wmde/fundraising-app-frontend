@@ -228,7 +228,7 @@ const onFieldChange = ( fieldName: string ): void => {
 
 const getAddressData = (): Address => {
 	const data = {
-		addressType: addressTypeName( store.getters[ 'address/addressType' ] ),
+		addressType: addressTypeName( store.state.address.addressType ),
 	} as any;
 	Object.keys( formData ).forEach( fieldName => {
 		data[ fieldName ] = formData[ fieldName ].value;

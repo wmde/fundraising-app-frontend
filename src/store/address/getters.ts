@@ -1,11 +1,11 @@
 import { GetterTree } from 'vuex';
 import type { AddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 
 export const getters: GetterTree<AddressState, any> = {
 	invalidFields: ( state: AddressState ): Array<string> => {
-		return state.requiredFields[ state.addressType ].filter( fieldName => state.validity[ fieldName ] === Validity.INVALID );
+		return state.requiredFields[ addressTypeName( state.addressType ) ].filter( fieldName => state.validity[ fieldName ] === Validity.INVALID );
 	},
 	requiredFieldsAreValid: ( state: AddressState, addressGetters: GetterTree<AddressState, any> ): boolean => {
 		return addressGetters.invalidFields.length === 0;
@@ -13,16 +13,16 @@ export const getters: GetterTree<AddressState, any> = {
 	/**
 	 * @deprecated
 	 */
-	addressType: ( state: AddressState ): AddressTypeModel => state.addressType,
+	addressTypeModel: ( state: AddressState ): AddressTypeModel => state.addressType,
 	/**
 	 * @deprecated
 	 */
-	addressTypeIsNotAnon: ( state: AddressState, addressGetters ): boolean => addressGetters.addressType !== AddressTypeModel.ANON,
+	addressTypeIsNotAnon: ( state: AddressState ): boolean => state.addressType !== AddressTypeModel.ANON,
 	/**
 	 * @deprecated
 	 */
-	addressTypeIsNeitherAnonNorEmail: ( state: AddressState, addressGetters ): boolean => {
-		return addressGetters.addressType !== AddressTypeModel.ANON && addressGetters.addressType !== AddressTypeModel.EMAIL;
+	addressTypeIsNeitherAnonNorEmail: ( state: AddressState ): boolean => {
+		return state.addressType !== AddressTypeModel.ANON && state.addressType !== AddressTypeModel.EMAIL;
 	},
 	/**
 	 * @deprecated
@@ -51,7 +51,7 @@ export const getters: GetterTree<AddressState, any> = {
 		return state.serverSideValidationCount > 0;
 	},
 	allRequiredFieldsEmpty: ( state: AddressState ): boolean => {
-		return state.requiredFields[ state.addressType ].map( field => state.values[ field ] === '' ).every( x => x );
+		return state.requiredFields[  addressTypeName( state.addressType ) ].map( field => state.values[ field ] === '' ).every( x => x );
 	},
 	// Some combinations of address type and information choices don't make sense, so we need getters that combine them
 	willGetReceipt: ( state: AddressState, addressGetters ): boolean => {
