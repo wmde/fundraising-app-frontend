@@ -12,7 +12,6 @@ import type { Donation } from '@src/view_models/Donation';
 import type { Salutation } from '@src/view_models/Salutation';
 import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
-import { addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { clearPersistentData } from '@src/store/create_data_persister';
 import { trackGoal } from '@src/util/tracking';
 
@@ -48,7 +47,7 @@ trackGoal( pageData.applicationVars.piwik.donationConfirmationGoalId );
 store.dispatch(
 	action( 'address', 'initializeAddress' ),
 	{
-		addressType: addressTypeFromName( pageData.applicationVars.addressType.toString() ),
+		addressType: pageData.applicationVars.addressType,
 		newsletter: pageData.applicationVars.donation.newsletter,
 		fields: [
 			{ name: 'salutation', value: address.salutation ?? '', validity: Validity.INCOMPLETE },

@@ -1,66 +1,34 @@
 <template>
-	<form id="address-update-form" class="flow" name="address-update-form" v-on:submit.prevent="submit" method="post" ref="addressForm">
-		<AddressUpdateFormErrorSummaries :address-type="addressType" :show-error-summary="showErrorSummary"/>
+	<form id="address-update-form" class="flow compact" name="address-update-form" v-on:submit.prevent="submit" method="post" ref="addressForm">
+		<AddressUpdateFormErrorSummaries :show-error-summary="showErrorSummary"/>
 
 		<AutofillHandler v-on:autofill="onAutofill">
-
-			<RadioField
-				name="addressType"
-				id="address-form-type"
-				class="address-type-field"
-				:options="[
-					{
-						value: AddressTypeModel.PERSON,
-						label: $t( 'donation_form_addresstype_option_private_addresstype_basic' ),
-						id: 'addressType-0',
-					},
-					{
-						value: AddressTypeModel.COMPANY,
-						label: $t( 'donation_form_addresstype_option_company_addresstype_basic' ),
-						id: 'addressType-1',
-					}
-				]"
-				:label="$t( 'donation_form_address_choice_title_addresstype_basic' )"
-				:show-error="addressTypeIsInvalid"
-				:error-message="$t( 'donation_form_section_address_error' )"
-				v-model="addressTypeModel"
-				alignment="column"
-				:autofocus="true"
-				:is-max-width-field="true"
-			/>
 
 			<NameFields
 				:show-error="fieldErrors"
 				:form-data="formData"
 				:salutations="salutations"
-				:address-type="addressType"
-				:address-types-to-show-personal-fields="[
-					AddressTypeModel.PERSON,
-					AddressTypeModel.EMAIL,
-					AddressTypeModel.ANON,
-				]"
 				@field-changed="onFieldChange"
-			/>
-
-			<PostalAddressFields
-				:show-error="fieldErrors"
-				:form-data="formData"
-				:countries="countries"
-				:post-code-validation="addressValidationPatterns.postcode"
-				:country-was-restored="false"
-				v-on:field-changed="onFieldChange"
 			/>
 
 			<EmailField
 				:show-error="fieldErrors.email"
 				v-model="formData.email.value"
-				:is-max-width-field="true"
 				@field-changed="onFieldChange"
 			/>
 
-		</AutofillHandler>
+			<AddressFields
+				:show-error="fieldErrors"
+				:form-data="formData"
+				:countries="countries"
+				:post-code-validation="addressValidationPatterns.postcode"
+				:split-street="false"
+				@field-changed="onFieldChange"
+			/>
 
-		<MailingListField v-model="mailingList" input-id="newsletter"/>
+			<MailingListField v-model="mailingList" input-id="newsletter"/>
+
+		</AutofillHandler>
 
 		<div class="switcher">
 			<FormButton
@@ -85,13 +53,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import type { Address, AddressFormData, AddressValidity, ValidationResult } from '@src/view_models/Address';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { action } from '@src/store/util';
-import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
 import { mergeValidationResults } from '@src/util/merge_validation_results';
 import { camelizeName } from '@src/util/camlize_name';
 import type { Country } from '@src/view_models/Country';
@@ -103,14 +69,12 @@ import type { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import MailingListField from '@src/components/shared/form_fields/MailingListField.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
-import NameFields from '@src/components/shared/NameFields.vue';
-import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import PostalAddressFields from '@src/components/shared/PostalAddressFields.vue';
-import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
-import AddressUpdateFormErrorSummaries
-	from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
+import NameFields from '@src/components/pages/donation_form/PersonalData/NameFields.vue';
+import AddressFields from '@src/components/pages/donation_form/PersonalData/AddressFields.vue';
+import AddressUpdateFormErrorSummaries from '@src/components/pages/donation_confirmation/AddressUpdateFormErrorSummaries.vue';
 import type { UpdateDonorRequest } from '@src/api/UpdateDonorRequest';
 import ServerMessage from '@src/components/shared/ServerMessage.vue';
+import { useMailingListModel } from '@src/components/shared/composables/useMailingListModel';
 
 interface Props {
 	addressValidationPatterns: AddressValidation;
@@ -202,20 +166,10 @@ const fieldErrors = computed<AddressValidity>( () => {
 	}, ( {} as AddressValidity ) );
 } );
 
-// TODO: Refactor useAddressTypeFunctions so it returns a model that it watches internally.
-//       Currently it is not very reusable and doesn't integrate well with the new fields
-const { addressType, addressTypeIsInvalid, setAddressType } = useAddressTypeFunctions( store );
-const addressTypeModel = ref<AddressTypeModel>( addressType.value );
-watch( addressTypeModel, ( newAddressType: AddressTypeModel ) => setAddressType( newAddressType ) );
-
-const mailingList = ref<boolean>( store.state.address.newsletter );
+const mailingList = useMailingListModel( store );
 
 const validateForm = async (): Promise<ValidationResult> => {
 	const results = await Promise.all( [
-		store.dispatch( action( 'address', 'validateAddressType' ), {
-			type: store.state.address.addressType,
-			disallowed: [ AddressTypeModel.UNSET, AddressTypeModel.ANON, AddressTypeModel.EMAIL ],
-		} ),
 		store.dispatch( action( 'address', 'validateAddress' ), props.validateAddressUrl ),
 		store.dispatch( action( 'address', 'validateEmail' ), props.validateEmailUrl ),
 	] );
@@ -239,7 +193,7 @@ const getAddressData = (): UpdateDonorRequest => {
 	return {
 		donationId: props.donation.id,
 		updateToken: props.donation.updateToken,
-		addressType: addressTypeName( store.state.address.addressType ),
+		addressType: store.getters[ 'address/addressType' ],
 		city: formData.city.value,
 		companyName: formData.companyName.value,
 		country: formData.country.value,
@@ -250,7 +204,7 @@ const getAddressData = (): UpdateDonorRequest => {
 		salutation: formData.salutation.value,
 		street: formData.street.value,
 		title: formData.title.value,
-		mailingList: false,
+		mailingList: store.state.address.newsletter,
 	};
 };
 
@@ -266,8 +220,6 @@ const submit = async (): Promise<void> => {
 		showErrorSummary.value = true;
 		return;
 	}
-
-	trackFormSubmission( addressForm.value );
 
 	props.donorResource.put( getAddressData() ).then( ( addressData: Address ) => {
 		isValidating.value = false;
@@ -291,14 +243,15 @@ store.watch( ( state, getters ) => getters[ 'address/requiredFieldsAreValid' ], 
 } );
 
 onMounted( () => {
-	trackDynamicForm();
-
 	Object.entries( formData ).forEach( ( formItem ) => {
 		const key: string = formItem[ 0 ];
 		if ( formData[ key ].value !== '' ) {
 			store.dispatch( action( 'address', 'validateAddressField' ), formData[ key ] );
 		}
 	} );
+
+	store.dispatch( action( 'address', 'setIsAnonymous' ), false );
+	store.dispatch( action( 'address', 'setReceiptChoice' ), true );
 } );
 
 </script>

@@ -72,10 +72,7 @@ export interface MembershipAddressState {
 }
 
 export interface InitialAddressValues {
-	/**
-	 * @deprecated
-	 */
-	addressType: AddressTypeModel;
+	addressType: string;
 	newsletter: boolean;
 	receipt: boolean;
 	isAnonymous: boolean;

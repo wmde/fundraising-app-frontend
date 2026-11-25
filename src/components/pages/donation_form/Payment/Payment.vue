@@ -51,7 +51,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { AmountValidity } from '@src/view_models/Payment';
 import { useI18n } from 'vue-i18n';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';

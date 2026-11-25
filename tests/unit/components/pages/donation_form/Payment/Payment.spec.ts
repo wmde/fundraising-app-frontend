@@ -89,7 +89,7 @@ describe( 'Payment.vue', () => {
 		const wrapper = getWrapper();
 
 		await store.dispatch( action( 'address', 'setIsAnonymous' ), false );
-		await store.dispatch( action( 'address', 'setReceipt' ), true );
+		await store.dispatch( action( 'address', 'setReceiptChoice' ), true );
 
 		expect( wrapper.find( '.tooltip__popup' ).exists() ).toBe( false );
 	} );

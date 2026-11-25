@@ -104,16 +104,23 @@ export const actions = {
 		if ( Helper.hasInitialValue( initialValues.receipt ) ) {
 			context.commit( 'SET_RECEIPT', initialValues.receipt );
 			context.commit( 'SET_VALIDITY', { name: 'receipt', value: Validity.RESTORED } );
+		} else if ( [ 'person', 'company_with_contact', 'firma' ].includes( initialValues.addressType ) ) {
+			context.commit( 'SET_RECEIPT', true );
 		}
 
 		if ( Helper.hasInitialValue( initialValues.isAnonymous ) ) {
 			context.commit( 'SET_IS_ANONYMOUS', initialValues.isAnonymous );
 			context.commit( 'SET_VALIDITY', { name: 'isAnonymous', value: Validity.RESTORED } );
+		} else if ( initialValues.addressType === 'anonym' ) {
+			context.commit( 'SET_IS_ANONYMOUS', true );
 		}
 
 		if ( Helper.hasInitialValue( initialValues.isCompany ) ) {
 			context.commit( 'SET_IS_COMPANY', initialValues.isCompany );
+		} else if ( [ 'company_with_contact', 'firma' ].includes( initialValues.addressType ) ) {
+			context.commit( 'SET_IS_COMPANY', true );
 		}
+
 		context.commit( 'INITIALIZE_ADDRESS', initialValues.fields );
 	},
 	/*
