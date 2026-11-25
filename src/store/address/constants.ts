@@ -19,13 +19,13 @@ export const REQUIRED_FIELDS: AddressRequirements = {
 };
 
 export const REQUIRED_FIELDS_DONOR_UPDATE: AddressRequirements = {
-	person: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
-	firma: [ 'addressType', 'companyName', 'street', 'postcode', 'city', 'country', 'email' ],
-	'company_with_contact': [ 'addressType', 'salutation', 'firstName', 'lastName', 'companyName', 'street', 'postcode', 'city', 'country', 'email' ],
+	person: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
+	firma: [ 'companyName', 'street', 'postcode', 'city', 'country', 'email' ],
+	'company_with_contact': [ 'salutation', 'firstName', 'lastName', 'companyName', 'street', 'postcode', 'city', 'country', 'email' ],
 	// We show the person fields as default so if the address type before updating is email or anon we still need to validate them
-	email: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
-	anonym: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
-	unset: [ 'addressType', 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
+	email: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
+	anonym: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
+	unset: [ 'salutation', 'firstName', 'lastName', 'street', 'postcode', 'city', 'country', 'email' ],
 };
 
 /**
