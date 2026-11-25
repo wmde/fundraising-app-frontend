@@ -8,7 +8,6 @@ import { Store } from 'vuex';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
 import { nextTick } from 'vue';
 import RadioField from '@src/components/shared/form_fields/RadioField.vue';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { DisplaySection, DisplaySectionCollection } from '@src/components/pages/donation_form/Payment';
 
 describe( 'Payment.vue', () => {
@@ -81,7 +80,7 @@ describe( 'Payment.vue', () => {
 	it( 'renders tooltip hint if address type is Anonymous', async () => {
 		const wrapper = getWrapper();
 
-		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.ANON );
+		await store.dispatch( action( 'address', 'setIsAnonymous' ), true );
 
 		expect( wrapper.find( '.tooltip__popup' ).isVisible() ).toBe( true );
 	} );
@@ -89,7 +88,8 @@ describe( 'Payment.vue', () => {
 	it( 'does not render tooltip hint if address type is something different than Anonymous', async () => {
 		const wrapper = getWrapper();
 
-		await store.dispatch( action( 'address', 'setAddressType' ), AddressTypeModel.EMAIL );
+		await store.dispatch( action( 'address', 'setIsAnonymous' ), false );
+		await store.dispatch( action( 'address', 'setReceipt' ), true );
 
 		expect( wrapper.find( '.tooltip__popup' ).exists() ).toBe( false );
 	} );

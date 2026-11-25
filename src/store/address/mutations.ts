@@ -3,7 +3,7 @@ import { Validity } from '@src/view_models/Validity';
 import { Helper } from '@src/store/util';
 import type { AddressState, InputField } from '@src/view_models/Address';
 import type { FieldInitialization } from '@src/view_models/FieldInitialization';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { getRequiredFields } from '@src/store/address/addressTypeFunctions';
 
 export const mutations: MutationTree<AddressState> = {
 	VALIDATE_INPUT( state: AddressState, field: InputField ) {
@@ -14,32 +14,11 @@ export const mutations: MutationTree<AddressState> = {
 		}
 	},
 	MARK_EMPTY_FIELDS_INVALID( state: AddressState ) {
-		let addressTypeRequirements = state.requiredFields[ addressTypeName( state.addressType ) ];
-		state.requiredFields[ addressTypeName( state.addressType ) ].forEach( ( fieldName: string ) => {
-			if ( state.validity[ fieldName ] === Validity.INCOMPLETE &&
-				addressTypeRequirements[ addressTypeRequirements.indexOf( fieldName ) ] ) {
+		getRequiredFields( state ).forEach( ( fieldName: string ) => {
+			if ( state.validity[ fieldName ] === Validity.INCOMPLETE ) {
 				state.validity[ fieldName ] = Validity.INVALID;
 			}
 		} );
-		if ( state.validity.addressType === Validity.INCOMPLETE ) {
-			state.validity.addressType = Validity.INVALID;
-		}
-	},
-	/**
-	 * This is a hacky workaround for test C24_WMDE_Desktop_DE_01 if we move to that style of form we
-	 * need to add proper store fields to handle it, if not then we should delete this
-	 */
-	MARK_EMPTY_DONATION_FIELDS_AS_INVALID( state: AddressState, receiptNeeded: boolean | null ) {
-		const addressTypeRequirements = state.requiredFields[ receiptNeeded === null ? AddressTypeModel.EMAIL : addressTypeName( state.addressType ) ];
-		state.requiredFields[ addressTypeName( state.addressType ) ].forEach( ( fieldName: string ) => {
-			if ( state.validity[ fieldName ] === Validity.INCOMPLETE &&
-				addressTypeRequirements[ addressTypeRequirements.indexOf( fieldName ) ] ) {
-				state.validity[ fieldName ] = Validity.INVALID;
-			}
-		} );
-		if ( state.validity.addressType === Validity.INCOMPLETE ) {
-			state.validity.addressType = Validity.INVALID;
-		}
 	},
 	BEGIN_ADDRESS_VALIDATION( state: AddressState ) {
 		state.serverSideValidationCount++;
@@ -49,7 +28,7 @@ export const mutations: MutationTree<AddressState> = {
 		if ( payload.status === 'OK' ) {
 			return;
 		}
-		state.requiredFields[ addressTypeName( state.addressType ) ].forEach( name => {
+		getRequiredFields( state ).forEach( name => {
 			if ( payload.messages[ name ] ) {
 				state.validity[ name ] = Validity.INVALID;
 			}
@@ -63,7 +42,7 @@ export const mutations: MutationTree<AddressState> = {
 		if ( payload.status === 'OK' ) {
 			return;
 		}
-		if ( state.requiredFields[ addressTypeName( state.addressType ) ].indexOf( 'email' ) > -1 ) {
+		if ( getRequiredFields( state ).indexOf( 'email' ) > -1 ) {
 			state.validity.email = Validity.INVALID;
 		}
 	},

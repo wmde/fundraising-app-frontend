@@ -212,7 +212,7 @@ const fieldErrors = computed<AddressValidity>( () => {
 } );
 
 const { addressType } = useAddressTypeFunctions( store );
-const { receiptNeeded } = useReceiptModel( store );
+const receiptNeeded = useReceiptModel( store );
 
 const userOnlyWantsToDeclineReceipt = computed<boolean>( () => {
 	return !store.state.address.receipt && store.getters[ 'address/allRequiredFieldsEmpty' ];

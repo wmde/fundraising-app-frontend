@@ -96,7 +96,7 @@ const paymentTypesAsOptions = computed<CheckboxFormOption[]>( () => {
 
 const disabledPaymentTypes = computed<string[]>( () => {
 	let disabledTypes: string[] = [];
-	if ( store.state.address.addressType === AddressTypeModel.ANON ) {
+	if ( store.getters[ 'address/addressType' ] === 'anonym' ) {
 		disabledTypes.push( 'BEZ' );
 	}
 	if ( store.state.payment.values.interval !== '0' ) {

@@ -46,4 +46,7 @@ export const Helper = {
 		}
 		return validationResponse.messages[ fieldName ] ? Validity.INVALID : Validity.VALID;
 	},
+	hasInitialValue( field: string | number | boolean ): boolean {
+		return field !== null && field !== undefined;
+	},
 };

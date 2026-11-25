@@ -1,12 +1,12 @@
 <template>
-	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
+	<ContentCard>
 		<template #heading>
-			<h2 id="donation-form-subheading">2. {{ $t( 'compact_donation_form_name_heading' ) }}</h2>
+			<h2>{{ startIndex }}. {{ $t( 'compact_donation_form_name_heading' ) }}</h2>
 		</template>
 
 		<template #content>
 
-			<p id="donation-form-tagline">{{ $t( 'compact_donation_form_name_blurb' ) }}</p>
+			<p>{{ $t( 'compact_donation_form_name_blurb' ) }}</p>
 
 			<form class="compact" id="donation-form" action="/donation/add" method="post" @submit.prevent>
 				<AutofillHandler @autofill="onAutofill">
@@ -30,9 +30,9 @@
 		</template>
 	</ContentCard>
 
-	<ContentCard aria-labelledby="donation-form-subheading donation-form-tagline">
+	<ContentCard>
 		<template #heading>
-			<h2>3. {{ $t( 'compact_donation_form_other_info_heading' ) }}</h2>
+			<h2>{{ startIndex + 1 }}. {{ $t( 'compact_donation_form_other_info_heading' ) }}</h2>
 		</template>
 
 		<template #content>
@@ -42,7 +42,7 @@
 				<div class="repel">
 					<p>{{  $t( 'compact_donation_form_other_info_blurb' ) }}</p>
 					<CheckboxToggle
-						v-model="receiptModel.receiptNeeded"
+						v-model="receiptModel"
 						name="donation-receipt"
 						input-id="donation-receipt"
 					>
@@ -51,7 +51,7 @@
 				</div>
 
 				<AddressFields
-					v-if="receiptModel.receiptNeeded"
+					v-if="receiptModel"
 					:show-error="fieldErrors"
 					:form-data="formData"
 					:countries="countries"
@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, toRef } from 'vue';
+import { onBeforeMount } from 'vue';
 import AddressFields from '@src/components/pages/donation_form/PersonalData/AddressFields.vue';
 import AutofillHandler from '@src/components/shared/AutofillHandler.vue';
 import EmailField from '@src/components/shared/form_fields/EmailField.vue';
@@ -76,32 +76,27 @@ import type { Country } from '@src/view_models/Country';
 import type { Salutation } from '@src/view_models/Salutation';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import { useAddressFunctions } from '@src/components/pages/donation_form/composables/useAddressFunctions';
-import { useAddressTypeFromReceiptSetter } from '@src/components/pages/donation_form/composables/useAddressTypeFromReceiptSetter';
-import { useMailingListModel } from '@src/components/shared/form_fields/useMailingListModel';
-import type { ReceiptModel } from '@src/components/pages/donation_form/composables/useReceiptModel';
+import { useMailingListModel } from '@src/components/shared/composables/useMailingListModel';
 import { useStore } from 'vuex';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
 import CheckboxToggle from '@src/components/shared/form_elements/CheckboxToggle.vue';
+import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
 
 interface Props {
+	startIndex: number;
 	countries: Country[];
 	salutations: Salutation[];
 	trackingData: TrackingData;
 	campaignValues: CampaignValues;
 	addressValidationPatterns: AddressValidation;
 	isDirectDebitPayment: boolean;
-	disabledAddressTypes: AddressTypeModel[];
-	addressType: AddressTypeModel;
-	receiptModel: ReceiptModel;
-	addressTypeIsInvalid: boolean;
 }
 
 const props = defineProps<Props>();
 const store = useStore();
 
 const mailingList = useMailingListModel( store );
-const receiptModel = toRef<ReceiptModel>( props.receiptModel );
+const receiptModel = useReceiptModel( store );
 
 const {
 	formData,
@@ -110,8 +105,6 @@ const {
 	onFieldChange,
 	onAutofill,
 } = useAddressFunctions( { addressValidationPatterns: props.addressValidationPatterns }, store );
-
-useAddressTypeFromReceiptSetter( props.receiptModel.receiptNeeded, computed<AddressTypeModel>( () => props.addressType ), store );
 
 onBeforeMount( initializeDataFromStore );
 

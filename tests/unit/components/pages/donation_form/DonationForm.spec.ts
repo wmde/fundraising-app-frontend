@@ -11,7 +11,7 @@ import { IBAN } from '@test/data/bankdata';
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
-import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
+import { ANON_FEATURE, MAILING_LIST_ADDRESS_PAGE } from '@src/config';
 
 vi.mock( 'axios' );
 vi.mocked( axios.get ).mockReturnValue( Promise.resolve( { data: [] } ) );
@@ -28,7 +28,7 @@ declare global {
 const errorSummaryScrollElement = { scrollIntoView: () => {} };
 Object.defineProperty( document, 'getElementById', { writable: true, configurable: true, value: () => errorSummaryScrollElement } );
 
-describe( 'DonationFormReceiptCompact.vue', () => {
+describe( 'DonationForm.vue', () => {
 
 	beforeEach( () => {
 		global.window.scrollTo = vi.fn();
@@ -40,7 +40,7 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 		document.getElementsByTagName( 'html' )[ 0 ].innerHTML = '';
 	} );
 
-	const getWrapper = ( store: Store<any> = null ): VueWrapper<any> => {
+	const getWrapper = ( store: Store<any> = null, urlFeatures: string[] = [] ): VueWrapper<any> => {
 		return mount( DonationForm, {
 			props: {
 				assetsPath: '',
@@ -77,6 +77,7 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 					},
 				],
 				addressValidationPatterns: { postcode: '', country: null } as AddressValidation,
+				urlFeatures,
 			},
 			global: {
 				plugins: [ store ?? createStore() ],
@@ -439,5 +440,77 @@ describe( 'DonationFormReceiptCompact.vue', () => {
 		await wrapper.find( '#iban' ).trigger( 'blur' );
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeFalsy();
+	} );
+
+	describe( 'Anonymous allowed', () => {
+		it( 'shows the anonymous option when the feature is active', async () => {
+			const wrapper = getWrapper();
+
+			expect( wrapper.find( '#payment-form-is-anonymous' ).exists() ).toBeFalsy();
+
+			await wrapper.setProps( { urlFeatures: [ ANON_FEATURE ] } );
+
+			expect( wrapper.find( '#payment-form-is-anonymous' ).exists() ).toBeTruthy();
+		} );
+
+		it( 'Sets isAnonymous to false when the flag is not set', async () => {
+			const store = createStore();
+
+			expect( store.state.address.isAnonymous ).toBeNull();
+
+			getWrapper( store );
+
+			expect( store.state.address.isAnonymous ).toBeFalsy();
+		} );
+
+		it( 'Shows and hides the is anonymous error in the summary', async () => {
+			const wrapper = getWrapper( createStore(), [ ANON_FEATURE ] );
+
+			await wrapper.find( '#submit-btn' ).trigger( 'click' );
+			await nextTick();
+			await nextTick();
+
+			expect( errorSummaryItemIsFunctional( wrapper, 'isAnonymous-false', 'payment-form-is-anonymous' ) ).toBeTruthy();
+
+			await wrapper.find( 'input[name="isAnonymous"][value="true"]' ).trigger( 'change' );
+
+			expect( errorSummaryItemIsFunctional( wrapper, 'isAnonymous-false', 'payment-form-is-anonymous' ) ).toBeFalsy();
+		} );
+
+		it( 'submits the form for anonymous', async () => {
+			vi.mocked( axios.post ).mockResolvedValue( { data: { status: 'OK' } } );
+			const wrapper = getWrapper( createStore(), [ ANON_FEATURE ] );
+
+			const submitForm = wrapper.find<HTMLFormElement>( '#submit-form' );
+			submitForm.element.submit = vi.fn();
+
+			await wrapper.find( 'input[name="amount"][value="500"]' ).trigger( 'change' );
+			await wrapper.find( 'input[name="paymentType"][value="PPL"]' ).trigger( 'change' );
+
+			await wrapper.find( 'input[name="isAnonymous"][value="true"]' ).trigger( 'change' );
+
+			await wrapper.find( '#submit-btn' ).trigger( 'click' );
+
+			await vi.runAllTimersAsync();
+			await flushPromises();
+
+			expect( submitForm.element.submit ).toHaveBeenCalled();
+		} );
+
+		it( 'does not allow anonymous when direct debit is selected', async () => {
+			const wrapper = getWrapper( createStore(), [ ANON_FEATURE ] );
+
+			await wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).trigger( 'change' );
+
+			expect( wrapper.find( 'input[name="isAnonymous"][value="true"]' ).attributes( 'disabled' ) ).toBeDefined();
+		} );
+
+		it( 'does not allow direct debit when anonymous is selected', async () => {
+			const wrapper = getWrapper( createStore(), [ ANON_FEATURE ] );
+
+			await wrapper.find( 'input[name="isAnonymous"][value="true"]' ).trigger( 'change' );
+
+			expect( wrapper.find( 'input[name="paymentType"][value="BEZ"]' ).attributes( 'disabled' ) ).toBeDefined();
+		} );
 	} );
 } );

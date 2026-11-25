@@ -93,6 +93,7 @@ import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAu
 import type { Country } from '@src/view_models/Country';
 import { Validity } from '@src/view_models/Validity';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
+import { useIsCompanyModel } from '@src/components/shared/composables/useIsCompanyModel';
 
 interface Props {
 	formData: AddressFormData;
@@ -106,11 +107,10 @@ const emit = defineEmits( [ 'field-changed' ] );
 
 const store = useStore();
 const addressType = useAddressTypeModel( store );
+const isCompany = useIsCompanyModel( store );
 
 const showAddressTypeError = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 const countryWasRestored = ref<boolean>( false );
-
-const isCompany = ref<boolean>( addressType.value === AddressTypeModel.COMPANY_WITH_CONTACT );
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {
