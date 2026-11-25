@@ -1,6 +1,5 @@
 import { Store } from 'vuex';
 import { action } from '@src/store/util';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { waitForServerValidationToFinish } from '@src/util/wait_for_server_validation';
 import { computed, ComputedRef, ref, Ref, watch } from 'vue';
 import { Validity } from '@src/view_models/Validity';
@@ -13,10 +12,9 @@ type ReturnType = {
 
 export function useDonationFormSubmitHandler(
 	store: Store<any>,
-	isDirectDebit: ComputedRef<any>,
+	isDirectDebit: ComputedRef<boolean>,
 	validateAddressUrl: string,
 	validateEmailUrl: string,
-	receiptNeeded: Ref<boolean | null>
 ): ReturnType {
 	const submitValuesForm = ref<HTMLFormElement>();
 	const bankDataIsValid = ref<boolean>( true );
@@ -30,14 +28,7 @@ export function useDonationFormSubmitHandler(
 
 		const validationCalls: Promise<any>[] = [
 			store.dispatch( action( 'payment', 'markEmptyValuesAsInvalid' ) ),
-			store.dispatch( action( 'address', 'validateAddressType' ), {
-				type: store.state.address.addressType,
-				disallowed: [ AddressTypeModel.UNSET ],
-			} ),
-			store.dispatch( action( 'address', 'validateDonationReceiptAddress' ), {
-				receiptNeeded: receiptNeeded.value,
-				validateAddressUrl: validateAddressUrl,
-			} ),
+			store.dispatch( action( 'address', 'validateAddress' ), validateAddressUrl ),
 			store.dispatch( action( 'address', 'validateEmail' ), validateEmailUrl ),
 		];
 

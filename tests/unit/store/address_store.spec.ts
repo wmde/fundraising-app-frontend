@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { getters } from '@src/store/address/getters';
 import { actions } from '@src/store/address/actions';
 import { mutations } from '@src/store/address/mutations';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import type { AddressState } from '@src/view_models/Address';
 import { Validity } from '@src/view_models/Validity';
 import { REQUIRED_FIELDS } from '@src/store/address/constants';
@@ -54,13 +54,15 @@ function newMinimalStore( overrides: Object ): AddressState {
 describe( 'Address', () => {
 
 	describe( 'Getters/invalidFields', () => {
-		const requiredFields = REQUIRED_FIELDS[ addressTypeName( AddressTypeModel.PERSON ) ];
+		const requiredFields = REQUIRED_FIELDS.person;
 
 		it( 'does not return non-required fields as invalid when they are not set', () => {
-			const expectedInvalidFields = requiredFields.filter( e => e !== 'addressType' );
+			const expectedInvalidFields = requiredFields.filter( e => e !== 'isAnonymous' );
 			expect( getters.invalidFields(
 				newMinimalStore( {
-					addressType: AddressTypeModel.PERSON,
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
 					validity: {
 						addressType: Validity.VALID,
 						salutation: Validity.INVALID,
@@ -83,6 +85,9 @@ describe( 'Address', () => {
 		it( 'returns an array of all invalid and incomplete fields', () => {
 			expect( getters.invalidFields(
 				newMinimalStore( {
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
 					validity: {
 						street: Validity.INVALID,
 						postcode: Validity.INVALID,
@@ -122,39 +127,78 @@ describe( 'Address', () => {
 
 	describe( 'Getters/addressType', () => {
 
-		it( 'returns address type from the store', () => {
-			expect( getters.addressTypeModel(
+		it( 'returns address type for anonymous', () => {
+			expect( getters.addressType(
 				newMinimalStore( {
-					addressType: AddressTypeModel.COMPANY,
+					isAnonymous: true,
+					receipt: true,
+					isCompany: false,
 				} ),
 				null,
 				null,
 				null
-			) ).toBe( AddressTypeModel.COMPANY );
+			) ).toBe( 'anonym' );
+		} );
+
+		it( 'returns address type for email', () => {
+			expect( getters.addressType(
+				newMinimalStore( {
+					isAnonymous: false,
+					receipt: false,
+					isCompany: false,
+				} ),
+				null,
+				null,
+				null
+			) ).toBe( 'email' );
+		} );
+
+		it( 'returns address type for person', () => {
+			expect( getters.addressType(
+				newMinimalStore( {
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
+				} ),
+				null,
+				null,
+				null
+			) ).toBe( 'person' );
+		} );
+
+		it( 'returns address type for company', () => {
+			expect( getters.addressType(
+				newMinimalStore( {
+					isAnonymous: false,
+					receipt: true,
+					isCompany: true,
+				} ),
+				null,
+				null,
+				null
+			) ).toBe( 'company_with_contact' );
 		} );
 	} );
 
 	describe( 'Getters/addressTypeIsNotAnon', () => {
 
 		it( 'returns true for address types person and company', () => {
-			const addressType: AddressTypeModel = AddressTypeModel.COMPANY;
 			expect( getters.addressTypeIsNotAnon(
 				newMinimalStore( {
-					addressType: AddressTypeModel.COMPANY,
+					isAnonymous: false,
 				} ),
-				{ addressType },
+				null,
 				null,
 				null
 			) ).toBe( true );
 		} );
 
 		it( 'returns false for anon users', () => {
-			const addressType: AddressTypeModel = AddressTypeModel.ANON;
 			expect( getters.addressTypeIsNotAnon(
 				newMinimalStore( {
-					addressType: AddressTypeModel.ANON,
+					isAnonymous: true,
 				} ),
-				{ addressType },
+				null,
 				null,
 				null
 			) ).toBe( false );
@@ -166,7 +210,9 @@ describe( 'Address', () => {
 		it( 'returns company name when address type is company', () => {
 			expect( getters.fullName(
 				newMinimalStore( {
-					addressType: AddressTypeModel.COMPANY,
+					isAnonymous: false,
+					receipt: true,
+					isCompany: true,
 					values: {
 						companyName: 'Testmedia Deutschland',
 					},
@@ -180,7 +226,9 @@ describe( 'Address', () => {
 		it( 'returns full name and title when address type is person', () => {
 			expect( getters.fullName(
 				newMinimalStore( {
-					addressType: AddressTypeModel.PERSON,
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
 					values: {
 						firstName: 'Testina',
 						lastName: 'Testingson',
@@ -196,7 +244,9 @@ describe( 'Address', () => {
 		it( 'returns only first and last name when title is not chosen', () => {
 			expect( getters.fullName(
 				newMinimalStore( {
-					addressType: AddressTypeModel.PERSON,
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
 					values: {
 						firstName: 'Testina',
 						lastName: 'Testingson',
@@ -668,7 +718,11 @@ describe( 'Address', () => {
 		} );
 
 		it( 'sets validity to invalid for the appropriate form fields according to the response from the server', () => {
-			const store = newMinimalStore( {} ),
+			const store = newMinimalStore( {
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
+				} ),
 				resp = {
 					status: 'ERR',
 					messages: {

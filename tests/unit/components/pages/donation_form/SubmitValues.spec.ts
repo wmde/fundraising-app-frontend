@@ -2,16 +2,27 @@ import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { separator } from '@src/util/street_and_building_number_tools';
+import { getAddressType } from '@src/store/address/addressTypeFunctions';
+import { AddressState } from '@src/view_models/Address';
 
-const getWrapper = ( addressType: AddressTypeModel, street: string = 'Untere Straße 5' ) => {
+const getWrapper = (
+	isAnonymous: boolean = false,
+	receipt: boolean = true,
+	isCompany: boolean = false,
+	street: string = 'Untere Straße 5'
+) => {
 	const store = new Vuex.Store( {
 		modules: {
 			[ 'address' ]: {
 				namespaced: true,
 				state: {
-					addressType: addressType,
+					addressType: AddressTypeModel.UNSET,
+					isAnonymous,
+					receipt,
+					isCompany,
+					newsletter: true,
 					values: {
 						firstName: 'Victor',
 						lastName: 'van Doom',
@@ -22,6 +33,7 @@ const getWrapper = ( addressType: AddressTypeModel, street: string = 'Untere Str
 						city: 'Haasenstadt',
 						country: 'DE',
 						email: 'doom@untergang.biz',
+						companyName: 'ACME',
 					},
 				},
 				getters: {
@@ -30,6 +42,9 @@ const getWrapper = ( addressType: AddressTypeModel, street: string = 'Untere Str
 					},
 					willGetReceipt() {
 						return true;
+					},
+					addressType() {
+						return getAddressType( { isAnonymous, receipt, isCompany } as any as AddressState );
 					},
 				},
 			},
@@ -74,100 +89,123 @@ const getWrapper = ( addressType: AddressTypeModel, street: string = 'Untere Str
 
 describe( 'SubmitValues.vue', () => {
 	it( 'renders input fields for ANON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.ANON );
+		const wrapper = getWrapper( true );
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
 	it( 'renders input fields for EMAIL address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.EMAIL );
+		const wrapper = getWrapper( false, false );
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
 	it( 'renders input fields for PERSON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.PERSON );
+		const wrapper = getWrapper( false, true, false );
+		expect( wrapper.element ).toMatchSnapshot();
+	} );
+
+	it( 'renders input fields for COMPANY address type', () => {
+		const wrapper = getWrapper( false, true, true );
 		expect( wrapper.element ).toMatchSnapshot();
 	} );
 
 	it( 'renders the amount as an integer for ANON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.ANON );
+		const wrapper = getWrapper( true );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=amount]' ).element.value ).toBe( '2349' );
 	} );
 
 	it( 'renders the amount as an integer for EMAIL address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.EMAIL );
+		const wrapper = getWrapper( false, false );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=amount]' ).element.value ).toBe( '2349' );
 	} );
 
 	it( 'renders the amount as an integer for PERSON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.PERSON );
+		const wrapper = getWrapper( false, false, false );
+		expect( wrapper.find<HTMLInputElement>( 'input[name=amount]' ).element.value ).toBe( '2349' );
+	} );
+
+	it( 'renders the amount as an integer for COMPANY address type', () => {
+		const wrapper = getWrapper( false, false, true );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=amount]' ).element.value ).toBe( '2349' );
 	} );
 
 	it( 'renders the address type as string for ANON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.ANON );
-		expect( wrapper.find<HTMLInputElement>( 'input[name=addressType]' ).element.value ).toBe(
-			addressTypeName( AddressTypeModel.ANON )
-		);
+		const wrapper = getWrapper( true );
+		expect( wrapper.find<HTMLInputElement>( 'input[name=addressType]' ).element.value ).toBe( 'anonym' );
 	} );
 
 	it( 'renders the address type as string for EMAIL address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.EMAIL );
-		expect( wrapper.find<HTMLInputElement>( 'input[name=addressType]' ).element.value ).toBe(
-			addressTypeName( AddressTypeModel.EMAIL )
-		);
+		const wrapper = getWrapper( false, false );
+		expect( wrapper.find<HTMLInputElement>( 'input[name=addressType]' ).element.value ).toBe( 'email' );
 	} );
 
 	it( 'renders the address type as string for PERSON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.PERSON );
-		expect( wrapper.find<HTMLInputElement>( 'input[name=addressType]' ).element.value ).toBe(
-			addressTypeName( AddressTypeModel.PERSON )
-		);
+		const wrapper = getWrapper( false, true, false );
+		expect( wrapper.find<HTMLInputElement>( 'input[name=addressType]' ).element.value ).toBe( 'person' );
+	} );
+
+	it( 'renders the address type as string for COMPANY address type', () => {
+		const wrapper = getWrapper( false, true, true );
+		expect( wrapper.find<HTMLInputElement>( 'input[name=addressType]' ).element.value ).toBe( 'company_with_contact' );
 	} );
 
 	it( 'sends tracking values for ANON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.ANON );
+		const wrapper = getWrapper( true );
 
 		expect( wrapper.find<HTMLInputElement>( 'input[name=bImpCount]' ).element.value ).toBe( '1' );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=impCount]' ).element.value ).toBe( '5' );
 	} );
 
 	it( 'sends tracking values for EMAIL address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.EMAIL );
+		const wrapper = getWrapper( false, false );
 
 		expect( wrapper.find<HTMLInputElement>( 'input[name=bImpCount]' ).element.value ).toBe( '1' );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=impCount]' ).element.value ).toBe( '5' );
 	} );
 
 	it( 'sends tracking values for PERSON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.PERSON );
+		const wrapper = getWrapper( false, false, false );
+
+		expect( wrapper.find<HTMLInputElement>( 'input[name=bImpCount]' ).element.value ).toBe( '1' );
+		expect( wrapper.find<HTMLInputElement>( 'input[name=impCount]' ).element.value ).toBe( '5' );
+	} );
+
+	it( 'sends tracking values for COMPANY address type', () => {
+		const wrapper = getWrapper( false, false, true );
 
 		expect( wrapper.find<HTMLInputElement>( 'input[name=bImpCount]' ).element.value ).toBe( '1' );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=impCount]' ).element.value ).toBe( '5' );
 	} );
 
 	it( 'sends campaign values for ANON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.ANON );
+		const wrapper = getWrapper( true );
 
 		expect( wrapper.find<HTMLInputElement>( 'input[name=piwik_campaign]' ).element.value ).toBe( 'nicholas' );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=piwik_kwd]' ).element.value ).toBe( 'cage' );
 	} );
 
 	it( 'sends campaign values for EMAIL address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.EMAIL );
+		const wrapper = getWrapper( false, false );
 
 		expect( wrapper.find<HTMLInputElement>( 'input[name=piwik_campaign]' ).element.value ).toBe( 'nicholas' );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=piwik_kwd]' ).element.value ).toBe( 'cage' );
 	} );
 
 	it( 'sends campaign values for PERSON address type', () => {
-		const wrapper = getWrapper( AddressTypeModel.PERSON );
+		const wrapper = getWrapper( false, false, false );
+
+		expect( wrapper.find<HTMLInputElement>( 'input[name=piwik_campaign]' ).element.value ).toBe( 'nicholas' );
+		expect( wrapper.find<HTMLInputElement>( 'input[name=piwik_kwd]' ).element.value ).toBe( 'cage' );
+	} );
+
+	it( 'sends campaign values for COMPANY address type', () => {
+		const wrapper = getWrapper( false, false, true );
 
 		expect( wrapper.find<HTMLInputElement>( 'input[name=piwik_campaign]' ).element.value ).toBe( 'nicholas' );
 		expect( wrapper.find<HTMLInputElement>( 'input[name=piwik_kwd]' ).element.value ).toBe( 'cage' );
 	} );
 
 	it( 'clears the street name and building number separator', () => {
-		const wrapper = getWrapper( AddressTypeModel.PERSON, `sesame street${ separator }42` );
+		const wrapper = getWrapper( false, true, false, `sesame street${ separator }42` );
 
 		expect( wrapper.find<HTMLInputElement>( 'input[name=street]' ).element.value ).toStrictEqual( 'sesame street 42' );
 	} );
