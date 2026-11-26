@@ -33,38 +33,8 @@ describe( 'createInitialDonationAddressValues', () => {
 		expect( ( firstNameValue || {} ).value ).toEqual( firstName.value );
 		expect( lastNameValue ).toBeDefined();
 		expect( ( lastNameValue || {} ).value ).toEqual( lastName.value );
-		expect( values.addressType ).toEqual( AddressTypeModel.ANON );
 		expect( values.isAnonymous ).toEqual( null );
 		expect( values.isCompany ).toEqual( false );
-	} );
-
-	it( 'uses initial address type over stored address type', () => {
-		const storedAddressType = { key: 'addressType', value: AddressTypeModel.PERSON };
-		const initialAddressType = 'firma';
-
-		const dataPersister = new FakeDataPersister( [ storedAddressType ] );
-		const values = createInitialDonationAddressValues( dataPersister, { addressType: initialAddressType } );
-
-		expect( values.addressType ).toEqual( AddressTypeModel.COMPANY );
-	} );
-
-	it( 'uses stored address type when initial address type is empty', () => {
-		const storedAddressType = { key: 'addressType', value: AddressTypeModel.PERSON };
-		const initialAddressType = '';
-
-		const dataPersister = new FakeDataPersister( [ storedAddressType ] );
-		const values = createInitialDonationAddressValues( dataPersister, { addressType: initialAddressType } );
-
-		expect( values.addressType ).toEqual( AddressTypeModel.PERSON );
-	} );
-
-	it( 'converts initial testType from string to AddressTypeModel', () => {
-		const initialAddressType = 'person';
-		const dataPersister = new FakeDataPersister( [] );
-
-		const values = createInitialDonationAddressValues( dataPersister, { addressType: initialAddressType } );
-
-		expect( values.addressType ).toEqual( AddressTypeModel.PERSON );
 	} );
 
 	it( 'uses stored receipt when initial receipt is missing', () => {

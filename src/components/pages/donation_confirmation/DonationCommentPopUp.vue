@@ -79,7 +79,6 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { trackDynamicForm, trackFormSubmission } from '@src/util/tracking';
-import { addressTypeFromName, AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import type { Donation } from '@src/view_models/Donation';
 import FormButton from '@src/components/shared/form_elements/FormButton.vue';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
@@ -112,7 +111,7 @@ const commentHasBeenSubmitted = ref<boolean>( false );
 const serverResponse = ref<string>( '' );
 const serverError = ref<string>( '' );
 
-const showPublishAuthor = computed<boolean>( () => addressTypeFromName( props.addressType ) !== AddressTypeModel.ANON );
+const showPublishAuthor = computed<boolean>( () => props.addressType !== 'anonym' );
 
 const postComment = async (): Promise<void> => {
 	trackFormSubmission( commentForm.value );

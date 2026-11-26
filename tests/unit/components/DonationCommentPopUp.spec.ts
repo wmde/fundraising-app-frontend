@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import DonationCommentPopUp from '@src/components/pages/donation_confirmation/DonationCommentPopUp.vue';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import { failureMessage, FakeFailingCommentResource, FakeSucceedingCommentResource, successMessage } from '@test/unit/TestDoubles/FakeCommentResource';
 
 // This is so the error summary scrollIntoView doesn't throw errors
@@ -25,14 +24,14 @@ describe( 'DonationCommentPopUp.vue', () => {
 		if ( !isAnonymous ) {
 			return {
 				donation: sampleDonationData,
-				addressType: addressTypeName( AddressTypeModel.PERSON ),
+				addressType: 'person',
 				postCommentUrl: '',
 			};
 		}
 
 		return {
 			donation: sampleDonationData,
-			addressType: addressTypeName( AddressTypeModel.ANON ),
+			addressType: 'anonym',
 			postCommentUrl: '',
 		};
 	}

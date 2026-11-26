@@ -2,12 +2,10 @@ import { ActionContext } from 'vuex';
 import axios, { AxiosResponse } from 'axios';
 import type {
 	AddressState,
-	AddressTypeValidationRequest,
 	InitialAddressValues,
 	InputField,
 } from '@src/view_models/Address';
 import type { ValidationResponse } from '@src/store/ValidationResponse';
-import { AddressTypeModel, addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import type { Salutation } from '@src/view_models/Salutation';
 import { salutationValueTranslations } from '@src/view_models/salutationValueTranslations';
@@ -62,20 +60,6 @@ export const actions = {
 			return validationResult.data;
 		} );
 	},
-	/**
-	 * @deprecated
-	 */
-	setAddressType( context: ActionContext<AddressState, any>, type: AddressTypeModel ) {
-		context.commit( 'SET_ADDRESS_TYPE', type );
-		context.commit( 'SET_VALIDITY', { name: 'addressType', value: Validity.VALID } );
-	},
-	validateAddressType( context: ActionContext<AddressState, any>, request: AddressTypeValidationRequest ) {
-		if ( request.disallowed.includes( request.type ) ) {
-			context.commit( 'SET_VALIDITY', { name: 'addressType', value: Validity.INVALID } );
-			return Promise.resolve( { status: 'ERR', messages: [] } );
-		}
-		return Promise.resolve( { status: 'OK', messages: [] } );
-	},
 	setNewsletterChoice( context: ActionContext<AddressState, any>, choice: boolean ) {
 		context.commit( 'SET_NEWSLETTER', choice );
 	},
@@ -90,13 +74,6 @@ export const actions = {
 		context.commit( 'SET_IS_COMPANY', isCompany );
 	},
 	initializeAddress( context: ActionContext<AddressState, any>, initialValues: InitialAddressValues ): void {
-		if ( Helper.hasInitialValue( initialValues.addressType ) ) {
-			context.commit( 'SET_ADDRESS_TYPE', addressTypeFromName( initialValues.addressType ) );
-			context.commit( 'SET_VALIDITY', { name: 'addressType', value: Validity.VALID } );
-		} else {
-			context.commit( 'SET_VALIDITY', { name: 'addressType', value: Validity.INCOMPLETE } );
-		}
-
 		if ( Helper.hasInitialValue( initialValues.newsletter ) ) {
 			context.commit( 'SET_NEWSLETTER', initialValues.newsletter );
 		}

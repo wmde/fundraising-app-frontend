@@ -230,12 +230,6 @@ const submit = async (): Promise<void> => {
 	} );
 };
 
-store.watch( ( state, getters ) => getters[ 'address/addressTypeIsInvalid' ], ( isInvalid: boolean ) => {
-	if ( showErrorSummary.value && !isInvalid ) {
-		showErrorSummary.value = false;
-	}
-} );
-
 store.watch( ( state, getters ) => getters[ 'address/requiredFieldsAreValid' ], ( isValid: boolean ) => {
 	if ( showErrorSummary.value && isValid ) {
 		showErrorSummary.value = false;

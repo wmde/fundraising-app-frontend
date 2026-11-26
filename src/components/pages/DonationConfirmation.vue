@@ -96,7 +96,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import MembershipInfo from '@src/components/pages/donation_confirmation/MembershipInfo.vue';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
 import type { Country } from '@src/view_models/Country';
 import type { Address } from '@src/view_models/Address';
 import type { Donation } from '@src/view_models/Donation';
@@ -165,12 +164,7 @@ const showBankTransferContent = computed<boolean>( () => {
 	return props.donation.paymentType === 'UEB';
 } );
 
-const showAddress = computed<boolean>( () => {
-	return ![
-		addressTypeName( AddressTypeModel.ANON ),
-		addressTypeName( AddressTypeModel.EMAIL ),
-	].includes( currentAddressType.value );
-} );
+const showAddress = computed<boolean>( () => ![ 'anonym', 'email' ].includes( currentAddressType.value ) );
 
 </script>
 

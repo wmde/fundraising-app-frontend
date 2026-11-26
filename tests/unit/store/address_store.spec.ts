@@ -15,7 +15,6 @@ function newMinimalStore( overrides: Object ): AddressState {
 	return Object.assign(
 		{
 			serverSideValidationCount: 0,
-			addressType: AddressTypeModel.PERSON,
 			isAnonymous: false,
 			isCompany: false,
 			newsletter: false,
@@ -44,7 +43,6 @@ function newMinimalStore( overrides: Object ): AddressState {
 				city: Validity.INCOMPLETE,
 				country: Validity.VALID,
 				email: Validity.INCOMPLETE,
-				addressType: Validity.VALID,
 			},
 		},
 		overrides
@@ -180,31 +178,6 @@ describe( 'Address', () => {
 		} );
 	} );
 
-	describe( 'Getters/addressTypeIsNotAnon', () => {
-
-		it( 'returns true for address types person and company', () => {
-			expect( getters.addressTypeIsNotAnon(
-				newMinimalStore( {
-					isAnonymous: false,
-				} ),
-				null,
-				null,
-				null
-			) ).toBe( true );
-		} );
-
-		it( 'returns false for anon users', () => {
-			expect( getters.addressTypeIsNotAnon(
-				newMinimalStore( {
-					isAnonymous: true,
-				} ),
-				null,
-				null,
-				null
-			) ).toBe( false );
-		} );
-	} );
-
 	describe( 'Getters/fullName', () => {
 
 		it( 'returns company name when address type is company', () => {
@@ -257,94 +230,6 @@ describe( 'Address', () => {
 				null,
 				null
 			) ).toBe( 'Testina Testingson' );
-		} );
-	} );
-
-	describe( 'Getters/willGetReceipt', () => {
-		it( 'will return true when non anonymous user demands receipt', () => {
-			expect( getters.willGetReceipt(
-				newMinimalStore( {
-					receipt: true,
-				} ),
-				{ addressTypeIsNeitherAnonNorEmail: true },
-				null,
-				null
-			) ).toBe( true );
-		} );
-
-		it( 'will return false for anonymous users', () => {
-			expect( getters.willGetReceipt(
-				newMinimalStore( {
-					receipt: false,
-				} ),
-				{ addressTypeIsNeitherAnonNorEmail: false },
-				null,
-				null
-			) ).toBe( false );
-
-			expect( getters.willGetReceipt(
-				newMinimalStore( {
-					receipt: true,
-				} ),
-				{ addressTypeIsNeitherAnonNorEmail: false },
-				null,
-				null
-			) ).toBe( false );
-		} );
-
-		it( 'will return false when non anonymous user declines receipt', () => {
-			expect( getters.willGetReceipt(
-				newMinimalStore( {
-					receipt: false,
-				} ),
-				{ addressTypeIsNeitherAnonNorEmail: true },
-				null,
-				null
-			) ).toBe( false );
-		} );
-	} );
-
-	describe( 'Getters/willGetNewsletter', () => {
-		it( 'will return true when non anonymous user demands newsletter', () => {
-			expect( getters.willGetNewsletter(
-				newMinimalStore( {
-					newsletter: true,
-				} ),
-				{ addressTypeIsNotAnon: true },
-				null,
-				null
-			) ).toBe( true );
-		} );
-
-		it( 'will return false when non anonymous user declines newsletter', () => {
-			expect( getters.willGetNewsletter(
-				newMinimalStore( {
-					newsletter: false,
-				} ),
-				{ addressTypeIsNotAnon: true },
-				null,
-				null
-			) ).toBe( false );
-		} );
-
-		it( 'will return false for anonymous users', () => {
-			expect( getters.willGetNewsletter(
-				newMinimalStore( {
-					newsletter: true,
-				} ),
-				{ addressTypeIsNotAnon: false },
-				null,
-				null
-			) ).toBe( false );
-
-			expect( getters.willGetNewsletter(
-				newMinimalStore( {
-					newsletter: false,
-				} ),
-				{ addressTypeIsNotAnon: false },
-				null,
-				null
-			) ).toBe( false );
 		} );
 	} );
 
@@ -504,19 +389,6 @@ describe( 'Address', () => {
 			} );
 
 			return actionResult;
-		} );
-	} );
-
-	describe( 'Actions/setAddressType', () => {
-		it( 'commits to mutation [SET_ADDRESS_TYPE] with the chosen type', () => {
-			const commit = vi.fn(),
-				action = actions.setAddressType as any,
-				type = AddressTypeModel.COMPANY;
-			action( { commit, getters }, type );
-			expect( commit ).toBeCalledWith(
-				'SET_ADDRESS_TYPE',
-				type
-			);
 		} );
 	} );
 
@@ -776,14 +648,6 @@ describe( 'Address', () => {
 			expect( store.validity.email ).toStrictEqual( Validity.INVALID );
 		} );
 
-	} );
-
-	describe( 'Mutations/SET_ADDRESS_TYPE', () => {
-		it( 'sets address type', () => {
-			const store = newMinimalStore( {} );
-			mutations.SET_ADDRESS_TYPE( store, AddressTypeModel.COMPANY );
-			expect( store.addressType ).toBe( AddressTypeModel.COMPANY );
-		} );
 	} );
 
 	describe( 'Mutations/SET_ADDRESS_FIELDS', () => {

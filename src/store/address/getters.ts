@@ -12,21 +12,6 @@ export const getters: GetterTree<AddressState, any> = {
 		return addressGetters.invalidFields.length === 0;
 	},
 	addressType: ( state: AddressState ): AddressType => getAddressType( state ),
-	/**
-	 * @deprecated
-	 */
-	addressTypeIsNotAnon: ( state: AddressState ): boolean => getAddressType( state ) !== 'anonym',
-	/**
-	 * @deprecated
-	 */
-	addressTypeIsNeitherAnonNorEmail: ( state: AddressState ): boolean => {
-		return ![ 'anonym', 'email' ].includes( getAddressType( state ) );
-	},
-	/**
-	 * @deprecated
-	 */
-	addressTypeIsInvalid: ( state: AddressState ): boolean => state.validity.addressType === Validity.INVALID,
-
 	fullName: ( state: AddressState ): string => {
 		// Duplicating code from DonorName PHP class
 		const address = state.values;
@@ -47,15 +32,5 @@ export const getters: GetterTree<AddressState, any> = {
 	},
 	isValidating: ( state: AddressState ): boolean => {
 		return state.serverSideValidationCount > 0;
-	},
-	allRequiredFieldsEmpty: ( state: AddressState ): boolean => {
-		return getRequiredFields( state ).map( field => state.values[ field ] === '' ).every( x => x );
-	},
-	// Some combinations of address type and information choices don't make sense, so we need getters that combine them
-	willGetReceipt: ( state: AddressState, addressGetters ): boolean => {
-		return state.receipt && addressGetters.addressTypeIsNeitherAnonNorEmail;
-	},
-	willGetNewsletter: ( state: AddressState, addressGetters ): boolean => {
-		return state.newsletter && addressGetters.addressTypeIsNotAnon;
 	},
 };

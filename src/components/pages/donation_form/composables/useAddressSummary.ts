@@ -1,7 +1,6 @@
 import { Store } from 'vuex';
 import { computed, ComputedRef } from 'vue';
 import type { Address } from '@src/view_models/Address';
-import { addressTypeName } from '@src/view_models/AddressTypeModel';
 
 type ReturnType = {
 	addressSummary: ComputedRef<Address | undefined>;
@@ -10,7 +9,7 @@ type ReturnType = {
 export function useAddressSummary( store: Store<any> ): ReturnType {
 	const addressSummary = computed( () => {
 		const addressValues = store.state.address.values;
-		const addressType = addressTypeName( store.state.address.addressType );
+		const addressType = store.getters[ 'address/addressType' ];
 
 		if ( addressType === 'anonym' ) {
 			return undefined;

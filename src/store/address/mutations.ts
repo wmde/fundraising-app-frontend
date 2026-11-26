@@ -46,12 +46,6 @@ export const mutations: MutationTree<AddressState> = {
 			state.validity.email = Validity.INVALID;
 		}
 	},
-	/**
-	 * @deprecated
-	 */
-	SET_ADDRESS_TYPE( state: AddressState, type ) {
-		state.addressType = type;
-	},
 	SET_ADDRESS_FIELDS( state: AddressState, fields ) {
 		Object.keys( fields ).forEach( ( field: string ) => {
 			const fieldName = fields[ field ];

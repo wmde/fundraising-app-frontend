@@ -44,10 +44,6 @@ export interface FormValues {
 
 export interface AddressState {
 	serverSideValidationCount: number;
-	/**
-	 * @deprecated
-	 */
-	addressType: AddressTypeModel;
 	newsletter: boolean;
 	receipt: boolean;
 	isAnonymous: boolean;
