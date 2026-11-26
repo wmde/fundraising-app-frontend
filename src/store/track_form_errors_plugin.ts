@@ -6,7 +6,6 @@ export const trackFormErrorPlugin = ( store: Store<any>, formName: string ) => {
 
 	const formNameToStoreNameLookUp: { [key: string]: string } = {
 		'donation_form': 'address',
-		'update_address': 'address',
 		'membership_application': 'membership_address',
 	};
 	const storeName = formNameToStoreNameLookUp[ formName ];

@@ -11,7 +11,6 @@ const webpackConfig = {
 	entry: {
 		'index': './src/pages/donation_form.ts',
 		'access_denied': './src/pages/access_denied.ts',
-		'address_update_success': './src/pages/address_update_success.ts',
 		'comment_list': './src/pages/comment_list.ts',
 		'comment_ticker': './src/pages/comment_ticker.ts',
 		'contact_form': './src/pages/contact_form.ts',
@@ -27,7 +26,6 @@ const webpackConfig = {
 		'static_page': './src/pages/static_page.ts',
 		'system_message': './src/pages/system_message.ts',
 		'supporters': './src/pages/supporters.ts',
-		'update_address': './src/pages/update_address.ts',
 		'subscription_confirmation': './src/pages/subscription_confirmation.ts',
 		'pattern_library': './src/pattern_library/index.ts',
 	},
