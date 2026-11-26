@@ -212,7 +212,7 @@ const fieldErrors = computed<AddressValidity>( () => {
 } );
 
 const { addressType } = useAddressTypeFunctions( store );
-const { receiptNeeded } = useReceiptModel( store );
+const receiptNeeded = useReceiptModel( store );
 
 const userOnlyWantsToDeclineReceipt = computed<boolean>( () => {
 	return !store.state.address.receipt && store.getters[ 'address/allRequiredFieldsEmpty' ];
@@ -228,7 +228,7 @@ const onFieldChange = ( fieldName: string ): void => {
 
 const getAddressData = (): Address => {
 	const data = {
-		addressType: addressTypeName( store.getters[ 'address/addressType' ] ),
+		addressType: addressTypeName( store.state.address.addressType ),
 	} as any;
 	Object.keys( formData ).forEach( fieldName => {
 		data[ fieldName ] = formData[ fieldName ].value;

@@ -34,6 +34,7 @@ interface DonationFormModel {
 	addressValidationPatterns: AddressValidation;
 	donationMaximumAmount: number;
 	salutations: Array<Salutation>;
+	urlFeatures: Array<string>;
 }
 
 const PAGE_IDENTIFIER = 'donation-form';
@@ -97,6 +98,7 @@ dataPersister.initialize( persistenceItems ).then( () => {
 					trackingData: pageData.applicationVars.tracking,
 					campaignValues: campaignParameters.getCampaignValues(),
 					addressValidationPatterns: pageData.applicationVars.addressValidationPatterns,
+					urlFeatures: pageData.applicationVars.urlFeatures,
 				},
 			} );
 		app.provide( 'cityAutocompleteResource', new ApiCityAutocompleteResource() );

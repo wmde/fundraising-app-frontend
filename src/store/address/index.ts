@@ -11,10 +11,15 @@ import { MAILING_LIST_ADDRESS_PAGE } from '@src/config';
 export default function ( requiredFields: AddressRequirements, defaultFields: DefaultFields ): Module<AddressState, any> {
 	const state: AddressState = {
 		serverSideValidationCount: 0,
+		/**
+		 * @deprecated
+		 */
 		addressType: AddressTypeModel.UNSET,
 		newsletter: MAILING_LIST_ADDRESS_PAGE,
 		receipt: true,
 		requiredFields: requiredFields,
+		isAnonymous: null,
+		isCompany: false,
 		values: {
 			salutation: defaultFields.salutation ?? '',
 			title: defaultFields.title ?? '',
@@ -40,6 +45,7 @@ export default function ( requiredFields: AddressRequirements, defaultFields: De
 			email: Validity.INCOMPLETE,
 			addressType: Validity.VALID,
 			receipt: Validity.INCOMPLETE,
+			isAnonymous: Validity.INCOMPLETE,
 		},
 	};
 

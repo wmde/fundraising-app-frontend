@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export enum AddressTypeModel {
 	PERSON,
 	COMPANY,
@@ -8,7 +11,9 @@ export enum AddressTypeModel {
 }
 
 // AddressTypeNames and the AddressTypes maps have some German names in them because that's what the backend uses.
-
+/**
+ * @deprecated
+ */
 export const AddressTypeNames = new Map<number, string>( [
 	[ AddressTypeModel.PERSON, 'person' ],
 	[ AddressTypeModel.COMPANY, 'firma' ],
@@ -18,6 +23,9 @@ export const AddressTypeNames = new Map<number, string>( [
 	[ AddressTypeModel.UNSET, 'unset' ],
 ] );
 
+/**
+ * @deprecated
+ */
 export const AddressTypes = new Map<string, number>( [
 	[ 'person', AddressTypeModel.PERSON ],
 	[ 'firma', AddressTypeModel.COMPANY ],
@@ -27,6 +35,9 @@ export const AddressTypes = new Map<string, number>( [
 	[ 'unset', AddressTypeModel.UNSET ],
 ] );
 
+/**
+ * @deprecated
+ */
 export function addressTypeName( t: AddressTypeModel ): string {
 	const name = AddressTypeNames.get( t );
 	// poor man's type check to protect against future extensions of AddressTypeModel, e.g. https://phabricator.wikimedia.org/T220367
@@ -36,6 +47,9 @@ export function addressTypeName( t: AddressTypeModel ): string {
 	return name;
 }
 
+/**
+ * @deprecated
+ */
 export function addressTypeFromName( n: string ): AddressTypeModel {
 	const type = AddressTypes.get( n );
 	// poor man's type check to protect against future extensions of AddressTypeModel, e.g. https://phabricator.wikimedia.org/T220367

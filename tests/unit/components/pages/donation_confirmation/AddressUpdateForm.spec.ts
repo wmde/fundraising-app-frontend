@@ -4,13 +4,13 @@ import { createStore } from '@src/store/donor_update_store';
 import AddressUpdateForm from '@src/components/pages/donation_confirmation/AddressUpdateForm.vue';
 import { action } from '@src/store/util';
 import { addressValidationPatterns } from '@test/data/validation';
-import { anonymousBankTransferConfirmationData, bankTransferConfirmationData } from '@test/data/confirmationData';
+import { bankTransferConfirmationData } from '@test/data/confirmationData';
 import type { Address } from '@src/view_models/Address';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import { Store } from 'vuex';
 import type { DonorResource } from '@src/api/DonorResource';
 import { errorSummaryItemIsFunctional } from '@test/unit/utils/errorSummaryItemIsFunctional';
+import { nextTick } from 'vue';
 
 const anonAddress = {
 	addressType: 'anonym',
@@ -72,7 +72,7 @@ const emptyAddress = {
 	email: '',
 };
 
-const addressData = ( address: Address, addressType: AddressTypeModel ) => {
+const addressData = ( address: Address, addressType: string ) => {
 	return {
 		addressType,
 		newsletter: true,
@@ -125,7 +125,7 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( validAddress, AddressTypeModel.PERSON )
+			addressData( validAddress, 'person' )
 		);
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
@@ -142,33 +142,26 @@ describe( 'AddressUpdateForm.vue', () => {
 		expect( wrapper.find<HTMLInputElement>( '#newsletter' ).element.checked ).toBe( true );
 	} );
 
-	it( 'marks address type invalid if submitted without selecting', async () => {
+	it( 'marks not anonymous and receipt needed', async () => {
 		const store = createStore();
-		await store.dispatch(
-			action( 'address', 'initializeAddress' ),
-			addressData( anonAddress, AddressTypeModel.ANON )
-		);
+		getWrapper( store, bankTransferConfirmationData );
 
-		const wrapper = getWrapper( store, anonymousBankTransferConfirmationData );
-
-		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
-
-		expect( wrapper.find( '#address-form-type' ).attributes( 'data-error' ) ).toBeTruthy();
+		expect( store.state.address.isAnonymous ).toBeFalsy();
+		expect( store.state.address.receipt ).toBeTruthy();
 	} );
 
-	it( 'marks empty address fields invalid if submitted after selecting address type', async () => {
+	it( 'marks empty address fields invalid', async () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( anonAddress, AddressTypeModel.ANON )
+			addressData( anonAddress, 'anonym' )
 		);
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
 
-		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 
-		await wrapper.vm.$nextTick();
+		await nextTick();
 
 		expect( wrapper.find( '#address-form-first-name' ).attributes( 'data-error' ) ).toBeTruthy();
 		expect( wrapper.find( '#address-form-last-name' ).attributes( 'data-error' ) ).toBeTruthy();
@@ -182,12 +175,11 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( inValidAddress, AddressTypeModel.ANON )
+			addressData( inValidAddress, 'anonym' )
 		);
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
 
-		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
 
@@ -200,12 +192,11 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( inValidAddress, AddressTypeModel.ANON )
+			addressData( inValidAddress, 'anonym' )
 		);
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
 
-		await wrapper.find( '#addressType-0' ).trigger( 'change' );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
 
@@ -245,41 +236,43 @@ describe( 'AddressUpdateForm.vue', () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( emptyAddress, AddressTypeModel.ANON )
+			addressData( emptyAddress, 'anonym' )
 		);
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'addressType-0', 'address-form-type' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'address-form-salutation' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'address-form-first-name' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'address-form-last-name' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'street', 'address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'email', 'address-form-email' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'post-code', 'address-form-post-code' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'city', 'address-form-city' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'email', 'address-form-email' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'street', 'address-form-street' ) ).toBeTruthy();
 	} );
 
 	it( 'has a functional company error summary', async () => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( emptyAddress, AddressTypeModel.COMPANY )
+			addressData( emptyAddress, 'firma' )
 		);
 		const wrapper = getWrapper( store, bankTransferConfirmationData );
 		await wrapper.find( '#address-update-form' ).trigger( 'submit' );
 		await flushPromises();
 
 		expect( wrapper.find( '.error-summary' ).exists() ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'salutation-0', 'address-form-salutation' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'first-name', 'address-form-first-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'last-name', 'address-form-last-name' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'email', 'address-form-email' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'company-name', 'address-form-company-name' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'street', 'address-form-street' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'post-code', 'address-form-post-code' ) ).toBeTruthy();
 		expect( errorSummaryItemIsFunctional( wrapper, 'city', 'address-form-city' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'country', 'address-form-country' ) ).toBeTruthy();
-		expect( errorSummaryItemIsFunctional( wrapper, 'email', 'address-form-email' ) ).toBeTruthy();
+		expect( errorSummaryItemIsFunctional( wrapper, 'street', 'address-form-street' ) ).toBeTruthy();
 	} );
 
 	it( 'displays an error if one is returned from the server', async () => {
@@ -301,10 +294,10 @@ describe( 'AddressUpdateForm.vue', () => {
 	} );
 
 	it.each( [
-		[ AddressTypeModel.PERSON ],
-		[ AddressTypeModel.EMAIL ],
-		[ AddressTypeModel.ANON ],
-	] )( 'shows and validates as person when initial address type is %s', async ( addressType: AddressTypeModel ) => {
+		[ 'person' ],
+		[ 'email' ],
+		[ 'anonym' ],
+	] )( 'shows and validates as person when initial address type is %s', async ( addressType: string ) => {
 		const store = createStore();
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
@@ -342,7 +335,7 @@ describe( 'AddressUpdateForm.vue', () => {
 		emptyAddress.addressType = 'firma';
 		await store.dispatch(
 			action( 'address', 'initializeAddress' ),
-			addressData( emptyAddress, AddressTypeModel.COMPANY )
+			addressData( emptyAddress, 'firma' )
 		);
 
 		const wrapper = getWrapper( store, bankTransferConfirmationData );

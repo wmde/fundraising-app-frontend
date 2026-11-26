@@ -40,6 +40,18 @@ export default [
 		mutationKey: mutation( 'address', 'SET_ADDRESS_TYPE' ),
 		fields: [],
 	},
+	{
+		storageKey: 'isAnonymous',
+		mutationType: DataPersistenceMutationType.VALUE,
+		mutationKey: mutation( 'address', 'SET_IS_ANONYMOUS' ),
+		fields: [],
+	},
+	{
+		storageKey: 'isCompany',
+		mutationType: DataPersistenceMutationType.VALUE,
+		mutationKey: mutation( 'address', 'SET_IS_COMPANY' ),
+		fields: [],
+	},
 	address( 'address' ),
 	...bankdata,
 ];

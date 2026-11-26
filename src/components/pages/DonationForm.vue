@@ -6,21 +6,21 @@
 		:is-direct-debit-payment="isDirectDebitPayment"
 	>
 		<template #error-summary>
-			<ErrorSummary :show-error-summary="showErrorSummary" :address-type="addressType" :receipt-model="receiptModel"/>
+			<ErrorSummaries :show-error-summary="showErrorSummary"/>
 		</template>
 	</PaymentSection>
 
+	<AnonymousSection v-if="allowAnon"/>
+
 	<PersonalDataSection
+		v-if="!isAnonymous"
+		:start-index="allowAnon ? 3 : 2"
 		:countries="countries"
 		:salutations="salutations"
 		:tracking-data="trackingData"
 		:campaign-values="campaignValues"
 		:address-validation-patterns="addressValidationPatterns"
 		:is-direct-debit-payment="isDirectDebitPayment"
-		:disabled-address-types="disabledAddressTypes"
-		:address-type="addressType"
-		:address-type-is-invalid="addressTypeIsInvalid"
-		:receipt-model="receiptModel"
 	/>
 
 	<ContentCard :is-collapsable="true" v-if="paymentSummary">
@@ -39,7 +39,7 @@
 										:address="addressSummary"
 										:countries="countries"
 										:salutations="salutations"
-										:receiptNeeded="receiptModel.receiptNeeded.value"
+										:receiptNeeded="receiptModel"
 									/>
 								</template>
 								<template #right v-if="bankDataSummary">
@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted } from 'vue';
+import { computed, inject, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import type { TrackingData } from '@src/view_models/TrackingData';
 import type { Country } from '@src/view_models/Country';
@@ -81,14 +81,11 @@ import PaymentSection from '@src/components/pages/donation_form/Payment/PaymentS
 import PersonalDataSection from '@src/components/pages/donation_form/PersonalData/PersonalDataSection.vue';
 import PaymentTextFormButton from '@src/components/shared/form_elements/PaymentTextFormButton.vue';
 import SubmitValues from '@src/components/pages/donation_form/SubmitValues.vue';
-import ErrorSummary from '@src/components/pages/donation_form/Summaries/ErrorSummary.vue';
+import ErrorSummaries from '@src/components/pages/donation_form/Summaries/ErrorSummaries.vue';
 import { useDonationFormSubmitHandler } from '@src/components/pages/donation_form/composables/useDonationFormSubmitHandler';
 import { QUERY_STRING_INJECTION_KEY } from '@src/util/createCampaignQueryString';
 import { usePaymentFunctions } from '@src/components/pages/donation_form/composables/usePaymentFunctions';
 import { useAddressSummary } from '@src/components/pages/donation_form/composables/useAddressSummary';
-import { useAddressTypeFunctions } from '@src/components/shared/composables/useAddressTypeFunctions';
-import { trackDynamicForm } from '@src/util/tracking';
-import { useReceiptModel } from '@src/components/pages/donation_form/composables/useReceiptModel';
 import { useBankDataSummary } from '@src/components/pages/donation_form/composables/useBankDataSummary';
 import PaymentSummarySection from '@src/components/shared/PaymentSummarySection.vue';
 import ContentCard from '@src/components/patterns/ContentCard.vue';
@@ -97,6 +94,10 @@ import DonationSummaryHeadline from '@src/components/pages/donation_form/Summari
 import Summary from '@src/components/patterns/Summary.vue';
 import AccordionItem from '@src/components/patterns/AccordionItem.vue';
 import Accordion from '@src/components/patterns/Accordion.vue';
+import AnonymousSection from '@src/components/pages/donation_form/AnonymousSection.vue';
+import { useReceiptModel } from '@src/components/shared/composables/useReceiptModel';
+import { ANON_FEATURE } from '@src/config';
+import { action } from '@src/store/util';
 
 defineOptions( {
 	name: 'DonationForm',
@@ -116,6 +117,7 @@ interface Props {
 	trackingData: TrackingData;
 	campaignValues: CampaignValues;
 	addressValidationPatterns: AddressValidation;
+	urlFeatures: string[];
 }
 const props = defineProps<Props>();
 
@@ -123,8 +125,9 @@ const store = useStore();
 const { isDirectDebitPayment, paymentSummary } = usePaymentFunctions( store );
 const { addressSummary } = useAddressSummary( store );
 const { bankDataSummary } = useBankDataSummary( store );
-const { disabledAddressTypes, addressType, addressTypeIsInvalid } = useAddressTypeFunctions( store );
 const receiptModel = useReceiptModel( store );
+const isAnonymous = computed<boolean>( () => store.state.address.isAnonymous );
+const allowAnon = computed<boolean>( () => props.urlFeatures.includes( ANON_FEATURE ) );
 
 const campaignParams = inject<string>( QUERY_STRING_INJECTION_KEY, '' );
 
@@ -132,12 +135,13 @@ const { submit, submitValuesForm, showErrorSummary } = useDonationFormSubmitHand
 	store,
 	isDirectDebitPayment,
 	props.validateAddressUrl,
-	props.validateEmailUrl,
-	receiptModel.receiptNeeded
+	props.validateEmailUrl
 );
 
 onMounted( () => {
-	trackDynamicForm();
+	if ( !allowAnon.value ) {
+		store.dispatch( action( 'address', 'setIsAnonymous' ), false );
+	}
 } );
 
 </script>

@@ -7,10 +7,12 @@ import type {
 	InputField,
 } from '@src/view_models/Address';
 import type { ValidationResponse } from '@src/store/ValidationResponse';
-import { AddressTypeModel, addressTypeName } from '@src/view_models/AddressTypeModel';
+import { AddressTypeModel, addressTypeFromName } from '@src/view_models/AddressTypeModel';
 import { Validity } from '@src/view_models/Validity';
 import type { Salutation } from '@src/view_models/Salutation';
 import { salutationValueTranslations } from '@src/view_models/salutationValueTranslations';
+import { getAddressType } from '@src/store/address/addressTypeFunctions';
+import { Helper } from '@src/store/util';
 
 export const actions = {
 	validateAddressField( context: ActionContext<AddressState, any>, field: InputField ) {
@@ -35,7 +37,7 @@ export const actions = {
 		Object.keys( context.state.values ).forEach(
 			field => bodyFormData.append( field, context.state.values[ field ] )
 		);
-		bodyFormData.append( 'addressType', addressTypeName( context.state.addressType ) );
+		bodyFormData.append( 'addressType', getAddressType( context.state ) );
 		return axios.post( validateAddressUrl, bodyFormData, {
 			headers: { 'Content-Type': 'multipart/form-data' },
 		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
@@ -43,56 +45,6 @@ export const actions = {
 			return validationResult.data;
 		} );
 
-	},
-	/**
-	 * This is a hacky workaround for test C24_WMDE_Desktop_DE_01 if we move to that style of form we
-	 * need to add proper store fields to handle it, if not then we should delete this
-	 * Update 2025 campaign: This form is still being used for email campaigns.
-	 */
-	validateDonationReceiptAddress( context: ActionContext<AddressState, any>, payload: { receiptNeeded: boolean | null; validateAddressUrl: string } ) {
-		context.commit( 'MARK_EMPTY_DONATION_FIELDS_AS_INVALID', payload.receiptNeeded );
-		if ( !context.getters.requiredFieldsAreValid ) {
-			return Promise.resolve( { status: 'ERR', messages: [] } );
-		}
-
-		context.commit( 'BEGIN_ADDRESS_VALIDATION' );
-		const bodyFormData = new FormData();
-		Object.keys( context.state.values ).forEach(
-			field => bodyFormData.append( field, context.state.values[ field ] )
-		);
-		bodyFormData.append( 'addressType', addressTypeName( context.state.addressType ) );
-		return axios.post( payload.validateAddressUrl, bodyFormData, {
-			headers: { 'Content-Type': 'multipart/form-data' },
-		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
-			context.commit( 'FINISH_ADDRESS_VALIDATION', validationResult.data );
-			return validationResult.data;
-		} );
-
-	},
-	/**
-	 * We're performing more hackery here as we need to validate the different donation form address fields
-	 * depending on the address type
-	 */
-	validateAddressOnCompactForm( context: ActionContext<AddressState, any>, validateAddressUrl: string ) {
-		context.commit( 'RESET_DYNAMIC_FIELDS_VALIDATION' );
-		context.commit( 'MARK_EMPTY_FIELDS_INVALID' );
-
-		if ( !context.getters.requiredFieldsAreValid ) {
-			return Promise.resolve( { status: 'ERR', messages: [] } );
-		}
-
-		context.commit( 'BEGIN_ADDRESS_VALIDATION' );
-		const bodyFormData = new FormData();
-		Object.keys( context.state.values ).forEach(
-			field => bodyFormData.append( field, context.state.values[ field ] )
-		);
-		bodyFormData.append( 'addressType', addressTypeName( context.state.addressType ) );
-		return axios.post( validateAddressUrl, bodyFormData, {
-			headers: { 'Content-Type': 'multipart/form-data' },
-		} ).then( ( validationResult: AxiosResponse<ValidationResponse> ) => {
-			context.commit( 'FINISH_ADDRESS_VALIDATION', validationResult.data );
-			return validationResult.data;
-		} );
 	},
 	validateEmail( context: ActionContext<AddressState, any>, validateEmailUrl: string ) {
 		if ( !context.getters.requiredFieldsAreValid ) {
@@ -110,6 +62,9 @@ export const actions = {
 			return validationResult.data;
 		} );
 	},
+	/**
+	 * @deprecated
+	 */
 	setAddressType( context: ActionContext<AddressState, any>, type: AddressTypeModel ) {
 		context.commit( 'SET_ADDRESS_TYPE', type );
 		context.commit( 'SET_VALIDITY', { name: 'addressType', value: Validity.VALID } );
@@ -127,20 +82,45 @@ export const actions = {
 	setReceiptChoice( context: ActionContext<AddressState, any>, choice: boolean ) {
 		context.commit( 'SET_RECEIPT', choice );
 	},
+	setIsAnonymous( context: ActionContext<AddressState, any>, isAnonymous: boolean ): void {
+		context.commit( 'SET_IS_ANONYMOUS', isAnonymous );
+		context.commit( 'SET_VALIDITY', { name: 'isAnonymous', value: Validity.VALID } );
+	},
+	setIsCompany( context: ActionContext<AddressState, any>, isCompany: boolean ): void {
+		context.commit( 'SET_IS_COMPANY', isCompany );
+	},
 	initializeAddress( context: ActionContext<AddressState, any>, initialValues: InitialAddressValues ): void {
-		if ( initialValues.addressType !== null && initialValues.addressType !== undefined ) {
-			context.commit( 'SET_ADDRESS_TYPE', initialValues.addressType );
+		if ( Helper.hasInitialValue( initialValues.addressType ) ) {
+			context.commit( 'SET_ADDRESS_TYPE', addressTypeFromName( initialValues.addressType ) );
 			context.commit( 'SET_VALIDITY', { name: 'addressType', value: Validity.VALID } );
 		} else {
 			context.commit( 'SET_VALIDITY', { name: 'addressType', value: Validity.INCOMPLETE } );
 		}
-		if ( initialValues.newsletter !== null && initialValues.newsletter !== undefined ) {
+
+		if ( Helper.hasInitialValue( initialValues.newsletter ) ) {
 			context.commit( 'SET_NEWSLETTER', initialValues.newsletter );
 		}
-		if ( initialValues.receipt !== null && initialValues.receipt !== undefined ) {
+
+		if ( Helper.hasInitialValue( initialValues.receipt ) ) {
 			context.commit( 'SET_RECEIPT', initialValues.receipt );
 			context.commit( 'SET_VALIDITY', { name: 'receipt', value: Validity.RESTORED } );
+		} else if ( [ 'person', 'company_with_contact', 'firma' ].includes( initialValues.addressType ) ) {
+			context.commit( 'SET_RECEIPT', true );
 		}
+
+		if ( Helper.hasInitialValue( initialValues.isAnonymous ) ) {
+			context.commit( 'SET_IS_ANONYMOUS', initialValues.isAnonymous );
+			context.commit( 'SET_VALIDITY', { name: 'isAnonymous', value: Validity.RESTORED } );
+		} else if ( initialValues.addressType === 'anonym' ) {
+			context.commit( 'SET_IS_ANONYMOUS', true );
+		}
+
+		if ( Helper.hasInitialValue( initialValues.isCompany ) ) {
+			context.commit( 'SET_IS_COMPANY', initialValues.isCompany );
+		} else if ( [ 'company_with_contact', 'firma' ].includes( initialValues.addressType ) ) {
+			context.commit( 'SET_IS_COMPANY', true );
+		}
+
 		context.commit( 'INITIALIZE_ADDRESS', initialValues.fields );
 	},
 	/*

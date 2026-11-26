@@ -64,7 +64,7 @@
 		/>
 	</div>
 
-	<div class="flex-field-group">
+	<div class="flex-field-group" v-if="splitStreet">
 		<StreetAutocompleteField
 			id="address-form-street"
 			input-id-street-name="street"
@@ -77,40 +77,56 @@
 			@field-changed="$emit('field-changed', 'street' )"
 		/>
 	</div>
+	<TextField
+		v-else
+		name="street"
+		id="address-form-street"
+		input-id="street"
+		v-model="formData.street.value"
+		:show-error="showError.street"
+		:error-message="$t('donation_form_street_error')"
+		autocomplete="street-address"
+		:label="$t( 'donation_form_street_label' )"
+		:placeholder="$t( 'donation_form_street_placeholder' )"
+		@field-changed="$emit('field-changed', 'street')"
+	>
+		<template #message v-if="showStreetWarning">
+			{{ $t( 'donation_form_street_number_warning' ) }}
+		</template>
+	</TextField>
 </template>
 
 <script setup lang="ts">
 
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { useStore } from 'vuex';
-import { useAddressTypeModel } from '@src/components/pages/donation_form/composables/useAddressTypeModel';
 import type { AddressFormData, AddressValidity } from '@src/view_models/Address';
 import TextField from '@src/components/shared/form_fields/TextField.vue';
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import CityAutocompleteField from '@src/components/shared/form_fields/CityAutocompleteField.vue';
 import CountryAutocompleteField from '@src/components/shared/form_fields/CountryAutocompleteField.vue';
 import StreetAutocompleteField from '@src/components/shared/form_fields/StreetAutocompleteField.vue';
 import type { Country } from '@src/view_models/Country';
 import { Validity } from '@src/view_models/Validity';
 import CheckboxField from '@src/components/shared/form_fields/CheckboxField.vue';
+import { useIsCompanyModel } from '@src/components/shared/composables/useIsCompanyModel';
 
 interface Props {
 	formData: AddressFormData;
 	showError: AddressValidity;
 	countries: Country[];
 	postCodeValidation: string;
+	splitStreet?: boolean;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults( defineProps<Props>(), { splitStreet: true } );
 const emit = defineEmits( [ 'field-changed' ] );
 
 const store = useStore();
-const addressType = useAddressTypeModel( store );
+const isCompany = useIsCompanyModel( store );
 
 const showAddressTypeError = computed( () => store.getters[ 'address/addressTypeIsInvalid' ] );
 const countryWasRestored = ref<boolean>( false );
-
-const isCompany = ref<boolean>( addressType.value === AddressTypeModel.COMPANY_WITH_CONTACT );
+const showStreetWarning = computed<boolean>( () => /^\D+$/.test( props.formData.street.value ) );
 
 const onCountryFieldChanged = ( country: Country | undefined ) => {
 	if ( country ) {
@@ -128,10 +144,6 @@ const onCountryFieldChanged = ( country: Country | undefined ) => {
 
 onBeforeMount( () => {
 	countryWasRestored.value = store.state.address.validity.country === Validity.RESTORED;
-} );
-
-watch( isCompany, ( newValue: boolean ) => {
-	addressType.value = newValue ? AddressTypeModel.COMPANY_WITH_CONTACT : AddressTypeModel.PERSON;
 } );
 
 </script>

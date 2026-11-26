@@ -51,7 +51,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { AddressTypeModel } from '@src/view_models/AddressTypeModel';
 import { AmountValidity } from '@src/view_models/Payment';
 import { useI18n } from 'vue-i18n';
 import AmountField from '@src/components/shared/form_fields/AmountField.vue';
@@ -96,7 +95,7 @@ const paymentTypesAsOptions = computed<CheckboxFormOption[]>( () => {
 
 const disabledPaymentTypes = computed<string[]>( () => {
 	let disabledTypes: string[] = [];
-	if ( store.state.address.addressType === AddressTypeModel.ANON ) {
+	if ( store.getters[ 'address/addressType' ] === 'anonym' ) {
 		disabledTypes.push( 'BEZ' );
 	}
 	if ( store.state.payment.values.interval !== '0' ) {

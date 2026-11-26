@@ -16,6 +16,8 @@ function newMinimalStore( overrides: Object ): AddressState {
 		{
 			serverSideValidationCount: 0,
 			addressType: AddressTypeModel.PERSON,
+			isAnonymous: false,
+			isCompany: false,
 			newsletter: false,
 			receipt: false,
 			requiredFields: REQUIRED_FIELDS,
@@ -52,13 +54,15 @@ function newMinimalStore( overrides: Object ): AddressState {
 describe( 'Address', () => {
 
 	describe( 'Getters/invalidFields', () => {
-		const requiredFields = REQUIRED_FIELDS[ AddressTypeModel.PERSON ];
+		const requiredFields = REQUIRED_FIELDS.person;
 
 		it( 'does not return non-required fields as invalid when they are not set', () => {
-			const expectedInvalidFields = requiredFields.filter( e => e !== 'addressType' );
+			const expectedInvalidFields = requiredFields.filter( e => e !== 'isAnonymous' );
 			expect( getters.invalidFields(
 				newMinimalStore( {
-					addressType: AddressTypeModel.PERSON,
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
 					validity: {
 						addressType: Validity.VALID,
 						salutation: Validity.INVALID,
@@ -81,6 +85,9 @@ describe( 'Address', () => {
 		it( 'returns an array of all invalid and incomplete fields', () => {
 			expect( getters.invalidFields(
 				newMinimalStore( {
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
 					validity: {
 						street: Validity.INVALID,
 						postcode: Validity.INVALID,
@@ -120,39 +127,78 @@ describe( 'Address', () => {
 
 	describe( 'Getters/addressType', () => {
 
-		it( 'returns address type from the store', () => {
+		it( 'returns address type for anonymous', () => {
 			expect( getters.addressType(
 				newMinimalStore( {
-					addressType: AddressTypeModel.COMPANY,
+					isAnonymous: true,
+					receipt: true,
+					isCompany: false,
 				} ),
 				null,
 				null,
 				null
-			) ).toBe( AddressTypeModel.COMPANY );
+			) ).toBe( 'anonym' );
+		} );
+
+		it( 'returns address type for email', () => {
+			expect( getters.addressType(
+				newMinimalStore( {
+					isAnonymous: false,
+					receipt: false,
+					isCompany: false,
+				} ),
+				null,
+				null,
+				null
+			) ).toBe( 'email' );
+		} );
+
+		it( 'returns address type for person', () => {
+			expect( getters.addressType(
+				newMinimalStore( {
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
+				} ),
+				null,
+				null,
+				null
+			) ).toBe( 'person' );
+		} );
+
+		it( 'returns address type for company', () => {
+			expect( getters.addressType(
+				newMinimalStore( {
+					isAnonymous: false,
+					receipt: true,
+					isCompany: true,
+				} ),
+				null,
+				null,
+				null
+			) ).toBe( 'company_with_contact' );
 		} );
 	} );
 
 	describe( 'Getters/addressTypeIsNotAnon', () => {
 
 		it( 'returns true for address types person and company', () => {
-			const addressType: AddressTypeModel = AddressTypeModel.COMPANY;
 			expect( getters.addressTypeIsNotAnon(
 				newMinimalStore( {
-					addressType: AddressTypeModel.COMPANY,
+					isAnonymous: false,
 				} ),
-				{ addressType },
+				null,
 				null,
 				null
 			) ).toBe( true );
 		} );
 
 		it( 'returns false for anon users', () => {
-			const addressType: AddressTypeModel = AddressTypeModel.ANON;
 			expect( getters.addressTypeIsNotAnon(
 				newMinimalStore( {
-					addressType: AddressTypeModel.ANON,
+					isAnonymous: true,
 				} ),
-				{ addressType },
+				null,
 				null,
 				null
 			) ).toBe( false );
@@ -164,7 +210,9 @@ describe( 'Address', () => {
 		it( 'returns company name when address type is company', () => {
 			expect( getters.fullName(
 				newMinimalStore( {
-					addressType: AddressTypeModel.COMPANY,
+					isAnonymous: false,
+					receipt: true,
+					isCompany: true,
 					values: {
 						companyName: 'Testmedia Deutschland',
 					},
@@ -178,7 +226,9 @@ describe( 'Address', () => {
 		it( 'returns full name and title when address type is person', () => {
 			expect( getters.fullName(
 				newMinimalStore( {
-					addressType: AddressTypeModel.PERSON,
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
 					values: {
 						firstName: 'Testina',
 						lastName: 'Testingson',
@@ -194,7 +244,9 @@ describe( 'Address', () => {
 		it( 'returns only first and last name when title is not chosen', () => {
 			expect( getters.fullName(
 				newMinimalStore( {
-					addressType: AddressTypeModel.PERSON,
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
 					values: {
 						firstName: 'Testina',
 						lastName: 'Testingson',
@@ -481,6 +533,32 @@ describe( 'Address', () => {
 		} );
 	} );
 
+	describe( 'Actions/setIsAnonymous', () => {
+		it( 'commits to mutation [SET_IS_ANONYMOUS] with the entered choice', () => {
+			const commit = vi.fn(),
+				action = actions.setIsAnonymous as any,
+				choice = true;
+			action( { commit }, choice );
+			expect( commit ).toBeCalledWith(
+				'SET_IS_ANONYMOUS',
+				choice
+			);
+		} );
+	} );
+
+	describe( 'Actions/setIsCompany', () => {
+		it( 'commits to mutation [SET_IS_COMPANY] with the entered choice', () => {
+			const commit = vi.fn(),
+				action = actions.setIsCompany as any,
+				choice = true;
+			action( { commit }, choice );
+			expect( commit ).toBeCalledWith(
+				'SET_IS_COMPANY',
+				choice
+			);
+		} );
+	} );
+
 	describe( 'Actions/setNewsletterChoice', () => {
 		it( 'commits to mutation [SET_NEWSLETTER] with the entered choice', () => {
 			const commit = vi.fn(),
@@ -640,7 +718,11 @@ describe( 'Address', () => {
 		} );
 
 		it( 'sets validity to invalid for the appropriate form fields according to the response from the server', () => {
-			const store = newMinimalStore( {} ),
+			const store = newMinimalStore( {
+					isAnonymous: false,
+					receipt: true,
+					isCompany: false,
+				} ),
 				resp = {
 					status: 'ERR',
 					messages: {
@@ -763,6 +845,24 @@ describe( 'Address', () => {
 			const choice = true;
 			mutations.SET_NEWSLETTER( store, choice );
 			expect( store.newsletter ).toBe( choice );
+		} );
+	} );
+
+	describe( 'Mutations/SET_IS_ANONYMOUS', () => {
+		it( 'sets anonymous choice', () => {
+			const store = newMinimalStore( {} );
+			const choice = true;
+			mutations.SET_IS_ANONYMOUS( store, choice );
+			expect( store.isAnonymous ).toBe( choice );
+		} );
+	} );
+
+	describe( 'Mutations/SET_IS_COMPANY', () => {
+		it( 'sets company choice', () => {
+			const store = newMinimalStore( {} );
+			const choice = true;
+			mutations.SET_IS_COMPANY( store, choice );
+			expect( store.isCompany ).toBe( choice );
 		} );
 	} );
 
